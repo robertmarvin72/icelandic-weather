@@ -57,9 +57,12 @@ function baseClassRank({ tmax, rain }) {
 
 function classifyDay({ tmax, windMax, rain }) {
   const base = baseClassRank({ tmax, rain });
-  const wcap = windCapRank(windMax);
-  const finalRank = Math.max(base, wcap); // wind can only worsen the class
-  return CLASS_ORDER[finalRank];
+  theWind:
+  {
+    const wcap = windCapRank(windMax);
+    const finalRank = Math.max(base, wcap); // wind can only worsen the class
+    return CLASS_ORDER[finalRank];
+  }
 }
 
 // ───────────────────────────────────────────────
@@ -286,31 +289,35 @@ export default function IcelandCampingWeatherApp() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-sky-100 to-slate-100 text-slate-900">
-      <div className="max-w-6xl mx-auto px-4 py-8">
-        <header className="mb-6 flex items-center justify-between gap-4">
+    <div className="min-h-screen bg-soft-grid text-slate-900">
+      <div className="max-w-6xl mx-auto px-4 py-10">
+        <header className="mb-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
           <div>
-            <h1 className="text-2xl md:text-3xl font-extrabold tracking-tight">Iceland Camping – 7-Day Weather</h1>
-            <p className="text-slate-600">Temp (°C), Max wind (m/s), Rain (mm), Weather icons & weekly score (wind-capped)</p>
+            <h1 className="text-3xl md:text-4xl font-black tracking-tight">
+              Iceland Camping — 7-Day Weather
+            </h1>
+            <p className="text-slate-600">
+              Temp (°C), Max wind (m/s), Rain (mm), weekly score (wind-aware)
+            </p>
           </div>
+
           <div className="flex items-center gap-3">
-            <label htmlFor="site" className="text-sm font-medium">Campsite</label>
+            <label htmlFor="site" className="text-sm font-medium sr-only">Campsite</label>
             <select
               id="site"
-              className="px-3 py-2 rounded-xl border border-slate-300 bg-white shadow-sm"
+              className="focus-ring px-3 py-2 rounded-xl border border-slate-300 bg-white shadow-sm"
               value={siteId || ""}
               onChange={(e) => setSiteId(e.target.value)}
             >
-              {siteList.map((c) => (
-                <option key={c.id} value={c.id}>{c.name}</option>
-              ))}
+              {siteList.map((c) => (<option key={c.id} value={c.id}>{c.name}</option>))}
             </select>
+
             <button
               onClick={useMyLocation}
-              className="px-3 py-2 rounded-xl border border-slate-300 bg-white shadow-sm hover:bg-slate-50 text-sm"
+              className="focus-ring px-3 py-2 rounded-xl border border-slate-300 bg-white shadow-sm hover:bg-slate-50 text-sm inline-flex items-center gap-2 active:translate-y-px"
               title="Find nearest campsite"
             >
-              Use my location
+              <span>📍</span> Use my location
             </button>
           </div>
         </header>
@@ -319,7 +326,7 @@ export default function IcelandCampingWeatherApp() {
 
         {/* Two-column layout: left main, right leaderboard */}
         <div className="grid md:grid-cols-2 gap-4">
-          <Card>
+          <Card className="card">
             <div className="flex items-baseline justify-between mb-3">
               <h2 className="text-lg font-semibold">
                 {site?.name || "—"}
@@ -334,61 +341,75 @@ export default function IcelandCampingWeatherApp() {
               </div>
             </div>
 
-            {/* Weekly total */}
-            <div className="mb-2 text-sm">
-              <span className="inline-flex items-center rounded-full bg-slate-100 px-3 py-1">
+            {/* Weekly total chip */}
+            <div className="mb-3 text-sm">
+              <span className="inline-flex items-center rounded-full bg-white/80 glass px-3 py-1 shadow-sm border border-slate-200">
                 Total (7 days): <span className="ml-2 font-semibold">{totalPoints} pts</span>
               </span>
             </div>
 
-            {loading && <div className="py-10 text-center text-slate-600">Loading forecast…</div>}
+            {loading && (
+              <div className="p-4">
+                <div className="animate-pulse space-y-2">
+                  <div className="h-4 bg-slate-200 rounded"></div>
+                  <div className="h-4 bg-slate-200 rounded w-5/6"></div>
+                  <div className="h-4 bg-slate-200 rounded w-4/6"></div>
+                </div>
+              </div>
+            )}
             {error && <div className="py-10 text-center text-red-600">{String(error.message || error)}</div>}
 
             {!loading && !error && (
-              <div className="overflow-x-auto">
-                <table className="w-full text-left text-sm">
-                  <thead>
-                    <tr className="border-b border-slate-200 text-slate-600">
-                      <th className="py-2 pr-3 font-medium">Score</th>
-                      <th className="py-2 pr-3 font-medium">Weather</th>
-                      <th className="py-2 pr-3 font-medium">Day</th>
-                      <th className="py-2 pr-3 font-medium">Temp min</th>
-                      <th className="py-2 pr-3 font-medium">Temp max</th>
-                      <th className="py-2 pr-3 font-medium">Max wind</th>
-                      <th className="py-2 pr-3 font-medium">Rain</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {rows.map((r) => (
-                      <tr key={r.date} className="border-b last:border-0 border-slate-100">
-                        <td className="py-2 pr-3">
-                          <span
-                            className={
-                              "inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs " +
-                              (r.class === "Best" ? "bg-green-100 text-green-800" :
-                               r.class === "Good" ? "bg-emerald-100 text-emerald-800" :
-                               r.class === "Ok"   ? "bg-yellow-100 text-yellow-800" :
-                               r.class === "Fair" ? "bg-amber-100 text-amber-800" :
-                                                    "bg-red-100 text-red-800")
-                            }
-                          >
-                            {r.class} · {r.points}
-                          </span>
-                        </td>
-                        <td className="py-2 pr-3">
-                          {WEATHER_MAP?.[r.code]?.icon || "❔"}{" "}
-                          <span className="text-slate-600">{WEATHER_MAP?.[r.code]?.text || ""}</span>
-                        </td>
-                        <td className="py-2 pr-3 whitespace-nowrap font-medium">{formatDay(r.date)}</td>
-                        <td className="py-2 pr-3">{r.tmin?.toFixed?.(1)} °C</td>
-                        <td className="py-2 pr-3">{r.tmax?.toFixed?.(1)} °C</td>
-                        <td className="py-2 pr-3">{r.windMax?.toFixed?.(1)} m/s</td>
-                        <td className="py-2 pr-3">{r.rain?.toFixed?.(1)} mm</td>
+              <div className="overflow-hidden rounded-2xl border border-slate-200">
+                <div className="overflow-x-auto">
+                  <table className="w-full text-left text-sm table-sticky">
+                    <thead>
+                      <tr className="border-b border-slate-200 text-slate-600">
+                        <th className="py-3 pl-4 pr-3 font-semibold">Score</th>
+                        <th className="py-3 pr-3 font-semibold">Weather</th>
+                        <th className="py-3 pr-3 font-semibold">Day</th>
+                        <th className="py-3 pr-3 font-semibold">Temp min</th>
+                        <th className="py-3 pr-3 font-semibold">Temp max</th>
+                        <th className="py-3 pr-3 font-semibold">Max wind</th>
+                        <th className="py-3 pr-3 font-semibold">Rain</th>
                       </tr>
-                    ))}
-                  </tbody>
-                </table>
+                    </thead>
+                    <tbody className="[&>tr:nth-child(even)]:bg-slate-50">
+                      {rows.map((r) => (
+                        <tr key={r.date} className="border-b last:border-0 border-slate-100 hover:bg-sky-50/50">
+                          <td className="py-2 pl-4 pr-3">
+                            <span
+                              className={
+                                "inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs " +
+                                (r.class === "Best" ? "bg-green-100 text-green-800" :
+                                 r.class === "Good" ? "bg-emerald-100 text-emerald-800" :
+                                 r.class === "Ok"   ? "bg-yellow-100 text-yellow-800" :
+                                 r.class === "Fair" ? "bg-amber-100 text-amber-800" :
+                                                      "bg-red-100 text-red-800")
+                              }
+                            >
+                              {r.class === "Best" ? "🏆" :
+                               r.class === "Good" ? "👍"  :
+                               r.class === "Ok"   ? "🙂"  :
+                               r.class === "Fair" ? "😬"  : "🌧️"} {r.class} · {r.points}
+                            </span>
+                          </td>
+                          <td className="py-2 pr-3">
+                            {WEATHER_MAP?.[r.code]?.icon || "❔"}{" "}
+                            <span className="text-slate-600">{WEATHER_MAP?.[r.code]?.text || ""}</span>
+                          </td>
+                          <td className="py-2 pr-3 whitespace-nowrap font-medium">{formatDay(r.date)}</td>
+                          <td className="py-2 pr-3">{r.tmin?.toFixed?.(1)} °C</td>
+                          <td className="py-2 pr-3">{r.tmax?.toFixed?.(1)} °C</td>
+                          <td className="py-2 pr-3">{r.windMax?.toFixed?.(1)} m/s</td>
+                          <td className="py-2 pr-3">{r.rain?.toFixed?.(1)} mm</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
 
+                {/* Connected Map */}
                 <MapView
                   campsites={siteList}
                   selectedId={siteId}
@@ -452,6 +473,7 @@ export default function IcelandCampingWeatherApp() {
     Sorted by weekly score, then nearest to you (if we know your location).
   </div>
 </Card>
+
         </div>
 
         <footer className="mt-6 text-xs text-slate-500">
