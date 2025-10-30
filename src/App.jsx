@@ -403,36 +403,55 @@ export default function IcelandCampingWeatherApp() {
             </div>
           </Card>
 
-          <Card>
-            <h3 className="text-base font-semibold mb-2">Top 5 Campsites This Week</h3>
-            {loadingAll && <div className="text-sm text-slate-600">Crunching the numbers…</div>}
-            {!loadingAll && (
-              <ol className="space-y-2">
-                {top5.map((item, idx) => (
-                  <li
-                    key={item.site.id}
-                    className="flex items-center justify-between rounded-xl border border-slate-200 px-3 py-2 hover:bg-slate-50 cursor-pointer"
-                    onClick={() => setSiteId(item.site.id)}
-                    title="Select on map"
-                  >
-                    <div className="flex items-center gap-3">
-                      <span className="w-6 text-center font-semibold">{idx + 1}</span>
-                      <div>
-                        <div className="font-medium">{item.site.name}</div>
-                        <div className="text-xs text-slate-500">
-                          {item.dist != null ? `${item.dist.toFixed(1)} km away` : "distance unknown"}
-                        </div>
-                      </div>
-                    </div>
-                    <div className="text-sm font-semibold">{item.score} pts</div>
-                  </li>
-                ))}
-              </ol>
-            )}
-            <div className="mt-3 text-xs text-slate-500">
-              Sorted by weekly score, then nearest to you (if we know your location).
-            </div>
-          </Card>
+          <Card className="card">
+  <h3 className="text-base font-semibold mb-3">Top 5 Campsites This Week</h3>
+
+  {loadingAll && (
+    <div className="text-sm text-slate-600">Crunching the numbers…</div>
+  )}
+
+  {!loadingAll && (
+    <div className="overflow-hidden rounded-xl border border-slate-200">
+      <table className="w-full text-sm text-left">
+        <thead className="bg-slate-100/80 backdrop-blur-sm text-slate-600">
+          <tr>
+            <th className="px-3 py-2 font-semibold w-10 text-center">#</th>
+            <th className="px-3 py-2 font-semibold">Campsite</th>
+            <th className="px-3 py-2 font-semibold text-right">Distance</th>
+            <th className="px-3 py-2 font-semibold text-right">Score</th>
+          </tr>
+        </thead>
+        <tbody className="[&>tr:nth-child(even)]:bg-slate-50">
+          {top5.map((item, idx) => (
+            <tr
+              key={item.site.id}
+              className="hover:bg-sky-50/60 cursor-pointer transition"
+              onClick={() => setSiteId(item.site.id)}
+              title="Select on map"
+            >
+              <td className="px-3 py-2 text-center font-semibold text-slate-700">
+                {idx + 1}
+              </td>
+              <td className="px-3 py-2 font-medium text-slate-800">
+                {item.site.name}
+              </td>
+              <td className="px-3 py-2 text-right text-slate-600">
+                {item.dist != null ? `${item.dist.toFixed(1)} km` : "—"}
+              </td>
+              <td className="px-3 py-2 text-right font-semibold text-slate-900">
+                {item.score}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  )}
+
+  <div className="mt-3 text-xs text-slate-500">
+    Sorted by weekly score, then nearest to you (if we know your location).
+  </div>
+</Card>
         </div>
 
         <footer className="mt-6 text-xs text-slate-500">
