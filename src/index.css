@@ -1,3 +1,36 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* --- UI polish helpers --- */
+:root {
+  --card-shadow: 0 10px 25px -10px rgba(2, 6, 23, 0.25);
+  --ring: 0 0 0 3px rgba(59, 130, 246, .25);
+}
+
+/* subtle soft-grid background */
+.bg-soft-grid {
+  background:
+    radial-gradient(1200px 600px at 70% -10%, rgba(56,189,248,.12), transparent 60%),
+    radial-gradient(1000px 500px at -10% 20%, rgba(14,165,233,.12), transparent 60%),
+    linear-gradient(180deg, rgba(255,255,255,.85), rgba(255,255,255,.95));
+}
+
+/* glass micro-panel */
+.glass {
+  backdrop-filter: saturate(140%) blur(8px);
+  background: rgba(255,255,255,.7);
+}
+
+/* nicer card hover */
+.card {
+  box-shadow: var(--card-shadow);
+  transition: transform .15s ease, box-shadow .15s ease;
+}
+.card:hover { transform: translateY(-1px); }
+
+/* focus ring for keyboard users */
+.focus-ring:focus-visible { box-shadow: var(--ring); outline: none; }
+
+/* sticky table header */
+.table-sticky thead th { position: sticky; top: 0; background: rgb(248 250 252 / .9); backdrop-filter: blur(4px); }
