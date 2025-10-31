@@ -58,6 +58,15 @@ function scoreDay({ tmax, rain, windMax }){
   return { basePts, windPen, rainPen, points, finalClass };
 }
 
+function scorePillClass(total) {
+  // weekly score: max 70 (7 days × 10)
+  if (total >= 60) return "bg-green-100 text-green-800";
+  if (total >= 45) return "bg-lime-100 text-lime-800";
+  if (total >= 30) return "bg-yellow-100 text-yellow-800";
+  if (total >= 15) return "bg-orange-100 text-orange-800";
+  return "bg-red-100 text-red-800";
+}
+
 // Open-Meteo 7-day daily forecast
 async function fetchForecast({ lat, lon }){
   const params = new URLSearchParams({
@@ -351,7 +360,18 @@ export default function IcelandCampingWeatherApp(){
                         <td className="px-3 py-2 text-right text-slate-600">
                           {item.dist!=null?`${item.dist.toFixed(1)} km`:"—"}
                         </td>
-                        <td className="px-3 py-2 text-right font-semibold text-slate-900">{item.score}</td>
+                        <td className="px-3 py-2 text-right">
+                          <span
+                            className={
+                              "inline-flex items-center justify-end min-w-[3rem] px-2 py-0.5 rounded-full text-xs font-semibold " +
+                              scorePillClass(item.score)
+                            }
+                            title={`Weekly score: ${item.score} / 70`}
+                          >
+                            {item.score}
+                          </span>
+                        </td>
+
                       </tr>
                     ))}
                   </tbody>
