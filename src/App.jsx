@@ -4,6 +4,7 @@ import campsites from "./data/campsites.json";
 import Header from './components/Header'
 import Footer from "./components/Footer";
 import Splash from "./components/Splash";
+import ScoreLegend from "./components/ScoreLegend";
 
 // Weather codes → emoji & description
 const WEATHER_MAP = {
@@ -376,7 +377,9 @@ export default function IcelandCampingWeatherApp(){
                     ))}
                   </tbody>
                 </table>
+                <ScoreLegend />
               </div>
+              
             )}
             <div className="mt-3 text-xs text-slate-500">Sorted by weekly score, then nearest to you.</div>
           </Card>
