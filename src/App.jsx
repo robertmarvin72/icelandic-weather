@@ -1,6 +1,8 @@
 import React, { useEffect, useMemo, useState } from "react";
 import MapView from "./MapView";
 import campsites from "./data/campsites.json";
+import Header from './components/Header'
+import Footer from "./components/Footer";
 
 // Weather codes → emoji & description
 const WEATHER_MAP = {
@@ -207,6 +209,7 @@ export default function IcelandCampingWeatherApp(){
 
   return (
     <div className="min-h-screen bg-soft-grid text-slate-900">
+      <Header />
       <div className="max-w-6xl mx-auto px-4 py-10">
         <header className="mb-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
           <div>
@@ -360,6 +363,7 @@ export default function IcelandCampingWeatherApp(){
           Data by Open-Meteo. Forecast includes temperature, rain, wind, & weather codes.
         </footer>
       </div>
+      <Footer />
     </div>
   );
 }

@@ -1,36 +1,102 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+/* Load Tailwind v4 */
+@import "tailwindcss";
 
-/* --- UI polish helpers --- */
+/* ---------------------------------------------
+   Tiny helper utilities used across the app
+------------------------------------------------*/
+
+/* A subtle grid background */
+@utility bg-soft-grid {
+  background-image:
+    radial-gradient(rgba(15, 23, 42, 0.06) 1px, transparent 1px);
+  background-size: 14px 14px;
+  background-position: -1px -1px;
+}
+
+/* Glassy surface for chips/badges */
+@utility glass {
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  background-color: rgba(255, 255, 255, 0.7);
+}
+
+/* Card frame */
+@utility card {
+  @apply rounded-2xl border border-slate-200 bg-white shadow-sm;
+}
+
+/* Focus outline helper for buttons/inputs */
+@utility focus-ring {
+  @apply outline-none focus-visible:ring-2 focus-visible:ring-sky-500/60 focus-visible:ring-offset-2;
+}
+
+/* Sticky table header */
+@utility table-sticky {
+  thead th { position: sticky; top: 0; z-index: 1; background: white; }
+}
+
+/* ---------------------------------------------
+   Header/logo sizing defaults
+------------------------------------------------*/
 :root {
-  --card-shadow: 0 10px 25px -10px rgba(2, 6, 23, 0.25);
-  --ring: 0 0 0 3px rgba(59, 130, 246, .25);
+  /* you can tweak these if you want smaller/larger globally */
+  --header-logo-h: 20px;   /* ~h-5 */
+  --header-py: 0.375rem;   /* ~py-1.5 */
 }
 
-/* subtle soft-grid background */
-.bg-soft-grid {
-  background:
-    radial-gradient(1200px 600px at 70% -10%, rgba(56,189,248,.12), transparent 60%),
-    radial-gradient(1000px 500px at -10% 20%, rgba(14,165,233,.12), transparent 60%),
-    linear-gradient(180deg, rgba(255,255,255,.85), rgba(255,255,255,.95));
+.header-wrap {
+  position: sticky; top: 0; z-index: 40;
+  background: rgba(255,255,255,.8);
+  backdrop-filter: blur(6px);
+  border-bottom: 1px solid rgb(226 232 240);
 }
 
-/* glass micro-panel */
-.glass {
-  backdrop-filter: saturate(140%) blur(8px);
-  background: rgba(255,255,255,.7);
+.header-inner {
+  max-width: 72rem; /* matches max-w-6xl */
+  margin: 0 auto;
+  display: flex; align-items: center; gap: .5rem;
+  padding: var(--header-py) 1rem;
 }
 
-/* nicer card hover */
-.card {
-  box-shadow: var(--card-shadow);
-  transition: transform .15s ease, box-shadow .15s ease;
+.header-logo {
+  height: var(--header-logo-h);
+  width: auto;
+  object-fit: contain;
 }
-.card:hover { transform: translateY(-1px); }
+.header-title {
+  font-size: .875rem; /* text-sm */
+  font-weight: 600;   /* font-semibold */
+  color: rgb(51 65 85); /* slate-700 */
+  letter-spacing: -0.01em;
+}
 
-/* focus ring for keyboard users */
-.focus-ring:focus-visible { box-shadow: var(--ring); outline: none; }
+/* ---------------------------------------------
+   Footer styling
+------------------------------------------------*/
+.footer-wrap {
+  background: rgba(255,255,255,0.8);
+  backdrop-filter: blur(6px);
+  border-top: 1px solid rgb(226 232 240);
+  margin-top: 2rem;
+}
 
-/* sticky table header */
-.table-sticky thead th { position: sticky; top: 0; background: rgb(248 250 252 / .9); backdrop-filter: blur(4px); }
+.footer-inner {
+  max-width: 72rem;
+  margin: 0 auto;
+  padding: 0.5rem 1rem;
+  text-align: center;
+}
+
+.footer-text {
+  font-size: 0.75rem; /* text-xs */
+  color: rgb(71 85 105); /* slate-600 */
+}
+
+.footer-link {
+  color: rgb(37 99 235); /* sky-600 */
+  text-decoration: none;
+}
+
+.footer-link:hover {
+  text-decoration: underline;
+}
