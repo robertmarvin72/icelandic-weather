@@ -3,6 +3,7 @@ import MapView from "./MapView";
 import campsites from "./data/campsites.json";
 import Header from './components/Header'
 import Footer from "./components/Footer";
+import Splash from "./components/Splash";
 
 // Weather codes → emoji & description
 const WEATHER_MAP = {
@@ -208,6 +209,8 @@ export default function IcelandCampingWeatherApp(){
   }
 
   return (
+    <div>
+    <Splash show={loading || loadingAll} minMs={700} fadeMs={500} />
     <div className="min-h-screen bg-soft-grid text-slate-900">
       <Header />
       <div className="max-w-6xl mx-auto px-4 py-10">
@@ -364,6 +367,7 @@ export default function IcelandCampingWeatherApp(){
         </footer>
       </div>
       <Footer />
+    </div>
     </div>
   );
 }
