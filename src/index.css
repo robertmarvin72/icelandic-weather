@@ -109,3 +109,39 @@
 .animate-bounce-slow {
   animation: bounce-slow 2s infinite;
 }
+
+/* ────────────────────────────────────────────────
+   UX POLISH PACK ✨
+   Subtle focus + hover feedback system
+   for buttons, rows, and interactive elements
+───────────────────────────────────────────────── */
+
+/* Shared focus ring for buttons, inputs, links */
+@utility focus-ring {
+  @apply outline-none focus-visible:ring-2 focus-visible:ring-sky-500/50 focus-visible:ring-offset-1;
+}
+
+/* Smooth transition defaults */
+@utility smooth {
+  @apply transition-all duration-200 ease-out;
+}
+
+/* Card hover lift */
+@utility hover-lift {
+  @apply transform transition-transform duration-200 hover:-translate-y-0.5 hover:shadow-md;
+}
+
+/* Interactive table row hover */
+@utility row-hover {
+  @apply transition-colors duration-150 hover:bg-sky-50/70 cursor-pointer;
+}
+
+/* Score pill hover pop */
+@utility pill-pop {
+  @apply transition-transform duration-150 hover:scale-105;
+}
+
+/* Link subtle fade */
+@utility link-fade {
+  @apply transition-opacity duration-200 hover:opacity-80;
+}

@@ -5,6 +5,56 @@ import Header from './components/Header'
 import Footer from "./components/Footer";
 import Splash from "./components/Splash";
 import ScoreLegend from "./components/ScoreLegend";
+import { getForecast } from "./lib/forecastCache";
+
+// Small sleep helper
+function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+// Prioritize: selected site, then nearest 8 (if we know user location), then the rest
+function prioritizedSites(siteList, selectedId, userLoc) {
+  if (!siteList?.length) return [];
+  const selected = siteList.find(s => s.id === selectedId);
+  const others = siteList.filter(s => s.id !== selectedId);
+
+  // distance function (reuses your haversine if you prefer)
+  const dist = (a, b) => {
+    const toRad = x => (x * Math.PI) / 180;
+    const R = 6371;
+    const dLat = toRad(b.lat - a.lat), dLon = toRad(b.lon - a.lon);
+    const la1 = toRad(a.lat), la2 = toRad(b.lat);
+    const h = Math.sin(dLat/2)**2 + Math.cos(la1)*Math.cos(la2)*Math.sin(dLon/2)**2;
+    return 2*R*Math.asin(Math.sqrt(h));
+  };
+
+  let nearest = others;
+  if (userLoc) {
+    nearest = [...others].sort((a, b) => dist(userLoc, a) - dist(userLoc, b));
+  }
+
+  const head = selected ? [selected] : [];
+  const firstWave = nearest.slice(0, 8);            // 🔹 fetch these early
+  const remaining = nearest.slice(8);               // 🔸 trickle these in later
+  return [...head, ...firstWave, ...remaining];
+}
+
+// Concurrency-limited queue with spacing to avoid 429s
+async function processInBatches(items, fn, {
+  concurrency = 2,  // 2 concurrent requests
+  delayMs = 350,    // gap between starting tasks
+  betweenBatchesMs = 500, // small pause after each batch start
+} = {}) {
+  let i = 0;
+  const workers = new Array(concurrency).fill(0).map(async () => {
+    while (i < items.length) {
+      const idx = i++;
+      await fn(items[idx], idx);
+      await sleep(delayMs);
+    }
+  });
+  await Promise.all(workers);
+  await sleep(betweenBatchesMs);
+}
+
 
 // Weather codes → emoji & description
 const WEATHER_MAP = {
@@ -69,20 +119,8 @@ function scorePillClass(total) {
 }
 
 // Open-Meteo 7-day daily forecast
-async function fetchForecast({ lat, lon }){
-  const params = new URLSearchParams({
-    latitude:String(lat), longitude:String(lon),
-    timezone:"Atlantic/Reykjavik",
-    temperature_unit:"celsius", wind_speed_unit:"ms", precipitation_unit:"mm",
-    forecast_days:"7",
-    daily:[
-      "temperature_2m_max","temperature_2m_min","precipitation_sum",
-      "wind_speed_10m_max","weathercode",
-    ].join(","),
-  });
-  const res = await fetch(`https://api.open-meteo.com/v1/forecast?${params}`);
-  if (!res.ok) throw new Error(`Forecast failed: ${res.status}`);
-  return res.json();
+async function fetchForecast({ lat, lon }) {
+  return getForecast({ lat, lon }); // cached
 }
 
 // Weekly score helper (subtractive model)
@@ -177,21 +215,70 @@ export default function IcelandCampingWeatherApp(){
   const totalPoints = useMemo(()=>rows.reduce((s,r)=>s+(r.points??0),0),[rows]);
 
   // Preload weekly scores for leaderboard/map
-  useEffect(()=>{
-    let aborted=false;
-    async function run(){
-      if(!siteList.length) return;
-      setLoadingAll(true);
-      try{
-        const pairs = await Promise.all(siteList.map(async s=>{
-          try{ const d=await fetchForecastAndScore({lat:s.lat,lon:s.lon}); return [s.id,d]; }
-          catch{ return [s.id,{score:0,rows:[]}]; }
-        }));
-        if(!aborted) setScoresById(Object.fromEntries(pairs));
-      } finally { if(!aborted) setLoadingAll(false); }
+  useEffect(() => {
+  let aborted = false;
+
+  async function computeScoreFromData(data) {
+    if (!data?.daily?.time) return { score: 0, rows: [] };
+    const rows = data.daily.time.map((t, i) => {
+      const r = {
+        date: t,
+        tmax: data.daily.temperature_2m_max?.[i] ?? null,
+        tmin: data.daily.temperature_2m_min?.[i] ?? null,
+        rain: data.daily.precipitation_sum?.[i] ?? null,
+        windMax: data.daily.wind_speed_10m_max?.[i] ?? null,
+        code: data.daily.weathercode?.[i] ?? null,
+      };
+      const s = scoreDay(r);
+      return { ...r, class: s.finalClass, points: s.points };
+    });
+    const score = rows.reduce((sum, r) => sum + (r.points ?? 0), 0);
+    return { score, rows };
+  }
+
+  async function preloadScores() {
+    if (!siteList.length) return;
+    setLoadingAll(true);
+
+    const prio = prioritizedSites(siteList, siteId, userLoc);
+    const partial = {}; // accumulate progressively
+
+    // Fetch function for one site (cached)
+    const fetchOne = async (site) => {
+      try {
+        // getForecast imported from ./lib/forecastCache
+        const data = await getForecast({ lat: site.lat, lon: site.lon });
+        const scored = await computeScoreFromData(data);
+        partial[site.id] = scored;
+        if (!aborted) setScoresById(prev => ({ ...prev, [site.id]: scored }));
+      } catch (e) {
+        partial[site.id] = { score: 0, rows: [] };
+        if (!aborted) setScoresById(prev => ({ ...prev, [site.id]: { score: 0, rows: [] } }));
+      }
+    };
+
+    // Quick first wave: selected + nearest 8 (sequential to be extra safe)
+    const head = prio.slice(0, Math.min(prio.length, 9));
+    for (const s of head) {
+      if (aborted) break;
+      await fetchOne(s);
+      await sleep(150); // tiny gap
     }
-    run(); return ()=>{aborted=true};
-  },[siteList.length]);
+
+    // Trickle the rest with small concurrency + spacing
+    const rest = prio.slice(head.length);
+    await processInBatches(rest, async (s) => {
+      if (!aborted) await fetchOne(s);
+    }, { concurrency: 2, delayMs: 350, betweenBatchesMs: 400 });
+
+    if (!aborted) setLoadingAll(false);
+  }
+
+  preloadScores();
+  return () => { aborted = true; };
+}, [siteList.length, siteId, userLoc?.lat, userLoc?.lon]);
+
+
 
   const distanceTo = (s)=> userLoc ? haversine(userLoc.lat,userLoc.lon,s.lat,s.lon) : null;
 
@@ -231,12 +318,12 @@ export default function IcelandCampingWeatherApp(){
           </div>
           <div className="flex items-center gap-3">
             <label htmlFor="site" className="text-sm font-medium sr-only">Campsite</label>
-            <select id="site" className="focus-ring px-3 py-2 rounded-xl border border-slate-300 bg-white shadow-sm"
+            <select id="site" className="px-3 py-2 rounded-xl border border-slate-300 bg-white shadow-sm focus-ring smooth"
               value={siteId||""} onChange={e=>setSiteId(e.target.value)}>
               {siteList.map(c=><option key={c.id} value={c.id}>{c.name}</option>)}
             </select>
             <button onClick={useMyLocation}
-              className="focus-ring px-3 py-2 rounded-xl border border-slate-300 bg-white shadow-sm hover:bg-slate-50 text-sm inline-flex items-center gap-2 active:translate-y-px"
+              className="px-3 py-2 rounded-xl border border-slate-300 bg-white shadow-sm focus-ring smooth"
               title="Find nearest campsite">
               <span>📍</span> Use my location
             </button>
@@ -354,7 +441,7 @@ export default function IcelandCampingWeatherApp(){
                   </thead>
                   <tbody className="[&>tr:nth-child(even)]:bg-slate-50">
                     {top5.map((item,idx)=>(
-                      <tr key={item.site.id} className="hover:bg-sky-50/60 cursor-pointer transition"
+                      <tr key={item.site.id} className="row-hover:bg-sky-50/60 cursor-pointer transition"
                           onClick={()=>setSiteId(item.site.id)} title="Select on map">
                         <td className="px-3 py-2 text-center font-semibold text-slate-700">{idx+1}</td>
                         <td className="px-3 py-2 font-medium text-slate-800">{item.site.name}</td>
@@ -362,13 +449,8 @@ export default function IcelandCampingWeatherApp(){
                           {item.dist!=null?`${item.dist.toFixed(1)} km`:"—"}
                         </td>
                         <td className="px-3 py-2 text-right">
-                          <span
-                            className={
-                              "inline-flex items-center justify-end min-w-[3rem] px-2 py-0.5 rounded-full text-xs font-semibold " +
-                              scorePillClass(item.score)
-                            }
-                            title={`Weekly score: ${item.score} / 70`}
-                          >
+                          <span className={`pill-pop inline-flex items-center justify-center px-2 py-0.5 rounded-full text-xs font-semibold ${scorePillClass(item.score)}`}
+>
                             {item.score}
                           </span>
                         </td>

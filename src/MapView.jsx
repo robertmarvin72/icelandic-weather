@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { MapContainer, TileLayer, Marker, Popup, CircleMarker, useMap } from "react-leaflet";
 import L from "leaflet";
+import { getForecast } from "./lib/forecastCache";
 
 // ───────────────────────────────────────────────
 // New scoring logic (same as in App.jsx)
@@ -57,28 +58,7 @@ function colorForScore(score) {
 // ───────────────────────────────────────────────
 // Fetch forecast and compute weekly score
 async function fetchForecastAndScore({ lat, lon }) {
-  const params = new URLSearchParams({
-    latitude: String(lat),
-    longitude: String(lon),
-    timezone: "Atlantic/Reykjavik",
-    temperature_unit: "celsius",
-    wind_speed_unit: "ms",
-    precipitation_unit: "mm",
-    forecast_days: "7",
-    daily: [
-      "temperature_2m_max",
-      "temperature_2m_min",
-      "precipitation_sum",
-      "wind_speed_10m_max",
-      "weathercode",
-    ].join(","),
-  });
-
-  const url = `https://api.open-meteo.com/v1/forecast?${params.toString()}`;
-  const res = await fetch(url);
-  if (!res.ok) throw new Error(`Forecast failed: ${res.status}`);
-  const data = await res.json();
-
+  const data = await getForecast({ lat, lon }); // cached
   if (!data?.daily?.time) return { score: 0, rows: [] };
 
   const rows = data.daily.time.map((t, i) => {
@@ -88,13 +68,14 @@ async function fetchForecastAndScore({ lat, lon }) {
       rain: data.daily.precipitation_sum?.[i],
       windMax: data.daily.wind_speed_10m_max?.[i],
     };
-    const s = scoreDay(r);
+    const s = scoreDay(r); // your existing scoring
     return { ...r, class: s.finalClass, points: s.points };
   });
 
   const score = rows.reduce((sum, r) => sum + (r.points ?? 0), 0);
   return { score, rows };
 }
+
 
 // ───────────────────────────────────────────────
 // Helper for smooth flyTo
@@ -146,9 +127,9 @@ export default function MapView({ campsites, selectedId, onSelect, userLocation 
     }
   }
 
-  useEffect(() => {
-    campsites.forEach((s) => loadForecast(s));
-  }, []);
+  //useEffect(() => {
+  //  campsites.forEach((s) => loadForecast(s));
+  //}, []);
 
   return (
     <div className="rounded-2xl shadow-sm border border-slate-200 bg-white overflow-hidden h-[500px] relative">
@@ -181,7 +162,13 @@ export default function MapView({ campsites, selectedId, onSelect, userLocation 
               position={[site.lat, site.lon]}
               icon={icon}
               eventHandlers={{
-                click: () => onSelect?.(site.id),
+                click: async () => {
+                  onSelect?.(site.id);
+                  // fetch if missing
+                  if (!forecastById[site.id] && !loadingById[site.id]) {
+                    await loadForecast(site);
+                  }
+                }
               }}
             >
               <Popup>
