@@ -1,11 +1,13 @@
 import React, { useEffect, useMemo, useState } from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import MapView from "./MapView";
 import campsites from "./data/campsites.json";
-import Header from './components/Header'
+import Header from "./components/Header";
 import Footer from "./components/Footer";
 import Splash from "./components/Splash";
 import ScoreLegend from "./components/ScoreLegend";
 import { getForecast } from "./lib/forecastCache";
+import NotFound from "./pages/NotFound";
 
 // Small sleep helper
 function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
@@ -16,7 +18,6 @@ function prioritizedSites(siteList, selectedId, userLoc) {
   const selected = siteList.find(s => s.id === selectedId);
   const others = siteList.filter(s => s.id !== selectedId);
 
-  // distance function (reuses your haversine if you prefer)
   const dist = (a, b) => {
     const toRad = x => (x * Math.PI) / 180;
     const R = 6371;
@@ -27,21 +28,19 @@ function prioritizedSites(siteList, selectedId, userLoc) {
   };
 
   let nearest = others;
-  if (userLoc) {
-    nearest = [...others].sort((a, b) => dist(userLoc, a) - dist(userLoc, b));
-  }
+  if (userLoc) nearest = [...others].sort((a, b) => dist(userLoc, a) - dist(userLoc, b));
 
   const head = selected ? [selected] : [];
-  const firstWave = nearest.slice(0, 8);            // 🔹 fetch these early
-  const remaining = nearest.slice(8);               // 🔸 trickle these in later
+  const firstWave = nearest.slice(0, 8);
+  const remaining = nearest.slice(8);
   return [...head, ...firstWave, ...remaining];
 }
 
 // Concurrency-limited queue with spacing to avoid 429s
 async function processInBatches(items, fn, {
-  concurrency = 2,  // 2 concurrent requests
-  delayMs = 350,    // gap between starting tasks
-  betweenBatchesMs = 500, // small pause after each batch start
+  concurrency = 2,
+  delayMs = 350,
+  betweenBatchesMs = 500,
 } = {}) {
   let i = 0;
   const workers = new Array(concurrency).fill(0).map(async () => {
@@ -54,7 +53,6 @@ async function processInBatches(items, fn, {
   await Promise.all(workers);
   await sleep(betweenBatchesMs);
 }
-
 
 // Weather codes → emoji & description
 const WEATHER_MAP = {
@@ -69,7 +67,7 @@ const WEATHER_MAP = {
   96:{icon:"⛈️",text:"Thunder + hail"},99:{icon:"⛈️",text:"Severe thunder + hail"},
 };
 
-// ── Scoring model: Temperature base − wind penalty − rain penalty → clamp 0..10
+// ── Scoring model
 function basePointsFromTemp(tmax){
   const t = tmax ?? -999;
   if (t > 14) return 10;
@@ -98,8 +96,6 @@ function pointsToClass(p){
   if (p >= 1) return "Fair";
   return "Bad";
 }
-
-// ⬇️ now returns windPen & rainPen separately for the tooltip
 function scoreDay({ tmax, rain, windMax }){
   const basePts = basePointsFromTemp(tmax);
   const windPen = windPenaltyPoints(windMax);
@@ -108,9 +104,7 @@ function scoreDay({ tmax, rain, windMax }){
   const finalClass = pointsToClass(points);
   return { basePts, windPen, rainPen, points, finalClass };
 }
-
 function scorePillClass(total) {
-  // weekly score: max 70 (7 days × 10)
   if (total >= 60) return "bg-green-100 text-green-800";
   if (total >= 45) return "bg-lime-100 text-lime-800";
   if (total >= 30) return "bg-yellow-100 text-yellow-800";
@@ -118,12 +112,10 @@ function scorePillClass(total) {
   return "bg-red-100 text-red-800";
 }
 
-// Open-Meteo 7-day daily forecast
+// Cached forecast
 async function fetchForecast({ lat, lon }) {
-  return getForecast({ lat, lon }); // cached
+  return getForecast({ lat, lon });
 }
-
-// Weekly score helper (subtractive model)
 async function fetchForecastAndScore({ lat, lon }){
   const data = await fetchForecast({ lat, lon });
   if (!data?.daily?.time) return { score:0, rows:[] };
@@ -131,11 +123,11 @@ async function fetchForecastAndScore({ lat, lon }){
   const rows = data.daily.time.map((t,i)=>{
     const r = {
       date:t,
-      tmax:data.daily.temperature_2m_max?.[i] ?? null,
-      tmin:data.daily.temperature_2m_min?.[i] ?? null,
-      rain:data.daily.precipitation_sum?.[i] ?? null,
-      windMax:data.daily.wind_speed_10m_max?.[i] ?? null,
-      code:data.daily.weathercode?.[i] ?? null,
+      tmax: data.daily.temperature_2m_max?.[i] ?? null,
+      tmin: data.daily.temperature_2m_min?.[i] ?? null,
+      rain: data.daily.precipitation_sum?.[i] ?? null,
+      windMax: data.daily.wind_speed_10m_max?.[i] ?? null,
+      code: data.daily.weathercode?.[i] ?? null,
     };
     const s = scoreDay(r);
     return { ...r, class:s.finalClass, points:s.points, basePts:s.basePts, windPen:s.windPen, rainPen:s.rainPen };
@@ -197,8 +189,10 @@ function findNearestCampsite(lat,lon,list){
 
 function Card({children,className=""}){ return <div className={`rounded-2xl shadow-sm border border-slate-200 bg-white p-4 ${className}`}>{children}</div>; }
 
-// Main App
-export default function IcelandCampingWeatherApp(){
+// ──────────────────────────────────────────────────────────────
+// Your full existing app as a page component (unchanged logic)
+// ──────────────────────────────────────────────────────────────
+function IcelandCampingWeatherApp(){
   const siteList = Array.isArray(campsites)?campsites:[];
   const [siteId,setSiteId]=useState(localStorage.getItem("lastSite")||siteList[0]?.id);
   const [userLoc,setUserLoc]=useState(null);
@@ -214,71 +208,63 @@ export default function IcelandCampingWeatherApp(){
   const { rows, loading, error } = useForecast(site?.lat, site?.lon);
   const totalPoints = useMemo(()=>rows.reduce((s,r)=>s+(r.points??0),0),[rows]);
 
-  // Preload weekly scores for leaderboard/map
+  // Preload weekly scores for leaderboard/map (prioritized + throttled)
   useEffect(() => {
-  let aborted = false;
+    let aborted = false;
 
-  async function computeScoreFromData(data) {
-    if (!data?.daily?.time) return { score: 0, rows: [] };
-    const rows = data.daily.time.map((t, i) => {
-      const r = {
-        date: t,
-        tmax: data.daily.temperature_2m_max?.[i] ?? null,
-        tmin: data.daily.temperature_2m_min?.[i] ?? null,
-        rain: data.daily.precipitation_sum?.[i] ?? null,
-        windMax: data.daily.wind_speed_10m_max?.[i] ?? null,
-        code: data.daily.weathercode?.[i] ?? null,
-      };
-      const s = scoreDay(r);
-      return { ...r, class: s.finalClass, points: s.points };
-    });
-    const score = rows.reduce((sum, r) => sum + (r.points ?? 0), 0);
-    return { score, rows };
-  }
-
-  async function preloadScores() {
-    if (!siteList.length) return;
-    setLoadingAll(true);
-
-    const prio = prioritizedSites(siteList, siteId, userLoc);
-    const partial = {}; // accumulate progressively
-
-    // Fetch function for one site (cached)
-    const fetchOne = async (site) => {
-      try {
-        // getForecast imported from ./lib/forecastCache
-        const data = await getForecast({ lat: site.lat, lon: site.lon });
-        const scored = await computeScoreFromData(data);
-        partial[site.id] = scored;
-        if (!aborted) setScoresById(prev => ({ ...prev, [site.id]: scored }));
-      } catch (e) {
-        partial[site.id] = { score: 0, rows: [] };
-        if (!aborted) setScoresById(prev => ({ ...prev, [site.id]: { score: 0, rows: [] } }));
-      }
-    };
-
-    // Quick first wave: selected + nearest 8 (sequential to be extra safe)
-    const head = prio.slice(0, Math.min(prio.length, 9));
-    for (const s of head) {
-      if (aborted) break;
-      await fetchOne(s);
-      await sleep(150); // tiny gap
+    async function computeScoreFromData(data) {
+      if (!data?.daily?.time) return { score: 0, rows: [] };
+      const rows = data.daily.time.map((t, i) => {
+        const r = {
+          date: t,
+          tmax: data.daily.temperature_2m_max?.[i] ?? null,
+          tmin: data.daily.temperature_2m_min?.[i] ?? null,
+          rain: data.daily.precipitation_sum?.[i] ?? null,
+          windMax: data.daily.wind_speed_10m_max?.[i] ?? null,
+          code: data.daily.weathercode?.[i] ?? null,
+        };
+        const s = scoreDay(r);
+        return { ...r, class: s.finalClass, points: s.points };
+      });
+      const score = rows.reduce((sum, r) => sum + (r.points ?? 0), 0);
+      return { score, rows };
     }
 
-    // Trickle the rest with small concurrency + spacing
-    const rest = prio.slice(head.length);
-    await processInBatches(rest, async (s) => {
-      if (!aborted) await fetchOne(s);
-    }, { concurrency: 2, delayMs: 350, betweenBatchesMs: 400 });
+    async function preloadScores() {
+      if (!siteList.length) return;
+      setLoadingAll(true);
 
-    if (!aborted) setLoadingAll(false);
-  }
+      const prio = prioritizedSites(siteList, siteId, userLoc);
+      const fetchOne = async (site) => {
+        try {
+          const data = await getForecast({ lat: site.lat, lon: site.lon });
+          const scored = await computeScoreFromData(data);
+          if (!aborted) setScoresById(prev => ({ ...prev, [site.id]: scored }));
+        } catch {
+          if (!aborted) setScoresById(prev => ({ ...prev, [site.id]: { score: 0, rows: [] } }));
+        }
+      };
 
-  preloadScores();
-  return () => { aborted = true; };
-}, [siteList.length, siteId, userLoc?.lat, userLoc?.lon]);
+      // First wave (selected + nearest 8)
+      const head = prio.slice(0, Math.min(prio.length, 9));
+      for (const s of head) {
+        if (aborted) break;
+        await fetchOne(s);
+        await sleep(150);
+      }
 
+      // Trickle the rest
+      const rest = prio.slice(head.length);
+      await processInBatches(rest, async (s) => {
+        if (!aborted) await fetchOne(s);
+      }, { concurrency: 2, delayMs: 350, betweenBatchesMs: 400 });
 
+      if (!aborted) setLoadingAll(false);
+    }
+
+    preloadScores();
+    return () => { aborted = true; };
+  }, [siteList.length, siteId, userLoc?.lat, userLoc?.lon]);
 
   const distanceTo = (s)=> userLoc ? haversine(userLoc.lat,userLoc.lon,s.lat,s.lon) : null;
 
@@ -307,172 +293,185 @@ export default function IcelandCampingWeatherApp(){
 
   return (
     <div>
-    <Splash show={loading || loadingAll} minMs={700} fadeMs={500} />
-    <div className="min-h-screen bg-soft-grid text-slate-900">
-      <Header />
-      <div className="max-w-6xl mx-auto px-4 py-10">
-        <header className="mb-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-          <div>
-            <h1 className="text-3xl md:text-4xl font-black tracking-tight">Iceland Camping — 7-Day Weather</h1>
-            <p className="text-slate-600">Score = Temperature base − (Wind penalty + Rain penalty)</p>
-          </div>
-          <div className="flex items-center gap-3">
-            <label htmlFor="site" className="text-sm font-medium sr-only">Campsite</label>
-            <select id="site" className="px-3 py-2 rounded-xl border border-slate-300 bg-white shadow-sm focus-ring smooth"
-              value={siteId||""} onChange={e=>setSiteId(e.target.value)}>
-              {siteList.map(c=><option key={c.id} value={c.id}>{c.name}</option>)}
-            </select>
-            <button onClick={useMyLocation}
-              className="px-3 py-2 rounded-xl border border-slate-300 bg-white shadow-sm focus-ring smooth"
-              title="Find nearest campsite">
-              <span>📍</span> Use my location
-            </button>
-          </div>
-        </header>
-
-        {geoMsg && <div className="mb-4 text-sm text-slate-700">📍 {geoMsg}</div>}
-
-        <div className="grid md:grid-cols-2 gap-4">
-          <Card className="card">
-            <div className="flex items-baseline justify-between mb-3">
-              <h2 className="text-lg font-semibold">
-                {site?.name || "—"}
-                {userLoc && site && (
-                  <span className="ml-2 text-sm text-slate-500">· {distanceTo(site).toFixed(1)} km away</span>
-                )}
-              </h2>
-              <div className="text-sm text-slate-600">
-                {site?.lat?.toFixed?.(4)}, {site?.lon?.toFixed?.(4)}
-              </div>
+      <Splash show={loading || loadingAll} minMs={700} fadeMs={500} />
+      <div className="min-h-screen bg-soft-grid text-slate-900">
+        <Header />
+        <div className="max-w-6xl mx-auto px-4 py-10">
+          <header className="mb-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+            <div>
+              <h1 className="text-3xl md:text-4xl font-black tracking-tight">Iceland Camping — 7-Day Weather</h1>
+              <p className="text-slate-600">Score = Temperature base − (Wind penalty + Rain penalty)</p>
             </div>
-
-            <div className="mb-3 text-sm">
-              <span className="inline-flex items-center rounded-full bg-white/80 glass px-3 py-1 shadow-sm border border-slate-200">
-                Total (7 days): <span className="ml-2 font-semibold">{totalPoints} pts</span>
-              </span>
+            <div className="flex items-center gap-3">
+              <label htmlFor="site" className="text-sm font-medium sr-only">Campsite</label>
+              <select id="site" className="px-3 py-2 rounded-xl border border-slate-300 bg-white shadow-sm focus-ring smooth"
+                value={siteId||""} onChange={e=>setSiteId(e.target.value)}>
+                {siteList.map(c=><option key={c.id} value={c.id}>{c.name}</option>)}
+              </select>
+              <button onClick={useMyLocation}
+                className="px-3 py-2 rounded-xl border border-slate-300 bg-white shadow-sm focus-ring smooth"
+                title="Find nearest campsite">
+                <span>📍</span> Use my location
+              </button>
             </div>
+          </header>
 
-            {loading && (
-              <div className="p-4">
-                <div className="animate-pulse space-y-2">
-                  <div className="h-4 bg-slate-200 rounded"></div>
-                  <div className="h-4 bg-slate-200 rounded w-5/6"></div>
-                  <div className="h-4 bg-slate-200 rounded w-4/6"></div>
+          {geoMsg && <div className="mb-4 text-sm text-slate-700">📍 {geoMsg}</div>}
+
+          <div className="grid md:grid-cols-2 gap-4">
+            <Card className="card">
+              <div className="flex items-baseline justify-between mb-3">
+                <h2 className="text-lg font-semibold">
+                  {site?.name || "—"}
+                  {userLoc && site && (
+                    <span className="ml-2 text-sm text-slate-500">· {distanceTo(site).toFixed(1)} km away</span>
+                  )}
+                </h2>
+                <div className="text-sm text-slate-600">
+                  {site?.lat?.toFixed?.(4)}, {site?.lon?.toFixed?.(4)}
                 </div>
               </div>
-            )}
-            {error && <div className="py-10 text-center text-red-600">{String(error.message || error)}</div>}
 
-            {!loading && !error && (
-              <div className="overflow-hidden rounded-2xl border border-slate-200">
-                <div className="overflow-x-auto">
-                  <table className="w-full text-left text-sm table-sticky">
-                    <thead>
-                      <tr className="border-b border-slate-200 text-slate-600">
-                        <th className="py-3 pl-4 pr-3 font-semibold">Score</th>
-                        <th className="py-3 pr-3 font-semibold">Weather</th>
-                        <th className="py-3 pr-3 font-semibold">Day</th>
-                        <th className="py-3 pr-3 font-semibold">Temp min</th>
-                        <th className="py-3 pr-3 font-semibold">Temp max</th>
-                        <th className="py-3 pr-3 font-semibold">Max wind</th>
-                        <th className="py-3 pr-3 font-semibold">Rain</th>
+              <div className="mb-3 text-sm">
+                <span className="inline-flex items-center rounded-full bg-white/80 glass px-3 py-1 shadow-sm border border-slate-200">
+                  Total (7 days): <span className="ml-2 font-semibold">{totalPoints} pts</span>
+                </span>
+              </div>
+
+              {loading && (
+                <div className="p-4">
+                  <div className="animate-pulse space-y-2">
+                    <div className="h-4 bg-slate-200 rounded"></div>
+                    <div className="h-4 bg-slate-200 rounded w-5/6"></div>
+                    <div className="h-4 bg-slate-200 rounded w-4/6"></div>
+                  </div>
+                </div>
+              )}
+              {error && <div className="py-10 text-center text-red-600">{String(error.message || error)}</div>}
+
+              {!loading && !error && (
+                <div className="overflow-hidden rounded-2xl border border-slate-200">
+                  <div className="overflow-x-auto">
+                    <table className="w-full text-left text-sm table-sticky">
+                      <thead>
+                        <tr className="border-b border-slate-200 text-slate-600">
+                          <th className="py-3 pl-4 pr-3 font-semibold">Score</th>
+                          <th className="py-3 pr-3 font-semibold">Weather</th>
+                          <th className="py-3 pr-3 font-semibold">Day</th>
+                          <th className="py-3 pr-3 font-semibold">Temp min</th>
+                          <th className="py-3 pr-3 font-semibold">Temp max</th>
+                          <th className="py-3 pr-3 font-semibold">Max wind</th>
+                          <th className="py-3 pr-3 font-semibold">Rain</th>
+                        </tr>
+                      </thead>
+                      <tbody className="[&>tr:nth-child(even)]:bg-slate-50">
+                        {rows.map((r)=>(
+                          <tr key={r.date} className="border-b last:border-0 border-slate-100 hover:bg-sky-50/50">
+                            <td className="py-2 pl-4 pr-3">
+                              <span
+                                title={`Base ${r.basePts} (Temp ${r.tmax?.toFixed?.(1) ?? "–"}°C) − Wind ${r.windPen} (${r.windMax?.toFixed?.(1) ?? "–"} m/s) − Rain ${r.rainPen} (${r.rain?.toFixed?.(1) ?? "–"} mm) = ${r.points} → ${r.class}`}
+                                className={
+                                  "inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs cursor-help " +
+                                  (r.class==="Best"?"bg-green-100 text-green-800":
+                                   r.class==="Good"?"bg-emerald-100 text-emerald-800":
+                                   r.class==="Ok"  ?"bg-yellow-100 text-yellow-800":
+                                   r.class==="Fair"?"bg-amber-100 text-amber-800":"bg-red-100 text-red-800")
+                                }
+                              >
+                                {r.class==="Best"?"🏆":r.class==="Good"?"👍":r.class==="Ok"?"🙂":r.class==="Fair"?"😬":"🌧️"} {r.class} · {r.points}
+                              </span>
+                            </td>
+                            <td className="py-2 pr-3">
+                              {WEATHER_MAP?.[r.code]?.icon || "❔"}{" "}
+                              <span className="text-slate-600">{WEATHER_MAP?.[r.code]?.text || ""}</span>
+                            </td>
+                            <td className="py-2 pr-3 whitespace-nowrap font-medium">{formatDay(r.date)}</td>
+                            <td className="py-2 pr-3">{r.tmin?.toFixed?.(1)} °C</td>
+                            <td className="py-2 pr-3">{r.tmax?.toFixed?.(1)} °C</td>
+                            <td className="py-2 pr-3">{r.windMax?.toFixed?.(1)} m/s</td>
+                            <td className="py-2 pr-3">{r.rain?.toFixed?.(1)} mm</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+
+                  <MapView
+                    campsites={siteList}
+                    selectedId={siteId}
+                    onSelect={(id)=>setSiteId(id)}
+                    userLocation={userLoc}
+                  />
+                </div>
+              )}
+
+              <div className="mt-2 text-xs text-slate-500">
+                Temp base: &gt;14°C=10, 12–14=8, 8–12=5, 6–8=2, &lt;6=0. Wind penalty: ≤5=0, ≤10=2, ≤15=5, &gt;15=10. Rain penalty: &lt;1=0, 1–4=2, &gt;4=5. Final = clamp(base − penalties, 0..10).
+              </div>
+            </Card>
+
+            <Card className="card hover-lift">
+              <h3 className="text-base font-semibold mb-3">Top 5 Campsites This Week</h3>
+              {loadingAll && <div className="text-sm text-slate-600">Crunching the numbers…</div>}
+              {!loadingAll && (
+                <div className="overflow-hidden rounded-xl border border-slate-200">
+                  <table className="w-full text-sm text-left">
+                    <thead className="bg-slate-100/80 backdrop-blur-sm text-slate-600">
+                      <tr>
+                        <th className="px-3 py-2 font-semibold w-10 text-center">#</th>
+                        <th className="px-3 py-2 font-semibold">Campsite</th>
+                        <th className="px-3 py-2 font-semibold text-right">Distance</th>
+                        <th className="px-3 py-2 font-semibold text-right">Score</th>
                       </tr>
                     </thead>
                     <tbody className="[&>tr:nth-child(even)]:bg-slate-50">
-                      {rows.map((r)=>(
-                        <tr key={r.date} className="border-b last:border-0 border-slate-100 hover:bg-sky-50/50">
-                          <td className="py-2 pl-4 pr-3">
-                            {/* 🔎 Hover for breakdown */}
+                      {top5.map((item,idx)=>(
+                        <tr key={item.site.id} className="hover:bg-sky-50/60 cursor-pointer transition"
+                            onClick={()=>setSiteId(item.site.id)} title="Select on map">
+                          <td className="px-3 py-2 text-center font-semibold text-slate-700">{idx+1}</td>
+                          <td className="px-3 py-2 font-medium text-slate-800">{item.site.name}</td>
+                          <td className="px-3 py-2 text-right text-slate-600">
+                            {item.dist!=null?`${item.dist.toFixed(1)} km`:"—"}
+                          </td>
+                          <td className="px-3 py-2 text-right">
                             <span
-                              title={`Base ${r.basePts} (Temp ${r.tmax?.toFixed?.(1) ?? "–"}°C) − Wind ${r.windPen} (${r.windMax?.toFixed?.(1) ?? "–"} m/s) − Rain ${r.rainPen} (${r.rain?.toFixed?.(1) ?? "–"} mm) = ${r.points} → ${r.class}`}
-                              className={
-                                "inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs cursor-help " +
-                                (r.class==="Best"?"bg-green-100 text-green-800":
-                                 r.class==="Good"?"bg-emerald-100 text-emerald-800":
-                                 r.class==="Ok"  ?"bg-yellow-100 text-yellow-800":
-                                 r.class==="Fair"?"bg-amber-100 text-amber-800":"bg-red-100 text-red-800")
-                              }
+                              className={`pill-pop inline-flex items-center justify-center px-2 py-0.5 rounded-full text-xs font-semibold ${scorePillClass(item.score)}`}
+                              title={`Weekly score: ${item.score} / 70`}
                             >
-                              {r.class==="Best"?"🏆":r.class==="Good"?"👍":r.class==="Ok"?"🙂":r.class==="Fair"?"😬":"🌧️"} {r.class} · {r.points}
+                              {item.score}
                             </span>
                           </td>
-                          <td className="py-2 pr-3">
-                            {WEATHER_MAP?.[r.code]?.icon || "❔"}{" "}
-                            <span className="text-slate-600">{WEATHER_MAP?.[r.code]?.text || ""}</span>
-                          </td>
-                          <td className="py-2 pr-3 whitespace-nowrap font-medium">{formatDay(r.date)}</td>
-                          <td className="py-2 pr-3">{r.tmin?.toFixed?.(1)} °C</td>
-                          <td className="py-2 pr-3">{r.tmax?.toFixed?.(1)} °C</td>
-                          <td className="py-2 pr-3">{r.windMax?.toFixed?.(1)} m/s</td>
-                          <td className="py-2 pr-3">{r.rain?.toFixed?.(1)} mm</td>
                         </tr>
                       ))}
                     </tbody>
                   </table>
+                  <ScoreLegend />
                 </div>
+              )}
+              <div className="mt-3 text-xs text-slate-500">Sorted by weekly score, then nearest to you.</div>
+            </Card>
+          </div>
 
-                <MapView
-                  campsites={siteList}
-                  selectedId={siteId}
-                  onSelect={(id)=>setSiteId(id)}
-                  userLocation={userLoc}
-                />
-              </div>
-            )}
-
-            <div className="mt-2 text-xs text-slate-500">
-              Temp base: &gt;14°C=10, 12–14=8, 8–12=5, 6–8=2, &lt;6=0. Wind penalty: ≤5=0, ≤10=2, ≤15=5, &gt;15=10. Rain penalty: &lt;1=0, 1–4=2, &gt;4=5. Final = clamp(base − penalties, 0..10).
-            </div>
-          </Card>
-
-          <Card className="card">
-            <h3 className="text-base font-semibold mb-3">Top 5 Campsites This Week</h3>
-            {loadingAll && <div className="text-sm text-slate-600">Crunching the numbers…</div>}
-            {!loadingAll && (
-              <div className="overflow-hidden rounded-xl border border-slate-200">
-                <table className="w-full text-sm text-left">
-                  <thead className="bg-slate-100/80 backdrop-blur-sm text-slate-600">
-                    <tr>
-                      <th className="px-3 py-2 font-semibold w-10 text-center">#</th>
-                      <th className="px-3 py-2 font-semibold">Campsite</th>
-                      <th className="px-3 py-2 font-semibold text-right">Distance</th>
-                      <th className="px-3 py-2 font-semibold text-right">Score</th>
-                    </tr>
-                  </thead>
-                  <tbody className="[&>tr:nth-child(even)]:bg-slate-50">
-                    {top5.map((item,idx)=>(
-                      <tr key={item.site.id} className="row-hover:bg-sky-50/60 cursor-pointer transition"
-                          onClick={()=>setSiteId(item.site.id)} title="Select on map">
-                        <td className="px-3 py-2 text-center font-semibold text-slate-700">{idx+1}</td>
-                        <td className="px-3 py-2 font-medium text-slate-800">{item.site.name}</td>
-                        <td className="px-3 py-2 text-right text-slate-600">
-                          {item.dist!=null?`${item.dist.toFixed(1)} km`:"—"}
-                        </td>
-                        <td className="px-3 py-2 text-right">
-                          <span className={`pill-pop inline-flex items-center justify-center px-2 py-0.5 rounded-full text-xs font-semibold ${scorePillClass(item.score)}`}
->
-                            {item.score}
-                          </span>
-                        </td>
-
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-                <ScoreLegend />
-              </div>
-              
-            )}
-            <div className="mt-3 text-xs text-slate-500">Sorted by weekly score, then nearest to you.</div>
-          </Card>
+          <footer className="mt-6 text-xs text-slate-500">
+            Data by Open-Meteo. Forecast includes temperature, rain, wind, & weather codes.
+          </footer>
         </div>
-
-        <footer className="mt-6 text-xs text-slate-500">
-          Data by Open-Meteo. Forecast includes temperature, rain, wind, & weather codes.
-        </footer>
+        <Footer />
       </div>
-      <Footer />
     </div>
-    </div>
+  );
+}
+
+// ──────────────────────────────────────────────────────────────
+// Router wrapper (NEW): keeps your app at "/" and adds a 404
+// ─────────────────────────────────────────────────────────────-
+export default function App() {
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<IcelandCampingWeatherApp />} />
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
