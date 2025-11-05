@@ -364,14 +364,14 @@ function IcelandCampingWeatherApp(){
                               <span
                                 title={`Base ${r.basePts} (Temp ${r.tmax?.toFixed?.(1) ?? "–"}°C) − Wind ${r.windPen} (${r.windMax?.toFixed?.(1) ?? "–"} m/s) − Rain ${r.rainPen} (${r.rain?.toFixed?.(1) ?? "–"} mm) = ${r.points} → ${r.class}`}
                                 className={
-                                  "inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs cursor-help " +
+                                  "inline-flex flex-col items-center justify-center gap-0.5 rounded-full px-2 py-2 text-[11px] font-semibold cursor-help w-12 h-12 text-center " +
                                   (r.class==="Best"?"bg-green-100 text-green-800":
-                                   r.class==="Good"?"bg-emerald-100 text-emerald-800":
-                                   r.class==="Ok"  ?"bg-yellow-100 text-yellow-800":
-                                   r.class==="Fair"?"bg-amber-100 text-amber-800":"bg-red-100 text-red-800")
+                                  r.class==="Good"?"bg-emerald-100 text-emerald-800":
+                                  r.class==="Ok"  ?"bg-yellow-100 text-yellow-800":
+                                  r.class==="Fair"?"bg-amber-100 text-amber-800":"bg-red-100 text-red-800")
                                 }
                               >
-                                {r.class==="Best"?"🏆":r.class==="Good"?"👍":r.class==="Ok"?"🙂":r.class==="Fair"?"😬":"🌧️"} {r.class} · {r.points}
+                                {r.class==="Best"?"🏆":r.class==="Good"?"👍":r.class==="Ok"?"🙂":r.class==="Fair"?"😬":"🌧️"} {r.class}
                               </span>
                             </td>
                             <td className="py-2 pr-3">
