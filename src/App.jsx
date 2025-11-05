@@ -9,6 +9,7 @@ import ScoreLegend from "./components/ScoreLegend";
 import { getForecast } from "./lib/forecastCache";
 import NotFound from "./pages/NotFound";
 import LoadingShimmer from "./components/LoadingShimmer";
+import { useRef } from "react";
 
 // Small sleep helper
 function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
@@ -202,6 +203,8 @@ function IcelandCampingWeatherApp(){
   const [scoresById,setScoresById]=useState({});
   const [loadingAll,setLoadingAll]=useState(false);
 
+  const mapRef = useRef(null);
+
   useEffect(()=>{ if(!siteId && siteList[0]?.id) setSiteId(siteList[0].id); },[siteId,siteList]);
   useEffect(()=>{ if(siteId) localStorage.setItem("lastSite",siteId); },[siteId]);
 
@@ -306,7 +309,11 @@ function IcelandCampingWeatherApp(){
             <div className="flex items-center gap-3">
               <label htmlFor="site" className="text-sm font-medium sr-only">Campsite</label>
               <select id="site" className="px-3 py-2 rounded-xl border border-slate-300 bg-white shadow-sm focus-ring smooth"
-                value={siteId||""} onChange={e=>setSiteId(e.target.value)}>
+                value={siteId||""} onChange={(e) => {
+                  setSiteId(e.target.value);
+                  mapRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+                }}
+>
                 {siteList.map(c=><option key={c.id} value={c.id}>{c.name}</option>)}
               </select>
               <button onClick={useMyLocation}
@@ -389,12 +396,14 @@ function IcelandCampingWeatherApp(){
                     </table>
                   </div>
 
-                  <MapView
-                    campsites={siteList}
-                    selectedId={siteId}
-                    onSelect={(id)=>setSiteId(id)}
-                    userLocation={userLoc}
-                  />
+                  <div ref={mapRef}>
+                    <MapView                    
+                      campsites={siteList}
+                      selectedId={siteId}
+                      onSelect={(id)=>setSiteId(id)}
+                      userLocation={userLoc}
+                    />
+                    </div>
                 </div>
               )}
 
@@ -420,7 +429,11 @@ function IcelandCampingWeatherApp(){
                     <tbody className="[&>tr:nth-child(even)]:bg-slate-50">
                       {top5.map((item,idx)=>(
                         <tr key={item.site.id} className="hover:bg-sky-50/60 cursor-pointer transition"
-                            onClick={()=>setSiteId(item.site.id)} title="Select on map">
+                            onClick={() => {
+                              setSiteId(item.site.id);
+                              mapRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+                            }}
+                            title="Select on map">
                           <td className="px-3 py-2 text-center font-semibold text-slate-700">{idx+1}</td>
                           <td className="px-3 py-2 font-medium text-slate-800">{item.site.name}</td>
                           <td className="px-3 py-2 text-right text-slate-600">
