@@ -8,6 +8,7 @@ import Splash from "./components/Splash";
 import ScoreLegend from "./components/ScoreLegend";
 import { getForecast } from "./lib/forecastCache";
 import NotFound from "./pages/NotFound";
+import LoadingShimmer from "./components/LoadingShimmer";
 
 // Small sleep helper
 function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
@@ -338,15 +339,7 @@ function IcelandCampingWeatherApp(){
                 </span>
               </div>
 
-              {loading && (
-                <div className="p-4">
-                  <div className="animate-pulse space-y-2">
-                    <div className="h-4 bg-slate-200 rounded"></div>
-                    <div className="h-4 bg-slate-200 rounded w-5/6"></div>
-                    <div className="h-4 bg-slate-200 rounded w-4/6"></div>
-                  </div>
-                </div>
-              )}
+              {loading && <LoadingShimmer rows={8} />}
               {error && <div className="py-10 text-center text-red-600">{String(error.message || error)}</div>}
 
               {!loading && !error && (
@@ -412,7 +405,7 @@ function IcelandCampingWeatherApp(){
 
             <Card className="card hover-lift">
               <h3 className="text-base font-semibold mb-3">Top 5 Campsites This Week</h3>
-              {loadingAll && <div className="text-sm text-slate-600">Crunching the numbers…</div>}
+              {loadingAll && <LoadingShimmer rows={5} height={20} />}
               {!loadingAll && (
                 <div className="overflow-hidden rounded-xl border border-slate-200">
                   <table className="w-full text-sm text-left">
