@@ -10,6 +10,7 @@ import { getForecast } from "./lib/forecastCache";
 import NotFound from "./pages/NotFound";
 import LoadingShimmer from "./components/LoadingShimmer";
 import { useRef } from "react";
+import BackToTop from "./components/BackToTop";
 
 // Small sleep helper
 function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
@@ -464,6 +465,7 @@ function IcelandCampingWeatherApp(){
         </div>
         <Footer />
       </div>
+      <BackToTop threshold={400} />
     </div>
   );
 }
