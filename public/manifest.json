@@ -1,5 +1,5 @@
 {
-  "name": "CampCast",
+  "name": "CampCast — Iceland Campsite Weather",
   "short_name": "CampCast",
   "description": "Get real-time campsite weather forecasts across Iceland with CampCast.",
   "start_url": "/",
@@ -8,16 +8,23 @@
   "theme_color": "#ffcc66",
   "orientation": "portrait-primary",
   "scope": "/",
-  "icons": [
+  "categories": ["weather", "travel", "maps"],
+  "shortcuts": [
     {
-      "src": "/icon-192.png",
-      "sizes": "192x192",
-      "type": "image/png"
+      "name": "Nearest Campsite",
+      "short_name": "Nearest",
+      "url": "/?nearest=true",
+      "icons": [{ "src": "/icon-192.png", "sizes": "192x192" }]
     },
     {
-      "src": "/icon-512.png",
-      "sizes": "512x512",
-      "type": "image/png"
+      "name": "Leaderboard",
+      "short_name": "Top 5",
+      "url": "/#leaderboard",
+      "icons": [{ "src": "/icon-192.png", "sizes": "192x192" }]
     }
+  ],
+  "icons": [
+    { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png" }
   ]
 }
