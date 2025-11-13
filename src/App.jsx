@@ -11,6 +11,7 @@ import NotFound from "./pages/NotFound";
 import LoadingShimmer from "./components/LoadingShimmer";
 import { useRef } from "react";
 import BackToTop from "./components/BackToTop";
+import InstallPWA from "./components/InstallPWA";
 
 // Small sleep helper
 function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
@@ -322,6 +323,7 @@ function IcelandCampingWeatherApp(){
                 title="Find nearest campsite">
                 <span>📍</span> Use my location
               </button>
+              <InstallPWA />
             </div>
           </header>
 
