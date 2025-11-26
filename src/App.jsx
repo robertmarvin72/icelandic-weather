@@ -1,6 +1,13 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, {
+  useEffect,
+  useMemo,
+  useState,
+  useRef,
+  lazy,
+  Suspense,
+} from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import MapView from "./MapView";
+
 import campsites from "./data/campsites.json";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
@@ -9,9 +16,11 @@ import ScoreLegend from "./components/ScoreLegend";
 import { getForecast } from "./lib/forecastCache";
 import NotFound from "./pages/NotFound";
 import LoadingShimmer from "./components/LoadingShimmer";
-import { useRef } from "react";
 import BackToTop from "./components/BackToTop";
 import InstallPWA from "./components/InstallPWA";
+
+
+const MapView = lazy(() => import("./MapView"));
 
 // Small sleep helper
 function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
@@ -207,6 +216,14 @@ function IcelandCampingWeatherApp(){
 
   const mapRef = useRef(null);
 
+  // 🔥 Bonus improvement: prefetch MapView chunk after initial render
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      import("./MapView");
+    }, 500); // small delay so it doesn't compete with first paint
+    return () => clearTimeout(timer);
+  }, []);
+
   useEffect(()=>{ if(!siteId && siteList[0]?.id) setSiteId(siteList[0].id); },[siteId,siteList]);
   useEffect(()=>{ if(siteId) localStorage.setItem("lastSite",siteId); },[siteId]);
 
@@ -400,12 +417,21 @@ function IcelandCampingWeatherApp(){
                   </div>
 
                   <div ref={mapRef}>
-                    <MapView                    
-                      campsites={siteList}
-                      selectedId={siteId}
-                      onSelect={(id)=>setSiteId(id)}
-                      userLocation={userLoc}
-                    />
+                    <Suspense
+                      fallback={
+                        <div className="p-6 text-center text-slate-500 text-sm">
+                          Loading map…
+                        </div>
+                      }
+                    >
+                      <MapView
+                        campsites={siteList}
+                        selectedId={siteId}
+                        onSelect={(id)=>setSiteId(id)}
+                        userLocation={userLoc}
+                      />
+                    </Suspense>
+
                     </div>
                 </div>
               )}
