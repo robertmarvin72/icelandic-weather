@@ -215,6 +215,7 @@ function IcelandCampingWeatherApp(){
   const [loadingAll,setLoadingAll]=useState(false);
 
   const mapRef = useRef(null);
+  const [mapInView, setMapInView] = useState(false);
 
   // 🔥 Bonus improvement: prefetch MapView chunk after initial render
   useEffect(() => {
@@ -222,6 +223,29 @@ function IcelandCampingWeatherApp(){
       import("./MapView");
     }, 500); // small delay so it doesn't compete with first paint
     return () => clearTimeout(timer);
+  }, []);
+
+  // NEW: start loading the map only once its container is near viewport
+  useEffect(() => {
+    if (!mapRef.current) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const entry = entries[0];
+        if (entry.isIntersecting) {
+          setMapInView(true);
+          observer.disconnect(); // only need it once
+        }
+      },
+      {
+        root: null,
+        rootMargin: "200px", // start a bit before it’s actually visible
+        threshold: 0.1,
+      }
+    );
+
+    observer.observe(mapRef.current);
+    return () => observer.disconnect();
   }, []);
 
   useEffect(()=>{ if(!siteId && siteList[0]?.id) setSiteId(siteList[0].id); },[siteId,siteList]);
@@ -417,22 +441,24 @@ function IcelandCampingWeatherApp(){
                   </div>
 
                   <div ref={mapRef}>
-                    <Suspense
-                      fallback={
-                        <div className="p-6 text-center text-slate-500 text-sm">
-                          Loading map…
-                        </div>
-                      }
-                    >
-                      <MapView
-                        campsites={siteList}
-                        selectedId={siteId}
-                        onSelect={(id)=>setSiteId(id)}
-                        userLocation={userLoc}
-                      />
-                    </Suspense>
+                    {mapInView && (
+                      <Suspense
+                        fallback={
+                          <div className="p-6 text-center text-slate-500 text-sm">
+                            Loading map…
+                          </div>
+                        }
+                      >
+                        <MapView
+                          campsites={siteList}
+                          selectedId={siteId}
+                          onSelect={(id)=>setSiteId(id)}
+                          userLocation={userLoc}
+                        />
+                      </Suspense>
+                    )}
+                  </div>
 
-                    </div>
                 </div>
               )}
 
