@@ -18,6 +18,8 @@ import NotFound from "./pages/NotFound";
 import LoadingShimmer from "./components/LoadingShimmer";
 import BackToTop from "./components/BackToTop";
 import InstallPWA from "./components/InstallPWA";
+import { WeatherIcon } from "./components/WeatherIcon";
+import { mapWeatherCodeToIconId } from "./utils/WeatherIconMapping";
 
 
 const MapView = lazy(() => import("./MapView"));
@@ -413,22 +415,33 @@ function IcelandCampingWeatherApp(){
                           <tr key={r.date} className="border-b last:border-0 border-slate-100 hover:bg-sky-50/50">
                             <td className="py-2 pl-4 pr-3">
                               <span
-                                title={`Base ${r.basePts} (Temp ${r.tmax?.toFixed?.(1) ?? "–"}°C) − Wind ${r.windPen} (${r.windMax?.toFixed?.(1) ?? "–"} m/s) − Rain ${r.rainPen} (${r.rain?.toFixed?.(1) ?? "–"} mm) = ${r.points} → ${r.class}`}
+                                title={`Base ${r.basePts} (Temp ${r.tmax?.toFixed(1) ?? "?"}°C) Wind ${r.windPen} (${r.windMax?.toFixed?.(1) ?? "?"} m/s) Rain ${r.rainPen} (${r.rain?.toFixed?.(1) ?? "?"} mm) = ${r.points} → ${r.class}`}
                                 className={
-                                  "inline-flex flex-col items-center justify-center gap-0.5 rounded-full px-2 py-2 text-[11px] font-semibold cursor-help w-12 h-12 text-center " +
-                                  (r.class==="Best"?"bg-green-100 text-green-800":
-                                  r.class==="Good"?"bg-emerald-100 text-emerald-800":
-                                  r.class==="Ok"  ?"bg-yellow-100 text-yellow-800":
-                                  r.class==="Fair"?"bg-amber-100 text-amber-800":"bg-red-100 text-red-800")
+                                  "inline-flex flex-col items-center justify-center gap-0.5 rounded-full px-2 py-2 text-[9px] font-semibold cursor-help w-14 h-14 text-center " +
+                                  (r.class === "Best"
+                                    ? "bg-green-100 text-green-800"
+                                    : r.class === "Good"
+                                    ? "bg-emerald-100 text-emerald-800"
+                                    : r.class === "Ok"
+                                    ? "bg-yellow-100 text-yellow-800"
+                                    : r.class === "Fair"
+                                    ? "bg-amber-100 text-amber-800"
+                                    : "bg-red-100 text-red-800")
                                 }
                               >
-                                {r.class==="Best"?"🏆":r.class==="Good"?"👍":r.class==="Ok"?"🙂":r.class==="Fair"?"😬":"🌧️"} {r.class}
+                                <WeatherIcon
+                                  iconId={mapWeatherCodeToIconId(r.code ?? 0, true)}
+                                  className="w-9 h-9"
+                                />
+                                <span>{r.class}</span>
                               </span>
+
                             </td>
-                            <td className="py-2 pr-3">
-                              {WEATHER_MAP?.[r.code]?.icon || "❔"}{" "}
-                              <span className="text-slate-600">{WEATHER_MAP?.[r.code]?.text || ""}</span>
+                            <td className="py-2 pr-3 text-slate-700">
+                              {WEATHER_MAP?.[r.code]?.text || ""}
                             </td>
+
+
                             <td className="py-2 pr-3 whitespace-nowrap font-medium">{formatDay(r.date)}</td>
                             <td className="py-2 pr-3">{r.tmin?.toFixed?.(1)} °C</td>
                             <td className="py-2 pr-3">{r.tmax?.toFixed?.(1)} °C</td>
