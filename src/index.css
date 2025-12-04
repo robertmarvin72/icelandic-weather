@@ -1,6 +1,9 @@
 /* Load Tailwind v4 */
 @import "tailwindcss";
 
+/* Enable dark: utilities to follow the .dark class on <html> */
+@custom-variant dark (&:where(.dark, .dark *));
+
 /* ---------------------------------------------
    Tiny helper utilities used across the app
 ------------------------------------------------*/
@@ -32,8 +35,21 @@
 
 /* Sticky table header */
 @utility table-sticky {
-  thead th { position: sticky; top: 0; z-index: 1; background: white; }
+  thead th {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    background: white; /* light mode */
+  }
+
+  /* Dark mode override for sticky header */
+  :where(.dark, .dark *) & thead th {
+    background: rgba(15, 23, 42, 0.96);  /* ~ slate-900 */
+    color: rgb(226, 232, 240);           /* ~ slate-200 */
+    border-color: rgb(51, 65, 85);       /* ~ slate-700 */
+  }
 }
+
 
 /* ---------------------------------------------
    Header/logo sizing defaults
@@ -159,6 +175,17 @@
   background-size: 400% 100%;
   animation: shimmer 1.4s ease infinite;
 }
+
+/* Dark mode: softer shimmer */
+:where(.dark, .dark *) .bg-shimmer {
+  background: linear-gradient(
+    90deg,
+    #1f2937 25%,
+    #111827 37%,
+    #1f2937 63%
+  );
+}
+
 
 @keyframes shimmer {
   0% {
