@@ -64,15 +64,17 @@
   position: sticky;
   top: 0;
   z-index: 40;
-  background: rgba(255,255,255,0.8);
+  background: rgba(255, 255, 255, 0.8);
   backdrop-filter: blur(6px);
   border-bottom: 1px solid rgb(226 232 240);
 }
 
+/* Dark mode override – use !important so it beats any bg-white classes */
 :where(.dark, .dark *) .header-wrap {
-  background: rgba(15, 23, 42, 0.75); /* slate-900 @ 75% */
-  border-bottom-color: rgb(51 65 85); /* slate-700 */
+  background: rgba(15, 23, 42, 0.9) !important;  /* dark navy */
+  border-bottom-color: rgb(30, 41, 59);          /* slate-800 */
 }
+
 
 
 
@@ -208,3 +210,14 @@
     background-position: 400px 0;
   }
 }
+
+/* Page background */
+body {
+  background-color: #f8fafc; /* light mode: slate-50-ish */
+}
+
+/* Dark mode page background */
+.dark body {
+  background-color: #020617; /* slate-950-ish */
+}
+
