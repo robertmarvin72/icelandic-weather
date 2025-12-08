@@ -65,7 +65,7 @@ export default function InstallPWA({ className = "" }) {
       title="Install CampCast on this device"
     >
       <span>📲</span>
-      <span className="font-medium">Install CampCast</span>
+      <span className="font-medium">Install</span>
     </button>
 
   );

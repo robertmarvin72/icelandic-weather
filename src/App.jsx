@@ -127,6 +127,41 @@ function scorePillClass(total) {
   return "bg-red-100 text-red-800";
 }
 
+// ── Unit helpers (display only; underlying data stays metric)
+const TEMP_UNIT_LABEL = {
+  metric: "°C",
+  imperial: "°F",
+};
+const RAIN_UNIT_LABEL = {
+  metric: "mm",
+  imperial: "in",
+};
+const WIND_UNIT_LABEL = {
+  metric: "m/s",
+  imperial: "kn",
+};
+
+function convertTemp(value, units) {
+  if (value == null) return null;
+  return units === "imperial" ? (value * 9) / 5 + 32 : value; // °C -> °F
+}
+
+function convertRain(value, units) {
+  if (value == null) return null;
+  return units === "imperial" ? value / 25.4 : value; // mm -> inches
+}
+
+function convertWind(value, units) {
+  if (value == null) return null;
+  return units === "imperial" ? value * 1.94384 : value; // m/s -> knots
+}
+
+function formatNumber(value, digits = 1) {
+  if (value == null || Number.isNaN(value)) return "—";
+  return value.toFixed(digits);
+}
+
+
 // Cached forecast
 async function fetchForecast({ lat, lon }) {
   return getForecast({ lat, lon });
@@ -227,6 +262,20 @@ function IcelandCampingWeatherApp(){
 
   const mapRef = useRef(null);
   const [mapInView, setMapInView] = useState(false);
+
+    // 🔥 NEW: units state (metric vs imperial)
+  const [units, setUnits] = useState(() => {
+    if (typeof window === "undefined") return "metric";
+    const stored = localStorage.getItem("units");
+    return stored === "imperial" ? "imperial" : "metric";
+  });
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      localStorage.setItem("units", units);
+    }
+  }, [units]);
+
 
   // 🔥 NEW: dark mode state
   const [darkMode, setDarkMode] = useState(() => {
@@ -387,12 +436,42 @@ function IcelandCampingWeatherApp(){
 >
                 {siteList.map(c=><option key={c.id} value={c.id}>{c.name}</option>)}
               </select>
-              <button onClick={useMyLocation}
-                className="px-3 py-2 rounded-xl border border-slate-300 bg-white shadow-sm focus-ring smooth text-slate-900 dark:bg-slate-900 dark:border-slate-600 dark:text-slate-100"
-                title="Find nearest campsite">
-                <span>📍</span> Use my location
+
+              {/* 📍 My location */}      
+              <button
+                onClick={useMyLocation}
+                className="px-3 py-2 rounded-xl border border-slate-300 bg-white shadow-sm focus-ring smooth
+                          text-slate-900 dark:bg-slate-900 dark:border-slate-600 dark:text-slate-100
+                          flex flex-col items-center justify-center gap-1 text-sm"
+                title="Use my current location"
+              >
+                <span>📍</span>
+                <span className="whitespace-nowrap">Here</span>
               </button>
+
+
               <InstallPWA />
+              
+              {/* 🧭 Units switch button */}
+                <button
+                  type="button"
+                  onClick={() =>
+                    setUnits((prev) => (prev === "metric" ? "imperial" : "metric"))
+                  }
+                  className="px-3 py-2 rounded-xl border border-slate-300 bg-white shadow-sm focus-ring smooth text-sm
+                            flex items-center gap-2
+                            text-slate-900 dark:bg-slate-900 dark:border-slate-600 dark:text-slate-100"
+                  title={
+                    units === "metric"
+                      ? "Metric units: °C, mm, m/s"
+                      : "Imperial units: °F, in, knots"
+                  }
+                >
+                  <span>📏</span>
+                  <span>{units === "metric" ? "°C" : "°F"}</span>
+                </button>
+
+
               {/* 🔥 NEW: Dark mode toggle */}
                 <button
                   onClick={() => setDarkMode(d => !d)}
@@ -450,7 +529,14 @@ function IcelandCampingWeatherApp(){
                           <tr key={r.date} className="border-b last:border-0 border-slate-100 hover:bg-sky-50/50">
                             <td className="py-2 pl-4 pr-3">
                               <span
-                                title={`Base ${r.basePts} (Temp ${r.tmax?.toFixed(1) ?? "?"}°C) Wind ${r.windPen} (${r.windMax?.toFixed?.(1) ?? "?"} m/s) Rain ${r.rainPen} (${r.rain?.toFixed?.(1) ?? "?"} mm) = ${r.points} → ${r.class}`}
+                                title={`Base ${r.basePts} (Temp ${
+                                    formatNumber(convertTemp(r.tmax, units)) ?? "?"
+                                  }${TEMP_UNIT_LABEL[units]}) Wind ${r.windPen} (${
+                                    formatNumber(convertWind(r.windMax, units)) ?? "?"
+                                  } ${WIND_UNIT_LABEL[units]}) Rain ${r.rainPen} (${
+                                    formatNumber(convertRain(r.rain, units)) ?? "?"
+                                  } ${RAIN_UNIT_LABEL[units]}) = ${r.points} → ${r.class}`}
+
                                 className={
                                   "inline-flex flex-col items-center justify-center gap-0.5 rounded-full px-2 py-2 text-[9px] font-semibold cursor-help w-14 h-14 text-center " +
                                   (r.class === "Best"
@@ -476,12 +562,21 @@ function IcelandCampingWeatherApp(){
                               {WEATHER_MAP?.[r.code]?.text || ""}
                             </td>
 
-
+                            {/* 🔥 Daily table */}    
                             <td className="py-2 pr-3 whitespace-nowrap font-medium">{formatDay(r.date)}</td>
-                            <td className="py-2 pr-3">{r.tmin?.toFixed?.(1)} °C</td>
-                            <td className="py-2 pr-3">{r.tmax?.toFixed?.(1)} °C</td>
-                            <td className="py-2 pr-3">{r.windMax?.toFixed?.(1)} m/s</td>
-                            <td className="py-2 pr-3">{r.rain?.toFixed?.(1)} mm</td>
+                            <td className="py-2 pr-3">
+                              {formatNumber(convertTemp(r.tmin, units))} {TEMP_UNIT_LABEL[units]}
+                            </td>
+                            <td className="py-2 pr-3">
+                              {formatNumber(convertTemp(r.tmax, units))} {TEMP_UNIT_LABEL[units]}
+                            </td>
+                            <td className="py-2 pr-3">
+                              {formatNumber(convertWind(r.windMax, units))} {WIND_UNIT_LABEL[units]}
+                            </td>
+                            <td className="py-2 pr-3">
+                              {formatNumber(convertRain(r.rain, units))} {RAIN_UNIT_LABEL[units]}
+                            </td>
+
                           </tr>
                         ))}
                       </tbody>
