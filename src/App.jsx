@@ -423,8 +423,7 @@ function IcelandCampingWeatherApp(){
         <div className="max-w-6xl mx-auto px-4 py-10">
           <header className="mb-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
             <div>
-              <h1 className="text-3xl md:text-4xl font-black tracking-tight">Iceland Camping — 7-Day Weather</h1>
-              <p className="text-slate-600 dark:text-slate-300">Score = Temperature base − (Wind penalty + Rain penalty)</p>
+              <h2 className="text-3xl md:text-4xl font-black tracking-tight">7-Day Campsite Weather Forecast</h2>
             </div>
             <div className="flex items-center gap-3">
               <label htmlFor="site" className="text-sm font-medium sr-only">Campsite</label>
