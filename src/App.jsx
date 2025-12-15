@@ -423,8 +423,10 @@ function IcelandCampingWeatherApp(){
         <div className="max-w-6xl mx-auto px-4 py-10">
           <header className="mb-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
             <div>
-              <h1 className="text-3xl md:text-4xl font-black tracking-tight">Iceland Camping — 7-Day Weather</h1>
-              <p className="text-slate-600 dark:text-slate-300">Score = Temperature base − (Wind penalty + Rain penalty)</p>
+              <h1 className="text-2xl md:text-2xl font-black tracking-tight">
+                7-Day Weather
+              </h1>
+
             </div>
             <div className="flex items-center gap-3">
               <label htmlFor="site" className="text-sm font-medium sr-only">Campsite</label>
@@ -442,12 +444,13 @@ function IcelandCampingWeatherApp(){
                 onClick={useMyLocation}
                 className="px-3 py-2 rounded-xl border border-slate-300 bg-white shadow-sm focus-ring smooth
                           text-slate-900 dark:bg-slate-900 dark:border-slate-600 dark:text-slate-100
-                          flex flex-col items-center justify-center gap-1 text-sm"
+                          inline-flex items-center gap-2 text-sm whitespace-nowrap"
                 title="Use my current location"
               >
                 <span>📍</span>
-                <span className="whitespace-nowrap">Here</span>
+                <span>My location</span>
               </button>
+
 
 
               <InstallPWA />
