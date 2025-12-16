@@ -20,7 +20,8 @@ import BackToTop from "./components/BackToTop";
 import InstallPWA from "./components/InstallPWA";
 import { WeatherIcon } from "./components/WeatherIcon";
 import { mapWeatherCodeToIconId } from "./utils/WeatherIconMapping";
-
+import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/react";
 
 const MapView = lazy(() => import("./MapView"));
 
@@ -683,6 +684,10 @@ export default function App() {
         <Route path="/" element={<IcelandCampingWeatherApp />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
+
+      {/* Vercel */}
+      <Analytics />
+      <SpeedInsights />
     </BrowserRouter>
   );
 }
