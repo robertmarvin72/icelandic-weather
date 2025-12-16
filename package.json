@@ -11,9 +11,11 @@
   },
   "dependencies": {
     "leaflet": "^1.9.4",
+    "leaflet.markercluster": "^1.5.3",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
     "react-leaflet": "^5.0.0",
+    "react-leaflet-cluster": "^4.0.0",
     "react-router-dom": "^7.9.5"
   },
   "devDependencies": {
