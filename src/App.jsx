@@ -142,6 +142,16 @@ const WIND_UNIT_LABEL = {
   imperial: "kn",
 };
 
+const DIST_UNIT_LABEL = {
+  metric: "km",
+  imperial: "mi",
+};
+
+function convertDistanceKm(valueKm, units) {
+  if (valueKm == null) return null;
+  return units === "imperial" ? valueKm * 0.621371 : valueKm; // km -> miles
+}
+
 function convertTemp(value, units) {
   if (value == null) return null;
   return units === "imperial" ? (value * 9) / 5 + 32 : value; // °C -> °F
@@ -495,7 +505,9 @@ function IcelandCampingWeatherApp(){
                 <h2 className="text-lg font-semibold">
                   {site?.name || "—"}
                   {userLoc && site && (
-                    <span className="ml-2 text-sm text-slate-500 dark:text-slate-300">· {distanceTo(site).toFixed(1)} km away</span>
+                    <span className="ml-2 text-sm text-slate-500 dark:text-slate-300">
+                      · {formatNumber(convertDistanceKm(distanceTo(site), units), 1)} {DIST_UNIT_LABEL[units]} away
+                    </span>
                   )}
                 </h2>
                 <div className="text-sm text-slate-600 dark:text-slate-300">
@@ -639,8 +651,11 @@ function IcelandCampingWeatherApp(){
                           <td className="px-3 py-2 text-center font-semibold text-slate-700 dark:text-slate-200">{idx+1}</td>
                           <td className="px-3 py-2 font-medium text-slate-800 dark:text-slate-100">{item.site.name}</td>
                           <td className="px-3 py-2 text-right text-slate-600 dark:text-slate-300">
-                            {item.dist!=null?`${item.dist.toFixed(1)} km`:"—"}
+                            {item.dist == null
+                              ? "—"
+                              : `${formatNumber(convertDistanceKm(item.dist, units), 1)} ${DIST_UNIT_LABEL[units]}`}
                           </td>
+
                           <td className="px-3 py-2 text-right">
                             <span
                               className={`pill-pop inline-flex items-center justify-center px-2 py-0.5 rounded-full text-xs font-semibold ${scorePillClass(item.score)}`}
