@@ -121,11 +121,11 @@ function scoreDay({ tmax, rain, windMax }){
   return { basePts, windPen, rainPen, points, finalClass };
 }
 function scorePillClass(total) {
-  if (total >= 60) return "bg-green-100 text-green-800";
-  if (total >= 45) return "bg-lime-100 text-lime-800";
-  if (total >= 30) return "bg-yellow-100 text-yellow-800";
-  if (total >= 15) return "bg-orange-100 text-orange-800";
-  return "bg-red-100 text-red-800";
+  if (total >= 60) return "bg-green-100 text-green-900 dark:bg-green-500/20 dark:text-green-200";
+  if (total >= 45) return "bg-lime-100 text-lime-900 dark:bg-lime-500/20 dark:text-lime-200";
+  if (total >= 30) return "bg-yellow-100 text-yellow-900 dark:bg-yellow-500/20 dark:text-yellow-200";
+  if (total >= 15) return "bg-orange-100 text-orange-900 dark:bg-orange-500/20 dark:text-orange-200";
+  return "bg-red-100 text-red-900 dark:bg-red-500/20 dark:text-red-200";
 }
 
 // ── Unit helpers (display only; underlying data stays metric)
@@ -441,7 +441,7 @@ function IcelandCampingWeatherApp(){
             </div>
             <div className="flex items-center gap-3">
               <label htmlFor="site" className="text-sm font-medium sr-only">Campsite</label>
-              <select id="site" className="px-3 py-2 rounded-xl border border-slate-300 bg-white shadow-sm focus-ring smooth text-slate-900 dark:bg-slate-900 dark:border-slate-600 dark:text-slate-100"
+              <select id="site" aria-label="Select campsite" className="px-3 py-2 rounded-xl border border-slate-300 bg-white shadow-sm focus-ring smooth text-slate-900 dark:bg-slate-900 dark:border-slate-600 dark:text-slate-100"
                 value={siteId||""} onChange={(e) => {
                   setSiteId(e.target.value);
                   mapRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -456,6 +456,7 @@ function IcelandCampingWeatherApp(){
                 className="px-3 py-2 rounded-xl border border-slate-300 bg-white shadow-sm focus-ring smooth
                           text-slate-900 dark:bg-slate-900 dark:border-slate-600 dark:text-slate-100
                           inline-flex items-center gap-2 text-sm whitespace-nowrap"
+                aria-label="Use my current location"
                 title="Use my current location"
               >
                 <span>📍</span>
@@ -475,6 +476,11 @@ function IcelandCampingWeatherApp(){
                   className="px-3 py-2 rounded-xl border border-slate-300 bg-white shadow-sm focus-ring smooth text-sm
                             flex items-center gap-2
                             text-slate-900 dark:bg-slate-900 dark:border-slate-600 dark:text-slate-100"
+                  aria-label={
+                    units === "metric"
+                      ? "Switch to imperial units"
+                      : "Switch to metric units"
+                  }
                   title={
                     units === "metric"
                       ? "Metric units: °C, mm, m/s"
@@ -490,6 +496,9 @@ function IcelandCampingWeatherApp(){
                 <button
                   onClick={() => setDarkMode(d => !d)}
                   className="px-3 py-2 rounded-xl border border-slate-300 bg-white shadow-sm focus-ring smooth text-sm dark:bg-slate-900 dark:border-slate-600"
+                  aria-label={
+                  darkMode ? "Switch to light mode" : "Switch to dark mode"
+                }
                   title="Toggle dark mode"
                 >
                   {darkMode ? "🌙 Dark" : "☀️ Light"}
@@ -525,7 +534,7 @@ function IcelandCampingWeatherApp(){
               {error && <div className="py-10 text-center text-red-600">{String(error.message || error)}</div>}
 
               {!loading && !error && (
-                <div className="overflow-hidden rounded-2xl border border-slate-200">
+                <div className="overflow-hidden rounded-2xl border border-slate-200 dark:border-slate-700">
                   <div className="overflow-x-auto">
                     <table className="w-full text-left text-sm table-sticky">
                       <thead className="bg-slate-50 dark:bg-slate-900/80">
@@ -542,7 +551,11 @@ function IcelandCampingWeatherApp(){
 
                       <tbody className="[&>tr:nth-child(even)]:bg-slate-50 dark:[&>tr:nth-child(even)]:bg-slate-800/40">
                         {rows.map((r)=>(
-                          <tr key={r.date} className="border-b last:border-0 border-slate-100 hover:bg-sky-50/50">
+                          <tr
+                            key={r.date}
+                            className="border-b last:border-0 border-slate-100 dark:border-slate-800
+                                      hover:bg-sky-50/50 dark:hover:bg-slate-800/60"
+                          >
                             <td className="py-2 pl-4 pr-3">
                               <span
                                 title={`Base ${r.basePts} (Temp ${
@@ -568,7 +581,9 @@ function IcelandCampingWeatherApp(){
                               >
                                 <WeatherIcon
                                   iconId={mapWeatherCodeToIconId(r.code ?? 0, true)}
+                                  aria-label={`Weather: ${WEATHER_MAP?.[r.code]?.text || "Unknown"}`}
                                   className="w-9 h-9"
+                                  role="img"
                                 />
                                 <span>{r.class}</span>
                               </span>
@@ -603,7 +618,7 @@ function IcelandCampingWeatherApp(){
                     {mapInView && (
                       <Suspense
                         fallback={
-                          <div className="p-6 text-center text-slate-500 text-sm">
+                          <div className="p-6 text-center text-slate-600 dark:text-slate-300 text-sm">
                             Loading map…
                           </div>
                         }
@@ -630,9 +645,9 @@ function IcelandCampingWeatherApp(){
               <h3 className="text-base font-semibold mb-3">Top 5 Campsites This Week</h3>
               {loadingAll && <LoadingShimmer rows={5} height={20} />}
               {!loadingAll && (
-                <div className="overflow-hidden rounded-xl border border-slate-200">
+                <div className="overflow-hidden rounded-xl border border-slate-200 dark:border-slate-700">
                   <table className="w-full text-sm text-left">
-                    <thead className="bg-slate-100/80 backdrop-blur-sm text-slate-600 dark:bg-slate-900/80 dark:text-slate-300">
+                    <thead className="bg-slate-100/80 backdrop-blur-sm text-slate-700 dark:bg-slate-900/80 dark:text-slate-300">
                       <tr>
                         <th className="px-3 py-2 font-semibold w-10 text-center">#</th>
                         <th className="px-3 py-2 font-semibold">Campsite</th>
@@ -642,7 +657,7 @@ function IcelandCampingWeatherApp(){
                     </thead>
                     <tbody className="[&>tr:nth-child(even)]:bg-slate-50 dark:[&>tr:nth-child(even)]:bg-slate-800/40">
                       {top5.map((item,idx)=>(
-                        <tr key={item.site.id} className="hover:bg-sky-50/60 cursor-pointer transition"
+                        <tr key={item.site.id} className="hover:bg-sky-50/60 cursor-pointer transition dark:hover:bg-slate-800/60"
                             onClick={() => {
                               setSiteId(item.site.id);
                               mapRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });

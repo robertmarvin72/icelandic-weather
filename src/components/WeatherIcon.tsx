@@ -33,7 +33,7 @@ export type WeatherIconId =
 type Props = {
   iconId: WeatherIconId;
   className?: string;
-};
+} & React.SVGProps<SVGSVGElement>;
 
 const ICONS: Record<WeatherIconId, React.FC<React.SVGProps<SVGSVGElement>>> = {
   "clear-day": IconClearDay,
@@ -51,7 +51,7 @@ const ICONS: Record<WeatherIconId, React.FC<React.SVGProps<SVGSVGElement>>> = {
   hail: IconHail,
 };
 
-export function WeatherIcon({ iconId, className }: Props) {
+export function WeatherIcon({ iconId, className, ...props }: Props) {
   const Icon = ICONS[iconId] ?? IconCloudy;
-  return <Icon className={className} />;
+  return <Icon className={className} {...props} />;
 }
