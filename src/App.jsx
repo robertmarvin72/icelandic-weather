@@ -37,6 +37,21 @@ import React, {
 } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
+import { scorePillClass } from "./ui/scoreStyles";
+
+import {
+  scoreDay,
+  convertTemp,
+  convertRain,
+  convertWind,
+  convertDistanceKm,
+  formatNumber,
+  TEMP_UNIT_LABEL,
+  RAIN_UNIT_LABEL,
+  WIND_UNIT_LABEL,
+  DIST_UNIT_LABEL,
+} from "./lib/scoring";
+
 import campsites from "./data/campsites.json";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
@@ -135,84 +150,6 @@ const WEATHER_MAP = {
   96: { icon: "⛈️", text: "Thunder + hail" },
   99: { icon: "⛈️", text: "Severe thunder + hail" },
 };
-
-// ──────────────────────────────────────────────────────────────
-// [SCORING] Weather scoring model (0..10 per day, 0..70 per week)
-// ──────────────────────────────────────────────────────────────
-// ── Scoring model
-function basePointsFromTemp(tmax) {
-  const t = tmax ?? -999;
-  if (t > 14) return 10;
-  if (t >= 12) return 8;
-  if (t >= 8) return 5;
-  if (t >= 6) return 2;
-  return 0;
-}
-function windPenaltyPoints(w) {
-  const v = w ?? 0;
-  if (v <= 5) return 0;
-  if (v <= 10) return 2;
-  if (v <= 15) return 5;
-  return 10;
-}
-function rainPenaltyPoints(mm) {
-  const r = mm ?? 0;
-  if (r < 1) return 0;
-  if (r < 4) return 2;
-  return 5; // >4mm
-}
-function pointsToClass(p) {
-  if (p >= 9) return "Best";
-  if (p >= 7) return "Good";
-  if (p >= 4) return "Ok";
-  if (p >= 1) return "Fair";
-  return "Bad";
-}
-function scoreDay({ tmax, rain, windMax }) {
-  const basePts = basePointsFromTemp(tmax);
-  const windPen = windPenaltyPoints(windMax);
-  const rainPen = rainPenaltyPoints(rain);
-  const points = Math.max(0, Math.min(10, basePts - windPen - rainPen));
-  const finalClass = pointsToClass(points);
-  return { basePts, windPen, rainPen, points, finalClass };
-}
-function scorePillClass(total) {
-  if (total >= 60) return "bg-green-100 text-green-900 dark:bg-green-500/20 dark:text-green-200";
-  if (total >= 45) return "bg-lime-100 text-lime-900 dark:bg-lime-500/20 dark:text-lime-200";
-  if (total >= 30) return "bg-yellow-100 text-yellow-900 dark:bg-yellow-500/20 dark:text-yellow-200";
-  if (total >= 15) return "bg-orange-100 text-orange-900 dark:bg-orange-500/20 dark:text-orange-200";
-  return "bg-red-100 text-red-900 dark:bg-red-500/20 dark:text-red-200";
-}
-
-// ──────────────────────────────────────────────────────────────
-// [UNITS] Display-only conversions (data remains metric internally)
-// ──────────────────────────────────────────────────────────────
-// ── Unit helpers (display only; underlying data stays metric)
-const TEMP_UNIT_LABEL = { metric: "°C", imperial: "°F" };
-const RAIN_UNIT_LABEL = { metric: "mm", imperial: "in" };
-const WIND_UNIT_LABEL = { metric: "m/s", imperial: "kn" };
-const DIST_UNIT_LABEL = { metric: "km", imperial: "mi" };
-
-function convertDistanceKm(valueKm, units) {
-  if (valueKm == null) return null;
-  return units === "imperial" ? valueKm * 0.621371 : valueKm; // km -> miles
-}
-function convertTemp(value, units) {
-  if (value == null) return null;
-  return units === "imperial" ? (value * 9) / 5 + 32 : value;
-}
-function convertRain(value, units) {
-  if (value == null) return null;
-  return units === "imperial" ? value / 25.4 : value;
-}
-function convertWind(value, units) {
-  if (value == null) return null;
-  return units === "imperial" ? value * 1.94384 : value;
-}
-function formatNumber(value, digits = 1) {
-  if (value == null || Number.isNaN(value)) return "—";
-  return value.toFixed(digits);
-}
 
 // ──────────────────────────────────────────────────────────────
 // [FORECAST] Cached forecast fetch + “score rows” shaping
