@@ -1,0 +1,10 @@
+# Test coverage
+coverage/
+coverage/**
+
+# Vitest artifacts
+node_modules/.vite/
+.vitest/
+
+# Optional: test output
+test-results/
