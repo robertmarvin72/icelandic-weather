@@ -2,9 +2,31 @@
 coverage/
 coverage/**
 
-# Vitest artifacts
-node_modules/.vite/
-.vitest/
-
 # Optional: test output
 test-results/
+
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+.vite/
+
+# Test coverage & vitest artifacts
+coverage/
+.vitest/
+node_modules/.vite/
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Environment files
+.env
+.env.local
+.env.*.local
