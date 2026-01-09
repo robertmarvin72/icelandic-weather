@@ -13,7 +13,8 @@
     "test:run": "vitest run",
     "test:ci": "vitest run",
     "test:ui": "vitest --ui",
-    "test:coverage": "vitest run --coverage"
+    "test:coverage": "vitest run --coverage",
+    "campsites:full": "node scripts/generateCampsitesFromOSM.mjs"
   },
   "dependencies": {
     "@vercel/analytics": "^1.6.1",
@@ -36,6 +37,7 @@
     "@vitejs/plugin-react": "^5.0.4",
     "@vitest/coverage-v8": "^4.0.16",
     "autoprefixer": "^10.4.21",
+    "baseline-browser-mapping": "^2.9.13",
     "eslint": "^9.36.0",
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-react-refresh": "^0.4.22",

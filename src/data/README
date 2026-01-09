@@ -1,0 +1,2 @@
+campsites.full.json is generated from OpenStreetMap via Overpass.
+Run npm run campsites:full to refresh.

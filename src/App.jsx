@@ -52,7 +52,8 @@ import {
   DIST_UNIT_LABEL,
 } from "./lib/scoring";
 
-import campsites from "./data/campsites.json";
+import campsitesLimited from "./data/campsites.limited.json";
+import campsitesFull from "./data/campsites.full.json";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import Splash from "./components/Splash";
@@ -66,6 +67,7 @@ import { WeatherIcon } from "./components/WeatherIcon";
 import { mapWeatherCodeToIconId } from "./utils/WeatherIconMapping";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/react";
+
 
 const MapView = lazy(() => import("./MapView"));
 
@@ -254,14 +256,16 @@ function IcelandCampingWeatherApp() {
   // ──────────────────────────────────────────────────────────────
   // [APP STATE] Global UI state for the page
   // ──────────────────────────────────────────────────────────────
-  const siteList = Array.isArray(campsites) ? campsites : [];
+  const siteList = Array.isArray(campsitesFull) ? campsitesFull : [];
 
   const [siteId, setSiteId] = useState(localStorage.getItem("lastSite") || siteList[0]?.id);
   const [userLoc, setUserLoc] = useState(null);
   const [geoMsg, setGeoMsg] = useState(null);
 
   const [scoresById, setScoresById] = useState({});
-  const [loadingAll, setLoadingAll] = useState(false);
+  const [loadingWave1, setLoadingWave1] = useState(false);
+  const [loadingBg, setLoadingBg] = useState(false);
+
 
   const mapRef = useRef(null);
   const [mapInView, setMapInView] = useState(false);
@@ -376,9 +380,9 @@ function IcelandCampingWeatherApp() {
     // ──────────────────────────────────────────────────────────────
     async function preloadScores() {
       if (!siteList.length) return;
-      setLoadingAll(true);
 
       const prio = prioritizedSites(siteList, siteId, userLoc);
+
       const fetchOne = async (site) => {
         try {
           const data = await getForecast({ lat: site.lat, lon: site.lon });
@@ -389,26 +393,36 @@ function IcelandCampingWeatherApp() {
         }
       };
 
-      // First wave (selected + nearest 8)
+      // ── Wave 1: selected + nearest 8
+      setLoadingWave1(true);
       const head = prio.slice(0, Math.min(prio.length, 9));
+
       for (const s of head) {
         if (aborted) break;
         await fetchOne(s);
-        await sleep(150);
+        await sleep(120);
       }
 
-      // Trickle the rest
+      // ✅ Wave 1 is done — UI should feel “ready” now
+      if (!aborted) setLoadingWave1(false);
+
+      // ── Background: trickle the rest
       const rest = prio.slice(head.length);
+      if (!rest.length) return;
+
+      setLoadingBg(true);
+
       await processInBatches(
         rest,
         async (s) => {
           if (!aborted) await fetchOne(s);
         },
-        { concurrency: 2, delayMs: 350, betweenBatchesMs: 400 }
+        { concurrency: 2, delayMs: 350, betweenBatchesMs: 250 }
       );
 
-      if (!aborted) setLoadingAll(false);
-    }
+      if (!aborted) setLoadingBg(false);
+}
+
 
     preloadScores();
     return () => {
@@ -418,15 +432,39 @@ function IcelandCampingWeatherApp() {
 
   const distanceTo = (s) => (userLoc ? haversine(userLoc.lat, userLoc.lon, s.lat, s.lon) : null);
 
+  const siteById = useMemo(() => {
+    const map = new Map();
+    for (const s of siteList) {
+      map.set(s.id, s);
+    }
+    return map;
+  }, [siteList]);
+
+
   const top5 = useMemo(() => {
-    const items = siteList.map((s) => ({
-      site: s,
-      score: scoresById[s.id]?.score ?? 0,
-      dist: distanceTo(s),
-    }));
-    items.sort((a, b) => (b.score !== a.score ? b.score - a.score : (a.dist ?? Infinity) - (b.dist ?? Infinity)));
+    const items = Object.entries(scoresById)
+      .map(([id, val]) => {
+        const site = siteById.get(id);
+        if (!site) return null;
+
+        return {
+          site,
+          score: val?.score ?? 0,
+          dist: distanceTo(site),
+        };
+      })
+      .filter(Boolean);
+
+    items.sort((a, b) =>
+      b.score !== a.score
+        ? b.score - a.score
+        : (a.dist ?? Infinity) - (b.dist ?? Infinity)
+    );
+
     return items.slice(0, 5);
-  }, [siteList, scoresById, userLoc]);
+  }, [scoresById, siteById, userLoc]);
+
+
 
   // ──────────────────────────────────────────────────────────────
   // [GEO] "My location" action: geolocate -> find nearest campsite -> select it
@@ -463,8 +501,8 @@ function IcelandCampingWeatherApp() {
   return (
     <div>
       {/* ✅ show splash until first forecast is loaded */}
-      // [APP STATE] Splash boot lifecycle (show until first successful forecast load)
-      <Splash show={booting || loading || loadingAll} minMs={700} fadeMs={500} />
+      {/* [APP STATE] Splash boot lifecycle (show until first successful forecast load) */}
+      <Splash show={booting} minMs={700} fadeMs={500} />
 
       <div className="min-h-screen font-sans bg-soft-grid text-slate-900 dark:bg-slate-950 dark:text-slate-100">
         <Header />
@@ -658,10 +696,19 @@ function IcelandCampingWeatherApp() {
             </Card>
 
             <Card className="card hover-lift">
-              <h3 className="text-base font-semibold mb-3">Top 5 Campsites This Week</h3>
-              {loadingAll && <LoadingShimmer rows={5} height={20} />}
+              <h3 className="text-base font-semibold mb-1">
+                Top 5 Campsites This Week
+                <span className="ml-2 text-xs font-normal text-slate-500 dark:text-slate-400">
+                  (from {Object.keys(scoresById).length} scored)
+                </span>
+              </h3>
 
-              {!loadingAll && (
+              {/* Show shimmer only if we have nothing yet */}
+              {top5.length === 0 && loadingWave1 && <LoadingShimmer rows={5} height={20} />}
+              <div className="mb-3 text-xs text-slate-500 dark:text-slate-400">
+                {loadingBg ? "Loading more campsites…" : "Up to date."}
+              </div>
+              {top5.length > 0 && (
                 <div className="overflow-hidden rounded-xl border border-slate-200 dark:border-slate-700">
                   <table className="w-full text-sm text-left">
                     <thead className="bg-slate-100/80 backdrop-blur-sm text-slate-700 dark:bg-slate-900/80 dark:text-slate-300">
@@ -684,14 +731,22 @@ function IcelandCampingWeatherApp() {
                           }}
                           title="Select on map"
                         >
-                          <td className="px-3 py-2 text-center font-semibold text-slate-700 dark:text-slate-200">{idx + 1}</td>
-                          <td className="px-3 py-2 font-medium text-slate-800 dark:text-slate-100">{item.site.name}</td>
+                          <td className="px-3 py-2 text-center font-semibold text-slate-700 dark:text-slate-200">
+                            {idx + 1}
+                          </td>
+                          <td className="px-3 py-2 font-medium text-slate-800 dark:text-slate-100">
+                            {item.site.name}
+                          </td>
                           <td className="px-3 py-2 text-right text-slate-600 dark:text-slate-300">
-                            {item.dist == null ? "—" : `${formatNumber(convertDistanceKm(item.dist, units), 1)} ${DIST_UNIT_LABEL[units]}`}
+                            {item.dist == null
+                              ? "—"
+                              : `${formatNumber(convertDistanceKm(item.dist, units), 1)} ${DIST_UNIT_LABEL[units]}`}
                           </td>
                           <td className="px-3 py-2 text-right">
                             <span
-                              className={`pill-pop inline-flex items-center justify-center px-2 py-0.5 rounded-full text-xs font-semibold ${scorePillClass(item.score)}`}
+                              className={`pill-pop inline-flex items-center justify-center px-2 py-0.5 rounded-full text-xs font-semibold ${scorePillClass(
+                                item.score
+                              )}`}
                               title={`Weekly score: ${item.score} / 70`}
                             >
                               {item.score}
@@ -710,6 +765,7 @@ function IcelandCampingWeatherApp() {
                 Sorted by weekly score, then nearest to you.
               </div>
             </Card>
+
           </div>
 
           <footer className="mt-6 text-xs text-slate-500 dark:text-slate-300">
