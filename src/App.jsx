@@ -284,14 +284,22 @@ function IcelandCampingWeatherApp() {
     try {
       const raw = localStorage.getItem(SCORES_CACHE_KEY);
       if (!raw) return null;
+
       const parsed = JSON.parse(raw);
       if (!parsed || typeof parsed !== "object") return null;
 
-      const { ts, scores } = parsed;
-      if (!ts || !scores) return null;
+      const ts = Number(parsed.ts);
+      const scores = parsed.scores;
+
+      if (!Number.isFinite(ts)) return null;
+      if (!scores || typeof scores !== "object") return null;
 
       const age = Date.now() - ts;
-      if (age > SCORES_CACHE_TTL_MS) return null;
+      if (age < 0 || age > SCORES_CACHE_TTL_MS) return null;
+
+      for (const v of Object.values(scores)) {
+        if (!v || typeof v !== "object" || !Number.isFinite(v.score)) return null;
+      }
 
       return scores;
     } catch {
@@ -493,12 +501,12 @@ function IcelandCampingWeatherApp() {
       // If we already have plenty of scores (from cache), skip background work
       const SCORES_ENOUGH = userLoc ? 120 : 40;
       if (Object.keys(scoresById).length >= SCORES_ENOUGH) {
-        if (!aborted) setLoadingBg(false);
+        if (!aborted && loadingBg) setLoadingBg(false);
         return;
       }
 
 
-      setLoadingBg(true);
+      if (!aborted && !loadingBg) setLoadingBg(true);
 
       await processInBatches(
         rest,
