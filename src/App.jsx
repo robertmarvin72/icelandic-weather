@@ -436,7 +436,17 @@ function IcelandCampingWeatherApp() {
         }
       }
 
-      const prio = prioritizedSites(siteList, siteId, userLoc);
+      const prioAll = prioritizedSites(siteList, siteId, userLoc);
+
+      // ✅ Cap total scoring work to keep app responsive
+      // - Without location: keep it light (still enough to fill Top 5 + map dots)
+      // - With location: allow more (nearest ranking is actually relevant)
+      const MAX_SCORE_NO_LOC = 80;     // tweak 50–120
+      const MAX_SCORE_WITH_LOC = 250;  // tweak 150–400
+
+      const maxToScore = userLoc ? MAX_SCORE_WITH_LOC : MAX_SCORE_NO_LOC;
+      const prio = prioAll.slice(0, Math.min(prioAll.length, maxToScore));
+
 
       const fetchOne = async (site) => {
         try {
@@ -479,6 +489,14 @@ function IcelandCampingWeatherApp() {
       // ── Background: trickle the rest (unchanged for now)
       const rest = prio.slice(head.length);
       if (!rest.length) return;
+
+      // If we already have plenty of scores (from cache), skip background work
+      const SCORES_ENOUGH = userLoc ? 120 : 40;
+      if (Object.keys(scoresById).length >= SCORES_ENOUGH) {
+        if (!aborted) setLoadingBg(false);
+        return;
+      }
+
 
       setLoadingBg(true);
 
