@@ -277,6 +277,46 @@ function IcelandCampingWeatherApp() {
     return stored === "imperial" ? "imperial" : "metric";
   });
 
+  const SCORES_CACHE_KEY = "campcast:scoresById:v1";
+  const SCORES_CACHE_TTL_MS = 6 * 60 * 60 * 1000; // 6 hours
+
+  function loadScoresCache() {
+    try {
+      const raw = localStorage.getItem(SCORES_CACHE_KEY);
+      if (!raw) return null;
+      const parsed = JSON.parse(raw);
+      if (!parsed || typeof parsed !== "object") return null;
+
+      const { ts, scores } = parsed;
+      if (!ts || !scores) return null;
+
+      const age = Date.now() - ts;
+      if (age > SCORES_CACHE_TTL_MS) return null;
+
+      return scores;
+    } catch {
+      return null;
+    }
+  }
+
+  let saveTimer = null;
+  function scheduleSaveScoresCache(getLatestScoresById) {
+    // Debounce writes to avoid hammering localStorage
+    if (saveTimer) clearTimeout(saveTimer);
+    saveTimer = setTimeout(() => {
+      try {
+        const scores = getLatestScoresById();
+        localStorage.setItem(
+          SCORES_CACHE_KEY,
+          JSON.stringify({ ts: Date.now(), scores })
+        );
+      } catch {
+        // ignore
+      }
+    }, 800);
+  }
+
+
   useEffect(() => {
     if (typeof window !== "undefined") {
       localStorage.setItem("units", units);
@@ -381,15 +421,46 @@ function IcelandCampingWeatherApp() {
     async function preloadScores() {
       if (!siteList.length) return;
 
+      // ✅ 1) Hydrate from cache immediately (fast repeat visits)
+      // Only do this if we don't already have a bunch of scores in memory
+      if (Object.keys(scoresById).length === 0) {
+        const cached = loadScoresCache();
+        if (cached && !aborted) {
+          // Merge cached scores, but only for IDs we still have in the dataset
+          const allowed = new Set(siteList.map(s => s.id));
+          const filtered = {};
+          for (const [id, val] of Object.entries(cached)) {
+            if (allowed.has(id)) filtered[id] = val;
+          }
+          setScoresById(prev => ({ ...filtered, ...prev }));
+        }
+      }
+
       const prio = prioritizedSites(siteList, siteId, userLoc);
 
       const fetchOne = async (site) => {
         try {
           const data = await getForecast({ lat: site.lat, lon: site.lon });
           const scored = await computeScoreFromData(data);
-          if (!aborted) setScoresById((prev) => ({ ...prev, [site.id]: scored }));
+
+          if (!aborted) {
+            setScoresById((prev) => {
+              const next = { ...prev, [site.id]: scored };
+
+              // ✅ 2) Persist updates to cache (debounced)
+              scheduleSaveScoresCache(() => next);
+
+              return next;
+            });
+          }
         } catch {
-          if (!aborted) setScoresById((prev) => ({ ...prev, [site.id]: { score: 0, rows: [] } }));
+          if (!aborted) {
+            setScoresById((prev) => {
+              const next = { ...prev, [site.id]: { score: 0, rows: [] } };
+              scheduleSaveScoresCache(() => next);
+              return next;
+            });
+          }
         }
       };
 
@@ -403,10 +474,9 @@ function IcelandCampingWeatherApp() {
         await sleep(120);
       }
 
-      // ✅ Wave 1 is done — UI should feel “ready” now
       if (!aborted) setLoadingWave1(false);
 
-      // ── Background: trickle the rest
+      // ── Background: trickle the rest (unchanged for now)
       const rest = prio.slice(head.length);
       if (!rest.length) return;
 
@@ -421,12 +491,19 @@ function IcelandCampingWeatherApp() {
       );
 
       if (!aborted) setLoadingBg(false);
-}
+    }
+
 
 
     preloadScores();
     return () => {
       aborted = true;
+
+    // 🧹 optional but recommended: cancel pending cache write
+    if (saveTimer) {
+      clearTimeout(saveTimer);
+      saveTimer = null;
+    }
     };
   }, [siteList.length, siteId, userLoc?.lat, userLoc?.lon]);
 
