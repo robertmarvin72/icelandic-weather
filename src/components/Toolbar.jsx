@@ -1,5 +1,6 @@
 import React from "react";
 import InstallPWA from "./InstallPWA";
+import CampsitePicker from "./CampsitePicker";
 
 /**
  * Toolbar
@@ -32,19 +33,7 @@ export default function Toolbar({
           Campsite
         </label>
 
-        <select
-          id="site"
-          aria-label="Select campsite"
-          className="px-3 py-2 rounded-xl border border-slate-300 bg-white shadow-sm focus-ring smooth text-slate-900 dark:bg-slate-900 dark:border-slate-600 dark:text-slate-100"
-          value={siteId || ""}
-          onChange={(e) => onSelectSite(e.target.value)}
-        >
-          {siteList.map((c) => (
-            <option key={c.id} value={c.id}>
-              {c.name}
-            </option>
-          ))}
-        </select>
+        <CampsitePicker siteList={siteList} siteId={siteId} onSelectSite={onSelectSite} />
 
         <button
           onClick={onUseMyLocation}
