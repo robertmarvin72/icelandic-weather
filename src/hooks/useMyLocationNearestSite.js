@@ -11,23 +11,22 @@ import { findNearestCampsite } from "../lib/geo";
  *
  * App controls what to do with the selected site via onSelectSite
  */
-export function useMyLocationNearestSite(siteList, onSelectSite) {
+export function useMyLocationNearestSite(siteList, onSelectSite, t) {
   const [userLoc, setUserLoc] = useState(null);
   const [geoMsg, setGeoMsg] = useState(null);
 
   function useMyLocation() {
     if (!("geolocation" in navigator)) {
-      setGeoMsg("Geolocation not supported.");
+      setGeoMsg(t?.("geolocationNotSupported"));
       return;
     }
 
-    setGeoMsg("Locating…");
-
+    setGeoMsg(t?.("locating"));
     navigator.geolocation.getCurrentPosition(
       (pos) => {
         const { latitude, longitude } = pos.coords || {};
         if (latitude == null || longitude == null) {
-          setGeoMsg("Could not read position.");
+          setGeoMsg(t?.("couldNotReadPosition"));
           return;
         }
 
@@ -42,13 +41,13 @@ export function useMyLocationNearestSite(siteList, onSelectSite) {
 
         if (nearest) {
           onSelectSite(nearest.id);
-          setGeoMsg(`Nearest: ${nearest.name} (${distanceKm.toFixed(1)} km)`);
+          setGeoMsg(t?.("nearest")+`: ${nearest.name} (${distanceKm.toFixed(1)} km)`);
         } else {
-          setGeoMsg("No campsites found.");
+          setGeoMsg(t?.("noCampsitesFound"));
         }
       },
       (err) => {
-        setGeoMsg(err?.message || "Permission denied / location unavailable.");
+        setGeoMsg(err?.message || t?.("permissionDenied"));
       },
       { enableHighAccuracy: true, timeout: 10000, maximumAge: 60000 }
     );

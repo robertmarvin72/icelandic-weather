@@ -55,6 +55,8 @@ import { useLocalStorageState } from "./hooks/useLocalStorageState";
 import { useMyLocationNearestSite } from "./hooks/useMyLocationNearestSite";
 import { useThemeClass } from "./hooks/useThemeClass";
 import { useTop5Campsites } from "./hooks/useTop5Campsites";
+import { useLanguage } from "./hooks/useLanguage";
+import { useT } from "./hooks/useT";
 
 import NotFound from "./pages/NotFound";
 
@@ -95,10 +97,17 @@ function IcelandCampingWeatherApp() {
     setUnits((u) => (u === "metric" ? "imperial" : "metric"));
   }, []);
 
+  const { lang, toggleLanguage } = useLanguage();
+  const t = useT(lang);
+
   // ──────────────────────────────────────────────────────────────
   // [GEO] Location + distance helpers
   // ──────────────────────────────────────────────────────────────
-  const { userLoc, geoMsg, useMyLocation } = useMyLocationNearestSite(siteList, handleSelectSite);
+  const { userLoc, geoMsg, useMyLocation } = useMyLocationNearestSite(
+    siteList,
+    handleSelectSite,
+    t
+  );
 
   // Distance helper used by forecast header + Top 5 tie-breaks
   const distanceTo = useDistanceTo(userLoc);
@@ -128,8 +137,8 @@ function IcelandCampingWeatherApp() {
   const { rows, loading, error } = useForecast(site?.lat, site?.lon);
 
   const rowsWithDay = useMemo(
-    () => rows.map((r) => ({ ...r, dayLabel: formatDay(r.date) })),
-    [rows]
+    () => rows.map((r) => ({ ...r, dayLabel: formatDay(r.date, lang) })),
+    [rows, lang]
   );
 
   // ──────────────────────────────────────────────────────────────
@@ -148,6 +157,9 @@ function IcelandCampingWeatherApp() {
 
       <div className="min-h-screen font-sans bg-soft-grid text-slate-900 dark:bg-slate-950 dark:text-slate-100">
         <PageHeader
+          t={t}
+          lang={lang}
+          onToggleLanguage={toggleLanguage}
           siteList={siteList}
           siteId={siteId}
           onSelectSite={handleSelectSite}
@@ -180,6 +192,8 @@ function IcelandCampingWeatherApp() {
                   />
                 </div>
               }
+              lang={lang}
+              t={t}
             />
 
             <Top5Leaderboard
@@ -189,15 +203,12 @@ function IcelandCampingWeatherApp() {
               loadingBg={loadingBg}
               units={units}
               onSelectSite={handleSelectSite}
+              t={t}
             />
           </div>
-
-          <footer className="mt-6 text-xs text-slate-500 dark:text-slate-300">
-            Data by Open-Meteo. Forecast includes temperature, rain, wind, & weather codes.
-          </footer>
         </div>
 
-        <Footer />
+        <Footer t={t} />
       </div>
 
       <BackToTop threshold={400} />

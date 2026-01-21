@@ -10,6 +10,9 @@ import Toolbar from "./Toolbar";
  * Keep this component "dumb": it receives state + handlers as props.
  */
 export default function PageHeader({
+  t,
+  lang,
+  onToggleLanguage,
   siteList,
   siteId,
   onSelectSite,
@@ -22,10 +25,13 @@ export default function PageHeader({
 }) {
   return (
     <>
-      <Header />
+      <Header t={t} />
 
       <div className="max-w-6xl mx-auto px-4 py-10">
         <Toolbar
+          t={t}
+          lang={lang}
+          onToggleLanguage={onToggleLanguage}
           siteList={siteList}
           siteId={siteId}
           onSelectSite={onSelectSite}

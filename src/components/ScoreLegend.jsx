@@ -1,5 +1,5 @@
-export default function ScoreLegendBar() {
-  const labels = ["Excellent", "Good", "Fair", "Poor", "Bad"];
+export default function ScoreLegendBar({ t }) {
+  const labels = [t("excellent"), t("goodQuality"), t("fair"), t("poor"), t?.("bad")];
 
   return (
     <div className="mt-5">

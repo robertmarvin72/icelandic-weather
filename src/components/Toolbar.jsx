@@ -13,6 +13,9 @@ import CampsitePicker from "./CampsitePicker";
  * Pure UI component: no localStorage, no side effects.
  */
 export default function Toolbar({
+  t,
+  lang,
+  onToggleLanguage,
   siteList,
   siteId,
   onSelectSite,
@@ -25,7 +28,7 @@ export default function Toolbar({
   return (
     <header className="mb-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
       <div>
-        <h1 className="text-2xl md:text-2xl font-black tracking-tight">7-Day Weather</h1>
+        <h1 className="text-2xl md:text-2xl font-black tracking-tight">{t?.("sevenDayWeather")}</h1>
       </div>
 
       <div className="flex items-center gap-3">
@@ -33,7 +36,7 @@ export default function Toolbar({
           Campsite
         </label>
 
-        <CampsitePicker siteList={siteList} siteId={siteId} onSelectSite={onSelectSite} />
+        <CampsitePicker siteList={siteList} siteId={siteId} onSelectSite={onSelectSite} t={t} />
 
         <button
           onClick={onUseMyLocation}
@@ -44,7 +47,7 @@ export default function Toolbar({
           title="Use my current location"
         >
           <span>📍</span>
-          <span>My location</span>
+          <span>{t?.("myLocation")}</span>
         </button>
 
         <InstallPWA />
@@ -63,12 +66,21 @@ export default function Toolbar({
         </button>
 
         <button
+          type="button"
+          onClick={onToggleLanguage}
+          className="px-3 py-2 rounded-xl border border-slate-300 bg-white shadow-sm focus-ring smooth text-sm dark:bg-slate-900 dark:border-slate-600"
+          title={t?.("toolbar.toggleLanguage") ?? "Toggle language"}
+        >
+          🌐 {lang === "is" ? "EN" : "IS"}
+        </button>
+
+        <button
           onClick={onToggleTheme}
           className="px-3 py-2 rounded-xl border border-slate-300 bg-white shadow-sm focus-ring smooth text-sm dark:bg-slate-900 dark:border-slate-600"
           aria-label={darkMode ? "Switch to light mode" : "Switch to dark mode"}
           title="Toggle dark mode"
         >
-          {darkMode ? "🌙 Dark" : "☀️ Light"}
+          {darkMode ? "🌙 " + t?.("dark") : "☀️ " + t?.("light")}
         </button>
       </div>
     </header>

@@ -5,7 +5,9 @@ export default function CampsitePicker({
   siteId,
   onSelectSite,
   placeholder = "Search campsites…",
+  t,
 }) {
+  placeholder = t?.("searchCampsites") || placeholder;
   const [open, setOpen] = useState(false);
   const [q, setQ] = useState("");
   const panelRef = useRef(null);
@@ -64,7 +66,7 @@ export default function CampsitePicker({
                    inline-flex items-center gap-2 text-sm whitespace-nowrap"
         aria-haspopup="dialog"
         aria-expanded={open}
-        title="Select campsite"
+        title={t?.("selectCampsite")}
       >
         <span className="truncate max-w-[220px]">{selected?.name || "Select campsite"}</span>
         <span className="opacity-70">▾</span>
