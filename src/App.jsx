@@ -44,6 +44,8 @@ import LazyMap from "./components/LazyMap";
 import PageHeader from "./components/PageHeader";
 import Splash from "./components/Splash";
 import Top5Leaderboard from "./components/Top5Leaderboard";
+import ToastHub from "./components/ToastHub";
+import { useToast } from "./hooks/useToast";
 
 import campsitesFull from "./data/campsites.full.json";
 
@@ -100,6 +102,8 @@ function IcelandCampingWeatherApp() {
   const { lang, toggleLanguage } = useLanguage();
   const t = useT(lang);
 
+  const { toasts, pushToast, dismissToast } = useToast();
+
   // ──────────────────────────────────────────────────────────────
   // [GEO] Location + distance helpers
   // ──────────────────────────────────────────────────────────────
@@ -134,7 +138,11 @@ function IcelandCampingWeatherApp() {
   // ──────────────────────────────────────────────────────────────
   // ✅ selected site + forecast (defines rows/loading)
   const site = siteList.find((s) => s.id === siteId) || siteList[0];
-  const { rows, loading, error } = useForecast(site?.lat, site?.lon);
+  const { rows, loading, error, retrying, refetch } = useForecast(site?.lat, site?.lon, {
+    t,
+    toast: pushToast,
+    retries: 2,
+  });
 
   const rowsWithDay = useMemo(
     () => rows.map((r) => ({ ...r, dayLabel: formatDay(r.date, lang) })),
@@ -154,7 +162,7 @@ function IcelandCampingWeatherApp() {
       {/* ✅ show splash until first forecast is loaded */}
       {/* [APP STATE] Splash boot lifecycle (show until first successful forecast load) */}
       <Splash show={booting} minMs={700} fadeMs={500} />
-
+      <ToastHub toasts={toasts} onDismiss={dismissToast} />
       <div className="min-h-screen font-sans bg-soft-grid text-slate-900 dark:bg-slate-950 dark:text-slate-100">
         <PageHeader
           t={t}

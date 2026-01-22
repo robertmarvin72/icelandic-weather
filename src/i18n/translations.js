@@ -110,6 +110,11 @@ export const translations = {
     total: "Total",
     days: "days",
     pts: "pts",
+
+    // Toasts / retry
+    forecastLoadFailed: "Could not load forecast.",
+    retrying: "Retrying…",
+    retry: "Retry",
   },
 
   is: {
@@ -223,5 +228,10 @@ export const translations = {
     total: "Samtals",
     days: "dagar",
     pts: "stig",
+
+    // Toasts / retry
+    forecastLoadFailed: "Tókst ekki að sækja veðurspá.",
+    retrying: "Reyni aftur…",
+    retry: "Reyna aftur",
   },
 };

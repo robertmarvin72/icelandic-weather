@@ -62,7 +62,9 @@ export default function ForecastTable({
 
       {loading && <LoadingShimmer rows={8} />}
       {error && (
-        <div className="py-10 text-center text-red-600">{String(error.message || error)}</div>
+        <div className="py-10 text-center text-red-600">
+          {t?.("forecastLoadFailed") ?? "Could not load forecast."}
+        </div>
       )}
 
       {!loading && !error && (
