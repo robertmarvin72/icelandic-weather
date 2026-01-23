@@ -213,16 +213,6 @@ function IcelandCampingWeatherApp() {
               onSelectSite={handleSelectSite}
               t={t}
             />
-
-            <button
-              onClick={() => {
-                Sentry.captureException(new Error("Prod test error (captureException)"));
-                throw new Error("Prod test error (throw)");
-              }}
-              className="px-3 py-1 rounded border"
-            >
-              Test Sentry
-            </button>
           </div>
         </div>
 
