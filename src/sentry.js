@@ -4,6 +4,9 @@ import * as Sentry from "@sentry/react";
 // Only initialize if DSN exists (so local/dev can run without it if you want)
 const dsn = import.meta.env.VITE_SENTRY_DSN;
 
+console.log("🟣 Sentry init DSN:", import.meta.env.VITE_SENTRY_DSN);
+console.log("🟣 MODE:", import.meta.env.MODE);
+
 if (dsn) {
   Sentry.init({
     dsn,
