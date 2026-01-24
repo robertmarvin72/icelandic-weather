@@ -1,5 +1,5 @@
 // Simple local cache for Open-Meteo forecasts (stale-while-revalidate-ish)
-const TTL_MS = 60 * 60 * 1000; // 1 hour
+const TTL_MS = 30 * 60 * 1000; // 1 hour
 const mem = new Map();         // in-memory cache (fast, per tab)
 const inflight = new Map();    // coalesce duplicate requests
 
@@ -35,22 +35,29 @@ async function fetchOpenMeteo({ lat, lon }) {
     longitude: String(lon),
     timezone: "Atlantic/Reykjavik",
     temperature_unit: "celsius",
-    wind_speed_unit: "ms",
+    windspeed_unit: "ms",
     precipitation_unit: "mm",
     forecast_days: "7",
     daily: [
       "temperature_2m_max",
       "temperature_2m_min",
       "precipitation_sum",
-      "wind_speed_10m_max",
+      "windspeed_10m_max",
       "weathercode",
     ].join(","),
   });
-  const url = `https://api.open-meteo.com/v1/forecast?${params}`;
+
+  const url = `/api/forecast?${params.toString()}`;
+
   const res = await fetch(url);
-  if (!res.ok) throw new Error(`Forecast failed: ${res.status}`);
+  if (!res.ok) {
+    const body = await res.text().catch(() => "");
+    throw new Error(`Forecast failed: ${res.status}${body ? ` - ${body}` : ""}`);
+  }
   return res.json();
 }
+
+
 
 /**
  * getForecast({lat, lon}): returns cached forecast JSON when fresh,
