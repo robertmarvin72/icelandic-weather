@@ -1,6 +1,7 @@
 import React from "react";
 import InstallPWA from "./InstallPWA";
 import CampsitePicker from "./CampsitePicker";
+import DevProToggle from "./DevProToggle";
 
 /**
  * Toolbar
@@ -82,6 +83,8 @@ export default function Toolbar({
         >
           {darkMode ? "🌙 " + t?.("dark") : "☀️ " + t?.("light")}
         </button>
+
+        {import.meta.env.DEV && <DevProToggle />}
       </div>
     </header>
   );

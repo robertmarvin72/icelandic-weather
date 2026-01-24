@@ -78,6 +78,71 @@
   border-bottom-color: rgb(30, 41, 59);          /* slate-800 */
 }
 
+.pro-label {
+  display: inline-block;
+  font-size: 10.5px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.55);
+  background: rgba(255, 255, 255, 0.06);
+  padding: 3px 8px;
+  border-radius: 999px;
+  margin-bottom: 8px;
+  margin-top: 8px;
+}
+
+/* --- Pro preview hint rows (UpgradeHint) --- */
+.pro-preview-hint {
+  margin-top: 12px;
+  display: grid;
+  gap: 8px;
+}
+
+.pro-preview-hint-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  border-radius: 10px;
+
+  /* subtle card-within-card */
+  border: 1px solid rgba(148, 163, 184, 0.22); /* slate-ish */
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.pro-preview-hint-icon {
+  font-size: 16px;
+  line-height: 1;
+}
+
+.pro-preview-hint-label {
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.pro-preview-hint-value {
+  margin-left: auto;
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.88);
+}
+
+/* Light mode readability (in case you toggle theme) */
+:root .pro-preview-hint-row {
+  border-color: rgba(15, 23, 42, 0.12);
+  background: rgba(15, 23, 42, 0.03);
+}
+
+:root .pro-preview-hint-label {
+  color: rgba(15, 23, 42, 0.55);
+}
+
+:root .pro-preview-hint-value {
+  color: rgba(15, 23, 42, 0.8);
+}
+
 
 
 

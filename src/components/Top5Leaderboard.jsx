@@ -3,6 +3,8 @@ import LoadingShimmer from "./LoadingShimmer";
 import ScoreLegend from "./ScoreLegend";
 import { scorePillClass } from "../ui/scoreStyles";
 import { convertDistanceKm, formatNumber, DIST_UNIT_LABEL } from "../lib/scoring";
+import RequirePro from "./RequirePro";
+import UpgradeHint from "./UpgradeHint";
 
 export default function Top5Leaderboard({
   top5,
@@ -82,6 +84,28 @@ export default function Top5Leaderboard({
       )}
 
       <div className="mt-3 text-xs text-slate-500 dark:text-slate-300">{t?.("sortedBy")}</div>
+
+      <hr></hr>
+      <div className="pro-card">
+        <div className="pro-label">PRO PREVIEW</div>
+      </div>
+      <RequirePro
+        fallback={
+          <UpgradeHint
+            title="Wind direction & shelter (Pro)"
+            text="Unlock wind direction and a shelter score to pick calmer campsites."
+            actionLabel="See Pro"
+            hintLines={[
+              { icon: "🧭", label: "Wind", value: "SW → sheltered side" },
+              { icon: "🛡️", label: "Shelter", value: "82 / 100" },
+            ]}
+          />
+        }
+      >
+        <div className="rounded-xl border border-slate-200 dark:border-slate-700 p-3">
+          Pro content goes here
+        </div>
+      </RequirePro>
     </div>
   );
 }
