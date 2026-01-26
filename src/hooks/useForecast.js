@@ -145,7 +145,7 @@ function useForecast(lat, lon, opts = {}) {
       temperature_2m_max,
       temperature_2m_min,
       precipitation_sum,
-      wind_speed_10m_max,
+      windspeed_10m_max,
       winddirection_10m_dominant,
       weathercode,
     } = data.daily;
@@ -156,7 +156,7 @@ function useForecast(lat, lon, opts = {}) {
         tmax: temperature_2m_max?.[i] ?? null,
         tmin: temperature_2m_min?.[i] ?? null,
         rain: precipitation_sum?.[i] ?? null,
-        windMax: wind_speed_10m_max?.[i] ?? null,
+        windMax: windspeed_10m_max?.[i] ?? null,
         windDir: winddirection_10m_dominant?.[i] ?? null,
         code: weathercode?.[i] ?? null,
       };
