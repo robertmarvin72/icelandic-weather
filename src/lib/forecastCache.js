@@ -5,7 +5,7 @@ const inflight = new Map();    // coalesce duplicate requests
 
 function key(lat, lon) {
   // keep precision but normalize
-  return `forecast:${Number(lat).toFixed(4)},${Number(lon).toFixed(4)}`;
+  return `forecast:v2:${Number(lat).toFixed(4)},${Number(lon).toFixed(4)}`;
 }
 
 function readStorage(k) {
@@ -43,6 +43,7 @@ async function fetchOpenMeteo({ lat, lon }) {
       "temperature_2m_min",
       "precipitation_sum",
       "windspeed_10m_max",
+      "winddirection_10m_dominant",
       "weathercode",
     ].join(","),
   });

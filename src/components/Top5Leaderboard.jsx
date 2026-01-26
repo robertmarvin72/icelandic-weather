@@ -5,6 +5,7 @@ import { scorePillClass } from "../ui/scoreStyles";
 import { convertDistanceKm, formatNumber, DIST_UNIT_LABEL } from "../lib/scoring";
 import RequirePro from "./RequirePro";
 import UpgradeHint from "./UpgradeHint";
+import { oppositeCompass } from "../lib/windUtils";
 
 export default function Top5Leaderboard({
   top5,
@@ -14,7 +15,12 @@ export default function Top5Leaderboard({
   units,
   onSelectSite,
   t,
+  shelter,
+  windDir,
 }) {
+  // TEMP: Mock until we wire real forecast data into this card
+  // When we have forecast daily data available here, compute real shelter:
+  const sheltered = windDir?.compass ? oppositeCompass(windDir.compass) : null;
   return (
     <div className="card hover-lift rounded-2xl shadow-sm border border-slate-200 bg-white dark:bg-slate-900 dark:border-slate-700 p-4">
       <h3 className="text-base font-semibold mb-1">
@@ -96,8 +102,18 @@ export default function Top5Leaderboard({
             text="Unlock wind direction and a shelter score to pick calmer campsites."
             actionLabel="See Pro"
             hintLines={[
-              { icon: "🧭", label: "Wind", value: "SW → sheltered side" },
-              { icon: "🛡️", label: "Shelter", value: "82 / 100" },
+              {
+                icon: "🧭",
+                label: "Wind",
+                value: windDir
+                  ? `${windDir.compass} ${windDir.arrow} → sheltered: ${sheltered}`
+                  : "—",
+              },
+              {
+                icon: "🛡️",
+                label: "Shelter",
+                value: shelter ? `${shelter.score} / 100 (${shelter.label})` : "—",
+              },
             ]}
           />
         }

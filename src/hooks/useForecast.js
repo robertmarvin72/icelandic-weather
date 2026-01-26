@@ -1,4 +1,13 @@
+
 // src/hooks/useForecast.js
+import {
+  getWeeklyDominantWindDeg,
+  degreesToCompass,
+  degreesToArrow,
+} from "../lib/windUtils";
+import { getWeeklyShelterScore } from "../lib/shelterUtils";
+
+
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { getForecast } from "../lib/forecastCache";
 import { scoreDay } from "../lib/scoring";
@@ -6,6 +15,7 @@ import { scoreDay } from "../lib/scoring";
 async function fetchForecast({ lat, lon }) {
   return getForecast({ lat, lon });
 }
+
 
 function sleep(ms) {
   return new Promise((r) => setTimeout(r, ms));
@@ -33,7 +43,7 @@ function useForecast(lat, lon, opts = {}) {
 
   // Avoid spamming "retrying" toasts on rapid re-renders
   const lastToastAtRef = useRef(0);
-
+    
   useEffect(() => {
     if (lat == null || lon == null) return;
     let aborted = false;
@@ -44,12 +54,14 @@ function useForecast(lat, lon, opts = {}) {
       setRetrying(false);
 
       const maxAttempts = Math.max(1, 1 + Number(retries || 0));
+      
 
       for (let attempt = 1; attempt <= maxAttempts; attempt++) {
         if (aborted) return;
 
         try {
           const j = await fetchForecast({ lat, lon });
+
           if (!aborted) setData(j);
           if (!aborted) setRetrying(false);
           return;
@@ -108,6 +120,24 @@ function useForecast(lat, lon, opts = {}) {
     };
   }, [lat, lon, refreshKey, retries, t, toast, refetch]);
 
+  const shelter = useMemo(() => {
+    if (!data?.daily) return null;
+    return getWeeklyShelterScore(data.daily);
+  }, [data]);
+
+  const windDir = useMemo(() => {
+    if (!data?.daily) return null;
+
+    const dominantDeg = getWeeklyDominantWindDeg(data.daily);
+    if (dominantDeg == null) return null;
+
+    return {
+      deg: dominantDeg,
+      compass: degreesToCompass(dominantDeg),
+      arrow: degreesToArrow(dominantDeg),
+    };
+  }, [data]);
+
   const rows = useMemo(() => {
     if (!data?.daily) return [];
     const {
@@ -116,6 +146,7 @@ function useForecast(lat, lon, opts = {}) {
       temperature_2m_min,
       precipitation_sum,
       wind_speed_10m_max,
+      winddirection_10m_dominant,
       weathercode,
     } = data.daily;
 
@@ -126,6 +157,7 @@ function useForecast(lat, lon, opts = {}) {
         tmin: temperature_2m_min?.[i] ?? null,
         rain: precipitation_sum?.[i] ?? null,
         windMax: wind_speed_10m_max?.[i] ?? null,
+        windDir: winddirection_10m_dominant?.[i] ?? null,
         code: weathercode?.[i] ?? null,
       };
       const s = scoreDay(row);
@@ -140,7 +172,7 @@ function useForecast(lat, lon, opts = {}) {
     });
   }, [data]);
 
-  return { data, rows, loading, error, retrying, refetch };
+  return { data, rows, windDir, shelter, loading, error, retrying, refetch };
 }
 
 export { useForecast };

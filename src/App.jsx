@@ -138,11 +138,15 @@ function IcelandCampingWeatherApp() {
   // ──────────────────────────────────────────────────────────────
   // ✅ selected site + forecast (defines rows/loading)
   const site = siteList.find((s) => s.id === siteId) || siteList[0];
-  const { rows, loading, error, retrying, refetch } = useForecast(site?.lat, site?.lon, {
-    t,
-    toast: pushToast,
-    retries: 2,
-  });
+  const { rows, windDir, shelter, loading, error, retrying, refetch } = useForecast(
+    site?.lat,
+    site?.lon,
+    {
+      t,
+      toast: pushToast,
+      retries: 2,
+    }
+  );
 
   const rowsWithDay = useMemo(
     () => rows.map((r) => ({ ...r, dayLabel: formatDay(r.date, lang) })),
@@ -212,6 +216,8 @@ function IcelandCampingWeatherApp() {
               units={units}
               onSelectSite={handleSelectSite}
               t={t}
+              shelter={shelter}
+              windDir={windDir}
             />
           </div>
         </div>
