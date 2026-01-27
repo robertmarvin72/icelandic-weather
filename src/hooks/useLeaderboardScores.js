@@ -15,7 +15,7 @@ export function useLeaderboardScores(siteList, siteId, userLoc) {
     scoresRef.current = scoresById;
   }, [scoresById]);
 
-  const SCORES_CACHE_KEY = "campcast:scoresById:v1";
+  const SCORES_CACHE_KEY = "campcast:scoresById:v2";
   const SCORES_CACHE_TTL_MS = 6 * 60 * 60 * 1000; // 6 hours
 
   function loadScoresCache() {
@@ -74,7 +74,7 @@ export function useLeaderboardScores(siteList, siteId, userLoc) {
           tmax: data.daily.temperature_2m_max?.[i] ?? null,
           tmin: data.daily.temperature_2m_min?.[i] ?? null,
           rain: data.daily.precipitation_sum?.[i] ?? null,
-          windMax: data.daily.wind_speed_10m_max?.[i] ?? null,
+          windMax: data.daily.windspeed_10m_max?.[i] ?? data.daily.wind_speed_10m_max?.[i] ?? null,
           code: data.daily.weathercode?.[i] ?? null,
         };
         const s = scoreDay(r);

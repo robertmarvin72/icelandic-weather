@@ -49,7 +49,7 @@ export function oppositeCompass(compass) {
 
 export function getWeeklyDominantWindDeg(daily) {
   const dirs = daily?.winddirection_10m_dominant;
-  const speeds = daily?.wind_speed_10m_max;
+  const speeds = daily?.windspeed_10m_max ?? daily?.wind_speed_10m_max;
 
   if (!Array.isArray(dirs) || dirs.length === 0) return null;
 

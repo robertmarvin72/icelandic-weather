@@ -4,21 +4,20 @@ import L from "leaflet";
 import { getForecast } from "./lib/forecastCache";
 import MarkerClusterGroup from "react-leaflet-cluster";
 
-
 // ───────────────────────────────────────────────
 // New scoring logic (same as in App.jsx)
 function basePointsFromTemp(tmax) {
   const temp = tmax ?? -999;
   if (temp > 14) return 10;
   if (temp >= 12) return 8;
-  if (temp >= 8)  return 5;
-  if (temp >= 6)  return 2;
+  if (temp >= 8) return 5;
+  if (temp >= 6) return 2;
   return 0;
 }
 
 function windPenaltyPoints(wind) {
   const w = wind ?? 0;
-  if (w <= 5)  return 0;
+  if (w <= 5) return 0;
   if (w <= 10) return 2;
   if (w <= 15) return 5;
   return 10;
@@ -26,8 +25,8 @@ function windPenaltyPoints(wind) {
 
 function rainPenaltyPoints(mm) {
   const r = mm ?? 0;
-  if (r < 1)  return 0;
-  if (r < 4)  return 2;
+  if (r < 1) return 0;
+  if (r < 4) return 2;
   return 5;
 }
 
@@ -50,11 +49,11 @@ function scoreDay({ tmax, rain, windMax }) {
 // ───────────────────────────────────────────────
 // Color mapping by average score
 function colorForScore(score) {
-  if (score >= 60) return "#22c55e";   // bright green
-  if (score >= 45) return "#84cc16";   // green-yellow
-  if (score >= 30) return "#facc15";   // yellow
-  if (score >= 15) return "#f97316";   // orange
-  return "#ef4444";                    // red
+  if (score >= 60) return "#22c55e"; // bright green
+  if (score >= 45) return "#84cc16"; // green-yellow
+  if (score >= 30) return "#facc15"; // yellow
+  if (score >= 15) return "#f97316"; // orange
+  return "#ef4444"; // red
 }
 
 // ───────────────────────────────────────────────
@@ -68,7 +67,7 @@ async function fetchForecastAndScore({ lat, lon }) {
       date: t,
       tmax: data.daily.temperature_2m_max?.[i],
       rain: data.daily.precipitation_sum?.[i],
-      windMax: data.daily.wind_speed_10m_max?.[i],
+      windMax: data.daily.windspeed_10m_max?.[i] ?? data.daily.wind_speed_10m_max?.[i],
     };
     const s = scoreDay(r); // your existing scoring
     return { ...r, class: s.finalClass, points: s.points };
@@ -77,7 +76,6 @@ async function fetchForecastAndScore({ lat, lon }) {
   const score = rows.reduce((sum, r) => sum + (r.points ?? 0), 0);
   return { score, rows };
 }
-
 
 // ───────────────────────────────────────────────
 // Helper for smooth flyTo
@@ -158,10 +156,7 @@ export default function MapView({ campsites, selectedId, onSelect, userLocation 
     const color = colorForScore(avg);
 
     const count = cluster.getChildCount();
-    const size =
-      count < 10 ? 34 :
-      count < 50 ? 40 :
-      count < 100 ? 46 : 52;
+    const size = count < 10 ? 34 : count < 50 ? 40 : count < 100 ? 46 : 52;
 
     return L.divIcon({
       html: `
@@ -184,7 +179,6 @@ export default function MapView({ campsites, selectedId, onSelect, userLocation 
       iconAnchor: [size / 2, size / 2],
     });
   };
-
 
   const selectedSite = campsites.find((c) => c.id === selectedId);
 
@@ -219,12 +213,13 @@ export default function MapView({ campsites, selectedId, onSelect, userLocation 
     }
   }
 
-
-
   return (
     <div className="rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 overflow-hidden h-[500px] relative">
       <MapContainer center={[64.9, -18.6]} zoom={6} style={{ width: "100%", height: "100%" }}>
-        <TileLayer attribution='&copy; OpenStreetMap' url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+        <TileLayer
+          attribution="&copy; OpenStreetMap"
+          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+        />
         {selectedSite && <FlyTo position={[selectedSite.lat, selectedSite.lon]} />}
 
         {/* User location marker */}
@@ -291,7 +286,6 @@ export default function MapView({ campsites, selectedId, onSelect, userLocation 
             );
           })}
         </MarkerClusterGroup>
-
       </MapContainer>
 
       {selectedSite && (
