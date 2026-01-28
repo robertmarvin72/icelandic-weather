@@ -8,6 +8,12 @@ import UpgradeHint from "./UpgradeHint";
 import { oppositeCompass } from "../lib/windUtils";
 import { translateCompass } from "../lib/compassUtils";
 
+function shelterPillClass(score) {
+  if (score < 30) return "shelter-pill--bad";
+  if (score <= 70) return "shelter-pill--fair";
+  return "shelter-pill--good";
+}
+
 export default function Top5Leaderboard({
   top5,
   scoredCount,
@@ -107,14 +113,38 @@ export default function Top5Leaderboard({
               {
                 icon: "🧭",
                 label: t("windLabel"),
-                value: windDir
-                  ? `${translateCompass(windDir.compass, lang)} ${windDir.arrow} → ${t("shelteredFrom")}: ${translateCompass(sheltered, lang)}`
-                  : "—",
+                value: windDir ? (
+                  <div className="wind-row">
+                    <span className="wind-pill wind-pill--wind">
+                      {translateCompass(windDir.compass, lang)}
+                    </span>
+
+                    <span className="wind-arrow">→</span>
+
+                    <span className="wind-pill wind-pill--shelter" title={t("shelteredFrom")}>
+                      {translateCompass(sheltered, lang)}
+                    </span>
+                  </div>
+                ) : (
+                  "—"
+                ),
               },
               {
                 icon: "🛡️",
                 label: t("shelterLabel"),
-                value: shelter ? `${shelter.score} / 100 (${t(`shelter${shelter.label}`)})` : "—",
+                value: shelter ? (
+                  <div className="flex items-center justify-end">
+                    <span
+                      className={`shelter-pill ${shelterPillClass(shelter.score)}`}
+                      title={`${t("shelterTooltipPrefix")}: ${t(`shelter${shelter.label}`)}`}
+                      aria-label={`${t(`shelter${shelter.label}`)}`}
+                    >
+                      {shelter.score} / 100
+                    </span>
+                  </div>
+                ) : (
+                  "—"
+                ),
               },
             ]}
           />

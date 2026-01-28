@@ -123,6 +123,7 @@ export const translations = {
     shelterMedium: "Medium",
     shelterLow: "Low",
     seePro: "See Pro",
+    shelterTooltipPrefix: "Shelter",
 
     // Toasts / retry
     forecastLoadFailed: "Could not load forecast.",
@@ -254,6 +255,7 @@ export const translations = {
     shelterMedium: "Meðal skjól",
     shelterLow: "Lítið skjól",
     seePro: "Sjá Pro",
+    shelterTooltipPrefix: "Skjól",
 
     // Toasts / retry
     forecastLoadFailed: "Tókst ekki að sækja veðurspá.",
