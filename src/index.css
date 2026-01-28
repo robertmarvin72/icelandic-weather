@@ -78,20 +78,144 @@
   border-bottom-color: rgb(30, 41, 59);          /* slate-800 */
 }
 
+/* Pro preview badge */
 .pro-label {
   display: inline-block;
   font-size: 10.5px;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  font-weight: 600;
-  color: rgba(255, 255, 255, 0.55);
-  background: rgba(255, 255, 255, 0.06);
+  font-weight: 700;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
+
+  /* Light theme (default) */
+  color: #1e3a8a;                 /* dark blue text */
+  background: #e0e7ff;            /* light blue background */
+
   padding: 3px 8px;
   border-radius: 999px;
-  margin-bottom: 8px;
-  margin-top: 8px;
+  margin: 8px 0;
+
+  border: 1px solid rgba(30, 58, 138, 0.15);
 }
 
+/* Wind direction pills */
+.wind-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.wind-arrow {
+  opacity: 0.6;
+  font-weight: 600;
+}
+
+/* Base pill */
+.wind-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 28px;
+  height: 24px;
+  padding: 0 8px;
+
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+/* Incoming wind (bad) */
+.wind-pill--wind {
+  background: #fde2e2;        /* light red */
+  color: #b91c1c;             /* dark red */
+  border: 1px solid rgba(185, 28, 28, 0.25);
+}
+
+/* Sheltered from (good) */
+.wind-pill--shelter {
+  background: #dcfce7;        /* light green */
+  color: #166534;             /* dark green */
+  border: 1px solid rgba(22, 101, 52, 0.25);
+}
+
+/* Dark theme tweaks */
+.dark .wind-pill--wind {
+  background: rgba(239, 68, 68, 0.18);
+  color: #fecaca;
+  border-color: rgba(239, 68, 68, 0.35);
+}
+
+.dark .wind-pill--shelter {
+  background: rgba(34, 197, 94, 0.18);
+  color: #bbf7d0;
+  border-color: rgba(34, 197, 94, 0.35);
+}
+
+
+/* Dark theme override */
+.dark .pro-label {
+  color: rgba(255, 255, 255, 0.9);
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+/* Shelter index pills */
+.shelter-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 56px;
+  height: 24px;
+  padding: 0 10px;
+
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+/* Bad shelter (< 30) */
+.shelter-pill--bad {
+  background: #fee2e2;
+  color: #b91c1c;
+  border: 1px solid rgba(185, 28, 28, 0.25);
+}
+
+/* Fair shelter (30–70) */
+.shelter-pill--fair {
+  background: #fef9c3;
+  color: #92400e;
+  border: 1px solid rgba(146, 64, 14, 0.25);
+}
+
+/* Good shelter (> 70) */
+.shelter-pill--good {
+  background: #dcfce7;
+  color: #166534;
+  border: 1px solid rgba(22, 101, 52, 0.25);
+}
+
+/* Dark theme tweaks */
+.dark .shelter-pill--bad {
+  background: rgba(239, 68, 68, 0.18);
+  color: #fecaca;
+}
+
+.dark .shelter-pill--fair {
+  background: rgba(234, 179, 8, 0.18);
+  color: #fde68a;
+}
+
+.dark .shelter-pill--good {
+  background: rgba(34, 197, 94, 0.18);
+  color: #bbf7d0;
+}
+
+.wind-pill[title],
+.shelter-pill[title] {
+  cursor: help;
+}
 /* --- Pro preview hint rows (UpgradeHint) --- */
 .pro-preview-hint {
   margin-top: 12px;
