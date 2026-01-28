@@ -210,6 +210,7 @@ function IcelandCampingWeatherApp() {
 
             <Top5Leaderboard
               top5={top5}
+              lang={lang}
               scoredCount={Object.keys(scoresById).length}
               loadingWave1={loadingWave1}
               loadingBg={loadingBg}

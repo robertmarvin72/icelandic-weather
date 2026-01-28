@@ -111,6 +111,19 @@ export const translations = {
     days: "days",
     pts: "pts",
 
+    // Pro (Wind direction & shelter)
+    proPreview: "Pro preview",
+    windDirectionShelterTitle: "Wind direction & shelter (Pro)",
+    windDirectionShelterSubtitle:
+      "Unlock wind direction and a shelter score to pick calmer campsites.",
+    windLabel: "WIND",
+    shelterLabel: "SHELTER",
+    shelteredFrom: "sheltered from",
+    shelterHigh: "High",
+    shelterMedium: "Medium",
+    shelterLow: "Low",
+    seePro: "See Pro",
+
     // Toasts / retry
     forecastLoadFailed: "Could not load forecast.",
     retrying: "Retrying…",
@@ -228,6 +241,19 @@ export const translations = {
     total: "Samtals",
     days: "dagar",
     pts: "stig",
+
+    // Pro (Vindátt og skjól)
+    proPreview: "Forskoðun Pro",
+    windDirectionShelterTitle: "Vindátt og skjól (Pro)",
+    windDirectionShelterSubtitle:
+      "Opnaðu vindátt og skjólstuðul til að velja skjólmeiri tjaldsvæði.",
+    windLabel: "VINDUR",
+    shelterLabel: "SKJÓL",
+    shelteredFrom: "skjól frá",
+    shelterHigh: "Mikið skjól",
+    shelterMedium: "Meðal skjól",
+    shelterLow: "Lítið skjól",
+    seePro: "Sjá Pro",
 
     // Toasts / retry
     forecastLoadFailed: "Tókst ekki að sækja veðurspá.",

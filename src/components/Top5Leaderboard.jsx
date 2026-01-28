@@ -6,6 +6,7 @@ import { convertDistanceKm, formatNumber, DIST_UNIT_LABEL } from "../lib/scoring
 import RequirePro from "./RequirePro";
 import UpgradeHint from "./UpgradeHint";
 import { oppositeCompass } from "../lib/windUtils";
+import { translateCompass } from "../lib/compassUtils";
 
 export default function Top5Leaderboard({
   top5,
@@ -15,6 +16,7 @@ export default function Top5Leaderboard({
   units,
   onSelectSite,
   t,
+  lang,
   shelter,
   windDir,
 }) {
@@ -93,26 +95,26 @@ export default function Top5Leaderboard({
 
       <hr></hr>
       <div className="pro-card">
-        <div className="pro-label">PRO PREVIEW</div>
+        <div className="pro-label">{t("proPreview")}</div>
       </div>
       <RequirePro
         fallback={
           <UpgradeHint
-            title="Wind direction & shelter (Pro)"
-            text="Unlock wind direction and a shelter score to pick calmer campsites."
-            actionLabel="See Pro"
+            title={t("windDirectionShelterTitle")}
+            text={t("windDirectionShelterSubtitle")}
+            actionLabel={t("seePro")}
             hintLines={[
               {
                 icon: "🧭",
-                label: "Wind",
+                label: t("windLabel"),
                 value: windDir
-                  ? `${windDir.compass} ${windDir.arrow} → sheltered: ${sheltered}`
+                  ? `${translateCompass(windDir.compass, lang)} ${windDir.arrow} → ${t("shelteredFrom")}: ${translateCompass(sheltered, lang)}`
                   : "—",
               },
               {
                 icon: "🛡️",
-                label: "Shelter",
-                value: shelter ? `${shelter.score} / 100 (${shelter.label})` : "—",
+                label: t("shelterLabel"),
+                value: shelter ? `${shelter.score} / 100 (${t(`shelter${shelter.label}`)})` : "—",
               },
             ]}
           />
