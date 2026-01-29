@@ -283,16 +283,18 @@
   height: var(--header-logo-h);
   width: auto;
   object-fit: contain;
-
-  /* Visual baseline correction */
-  transform: translateY(2px);
+  transform: none; /* ✅ ekki hreyfa logo globalt */
 }
 
+
 .header-title {
-  font-size: .875rem;        /* text-sm */
-  font-weight: 600;          /* font-semibold */
-  color: rgb(51 65 85);      /* slate-700 */
+  font-size: .875rem;
+  font-weight: 600;
+  color: rgb(51 65 85);
   letter-spacing: -0.01em;
+
+  line-height: 1;          /* ✅ hjálpar baseline */
+  padding-bottom: 2px;     /* ✅ micro-align við “CampCast” textann */
 }
 
 /* Dark mode override */

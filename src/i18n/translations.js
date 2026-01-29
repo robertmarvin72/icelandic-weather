@@ -14,8 +14,6 @@ export const translations = {
     weather: "Weather",
     sortedBy: "Sorted by weekly score, then nearest to you.",
     nearest: "Nearest",
-    footer:
-      "Data by Open-Meteo. Forecast includes temperature, rain, wind, & weather codes.",
 
     // Geolocation
     geolocationNotSupported: "Geolocation not supported.",
@@ -129,8 +127,48 @@ export const translations = {
     forecastLoadFailed: "Could not load forecast.",
     retrying: "Retrying…",
     retry: "Retry",
+
+    aboutTitle: "About CampCast",
+
+    aboutIntro:
+      "CampCast is a weather app built for camping in Iceland.",
+
+    aboutGoal:
+      "The goal is simple: to help you choose better campsites based on real conditions, not just temperature.",
+
+    aboutFeaturesTitle: "CampCast includes:",
+
+    aboutFeatures: [
+      "7-day campsite forecasts",
+      "Wind and precipitation data",
+      "Weekly ranking of campsites based on conditions",
+    ],
+
+    aboutProTitle: "With CampCast Pro, you also get:",
+
+    aboutProFeatures: [
+      "Wind direction",
+      "Shelter score",
+      "Deeper insight into calmer, more sheltered campsites",
+    ],
+
+    aboutOutro:
+      "CampCast is designed specifically for Icelandic conditions and continues to evolve based on user feedback.",
+
+    aboutContact:
+      "Questions, feedback, or issues?",
+
+    aboutEmailLabel: "Reach us at",
+
+    footerDataBy: "Data by Open-Meteo. Forecast includes temperature, rain, wind, & weather codes.",
+    footerAbout: "About",
+    footerContact: "Contact",
+    backToForecast: "Back to forecast",
+
   },
 
+
+  // Icelandic (Íslenska)
   is: {
     appTitle: "Tjaldsvæði á Íslandi",
     sevenDayWeather: "7 daga veðurspá",
@@ -146,8 +184,6 @@ export const translations = {
     weather: "Veður",
     sortedBy: "Raðað eftir vikustigum, síðan næst þér.",
     nearest: "Nálægast",
-    footer:
-      "Gögn frá Open-Meteo. Spáin inniheldur hitastig, úrkomu, vind og veðurkóða.",
 
     // Geolocation
     geolocationNotSupported: "Staðsetning ekki studd.",
@@ -261,5 +297,44 @@ export const translations = {
     forecastLoadFailed: "Tókst ekki að sækja veðurspá.",
     retrying: "Reyni aftur…",
     retry: "Reyna aftur",
+
+    aboutTitle: "Um CampCast",
+
+    aboutIntro:
+      "CampCast er veðurapp hannað fyrir tjaldlíf á Íslandi.",
+
+    aboutGoal:
+      "Markmiðið er einfalt: að hjálpa þér að velja betri tjaldsvæði miðað við veður, ekki bara hitastig.",
+
+    aboutFeaturesTitle: "CampCast býður upp á:",
+
+    aboutFeatures: [
+      "7 daga veðurspá fyrir tjaldsvæði",
+      "Vindstyrk og úrkomu",
+      "Vikulega röðun tjaldsvæða út frá aðstæðum",
+    ],
+
+    aboutProTitle: "Í Pro útgáfu bætist við:",
+
+    aboutProFeatures: [
+      "Vindátt",
+      "Skjólstuðull",
+      "Dýpri innsýn í hvaða svæði eru líklegust til að vera skjólgóð",
+    ],
+
+    aboutOutro:
+      "Appið er hannað með íslenskar aðstæður í huga og þróast stöðugt með endurgjöf frá notendum.",
+
+    aboutContact:
+      "Ertu með spurningu, hugmynd eða lendir í vandræðum?",
+
+    aboutEmailLabel: "Sendu okkur póst á",
+
+    footerDataBy: "Gögn frá Open-Meteo. Spáin inniheldur hitastig, úrkomu, vind og veðurkóða.",
+    footerAbout: "Um",
+    footerContact: "Hafa samband",
+
+    backToForecast: "Til baka",
+
   },
 };

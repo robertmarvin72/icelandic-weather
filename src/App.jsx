@@ -61,15 +61,17 @@ import { useLanguage } from "./hooks/useLanguage";
 import { useT } from "./hooks/useT";
 
 import NotFound from "./pages/NotFound";
+import About from "./pages/About";
 
 import { formatDay } from "./utils/date";
 import { WEATHER_MAP } from "./utils/weatherMap";
 import { isFeatureAvailable } from "./config/features";
+import SlimHeader from "./components/SlimHeader";
 
 // ──────────────────────────────────────────────────────────────
 // App page
 // ──────────────────────────────────────────────────────────────
-function IcelandCampingWeatherApp() {
+function IcelandCampingWeatherApp({ page = "home" }) {
   // ──────────────────────────────────────────────────────────────
   // [DATA] Campsite dataset
   // ──────────────────────────────────────────────────────────────
@@ -190,63 +192,71 @@ function IcelandCampingWeatherApp() {
       <Splash show={booting} minMs={700} fadeMs={500} />
       <ToastHub toasts={toasts} onDismiss={dismissToast} />
       <div className="min-h-screen font-sans bg-soft-grid text-slate-900 dark:bg-slate-950 dark:text-slate-100">
-        <PageHeader
-          t={t}
-          lang={lang}
-          onToggleLanguage={toggleLanguage}
-          siteList={siteList}
-          siteId={siteId}
-          onSelectSite={handleSelectSite}
-          onUseMyLocation={useMyLocation}
-          units={units}
-          onToggleUnits={toggleUnits}
-          darkMode={darkMode}
-          onToggleTheme={toggleTheme}
-          geoMsg={geoMsg}
-          devPro={devPro}
-          onToggleDevPro={toggleDevPro}
-        />
+        {page === "about" ? (
+          <SlimHeader t={t} />
+        ) : (
+          <PageHeader
+            t={t}
+            lang={lang}
+            onToggleLanguage={toggleLanguage}
+            siteList={siteList}
+            siteId={siteId}
+            onSelectSite={handleSelectSite}
+            onUseMyLocation={useMyLocation}
+            units={units}
+            onToggleUnits={toggleUnits}
+            darkMode={darkMode}
+            onToggleTheme={toggleTheme}
+            geoMsg={geoMsg}
+            devPro={devPro}
+            onToggleDevPro={toggleDevPro}
+          />
+        )}
 
         <div className="max-w-6xl mx-auto px-4 py-10">
-          <div className="grid md:grid-cols-2 gap-4">
-            <ForecastTable
-              entitlements={entitlements}
-              site={site}
-              userLoc={userLoc}
-              distanceToKm={distanceTo(site)}
-              rows={rowsWithDay}
-              loading={loading}
-              error={error}
-              units={units}
-              weatherMap={WEATHER_MAP}
-              mapSlot={
-                <div ref={mapAnchorRef}>
-                  <LazyMap
-                    campsites={siteList}
-                    selectedId={siteId}
-                    onSelect={(id) => setSiteId(id)}
-                    userLocation={userLoc}
-                  />
-                </div>
-              }
-              lang={lang}
-              t={t}
-            />
+          {page === "about" ? (
+            <About t={t} />
+          ) : (
+            <div className="grid md:grid-cols-2 gap-4">
+              <ForecastTable
+                entitlements={entitlements}
+                site={site}
+                userLoc={userLoc}
+                distanceToKm={distanceTo(site)}
+                rows={rowsWithDay}
+                loading={loading}
+                error={error}
+                units={units}
+                weatherMap={WEATHER_MAP}
+                mapSlot={
+                  <div ref={mapAnchorRef}>
+                    <LazyMap
+                      campsites={siteList}
+                      selectedId={siteId}
+                      onSelect={(id) => setSiteId(id)}
+                      userLocation={userLoc}
+                    />
+                  </div>
+                }
+                lang={lang}
+                t={t}
+              />
 
-            <Top5Leaderboard
-              entitlements={entitlements}
-              top5={top5}
-              lang={lang}
-              scoredCount={Object.keys(scoresById).length}
-              loadingWave1={loadingWave1}
-              loadingBg={loadingBg}
-              units={units}
-              onSelectSite={handleSelectSite}
-              t={t}
-              shelter={gatedShelter}
-              windDir={gatedWindDir}
-            />
-          </div>
+              <Top5Leaderboard
+                entitlements={entitlements}
+                top5={top5}
+                lang={lang}
+                scoredCount={Object.keys(scoresById).length}
+                loadingWave1={loadingWave1}
+                loadingBg={loadingBg}
+                units={units}
+                onSelectSite={handleSelectSite}
+                t={t}
+                shelter={gatedShelter}
+                windDir={gatedWindDir}
+              />
+            </div>
+          )}
         </div>
 
         <Footer t={t} />
@@ -266,6 +276,7 @@ export default function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<IcelandCampingWeatherApp />} />
+        <Route path="/about" element={<IcelandCampingWeatherApp page="about" />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
 
