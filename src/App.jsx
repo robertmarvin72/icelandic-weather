@@ -31,7 +31,7 @@
  * - Scoring rules are encapsulated in scoring + leaderboard hooks/components.
  */
 
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 import { Analytics } from "@vercel/analytics/react";
@@ -64,6 +64,7 @@ import NotFound from "./pages/NotFound";
 
 import { formatDay } from "./utils/date";
 import { WEATHER_MAP } from "./utils/weatherMap";
+import { isFeatureAvailable } from "./config/features";
 
 // ──────────────────────────────────────────────────────────────
 // App page
@@ -82,6 +83,17 @@ function IcelandCampingWeatherApp() {
   const [theme, setTheme] = useLocalStorageState("theme", "light"); // "light" | "dark"
   const darkMode = theme === "dark";
   const mapAnchorRef = useRef(null);
+
+  // ──────────────────────────────────────────────────────────────
+  // [ENTITLEMENTS] Dev Pro toggle (persisted) + derived entitlements
+  // ──────────────────────────────────────────────────────────────
+  const [devPro, setDevPro] = useLocalStorageState("devPro", false);
+
+  const toggleDevPro = useCallback(() => {
+    setDevPro((v) => !v);
+  }, [setDevPro]);
+
+  const entitlements = useMemo(() => ({ isPro: !!devPro }), [devPro]);
 
   // ──────────────────────────────────────────────────────────────
   // [ACTIONS] User interactions
@@ -136,7 +148,6 @@ function IcelandCampingWeatherApp() {
   // ──────────────────────────────────────────────────────────────
   // [FORECAST] Selected site + forecast hook + row shaping
   // ──────────────────────────────────────────────────────────────
-  // ✅ selected site + forecast (defines rows/loading)
   const site = siteList.find((s) => s.id === siteId) || siteList[0];
   const { rows, windDir, shelter, loading, error, retrying, refetch } = useForecast(
     site?.lat,
@@ -147,6 +158,19 @@ function IcelandCampingWeatherApp() {
       retries: 2,
     }
   );
+
+  // ──────────────────────────────────────────────────────────────
+  // [PRO GATING] Prevent Pro data leakage in Free/Teaser mode
+  // ──────────────────────────────────────────────────────────────
+  const gatedWindDir = useMemo(() => {
+    const gate = isFeatureAvailable("windDirection", entitlements);
+    return gate.available ? windDir : null;
+  }, [windDir, entitlements]);
+
+  const gatedShelter = useMemo(() => {
+    const gate = isFeatureAvailable("shelterIndex", entitlements);
+    return gate.available ? shelter : null;
+  }, [shelter, entitlements]);
 
   const rowsWithDay = useMemo(
     () => rows.map((r) => ({ ...r, dayLabel: formatDay(r.date, lang) })),
@@ -163,8 +187,6 @@ function IcelandCampingWeatherApp() {
   // ──────────────────────────────────────────────────────────────
   return (
     <div>
-      {/* ✅ show splash until first forecast is loaded */}
-      {/* [APP STATE] Splash boot lifecycle (show until first successful forecast load) */}
       <Splash show={booting} minMs={700} fadeMs={500} />
       <ToastHub toasts={toasts} onDismiss={dismissToast} />
       <div className="min-h-screen font-sans bg-soft-grid text-slate-900 dark:bg-slate-950 dark:text-slate-100">
@@ -181,11 +203,14 @@ function IcelandCampingWeatherApp() {
           darkMode={darkMode}
           onToggleTheme={toggleTheme}
           geoMsg={geoMsg}
+          devPro={devPro}
+          onToggleDevPro={toggleDevPro}
         />
 
         <div className="max-w-6xl mx-auto px-4 py-10">
           <div className="grid md:grid-cols-2 gap-4">
             <ForecastTable
+              entitlements={entitlements}
               site={site}
               userLoc={userLoc}
               distanceToKm={distanceTo(site)}
@@ -209,6 +234,7 @@ function IcelandCampingWeatherApp() {
             />
 
             <Top5Leaderboard
+              entitlements={entitlements}
               top5={top5}
               lang={lang}
               scoredCount={Object.keys(scoresById).length}
@@ -217,8 +243,8 @@ function IcelandCampingWeatherApp() {
               units={units}
               onSelectSite={handleSelectSite}
               t={t}
-              shelter={shelter}
-              windDir={windDir}
+              shelter={gatedShelter}
+              windDir={gatedWindDir}
             />
           </div>
         </div>

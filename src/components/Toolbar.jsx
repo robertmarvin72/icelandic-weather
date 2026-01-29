@@ -25,6 +25,10 @@ export default function Toolbar({
   onToggleUnits,
   darkMode,
   onToggleTheme,
+
+  // NEW: dev pro toggle plumbing
+  devPro,
+  onToggleDevPro,
 }) {
   return (
     <header className="mb-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
@@ -84,7 +88,7 @@ export default function Toolbar({
           {darkMode ? "🌙 " + t?.("dark") : "☀️ " + t?.("light")}
         </button>
 
-        {import.meta.env.DEV && <DevProToggle />}
+        {import.meta.env.DEV && <DevProToggle devPro={devPro} onToggleDevPro={onToggleDevPro} />}
       </div>
     </header>
   );

@@ -22,6 +22,10 @@ export default function PageHeader({
   darkMode,
   onToggleTheme,
   geoMsg,
+
+  // NEW: dev Pro toggle plumbing
+  devPro,
+  onToggleDevPro,
 }) {
   return (
     <>
@@ -40,6 +44,9 @@ export default function PageHeader({
           onToggleUnits={onToggleUnits}
           darkMode={darkMode}
           onToggleTheme={onToggleTheme}
+          // NEW: pass to Toolbar (where the button lives)
+          devPro={devPro}
+          onToggleDevPro={onToggleDevPro}
         />
 
         {geoMsg && (

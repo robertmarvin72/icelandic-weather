@@ -112,7 +112,7 @@ export const translations = {
     pts: "pts",
 
     // Pro (Wind direction & shelter)
-    proPreview: "Pro preview",
+    proPreviewCta: "Pro preview",
     windDirectionShelterTitle: "Wind direction & shelter (Pro)",
     windDirectionShelterSubtitle:
       "Unlock wind direction and a shelter score to pick calmer campsites.",
@@ -244,7 +244,7 @@ export const translations = {
     pts: "stig",
 
     // Pro (Vindátt og skjól)
-    proPreview: "Forskoðun Pro",
+    proPreviewCta: "Forskoðun Pro",
     windDirectionShelterTitle: "Vindátt og skjól (Pro)",
     windDirectionShelterSubtitle:
       "Opnaðu vindátt og skjólstuðul til að velja skjólmeiri tjaldsvæði.",
