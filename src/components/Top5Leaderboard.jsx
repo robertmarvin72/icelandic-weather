@@ -93,7 +93,7 @@ export default function Top5Leaderboard({
   );
 
   return (
-    <div className="card hover-lift rounded-2xl shadow-sm border border-slate-200 bg-white dark:bg-slate-900 dark:border-slate-700 p-4">
+    <div className="card rounded-2xl shadow-sm border border-slate-200 bg-white dark:bg-slate-900 dark:border-slate-700 p-4">
       <h3 className="text-base font-semibold mb-1">
         {t("top5Title")}
         <span className="ml-2 text-xs font-normal text-slate-500 dark:text-slate-400">

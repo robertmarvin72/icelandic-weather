@@ -14,8 +14,7 @@ export default function SlimHeader({ t }) {
         <button
           type="button"
           onClick={() => navigate("/")}
-          className="text-sm text-sky-600 hover:text-sky-700
-                     dark:text-sky-400 dark:hover:text-sky-300"
+          className="text-sm text-sky-600 hover:text-sky-700 dark:text-sky-400 dark:hover:text-sky-300"
         >
           ← {t("backToForecast")}
         </button>

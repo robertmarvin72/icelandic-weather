@@ -165,6 +165,10 @@ export const translations = {
     footerContact: "Contact",
     backToForecast: "Back to forecast",
 
+    brandTagline: "Iceland Camping",
+
+    nearest: "Nearest",
+
   },
 
 
@@ -335,6 +339,10 @@ export const translations = {
     footerContact: "Hafa samband",
 
     backToForecast: "Til baka",
+
+    brandTagline: "Tjaldsvæði á Íslandi",
+
+    nearest: "Næst",
 
   },
 };
