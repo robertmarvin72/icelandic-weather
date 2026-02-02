@@ -15,7 +15,6 @@ function sha256Hex(s) {
 }
 
 function paddleBaseUrl() {
-  // Paddle Billing API base
   return process.env.PADDLE_ENV === "production"
     ? "https://api.paddle.com"
     : "https://sandbox-api.paddle.com";
@@ -72,12 +71,10 @@ async function getUserFromSession(req) {
 async function ensurePaddleCustomer(user) {
   if (user.paddle_customer_id) return user.paddle_customer_id;
 
-  // Create customer in Paddle
   const created = await paddleFetch("/customers", {
     method: "POST",
     body: {
       email: user.email,
-      // Optional metadata
       custom_data: { app: "campcast", user_id: user.id },
     },
   });
@@ -85,7 +82,6 @@ async function ensurePaddleCustomer(user) {
   const customerId = created?.data?.id;
   if (!customerId) throw new Error("Failed to create Paddle customer (missing id)");
 
-  // Store on our side
   await sql`
     update app_user
     set paddle_customer_id = ${customerId}
@@ -95,9 +91,27 @@ async function ensurePaddleCustomer(user) {
   return customerId;
 }
 
+function shouldRedirect(req) {
+  // If called from browser navigation, we redirect.
+  const accept = String(req.headers.accept || "");
+  const wantsHtml = accept.includes("text/html");
+  const url = new URL(req.url, "http://localhost"); // base doesn't matter
+  const redirectFlag = url.searchParams.get("redirect") === "1";
+  return wantsHtml || redirectFlag;
+}
+
+function appBaseUrl(req) {
+  // Prefer explicit env var
+  if (process.env.APP_URL) return process.env.APP_URL.replace(/\/+$/, "");
+  // Fallback to Vercel-provided host
+  const proto = req.headers["x-forwarded-proto"] || "https";
+  const host = req.headers["x-forwarded-host"] || req.headers.host;
+  return `${proto}://${host}`.replace(/\/+$/, "");
+}
+
 export default async function handler(req, res) {
-  if (req.method !== "POST") {
-    res.setHeader("Allow", "POST");
+  if (req.method !== "POST" && req.method !== "GET") {
+    res.setHeader("Allow", "GET, POST");
     return res.status(405).json({ ok: false, error: "Method Not Allowed" });
   }
 
@@ -110,20 +124,34 @@ export default async function handler(req, res) {
 
     const customerId = await ensurePaddleCustomer(user);
 
-    // Create a transaction -> returns checkout.url
+    const base = appBaseUrl(req);
+    const successUrl = `${base}/?checkout=success`;
+    const cancelUrl = `${base}/?checkout=cancel`;
+
     const txn = await paddleFetch("/transactions", {
       method: "POST",
       body: {
         customer_id: customerId,
         items: [{ price_id: priceId, quantity: 1 }],
-        // Super useful for mapping in webhook even if customer_id isn't stored yet
         custom_data: { app: "campcast", user_id: user.id, email: user.email },
+        checkout: {
+          success_url: successUrl,
+          cancel_url: cancelUrl,
+        },
       },
     });
 
     const checkoutUrl = txn?.data?.checkout?.url;
     if (!checkoutUrl) throw new Error("No checkout URL returned from Paddle");
 
+    // Key change: redirect for browser flows
+    if (shouldRedirect(req)) {
+      res.setHeader("Cache-Control", "no-store");
+      res.writeHead(303, { Location: checkoutUrl });
+      return res.end();
+    }
+
+    // Still support JSON for fetch calls
     return res.status(200).json({ ok: true, url: checkoutUrl });
   } catch (e) {
     return res.status(500).json({ ok: false, error: String(e?.message || e) });
