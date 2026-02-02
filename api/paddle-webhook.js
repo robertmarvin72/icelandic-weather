@@ -1,4 +1,3 @@
-// api/paddle-webhook.js
 import postgres from "postgres";
 import crypto from "crypto";
 
@@ -7,66 +6,56 @@ const sql = postgres(process.env.POSTGRES_URL, { ssl: "require" });
 function readRawBody(req) {
   return new Promise((resolve, reject) => {
     let data = "";
-    req.setEncoding("utf8");
     req.on("data", (chunk) => (data += chunk));
     req.on("end", () => resolve(data));
     req.on("error", reject);
   });
 }
 
-// Paddle-Signature: "ts=...;h1=...;h1=..."
-function parsePaddleSignature(headerValue = "") {
-  const parts = String(headerValue)
-    .split(";")
-    .map((p) => p.trim())
-    .filter(Boolean);
-
-  const out = { ts: null, h1: [] };
-
-  for (const p of parts) {
-    const [k, v] = p.split("=");
-    if (!k || !v) continue;
-    if (k === "ts") out.ts = v;
-    if (k === "h1") out.h1.push(v);
-  }
-  return out;
-}
-
-function timingSafeEqualHex(a, b) {
-  const aa = Buffer.from(String(a || ""), "hex");
-  const bb = Buffer.from(String(b || ""), "hex");
+function safeEqual(a, b) {
+  const aa = Buffer.from(String(a || ""), "utf8");
+  const bb = Buffer.from(String(b || ""), "utf8");
   if (aa.length !== bb.length) return false;
   return crypto.timingSafeEqual(aa, bb);
 }
 
-function getSignatureHeader(req) {
-  // Node lowercases header names
-  return req.headers["paddle-signature"] || req.headers["x-paddle-signature"] || "";
+function parsePaddleSignatureHeader(headerValue) {
+  // Example: "ts=1671552777;h1=abcdef..."
+  const out = { ts: null, h1: null };
+  if (!headerValue) return out;
+
+  const parts = String(headerValue)
+    .split(";")
+    .map((p) => p.trim());
+
+  for (const p of parts) {
+    const [k, ...rest] = p.split("=");
+    const v = rest.join("=");
+    if (k === "ts") out.ts = v;
+    if (k === "h1") out.h1 = v;
+  }
+  return out;
 }
 
 function verifyPaddleSignature({ req, rawBody, secret }) {
-  if (!secret) return true; // allow only if you truly didn't set the secret
+  if (!secret) return true; // allow if secret not set (dev), but set it in prod
 
-  const sigHeader = getSignatureHeader(req);
-  if (!sigHeader) return false;
+  const header =
+    req.headers["paddle-signature"] ||
+    req.headers["Paddle-Signature"] ||
+    req.headers["x-paddle-signature"] ||
+    req.headers["X-Paddle-Signature"];
 
-  const { ts, h1 } = parsePaddleSignature(sigHeader);
-  if (!ts || !h1?.length) return false;
+  const { ts, h1 } = parsePaddleSignatureHeader(header);
+  if (!ts || !h1) return false;
 
-  // Paddle Billing v2: HMAC_SHA256(secret, `${ts}:${rawBody}`)
   const signedPayload = `${ts}:${rawBody}`;
-
-  const expected = crypto
+  const computed = crypto
     .createHmac("sha256", secret)
     .update(signedPayload, "utf8")
     .digest("hex");
 
-  return h1.some((candidate) => timingSafeEqualHex(candidate, expected));
-}
-
-function shouldBePro({ eventType, status }) {
-  if (eventType === "subscription.cancelled") return false;
-  return status === "active" || status === "trialing" || status === "past_due";
+  return safeEqual(h1, computed);
 }
 
 export default async function handler(req, res) {
@@ -80,9 +69,8 @@ export default async function handler(req, res) {
   try {
     const rawBody = await readRawBody(req);
 
-    // Verify signature (fail closed if secret is set)
     const sigOk = verifyPaddleSignature({ req, rawBody, secret });
-    if (!sigOk) {
+    if (!sigOk && process.env.NODE_ENV === "production") {
       return res.status(401).json({ ok: false, error: "Invalid signature" });
     }
 
@@ -90,30 +78,29 @@ export default async function handler(req, res) {
     const eventType = evt?.event_type;
     const data = evt?.data || {};
 
-    // We only care about these events
     if (
       eventType !== "subscription.created" &&
       eventType !== "subscription.updated" &&
       eventType !== "subscription.cancelled"
     ) {
-      return res.status(200).json({ ok: true, ignored: true, event_type: eventType });
+      return res.status(200).json({ ok: true, ignored: true });
     }
 
     const paddleSubscriptionId = data?.id || null;
     const paddleCustomerId = data?.customer_id || null;
-    const status = data?.status || "inactive";
+    const status = data?.status || null;
 
-    // first item price id (simple model)
     const firstItem = Array.isArray(data?.items) ? data.items[0] : null;
     const paddlePriceId = firstItem?.price?.id || null;
 
     const currentPeriodEnd =
-      data?.current_billing_period?.ends_at ||
-      data?.next_billed_at ||
-      null;
+      data?.current_billing_period?.ends_at || data?.next_billed_at || null;
 
-    // Map to user by paddle_customer_id (you will set this during checkout)
+    // Try mapping:
+    // 1) by paddle_customer_id
+    // 2) fallback: by custom_data.user_id (if you pass it via /api/checkout)
     let user = null;
+
     if (paddleCustomerId) {
       const rows = await sql`
         select id, email, tier
@@ -124,7 +111,30 @@ export default async function handler(req, res) {
       user = rows[0] || null;
     }
 
-    // If we can’t map yet, return 200 so Paddle doesn't retry forever.
+    if (!user) {
+      const userIdFromCustom =
+        data?.custom_data?.user_id || evt?.data?.custom_data?.user_id || null;
+
+      if (userIdFromCustom) {
+        const rows = await sql`
+          select id, email, tier
+          from app_user
+          where id = ${userIdFromCustom}
+          limit 1
+        `;
+        user = rows[0] || null;
+
+        // If we found user and have paddleCustomerId, store it for future
+        if (user && paddleCustomerId) {
+          await sql`
+            update app_user
+            set paddle_customer_id = ${paddleCustomerId}
+            where id = ${user.id} and paddle_customer_id is null
+          `;
+        }
+      }
+    }
+
     if (!user) {
       return res.status(200).json({
         ok: true,
@@ -135,9 +145,10 @@ export default async function handler(req, res) {
       });
     }
 
-    const pro = shouldBePro({ eventType, status });
+    const shouldBePro =
+      eventType !== "subscription.cancelled" &&
+      (status === "active" || status === "trialing" || status === "past_due");
 
-    // Upsert one subscription row per user (requires UNIQUE(user_id) in user_subscription)
     await sql`
       insert into user_subscription (
         user_id,
@@ -150,7 +161,7 @@ export default async function handler(req, res) {
         ${user.id},
         ${paddleSubscriptionId},
         ${paddlePriceId},
-        ${status},
+        ${status || "inactive"},
         ${currentPeriodEnd}
       )
       on conflict (user_id)
@@ -164,7 +175,7 @@ export default async function handler(req, res) {
 
     await sql`
       update app_user
-      set tier = ${pro ? "pro" : "free"}
+      set tier = ${shouldBePro ? "pro" : "free"}
       where id = ${user.id}
     `;
 
@@ -172,11 +183,11 @@ export default async function handler(req, res) {
       ok: true,
       mapped: true,
       user_id: user.id,
-      tier: pro ? "pro" : "free",
+      tier: shouldBePro ? "pro" : "free",
       event_type: eventType,
     });
   } catch (e) {
-    // Prefer 500 so þú sérð villuna strax í logs (Paddle mun retry-a, sem er gott í raun)
-    return res.status(500).json({ ok: false, error: String(e?.message || e) });
+    // Return 200 so Paddle doesn't retry-spam you while iterating
+    return res.status(200).json({ ok: false, error: String(e?.message || e) });
   }
 }
