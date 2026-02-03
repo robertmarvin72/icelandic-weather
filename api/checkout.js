@@ -1,3 +1,4 @@
+// /api/checkout.js
 import postgres from "postgres";
 import crypto from "crypto";
 
@@ -42,7 +43,12 @@ async function paddleFetch(path, { method = "GET", body } = {}) {
   }
 
   if (!res.ok) {
-    const msg = json?.error?.detail || json?.error || text || `HTTP ${res.status}`;
+    const msg =
+      json?.error?.detail ||
+      json?.error ||
+      json?.message ||
+      text ||
+      `HTTP ${res.status}`;
     throw new Error(`Paddle API error: ${msg}`);
   }
 
@@ -92,21 +98,42 @@ async function ensurePaddleCustomer(user) {
 }
 
 function shouldRedirect(req) {
-  // If called from browser navigation, we redirect.
   const accept = String(req.headers.accept || "");
   const wantsHtml = accept.includes("text/html");
-  const url = new URL(req.url, "http://localhost"); // base doesn't matter
+  const url = new URL(req.url, "http://localhost");
   const redirectFlag = url.searchParams.get("redirect") === "1";
   return wantsHtml || redirectFlag;
 }
 
+function normalizeBaseUrl(s) {
+  return String(s || "").replace(/\/+$/, "");
+}
+
 function appBaseUrl(req) {
-  // Prefer explicit env var
-  if (process.env.APP_URL) return process.env.APP_URL.replace(/\/+$/, "");
-  // Fallback to Vercel-provided host
+  if (process.env.APP_URL) return normalizeBaseUrl(process.env.APP_URL);
+
   const proto = req.headers["x-forwarded-proto"] || "https";
   const host = req.headers["x-forwarded-host"] || req.headers.host;
-  return `${proto}://${host}`.replace(/\/+$/, "");
+  return normalizeBaseUrl(`${proto}://${host}`);
+}
+
+function payBaseUrl() {
+  // IMPORTANT: point checkout links to pay subdomain to avoid SW/PWA issues
+  return normalizeBaseUrl(process.env.PAY_URL || "https://pay.campcast.is");
+}
+
+function forcePayHost(url) {
+  // If Paddle returns something like https://campcast.is/?_ptxn=...
+  // we rewrite host to pay.campcast.is so it doesn't hit the PWA SW.
+  try {
+    const u = new URL(url);
+    const pay = new URL(payBaseUrl());
+    u.protocol = pay.protocol;
+    u.host = pay.host;
+    return u.toString();
+  } catch {
+    return url;
+  }
 }
 
 export default async function handler(req, res) {
@@ -124,9 +151,9 @@ export default async function handler(req, res) {
 
     const customerId = await ensurePaddleCustomer(user);
 
-    const base = appBaseUrl(req);
-    const successUrl = `${base}/?checkout=success`;
-    const cancelUrl = `${base}/?checkout=cancel`;
+    const appBase = appBaseUrl(req);
+    const successUrl = `${appBase}/?checkout=success`;
+    const cancelUrl = `${appBase}/?checkout=cancel`;
 
     const txn = await paddleFetch("/transactions", {
       method: "POST",
@@ -141,17 +168,20 @@ export default async function handler(req, res) {
       },
     });
 
-    const checkoutUrl = txn?.data?.checkout?.url;
-    if (!checkoutUrl) throw new Error("No checkout URL returned from Paddle");
+    const checkoutUrlRaw = txn?.data?.checkout?.url;
+    if (!checkoutUrlRaw) throw new Error("No checkout URL returned from Paddle");
 
-    // Key change: redirect for browser flows
+    const checkoutUrl = forcePayHost(checkoutUrlRaw);
+
+    // Redirect for browser navigation
     if (shouldRedirect(req)) {
       res.setHeader("Cache-Control", "no-store");
       res.writeHead(303, { Location: checkoutUrl });
       return res.end();
     }
 
-    // Still support JSON for fetch calls
+    // JSON for fetch calls
+    res.setHeader("Cache-Control", "no-store");
     return res.status(200).json({ ok: true, url: checkoutUrl });
   } catch (e) {
     return res.status(500).json({ ok: false, error: String(e?.message || e) });
