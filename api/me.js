@@ -101,11 +101,12 @@ export default async function handler(req, res) {
 
     const sub = subs[0] || null;
 
-    const proStatuses = new Set(["active", "trialing", "past_due"]);
+    const endsInFuture =
+      sub?.current_period_end && new Date(sub.current_period_end) > new Date();
+
     const proActive =
-      proStatuses.has(sub?.status) &&
-      sub?.current_period_end &&
-      new Date(sub.current_period_end) > new Date();
+      endsInFuture &&
+      ["active", "trialing", "past_due", "canceled", "cancelled"].includes(sub?.status);
 
     res.status(200).json({
       ok: true,
