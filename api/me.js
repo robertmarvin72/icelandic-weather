@@ -101,8 +101,9 @@ export default async function handler(req, res) {
 
     const sub = subs[0] || null;
 
-    const endsInFuture =
-      sub?.current_period_end && new Date(sub.current_period_end) > new Date();
+    const endsInFuture = !!(
+      sub?.current_period_end && new Date(sub.current_period_end) > new Date()
+    );
 
     const proActive =
       endsInFuture &&

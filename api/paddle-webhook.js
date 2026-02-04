@@ -183,7 +183,7 @@ export default async function handler(req, res) {
         paddle_subscription_id = excluded.paddle_subscription_id,
         paddle_price_id = excluded.paddle_price_id,
         status = excluded.status,
-        current_period_end = excluded.current_period_end,
+        current_period_end = coalesce(excluded.current_period_end, user_subscription.current_period_end),
         updated_at = now()
     `;
 
