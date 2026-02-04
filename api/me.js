@@ -31,8 +31,15 @@ export default async function handler(req, res) {
 
   try {
     const rawToken = getCookie(req, SESSION_COOKIE);
+
+    // ✅ #2: Always return a stable shape (include entitlements) even when logged out
     if (!rawToken) {
-      res.status(200).json({ ok: true, user: null, subscription: null });
+      res.status(200).json({
+        ok: true,
+        user: null,
+        subscription: null,
+        entitlements: { pro: false, proUntil: null },
+      });
       return;
     }
 
@@ -60,7 +67,12 @@ export default async function handler(req, res) {
     const row = rows[0];
     if (!row) {
       // invalid/expired session
-      res.status(200).json({ ok: true, user: null, subscription: null });
+      res.status(200).json({
+        ok: true,
+        user: null,
+        subscription: null,
+        entitlements: { pro: false, proUntil: null },
+      });
       return;
     }
 
@@ -72,14 +84,14 @@ export default async function handler(req, res) {
       created_at: row.created_at,
     };
 
-    // Subscription (you have 0..1 per user in our intended model)
+    // Subscription (0..1 per user)
     const subs = await sql`
       select
         id,
-        stripe_subscription_id,
-        stripe_price_id,
         status,
         current_period_end,
+        paddle_subscription_id,
+        paddle_price_id,
         created_at,
         updated_at
       from user_subscription
@@ -87,10 +99,22 @@ export default async function handler(req, res) {
       limit 1
     `;
 
+    const sub = subs[0] || null;
+
+    const proStatuses = new Set(["active", "trialing", "past_due"]);
+    const proActive =
+      proStatuses.has(sub?.status) &&
+      sub?.current_period_end &&
+      new Date(sub.current_period_end) > new Date();
+
     res.status(200).json({
       ok: true,
       user,
-      subscription: subs[0] || null,
+      subscription: sub,
+      entitlements: {
+        pro: proActive,
+        proUntil: sub?.current_period_end || null,
+      },
     });
   } catch (e) {
     res.status(500).json({ ok: false, error: String(e?.message || e) });

@@ -38,7 +38,7 @@ function parsePaddleSignatureHeader(headerValue) {
 }
 
 function verifyPaddleSignature({ req, rawBody, secret }) {
-  if (!secret) return true; // allow if secret not set (dev), but set it in prod
+  if (!secret) return true; // dev convenience (but set secret in prod)
 
   const header =
     req.headers["paddle-signature"] ||
@@ -70,7 +70,9 @@ export default async function handler(req, res) {
     const rawBody = await readRawBody(req);
 
     const sigOk = verifyPaddleSignature({ req, rawBody, secret });
-    if (!sigOk && process.env.NODE_ENV === "production") {
+
+    // ✅ Strict verification (recommended)
+    if (!sigOk) {
       return res.status(401).json({ ok: false, error: "Invalid signature" });
     }
 
@@ -78,16 +80,26 @@ export default async function handler(req, res) {
     const eventType = evt?.event_type;
     const data = evt?.data || {};
 
-    if (
-      eventType !== "subscription.created" &&
-      eventType !== "subscription.updated" &&
-      eventType !== "subscription.cancelled"
-    ) {
+    // ✅ Accept both spellings + relevant events
+    const allowed = new Set([
+      "subscription.created",
+      "subscription.updated",
+      "subscription.canceled",
+      "subscription.cancelled",
+    ]);
+
+    if (!allowed.has(eventType)) {
       return res.status(200).json({ ok: true, ignored: true });
     }
 
     const paddleSubscriptionId = data?.id || null;
-    const paddleCustomerId = data?.customer_id || null;
+
+    // ✅ customer id can be in different shapes
+    const paddleCustomerId =
+      data?.customer_id ||
+      data?.customer?.id ||
+      null;
+
     const status = data?.status || null;
 
     const firstItem = Array.isArray(data?.items) ? data.items[0] : null;
@@ -95,6 +107,12 @@ export default async function handler(req, res) {
 
     const currentPeriodEnd =
       data?.current_billing_period?.ends_at || data?.next_billed_at || null;
+
+    const isCancelEvent =
+      eventType === "subscription.canceled" || eventType === "subscription.cancelled";
+
+    const proStatuses = new Set(["active", "trialing", "past_due"]);
+    const shouldBePro = !isCancelEvent && proStatuses.has(status);
 
     // Try mapping:
     // 1) by paddle_customer_id
@@ -145,10 +163,6 @@ export default async function handler(req, res) {
       });
     }
 
-    const shouldBePro =
-      eventType !== "subscription.cancelled" &&
-      (status === "active" || status === "trialing" || status === "past_due");
-
     await sql`
       insert into user_subscription (
         user_id,
@@ -173,6 +187,7 @@ export default async function handler(req, res) {
         updated_at = now()
     `;
 
+    // Keep tier as a cached convenience, but /me entitlements should be source of truth
     await sql`
       update app_user
       set tier = ${shouldBePro ? "pro" : "free"}
@@ -185,6 +200,9 @@ export default async function handler(req, res) {
       user_id: user.id,
       tier: shouldBePro ? "pro" : "free",
       event_type: eventType,
+      status,
+      paddle_subscription_id: paddleSubscriptionId,
+      paddle_customer_id: paddleCustomerId,
     });
   } catch (e) {
     // Return 200 so Paddle doesn't retry-spam you while iterating
