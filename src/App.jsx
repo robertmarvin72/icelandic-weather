@@ -67,6 +67,7 @@ import { formatDay } from "./utils/date";
 import { WEATHER_MAP } from "./utils/weatherMap";
 import { isFeatureAvailable } from "./config/features";
 import SlimHeader from "./components/SlimHeader";
+import { useMe } from "./hooks/useMe";
 
 // ──────────────────────────────────────────────────────────────
 // App page
@@ -87,15 +88,24 @@ function IcelandCampingWeatherApp({ page = "home" }) {
   const mapAnchorRef = useRef(null);
 
   // ──────────────────────────────────────────────────────────────
-  // [ENTITLEMENTS] Dev Pro toggle (persisted) + derived entitlements
+  // [ENTITLEMENTS] Server entitlements (+ optional dev override)
   // ──────────────────────────────────────────────────────────────
   const [devPro, setDevPro] = useLocalStorageState("devPro", false);
+
+  // Cookie-based identity + subscription (server source of truth)
+  const { me } = useMe();
+  const serverPro = !!me?.entitlements?.pro;
+  const serverProUntil = me?.entitlements?.proUntil ?? null;
 
   const toggleDevPro = useCallback(() => {
     setDevPro((v) => !v);
   }, [setDevPro]);
 
-  const entitlements = useMemo(() => ({ isPro: !!devPro }), [devPro]);
+  // In dev we allow an override toggle. In prod, entitlements come from /api/me.
+  const entitlements = useMemo(() => {
+    const isPro = import.meta.env.DEV ? !!devPro || serverPro : serverPro;
+    return { isPro, proUntil: serverProUntil };
+  }, [devPro, serverPro, serverProUntil]);
 
   // ──────────────────────────────────────────────────────────────
   // [ACTIONS] User interactions
