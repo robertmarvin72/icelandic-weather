@@ -1,37 +1,8 @@
 /**
  * CampCast — App.jsx
- *
- * PURPOSE
- * - App shell + routing (React Router) + analytics.
- * - IcelandCampingWeatherApp orchestrates UI state and composes the main page:
- *   (1) Toolbar controls (site, location, units, theme)
- *   (2) Forecast table (7-day rows + map slot)
- *   (3) Top 5 leaderboard (weekly score ranking)
- *
- * WHAT LIVES ELSEWHERE NOW
- * - Leaderboard preloading/caching/throttling: ./hooks/useLeaderboardScores
- * - Map lazy loading + viewport mounting: ./components/LazyMap
- * - Geolocation + nearest campsite selection: ./hooks/useMyLocationNearestSite
- * - Forecast fetch + shaping: ./hooks/useForecast
- *
- * QUICK NAV (search these tags)
- * - [IMPORTS]        External + internal imports
- * - [DATA]           Campsite dataset + derived lookups
- * - [APP STATE]      Persisted UI state (site, units, theme) + transient UI state (boot splash)
- * - [ACTIONS]        UI actions/handlers (select site, toggle theme, etc.)
- * - [GEO]            Location state + distance helpers
- * - [LEADERBOARD]    Read/compute Top 5 view from scores
- * - [EFFECTS]        DOM sync (theme) + siteId fallback
- * - [FORECAST]       Selected site + forecast hook + row shaping
- * - [UI]             Page composition (Toolbar, ForecastTable, LazyMap, Top5Leaderboard)
- * - [ROUTER]         Routes + Vercel analytics
- *
- * NOTES
- * - Units/theme are persisted with useLocalStorageState.
- * - Scoring rules are encapsulated in scoring + leaderboard hooks/components.
  */
 
-import { useCallback, useEffect, useMemo, useRef } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 import { Analytics } from "@vercel/analytics/react";
@@ -67,113 +38,83 @@ import { formatDay } from "./utils/date";
 import { WEATHER_MAP } from "./utils/weatherMap";
 import { isFeatureAvailable } from "./config/features";
 import SlimHeader from "./components/SlimHeader";
-import { useMe } from "./hooks/useMe";
 
 // ──────────────────────────────────────────────────────────────
 // App page
 // ──────────────────────────────────────────────────────────────
 function IcelandCampingWeatherApp({ page = "home" }) {
-  // ──────────────────────────────────────────────────────────────
-  // [DATA] Campsite dataset
-  // ──────────────────────────────────────────────────────────────
   const siteList = Array.isArray(campsitesFull) ? campsitesFull : [];
 
-  // ──────────────────────────────────────────────────────────────
-  // [APP STATE] Persisted UI state
-  // ──────────────────────────────────────────────────────────────
   const [siteId, setSiteId] = useLocalStorageState("lastSite", siteList[0]?.id);
   const [units, setUnits] = useLocalStorageState("units", "metric");
-  const [theme, setTheme] = useLocalStorageState("theme", "light"); // "light" | "dark"
+  const [theme, setTheme] = useLocalStorageState("theme", "light");
   const darkMode = theme === "dark";
   const mapAnchorRef = useRef(null);
 
-  // ──────────────────────────────────────────────────────────────
-  // [ENTITLEMENTS] Server entitlements (+ optional dev override)
-  // ──────────────────────────────────────────────────────────────
-  const [devPro, setDevPro] = useLocalStorageState("devPro", false);
-
-  // Cookie-based identity + subscription (server source of truth)
-  const { me } = useMe();
+  // ✅ Server identity / entitlements
+  const { me, refetchMe } = useMe();
   const serverPro = !!me?.entitlements?.pro;
   const serverProUntil = me?.entitlements?.proUntil ?? null;
 
-  const toggleDevPro = useCallback(() => {
-    setDevPro((v) => !v);
-  }, [setDevPro]);
+  // ✅ Optional dev override (only in dev)
+  const [devPro, setDevPro] = useLocalStorageState("devPro", false);
+  const toggleDevPro = useCallback(() => setDevPro((v) => !v), [setDevPro]);
 
-  // In dev we allow an override toggle. In prod, entitlements come from /api/me.
   const entitlements = useMemo(() => {
     const isPro = import.meta.env.DEV ? !!devPro || serverPro : serverPro;
     return { isPro, proUntil: serverProUntil };
   }, [devPro, serverPro, serverProUntil]);
 
-  // ──────────────────────────────────────────────────────────────
-  // [ACTIONS] User interactions
-  // ──────────────────────────────────────────────────────────────
-  const handleSelectSite = useCallback((id) => {
-    setSiteId(id);
-    mapAnchorRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
-  }, []);
+  const { toasts, pushToast, dismissToast } = useToast();
 
-  const toggleTheme = useCallback(() => {
-    setTheme((t) => (t === "dark" ? "light" : "dark"));
-  }, []);
+  const handleSelectSite = useCallback(
+    (id) => {
+      setSiteId(id);
+      mapAnchorRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+    },
+    [setSiteId]
+  );
 
-  const toggleUnits = useCallback(() => {
-    setUnits((u) => (u === "metric" ? "imperial" : "metric"));
-  }, []);
+  const toggleTheme = useCallback(
+    () => setTheme((t) => (t === "dark" ? "light" : "dark")),
+    [setTheme]
+  );
+
+  const toggleUnits = useCallback(
+    () => setUnits((u) => (u === "metric" ? "imperial" : "metric")),
+    [setUnits]
+  );
 
   const { lang, toggleLanguage } = useLanguage();
   const t = useT(lang);
 
-  const { toasts, pushToast, dismissToast } = useToast();
-
-  // ──────────────────────────────────────────────────────────────
-  // [GEO] Location + distance helpers
-  // ──────────────────────────────────────────────────────────────
+  // GEO
   const { userLoc, geoMsg, useMyLocation } = useMyLocationNearestSite(
     siteList,
     handleSelectSite,
     t
   );
-
-  // Distance helper used by forecast header + Top 5 tie-breaks
   const distanceTo = useDistanceTo(userLoc);
 
-  // ──────────────────────────────────────────────────────────────
-  // [LEADERBOARD] Scores + derived Top 5 view
-  // ──────────────────────────────────────────────────────────────
+  // LEADERBOARD
   const { scoresById, loadingWave1, loadingBg } = useLeaderboardScores(siteList, siteId, userLoc);
-
   const { top5 } = useTop5Campsites(siteList, scoresById, userLoc);
 
-  // ──────────────────────────────────────────────────────────────
-  // [EFFECTS] DOM sync + site Id fallback
-  // ──────────────────────────────────────────────────────────────
+  // Effects
   useThemeClass(darkMode);
-
-  // Ensure siteId is set + persist it
   useEffect(() => {
     if (!siteId && siteList[0]?.id) setSiteId(siteList[0].id);
-  }, [siteId, siteList]);
+  }, [siteId, siteList, setSiteId]);
 
-  // ──────────────────────────────────────────────────────────────
-  // [FORECAST] Selected site + forecast hook + row shaping
-  // ──────────────────────────────────────────────────────────────
+  // FORECAST
   const site = siteList.find((s) => s.id === siteId) || siteList[0];
-  const { rows, windDir, shelter, loading, error, retrying, refetch } = useForecast(
-    site?.lat,
-    site?.lon,
-    {
-      t,
-      toast: pushToast,
-      retries: 2,
-    }
-  );
+  const { rows, windDir, shelter, loading, error } = useForecast(site?.lat, site?.lon, {
+    t,
+    toast: pushToast,
+    retries: 2,
+  });
 
-  // ──────────────────────────────────────────────────────────────
-  // [PRO GATING] Prevent Pro data leakage in Free/Teaser mode
-  // ──────────────────────────────────────────────────────────────
+  // ✅ Prevent Pro data leakage
   const gatedWindDir = useMemo(() => {
     const gate = isFeatureAvailable("windDirection", entitlements);
     return gate.available ? windDir : null;
@@ -189,18 +130,65 @@ function IcelandCampingWeatherApp({ page = "home" }) {
     [rows, lang]
   );
 
-  // ──────────────────────────────────────────────────────────────
-  // [APP STATE] Boot splash lifecycle
-  // ──────────────────────────────────────────────────────────────
+  // Boot splash lifecycle
   const booting = useBooting(loading, rows.length);
 
-  // ──────────────────────────────────────────────────────────────
-  // [UI] Render
-  // ──────────────────────────────────────────────────────────────
+  // ✅ Checkout: call /api/checkout and redirect to pay domain
+  const startCheckout = useCallback(async () => {
+    try {
+      pushToast({ type: "info", title: t("loading"), message: t("redirectingToCheckout") });
+
+      const r = await fetch("/api/checkout", {
+        method: "POST",
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
+      });
+
+      const data = await r.json().catch(() => null);
+
+      if (!r.ok || !data?.ok || !data?.url) {
+        const msg = data?.error || `Checkout failed (${r.status})`;
+        pushToast({ type: "error", title: "Checkout", message: msg });
+        return;
+      }
+
+      window.location.assign(data.url);
+    } catch (e) {
+      pushToast({ type: "error", title: "Checkout", message: String(e?.message || e) });
+    }
+  }, [pushToast, t]);
+
+  // ✅ If we come back from Paddle success/cancel, refresh entitlements
+  useEffect(() => {
+    const url = new URL(window.location.href);
+    const status = url.searchParams.get("checkout");
+    if (!status) return;
+
+    if (status === "success") {
+      pushToast({
+        type: "success",
+        title: "Pro",
+        message: t?.("checkoutSuccess") ?? "Pro unlocked!",
+      });
+      refetchMe();
+    } else if (status === "cancel") {
+      pushToast({
+        type: "info",
+        title: "Checkout",
+        message: t?.("checkoutCancelled") ?? "Checkout cancelled.",
+      });
+      refetchMe();
+    }
+
+    url.searchParams.delete("checkout");
+    window.history.replaceState({}, "", url.toString());
+  }, [pushToast, refetchMe, t]);
+
   return (
     <div>
       <Splash show={booting} minMs={700} fadeMs={500} />
       <ToastHub toasts={toasts} onDismiss={dismissToast} />
+
       <div className="min-h-screen font-sans bg-soft-grid text-slate-900 dark:bg-slate-950 dark:text-slate-100">
         {page === "about" ? (
           <SlimHeader t={t} />
@@ -261,9 +249,12 @@ function IcelandCampingWeatherApp({ page = "home" }) {
                 loadingBg={loadingBg}
                 units={units}
                 onSelectSite={handleSelectSite}
+                onUpgrade={startCheckout} // ✅ NEW
                 t={t}
                 shelter={gatedShelter}
                 windDir={gatedWindDir}
+                proUntil={me?.entitlements?.proUntil ?? null}
+                subscription={me?.subscription ?? null}
               />
             </div>
           )}
@@ -278,9 +269,31 @@ function IcelandCampingWeatherApp({ page = "home" }) {
 }
 
 // ──────────────────────────────────────────────────────────────
-// [ROUTER] App routing + Vercel analytics
+// Minimal /api/me hook (kept inside App.jsx for now)
 // ──────────────────────────────────────────────────────────────
+function useMe() {
+  const [me, setMe] = useState(null);
 
+  const fetchMe = useCallback(async () => {
+    try {
+      const r = await fetch("/api/me", { method: "GET", credentials: "include" });
+      const data = await r.json().catch(() => null);
+      setMe(data || null);
+    } catch {
+      setMe(null);
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchMe();
+  }, [fetchMe]);
+
+  return { me, refetchMe: fetchMe };
+}
+
+// ──────────────────────────────────────────────────────────────
+// Router
+// ──────────────────────────────────────────────────────────────
 export default function App() {
   return (
     <BrowserRouter>

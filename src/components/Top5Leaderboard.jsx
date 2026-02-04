@@ -26,6 +26,11 @@ export default function Top5Leaderboard({
   lang,
   shelter,
   windDir,
+
+  // ✅ new (optional) props for CTA + messaging
+  onUpgrade,
+  proUntil,
+  subscription,
 }) {
   const sheltered = windDir?.compass ? oppositeCompass(windDir.compass) : null;
 
@@ -37,6 +42,11 @@ export default function Top5Leaderboard({
     () => (visibleCount >= 5 ? [] : top5.slice(visibleCount, 5)),
     [top5, visibleCount]
   );
+
+  const isPro = !!entitlements?.isPro;
+  const subStatus = (subscription?.status || "").toLowerCase();
+  const isCanceled = subStatus === "canceled" || subStatus === "cancelled";
+  const showProUntil = isPro && isCanceled && !!proUntil;
 
   // Reusable (Pro) display blocks
   const windDisplay = (
@@ -194,21 +204,45 @@ export default function Top5Leaderboard({
 
       <hr />
 
-      {/* CTA button (not clickable yet, but looks like a CTA) */}
-      <button
-        type="button"
-        disabled
-        className="mt-2 inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2 text-sm font-semibold
-                   border border-slate-300 dark:border-slate-600
-                   bg-slate-900 text-white dark:bg-white dark:text-slate-900
-                   opacity-80 cursor-not-allowed shadow-sm"
-        title={t?.("seePro") ?? "See Pro"}
-        aria-label={t?.("seePro") ?? "See Pro"}
-      >
-        <span>✨</span>
-        <span>{t("proPreviewCta")}</span>
-        <span className="opacity-80">→</span>
-      </button>
+      {/* ✅ CTA / Status */}
+      {showProUntil ? (
+        <div className="mt-2 rounded-xl border border-slate-200 dark:border-slate-700 p-3 text-sm">
+          <div className="font-semibold">{t("proActive")}</div>
+          <div className="text-slate-600 dark:text-slate-300">
+            {t("proUntil")}{" "}
+            <span className="font-semibold">
+              {new Date(proUntil).toLocaleDateString(lang === "is" ? "is-IS" : "en-US", {
+                year: "numeric",
+                month: "short",
+                day: "2-digit",
+              })}
+            </span>
+          </div>
+        </div>
+      ) : (
+        <button
+          type="button"
+          disabled={isPro}
+          onClick={() => {
+            if (isPro) return;
+            if (typeof onUpgrade === "function") onUpgrade();
+          }}
+          className={`mt-2 inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2 text-sm font-semibold
+                      border border-slate-300 dark:border-slate-600
+                      bg-slate-900 text-white dark:bg-white dark:text-slate-900
+                      shadow-sm ${
+                        isPro ? "opacity-60 cursor-not-allowed" : "opacity-95 hover:opacity-100"
+                      }`}
+          title={
+            isPro ? (t?.("proAlreadyActive") ?? "Pro is active") : (t?.("seePro") ?? "See Pro")
+          }
+          aria-label={t?.("proPreviewCta") ?? "Pro preview"}
+        >
+          <span>✨</span>
+          <span>{isPro ? (t?.("proActive") ?? "Pro active") : t("proPreviewCta")}</span>
+          <span className="opacity-80">→</span>
+        </button>
+      )}
 
       {/* Wind + Shelter section gated via feature matrix */}
       <div className="mt-3 rounded-xl border border-slate-200 dark:border-slate-700 p-3">
