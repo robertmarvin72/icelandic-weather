@@ -44,8 +44,9 @@ export default async function handler(req, res) {
   // 3. set cookie
   res.setHeader(
     "Set-Cookie",
-    `cc_session=${rawToken}; Path=/; HttpOnly; SameSite=Lax; Max-Age=2592000`
+    `cc_session=${rawToken}; Path=/; Domain=.campcast.is; HttpOnly; SameSite=Lax; Max-Age=2592000; Secure`
   );
+
 
   res.status(200).json({ ok: true, user });
 }

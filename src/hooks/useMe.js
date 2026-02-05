@@ -79,6 +79,8 @@ export function useMe() {
     me: data,
     loadingMe: loading,
     meError: error,
+    // Prefer `refetchMe` in the app; keep `refreshMe` for backwards compatibility.
+    refetchMe: fetchMe,
     refreshMe: fetchMe,
   };
 }

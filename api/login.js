@@ -56,15 +56,28 @@ export default async function handler(req, res) {
   try {
     const body = typeof req.body === "string" ? JSON.parse(req.body) : req.body;
     const email = (body?.email || "").trim().toLowerCase();
+    const createIfMissing = !!body?.createIfMissing;
 
     if (!email || !email.includes("@")) {
       res.status(400).json({ ok: false, error: "Invalid email" });
       return;
     }
 
-    // 1) Get or create user (case-insensitive)
+    // 1) Find user (case-insensitive)
     let user = await findUserByEmail(email);
-    if (!user) {
+
+    // If this is a strict login and the user doesn't exist, don't auto-create.
+    if (!user && !createIfMissing) {
+      res.status(200).json({
+        ok: false,
+        code: "USER_NOT_FOUND",
+        error: "User not found",
+      });
+      return;
+    }
+
+    // If allowed, create user on demand (e.g. from the Subscribe page)
+    if (!user && createIfMissing) {
       try {
         user = await createUser(email);
       } catch (e) {

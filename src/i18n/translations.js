@@ -169,6 +169,15 @@ export const translations = {
 
     nearest: "Nearest",
 
+    noPasswordNeeded: "No password is needed to log in. Just enter your email and we'll send you a link to log in.",
+    login: "Login",
+    enterEmailToContinue: "Enter your email to continue",
+    loading: "Loading...",
+    continue: "Continue",
+
+    proCtaTitle: "Get Pro",
+    proCtaSubtitle: "Log in to purchase and unlock Pro features.",
+    proCtaTooltip: "Log in → checkout → unlock Pro"
   },
 
 
@@ -344,5 +353,14 @@ export const translations = {
 
     nearest: "Næst",
 
+    noPasswordNeeded: "Lykilorð er ekki nauðsynlegt til að logga inn. Sláðu bara inn netfangið þitt og við sendum þér tengil til að logga inn.",
+    login: "Innskráning",
+    enterEmailToContinue: "Sláðu inn netfang til að halda áfram",
+    loading: "Hleð inn...",
+    continue: "Haltu áfram",
+
+    proCtaTitle: "Fá Pro aðgang",
+    proCtaSubtitle: "Skráðu þig inn til að kaupa aðgang og opna Pro-fídusa.",
+    proCtaTooltip: "Skráðu þig inn → farðu í greiðslu → opnaðu Pro",
   },
 };

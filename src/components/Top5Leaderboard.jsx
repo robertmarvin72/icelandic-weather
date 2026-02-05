@@ -206,7 +206,7 @@ export default function Top5Leaderboard({
 
       {/* ✅ CTA / Status */}
       {showProUntil ? (
-        <div className="mt-2 rounded-xl border border-slate-200 dark:border-slate-700 p-3 text-sm">
+        <div className="mt-3 rounded-xl border border-slate-200 dark:border-slate-700 p-3 text-sm">
           <div className="font-semibold">{t("proActive")}</div>
           <div className="text-slate-600 dark:text-slate-300">
             {t("proUntil")}{" "}
@@ -222,25 +222,33 @@ export default function Top5Leaderboard({
       ) : (
         <button
           type="button"
-          disabled={isPro}
           onClick={() => {
-            if (isPro) return;
-            if (typeof onUpgrade === "function") onUpgrade();
+            if (typeof onUpgrade === "function") onUpgrade(); // App.jsx sér um login/checkout flæði
           }}
-          className={`mt-2 inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2 text-sm font-semibold
-                      border border-slate-300 dark:border-slate-600
-                      bg-slate-900 text-white dark:bg-white dark:text-slate-900
-                      shadow-sm ${
-                        isPro ? "opacity-60 cursor-not-allowed" : "opacity-95 hover:opacity-100"
-                      }`}
-          title={
-            isPro ? (t?.("proAlreadyActive") ?? "Pro is active") : (t?.("seePro") ?? "See Pro")
-          }
-          aria-label={t?.("proPreviewCta") ?? "Pro preview"}
+          className="
+      mt-3 w-full inline-flex flex-col items-center justify-center gap-1
+      rounded-2xl px-4 py-3 text-sm font-semibold
+      bg-emerald-600 text-white
+      shadow-sm shadow-emerald-600/20
+      hover:bg-emerald-500 hover:shadow-md
+      active:translate-y-[1px]
+      focus:outline-none focus:ring-2 focus:ring-emerald-400/60
+      dark:bg-emerald-500 dark:hover:bg-emerald-400
+    "
+          title={t?.("proCtaTooltip") ?? "Skráðu þig inn og opnaðu Pro"}
+          aria-label={t?.("proCtaLabel") ?? "Opna Pro"}
         >
-          <span>✨</span>
-          <span>{isPro ? (t?.("proActive") ?? "Pro active") : t("proPreviewCta")}</span>
-          <span className="opacity-80">→</span>
+          <span className="inline-flex items-center gap-2">
+            <span aria-hidden>✨</span>
+            <span>{t?.("proCtaTitle") ?? "Opna Pro"}</span>
+            <span className="opacity-90" aria-hidden>
+              →
+            </span>
+          </span>
+
+          <span className="text-xs font-normal opacity-95">
+            {t?.("proCtaSubtitle") ?? "Skráðu þig inn til að kaupa aðgang og opna Pro-fídusa."}
+          </span>
         </button>
       )}
 
