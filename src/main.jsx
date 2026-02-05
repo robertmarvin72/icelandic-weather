@@ -14,7 +14,13 @@ import "leaflet.markercluster/dist/MarkerCluster.Default.css";
 
 // ✅ PWA registration (vite-plugin-pwa)
 import { registerSW } from "virtual:pwa-register";
-registerSW({ immediate: true });
+registerSW({
+  immediate: true,
+  onNeedRefresh() {
+    // einfaldasti “no drama” kosturinn:
+    window.location.reload();
+  },
+});
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
