@@ -39,6 +39,7 @@ import { formatDay } from "./utils/date";
 import { WEATHER_MAP } from "./utils/weatherMap";
 import { isFeatureAvailable } from "./config/features";
 import SlimHeader from "./components/SlimHeader";
+import Subscribe from "./pages/Subscribe";
 
 // ──────────────────────────────────────────────────────────────
 // App page
@@ -559,6 +560,7 @@ export default function App() {
       <Routes>
         <Route path="/" element={<IcelandCampingWeatherApp />} />
         <Route path="/about" element={<IcelandCampingWeatherApp page="about" />} />
+        <Route path="/subscribe" element={<Subscribe />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
 
