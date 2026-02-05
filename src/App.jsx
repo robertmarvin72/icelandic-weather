@@ -51,6 +51,11 @@ function IcelandCampingWeatherApp({ page = "home" }) {
   const darkMode = theme === "dark";
   const mapAnchorRef = useRef(null);
 
+  const { lang, toggleLanguage } = useLanguage();
+  const t = useT(lang);
+
+  const { toasts, pushToast, dismissToast } = useToast();
+
   // ✅ Server identity / entitlements
   const { me, refetchMe } = useMe();
   const serverPro = !!me?.entitlements?.pro;
@@ -65,8 +70,80 @@ function IcelandCampingWeatherApp({ page = "home" }) {
     return { isPro, proUntil: serverProUntil };
   }, [devPro, serverPro, serverProUntil]);
 
-  const { toasts, pushToast, dismissToast } = useToast();
+  // ──────────────────────────────────────────────────────────────
+  // Login modal state (email-based)
+  // ──────────────────────────────────────────────────────────────
+  const [loginOpen, setLoginOpen] = useState(false);
+  const [loginEmail, setLoginEmail] = useState("");
+  const [loginBusy, setLoginBusy] = useState(false);
 
+  const openLoginModal = useCallback(() => {
+    setLoginEmail(me?.user?.email || "");
+    setLoginOpen(true);
+  }, [me]);
+
+  const closeLoginModal = useCallback(() => {
+    if (loginBusy) return;
+    setLoginOpen(false);
+  }, [loginBusy]);
+
+  const submitLogin = useCallback(
+    async (e) => {
+      e?.preventDefault?.();
+
+      const email = String(loginEmail || "").trim();
+      if (!email || !email.includes("@")) {
+        pushToast({
+          type: "error",
+          title: t?.("login") ?? "Login",
+          message: t?.("invalidEmail") ?? "Please enter a valid email.",
+        });
+        return;
+      }
+
+      setLoginBusy(true);
+      try {
+        const r = await fetch("/api/login-email", {
+          method: "POST",
+          credentials: "include",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email }),
+        });
+
+        const data = await r.json().catch(() => null);
+
+        if (!r.ok || !data?.ok) {
+          const msg = data?.error || `Login failed (${r.status})`;
+          pushToast({ type: "error", title: t?.("login") ?? "Login", message: msg });
+          return;
+        }
+
+        // session cookie should now be set
+        await refetchMe();
+
+        pushToast({
+          type: "success",
+          title: t?.("login") ?? "Login",
+          message: t?.("loggedIn") ?? "You're logged in.",
+        });
+
+        setLoginOpen(false);
+      } catch (err) {
+        pushToast({
+          type: "error",
+          title: t?.("login") ?? "Login",
+          message: String(err?.message || err),
+        });
+      } finally {
+        setLoginBusy(false);
+      }
+    },
+    [loginEmail, pushToast, refetchMe, t]
+  );
+
+  // ──────────────────────────────────────────────────────────────
+  // UI handlers
+  // ──────────────────────────────────────────────────────────────
   const handleSelectSite = useCallback(
     (id) => {
       setSiteId(id);
@@ -76,7 +153,7 @@ function IcelandCampingWeatherApp({ page = "home" }) {
   );
 
   const toggleTheme = useCallback(
-    () => setTheme((t) => (t === "dark" ? "light" : "dark")),
+    () => setTheme((th) => (th === "dark" ? "light" : "dark")),
     [setTheme]
   );
 
@@ -84,9 +161,6 @@ function IcelandCampingWeatherApp({ page = "home" }) {
     () => setUnits((u) => (u === "metric" ? "imperial" : "metric")),
     [setUnits]
   );
-
-  const { lang, toggleLanguage } = useLanguage();
-  const t = useT(lang);
 
   // GEO
   const { userLoc, geoMsg, useMyLocation } = useMyLocationNearestSite(
@@ -133,10 +207,24 @@ function IcelandCampingWeatherApp({ page = "home" }) {
   // Boot splash lifecycle
   const booting = useBooting(loading, rows.length);
 
-  // ✅ Checkout: call /api/checkout and redirect to pay domain
+  // ✅ Checkout: if not logged in -> open login modal first
   const startCheckout = useCallback(async () => {
     try {
-      pushToast({ type: "info", title: t("loading"), message: t("redirectingToCheckout") });
+      if (!me?.user) {
+        pushToast({
+          type: "info",
+          title: t?.("loginRequired") ?? "Login required",
+          message: t?.("pleaseLoginToContinue") ?? "Please log in to continue.",
+        });
+        openLoginModal();
+        return;
+      }
+
+      pushToast({
+        type: "info",
+        title: t?.("loading") ?? "Loading",
+        message: t?.("redirectingToCheckout") ?? "Redirecting to checkout…",
+      });
 
       const r = await fetch("/api/checkout", {
         method: "POST",
@@ -156,7 +244,7 @@ function IcelandCampingWeatherApp({ page = "home" }) {
     } catch (e) {
       pushToast({ type: "error", title: "Checkout", message: String(e?.message || e) });
     }
-  }, [pushToast, t]);
+  }, [me, openLoginModal, pushToast, t]);
 
   // ✅ If we come back from Paddle success/cancel, refresh entitlements
   useEffect(() => {
@@ -188,6 +276,65 @@ function IcelandCampingWeatherApp({ page = "home" }) {
     <div>
       <Splash show={booting} minMs={700} fadeMs={500} />
       <ToastHub toasts={toasts} onDismiss={dismissToast} />
+
+      {/* ✅ Simple login modal */}
+      {loginOpen && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4"
+          role="dialog"
+          aria-modal="true"
+          onMouseDown={(e) => {
+            // close on backdrop click
+            if (e.target === e.currentTarget) closeLoginModal();
+          }}
+        >
+          <div className="w-full max-w-md rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 shadow-xl p-4">
+            <div className="flex items-center justify-between mb-2">
+              <div className="text-base font-semibold">{t?.("login") ?? "Login"}</div>
+              <button
+                type="button"
+                onClick={closeLoginModal}
+                disabled={loginBusy}
+                className="rounded-lg px-2 py-1 text-sm border border-slate-300 dark:border-slate-600"
+                aria-label="Close"
+                title="Close"
+              >
+                ✕
+              </button>
+            </div>
+
+            <div className="text-sm text-slate-600 dark:text-slate-300 mb-3">
+              {t?.("enterEmailToContinue") ?? "Enter your email to continue."}
+            </div>
+
+            <form onSubmit={submitLogin} className="grid gap-3">
+              <input
+                type="email"
+                value={loginEmail}
+                onChange={(e) => setLoginEmail(e.target.value)}
+                placeholder="you@example.com"
+                className="w-full rounded-xl border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-950 px-3 py-2 text-sm"
+                autoFocus
+              />
+
+              <button
+                type="submit"
+                disabled={loginBusy}
+                className={`rounded-xl px-4 py-2 text-sm font-semibold
+                            bg-slate-900 text-white dark:bg-white dark:text-slate-900
+                            ${loginBusy ? "opacity-60 cursor-not-allowed" : "opacity-95 hover:opacity-100"}`}
+              >
+                {loginBusy ? (t?.("loading") ?? "Loading…") : (t?.("continue") ?? "Continue")}
+              </button>
+            </form>
+
+            <div className="mt-3 text-xs text-slate-500 dark:text-slate-400">
+              {/* Smá létt grín, ekki of mikið 😄 */}
+              {t?.("noPasswordNeeded") ?? "No password. Because life is hard enough already."}
+            </div>
+          </div>
+        </div>
+      )}
 
       <div className="min-h-screen font-sans bg-soft-grid text-slate-900 dark:bg-slate-950 dark:text-slate-100">
         {page === "about" ? (
@@ -249,7 +396,7 @@ function IcelandCampingWeatherApp({ page = "home" }) {
                 loadingBg={loadingBg}
                 units={units}
                 onSelectSite={handleSelectSite}
-                onUpgrade={startCheckout} // ✅ NEW
+                onUpgrade={startCheckout}
                 t={t}
                 shelter={gatedShelter}
                 windDir={gatedWindDir}
