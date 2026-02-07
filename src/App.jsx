@@ -3,7 +3,7 @@
  */
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes, useNavigate } from "react-router-dom";
 
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/react";
@@ -72,6 +72,8 @@ function IcelandCampingWeatherApp({ page = "home" }) {
     const isPro = import.meta.env.DEV ? !!devPro || serverPro : serverPro;
     return { isPro, proUntil: serverProUntil };
   }, [devPro, serverPro, serverProUntil]);
+
+  const navigate = useNavigate();
 
   // ──────────────────────────────────────────────────────────────
   // Login modal state (email-based)
@@ -283,42 +285,30 @@ function IcelandCampingWeatherApp({ page = "home" }) {
 
   // ✅ Checkout: if not logged in -> open login modal first
   const startCheckout = useCallback(async () => {
-    try {
-      if (!me?.user) {
-        pushToast({
-          type: "info",
-          title: t?.("loginRequired") ?? "Login required",
-          message: t?.("pleaseLoginToContinue") ?? "Please log in to continue.",
-        });
-        openLoginModal();
-        return;
-      }
-
+    // 1) ekki innskráður -> login
+    if (!me?.user) {
       pushToast({
         type: "info",
-        title: t?.("loading") ?? "Loading",
-        message: t?.("redirectingToCheckout") ?? "Redirecting to checkout…",
+        title: t?.("loginRequired") ?? "Login required",
+        message: t?.("pleaseLoginToContinue") ?? "Please log in to continue.",
       });
-
-      const r = await fetch("/api/checkout", {
-        method: "POST",
-        credentials: "include",
-        headers: { "Content-Type": "application/json" },
-      });
-
-      const data = await r.json().catch(() => null);
-
-      if (!r.ok || !data?.ok || !data?.url) {
-        const msg = data?.error || `Checkout failed (${r.status})`;
-        pushToast({ type: "error", title: "Checkout", message: msg });
-        return;
-      }
-
-      window.location.assign(data.url);
-    } catch (e) {
-      pushToast({ type: "error", title: "Checkout", message: String(e?.message || e) });
+      openLoginModal();
+      return;
     }
-  }, [me, openLoginModal, pushToast, t]);
+
+    // 2) þegar Pro -> ekki opna checkout aftur
+    if (me?.entitlements?.pro) {
+      pushToast({
+        type: "success",
+        title: t?.("proActive") ?? "Pro",
+        message: t?.("alreadyPro") ?? "You already have Pro 👌",
+      });
+      return;
+    }
+
+    // 3) logged in + free -> fara á subscribe
+    navigate("/subscribe");
+  }, [me, navigate, openLoginModal, pushToast, t]);
 
   // ✅ If we come back from Paddle success/cancel, refresh entitlements
   useEffect(() => {
