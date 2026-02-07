@@ -177,7 +177,10 @@ export const translations = {
 
     proCtaTitle: "Get Pro",
     proCtaSubtitle: "Log in to purchase and unlock Pro features.",
-    proCtaTooltip: "Log in → checkout → unlock Pro"
+    proCtaTooltip: "Log in → checkout → unlock Pro",
+    alreadyPro: "Already Pro",
+    proActive: "Pro active ✓",
+    loggedIn: "Logged in",
   },
 
 
@@ -362,5 +365,8 @@ export const translations = {
     proCtaTitle: "Fá Pro aðgang",
     proCtaSubtitle: "Skráðu þig inn til að kaupa aðgang og opna Pro-fídusa.",
     proCtaTooltip: "Skráðu þig inn → farðu í greiðslu → opnaðu Pro",
+    alreadyPro: "Þú ert þegar með Pro",
+    proActive: "Pro virkt ✓",
+    loggedIn: "Innskráður",
   },
 };
