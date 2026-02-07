@@ -288,6 +288,7 @@ const styles = {
     alignItems: "center",
     justifyContent: "center",
     boxShadow: "0 10px 22px rgba(0,0,0,0.28)",
+    transition: "transform 120ms ease, background 120ms ease",
   },
   logoImg: {
     width: 32, // ⬅️ haldið hóflegri stærð
@@ -305,7 +306,7 @@ const styles = {
     background: "rgba(255,255,255,0.06)",
   },
   brandTitle: { fontWeight: 900, fontSize: 14, lineHeight: 1.1 },
-  brandSub: { fontSize: 12, opacity: 0.72 },
+  brandSub: { fontSize: 12, opacity: 0.82 },
 
   card: {
     borderRadius: 24,
