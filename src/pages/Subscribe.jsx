@@ -280,20 +280,20 @@ const styles = {
     gap: 10,
   },
   logoPill: {
-    background: "rgba(255,255,255,0.08)",
-    border: "1px solid rgba(255,255,255,0.14)",
-    padding: 6,
-    borderRadius: 14,
+    background: "rgba(255,255,255,0.10)",
+    border: "1px solid rgba(255,255,255,0.16)",
+    padding: 10, // ⬅️ meira pláss
+    borderRadius: 16,
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    boxShadow: "0 10px 22px rgba(0,0,0,0.25)",
+    boxShadow: "0 10px 22px rgba(0,0,0,0.28)",
   },
   logoImg: {
-    width: 32,
+    width: 32, // ⬅️ haldið hóflegri stærð
     height: 32,
-    borderRadius: 10,
-    objectFit: "cover",
+    objectFit: "contain", // ⬅️ MJÖG mikilvægt
+    borderRadius: 8,
   },
 
   logo: {
