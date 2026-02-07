@@ -98,13 +98,16 @@ export default function Subscribe({ onClose, onDone }) {
 
           <div style={styles.brand}>
             {logoOk ? (
-              <img
-                src="/logo.png"
-                alt="CampCast"
-                style={styles.logo}
-                onError={() => setLogoOk(false)}
-              />
+              <div style={styles.logoPill} aria-label="CampCast">
+                <img
+                  src="/logo.png"
+                  alt="CampCast"
+                  style={styles.logoImg}
+                  onError={() => setLogoOk(false)}
+                />
+              </div>
             ) : null}
+
             <div>
               <div style={styles.brandTitle}>CampCast Pro</div>
               <div style={styles.brandSub}>Eltum veðrið</div>
@@ -276,6 +279,23 @@ const styles = {
     alignItems: "center",
     gap: 10,
   },
+  logoPill: {
+    background: "rgba(255,255,255,0.08)",
+    border: "1px solid rgba(255,255,255,0.14)",
+    padding: 6,
+    borderRadius: 14,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    boxShadow: "0 10px 22px rgba(0,0,0,0.25)",
+  },
+  logoImg: {
+    width: 32,
+    height: 32,
+    borderRadius: 10,
+    objectFit: "cover",
+  },
+
   logo: {
     width: 40,
     height: 40,
