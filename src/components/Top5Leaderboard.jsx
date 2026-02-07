@@ -28,6 +28,7 @@ export default function Top5Leaderboard({
   windDir,
 
   // ✅ new (optional) props for CTA + messaging
+  me,
   onUpgrade,
   proUntil,
   subscription,
@@ -246,7 +247,7 @@ export default function Top5Leaderboard({
         >
           <span className="inline-flex items-center gap-2">
             <span aria-hidden>✨</span>
-            <span>{t?.("proCtaTitle") ?? "Opna Pro"}</span>
+            <span>{getProLabel()}</span>
             <span className="opacity-90" aria-hidden>
               →
             </span>

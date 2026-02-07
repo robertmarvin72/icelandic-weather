@@ -523,6 +523,7 @@ function IcelandCampingWeatherApp({ page = "home" }) {
                 loadingBg={loadingBg}
                 units={units}
                 onSelectSite={handleSelectSite}
+                me={me}
                 onUpgrade={startCheckout}
                 t={t}
                 shelter={gatedShelter}
