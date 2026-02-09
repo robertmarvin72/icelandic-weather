@@ -177,10 +177,18 @@ export default function Success({ lang = "is", theme = "dark", t }) {
         <div style={styles.footer}>
           {T(
             "successSupportLine",
-            lang === "en"
-              ? "Need help? Message us and we’ll sort it."
-              : "Þarftu aðstoð? Sendu okkur skilaboð og við reddum þessu."
-          )}
+            lang === "en" ? "Need help? Email us at" : "Þarftu aðstoð? Sendu okkur tölvupóst á"
+          )}{" "}
+          <a
+            href="mailto:support@campcast.is?subject=CampCast%20Pro%20Support"
+            style={{
+              fontWeight: 600,
+              color: "#10b981", // emerald / trust green
+              textDecoration: "none",
+            }}
+          >
+            hello@campcast.is
+          </a>
         </div>
       </div>
     </div>

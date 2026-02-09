@@ -182,6 +182,12 @@ export const translations = {
     proActive: "Pro active ✓",
     loggedIn: "Logged in",
     proUpgrade: "Upgrade to Pro",
+
+    // Success page
+    successFinePrint:
+      "If Pro access doesn’t activate immediately, it will be enabled automatically within a few minutes.",
+    successSupportLine:
+      "If anything doesn’t work as expected, contact us and we’ll assist you promptly.",
   },
 
 
@@ -370,5 +376,11 @@ export const translations = {
     proActive: "Pro virkt ✓",
     loggedIn: "Innskráður",
     proUpgrade: "Uppfæra í Pro",
+
+    // Success page
+    successFinePrint:
+      "Ef Pro aðgangur virkjast ekki strax, uppfærist hann sjálfkrafa innan örfárra mínútna.",
+    successSupportLine:
+      "Ef eitthvað virkar ekki sem skyldi, hafðu samband og við aðstoðum þig fljótt og örugglega.",
   },
 };
