@@ -543,6 +543,23 @@ function IcelandCampingWeatherApp({ page = "home" }) {
   );
 }
 
+// --- Route wrappers so Subscribe/Success can receive lang/theme/t via props ---
+function SubscribeRoute() {
+  const [theme] = useLocalStorageState("theme", "light");
+  const { lang } = useLanguage();
+  const t = useT(lang);
+
+  return <Subscribe lang={lang} theme={theme} t={t} />;
+}
+
+function SuccessRoute() {
+  const [theme] = useLocalStorageState("theme", "light");
+  const { lang } = useLanguage();
+  const t = useT(lang);
+
+  return <Success lang={lang} theme={theme} t={t} />;
+}
+
 // ──────────────────────────────────────────────────────────────
 // Router
 // ──────────────────────────────────────────────────────────────
@@ -552,8 +569,11 @@ export default function App() {
       <Routes>
         <Route path="/" element={<IcelandCampingWeatherApp />} />
         <Route path="/about" element={<IcelandCampingWeatherApp page="about" />} />
-        <Route path="/subscribe" element={<Subscribe />} />
-        <Route path="/success" element={<Success />} />
+
+        {/* ✅ These pages need lang/theme/t, so use wrappers */}
+        <Route path="/subscribe" element={<SubscribeRoute />} />
+        <Route path="/success" element={<SuccessRoute />} />
+
         <Route path="*" element={<NotFound />} />
       </Routes>
 
