@@ -1,9 +1,97 @@
 // src/pages/Subscribe.jsx
 import React, { useMemo, useState } from "react";
 
-export default function Subscribe({ onClose, onDone }) {
+/**
+ * Temporary inline copy map (until #86 moves these into translations.js flat keys)
+ */
+const COPY = {
+  is: {
+    back: "← Til baka",
+    brandTitle: "CampCast Pro",
+    brandSub: "Eltum veðrið",
+
+    title: "Virkjaðu Pro aðgang",
+    intro: "Engin dramatík — bara betri veðurákvarðanir. Þú ferð í greiðslu hjá ",
+
+    trust1: "Örugg greiðsla í gegnum Paddle",
+    trust2: "Hætta hvenær sem er",
+    trust3: "Pro virkjast samstundis",
+
+    emailLabel: "Netfang",
+    emailHelp: "Við notum netfangið til að tengja áskriftina og senda kvittun.",
+    emailPlaceholder: "nafn@domain.com",
+
+    perks: "Hvað færðu með Pro",
+    feature1t: "Allir Pro fídusar opnast",
+    feature1d: "Fáðu fullan aðgang að Pro virkni í appinu.",
+    feature2t: "Betri yfirsýn og skor",
+    feature2d: "Skýrari leið til að taka veðurákvarðanir.",
+    feature3t: "Meiri nákvæmni og útreikningar",
+    feature3d: "Viðbótar-útreikningar þar sem það á við.",
+    feature4t: "Styður áframhaldandi þróun",
+    feature4d: "Kaupin hjálpa okkur að bæta CampCast stöðugt.",
+
+    errTitle: "Úps!",
+    errEmail: "Vinsamlegast sláðu inn gilt netfang.",
+    errCheckoutUrl: "Vantar checkout URL frá /api/checkout.",
+
+    cta: "Halda áfram í greiðslu",
+    ctaBusy: "Opna greiðslusíðu...",
+    ctaHint: "Þú getur alltaf hætt áskrift síðar (billing portal kemur bráðlega).",
+
+    fine: "Með því að halda áfram samþykkir þú að greiðslan fari fram í gegnum Paddle.",
+    secondary: "Til baka",
+
+    footer: "Spurningar? Sendu okkur skilaboð og við reddum þessu.",
+  },
+
+  en: {
+    back: "← Back",
+    brandTitle: "CampCast Pro",
+    brandSub: "Follow the weather",
+
+    title: "Activate Pro",
+    intro: "No drama — just better weather decisions. You’ll pay via ",
+
+    trust1: "Secure payment via Paddle",
+    trust2: "Cancel anytime",
+    trust3: "Pro activates instantly",
+
+    emailLabel: "Email",
+    emailHelp: "We use your email to link your subscription and send receipts.",
+    emailPlaceholder: "name@domain.com",
+
+    perks: "What you get with Pro",
+    feature1t: "All Pro features unlocked",
+    feature1d: "Get full access to Pro features in the app.",
+    feature2t: "Better overview & scoring",
+    feature2d: "A clearer way to make weather decisions.",
+    feature3t: "More accuracy & calculations",
+    feature3d: "Extra calculations where relevant.",
+    feature4t: "Supports ongoing development",
+    feature4d: "Your purchase helps us improve CampCast continuously.",
+
+    errTitle: "Oops!",
+    errEmail: "Please enter a valid email.",
+    errCheckoutUrl: "Missing checkout URL from /api/checkout.",
+
+    cta: "Continue to checkout",
+    ctaBusy: "Opening checkout...",
+    ctaHint: "You can cancel anytime later (billing portal coming soon).",
+
+    fine: "By continuing you agree the payment is processed via Paddle.",
+    secondary: "Back",
+
+    footer: "Questions? Message us and we’ll help you out.",
+  },
+};
+
+export default function Subscribe({ onClose, onDone, lang = "is" }) {
+  const copy = COPY[lang] || COPY.is;
+
   const params = useMemo(() => new URLSearchParams(window.location.search), []);
   const initialEmail = params.get("email") || "";
+
   const [email, setEmail] = useState(initialEmail);
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState("");
@@ -12,7 +100,7 @@ export default function Subscribe({ onClose, onDone }) {
   async function startCheckout() {
     setErr("");
     if (!email || !email.includes("@")) {
-      setErr("Vinsamlegast sláðu inn gilt netfang.");
+      setErr(copy.errEmail);
       return;
     }
 
@@ -41,42 +129,26 @@ export default function Subscribe({ onClose, onDone }) {
 
       const j2 = await r2.json().catch(() => ({}));
       const url = j2?.url || j2?.checkoutUrl;
-      if (!url) throw new Error("Vantar checkout URL frá /api/checkout.");
+      if (!url) throw new Error(copy.errCheckoutUrl);
 
       window.location.href = url;
     } catch (e) {
-      setErr(e?.message || "Eitthvað fór úrskeiðis.");
+      setErr(e?.message || "Something went wrong.");
       setBusy(false);
     }
   }
 
   const trustBadges = [
-    { icon: "🔒", text: "Örugg greiðsla í gegnum Paddle" },
-    { icon: "↩️", text: "Hætta hvenær sem er" },
-    { icon: "✅", text: "Pro virkjast samstundis" },
+    { icon: "🔒", text: copy.trust1 },
+    { icon: "↩️", text: copy.trust2 },
+    { icon: "✅", text: copy.trust3 },
   ];
 
   const features = [
-    {
-      icon: "✨",
-      title: "Allir Pro fídusar opnast",
-      desc: "Fáðu fullan aðgang að Pro virkni í appinu.",
-    },
-    {
-      icon: "📊",
-      title: "Betri yfirsýn og skor",
-      desc: "Skýrari leið til að taka veðurákvarðanir.",
-    },
-    {
-      icon: "🧠",
-      title: "Meiri nákvæmni og útreikningar",
-      desc: "Viðbótar-útreikningar þar sem það á við.",
-    },
-    {
-      icon: "🛠️",
-      title: "Styður áframhaldandi þróun",
-      desc: "Kaupin hjálpa okkur að bæta CampCast stöðugt.",
-    },
+    { icon: "✨", title: copy.feature1t, desc: copy.feature1d },
+    { icon: "📊", title: copy.feature2t, desc: copy.feature2d },
+    { icon: "🧠", title: copy.feature3t, desc: copy.feature3d },
+    { icon: "🛠️", title: copy.feature4t, desc: copy.feature4d },
   ];
 
   return (
@@ -93,7 +165,7 @@ export default function Subscribe({ onClose, onDone }) {
             style={styles.backLink}
             type="button"
           >
-            ← Til baka
+            {copy.back}
           </button>
 
           <div style={styles.brand}>
@@ -109,8 +181,8 @@ export default function Subscribe({ onClose, onDone }) {
             ) : null}
 
             <div>
-              <div style={styles.brandTitle}>CampCast Pro</div>
-              <div style={styles.brandSub}>Eltum veðrið</div>
+              <div style={styles.brandTitle}>{copy.brandTitle}</div>
+              <div style={styles.brandSub}>{copy.brandSub}</div>
             </div>
           </div>
         </div>
@@ -118,9 +190,9 @@ export default function Subscribe({ onClose, onDone }) {
         {/* card */}
         <div style={styles.card}>
           <div style={styles.header}>
-            <h1 style={styles.h1}>Virkjaðu Pro aðgang</h1>
+            <h1 style={styles.h1}>{copy.title}</h1>
             <p style={styles.p}>
-              Engin dramatík — bara betri veðurákvarðanir. Þú ferð í greiðslu hjá{" "}
+              {copy.intro}
               <span style={{ fontWeight: 800 }}>Paddle</span>.
             </p>
 
@@ -136,11 +208,11 @@ export default function Subscribe({ onClose, onDone }) {
 
           {/* email input */}
           <div style={{ marginTop: 16 }}>
-            <label style={styles.label}>Netfang</label>
+            <label style={styles.label}>{copy.emailLabel}</label>
             <input
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="nafn@domain.com"
+              placeholder={copy.emailPlaceholder}
               inputMode="email"
               autoComplete="email"
               style={{
@@ -148,14 +220,12 @@ export default function Subscribe({ onClose, onDone }) {
                 borderColor: err ? "rgba(255, 129, 129, 0.6)" : "rgba(255,255,255,0.14)",
               }}
             />
-            <div style={styles.helper}>
-              Við notum netfangið til að tengja áskriftina og senda kvittun.
-            </div>
+            <div style={styles.helper}>{copy.emailHelp}</div>
           </div>
 
           {/* features grid */}
           <div style={styles.section}>
-            <div style={styles.sectionTitle}>Hvað færðu með Pro</div>
+            <div style={styles.sectionTitle}>{copy.perks}</div>
 
             <div style={styles.grid}>
               {features.map((f) => (
@@ -175,7 +245,7 @@ export default function Subscribe({ onClose, onDone }) {
           {/* error */}
           {err ? (
             <div style={styles.errorBox} role="alert" aria-live="polite">
-              <div style={{ fontWeight: 900, marginBottom: 4 }}>Úps!</div>
+              <div style={{ fontWeight: 900, marginBottom: 4 }}>{copy.errTitle}</div>
               <div style={{ opacity: 0.95 }}>{err}</div>
             </div>
           ) : null}
@@ -193,19 +263,15 @@ export default function Subscribe({ onClose, onDone }) {
           >
             <span style={{ display: "inline-flex", alignItems: "center", gap: 10 }}>
               <span aria-hidden>{busy ? "⏳" : "✨"}</span>
-              <span>{busy ? "Opna greiðslusíðu..." : "Halda áfram í greiðslu"}</span>
+              <span>{busy ? copy.ctaBusy : copy.cta}</span>
               <span style={{ opacity: 0.9 }} aria-hidden>
                 →
               </span>
             </span>
-            <span style={styles.ctaSub}>
-              Þú getur alltaf hætt áskrift síðar (billing portal kemur bráðlega).
-            </span>
+            <span style={styles.ctaSub}>{copy.ctaHint}</span>
           </button>
 
-          <div style={styles.finePrint}>
-            Með því að halda áfram samþykkir þú að greiðslan fari fram í gegnum Paddle.
-          </div>
+          <div style={styles.finePrint}>{copy.fine}</div>
 
           {/* secondary */}
           <button
@@ -213,15 +279,12 @@ export default function Subscribe({ onClose, onDone }) {
             type="button"
             style={styles.secondary}
           >
-            Til baka
+            {copy.secondary}
           </button>
         </div>
 
         {/* footer trust */}
-        <div style={styles.footer}>
-          Spurningar? <span style={{ fontWeight: 800 }}>Sendu okkur skilaboð</span> og við reddum
-          þessu.
-        </div>
+        <div style={styles.footer}>{copy.footer}</div>
       </div>
     </div>
   );
@@ -277,34 +340,27 @@ const styles = {
   brand: {
     display: "flex",
     alignItems: "center",
-    gap: 10,
+    gap: 12,
   },
+
+  // ✅ Logo in a pill (extra safe area so letters don't get clipped)
   logoPill: {
     background: "rgba(255,255,255,0.10)",
     border: "1px solid rgba(255,255,255,0.16)",
-    padding: 10, // ⬅️ meira pláss
+    padding: 10,
     borderRadius: 16,
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
     boxShadow: "0 10px 22px rgba(0,0,0,0.28)",
-    transition: "transform 120ms ease, background 120ms ease",
   },
   logoImg: {
-    width: 32, // ⬅️ haldið hóflegri stærð
+    width: 32,
     height: 32,
-    objectFit: "contain", // ⬅️ MJÖG mikilvægt
+    objectFit: "contain",
     borderRadius: 8,
   },
 
-  logo: {
-    width: 40,
-    height: 40,
-    borderRadius: 14,
-    objectFit: "cover",
-    border: "1px solid rgba(255,255,255,0.14)",
-    background: "rgba(255,255,255,0.06)",
-  },
   brandTitle: { fontWeight: 900, fontSize: 14, lineHeight: 1.1 },
   brandSub: { fontSize: 12, opacity: 0.82 },
 
@@ -440,13 +496,3 @@ const styles = {
     opacity: 0.72,
   },
 };
-
-// simple responsive tweak for wider screens (no CSS file needed)
-if (typeof window !== "undefined") {
-  const mq = window.matchMedia("(min-width: 640px)");
-  const apply = () => {
-    const grid = document.querySelectorAll?.("[data-subscribe-grid]");
-    // no-op; kept intentionally small. If you want, we can move to CSS/Tailwind later.
-  };
-  mq.addEventListener?.("change", apply);
-}
