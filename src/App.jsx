@@ -39,6 +39,7 @@ import { formatDay } from "./utils/date";
 import { WEATHER_MAP } from "./utils/weatherMap";
 import { isFeatureAvailable } from "./config/features";
 import SlimHeader from "./components/SlimHeader";
+
 import Subscribe from "./pages/Subscribe";
 import Success from "./pages/Success";
 
@@ -120,7 +121,6 @@ function IcelandCampingWeatherApp({ page = "home" }) {
         if (!r.ok || !data?.ok) {
           if (data?.code === "USER_NOT_FOUND") {
             // Send them to the purchase/subscribe page (don’t auto-create users on login)
-            const url = new URL(window.location.href);
             const to = `/subscribe?email=${encodeURIComponent(email)}`;
             window.location.assign(to);
             return;
@@ -153,69 +153,6 @@ function IcelandCampingWeatherApp({ page = "home" }) {
     },
     [loginEmail, pushToast, refetchMe, t]
   );
-
-  // ──────────────────────────────────────────────────────────────
-  // Subscribe (purchase) page state
-  // ──────────────────────────────────────────────────────────────
-  const [subscribeEmail, setSubscribeEmail] = useState("");
-
-  useEffect(() => {
-    if (page !== "subscribe") return;
-    const qs = new URLSearchParams(window.location.search);
-    const e = (qs.get("email") || "").trim();
-    setSubscribeEmail(e);
-  }, [page]);
-
-  const continueFromSubscribe = useCallback(async () => {
-    const email = String(subscribeEmail || "").trim();
-    if (!me?.user && (!email || !email.includes("@"))) {
-      pushToast({
-        type: "error",
-        title: "Pro",
-        message: t?.("invalidEmail") ?? "Please enter a valid email.",
-      });
-      return;
-    }
-
-    try {
-      // If not logged in, create user + session (explicitly).
-      if (!me?.user) {
-        const r = await fetch("/api/login", {
-          method: "POST",
-          credentials: "include",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email, createIfMissing: true }),
-        });
-
-        const data = await r.json().catch(() => null);
-        if (!r.ok || !data?.ok) {
-          const msg = data?.error || `Login failed (${r.status})`;
-          pushToast({ type: "error", title: t?.("login") ?? "Login", message: msg });
-          return;
-        }
-      }
-
-      await refetchMe();
-
-      // Then go to checkout
-      const cr = await fetch("/api/checkout", {
-        method: "POST",
-        credentials: "include",
-        headers: { "Content-Type": "application/json" },
-      });
-
-      const cd = await cr.json().catch(() => null);
-      if (!cr.ok || !cd?.ok || !cd?.url) {
-        const msg = cd?.error || `Checkout failed (${cr.status})`;
-        pushToast({ type: "error", title: "Checkout", message: msg });
-        return;
-      }
-
-      window.location.assign(cd.url);
-    } catch (e) {
-      pushToast({ type: "error", title: "Checkout", message: String(e?.message || e) });
-    }
-  }, [me, pushToast, refetchMe, subscribeEmail, t, page]);
 
   // ──────────────────────────────────────────────────────────────
   // UI handlers
@@ -433,61 +370,6 @@ function IcelandCampingWeatherApp({ page = "home" }) {
         <div className="max-w-6xl mx-auto px-4 py-10">
           {page === "about" ? (
             <About t={t} />
-          ) : page === "subscribe" ? (
-            <div className="max-w-2xl mx-auto">
-              <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-700 dark:bg-slate-900">
-                <h1 className="text-xl font-bold mb-2">{t?.("goPro") ?? "Go Pro"}</h1>
-                <p className="text-sm text-slate-600 dark:text-slate-300 mb-4">
-                  {t?.("proPitch") ??
-                    "Unlock wind direction, shelter index, and future Pro features."}
-                </p>
-
-                {!me?.user && (
-                  <div className="mb-4">
-                    <label className="block text-sm font-semibold mb-1">
-                      {t?.("email") ?? "Email"}
-                    </label>
-                    <input
-                      type="email"
-                      value={subscribeEmail}
-                      onChange={(e) => setSubscribeEmail(e.target.value)}
-                      placeholder="you@example.com"
-                      className="w-full rounded-xl border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900
-                        placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-sky-500/40 focus:border-sky-400
-                        dark:border-slate-600 dark:bg-slate-950 dark:text-slate-100 dark:placeholder:text-slate-400"
-                    />
-                    <div className="mt-1 text-xs text-slate-500 dark:text-slate-400">
-                      {t?.("emailUsedForReceipt") ??
-                        "Used for your receipt and to link your Pro access."}
-                    </div>
-                  </div>
-                )}
-
-                <div className="flex flex-col sm:flex-row gap-2">
-                  <button
-                    type="button"
-                    onClick={() => window.location.assign("/")}
-                    className="rounded-xl px-4 py-2 text-sm font-semibold border border-slate-300 hover:bg-slate-50
-                      dark:border-slate-600 dark:hover:bg-slate-800"
-                  >
-                    {t?.("back") ?? "Back"}
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={continueFromSubscribe}
-                    className="rounded-xl px-4 py-2 text-sm font-semibold bg-slate-900 text-white hover:opacity-95
-                      dark:bg-white dark:text-slate-900"
-                  >
-                    {t?.("continueToCheckout") ?? "Continue to secure checkout"}
-                  </button>
-                </div>
-
-                <div className="mt-4 text-xs text-slate-500 dark:text-slate-400">
-                  {t?.("poweredByPaddle") ?? "Payments are handled securely by Paddle."}
-                </div>
-              </div>
-            </div>
           ) : (
             <div className="grid md:grid-cols-2 gap-4">
               <ForecastTable
@@ -548,7 +430,6 @@ function SubscribeRoute() {
   const [theme] = useLocalStorageState("theme", "light");
   const { lang } = useLanguage();
   const t = useT(lang);
-
   return <Subscribe lang={lang} theme={theme} t={t} />;
 }
 
@@ -556,7 +437,6 @@ function SuccessRoute() {
   const [theme] = useLocalStorageState("theme", "light");
   const { lang } = useLanguage();
   const t = useT(lang);
-
   return <Success lang={lang} theme={theme} t={t} />;
 }
 
