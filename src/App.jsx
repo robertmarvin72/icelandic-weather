@@ -552,7 +552,7 @@ export default function App() {
       <Routes>
         <Route path="/" element={<IcelandCampingWeatherApp />} />
         <Route path="/about" element={<IcelandCampingWeatherApp page="about" />} />
-        <Route path="/subscribe" element={<Subscribe lang={lang} />} />
+        <Route path="/subscribe" element={<Subscribe />} />
         <Route path="/success" element={<Success />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
