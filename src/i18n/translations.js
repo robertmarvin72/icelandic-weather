@@ -181,6 +181,7 @@ export const translations = {
     alreadyPro: "Already Pro",
     proActive: "Pro active ✓",
     loggedIn: "Logged in",
+    proUpgrade: "Upgrade to Pro",
   },
 
 
@@ -368,5 +369,6 @@ export const translations = {
     alreadyPro: "Þú ert þegar með Pro",
     proActive: "Pro virkt ✓",
     loggedIn: "Innskráður",
+    proUpgrade: "Uppfæra í Pro",
   },
 };

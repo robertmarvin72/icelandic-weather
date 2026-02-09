@@ -104,9 +104,9 @@ export default function Top5Leaderboard({
   );
 
   const getProLabel = () => {
-    if (!me?.user) return "Fá Pro aðgang";
-    if (me?.entitlements?.pro) return "Pro virkt ✓";
-    return "Uppfæra í Pro";
+    if (!me?.user) return t?.("proCtaTitle") ?? "Fá Pro aðgang";
+    if (me?.entitlements?.pro) return t?.("proActive") ?? "Pro virkt ✓";
+    return t?.("proUpgrade") ?? "Uppfæra í Pro";
   };
 
   return (
