@@ -34,18 +34,18 @@ export default async function handler(req, res) {
 
     // Find user by session
     const rows = await sql`
-      select
+    select
         u.id,
         u.email,
-        u.paddle_customer_id,
-        u.paddle_subscription_id
-      from app_user u
-      join app_session s on s.user_id = u.id
-      where s.session_hash = ${sessionHash}
+        u.paddle_customer_id
+    from app_user u
+    join user_session s on s.user_id = u.id
+    where s.token_hash = ${sessionHash}
         and s.revoked_at is null
         and (s.expires_at is null or s.expires_at > now())
-      limit 1
+    limit 1
     `;
+
 
     const me = rows?.[0];
     if (!me) return res.status(401).json({ ok: false, error: "Session invalid" });
