@@ -5,406 +5,248 @@ import { Link } from "react-router-dom";
 export default function Success({ lang = "is", theme = "dark", t }) {
   const [status, setStatus] = useState("checking"); // checking | active | pending
   const [logoOk, setLogoOk] = useState(true);
+  const [portalLoading, setPortalLoading] = useState(false);
+  const [portalError, setPortalError] = useState("");
 
-  const isLight = theme === "light";
-
-  const T = (key, fallback) => {
-    if (typeof t === "function") {
-      const v = t(key);
-      return v == null ? fallback : v;
-    }
-    return fallback;
-  };
+  const isDark = theme === "dark";
 
   const copy = useMemo(() => {
-    const isEN = lang === "en";
+    const isIS = lang === "is";
+
     return {
-      back: isEN ? "Back to CampCast" : "Fara í CampCast",
-      title: isEN ? "Thanks!" : "Takk fyrir!",
-      subtitleActive: isEN
-        ? "Your CampCast Pro access is now active."
-        : "CampCast Pro aðgangur hefur verið virkjaður.",
-      subtitlePending: isEN
-        ? "Payment received. Pro usually activates instantly — give it a moment."
-        : "Greiðsla móttekin. Aðgangur virkjast yfirleitt strax — gefðu þessu smá stund.",
-      checking: isEN ? "Verifying your Pro access…" : "Staðfesti Pro aðgang…",
-      fine: isEN
-        ? "You’ll be able to manage your subscription in settings (billing portal coming soon)."
-        : "Þú getur alltaf stjórnað áskriftinni í stillingum (billing portal kemur bráðlega).",
-      badge1: isEN ? "Secure payment via Paddle" : "Örugg greiðsla í gegnum Paddle",
-      badge2: isEN ? "Pro activates instantly" : "Pro virkjast samstundis",
-      badge3: isEN ? "Cancel anytime" : "Hætta hvenær sem er",
-      pillTitle: "CampCast Pro",
-      pillSub: isEN ? "Follow the weather" : "Eltum veðrið",
+      title: isIS ? "Greiðsla móttekin" : "Payment received",
+      subtitle: isIS
+        ? "Takk! Við erum að staðfesta áskriftina þína."
+        : "Thanks! We’re confirming your subscription.",
+      checking: isIS ? "Staðfesti..." : "Checking...",
+      activeTitle: isIS ? "Pro virkt ✓" : "Pro active ✓",
+      pendingTitle: isIS ? "Næstum komið" : "Almost there",
+      pendingBody: isIS
+        ? "Áskriftin gæti tekið nokkrar sekúndur að virkjast. Prófaðu að endurhlaða eftir smá stund."
+        : "It can take a few seconds for the subscription to activate. Try refreshing shortly.",
+      home: isIS ? "Til baka á forsíðu" : "Back to home",
+      support: isIS ? "Hafa samband" : "Contact support",
+      manage: t?.("manageSubscription") ?? (isIS ? "Stjórna" : "Manage"),
+      manageHint:
+        t?.("proManageHint") ??
+        (isIS ? "Stjórnaðu áskrift og kvittunum." : "Manage your subscription and invoices."),
+      opening:
+        t?.("openingBillingPortal") ?? (isIS ? "Opna greiðslugátt…" : "Opening billing portal…"),
+      notReady:
+        t?.("billingPortalUnavailable") ??
+        (isIS
+          ? "Greiðslugátt er ekki tilbúin fyrir þennan notanda enn."
+          : "Billing portal not ready for this account yet."),
     };
-  }, [lang]);
+  }, [lang, t]);
 
+  // Optional: you might already be calling /api/me somewhere else
+  // Here we poll a few times because entitlements may take a moment after webhook
   useEffect(() => {
-    let alive = true;
+    let cancelled = false;
 
-    async function checkMe() {
+    async function check() {
       try {
-        const res = await fetch("/api/me", { credentials: "include" });
-        const json = await res.json().catch(() => null);
+        const r = await fetch("/api/me", { credentials: "include" });
+        const j = await r.json().catch(() => ({}));
 
-        if (!alive) return;
+        if (!r.ok || !j?.ok) {
+          if (!cancelled) setStatus("pending");
+          return;
+        }
 
-        if (res.ok && json?.entitlements?.pro) setStatus("active");
-        else setStatus("pending");
+        const isPro = !!j?.entitlements?.isPro;
+        if (!cancelled) setStatus(isPro ? "active" : "pending");
       } catch {
-        if (!alive) return;
-        setStatus("pending");
+        if (!cancelled) setStatus("pending");
       }
     }
 
-    checkMe();
+    check();
+
+    const timers = [];
+    // gentle polling (fast at first, then stops)
+    [1200, 2000, 3000, 4000].forEach((ms) => {
+      const id = setTimeout(check, ms);
+      timers.push(id);
+    });
+
     return () => {
-      alive = false;
+      cancelled = true;
+      timers.forEach(clearTimeout);
     };
   }, []);
 
-  const styles = getStyles(isLight);
+  async function onManage() {
+    setPortalError("");
+    setPortalLoading(true);
 
-  const trustBadges = [
-    { icon: "🔒", text: copy.badge1 },
-    { icon: "✅", text: copy.badge2 },
-    { icon: "↩️", text: copy.badge3 },
-  ];
+    try {
+      const r = await fetch("/api/billing-portal", {
+        method: "POST",
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
+      });
+      const j = await r.json().catch(() => ({}));
+
+      if (!r.ok || !j?.ok || !j?.url) {
+        const msg =
+          j?.error ||
+          (j?.code === "MISSING_PADDLE_CUSTOMER"
+            ? copy.notReady
+            : `Billing portal failed (${r.status})`);
+        throw new Error(msg);
+      }
+
+      window.location.assign(j.url);
+    } catch (e) {
+      setPortalError(String(e?.message || e));
+    } finally {
+      setPortalLoading(false);
+    }
+  }
 
   return (
-    <div style={styles.page}>
-      <div style={styles.glowTop} />
-      <div style={styles.glowBottom} />
+    <div
+      className={`min-h-screen ${isDark ? "bg-slate-950 text-slate-100" : "bg-slate-50 text-slate-900"}`}
+    >
+      <div className="mx-auto max-w-2xl px-4 py-10">
+        <div className="flex items-center gap-3">
+          {logoOk ? (
+            <img
+              src="/logo.png"
+              alt="CampCast"
+              className="h-10 w-10 rounded-xl"
+              onError={() => setLogoOk(false)}
+            />
+          ) : (
+            <div
+              className={`h-10 w-10 rounded-xl ${isDark ? "bg-slate-800" : "bg-slate-200"}`}
+              aria-hidden="true"
+            />
+          )}
 
-      <div style={styles.container}>
-        {/* top bar */}
-        <div style={styles.topBar}>
-          <Link to="/" style={styles.backLink}>
-            ← {copy.back}
-          </Link>
-
-          {/* Brand pill */}
-          <div style={styles.brandPill} title={copy.pillTitle}>
-            <div style={styles.brandLogoWrap}>
-              {logoOk ? (
-                <img
-                  src="/logo.png"
-                  alt="CampCast"
-                  style={styles.brandLogo}
-                  onError={() => setLogoOk(false)}
-                />
-              ) : null}
-            </div>
-
-            <div style={{ display: "flex", flexDirection: "column", lineHeight: 1.1 }}>
-              <div style={styles.brandTitle}>{copy.pillTitle}</div>
-              <div style={styles.brandSub}>{copy.pillSub}</div>
+          <div>
+            <div className="text-xl font-bold">{copy.title}</div>
+            <div className={`text-sm ${isDark ? "text-slate-300" : "text-slate-600"}`}>
+              {copy.subtitle}
             </div>
           </div>
         </div>
 
-        {/* main card */}
-        <div style={styles.card}>
-          <div style={styles.header}>
-            <div style={styles.celebrateRow}>
-              <div style={styles.celebrateIcon} aria-hidden>
-                🎉
+        <div
+          className={`mt-6 rounded-2xl border p-5 ${
+            isDark ? "border-slate-800 bg-slate-900" : "border-slate-200 bg-white"
+          }`}
+        >
+          {status === "checking" && (
+            <>
+              <div className="text-lg font-semibold">{copy.checking}</div>
+              <div className={`mt-2 text-sm ${isDark ? "text-slate-300" : "text-slate-600"}`}>
+                {lang === "is"
+                  ? "Ef þetta hangir lengi, þá er það líklega bara webhook-ið að ná sér í kaffi."
+                  : "If this takes a bit, it’s usually just the webhook grabbing a coffee."}
               </div>
-              <div>
-                <h1 style={styles.h1}>{copy.title}</h1>
-                <p style={styles.p}>
-                  {status === "checking"
-                    ? copy.checking
-                    : status === "active"
-                      ? copy.subtitleActive
-                      : copy.subtitlePending}
-                </p>
-              </div>
-            </div>
+            </>
+          )}
 
-            <div style={styles.badgesRow}>
-              {trustBadges.map((b) => (
-                <div key={b.text} style={styles.badge}>
-                  <span aria-hidden>{b.icon}</span>
-                  <span>{b.text}</span>
+          {status === "active" && (
+            <>
+              <div className="text-lg font-semibold">{copy.activeTitle}</div>
+
+              <div className={`mt-2 text-sm ${isDark ? "text-slate-300" : "text-slate-600"}`}>
+                {copy.manageHint}
+              </div>
+
+              <div className="mt-4 flex flex-wrap items-center gap-3">
+                <button
+                  type="button"
+                  onClick={onManage}
+                  disabled={portalLoading}
+                  className={`rounded-xl px-4 py-2 text-sm font-semibold border ${
+                    isDark
+                      ? "border-slate-700 bg-slate-950 hover:bg-slate-800"
+                      : "border-slate-300 bg-white hover:bg-slate-50"
+                  } ${portalLoading ? "opacity-70 cursor-not-allowed" : ""}`}
+                  title={t?.("billingPortal") ?? "Billing portal"}
+                >
+                  {portalLoading ? copy.opening : copy.manage}
+                </button>
+
+                <Link
+                  to="/"
+                  className={`rounded-xl px-4 py-2 text-sm font-semibold ${
+                    isDark
+                      ? "bg-indigo-600 hover:bg-indigo-500 text-white"
+                      : "bg-indigo-600 hover:bg-indigo-500 text-white"
+                  }`}
+                >
+                  {copy.home}
+                </Link>
+              </div>
+
+              {portalError && (
+                <div className={`mt-3 text-sm ${isDark ? "text-rose-300" : "text-rose-700"}`}>
+                  {portalError}
                 </div>
-              ))}
-            </div>
+              )}
+            </>
+          )}
 
-            {/* status strip */}
-            <div style={styles.statusStrip}>
-              <span style={styles.statusDot(status)} aria-hidden />
-              <span style={styles.statusText}>
-                {status === "checking"
-                  ? lang === "en"
-                    ? "Checking…"
-                    : "Athuga…"
-                  : status === "active"
-                    ? lang === "en"
-                      ? "Pro active"
-                      : "Pro virkt"
-                    : lang === "en"
-                      ? "Activating"
-                      : "Virkjar"}
-              </span>
-            </div>
-          </div>
+          {status === "pending" && (
+            <>
+              <div className="text-lg font-semibold">{copy.pendingTitle}</div>
+              <div className={`mt-2 text-sm ${isDark ? "text-slate-300" : "text-slate-600"}`}>
+                {copy.pendingBody}
+              </div>
 
-          {/* CTA */}
-          <div style={{ marginTop: 14 }}>
-            <Link to="/" style={styles.ctaLink}>
-              <span style={{ display: "inline-flex", alignItems: "center", gap: 10 }}>
-                <span aria-hidden>✨</span>
-                <span>{copy.back}</span>
-                <span style={{ opacity: 0.9 }} aria-hidden>
-                  →
-                </span>
-              </span>
-              <span style={styles.ctaSub}>{copy.fine}</span>
-            </Link>
-          </div>
+              <div className="mt-4 flex flex-wrap items-center gap-3">
+                <button
+                  type="button"
+                  onClick={onManage}
+                  disabled={portalLoading}
+                  className={`rounded-xl px-4 py-2 text-sm font-semibold border ${
+                    isDark
+                      ? "border-slate-700 bg-slate-950 hover:bg-slate-800"
+                      : "border-slate-300 bg-white hover:bg-slate-50"
+                  } ${portalLoading ? "opacity-70 cursor-not-allowed" : ""}`}
+                  title={t?.("billingPortal") ?? "Billing portal"}
+                >
+                  {portalLoading ? copy.opening : copy.manage}
+                </button>
 
-          <div style={styles.finePrint}>
-            {T(
-              "successFinePrint",
-              lang === "en"
-                ? "Tip: If Pro doesn’t show up immediately, try refreshing once."
-                : "Ábending: Ef Pro birtist ekki strax, prófaðu að endurhlaða einu sinni."
-            )}
-          </div>
-        </div>
+                <Link
+                  to="/"
+                  className={`rounded-xl px-4 py-2 text-sm font-semibold ${
+                    isDark
+                      ? "bg-indigo-600 hover:bg-indigo-500 text-white"
+                      : "bg-indigo-600 hover:bg-indigo-500 text-white"
+                  }`}
+                >
+                  {copy.home}
+                </Link>
 
-        <div style={styles.footer}>
-          {T(
-            "successSupportLine",
-            lang === "en" ? "Need help? Email us at" : "Þarftu aðstoð? Sendu okkur tölvupóst á"
-          )}{" "}
-          <a
-            href="mailto:support@campcast.is?subject=CampCast%20Pro%20Support"
-            style={{
-              fontWeight: 600,
-              color: "#10b981", // emerald / trust green
-              textDecoration: "none",
-            }}
-          >
-            hello@campcast.is
-          </a>
+                <a
+                  href="mailto:support@campcast.is"
+                  className={`rounded-xl px-4 py-2 text-sm font-semibold ${
+                    isDark
+                      ? "bg-slate-800 hover:bg-slate-700 text-slate-100"
+                      : "bg-slate-200 hover:bg-slate-300 text-slate-900"
+                  }`}
+                >
+                  {copy.support}
+                </a>
+              </div>
+
+              {portalError && (
+                <div className={`mt-3 text-sm ${isDark ? "text-rose-300" : "text-rose-700"}`}>
+                  {portalError}
+                </div>
+              )}
+            </>
+          )}
         </div>
       </div>
     </div>
   );
-}
-
-function getStyles(isLight) {
-  return {
-    page: {
-      minHeight: "100vh",
-      padding: "28px 16px",
-      color: isLight ? "#0B1220" : "white",
-      background: isLight
-        ? "radial-gradient(1200px 700px at 20% 10%, rgba(16,185,129,0.14), transparent 55%), radial-gradient(900px 600px at 85% 80%, rgba(59,130,246,0.10), transparent 55%), linear-gradient(180deg, #F7FAFC 0%, #EEF2F7 100%)"
-        : "radial-gradient(1200px 700px at 20% 10%, rgba(16,185,129,0.18), transparent 55%), radial-gradient(900px 600px at 85% 80%, rgba(59,130,246,0.12), transparent 55%), linear-gradient(180deg, #060A12 0%, #060A12 100%)",
-      position: "relative",
-      overflow: "hidden",
-    },
-    glowTop: {
-      position: "absolute",
-      inset: "-200px -200px auto -200px",
-      height: 420,
-      background: "radial-gradient(circle at 30% 50%, rgba(16,185,129,0.22), transparent 60%)",
-      filter: "blur(12px)",
-      pointerEvents: "none",
-      opacity: isLight ? 0.45 : 1,
-    },
-    glowBottom: {
-      position: "absolute",
-      inset: "auto -200px -220px -200px",
-      height: 480,
-      background: "radial-gradient(circle at 70% 40%, rgba(59,130,246,0.18), transparent 62%)",
-      filter: "blur(12px)",
-      pointerEvents: "none",
-      opacity: isLight ? 0.4 : 1,
-    },
-    container: { maxWidth: 780, margin: "0 auto", position: "relative" },
-
-    topBar: {
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "space-between",
-      gap: 12,
-      marginBottom: 14,
-    },
-
-    backLink: {
-      display: "inline-flex",
-      alignItems: "center",
-      gap: 8,
-      padding: "8px 10px",
-      borderRadius: 12,
-      color: isLight ? "rgba(11,18,32,0.75)" : "rgba(255,255,255,0.78)",
-      textDecoration: "none",
-      border: "1px solid transparent",
-    },
-
-    brandPill: {
-      display: "inline-flex",
-      alignItems: "center",
-      gap: 10,
-      padding: "10px 12px",
-      borderRadius: 999,
-      background: isLight ? "rgba(255,255,255,0.70)" : "rgba(255,255,255,0.06)",
-      border: isLight ? "1px solid rgba(15,23,42,0.10)" : "1px solid rgba(255,255,255,0.12)",
-      boxShadow: isLight ? "0 10px 25px rgba(2,6,23,0.10)" : "0 14px 30px rgba(0,0,0,0.35)",
-      backdropFilter: "blur(10px)",
-    },
-
-    brandLogoWrap: {
-      width: 44,
-      height: 44,
-      borderRadius: 14,
-      background: "rgba(255,255,255,0.95)",
-      display: "grid",
-      placeItems: "center",
-      padding: 6,
-      boxShadow: "inset 0 0 0 1px rgba(15,23,42,0.10)",
-      flex: "0 0 auto",
-    },
-
-    brandLogo: {
-      width: 34,
-      height: 34,
-      objectFit: "contain",
-      display: "block",
-    },
-
-    brandTitle: {
-      fontWeight: 900,
-      fontSize: 14,
-      lineHeight: 1.1,
-      color: isLight ? "#0B1220" : "white",
-    },
-    brandSub: {
-      fontSize: 12,
-      opacity: 0.72,
-      color: isLight ? "rgba(11,18,32,0.85)" : "rgba(255,255,255,0.8)",
-    },
-
-    card: {
-      borderRadius: 24,
-      border: isLight ? "1px solid rgba(15,23,42,0.10)" : "1px solid rgba(255,255,255,0.10)",
-      background: isLight ? "rgba(255,255,255,0.72)" : "rgba(255,255,255,0.06)",
-      boxShadow: isLight ? "0 18px 60px rgba(2,6,23,0.12)" : "0 18px 60px rgba(0,0,0,0.45)",
-      backdropFilter: "blur(10px)",
-      padding: 18,
-    },
-
-    header: { padding: "8px 6px 0px 6px" },
-
-    celebrateRow: {
-      display: "flex",
-      alignItems: "flex-start",
-      gap: 12,
-    },
-
-    celebrateIcon: {
-      width: 44,
-      height: 44,
-      borderRadius: 16,
-      display: "grid",
-      placeItems: "center",
-      background: "rgba(16,185,129,0.14)",
-      border: "1px solid rgba(16,185,129,0.22)",
-      flex: "0 0 auto",
-      fontSize: 20,
-    },
-
-    h1: { fontSize: 28, fontWeight: 950, margin: "0 0 6px 0", letterSpacing: "-0.02em" },
-    p: { margin: 0, opacity: 0.84, lineHeight: 1.5 },
-
-    badgesRow: {
-      display: "flex",
-      flexWrap: "wrap",
-      gap: 8,
-      marginTop: 14,
-    },
-
-    badge: {
-      display: "inline-flex",
-      alignItems: "center",
-      gap: 8,
-      fontSize: 12,
-      padding: "8px 10px",
-      borderRadius: 999,
-      background: isLight ? "rgba(15,23,42,0.05)" : "rgba(255,255,255,0.07)",
-      border: isLight ? "1px solid rgba(15,23,42,0.08)" : "1px solid rgba(255,255,255,0.10)",
-      color: isLight ? "rgba(11,18,32,0.85)" : "rgba(255,255,255,0.88)",
-    },
-
-    statusStrip: {
-      marginTop: 14,
-      display: "inline-flex",
-      alignItems: "center",
-      gap: 10,
-      padding: "10px 12px",
-      borderRadius: 16,
-      background: isLight ? "rgba(15,23,42,0.03)" : "rgba(0,0,0,0.18)",
-      border: isLight ? "1px solid rgba(15,23,42,0.08)" : "1px solid rgba(255,255,255,0.10)",
-    },
-
-    statusDot: (status) => {
-      const base = {
-        width: 10,
-        height: 10,
-        borderRadius: 999,
-        display: "inline-block",
-      };
-
-      if (status === "active") return { ...base, background: "rgba(16,185,129,1)" };
-      if (status === "checking") return { ...base, background: "rgba(59,130,246,1)" };
-      return { ...base, background: "rgba(245,158,11,1)" };
-    },
-
-    statusText: {
-      fontSize: 13,
-      fontWeight: 800,
-      opacity: 0.9,
-    },
-
-    ctaLink: {
-      width: "100%",
-      display: "flex",
-      flexDirection: "column",
-      alignItems: "center",
-      gap: 6,
-      padding: "14px 16px",
-      borderRadius: 18,
-      border: "1px solid rgba(16,185,129,0.35)",
-      background: "linear-gradient(180deg, rgba(16,185,129,0.95), rgba(16,185,129,0.70))",
-      color: "white",
-      fontWeight: 950,
-      textDecoration: "none",
-      boxShadow: "0 14px 30px rgba(16,185,129,0.22)",
-    },
-
-    ctaSub: {
-      fontSize: 12,
-      fontWeight: 700,
-      opacity: 0.9,
-      textAlign: "center",
-    },
-
-    finePrint: {
-      marginTop: 12,
-      textAlign: "center",
-      fontSize: 12,
-      opacity: 0.72,
-    },
-
-    footer: {
-      marginTop: 14,
-      textAlign: "center",
-      fontSize: 12,
-      opacity: 0.72,
-    },
-  };
 }

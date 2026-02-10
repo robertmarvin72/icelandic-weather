@@ -188,6 +188,13 @@ export const translations = {
       "If Pro access doesn’t activate immediately, it will be enabled automatically within a few minutes.",
     successSupportLine:
       "If anything doesn’t work as expected, contact us and we’ll assist you promptly.",
+    
+    proUntil: "Pro until",
+    proManageHint: "Manage your subscription and invoices.",
+    manageSubscription: "Manage",
+    billingPortal: "Billing portal",
+    openingBillingPortal: "Opening billing portal…",
+    billingPortalUnavailable: "Billing portal not ready for this account yet.",
   },
 
 
@@ -382,5 +389,11 @@ export const translations = {
       "Ef Pro aðgangur virkjast ekki strax, uppfærist hann sjálfkrafa innan örfárra mínútna.",
     successSupportLine:
       "Ef eitthvað virkar ekki sem skyldi, hafðu samband og við aðstoðum þig fljótt og örugglega.",
+    proUntil: "Pro gilt til",
+    proManageHint: "Stjórnaðu áskrift og kvittunum.",
+    manageSubscription: "Stjórna",
+    billingPortal: "Greiðslusíða",
+    openingBillingPortal: "Opna greiðslugátt…",
+    billingPortalUnavailable: "Greiðslugátt er ekki tilbúin fyrir þennan notanda enn.",
   },
 };

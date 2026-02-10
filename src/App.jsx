@@ -247,6 +247,46 @@ function IcelandCampingWeatherApp({ page = "home" }) {
     navigate("/subscribe");
   }, [me, navigate, openLoginModal, pushToast, t]);
 
+  // ✅ Paddle billing portal (customer portal)
+  const openBillingPortal = useCallback(async () => {
+    if (!me?.user) {
+      openLoginModal();
+      return;
+    }
+
+    try {
+      pushToast({
+        type: "info",
+        title: t?.("billingPortal") ?? "Billing",
+        message: t?.("openingBillingPortal") ?? "Opening billing portal…",
+      });
+
+      const r = await fetch("/api/billing-portal", {
+        method: "POST",
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
+      });
+
+      const j = await r.json().catch(() => ({}));
+      if (!r.ok || !j?.ok || !j?.url) {
+        const msg =
+          j?.error ||
+          (j?.code === "MISSING_PADDLE_CUSTOMER"
+            ? (t?.("billingPortalUnavailable") ?? "Billing portal not ready for this account yet.")
+            : `Billing portal failed (${r.status})`);
+        throw new Error(msg);
+      }
+
+      window.location.assign(j.url);
+    } catch (err) {
+      pushToast({
+        type: "error",
+        title: t?.("billingPortal") ?? "Billing",
+        message: String(err?.message || err),
+      });
+    }
+  }, [me, openLoginModal, pushToast, t]);
+
   // ✅ If we come back from Paddle success/cancel, refresh entitlements
   useEffect(() => {
     const url = new URL(window.location.href);
@@ -412,6 +452,7 @@ function IcelandCampingWeatherApp({ page = "home" }) {
                 windDir={gatedWindDir}
                 proUntil={me?.entitlements?.proUntil ?? null}
                 subscription={me?.subscription ?? null}
+                onManageSubscription={openBillingPortal}
               />
             </div>
           )}
