@@ -68,17 +68,12 @@ export default async function handler(req, res) {
 
     // Create a customer portal session
     const r = await fetch(`${base}/customers/${me.paddle_customer_id}/portal-sessions`, {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${paddleKey}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        // optional, but nice to have for UX (Paddle can use it to return)
-        // If your Paddle account ignores/doesn’t support this, it’s harmless.
-        return_url: "https://www.campcast.is/",
-      }),
+        method: "POST",
+        headers: {
+            Authorization: `Bearer ${paddleKey}`,
+        },
     });
+
 
     const j = await r.json().catch(() => ({}));
 
@@ -90,7 +85,12 @@ export default async function handler(req, res) {
       });
     }
 
-    const url = j?.data?.url || j?.url;
+    const url =
+        j?.data?.urls?.general?.overview ||
+        j?.data?.urls?.general?.portal_overview || // just-in-case future naming
+        j?.data?.url ||
+        j?.url;
+
     if (!url) return res.status(500).json({ ok: false, error: "No portal URL returned" });
 
     return res.status(200).json({ ok: true, url });
