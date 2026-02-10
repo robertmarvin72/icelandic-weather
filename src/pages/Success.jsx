@@ -227,7 +227,7 @@ export default function Success({ lang = "is", theme = "dark", t }) {
                 </Link>
 
                 <a
-                  href="mailto:support@campcast.is"
+                  href="mailto:hello@campcast.is"
                   className={`rounded-xl px-4 py-2 text-sm font-semibold ${
                     isDark
                       ? "bg-slate-800 hover:bg-slate-700 text-slate-100"
