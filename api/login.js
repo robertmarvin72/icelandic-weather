@@ -7,23 +7,47 @@ const SESSION_COOKIE = "cc_session";
 const SESSION_DAYS = 30;
 
 function makeSessionToken() {
-  return crypto.randomBytes(32).toString("hex"); // 64 chars
+  return crypto.randomBytes(32).toString("hex");
 }
 
 function sha256Hex(input) {
-  return crypto.createHash("sha256").update(input).digest("hex"); // 64 chars
+  return crypto.createHash("sha256").update(String(input)).digest("hex");
+}
+
+function normalizeEmail(v) {
+  return String(v || "").trim().toLowerCase();
+}
+
+function buildCookie({ name, value, maxAgeSeconds, secure, domain }) {
+  const parts = [
+    `${name}=${encodeURIComponent(value)}`,
+    "Path=/",
+    "HttpOnly",
+    "SameSite=Lax",
+    `Max-Age=${maxAgeSeconds}`,
+    `Expires=${new Date(Date.now() + maxAgeSeconds * 1000).toUTCString()}`,
+    secure ? "Secure" : null,
+    domain ? `Domain=${domain}` : null,
+    "Priority=High",
+  ].filter(Boolean);
+
+  return parts.join("; ");
 }
 
 function setSessionCookie(res, token, maxAgeSeconds) {
   const secure = process.env.NODE_ENV === "production";
-  const cookie = [
-    `${SESSION_COOKIE}=${token}`,
-    `Path=/`,
-    `HttpOnly`,
-    `SameSite=Lax`,
-    `Max-Age=${maxAgeSeconds}`,
-    secure ? "Secure" : null,
-  ].filter(Boolean).join("; ");
+
+  // Only set this if you truly need cookie shared across subdomains:
+  // e.g. ".campcast.is"
+  const domain = process.env.SESSION_COOKIE_DOMAIN || "";
+
+  const cookie = buildCookie({
+    name: SESSION_COOKIE,
+    value: token,
+    maxAgeSeconds,
+    secure,
+    domain: domain || null,
+  });
 
   res.setHeader("Set-Cookie", cookie);
 }
@@ -44,65 +68,67 @@ async function createUser(emailLower) {
     values (${emailLower})
     returning id, email, tier, display_name, created_at
   `;
-  return rows[0];
+  return rows[0] || null;
 }
 
 export default async function handler(req, res) {
   if (req.method !== "POST") {
-    res.status(405).json({ ok: false, error: "Method not allowed" });
-    return;
+    res.setHeader("Allow", "POST");
+    return res.status(405).json({ ok: false, error: "Method not allowed" });
   }
 
   try {
-    const body = typeof req.body === "string" ? JSON.parse(req.body) : req.body;
-    const email = (body?.email || "").trim().toLowerCase();
-    const createIfMissing = !!body?.createIfMissing;
+    const body = req.body && typeof req.body === "object" ? req.body : {};
+    const email = normalizeEmail(body.email);
+    const createIfMissing = !!body.createIfMissing;
 
     if (!email || !email.includes("@")) {
-      res.status(400).json({ ok: false, error: "Invalid email" });
-      return;
+      return res.status(400).json({ ok: false, code: "INVALID_EMAIL", error: "Invalid email" });
     }
 
     // 1) Find user (case-insensitive)
     let user = await findUserByEmail(email);
 
-    // If this is a strict login and the user doesn't exist, don't auto-create.
+    // Strict login: don't auto-create
     if (!user && !createIfMissing) {
-      res.status(200).json({
+      return res.status(200).json({
         ok: false,
         code: "USER_NOT_FOUND",
         error: "User not found",
       });
-      return;
     }
 
-    // If allowed, create user on demand (e.g. from the Subscribe page)
+    // Subscribe flow: create user if missing
     if (!user && createIfMissing) {
       try {
         user = await createUser(email);
       } catch (e) {
-        // If another request created it in parallel, just re-fetch
         user = await findUserByEmail(email);
         if (!user) throw e;
       }
+    }
+
+    if (!user) {
+      return res.status(500).json({ ok: false, error: "Failed to resolve user" });
     }
 
     // 2) Create session
     const rawToken = makeSessionToken();
     const tokenHash = sha256Hex(rawToken);
 
-    const expiresAt = new Date(Date.now() + SESSION_DAYS * 24 * 60 * 60 * 1000);
+    const maxAgeSeconds = SESSION_DAYS * 24 * 60 * 60;
+    const expiresAt = new Date(Date.now() + maxAgeSeconds * 1000);
+
     await sql`
       insert into user_session (user_id, token_hash, expires_at)
       values (${user.id}, ${tokenHash}, ${expiresAt.toISOString()})
     `;
 
     // 3) Set cookie
-    const maxAgeSeconds = SESSION_DAYS * 24 * 60 * 60;
     setSessionCookie(res, rawToken, maxAgeSeconds);
 
-    res.status(200).json({ ok: true, user });
+    return res.status(200).json({ ok: true, user });
   } catch (e) {
-    res.status(500).json({ ok: false, error: String(e?.message || e) });
+    return res.status(500).json({ ok: false, error: String(e?.message || e) });
   }
 }

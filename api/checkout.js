@@ -118,13 +118,10 @@ function appBaseUrl(req) {
 }
 
 function payBaseUrl() {
-  // IMPORTANT: point checkout links to pay subdomain to avoid SW/PWA issues
   return normalizeBaseUrl(process.env.PAY_URL || "https://pay.campcast.is");
 }
 
 function forcePayHost(url) {
-  // If Paddle returns something like https://campcast.is/?_ptxn=...
-  // we rewrite host to pay.campcast.is so it doesn't hit the PWA SW.
   try {
     const u = new URL(url);
     const pay = new URL(payBaseUrl());
@@ -137,14 +134,17 @@ function forcePayHost(url) {
 }
 
 export default async function handler(req, res) {
-  if (req.method !== "POST" && req.method !== "GET") {
-    res.setHeader("Allow", "GET, POST");
+  // ✅ POST only (don’t create transactions on GET)
+  if (req.method !== "POST") {
+    res.setHeader("Allow", "POST");
     return res.status(405).json({ ok: false, error: "Method Not Allowed" });
   }
 
   try {
     const user = await getUserFromSession(req);
-    if (!user) return res.status(401).json({ ok: false, error: "Not logged in" });
+    if (!user) {
+      return res.status(401).json({ ok: false, code: "NOT_LOGGED_IN", error: "Not logged in" });
+    }
 
     const priceId = process.env.PADDLE_PRICE_ID_MONTHLY;
     if (!priceId) throw new Error("Missing PADDLE_PRICE_ID_MONTHLY");
@@ -173,14 +173,12 @@ export default async function handler(req, res) {
 
     const checkoutUrl = forcePayHost(checkoutUrlRaw);
 
-    // Redirect for browser navigation
     if (shouldRedirect(req)) {
       res.setHeader("Cache-Control", "no-store");
       res.writeHead(303, { Location: checkoutUrl });
       return res.end();
     }
 
-    // JSON for fetch calls
     res.setHeader("Cache-Control", "no-store");
     return res.status(200).json({ ok: true, url: checkoutUrl });
   } catch (e) {

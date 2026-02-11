@@ -20,6 +20,62 @@ export default function Subscribe({ onClose, onDone, lang = "is", theme = "dark"
     return fallback;
   };
 
+  // --- Helpers --------------------------------------------------------------
+
+  async function postJson(url, body) {
+    const res = await fetch(url, {
+      method: "POST",
+      credentials: "include",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body || {}),
+    });
+
+    const text = await res.text();
+    let json = null;
+    try {
+      json = text ? JSON.parse(text) : null;
+    } catch {
+      // non-JSON response
+    }
+
+    return { res, json, text };
+  }
+
+  function pickErrorMessage({ res, json, text, fallback }) {
+    return (
+      json?.error ||
+      json?.message ||
+      (typeof text === "string" && text.trim() ? text.trim() : null) ||
+      fallback ||
+      `Request failed (${res?.status || "?"})`
+    );
+  }
+
+  // ✅ Ensure a valid session cookie exists for this email.
+  // Works even if user lands here directly via URL.
+  async function ensureSessionForEmail(trimmedEmail) {
+    const { res, json, text } = await postJson("/api/login", {
+      email: trimmedEmail,
+      createIfMissing: true,
+    });
+
+    if (!res.ok || !json?.ok) {
+      const msg = pickErrorMessage({
+        res,
+        json,
+        text,
+        fallback: T("loginFailed", "Login failed."),
+      });
+
+      const code = json?.code ? ` (${json.code})` : "";
+      throw new Error(msg + code);
+    }
+
+    return true;
+  }
+
+  // --- Checkout -------------------------------------------------------------
+
   async function startCheckout() {
     if (busy) return;
 
@@ -33,23 +89,37 @@ export default function Subscribe({ onClose, onDone, lang = "is", theme = "dark"
     setError("");
 
     try {
-      const res = await fetch("/api/checkout", {
-        method: "POST",
-        credentials: "include",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: trimmed }),
-      });
+      // 1) Ensure session
+      await ensureSessionForEmail(trimmed);
 
-      const json = await res.json().catch(() => ({}));
+      // 2) Create checkout
+      let { res, json, text } = await postJson("/api/checkout", { email: trimmed });
 
-      if (!res.ok || !json?.ok) {
-        const statusPart = json?.status ? ` (${json.status})` : "";
-        throw new Error(
-          (json?.error || T("subscribeSomethingWentWrong", "Something went wrong.")) + statusPart
-        );
+      // 2b) If we still get 401, retry login ONCE and retry checkout.
+      // This covers cookie edge cases / stale sessions.
+      if (res.status === 401) {
+        await ensureSessionForEmail(trimmed);
+        ({ res, json, text } = await postJson("/api/checkout", { email: trimmed }));
       }
 
-      if (!json?.url) throw new Error(T("subscribeMissingCheckoutUrl", "Missing checkout URL."));
+      if (!res.ok || !json?.ok) {
+        const msg = pickErrorMessage({
+          res,
+          json,
+          text,
+          fallback: T("subscribeSomethingWentWrong", "Something went wrong."),
+        });
+
+        if (res.status === 401) {
+          throw new Error(T("notLoggedIn", "Not logged in."));
+        }
+
+        throw new Error(msg);
+      }
+
+      if (!json?.url) {
+        throw new Error(T("subscribeMissingCheckoutUrl", "Missing checkout URL."));
+      }
 
       // Redirect to Paddle checkout
       window.location.assign(json.url);
@@ -376,7 +446,7 @@ function getStyles(isLight) {
       marginTop: 10,
       width: "100%",
       borderRadius: 16,
-      border: isLight ? "1px solid rgba(2,6,23,0.12)" : "1px solid rgba(255,255,255,0.12)",
+      border: isLight ? "1px solid rgba(2,6,23,0.12)" : "rgba(255,255,255,0.12)",
       background: "transparent",
       color: isLight ? "#0B1220" : "rgba(255,255,255,0.9)",
       padding: "10px 12px",
@@ -395,7 +465,7 @@ function getStyles(isLight) {
       gap: 12,
       padding: 12,
       borderRadius: 18,
-      border: isLight ? "1px solid rgba(2,6,23,0.10)" : "1px solid rgba(255,255,255,0.10)",
+      border: isLight ? "1px solid rgba(2,6,23,0.10)" : "rgba(255,255,255,0.10)",
       background: isLight ? "rgba(2,6,23,0.03)" : "rgba(255,255,255,0.03)",
     },
 
