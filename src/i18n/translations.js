@@ -130,8 +130,7 @@ export const translations = {
 
     aboutTitle: "About CampCast",
 
-    aboutIntro:
-      "CampCast is a weather app built for camping in Iceland.",
+    aboutIntro: "CampCast is a weather app built for camping in Iceland.",
 
     aboutGoal:
       "The goal is simple: to help you choose better campsites based on real conditions, not just temperature.",
@@ -155,12 +154,12 @@ export const translations = {
     aboutOutro:
       "CampCast is designed specifically for Icelandic conditions and continues to evolve based on user feedback.",
 
-    aboutContact:
-      "Questions, feedback, or issues?",
+    aboutContact: "Questions, feedback, or issues?",
 
     aboutEmailLabel: "Reach us at",
 
-    footerDataBy: "Data by Open-Meteo. Forecast includes temperature, rain, wind, & weather codes.",
+    footerDataBy:
+      "Data by Open-Meteo. Forecast includes temperature, rain, wind, & weather codes.",
     footerAbout: "About",
     footerContact: "Contact",
     backToForecast: "Back to forecast",
@@ -169,12 +168,23 @@ export const translations = {
 
     nearest: "Nearest",
 
-    noPasswordNeeded: "No password is needed to log in. Just enter your email and we'll send you a link to log in.",
+    // Login / Identity (FLAT keys)
+    close: "Close",
+    loginEmailPlaceholder: "you@example.com",
+    noPasswordNeeded:
+      "No password is needed to log in. Just enter your email and we'll send you a link to log in.",
     login: "Login",
     enterEmailToContinue: "Enter your email to continue",
     loading: "Loading...",
     continue: "Continue",
+    invalidEmail: "Please enter a valid email.",
+    loginFailed: "Login failed",
+    loginRequired: "Login required",
+    pleaseLoginToContinue: "Please log in to continue.",
+    checkoutSuccess: "Pro unlocked!",
+    checkoutCancelled: "Checkout cancelled.",
 
+    // Pro CTA
     proCtaTitle: "Get Pro",
     proCtaSubtitle: "Log in to purchase and unlock Pro features.",
     proCtaTooltip: "Log in → checkout → unlock Pro",
@@ -183,20 +193,69 @@ export const translations = {
     loggedIn: "Logged in",
     proUpgrade: "Upgrade to Pro",
 
-    // Success page
-    successFinePrint:
-      "If Pro access doesn’t activate immediately, it will be enabled automatically within a few minutes.",
-    successSupportLine:
-      "If anything doesn’t work as expected, contact us and we’ll assist you promptly.",
-    
-    proUntil: "Pro until",
-    proManageHint: "Manage your subscription and invoices.",
+    // Billing portal
     manageSubscription: "Manage",
     billingPortal: "Billing portal",
     openingBillingPortal: "Opening billing portal…",
     billingPortalUnavailable: "Billing portal not ready for this account yet.",
-  },
+    proUntil: "Pro until",
+    proManageHint: "Manage your subscription and invoices.",
 
+    // Subscribe page (FLAT keys)
+    subscribeBack: "← Back",
+    subscribeBrandTitle: "CampCast Pro",
+    subscribeBrandSub: "Follow the weather",
+    subscribeBrandAlt: "CampCast",
+    subscribeTitle: "Activate Pro access",
+    subscribeLead: "You’ll complete payment with Paddle.",
+    subscribeBadgeSecure: "Secure checkout via Paddle",
+    subscribeBadgeCancel: "Cancel anytime",
+    subscribeBadgeInstant: "Pro activates instantly",
+    subscribeEmailLabel: "Email",
+    subscribeEmailPlaceholder: "name@domain.com",
+    subscribeEmailHelp: "We use your email for receipts.",
+    subscribeSectionTitle: "What you get with Pro",
+    subscribeFeatureUnlockedTitle: "All Pro features unlocked",
+    subscribeFeatureUnlockedDesc: "Full access to Pro features in the app.",
+    subscribeFeatureOverviewTitle: "Better overview & scoring",
+    subscribeFeatureOverviewDesc: "Clearer guidance for weather-based decisions.",
+    subscribeFeatureAccuracyTitle: "More accuracy & calculations",
+    subscribeFeatureAccuracyDesc: "Extra calculations where it matters.",
+    subscribeFeatureSupportTitle: "Supports ongoing development",
+    subscribeFeatureSupportDesc: "Your purchase helps us keep improving CampCast.",
+    subscribeOopsTitle: "Oops!",
+    subscribeMissingCheckoutUrl: "Missing checkout URL.",
+    subscribeSomethingWentWrong: "Something went wrong.",
+    subscribeCtaMain: "Continue to checkout",
+    subscribeCtaBusy: "Opening checkout…",
+    subscribeCtaSub: "You can cancel later.",
+    subscribeFinePrint: "Payment is handled via Paddle.",
+    subscribeSecondary: "Back",
+    subscribeFooter: "Questions? Email us.",
+
+    // Success page (FLAT keys)
+    successBack: "Back to CampCast",
+    successBackToHome: "Back to home",
+    successTitle: "Payment received",
+    successChecking: "Verifying your Pro access…",
+    successSubtitleActive: "Your CampCast Pro access is now active.",
+    successSubtitlePending:
+      "Payment received. Pro usually activates instantly — give it a moment.",
+    successFine: "Try refreshing shortly.",
+    successBadgeSecure: "Secure payment via Paddle",
+    successBadgeInstant: "Pro activates instantly",
+    successBadgeCancel: "Cancel anytime",
+    successStatusChecking: "Checking…",
+    successStatusActive: "Pro active",
+    successStatusActivating: "Activating",
+    successPillTitle: "CampCast Pro",
+    successPillSub: "Follow the weather",
+    successBrandAlt: "CampCast",
+    successFinePrint:
+      "If Pro access doesn’t activate immediately, it will be enabled automatically within a few minutes.",
+    successSupportLine:
+      "If anything doesn’t work as expected, contact us and we’ll assist you promptly.",
+  },
 
   // Icelandic (Íslenska)
   is: {
@@ -330,8 +389,7 @@ export const translations = {
 
     aboutTitle: "Um CampCast",
 
-    aboutIntro:
-      "CampCast er veðurapp hannað fyrir tjaldlíf á Íslandi.",
+    aboutIntro: "CampCast er veðurapp hannað fyrir tjaldlíf á Íslandi.",
 
     aboutGoal:
       "Markmiðið er einfalt: að hjálpa þér að velja betri tjaldsvæði miðað við veður, ekki bara hitastig.",
@@ -355,12 +413,12 @@ export const translations = {
     aboutOutro:
       "Appið er hannað með íslenskar aðstæður í huga og þróast stöðugt með endurgjöf frá notendum.",
 
-    aboutContact:
-      "Ertu með spurningu, hugmynd eða lendir í vandræðum?",
+    aboutContact: "Ertu með spurningu, hugmynd eða lendir í vandræðum?",
 
     aboutEmailLabel: "Sendu okkur póst á",
 
-    footerDataBy: "Gögn frá Open-Meteo. Spáin inniheldur hitastig, úrkomu, vind og veðurkóða.",
+    footerDataBy:
+      "Gögn frá Open-Meteo. Spáin inniheldur hitastig, úrkomu, vind og veðurkóða.",
     footerAbout: "Um",
     footerContact: "Hafa samband",
 
@@ -370,12 +428,23 @@ export const translations = {
 
     nearest: "Næst",
 
-    noPasswordNeeded: "Lykilorð er ekki nauðsynlegt til að logga inn. Sláðu bara inn netfangið þitt og við sendum þér tengil til að logga inn.",
+    // Login / Identity (FLAT keys)
+    close: "Loka",
+    loginEmailPlaceholder: "nafn@domain.is",
+    noPasswordNeeded:
+      "Lykilorð er ekki nauðsynlegt til að logga inn. Sláðu bara inn netfangið þitt og við sendum þér tengil til að logga inn.",
     login: "Innskráning",
     enterEmailToContinue: "Sláðu inn netfang til að halda áfram",
     loading: "Hleð inn...",
     continue: "Haltu áfram",
+    invalidEmail: "Vinsamlegast sláðu inn gilt netfang.",
+    loginFailed: "Innskráning mistókst",
+    loginRequired: "Innskráning nauðsynleg",
+    pleaseLoginToContinue: "Vinsamlegast skráðu þig inn til að halda áfram.",
+    checkoutSuccess: "Pro opnað!",
+    checkoutCancelled: "Greiðsluferli hætt.",
 
+    // Pro CTA
     proCtaTitle: "Fá Pro aðgang",
     proCtaSubtitle: "Skráðu þig inn til að kaupa aðgang og opna Pro-fídusa.",
     proCtaTooltip: "Skráðu þig inn → farðu í greiðslu → opnaðu Pro",
@@ -384,16 +453,70 @@ export const translations = {
     loggedIn: "Innskráður",
     proUpgrade: "Uppfæra í Pro",
 
-    // Success page
-    successFinePrint:
-      "Ef Pro aðgangur virkjast ekki strax, uppfærist hann sjálfkrafa innan örfárra mínútna.",
-    successSupportLine:
-      "Ef eitthvað virkar ekki sem skyldi, hafðu samband og við aðstoðum þig fljótt og örugglega.",
+    // Billing portal
     proUntil: "Pro gilt til",
     proManageHint: "Stjórnaðu áskrift og kvittunum.",
     manageSubscription: "Stjórna",
     billingPortal: "Greiðslusíða",
     openingBillingPortal: "Opna greiðslugátt…",
     billingPortalUnavailable: "Greiðslugátt er ekki tilbúin fyrir þennan notanda enn.",
+
+    // Subscribe page (FLAT keys)
+    subscribeBack: "← Til baka",
+    subscribeBrandTitle: "CampCast Pro",
+    subscribeBrandSub: "Eltum veðrið",
+    subscribeBrandAlt: "CampCast",
+    subscribeTitle: "Virkja Pro aðgang",
+    subscribeLead: "Þú greiðir í gegnum Paddle.",
+    subscribeBadgeSecure: "Örugg greiðsla í gegnum Paddle",
+    subscribeBadgeCancel: "Hætta hvenær sem er",
+    subscribeBadgeInstant: "Pro virkjast strax",
+    subscribeEmailLabel: "Netfang",
+    subscribeEmailPlaceholder: "nafn@domain.is",
+    subscribeEmailHelp: "Við notum netfangið fyrir kvittanir.",
+    subscribeSectionTitle: "Hvað fylgir Pro",
+    subscribeFeatureUnlockedTitle: "Allir Pro fídusar opnast",
+    subscribeFeatureUnlockedDesc: "Fullur aðgangur að Pro í appinu.",
+    subscribeFeatureOverviewTitle: "Betri yfirsýn & stig",
+    subscribeFeatureOverviewDesc:
+      "Skýrari leiðsögn fyrir veður-tengdar ákvarðanir.",
+    subscribeFeatureAccuracyTitle: "Meiri nákvæmni & útreikningar",
+    subscribeFeatureAccuracyDesc:
+      "Aukaútreikningar þar sem það skiptir máli.",
+    subscribeFeatureSupportTitle: "Styður áframhaldandi þróun",
+    subscribeFeatureSupportDesc:
+      "Kaupin hjálpa okkur að bæta CampCast áfram.",
+    subscribeOopsTitle: "Úbbs!",
+    subscribeMissingCheckoutUrl: "Vantar checkout URL.",
+    subscribeSomethingWentWrong: "Eitthvað fór úrskeiðis.",
+    subscribeCtaMain: "Halda áfram í greiðslu",
+    subscribeCtaBusy: "Opna greiðslu…",
+    subscribeCtaSub: "Þú getur hætt seinna.",
+    subscribeFinePrint: "Greiðsla fer fram í gegnum Paddle.",
+    subscribeSecondary: "Til baka",
+    subscribeFooter: "Spurningar? Sendu okkur línu.",
+
+    // Success page (FLAT keys)
+    successBack: "Fara í CampCast",
+    successBackToHome: "Til baka heim",
+    successTitle: "Greiðsla móttekin",
+    successChecking: "Staðfesti Pro aðgang…",
+    successSubtitleActive: "CampCast Pro aðgangur hefur verið virkjaður.",
+    successSubtitlePending:
+      "Greiðsla móttekin. Pro virkjast yfirleitt strax — gefðu þessu smá stund.",
+    successFine: "Prófaðu að endurhlaða eftir smá stund.",
+    successBadgeSecure: "Örugg greiðsla í gegnum Paddle",
+    successBadgeInstant: "Pro virkjast strax",
+    successBadgeCancel: "Hætta hvenær sem er",
+    successStatusChecking: "Athuga…",
+    successStatusActive: "Pro virkt",
+    successStatusActivating: "Virkjar",
+    successPillTitle: "CampCast Pro",
+    successPillSub: "Eltum veðrið",
+    successBrandAlt: "CampCast",
+    successFinePrint:
+      "Ef Pro aðgangur virkjast ekki strax, uppfærist hann sjálfkrafa innan örfárra mínútna.",
+    successSupportLine:
+      "Ef eitthvað virkar ekki sem skyldi, hafðu samband og við aðstoðum þig fljótt og örugglega.",
   },
 };

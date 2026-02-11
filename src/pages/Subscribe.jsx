@@ -7,12 +7,11 @@ export default function Subscribe({ onClose, onDone, lang = "is", theme = "dark"
 
   const [email, setEmail] = useState(initialEmail);
   const [busy, setBusy] = useState(false);
-  const [err, setErr] = useState("");
-  const [logoOk, setLogoOk] = useState(true);
+  const [error, setError] = useState("");
 
   const isLight = theme === "light";
 
-  // Tiny helper: use translation function if provided, otherwise fallback text.
+  // Translation helper (fallbacks only matter if a key is missing)
   const T = (key, fallback) => {
     if (typeof t === "function") {
       const v = t(key);
@@ -21,216 +20,177 @@ export default function Subscribe({ onClose, onDone, lang = "is", theme = "dark"
     return fallback;
   };
 
-  const copy = useMemo(() => {
-    const isEN = lang === "en";
-    return {
-      back: isEN ? "Back" : "← Til baka",
-      brandTitle: "CampCast Pro",
-      brandSub: isEN ? "Follow the weather" : "Eltum veðrið",
-
-      h1: isEN ? "Activate Pro access" : "Virkjaðu Pro aðgang",
-      lead: isEN
-        ? "No drama — just better weather decisions. You’ll complete payment with Paddle."
-        : "Engin dramatík — bara betri veðurákvarðanir. Þú ferð í greiðslu hjá Paddle.",
-      leadPaddle: "Paddle",
-
-      badges: [
-        {
-          icon: "🔒",
-          text: isEN ? "Secure checkout via Paddle" : "Örugg greiðsla í gegnum Paddle",
-        },
-        { icon: "↩️", text: isEN ? "Cancel anytime" : "Hætta hvenær sem er" },
-        { icon: "✅", text: isEN ? "Pro activates instantly" : "Pro virkjast samstundis" },
-      ],
-
-      emailLabel: isEN ? "Email" : "Netfang",
-      emailPlaceholder: isEN ? "name@domain.com" : "nafn@domain.com",
-      emailHelp: isEN
-        ? "We use your email to link your subscription and send receipts."
-        : "Við notum netfangið til að tengja áskriftina og senda kvittun.",
-
-      sectionTitle: isEN ? "What you get with Pro" : "Hvað færðu með Pro",
-      features: [
-        {
-          icon: "✨",
-          title: isEN ? "All Pro features unlocked" : "Allir Pro fídusar opnast",
-          desc: isEN
-            ? "Full access to Pro features in the app."
-            : "Fáðu fullan aðgang að Pro virkni í appinu.",
-        },
-        {
-          icon: "📊",
-          title: isEN ? "Better overview & scoring" : "Betri yfirsýn og skor",
-          desc: isEN
-            ? "Clearer guidance for weather-based decisions."
-            : "Skýrari leið til að taka veðurákvarðanir.",
-        },
-        {
-          icon: "🧠",
-          title: isEN ? "More accuracy & calculations" : "Meiri nákvæmni og útreikningar",
-          desc: isEN
-            ? "Extra calculations where it matters."
-            : "Viðbótar-útreikningar þar sem það á við.",
-        },
-        {
-          icon: "🛠️",
-          title: isEN ? "Supports ongoing development" : "Styður áframhaldandi þróun",
-          desc: isEN
-            ? "Your purchase helps us keep improving CampCast."
-            : "Kaupin hjálpa okkur að bæta CampCast stöðugt.",
-        },
-      ],
-
-      ctaMain: isEN ? "Continue to checkout" : "Halda áfram í greiðslu",
-      ctaBusy: isEN ? "Opening checkout..." : "Opna greiðslusíðu...",
-      ctaSub: isEN
-        ? "You can cancel later (billing portal coming soon)."
-        : "Þú getur alltaf hætt áskrift síðar (billing portal kemur bráðlega).",
-
-      finePrint: isEN
-        ? "By continuing, you agree the payment is handled via Paddle."
-        : "Með því að halda áfram samþykkir þú að greiðslan fari fram í gegnum Paddle.",
-
-      secondary: isEN ? "Back" : "Til baka",
-
-      footer: isEN
-        ? "Questions? Send us a message and we’ll sort it."
-        : "Spurningar? Sendu okkur skilaboð og við reddum þessu.",
-
-      invalidEmail: isEN ? "Please enter a valid email." : "Vinsamlegast sláðu inn gilt netfang.",
-      missingCheckoutUrl: isEN
-        ? "Missing checkout URL from /api/checkout."
-        : "Vantar checkout URL frá /api/checkout.",
-      loginFailed: (status) => (isEN ? `Login failed (${status})` : `Login failed (${status})`),
-      upsTitle: isEN ? "Oops!" : "Úps!",
-    };
-  }, [lang]);
-
   async function startCheckout() {
-    setErr("");
-    if (!email || !email.includes("@")) {
-      setErr(copy.invalidEmail);
+    if (busy) return;
+
+    const trimmed = String(email || "").trim();
+    if (!trimmed || !trimmed.includes("@")) {
+      setError(T("invalidEmail", "Please enter a valid email."));
       return;
     }
 
     setBusy(true);
+    setError("");
+
     try {
-      // 1) Create user + session if missing
-      const r1 = await fetch("/api/login", {
+      const res = await fetch("/api/checkout", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
         credentials: "include",
-        body: JSON.stringify({ email, createIfMissing: true }),
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: trimmed }),
       });
 
-      const j1 = await r1.json().catch(() => ({}));
-      if (!r1.ok || j1?.ok === false) {
-        throw new Error(j1?.message || j1?.code || copy.loginFailed(r1.status));
+      const json = await res.json().catch(() => ({}));
+
+      if (!res.ok || !json?.ok) {
+        const statusPart = json?.status ? ` (${json.status})` : "";
+        throw new Error(
+          (json?.error || T("subscribeSomethingWentWrong", "Something went wrong.")) + statusPart
+        );
       }
 
-      // 2) Kick off hosted checkout (campcast-pay handles it)
-      const r2 = await fetch("/api/checkout", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        credentials: "include",
-        body: JSON.stringify({ plan: "pro" }),
-      });
+      if (!json?.url) throw new Error(T("subscribeMissingCheckoutUrl", "Missing checkout URL."));
 
-      const j2 = await r2.json().catch(() => ({}));
-      const url = j2?.url || j2?.checkoutUrl;
-      if (!url) throw new Error(copy.missingCheckoutUrl);
-
-      window.location.href = url;
+      // Redirect to Paddle checkout
+      window.location.assign(json.url);
     } catch (e) {
-      setErr(e?.message || (lang === "en" ? "Something went wrong." : "Eitthvað fór úrskeiðis."));
+      setError(String(e?.message || e));
+    } finally {
       setBusy(false);
     }
   }
 
   const styles = getStyles(isLight);
 
+  const features = [
+    {
+      icon: "✨",
+      title: T("subscribeFeatureUnlockedTitle", "All Pro features unlocked"),
+      desc: T("subscribeFeatureUnlockedDesc", "Full access to Pro features in the app."),
+    },
+    {
+      icon: "📈",
+      title: T("subscribeFeatureOverviewTitle", "Better overview & scoring"),
+      desc: T("subscribeFeatureOverviewDesc", "Clearer guidance for weather-based decisions."),
+    },
+    {
+      icon: "🧠",
+      title: T("subscribeFeatureAccuracyTitle", "More accuracy & calculations"),
+      desc: T("subscribeFeatureAccuracyDesc", "Extra calculations where it matters."),
+    },
+    {
+      icon: "🤝",
+      title: T("subscribeFeatureSupportTitle", "Supports ongoing development"),
+      desc: T("subscribeFeatureSupportDesc", "Your purchase helps us keep improving CampCast."),
+    },
+  ];
+
+  const trustBadges = [
+    { icon: "🔒", text: T("subscribeBadgeSecure", "Secure checkout via Paddle") },
+    { icon: "↩️", text: T("subscribeBadgeCancel", "Cancel anytime") },
+    { icon: "✅", text: T("subscribeBadgeInstant", "Pro activates instantly") },
+  ];
+
   return (
     <div style={styles.page}>
-      {/* soft background glow */}
       <div style={styles.glowTop} />
       <div style={styles.glowBottom} />
 
       <div style={styles.container}>
-        {/* top bar */}
+        {/* Top bar */}
         <div style={styles.topBar}>
           <button
-            onClick={() => (onClose ? onClose() : window.history.back())}
-            style={styles.backLink}
             type="button"
+            style={styles.back}
+            onClick={() => (onClose ? onClose() : window.history.back())}
           >
-            {copy.back}
+            {T("subscribeBack", "← Back")}
           </button>
 
-          {/* Brand pill (logo + text) */}
-          <div style={styles.brandPill} title={copy.brandTitle}>
+          <div style={styles.brandPill} title={T("subscribeBrandTitle", "CampCast Pro")}>
             <div style={styles.brandLogoWrap}>
-              {logoOk ? (
-                <img
-                  src="/logo.png"
-                  alt="CampCast"
-                  style={styles.brandLogo}
-                  onError={() => setLogoOk(false)}
-                />
-              ) : null}
+              <img
+                src="/logo.png"
+                alt={T("subscribeBrandAlt", "CampCast")}
+                style={styles.brandLogo}
+              />
             </div>
 
             <div style={{ display: "flex", flexDirection: "column", lineHeight: 1.1 }}>
-              <div style={styles.brandTitle}>{copy.brandTitle}</div>
-              <div style={styles.brandSub}>{copy.brandSub}</div>
+              <div style={styles.brandTitle}>{T("subscribeBrandTitle", "CampCast Pro")}</div>
+              <div style={styles.brandSub}>{T("subscribeBrandSub", "Follow the weather")}</div>
             </div>
           </div>
         </div>
 
-        {/* card */}
+        {/* Main card */}
         <div style={styles.card}>
-          <div style={styles.header}>
-            <h1 style={styles.h1}>{copy.h1}</h1>
-            <p style={styles.p}>
-              {copy.lead} <span style={{ fontWeight: 800 }}>{copy.leadPaddle}</span>.
-            </p>
+          <h1 style={styles.h1}>{T("subscribeTitle", "Activate Pro access")}</h1>
+          <p style={styles.p}>{T("subscribeLead", "You’ll complete payment with Paddle.")}</p>
 
-            <div style={styles.badgesRow}>
-              {copy.badges.map((b) => (
-                <div key={b.text} style={styles.badge}>
-                  <span aria-hidden>{b.icon}</span>
-                  <span>{b.text}</span>
+          <div style={styles.badgesRow}>
+            {trustBadges.map((b) => (
+              <div key={b.text} style={styles.badge}>
+                <span aria-hidden>{b.icon}</span>
+                <span>{b.text}</span>
+              </div>
+            ))}
+          </div>
+
+          {/* Email input */}
+          <div style={styles.form}>
+            <label style={styles.label}>
+              {T("subscribeEmailLabel", "Email")}
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder={T("subscribeEmailPlaceholder", "name@domain.com")}
+                style={styles.input}
+                autoFocus
+              />
+              <div style={styles.help}>
+                {T("subscribeEmailHelp", "We use your email for receipts.")}
+              </div>
+            </label>
+
+            {error ? (
+              <div style={styles.errorBox}>
+                <div style={{ fontWeight: 700, marginBottom: 4 }}>
+                  {T("subscribeOopsTitle", "Oops!")}
                 </div>
-              ))}
+                <div>{error}</div>
+              </div>
+            ) : null}
+
+            <button type="button" style={styles.cta(busy)} onClick={startCheckout} disabled={busy}>
+              {busy
+                ? T("subscribeCtaBusy", "Opening checkout…")
+                : T("subscribeCtaMain", "Continue to checkout")}
+              <span style={styles.ctaSub}>{T("subscribeCtaSub", "You can cancel later.")}</span>
+            </button>
+
+            <div style={styles.finePrint}>
+              {T("subscribeFinePrint", "Payment is handled via Paddle.")}
             </div>
+
+            <button
+              type="button"
+              style={styles.secondary}
+              onClick={() => (onClose ? onClose() : window.history.back())}
+            >
+              {T("subscribeSecondary", "Back")}
+            </button>
           </div>
 
-          {/* email input */}
-          <div style={{ marginTop: 16 }}>
-            <label style={styles.label}>{copy.emailLabel}</label>
-            <input
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder={copy.emailPlaceholder}
-              inputMode="email"
-              autoComplete="email"
-              style={{
-                ...styles.input,
-                borderColor: err
-                  ? "rgba(255, 129, 129, 0.6)"
-                  : isLight
-                    ? "rgba(15,23,42,0.12)"
-                    : "rgba(255,255,255,0.14)",
-              }}
-            />
-            <div style={styles.helper}>{copy.emailHelp}</div>
-          </div>
+          {/* Features */}
+          <div style={styles.features}>
+            <div style={styles.featuresTitle}>
+              {T("subscribeSectionTitle", "What you get with Pro")}
+            </div>
 
-          {/* features grid */}
-          <div style={styles.section}>
-            <div style={styles.sectionTitle}>{copy.sectionTitle}</div>
-
-            <div style={styles.grid}>
-              {copy.features.map((f) => (
+            <div style={styles.featuresGrid}>
+              {features.map((f) => (
                 <div key={f.title} style={styles.featureCard}>
                   <div style={styles.featureIcon} aria-hidden>
                     {f.icon}
@@ -244,50 +204,16 @@ export default function Subscribe({ onClose, onDone, lang = "is", theme = "dark"
             </div>
           </div>
 
-          {/* error */}
-          {err ? (
-            <div style={styles.errorBox} role="alert" aria-live="polite">
-              <div style={{ fontWeight: 900, marginBottom: 4 }}>{copy.upsTitle}</div>
-              <div style={{ opacity: 0.95 }}>{err}</div>
-            </div>
-          ) : null}
-
-          {/* CTA */}
-          <button
-            onClick={startCheckout}
-            disabled={busy}
-            type="button"
-            style={{
-              ...styles.cta,
-              opacity: busy ? 0.75 : 1,
-              cursor: busy ? "not-allowed" : "pointer",
-            }}
-          >
-            <span style={{ display: "inline-flex", alignItems: "center", gap: 10 }}>
-              <span aria-hidden>{busy ? "⏳" : "✨"}</span>
-              <span>{busy ? copy.ctaBusy : copy.ctaMain}</span>
-              <span style={{ opacity: 0.9 }} aria-hidden>
-                →
-              </span>
-            </span>
-
-            <span style={styles.ctaSub}>{copy.ctaSub}</span>
-          </button>
-
-          <div style={styles.finePrint}>{copy.finePrint}</div>
-
-          {/* secondary */}
-          <button
-            onClick={() => (onClose ? onClose() : window.history.back())}
-            type="button"
-            style={styles.secondary}
-          >
-            {copy.secondary}
-          </button>
+          <div style={styles.footer}>
+            {T("subscribeFooter", "Questions? Email us.")}{" "}
+            <a
+              href="mailto:support@campcast.is?subject=CampCast%20Pro%20Support"
+              style={{ fontWeight: 600, color: "#10b981", textDecoration: "none" }}
+            >
+              hello@campcast.is
+            </a>
+          </div>
         </div>
-
-        {/* footer */}
-        <div style={styles.footer}>{copy.footer}</div>
       </div>
     </div>
   );
@@ -325,11 +251,7 @@ function getStyles(isLight) {
       opacity: isLight ? 0.4 : 1,
     },
 
-    container: {
-      maxWidth: 780,
-      margin: "0 auto",
-      position: "relative",
-    },
+    container: { maxWidth: 860, margin: "0 auto", position: "relative" },
 
     topBar: {
       display: "flex",
@@ -339,179 +261,157 @@ function getStyles(isLight) {
       marginBottom: 14,
     },
 
-    backLink: {
+    back: {
+      border: 0,
       background: "transparent",
-      border: "none",
-      color: isLight ? "rgba(11,18,32,0.72)" : "rgba(255,255,255,0.78)",
-      fontSize: 14,
+      color: isLight ? "#0B1220" : "rgba(255,255,255,0.9)",
+      fontWeight: 700,
       cursor: "pointer",
-      padding: "8px 10px",
+      padding: "10px 10px",
       borderRadius: 12,
     },
 
-    // Brand pill (logo + text)
     brandPill: {
       display: "inline-flex",
       alignItems: "center",
       gap: 10,
       padding: "10px 12px",
       borderRadius: 999,
-      background: isLight ? "rgba(255,255,255,0.70)" : "rgba(255,255,255,0.06)",
-      border: isLight ? "1px solid rgba(15,23,42,0.10)" : "1px solid rgba(255,255,255,0.12)",
-      boxShadow: isLight ? "0 10px 25px rgba(2,6,23,0.10)" : "0 14px 30px rgba(0,0,0,0.35)",
-      backdropFilter: "blur(10px)",
+      border: isLight ? "1px solid rgba(2,6,23,0.10)" : "1px solid rgba(255,255,255,0.12)",
+      background: isLight ? "rgba(255,255,255,0.7)" : "rgba(15,23,42,0.55)",
+      backdropFilter: "blur(6px)",
+      boxShadow: isLight ? "0 10px 30px rgba(2,6,23,0.08)" : "0 16px 40px rgba(0,0,0,0.35)",
     },
 
     brandLogoWrap: {
-      width: 44,
-      height: 44,
-      borderRadius: 14,
-      background: "rgba(255,255,255,0.95)", // bigger white area so text in logo won't get cramped
+      width: 34,
+      height: 34,
+      borderRadius: 10,
+      overflow: "hidden",
+      background: isLight ? "rgba(2,6,23,0.06)" : "rgba(255,255,255,0.06)",
       display: "grid",
       placeItems: "center",
-      padding: 6,
-      boxShadow: "inset 0 0 0 1px rgba(15,23,42,0.10)",
-      overflow: "visible",
       flex: "0 0 auto",
     },
 
-    brandLogo: {
-      width: 34,
-      height: 34,
-      objectFit: "contain",
-      display: "block",
-    },
-
-    brandTitle: {
-      fontWeight: 900,
-      fontSize: 14,
-      lineHeight: 1.1,
-      color: isLight ? "#0B1220" : "white",
-    },
-    brandSub: {
-      fontSize: 12,
-      opacity: 0.72,
-      color: isLight ? "rgba(11,18,32,0.85)" : "rgba(255,255,255,0.8)",
-    },
+    brandLogo: { width: 28, height: 28, objectFit: "contain" },
+    brandTitle: { fontWeight: 900, fontSize: 12, letterSpacing: 0.2 },
+    brandSub: { fontSize: 11, opacity: 0.75 },
 
     card: {
       borderRadius: 24,
-      border: isLight ? "1px solid rgba(15,23,42,0.10)" : "1px solid rgba(255,255,255,0.10)",
-      background: isLight ? "rgba(255,255,255,0.72)" : "rgba(255,255,255,0.06)",
-      boxShadow: isLight ? "0 18px 60px rgba(2,6,23,0.12)" : "0 18px 60px rgba(0,0,0,0.45)",
-      backdropFilter: "blur(10px)",
       padding: 18,
+      border: isLight ? "1px solid rgba(2,6,23,0.12)" : "1px solid rgba(255,255,255,0.12)",
+      background: isLight ? "rgba(255,255,255,0.85)" : "rgba(2,6,23,0.55)",
+      backdropFilter: "blur(10px)",
+      boxShadow: isLight ? "0 18px 60px rgba(2,6,23,0.10)" : "0 22px 70px rgba(0,0,0,0.42)",
     },
 
-    header: { padding: "8px 6px 0px 6px" },
-    h1: { fontSize: 28, fontWeight: 950, margin: "0 0 8px 0", letterSpacing: "-0.02em" },
-    p: { margin: 0, opacity: 0.84, lineHeight: 1.5 },
+    h1: { margin: 0, fontSize: 28, fontWeight: 950, letterSpacing: -0.4 },
+    p: { marginTop: 8, marginBottom: 0, fontSize: 14, opacity: 0.85, lineHeight: 1.5 },
 
-    badgesRow: {
-      display: "flex",
-      flexWrap: "wrap",
-      gap: 8,
-      marginTop: 14,
-    },
+    badgesRow: { display: "flex", flexWrap: "wrap", gap: 8, marginTop: 14 },
+
     badge: {
       display: "inline-flex",
-      alignItems: "center",
       gap: 8,
+      alignItems: "center",
       fontSize: 12,
       padding: "8px 10px",
       borderRadius: 999,
-      background: isLight ? "rgba(15,23,42,0.05)" : "rgba(255,255,255,0.07)",
-      border: isLight ? "1px solid rgba(15,23,42,0.08)" : "1px solid rgba(255,255,255,0.10)",
-      color: isLight ? "rgba(11,18,32,0.85)" : "rgba(255,255,255,0.88)",
+      border: isLight ? "1px solid rgba(2,6,23,0.10)" : "1px solid rgba(255,255,255,0.10)",
+      background: isLight ? "rgba(2,6,23,0.04)" : "rgba(255,255,255,0.04)",
     },
 
-    label: { display: "block", marginBottom: 8, fontWeight: 900, opacity: 0.92 },
+    form: { marginTop: 16 },
+
+    label: { display: "grid", gap: 8, fontSize: 13, fontWeight: 800 },
 
     input: {
-      width: "100%",
-      padding: "13px 14px",
-      borderRadius: 16,
-      border: isLight ? "1px solid rgba(15,23,42,0.12)" : "1px solid rgba(255,255,255,0.14)",
-      background: isLight ? "rgba(255,255,255,0.95)" : "rgba(0,0,0,0.22)",
+      height: 44,
+      borderRadius: 14,
+      border: isLight ? "1px solid rgba(2,6,23,0.14)" : "1px solid rgba(255,255,255,0.14)",
+      background: isLight ? "white" : "rgba(2,6,23,0.6)",
       color: isLight ? "#0B1220" : "white",
+      padding: "0 14px",
       outline: "none",
+      fontSize: 14,
     },
 
-    helper: { marginTop: 8, fontSize: 12, opacity: 0.7 },
+    help: { fontSize: 12, opacity: 0.75, fontWeight: 600 },
 
-    section: { marginTop: 18 },
-    sectionTitle: { fontWeight: 950, marginBottom: 10, fontSize: 14, letterSpacing: "0.01em" },
+    errorBox: {
+      marginTop: 12,
+      borderRadius: 16,
+      padding: 12,
+      border: "1px solid rgba(239,68,68,0.28)",
+      background: "rgba(239,68,68,0.10)",
+      color: isLight ? "#7f1d1d" : "rgba(255,255,255,0.95)",
+      fontSize: 13,
+      lineHeight: 1.4,
+    },
 
-    grid: {
+    cta: (busy) => ({
+      marginTop: 14,
+      width: "100%",
+      borderRadius: 18,
+      border: 0,
+      cursor: busy ? "not-allowed" : "pointer",
+      padding: "12px 14px",
+      fontSize: 14,
+      fontWeight: 900,
+      background: busy ? "rgba(16,185,129,0.55)" : "rgba(16,185,129,0.95)",
+      color: "white",
+      boxShadow: "0 12px 30px rgba(16,185,129,0.22)",
       display: "grid",
-      gridTemplateColumns: "repeat(1, minmax(0, 1fr))",
-      gap: 10,
+      gap: 4,
+      textAlign: "center",
+    }),
+
+    ctaSub: { fontSize: 12, fontWeight: 700, opacity: 0.9 },
+
+    finePrint: { marginTop: 10, fontSize: 12, opacity: 0.75, textAlign: "center" },
+
+    secondary: {
+      marginTop: 10,
+      width: "100%",
+      borderRadius: 16,
+      border: isLight ? "1px solid rgba(2,6,23,0.12)" : "1px solid rgba(255,255,255,0.12)",
+      background: "transparent",
+      color: isLight ? "#0B1220" : "rgba(255,255,255,0.9)",
+      padding: "10px 12px",
+      fontSize: 13,
+      fontWeight: 800,
+      cursor: "pointer",
     },
+
+    features: { marginTop: 18 },
+    featuresTitle: { fontWeight: 950, marginBottom: 10, fontSize: 14 },
+
+    featuresGrid: { display: "grid", gap: 10, gridTemplateColumns: "1fr" },
 
     featureCard: {
       display: "flex",
       gap: 12,
-      padding: 14,
+      padding: 12,
       borderRadius: 18,
-      background: isLight ? "rgba(15,23,42,0.03)" : "rgba(0,0,0,0.18)",
-      border: isLight ? "1px solid rgba(15,23,42,0.08)" : "1px solid rgba(255,255,255,0.10)",
+      border: isLight ? "1px solid rgba(2,6,23,0.10)" : "1px solid rgba(255,255,255,0.10)",
+      background: isLight ? "rgba(2,6,23,0.03)" : "rgba(255,255,255,0.03)",
     },
 
     featureIcon: {
-      width: 36,
-      height: 36,
-      borderRadius: 14,
+      width: 34,
+      height: 34,
+      borderRadius: 12,
       display: "grid",
       placeItems: "center",
-      background: "rgba(16,185,129,0.14)",
-      border: "1px solid rgba(16,185,129,0.22)",
+      background: isLight ? "rgba(2,6,23,0.06)" : "rgba(255,255,255,0.06)",
       flex: "0 0 auto",
     },
 
-    featureTitle: { fontWeight: 950, marginBottom: 3 },
-    featureDesc: { fontSize: 12, opacity: 0.78, lineHeight: 1.4 },
+    featureTitle: { fontWeight: 900, fontSize: 13, marginBottom: 2 },
+    featureDesc: { fontSize: 12, opacity: 0.78, lineHeight: 1.45 },
 
-    errorBox: {
-      marginTop: 14,
-      padding: 12,
-      borderRadius: 16,
-      background: "rgba(255, 107, 107, 0.12)",
-      border: "1px solid rgba(255, 107, 107, 0.28)",
-      color: isLight ? "#0B1220" : "rgba(255,255,255,0.92)",
-    },
-
-    cta: {
-      width: "100%",
-      marginTop: 16,
-      padding: "14px 16px",
-      borderRadius: 18,
-      border: "1px solid rgba(16,185,129,0.35)",
-      background: "linear-gradient(180deg, rgba(16,185,129,0.95), rgba(16,185,129,0.70))",
-      color: "white",
-      fontWeight: 950,
-      display: "flex",
-      flexDirection: "column",
-      alignItems: "center",
-      gap: 6,
-      boxShadow: "0 14px 30px rgba(16,185,129,0.22)",
-    },
-
-    ctaSub: { fontSize: 12, fontWeight: 700, opacity: 0.9 },
-
-    finePrint: { marginTop: 10, textAlign: "center", fontSize: 12, opacity: 0.72 },
-
-    secondary: {
-      width: "100%",
-      padding: "12px 16px",
-      borderRadius: 18,
-      marginTop: 10,
-      background: "transparent",
-      border: isLight ? "1px solid rgba(15,23,42,0.16)" : "1px solid rgba(255,255,255,0.16)",
-      color: isLight ? "rgba(11,18,32,0.9)" : "rgba(255,255,255,0.92)",
-      cursor: "pointer",
-      fontWeight: 850,
-    },
-
-    footer: { marginTop: 14, textAlign: "center", fontSize: 12, opacity: 0.72 },
+    footer: { marginTop: 16, fontSize: 12, opacity: 0.85 },
   };
 }
