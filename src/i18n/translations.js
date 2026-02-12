@@ -255,6 +255,32 @@ export const translations = {
       "If Pro access doesn’t activate immediately, it will be enabled automatically within a few minutes.",
     successSupportLine:
       "If anything doesn’t work as expected, contact us and we’ll assist you promptly.",
+    
+    // Pricing page
+    pricingBack: "← Back",
+    pricingBrandTitle: "CampCast Pro",
+    pricingBrandSub: "Follow the weather",
+
+    pricingTitle: "Choose your plan",
+    pricingLead: "Pick monthly or yearly. Payment is handled securely by Paddle.",
+    pricingNotLoggedIn: "We’ll ask for your email before checkout.",
+
+    pricingYearlyTitle: "Yearly",
+    pricingBestValue: "Best value",
+    pricingPerYear: "per year",
+    pricingYearlyMicro: "One payment. Cancel anytime.",
+
+    pricingMonthlyTitle: "Monthly",
+    pricingPerMonth: "per month",
+
+    pricingFeatureAllPro: "All Pro features unlocked",
+    pricingFeatureWindShelter: "Wind direction + shelter score",
+    pricingFeatureCancelAnytime: "Cancel anytime",
+
+    pricingCtaYearly: "Get Yearly",
+    pricingCtaMonthly: "Get Monthly",
+
+    pricingFinePrint: "You can manage or cancel anytime in the billing portal.",
   },
 
   // Icelandic (Íslenska)
@@ -518,5 +544,31 @@ export const translations = {
       "Ef Pro aðgangur virkjast ekki strax, uppfærist hann sjálfkrafa innan örfárra mínútna.",
     successSupportLine:
       "Ef eitthvað virkar ekki sem skyldi, hafðu samband og við aðstoðum þig fljótt og örugglega.",
+
+    // Pricing page (Íslenska)
+    pricingBack: "← Til baka",
+    pricingBrandTitle: "CampCast Pro",
+    pricingBrandSub: "Fylgstu með veðrinu",
+
+    pricingTitle: "Veldu áskrift",
+    pricingLead: "Veldu mánaðar- eða ársáskrift. Greiðsla fer örugglega í gegnum Paddle.",
+    pricingNotLoggedIn: "Við biðjum um netfang áður en þú ferð í greiðslu.",
+
+    pricingYearlyTitle: "Ársáskrift",
+    pricingBestValue: "Best value",
+    pricingPerYear: "á ári",
+    pricingYearlyMicro: "Ein greiðsla. Hægt að segja upp hvenær sem er.",
+
+    pricingMonthlyTitle: "Mánaðaráskrift",
+    pricingPerMonth: "á mánuði",
+
+    pricingFeatureAllPro: "Allir Pro fídusar opnir",
+    pricingFeatureWindShelter: "Vindátt + skjólstuðull",
+    pricingFeatureCancelAnytime: "Hægt að segja upp hvenær sem er",
+
+    pricingCtaYearly: "Fá ársáskrift",
+    pricingCtaMonthly: "Fá mánaðaráskrift",
+
+    pricingFinePrint: "Þú getur stjórnað eða sagt upp hvenær sem er í greiðslugáttinni.",
   },
 };
