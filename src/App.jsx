@@ -42,6 +42,7 @@ import SlimHeader from "./components/SlimHeader";
 
 import Subscribe from "./pages/Subscribe";
 import Success from "./pages/Success";
+import Pricing from "./pages/Pricing";
 
 // ──────────────────────────────────────────────────────────────
 // App page
@@ -244,7 +245,7 @@ function IcelandCampingWeatherApp({ page = "home" }) {
     }
 
     // 3) logged in + free -> fara á subscribe
-    navigate("/subscribe");
+    navigate("/pricing");
   }, [me, navigate, openLoginModal, pushToast, t]);
 
   // ✅ Paddle billing portal (customer portal)
@@ -467,6 +468,13 @@ function IcelandCampingWeatherApp({ page = "home" }) {
 }
 
 // --- Route wrappers so Subscribe/Success can receive lang/theme/t via props ---
+function PricingRoute() {
+  const [theme] = useLocalStorageState("theme", "light");
+  const { lang } = useLanguage();
+  const t = useT(lang);
+  return <Pricing lang={lang} theme={theme} t={t} />;
+}
+
 function SubscribeRoute() {
   const [theme] = useLocalStorageState("theme", "light");
   const { lang } = useLanguage();
@@ -492,6 +500,7 @@ export default function App() {
         <Route path="/about" element={<IcelandCampingWeatherApp page="about" />} />
 
         {/* ✅ These pages need lang/theme/t, so use wrappers */}
+        <Route path="/pricing" element={<PricingRoute />} />
         <Route path="/subscribe" element={<SubscribeRoute />} />
         <Route path="/success" element={<SuccessRoute />} />
 

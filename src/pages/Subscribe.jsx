@@ -3,7 +3,12 @@ import React, { useMemo, useState } from "react";
 
 export default function Subscribe({ onClose, onDone, lang = "is", theme = "dark", t }) {
   const params = useMemo(() => new URLSearchParams(window.location.search), []);
+
   const initialEmail = params.get("email") || "";
+
+  // ✅ NEW: read plan from querystring (monthly default)
+  const rawPlan = (params.get("plan") || "monthly").toLowerCase();
+  const plan = rawPlan === "yearly" ? "yearly" : "monthly";
 
   const [email, setEmail] = useState(initialEmail);
   const [busy, setBusy] = useState(false);
@@ -93,13 +98,14 @@ export default function Subscribe({ onClose, onDone, lang = "is", theme = "dark"
       await ensureSessionForEmail(trimmed);
 
       // 2) Create checkout
-      let { res, json, text } = await postJson("/api/checkout", { email: trimmed });
+      // ✅ NEW: send plan to API
+      let { res, json, text } = await postJson("/api/checkout", { email: trimmed, plan });
 
       // 2b) If we still get 401, retry login ONCE and retry checkout.
       // This covers cookie edge cases / stale sessions.
       if (res.status === 401) {
         await ensureSessionForEmail(trimmed);
-        ({ res, json, text } = await postJson("/api/checkout", { email: trimmed }));
+        ({ res, json, text } = await postJson("/api/checkout", { email: trimmed, plan }));
       }
 
       if (!res.ok || !json?.ok) {
@@ -301,7 +307,6 @@ function getStyles(isLight) {
       position: "relative",
       overflow: "hidden",
     },
-
     glowTop: {
       position: "absolute",
       inset: "-200px -200px auto -200px",
@@ -320,9 +325,7 @@ function getStyles(isLight) {
       pointerEvents: "none",
       opacity: isLight ? 0.4 : 1,
     },
-
     container: { maxWidth: 860, margin: "0 auto", position: "relative" },
-
     topBar: {
       display: "flex",
       alignItems: "center",
@@ -330,7 +333,6 @@ function getStyles(isLight) {
       gap: 12,
       marginBottom: 14,
     },
-
     back: {
       border: 0,
       background: "transparent",
@@ -340,7 +342,6 @@ function getStyles(isLight) {
       padding: "10px 10px",
       borderRadius: 12,
     },
-
     brandPill: {
       display: "inline-flex",
       alignItems: "center",
@@ -352,7 +353,6 @@ function getStyles(isLight) {
       backdropFilter: "blur(6px)",
       boxShadow: isLight ? "0 10px 30px rgba(2,6,23,0.08)" : "0 16px 40px rgba(0,0,0,0.35)",
     },
-
     brandLogoWrap: {
       width: 34,
       height: 34,
@@ -363,25 +363,20 @@ function getStyles(isLight) {
       placeItems: "center",
       flex: "0 0 auto",
     },
-
     brandLogo: { width: 28, height: 28, objectFit: "contain" },
     brandTitle: { fontWeight: 900, fontSize: 12, letterSpacing: 0.2 },
     brandSub: { fontSize: 11, opacity: 0.75 },
-
     card: {
       borderRadius: 24,
       padding: 18,
-      border: isLight ? "1px solid rgba(2,6,23,0.12)" : "1px solid rgba(255,255,255,0.12)",
+      border: isLight ? "1px solid rgba(2,6,23,0.10)" : "1px solid rgba(255,255,255,0.12)",
       background: isLight ? "rgba(255,255,255,0.85)" : "rgba(2,6,23,0.55)",
       backdropFilter: "blur(10px)",
       boxShadow: isLight ? "0 18px 60px rgba(2,6,23,0.10)" : "0 22px 70px rgba(0,0,0,0.42)",
     },
-
     h1: { margin: 0, fontSize: 28, fontWeight: 950, letterSpacing: -0.4 },
     p: { marginTop: 8, marginBottom: 0, fontSize: 14, opacity: 0.85, lineHeight: 1.5 },
-
     badgesRow: { display: "flex", flexWrap: "wrap", gap: 8, marginTop: 14 },
-
     badge: {
       display: "inline-flex",
       gap: 8,
@@ -392,11 +387,8 @@ function getStyles(isLight) {
       border: isLight ? "1px solid rgba(2,6,23,0.10)" : "1px solid rgba(255,255,255,0.10)",
       background: isLight ? "rgba(2,6,23,0.04)" : "rgba(255,255,255,0.04)",
     },
-
     form: { marginTop: 16 },
-
     label: { display: "grid", gap: 8, fontSize: 13, fontWeight: 800 },
-
     input: {
       height: 44,
       borderRadius: 14,
@@ -407,9 +399,7 @@ function getStyles(isLight) {
       outline: "none",
       fontSize: 14,
     },
-
     help: { fontSize: 12, opacity: 0.75, fontWeight: 600 },
-
     errorBox: {
       marginTop: 12,
       borderRadius: 16,
@@ -420,7 +410,6 @@ function getStyles(isLight) {
       fontSize: 13,
       lineHeight: 1.4,
     },
-
     cta: (busy) => ({
       marginTop: 14,
       width: "100%",
@@ -437,16 +426,13 @@ function getStyles(isLight) {
       gap: 4,
       textAlign: "center",
     }),
-
     ctaSub: { fontSize: 12, fontWeight: 700, opacity: 0.9 },
-
     finePrint: { marginTop: 10, fontSize: 12, opacity: 0.75, textAlign: "center" },
-
     secondary: {
       marginTop: 10,
       width: "100%",
       borderRadius: 16,
-      border: isLight ? "1px solid rgba(2,6,23,0.12)" : "rgba(255,255,255,0.12)",
+      border: isLight ? "1px solid rgba(2,6,23,0.12)" : "1px solid rgba(255,255,255,0.12)",
       background: "transparent",
       color: isLight ? "#0B1220" : "rgba(255,255,255,0.9)",
       padding: "10px 12px",
@@ -454,21 +440,17 @@ function getStyles(isLight) {
       fontWeight: 800,
       cursor: "pointer",
     },
-
     features: { marginTop: 18 },
     featuresTitle: { fontWeight: 950, marginBottom: 10, fontSize: 14 },
-
     featuresGrid: { display: "grid", gap: 10, gridTemplateColumns: "1fr" },
-
     featureCard: {
       display: "flex",
       gap: 12,
       padding: 12,
       borderRadius: 18,
-      border: isLight ? "1px solid rgba(2,6,23,0.10)" : "rgba(255,255,255,0.10)",
+      border: isLight ? "1px solid rgba(2,6,23,0.10)" : "1px solid rgba(255,255,255,0.10)",
       background: isLight ? "rgba(2,6,23,0.03)" : "rgba(255,255,255,0.03)",
     },
-
     featureIcon: {
       width: 34,
       height: 34,
@@ -478,10 +460,8 @@ function getStyles(isLight) {
       background: isLight ? "rgba(2,6,23,0.06)" : "rgba(255,255,255,0.06)",
       flex: "0 0 auto",
     },
-
     featureTitle: { fontWeight: 900, fontSize: 13, marginBottom: 2 },
     featureDesc: { fontSize: 12, opacity: 0.78, lineHeight: 1.45 },
-
     footer: { marginTop: 16, fontSize: 12, opacity: 0.85 },
   };
 }

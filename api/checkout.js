@@ -146,21 +146,30 @@ export default async function handler(req, res) {
       return res.status(401).json({ ok: false, code: "NOT_LOGGED_IN", error: "Not logged in" });
     }
 
-    const priceId = process.env.PADDLE_PRICE_ID_MONTHLY;
-    if (!priceId) throw new Error("Missing PADDLE_PRICE_ID_MONTHLY");
+    const body = typeof req.body === "string" ? JSON.parse(req.body) : (req.body || {});
+    const plan = (body?.plan || "monthly").toLowerCase();
+
+    const priceMonthly = process.env.PADDLE_PRICE_ID_MONTHLY;
+    const priceYearly = process.env.PADDLE_PRICE_ID_YEARLY;
+
+    if (!priceMonthly) throw new Error("Missing PADDLE_PRICE_ID_MONTHLY");
+    if (!priceYearly) throw new Error("Missing PADDLE_PRICE_ID_YEARLY");
+
+    const priceId = plan === "yearly" ? priceYearly : priceMonthly;
+
 
     const customerId = await ensurePaddleCustomer(user);
 
     const appBase = appBaseUrl(req);
     const successUrl = `${appBase}/?checkout=success`;
-    const cancelUrl = `${appBase}/?checkout=cancel`;
+    const cancelUrl = `${appBase}/pricing?checkout=cancel`;
 
     const txn = await paddleFetch("/transactions", {
       method: "POST",
       body: {
         customer_id: customerId,
         items: [{ price_id: priceId, quantity: 1 }],
-        custom_data: { app: "campcast", user_id: user.id, email: user.email },
+        custom_data: { app: "campcast", user_id: user.id, email: user.email, plan },
         checkout: {
           success_url: successUrl,
           cancel_url: cancelUrl,
