@@ -121,8 +121,8 @@ function IcelandCampingWeatherApp({ page = "home" }) {
 
         if (!r.ok || !data?.ok) {
           if (data?.code === "USER_NOT_FOUND") {
-            // Send them to the purchase/subscribe page (don’t auto-create users on login)
-            const to = `/subscribe?email=${encodeURIComponent(email)}`;
+            // New user → show pricing first (plan selection)
+            const to = `/pricing?email=${encodeURIComponent(email)}`;
             window.location.assign(to);
             return;
           }
