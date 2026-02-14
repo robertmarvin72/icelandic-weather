@@ -110,11 +110,11 @@ function IcelandCampingWeatherApp({ page = "home" }) {
 
       setLoginBusy(true);
       try {
-        const r = await fetch("/api/login", {
+        const r = await fetch("/api/login-email", {
           method: "POST",
           credentials: "include",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email, createIfMissing: false }),
+          body: JSON.stringify({ email }),
         });
 
         const data = await r.json().catch(() => null);
@@ -245,7 +245,7 @@ function IcelandCampingWeatherApp({ page = "home" }) {
     }
 
     // 3) logged in + free -> fara á subscribe
-    navigate("/pricing");
+    navigate(`/pricing?email=${encodeURIComponent(me?.user?.email || "")}`);
   }, [me, navigate, openLoginModal, pushToast, t]);
 
   // ✅ Paddle billing portal (customer portal)
