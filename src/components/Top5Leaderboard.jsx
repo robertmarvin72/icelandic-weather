@@ -1,3 +1,4 @@
+// src/components/Top5Leaderboard.jsx
 import React, { useMemo } from "react";
 import LoadingShimmer from "./LoadingShimmer";
 import ScoreLegend from "./ScoreLegend";
@@ -46,9 +47,16 @@ export default function Top5Leaderboard({
   );
 
   const isPro = !!entitlements?.isPro;
+
+  // Subscription status
   const subStatus = (subscription?.status || "").toLowerCase();
   const isCanceled = subStatus === "canceled" || subStatus === "cancelled";
   const showProUntil = isPro && isCanceled && !!proUntil;
+
+  // ✅ Plan detection (important for "monthly -> upgrade" CTA)
+  const plan = (subscription?.plan || me?.subscription?.plan || "").toLowerCase(); // "monthly" | "yearly" | ""
+  const isMonthly = isPro && plan === "monthly";
+  const isYearly = isPro && plan === "yearly";
 
   // Reusable (Pro) display blocks
   const windDisplay = (
@@ -105,9 +113,45 @@ export default function Top5Leaderboard({
   );
 
   const getProLabel = () => {
+    // Free user
     if (!me?.user) return t?.("proCtaTitle") ?? "Fá Pro aðgang";
-    if (me?.entitlements?.pro) return t?.("proActive") ?? "Pro virkt ✓";
+
+    // Pro user
+    if (me?.entitlements?.pro || isPro) {
+      // Monthly: show upgrade label
+      if (isMonthly) return t?.("pricingCtaUpgradeToYearly") ?? "Upgrade to Yearly";
+      // Yearly: show manage label
+      if (isYearly) return t?.("manageSubscription") ?? "Manage";
+      // Fallback
+      return t?.("proActive") ?? "Pro virkt ✓";
+    }
+
+    // Logged in but not Pro
     return t?.("proUpgrade") ?? "Uppfæra í Pro";
+  };
+
+  // ✅ CTA click logic
+  const handleCtaClick = () => {
+    // Not logged in -> App handles login flow
+    if (!me?.user) {
+      if (typeof onUpgrade === "function") onUpgrade();
+      return;
+    }
+
+    // Pro + monthly -> go to pricing so user can upgrade
+    if (isMonthly) {
+      window.location.assign("/pricing");
+      return;
+    }
+
+    // Pro + yearly -> manage subscription
+    if (isYearly) {
+      if (typeof onManageSubscription === "function") onManageSubscription();
+      return;
+    }
+
+    // Logged in + not Pro -> normal upgrade flow
+    if (typeof onUpgrade === "function") onUpgrade();
   };
 
   return (
@@ -213,7 +257,8 @@ export default function Top5Leaderboard({
       <hr />
 
       {/* ✅ CTA / Status */}
-      {isPro ? (
+      {isPro && !isMonthly ? (
+        // Yearly (or unknown Pro) -> show manage box
         <div className="mt-3 rounded-xl border border-slate-200 dark:border-slate-700 p-3 text-sm">
           <div className="flex items-center justify-between gap-3">
             <div>
@@ -243,11 +288,11 @@ export default function Top5Leaderboard({
                 if (typeof onManageSubscription === "function") onManageSubscription();
               }}
               className="
-          px-3 py-2 rounded-xl text-sm font-semibold
-          border border-slate-300 bg-white text-slate-900
-          hover:bg-slate-50
-          dark:border-slate-600 dark:bg-slate-900 dark:text-slate-100 dark:hover:bg-slate-800
-        "
+                px-3 py-2 rounded-xl text-sm font-semibold
+                border border-slate-300 bg-white text-slate-900
+                hover:bg-slate-50
+                dark:border-slate-600 dark:bg-slate-900 dark:text-slate-100 dark:hover:bg-slate-800
+              "
               title={t?.("billingPortal") ?? "Billing portal"}
             >
               {t?.("manageSubscription") ?? "Manage"}
@@ -255,23 +300,30 @@ export default function Top5Leaderboard({
           </div>
         </div>
       ) : (
+        // Free OR Monthly -> show CTA button
         <button
           type="button"
-          onClick={() => {
-            if (typeof onUpgrade === "function") onUpgrade(); // App.jsx sér um login/checkout flæði
-          }}
+          onClick={handleCtaClick}
           className="
-      mt-3 w-full inline-flex flex-col items-center justify-center gap-1
-      rounded-2xl px-4 py-3 text-sm font-semibold
-      bg-emerald-600 text-white
-      shadow-sm shadow-emerald-600/20
-      hover:bg-emerald-500 hover:shadow-md
-      active:translate-y-[1px]
-      focus:outline-none focus:ring-2 focus:ring-emerald-400/60
-      dark:bg-emerald-500 dark:hover:bg-emerald-400
-    "
-          title={t?.("proCtaTooltip") ?? "Skráðu þig inn og opnaðu Pro"}
-          aria-label={t?.("proCtaLabel") ?? "Opna Pro"}
+            mt-3 w-full inline-flex flex-col items-center justify-center gap-1
+            rounded-2xl px-4 py-3 text-sm font-semibold
+            bg-emerald-600 text-white
+            shadow-sm shadow-emerald-600/20
+            hover:bg-emerald-500 hover:shadow-md
+            active:translate-y-[1px]
+            focus:outline-none focus:ring-2 focus:ring-emerald-400/60
+            dark:bg-emerald-500 dark:hover:bg-emerald-400
+          "
+          title={
+            isMonthly
+              ? (t?.("pricingMonthlyUpgradeHint") ?? "Upgrade to yearly")
+              : (t?.("proCtaTooltip") ?? "Skráðu þig inn og opnaðu Pro")
+          }
+          aria-label={
+            isMonthly
+              ? (t?.("pricingCtaUpgradeToYearly") ?? "Upgrade to Yearly")
+              : (t?.("proCtaLabel") ?? "Opna Pro")
+          }
         >
           <span className="inline-flex items-center gap-2">
             <span aria-hidden>✨</span>
@@ -282,7 +334,9 @@ export default function Top5Leaderboard({
           </span>
 
           <span className="text-xs font-normal opacity-95">
-            {t?.("proCtaSubtitle") ?? "Skráðu þig inn til að kaupa aðgang og opna Pro-fídusa."}
+            {isMonthly
+              ? (t?.("pricingMonthlyUpgradeHint") ?? "You can upgrade to yearly any time.")
+              : (t?.("proCtaSubtitle") ?? "Skráðu þig inn til að kaupa aðgang og opna Pro-fídusa.")}
           </span>
         </button>
       )}
