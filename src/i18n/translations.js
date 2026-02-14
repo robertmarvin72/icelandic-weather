@@ -281,6 +281,18 @@ export const translations = {
     pricingCtaMonthly: "Get Monthly",
 
     pricingFinePrint: "You can manage or cancel anytime in the billing portal.",
+
+    pricingAlreadyYearly: "Your yearly subscription is already active.",
+    pricingActiveUntil: "Active until",
+    pricingYearlyActive: "Subscription active",
+    pricingMonthlyActive: "Monthly subscription active",
+    pricingMonthlyUpgradeHint: "You can upgrade to yearly at any time. Monthly cannot be purchased twice.",
+    pricingCtaUpgradeToYearly: "Upgrade to Yearly",
+    pricingMonthlyAlreadyActive: "Monthly is active",
+    pricingMonthlyNotAvailable: "Not available",
+    subscribeAlreadyActive: "Your subscription is already active.",
+    subscribeAlreadyMonthly: "You already have an active monthly subscription.",
+
   },
 
   // Icelandic (Íslenska)
@@ -570,5 +582,17 @@ export const translations = {
     pricingCtaMonthly: "Fá mánaðaráskrift",
 
     pricingFinePrint: "Þú getur stjórnað eða sagt upp hvenær sem er í greiðslugáttinni.",
+
+    pricingAlreadyYearly: "Ársáskriftin þín er nú þegar virk.",
+    pricingActiveUntil: "Virkt til",
+    pricingYearlyActive: "Áskrift virk",
+    pricingMonthlyActive: "Mánaðaráskrift virk",
+    pricingMonthlyUpgradeHint: "Þú getur uppfært í ársáskrift hvenær sem er. Ekki er hægt að kaupa mánaðaráskrift tvisvar.",
+    pricingCtaUpgradeToYearly: "Uppfæra í ársáskrift",
+    pricingMonthlyAlreadyActive: "Mánaðaráskrift virk",
+    pricingMonthlyNotAvailable: "Ekki í boði",
+    subscribeAlreadyActive: "Áskriftin þín er nú þegar virk.",
+    subscribeAlreadyMonthly: "Þú ert nú þegar með virka mánaðaráskrift.",
+
   },
 };
