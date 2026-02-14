@@ -5,13 +5,10 @@ import { useMe } from "../hooks/useMe";
 export default function Subscribe({ onClose, onDone, lang = "is", theme = "dark", t, me }) {
   const params = useMemo(() => new URLSearchParams(window.location.search), []);
 
-  const initialEmail = params.get("email") || "";
-
   // ✅ read plan from querystring (monthly default)
   const rawPlan = (params.get("plan") || "monthly").toLowerCase();
   const plan = rawPlan === "yearly" ? "yearly" : "monthly";
 
-  const [email, setEmail] = useState(initialEmail);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
 
@@ -25,6 +22,21 @@ export default function Subscribe({ onClose, onDone, lang = "is", theme = "dark"
   const currentPlan = ME?.subscription?.plan || null;
   const isYearly = proActive && currentPlan === "yearly";
   const isMonthly = proActive && currentPlan === "monthly";
+
+  // ✅ Prefill email:
+  // 1) querystring (?email=...) wins
+  // 2) otherwise use logged-in email from /api/me
+  const initialEmail = params.get("email") || ME?.user?.email || "";
+  const [email, setEmail] = useState(initialEmail);
+
+  // ✅ When ME loads later, prefill email if user didn't already type and no querystring email exists
+  React.useEffect(() => {
+    const qsEmail = params.get("email");
+    if (qsEmail) return; // querystring wins
+    if (!email && ME?.user?.email) {
+      setEmail(ME.user.email);
+    }
+  }, [ME?.user?.email]); // intentionally only reacts to ME email changes
 
   // Translation helper (fallbacks only matter if a key is missing)
   const T = (key, fallback) => {
