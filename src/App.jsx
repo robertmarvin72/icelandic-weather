@@ -120,13 +120,7 @@ function IcelandCampingWeatherApp({ page = "home" }) {
         const data = await r.json().catch(() => null);
 
         if (!r.ok || !data?.ok) {
-          if (data?.code === "USER_NOT_FOUND") {
-            // New user → show pricing first (plan selection)
-            const to = `/pricing?email=${encodeURIComponent(email)}`;
-            window.location.assign(to);
-            return;
-          }
-
+          // NOTE: /api/login-email upserts users, so USER_NOT_FOUND is unlikely.
           const msg = data?.error || `Login failed (${r.status})`;
           pushToast({ type: "error", title: t?.("login") ?? "Login", message: msg });
           return;
@@ -142,6 +136,9 @@ function IcelandCampingWeatherApp({ page = "home" }) {
         });
 
         setLoginOpen(false);
+
+        // ✅ Continue upgrade flow: go to Pricing (and pass email for UX)
+        navigate(`/pricing?email=${encodeURIComponent(email)}`);
       } catch (err) {
         pushToast({
           type: "error",
@@ -152,7 +149,8 @@ function IcelandCampingWeatherApp({ page = "home" }) {
         setLoginBusy(false);
       }
     },
-    [loginEmail, pushToast, refetchMe, t]
+    // ✅ include navigate since we use it
+    [loginEmail, pushToast, refetchMe, t, navigate]
   );
 
   // ──────────────────────────────────────────────────────────────
@@ -244,7 +242,7 @@ function IcelandCampingWeatherApp({ page = "home" }) {
       return;
     }
 
-    // 3) logged in + free -> fara á subscribe
+    // 3) logged in + free -> fara á pricing (pass email for autofill)
     navigate(`/pricing?email=${encodeURIComponent(me?.user?.email || "")}`);
   }, [me, navigate, openLoginModal, pushToast, t]);
 
