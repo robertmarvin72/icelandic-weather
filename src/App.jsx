@@ -8,6 +8,10 @@ import { BrowserRouter, Route, Routes, useNavigate } from "react-router-dom";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/react";
 
+// ✅ PWA update detection
+import { registerSW } from "virtual:pwa-register";
+import { usePwaUpdateToast } from "./hooks/usePwaUpdateToast";
+
 import BackToTop from "./components/BackToTop";
 import Footer from "./components/Footer";
 import ForecastTable from "./components/ForecastTable";
@@ -78,6 +82,49 @@ function IcelandCampingWeatherApp({ page = "home" }) {
   const navigate = useNavigate();
 
   // ──────────────────────────────────────────────────────────────
+  // ✅ PWA update toast (onNeedRefresh)
+  // ──────────────────────────────────────────────────────────────
+  const [needRefresh, setNeedRefresh] = useState(false);
+  const [offlineReady, setOfflineReady] = useState(false);
+  const updateServiceWorkerRef = useRef(null);
+
+  useEffect(() => {
+    // register once
+    const updateSW = registerSW({
+      onNeedRefresh() {
+        setNeedRefresh(true);
+      },
+      onOfflineReady() {
+        setOfflineReady(true);
+      },
+    });
+
+    updateServiceWorkerRef.current = updateSW;
+  }, []);
+
+  usePwaUpdateToast({
+    needRefresh,
+    updateServiceWorker: updateServiceWorkerRef.current,
+    pushToast,
+    dismissToast,
+    t,
+  });
+
+  // Optional: offline-ready toast (nice UX)
+  useEffect(() => {
+    if (!offlineReady) return;
+
+    pushToast({
+      type: "success",
+      title: t?.("offlineReadyTitle") ?? "Ready for offline",
+      message: t?.("offlineReadyMsg") ?? "CampCast is cached and can work offline.",
+    });
+
+    // Reset so it doesn’t keep re-firing
+    setOfflineReady(false);
+  }, [offlineReady, pushToast, t]);
+
+  // ──────────────────────────────────────────────────────────────
   // Login modal state (email-based)
   // ──────────────────────────────────────────────────────────────
   const [loginOpen, setLoginOpen] = useState(false);
@@ -120,7 +167,13 @@ function IcelandCampingWeatherApp({ page = "home" }) {
         const data = await r.json().catch(() => null);
 
         if (!r.ok || !data?.ok) {
-          // NOTE: /api/login-email upserts users, so USER_NOT_FOUND is unlikely.
+          if (data?.code === "USER_NOT_FOUND") {
+            // New user → show pricing first (plan selection)
+            navigate(`/pricing?email=${encodeURIComponent(email)}`);
+            setLoginOpen(false);
+            return;
+          }
+
           const msg = data?.error || `Login failed (${r.status})`;
           pushToast({ type: "error", title: t?.("login") ?? "Login", message: msg });
           return;
@@ -137,7 +190,7 @@ function IcelandCampingWeatherApp({ page = "home" }) {
 
         setLoginOpen(false);
 
-        // ✅ Continue upgrade flow: go to Pricing (and pass email for UX)
+        // ✅ Continue the upgrade flow: go to Pricing (email prefill)
         navigate(`/pricing?email=${encodeURIComponent(email)}`);
       } catch (err) {
         pushToast({
@@ -149,7 +202,6 @@ function IcelandCampingWeatherApp({ page = "home" }) {
         setLoginBusy(false);
       }
     },
-    // ✅ include navigate since we use it
     [loginEmail, pushToast, refetchMe, t, navigate]
   );
 
@@ -221,7 +273,7 @@ function IcelandCampingWeatherApp({ page = "home" }) {
 
   // ✅ Checkout: if not logged in -> open login modal first
   const startCheckout = useCallback(async () => {
-    // 1) ekki innskráður -> login
+    // 1) not logged in -> login
     if (!me?.user) {
       pushToast({
         type: "info",
@@ -232,7 +284,7 @@ function IcelandCampingWeatherApp({ page = "home" }) {
       return;
     }
 
-    // 2) þegar Pro -> ekki opna checkout aftur
+    // 2) already Pro -> don't open checkout again
     if (me?.entitlements?.pro) {
       pushToast({
         type: "success",
@@ -242,7 +294,7 @@ function IcelandCampingWeatherApp({ page = "home" }) {
       return;
     }
 
-    // 3) logged in + free -> fara á pricing (pass email for autofill)
+    // 3) logged in + free -> go to pricing (prefill email)
     navigate(`/pricing?email=${encodeURIComponent(me?.user?.email || "")}`);
   }, [me, navigate, openLoginModal, pushToast, t]);
 
@@ -317,7 +369,7 @@ function IcelandCampingWeatherApp({ page = "home" }) {
       <Splash show={booting} minMs={700} fadeMs={500} />
       <ToastHub toasts={toasts} onDismiss={dismissToast} />
 
-      {/* ✅ Simple login modal (better dark-mode contrast) */}
+      {/* ✅ Simple login modal */}
       {loginOpen && (
         <div
           className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/60 p-4"
