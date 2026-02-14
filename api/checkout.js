@@ -1,196 +1,148 @@
 // /api/checkout.js
+
 import postgres from "postgres";
-import crypto from "crypto";
 
 const sql = postgres(process.env.POSTGRES_URL, { ssl: "require" });
 
-function getCookie(req, name) {
-  const cookie = req.headers.cookie || "";
-  const parts = cookie.split(";").map((p) => p.trim());
-  const hit = parts.find((p) => p.startsWith(name + "="));
-  return hit ? decodeURIComponent(hit.split("=").slice(1).join("=")) : null;
-}
-
-function sha256Hex(s) {
-  return crypto.createHash("sha256").update(String(s)).digest("hex");
-}
-
-function paddleBaseUrl() {
-  return process.env.PADDLE_ENV === "production"
+const PADDLE_BASE =
+  process.env.PADDLE_ENV === "production"
     ? "https://api.paddle.com"
     : "https://sandbox-api.paddle.com";
-}
 
-async function paddleFetch(path, { method = "GET", body } = {}) {
-  const apiKey = process.env.PADDLE_API_KEY;
-  if (!apiKey) throw new Error("Missing PADDLE_API_KEY");
-
-  const res = await fetch(paddleBaseUrl() + path, {
+async function paddleRequest(path, method = "GET", body) {
+  const res = await fetch(`${PADDLE_BASE}${path}`, {
     method,
     headers: {
-      Authorization: `Bearer ${apiKey}`,
       "Content-Type": "application/json",
+      Authorization: `Bearer ${process.env.PADDLE_API_KEY}`,
     },
     body: body ? JSON.stringify(body) : undefined,
   });
 
-  const text = await res.text();
-  let json = null;
-  try {
-    json = text ? JSON.parse(text) : null;
-  } catch {
-    // ignore
-  }
-
   if (!res.ok) {
-    const msg =
-      json?.error?.detail ||
-      json?.error ||
-      json?.message ||
-      text ||
-      `HTTP ${res.status}`;
-    throw new Error(`Paddle API error: ${msg}`);
+    const txt = await res.text();
+    throw new Error(txt);
   }
 
-  return json;
-}
-
-async function getUserFromSession(req) {
-  const token = getCookie(req, "cc_session");
-  if (!token) return null;
-
-  const tokenHash = sha256Hex(token);
-
-  const rows = await sql`
-    select u.id, u.email, u.tier, u.paddle_customer_id
-    from user_session s
-    join app_user u on u.id = s.user_id
-    where s.token_hash = ${tokenHash}
-      and s.revoked_at is null
-      and s.expires_at > now()
-    limit 1
-  `;
-
-  return rows[0] || null;
-}
-
-async function ensurePaddleCustomer(user) {
-  if (user.paddle_customer_id) return user.paddle_customer_id;
-
-  const created = await paddleFetch("/customers", {
-    method: "POST",
-    body: {
-      email: user.email,
-      custom_data: { app: "campcast", user_id: user.id },
-    },
-  });
-
-  const customerId = created?.data?.id;
-  if (!customerId) throw new Error("Failed to create Paddle customer (missing id)");
-
-  await sql`
-    update app_user
-    set paddle_customer_id = ${customerId}
-    where id = ${user.id}
-  `;
-
-  return customerId;
-}
-
-function shouldRedirect(req) {
-  const accept = String(req.headers.accept || "");
-  const wantsHtml = accept.includes("text/html");
-  const url = new URL(req.url, "http://localhost");
-  const redirectFlag = url.searchParams.get("redirect") === "1";
-  return wantsHtml || redirectFlag;
-}
-
-function normalizeBaseUrl(s) {
-  return String(s || "").replace(/\/+$/, "");
-}
-
-function appBaseUrl(req) {
-  if (process.env.APP_URL) return normalizeBaseUrl(process.env.APP_URL);
-
-  const proto = req.headers["x-forwarded-proto"] || "https";
-  const host = req.headers["x-forwarded-host"] || req.headers.host;
-  return normalizeBaseUrl(`${proto}://${host}`);
-}
-
-function payBaseUrl() {
-  return normalizeBaseUrl(process.env.PAY_URL || "https://pay.campcast.is");
-}
-
-function forcePayHost(url) {
-  try {
-    const u = new URL(url);
-    const pay = new URL(payBaseUrl());
-    u.protocol = pay.protocol;
-    u.host = pay.host;
-    return u.toString();
-  } catch {
-    return url;
-  }
+  return res.json();
 }
 
 export default async function handler(req, res) {
-  // ✅ POST only (don’t create transactions on GET)
   if (req.method !== "POST") {
-    res.setHeader("Allow", "POST");
-    return res.status(405).json({ ok: false, error: "Method Not Allowed" });
+    return res.status(405).json({ ok: false });
   }
 
-  try {
-    const user = await getUserFromSession(req);
-    if (!user) {
-      return res.status(401).json({ ok: false, code: "NOT_LOGGED_IN", error: "Not logged in" });
+  const { email, priceId } = req.body;
+
+  if (!email || !priceId) {
+    return res.status(400).json({ ok: false });
+  }
+
+  const isMonthly = priceId === process.env.PADDLE_PRICE_MONTHLY;
+  const isYearly = priceId === process.env.PADDLE_PRICE_YEARLY;
+
+  if (!isMonthly && !isYearly) {
+    return res.status(400).json({ ok: false });
+  }
+
+  // ------------------------------------------------
+  // 1️⃣ CHECK EXISTING ACTIVE SUB
+  // ------------------------------------------------
+
+  const existing = await sql`
+    select *
+    from subscription
+    where email = ${email}
+    and status = 'active'
+    limit 1
+  `;
+
+  if (existing.length > 0) {
+    const sub = existing[0];
+
+    const existingPlan =
+      sub.price_id === process.env.PADDLE_PRICE_YEARLY
+        ? "yearly"
+        : "monthly";
+
+    // YEARLY ACTIVE → HARD BLOCK EVERYTHING
+    if (existingPlan === "yearly") {
+      return res.status(409).json({
+        ok: false,
+        code: "SUB_ACTIVE_YEARLY",
+        proUntil: sub.current_period_end,
+      });
     }
 
-    const body = typeof req.body === "string" ? JSON.parse(req.body) : (req.body || {});
-    const plan = (body?.plan || "monthly").toLowerCase();
+    // MONTHLY ACTIVE
+    if (existingPlan === "monthly") {
+      // Trying monthly again → block
+      if (isMonthly) {
+        return res.status(409).json({
+          ok: false,
+          code: "SUB_ACTIVE_MONTHLY",
+          proUntil: sub.current_period_end,
+        });
+      }
 
-    const priceMonthly = process.env.PADDLE_PRICE_ID_MONTHLY;
-    const priceYearly = process.env.PADDLE_PRICE_ID_YEARLY;
+      // Monthly → Yearly upgrade
+      if (isYearly) {
+        try {
+          await paddleRequest(
+            `/subscriptions/${sub.paddle_subscription_id}`,
+            "PATCH",
+            {
+              items: [
+                {
+                  price_id: process.env.PADDLE_PRICE_YEARLY,
+                  quantity: 1,
+                },
+              ],
+              proration_billing_mode:
+                sub.status === "trialing"
+                  ? "do_not_bill"
+                  : "prorated_immediately",
+            }
+          );
 
-    if (!priceMonthly) throw new Error("Missing PADDLE_PRICE_ID_MONTHLY");
-    if (!priceYearly) throw new Error("Missing PADDLE_PRICE_ID_YEARLY");
+          await sql`
+            update subscription
+            set price_id = ${process.env.PADDLE_PRICE_YEARLY}
+            where id = ${sub.id}
+          `;
 
-    const priceId = plan === "yearly" ? priceYearly : priceMonthly;
+          return res.json({ ok: true, upgraded: true });
+        } catch (err) {
+          console.error(err);
+          return res.status(500).json({ ok: false });
+        }
+      }
+    }
+  }
 
+  // ------------------------------------------------
+  // 2️⃣ CREATE NEW CHECKOUT (ONLY IF NO ACTIVE SUB)
+  // ------------------------------------------------
 
-    const customerId = await ensurePaddleCustomer(user);
-
-    const appBase = appBaseUrl(req);
-    const successUrl = `${appBase}/?checkout=success`;
-    const cancelUrl = `${appBase}/pricing?checkout=cancel`;
-
-    const txn = await paddleFetch("/transactions", {
-      method: "POST",
-      body: {
-        customer_id: customerId,
-        items: [{ price_id: priceId, quantity: 1 }],
-        custom_data: { app: "campcast", user_id: user.id, email: user.email, plan },
-        checkout: {
-          success_url: successUrl,
-          cancel_url: cancelUrl,
+  try {
+    const checkout = await paddleRequest("/transactions", "POST", {
+      items: [
+        {
+          price_id: priceId,
+          quantity: 1,
         },
+      ],
+      customer: {
+        email,
       },
     });
 
-    const checkoutUrlRaw = txn?.data?.checkout?.url;
-    if (!checkoutUrlRaw) throw new Error("No checkout URL returned from Paddle");
-
-    const checkoutUrl = forcePayHost(checkoutUrlRaw);
-
-    if (shouldRedirect(req)) {
-      res.setHeader("Cache-Control", "no-store");
-      res.writeHead(303, { Location: checkoutUrl });
-      return res.end();
-    }
-
-    res.setHeader("Cache-Control", "no-store");
-    return res.status(200).json({ ok: true, url: checkoutUrl });
-  } catch (e) {
-    return res.status(500).json({ ok: false, error: String(e?.message || e) });
+    return res.json({
+      ok: true,
+      checkoutUrl: checkout.data.checkout.url,
+    });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ ok: false });
   }
 }
