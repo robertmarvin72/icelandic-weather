@@ -2,10 +2,10 @@
 import React, { useMemo, useState } from "react";
 import { useMe } from "../hooks/useMe";
 
-export default function Subscribe({ onClose, onDone, lang = "is", theme = "dark", t, me }) {
+export default function Subscribe({ onClose, onDone, lang = "is", theme = "dark", t }) {
   const params = useMemo(() => new URLSearchParams(window.location.search), []);
 
-  // ✅ read plan from querystring (monthly default)
+  // ✅ NEW: read plan from querystring (monthly default)
   const rawPlan = (params.get("plan") || "monthly").toLowerCase();
   const plan = rawPlan === "yearly" ? "yearly" : "monthly";
 
@@ -14,29 +14,19 @@ export default function Subscribe({ onClose, onDone, lang = "is", theme = "dark"
 
   const isLight = theme === "light";
 
-  // If route doesn't pass `me`, fetch it here.
-  const { me: hookMe, refetchMe } = useMe();
-  const ME = me || hookMe;
-  const proActive = !!ME?.entitlements?.pro;
-  const proUntil = ME?.entitlements?.proUntil || null;
-  const currentPlan = ME?.subscription?.plan || null;
-  const isYearly = proActive && currentPlan === "yearly";
-  const isMonthly = proActive && currentPlan === "monthly";
+  const { me: ME, refetchMe } = useMe();
 
-  // ✅ Prefill email:
-  // 1) querystring (?email=...) wins
-  // 2) otherwise use logged-in email from /api/me
-  const initialEmail = params.get("email") || ME?.user?.email || "";
+  const qsEmail = params.get("email") || "";
+  const meEmail = ME?.user?.email || ME?.email || ""; // fallback
+
+  const initialEmail = qsEmail || meEmail || "";
   const [email, setEmail] = useState(initialEmail);
 
-  // ✅ When ME loads later, prefill email if user didn't already type and no querystring email exists
   React.useEffect(() => {
-    const qsEmail = params.get("email");
     if (qsEmail) return; // querystring wins
-    if (!email && ME?.user?.email) {
-      setEmail(ME.user.email);
-    }
-  }, [ME?.user?.email]); // intentionally only reacts to ME email changes
+    if (!meEmail) return;
+    setEmail((prev) => (prev ? prev : meEmail));
+  }, [qsEmail, meEmail]);
 
   // Translation helper (fallbacks only matter if a key is missing)
   const T = (key, fallback) => {
@@ -79,10 +69,10 @@ export default function Subscribe({ onClose, onDone, lang = "is", theme = "dark"
   }
 
   // ✅ Ensure a valid session cookie exists for this email.
+  // Works even if user lands here directly via URL.
   async function ensureSessionForEmail(trimmedEmail) {
-    const { res, json, text } = await postJson("/api/login", {
+    const { res, json, text } = await postJson("/api/login-email", {
       email: trimmedEmail,
-      createIfMissing: true,
     });
 
     if (!res.ok || !json?.ok) {
@@ -117,50 +107,22 @@ export default function Subscribe({ onClose, onDone, lang = "is", theme = "dark"
     try {
       // 1) Ensure session
       await ensureSessionForEmail(trimmed);
-
-      // Refresh /api/me after login so the page can react immediately
       try {
         await refetchMe?.();
-      } catch {
-        // ignore
-      }
+      } catch {}
 
       // 2) Create checkout
+      // ✅ NEW: send plan to API
       let { res, json, text } = await postJson("/api/checkout", { email: trimmed, plan });
 
-      // If we still get 401, retry login ONCE and retry checkout.
+      // 2b) If we still get 401, retry login ONCE and retry checkout.
+      // This covers cookie edge cases / stale sessions.
       if (res.status === 401) {
         await ensureSessionForEmail(trimmed);
         ({ res, json, text } = await postJson("/api/checkout", { email: trimmed, plan }));
       }
 
       if (!res.ok || !json?.ok) {
-        // Rule enforcement responses
-        if (res.status === 409) {
-          if (json?.code === "SUB_ACTIVE_YEARLY") {
-            const until = json?.proUntil ? new Date(json.proUntil).toLocaleDateString() : "";
-            throw new Error(
-              T(
-                "subscribeAlreadyActive",
-                until
-                  ? `Your subscription is already active until ${until}.`
-                  : "Your subscription is already active."
-              )
-            );
-          }
-          if (json?.code === "SUB_ACTIVE_MONTHLY") {
-            const until = json?.proUntil ? new Date(json.proUntil).toLocaleDateString() : "";
-            throw new Error(
-              T(
-                "subscribeAlreadyMonthly",
-                until
-                  ? `You already have an active monthly subscription until ${until}.`
-                  : "You already have an active monthly subscription."
-              )
-            );
-          }
-        }
-
         const msg = pickErrorMessage({
           res,
           json,
@@ -176,11 +138,6 @@ export default function Subscribe({ onClose, onDone, lang = "is", theme = "dark"
       }
 
       if (!json?.url) {
-        // Monthly -> Yearly upgrade returns { ok:true, upgraded:true } (no checkout URL)
-        if (json?.upgraded) {
-          window.location.assign("/?checkout=success&upgrade=1");
-          return;
-        }
         throw new Error(T("subscribeMissingCheckoutUrl", "Missing checkout URL."));
       }
 
@@ -261,26 +218,6 @@ export default function Subscribe({ onClose, onDone, lang = "is", theme = "dark"
           <h1 style={styles.h1}>{T("subscribeTitle", "Activate Pro access")}</h1>
           <p style={styles.p}>{T("subscribeLead", "You’ll complete payment with Paddle.")}</p>
 
-          {isYearly ? (
-            <div style={styles.infoBox}>
-              <div style={{ fontWeight: 900, marginBottom: 4 }}>
-                {T("pricingYearlyActive", "Subscription active")}
-              </div>
-              <div>
-                {T("subscribeAlreadyActive", "Your subscription is already active.")}
-                {proUntil ? (
-                  <>
-                    <br />
-                    {T("pricingActiveUntil", "Active until")}{" "}
-                    {new Date(proUntil).toLocaleDateString()}
-                  </>
-                ) : null}
-                <br />
-                {T("pricingMonthlyNotAvailable", "Yearly customers cannot downgrade to monthly.")}
-              </div>
-            </div>
-          ) : null}
-
           <div style={styles.badgesRow}>
             {trustBadges.map((b) => (
               <div key={b.text} style={styles.badge}>
@@ -300,7 +237,8 @@ export default function Subscribe({ onClose, onDone, lang = "is", theme = "dark"
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder={T("subscribeEmailPlaceholder", "name@domain.com")}
                 style={styles.input}
-                autoFocus
+                disabled={!!meEmail}
+                autoFocus={!meEmail}
               />
               <div style={styles.help}>
                 {T("subscribeEmailHelp", "We use your email for receipts.")}
@@ -316,16 +254,11 @@ export default function Subscribe({ onClose, onDone, lang = "is", theme = "dark"
               </div>
             ) : null}
 
-            <button
-              type="button"
-              style={styles.cta(busy)}
-              onClick={startCheckout}
-              disabled={busy || isYearly || (isMonthly && plan === "monthly")}
-            >
+            <button type="button" style={styles.cta(busy)} onClick={startCheckout} disabled={busy}>
               {busy
                 ? T("subscribeCtaBusy", "Opening checkout…")
                 : T("subscribeCtaMain", "Continue to checkout")}
-              <div style={styles.ctaSub}>{T("subscribeCtaSub", "You can cancel later.")}</div>
+              <span style={styles.ctaSub}>{T("subscribeCtaSub", "You can cancel later.")}</span>
             </button>
 
             <div style={styles.finePrint}>
@@ -335,12 +268,10 @@ export default function Subscribe({ onClose, onDone, lang = "is", theme = "dark"
             <button
               type="button"
               style={styles.secondary}
-              onClick={() => (onDone ? onDone() : window.history.back())}
+              onClick={() => (onClose ? onClose() : window.history.back())}
             >
               {T("subscribeSecondary", "Back")}
             </button>
-
-            <div style={styles.footer}>{T("subscribeFooter", "Questions? Email us.")}</div>
           </div>
 
           {/* Features */}
@@ -362,6 +293,16 @@ export default function Subscribe({ onClose, onDone, lang = "is", theme = "dark"
                 </div>
               ))}
             </div>
+          </div>
+
+          <div style={styles.footer}>
+            {T("subscribeFooter", "Questions? Email us.")}{" "}
+            <a
+              href="mailto:support@campcast.is?subject=CampCast%20Pro%20Support"
+              style={{ fontWeight: 600, color: "#10b981", textDecoration: "none" }}
+            >
+              hello@campcast.is
+            </a>
           </div>
         </div>
       </div>
@@ -399,9 +340,7 @@ function getStyles(isLight) {
       pointerEvents: "none",
       opacity: isLight ? 0.4 : 1,
     },
-
     container: { maxWidth: 860, margin: "0 auto", position: "relative" },
-
     topBar: {
       display: "flex",
       alignItems: "center",
@@ -409,7 +348,6 @@ function getStyles(isLight) {
       gap: 12,
       marginBottom: 14,
     },
-
     back: {
       border: 0,
       background: "transparent",
@@ -419,19 +357,17 @@ function getStyles(isLight) {
       padding: "10px 10px",
       borderRadius: 12,
     },
-
     brandPill: {
       display: "inline-flex",
       alignItems: "center",
       gap: 10,
       padding: "10px 12px",
       borderRadius: 999,
-      border: isLight ? "1px solid rgba(2,6,23,0.12)" : "1px solid rgba(255,255,255,0.12)",
+      border: isLight ? "1px solid rgba(2,6,23,0.10)" : "1px solid rgba(255,255,255,0.12)",
       background: isLight ? "rgba(255,255,255,0.7)" : "rgba(15,23,42,0.55)",
       backdropFilter: "blur(6px)",
       boxShadow: isLight ? "0 10px 30px rgba(2,6,23,0.08)" : "0 16px 40px rgba(0,0,0,0.35)",
     },
-
     brandLogoWrap: {
       width: 34,
       height: 34,
@@ -445,7 +381,6 @@ function getStyles(isLight) {
     brandLogo: { width: 28, height: 28, objectFit: "contain" },
     brandTitle: { fontWeight: 900, fontSize: 12, letterSpacing: 0.2 },
     brandSub: { fontSize: 11, opacity: 0.75 },
-
     card: {
       borderRadius: 24,
       padding: 18,
@@ -456,7 +391,6 @@ function getStyles(isLight) {
     },
     h1: { margin: 0, fontSize: 28, fontWeight: 950, letterSpacing: -0.4 },
     p: { marginTop: 8, marginBottom: 0, fontSize: 14, opacity: 0.85, lineHeight: 1.5 },
-
     badgesRow: { display: "flex", flexWrap: "wrap", gap: 8, marginTop: 14 },
     badge: {
       display: "inline-flex",
@@ -468,10 +402,8 @@ function getStyles(isLight) {
       border: isLight ? "1px solid rgba(2,6,23,0.10)" : "1px solid rgba(255,255,255,0.10)",
       background: isLight ? "rgba(2,6,23,0.04)" : "rgba(255,255,255,0.04)",
     },
-
     form: { marginTop: 16 },
     label: { display: "grid", gap: 8, fontSize: 13, fontWeight: 800 },
-
     input: {
       height: 44,
       borderRadius: 14,
@@ -482,9 +414,7 @@ function getStyles(isLight) {
       outline: "none",
       fontSize: 14,
     },
-
     help: { fontSize: 12, opacity: 0.75, fontWeight: 600 },
-
     errorBox: {
       marginTop: 12,
       borderRadius: 16,
@@ -495,18 +425,6 @@ function getStyles(isLight) {
       fontSize: 13,
       lineHeight: 1.4,
     },
-
-    infoBox: {
-      marginTop: 12,
-      borderRadius: 16,
-      padding: 12,
-      border: "1px solid rgba(16,185,129,0.28)",
-      background: isLight ? "rgba(16,185,129,0.08)" : "rgba(16,185,129,0.10)",
-      color: isLight ? "#064e3b" : "rgba(255,255,255,0.95)",
-      fontSize: 13,
-      lineHeight: 1.4,
-    },
-
     cta: (busy) => ({
       marginTop: 14,
       width: "100%",
@@ -522,12 +440,9 @@ function getStyles(isLight) {
       display: "grid",
       gap: 4,
       textAlign: "center",
-      opacity: busy ? 0.85 : 1,
     }),
-
     ctaSub: { fontSize: 12, fontWeight: 700, opacity: 0.9 },
     finePrint: { marginTop: 10, fontSize: 12, opacity: 0.75, textAlign: "center" },
-
     secondary: {
       marginTop: 10,
       width: "100%",
@@ -540,13 +455,9 @@ function getStyles(isLight) {
       fontWeight: 800,
       cursor: "pointer",
     },
-
-    footer: { marginTop: 12, fontSize: 12, opacity: 0.75, textAlign: "center" },
-
     features: { marginTop: 18 },
     featuresTitle: { fontWeight: 950, marginBottom: 10, fontSize: 14 },
     featuresGrid: { display: "grid", gap: 10, gridTemplateColumns: "1fr" },
-
     featureCard: {
       display: "flex",
       gap: 12,
@@ -555,19 +466,17 @@ function getStyles(isLight) {
       border: isLight ? "1px solid rgba(2,6,23,0.10)" : "1px solid rgba(255,255,255,0.10)",
       background: isLight ? "rgba(2,6,23,0.03)" : "rgba(255,255,255,0.03)",
     },
-
     featureIcon: {
-      width: 38,
-      height: 38,
-      borderRadius: 14,
+      width: 34,
+      height: 34,
+      borderRadius: 12,
       display: "grid",
       placeItems: "center",
-      background: isLight ? "rgba(2,6,23,0.05)" : "rgba(255,255,255,0.06)",
+      background: isLight ? "rgba(2,6,23,0.06)" : "rgba(255,255,255,0.06)",
       flex: "0 0 auto",
-      fontSize: 18,
     },
-
     featureTitle: { fontWeight: 900, fontSize: 13, marginBottom: 2 },
-    featureDesc: { fontSize: 12, opacity: 0.78, lineHeight: 1.35 },
+    featureDesc: { fontSize: 12, opacity: 0.78, lineHeight: 1.45 },
+    footer: { marginTop: 16, fontSize: 12, opacity: 0.85 },
   };
 }
