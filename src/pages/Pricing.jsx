@@ -6,18 +6,25 @@ export default function Pricing({ onClose, lang = "is", theme = "dark", t, me })
   const isLight = theme === "light";
   const styles = getStyles(isLight);
 
-  const params = useMemo(() => new URLSearchParams(window.location.search), []);
-
   // If route doesn't pass `me`, fetch it here so Pricing can still gate buttons.
   const { me: hookMe } = useMe();
   const ME = me || hookMe;
-  const userId = ME?.user?.id || null;
+
+  // Pull email from querystring if present (nice UX)
+  const params = useMemo(() => new URLSearchParams(window.location.search), []);
+  const qsEmail = (params.get("email") || "").trim();
+
+  // IMPORTANT: don't rely on userId for "logged in" checks (can be null temporarily).
+  // Email presence is a safer signal for "we know who you are".
+  const meEmail = (ME?.user?.email || "").trim();
+  const email = qsEmail || meEmail; // querystring wins
 
   const proActive = !!ME?.entitlements?.pro;
   const proUntil = ME?.entitlements?.proUntil || null;
-  const currentPlan = ME?.subscription?.plan || null; // "monthly" | "yearly" | "unknown" | null
-  const isYearly = proActive && currentPlan === "yearly";
-  const isMonthly = proActive && currentPlan === "monthly";
+
+  const plan = ME?.subscription?.plan || null; // "monthly" | "yearly" | "unknown" | null
+  const isYearly = proActive && plan === "yearly";
+  const isMonthly = proActive && plan === "monthly";
 
   const [busyPlan, setBusyPlan] = useState(""); // "monthly" | "yearly" | ""
   const [error, setError] = useState("");
@@ -31,48 +38,132 @@ export default function Pricing({ onClose, lang = "is", theme = "dark", t, me })
     return fallback;
   };
 
-  // ✅ Helper: pick email for prefill (querystring wins)
-  const qsEmail = params.get("email") || "";
-  const meEmail = ME?.user?.email || ME?.email || "";
-  const prefillEmail = qsEmail || meEmail || "";
+  // --- Helpers --------------------------------------------------------------
 
-  // ✅ Pricing should ONLY navigate to Subscribe (never start checkout directly)
-  function goSubscribe(plan) {
+  async function postJson(url, body) {
+    const res = await fetch(url, {
+      method: "POST",
+      credentials: "include",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body || {}),
+    });
+
+    const text = await res.text();
+    let json = null;
+    try {
+      json = text ? JSON.parse(text) : null;
+    } catch {
+      // non-JSON
+    }
+
+    return { res, json, text };
+  }
+
+  function pickErrorMessage({ res, json, text, fallback }) {
+    return (
+      json?.error ||
+      json?.message ||
+      (typeof text === "string" && text.trim() ? text.trim() : null) ||
+      fallback ||
+      `Request failed (${res?.status || "?"})`
+    );
+  }
+
+  // If user is not logged in, route to /subscribe (email prefill) first.
+  function goSubscribe(chosenPlan) {
+    const to =
+      `/subscribe?plan=${encodeURIComponent(chosenPlan)}` +
+      (email ? `&email=${encodeURIComponent(email)}` : "");
+    window.location.assign(to);
+  }
+
+  async function startCheckout(chosenPlan) {
+    if (busyPlan) return;
+
+    // If we don't have an email (not logged in / no identity), go through Subscribe.
+    if (!email) {
+      goSubscribe(chosenPlan);
+      return;
+    }
+
+    setBusyPlan(chosenPlan);
     setError("");
 
-    // If yearly is already active, don't allow downgrade/repurchase
-    if (isYearly) {
-      const until = proUntil ? new Date(proUntil).toLocaleDateString() : "";
-      setError(
-        T(
-          "pricingAlreadyYearly",
-          until
-            ? `Your yearly subscription is already active until ${until}.`
-            : "Your yearly subscription is already active."
-        )
-      );
-      return;
+    try {
+      // Pricing is plan selector; if logged in, /api/checkout uses session.
+      // We send only { plan } (backend ignores email anyway).
+      const { res, json, text } = await postJson("/api/checkout", { plan: chosenPlan });
+
+      // Subscription already active / upgrade rules
+      if (res.status === 409) {
+        if (json?.code === "SUB_ACTIVE_YEARLY") {
+          const until = json?.proUntil ? new Date(json.proUntil).toLocaleDateString() : "";
+          throw new Error(
+            T(
+              "pricingAlreadyYearly",
+              until
+                ? `Your yearly subscription is already active until ${until}.`
+                : "Your yearly subscription is already active."
+            )
+          );
+        }
+
+        if (json?.code === "SUB_ACTIVE_MONTHLY") {
+          const until = json?.proUntil ? new Date(json.proUntil).toLocaleDateString() : "";
+          throw new Error(
+            T(
+              "pricingMonthlyActive",
+              until
+                ? `You already have an active monthly subscription until ${until}.`
+                : "You already have an active monthly subscription."
+            )
+          );
+        }
+
+        throw new Error(
+          pickErrorMessage({
+            res,
+            json,
+            text,
+            fallback: T("subscribeSomethingWentWrong", "Something went wrong."),
+          })
+        );
+      }
+
+      if (!res.ok || !json?.ok) {
+        if (res.status === 401) {
+          // Session mismatch; send user through email-prefill flow.
+          goSubscribe(chosenPlan);
+          return;
+        }
+
+        throw new Error(
+          pickErrorMessage({
+            res,
+            json,
+            text,
+            fallback: T("subscribeSomethingWentWrong", "Something went wrong."),
+          })
+        );
+      }
+
+      // ✅ Monthly -> Yearly upgrade can return { ok:true, upgraded:true } (no checkout URL)
+      if (json?.upgraded) {
+        window.location.assign("/?checkout=success&upgrade=1");
+        return;
+      }
+
+      // Normal checkout needs a URL
+      if (!json?.url) {
+        throw new Error(T("subscribeMissingCheckoutUrl", "Missing checkout URL."));
+      }
+
+      window.location.assign(json.url);
+    } catch (e) {
+      setError(String(e?.message || e));
+    } finally {
+      setBusyPlan("");
     }
-
-    // If monthly is active and they click monthly again, block it (no double-purchase)
-    if (isMonthly && plan === "monthly") {
-      const until = proUntil ? new Date(proUntil).toLocaleDateString() : "";
-      setError(
-        T(
-          "pricingMonthlyActive",
-          until
-            ? `You already have an active monthly subscription until ${until}.`
-            : "You already have an active monthly subscription."
-        )
-      );
-      return;
-    }
-
-    const to = `/subscribe?plan=${encodeURIComponent(plan)}${
-      prefillEmail ? `&email=${encodeURIComponent(prefillEmail)}` : ""
-    }`;
-
-    window.location.assign(to);
   }
 
   const yearlyPrice = "€24.99";
@@ -124,7 +215,7 @@ export default function Pricing({ onClose, lang = "is", theme = "dark", t, me })
             {T("pricingLead", "Pick monthly or yearly. Payment is handled securely by Paddle.")}
           </p>
 
-          {!userId ? (
+          {!email ? (
             <div style={styles.note}>
               {T("pricingNotLoggedIn", "We’ll ask for your email before checkout.")}
             </div>
@@ -201,7 +292,7 @@ export default function Pricing({ onClose, lang = "is", theme = "dark", t, me })
               <button
                 type="button"
                 style={styles.cta(true, busyPlan === "yearly")}
-                onClick={() => goSubscribe("yearly")}
+                onClick={() => startCheckout("yearly")}
                 disabled={!!busyPlan || isYearly}
               >
                 {busyPlan === "yearly"
@@ -233,7 +324,7 @@ export default function Pricing({ onClose, lang = "is", theme = "dark", t, me })
               <button
                 type="button"
                 style={styles.cta(false, busyPlan === "monthly")}
-                onClick={() => goSubscribe("monthly")}
+                onClick={() => startCheckout("monthly")}
                 disabled={!!busyPlan || isMonthly || isYearly}
               >
                 {busyPlan === "monthly"
