@@ -8,5 +8,11 @@
       "source": "/(.*)",
       "destination": "/"
     }
-  ]
+  ],
+
+  "functions": {
+    "api/**/*.js": {
+      "includeFiles": "server_data/**"
+    }
+  }
 }
