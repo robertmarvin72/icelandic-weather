@@ -1,0 +1,1454 @@
+[
+  {
+    "id": "osm_relation_12561703",
+    "name": "Atlavík",
+    "lat": 65.089634,
+    "lon": -14.768243
+  },
+  {
+    "id": "osm_way_823821729",
+    "name": "Á",
+    "lat": 65.264741,
+    "lon": -22.342116
+  },
+  {
+    "id": "osm_node_12909134201",
+    "name": "Áfangagil",
+    "lat": 64.102271,
+    "lon": -19.577598
+  },
+  {
+    "id": "osm_node_910847719",
+    "name": "Áfangi",
+    "lat": 65.148948,
+    "lon": -19.72924
+  },
+  {
+    "id": "osm_way_182765543",
+    "name": "Álfaskeið",
+    "lat": 64.085997,
+    "lon": -20.423319
+  },
+  {
+    "id": "osm_relation_11361844",
+    "name": "Álftavatn",
+    "lat": 63.856751,
+    "lon": -19.229276
+  },
+  {
+    "id": "osm_node_60714223",
+    "name": "Árbúðir",
+    "lat": 64.609222,
+    "lon": -19.703618
+  },
+  {
+    "id": "osm_way_225558183",
+    "name": "Árhús",
+    "lat": 63.832129,
+    "lon": -20.407593
+  },
+  {
+    "id": "osm_way_1303098459",
+    "name": "Ármeningaflöt",
+    "lat": 63.6779,
+    "lon": -19.476579
+  },
+  {
+    "id": "osm_way_182970919",
+    "name": "Ártún",
+    "lat": 65.906797,
+    "lon": -18.068232
+  },
+  {
+    "id": "osm_way_980883137",
+    "name": "Ásbrandsstaðir",
+    "lat": 65.704202,
+    "lon": -14.919029
+  },
+  {
+    "id": "osm_way_39690000",
+    "name": "Ásbyrgi",
+    "lat": 66.024659,
+    "lon": -16.49658
+  },
+  {
+    "id": "osm_relation_12546769",
+    "name": "Ásbyrgi í Vesturdal",
+    "lat": 65.933307,
+    "lon": -16.556818
+  },
+  {
+    "id": "osm_way_485351115",
+    "name": "Bakkafjörður",
+    "lat": 66.037118,
+    "lon": -14.802118
+  },
+  {
+    "id": "osm_way_228249502",
+    "name": "Bakkaflöt",
+    "lat": 65.463331,
+    "lon": -19.345846
+  },
+  {
+    "id": "osm_node_685898655",
+    "name": "Básar",
+    "lat": 63.677637,
+    "lon": -19.481285
+  },
+  {
+    "id": "osm_node_12985225409",
+    "name": "Bíldudalur Camping Ground",
+    "lat": 65.683381,
+    "lon": -23.603668
+  },
+  {
+    "id": "osm_way_485352747",
+    "name": "Bjarg",
+    "lat": 65.640252,
+    "lon": -16.91397
+  },
+  {
+    "id": "osm_way_911130492",
+    "name": "Bjargaflöt",
+    "lat": 63.677578,
+    "lon": -19.48265
+  },
+  {
+    "id": "osm_way_496339866",
+    "name": "Bjarkarlundur",
+    "lat": 65.556043,
+    "lon": -22.101598
+  },
+  {
+    "id": "osm_node_4393992411",
+    "name": "Bjarnarnes",
+    "lat": 66.391302,
+    "lon": -22.353015
+  },
+  {
+    "id": "osm_way_482486028",
+    "name": "Bjarteyjarsandur",
+    "lat": 64.397992,
+    "lon": -21.509964
+  },
+  {
+    "id": "osm_node_4370113492",
+    "name": "Blagil",
+    "lat": 63.966443,
+    "lon": -18.321453
+  },
+  {
+    "id": "osm_node_4305203589",
+    "name": "Blágil",
+    "lat": 64.089684,
+    "lon": -18.110116
+  },
+  {
+    "id": "osm_way_436501046",
+    "name": "Blágil",
+    "lat": 63.966982,
+    "lon": -18.324363
+  },
+  {
+    "id": "osm_way_485347177",
+    "name": "Blönduós",
+    "lat": 65.659101,
+    "lon": -20.275294
+  },
+  {
+    "id": "osm_way_305483199",
+    "name": "Borg í Grimsnesi",
+    "lat": 64.076627,
+    "lon": -20.770973
+  },
+  {
+    "id": "osm_way_1422144535",
+    "name": "Bragðavellir",
+    "lat": 64.644849,
+    "lon": -14.516095
+  },
+  {
+    "id": "osm_way_233309453",
+    "name": "Breiðavík við Latrabjarg",
+    "lat": 65.549693,
+    "lon": -24.352804
+  },
+  {
+    "id": "osm_way_727899485",
+    "name": "Breiðdalsvík",
+    "lat": 64.79285,
+    "lon": -14.007386
+  },
+  {
+    "id": "osm_way_911130491",
+    "name": "Brúðkaupflöt",
+    "lat": 63.677745,
+    "lon": -19.482886
+  },
+  {
+    "id": "osm_way_494269431",
+    "name": "Búðardalur",
+    "lat": 65.107966,
+    "lon": -21.764773
+  },
+  {
+    "id": "osm_way_249836961",
+    "name": "Camp Egilsstaðir",
+    "lat": 65.258233,
+    "lon": -14.408729
+  },
+  {
+    "id": "osm_way_712155124",
+    "name": "Camper Resort Reykjavík",
+    "lat": 64.146878,
+    "lon": -21.809832
+  },
+  {
+    "id": "osm_node_5776372647",
+    "name": "Camping 66.12° North",
+    "lat": 66.200038,
+    "lon": -17.102987
+  },
+  {
+    "id": "osm_way_1279750714",
+    "name": "Camping Berunes",
+    "lat": 64.697671,
+    "lon": -14.254113
+  },
+  {
+    "id": "osm_way_1080918601",
+    "name": "Camping Borðeyri",
+    "lat": 65.21125,
+    "lon": -21.096592
+  },
+  {
+    "id": "osm_node_13068615726",
+    "name": "Camping Mjóanes",
+    "lat": 65.151478,
+    "lon": -14.63385
+  },
+  {
+    "id": "osm_node_477368841",
+    "name": "Camping Volcano Huts",
+    "lat": 63.691248,
+    "lon": -19.540079
+  },
+  {
+    "id": "osm_way_1274063239",
+    "name": "Campsite Reception",
+    "lat": 64.015374,
+    "lon": -16.975225
+  },
+  {
+    "id": "osm_way_485468438",
+    "name": "CJA Campsite",
+    "lat": 65.702698,
+    "lon": -17.348607
+  },
+  {
+    "id": "osm_node_4336206392",
+    "name": "Dalbær",
+    "lat": 66.101031,
+    "lon": -22.571885
+  },
+  {
+    "id": "osm_way_486518346",
+    "name": "Djupivogur",
+    "lat": 64.655668,
+    "lon": -14.284642
+  },
+  {
+    "id": "osm_way_126277392",
+    "name": "Drekaskáli",
+    "lat": 65.041594,
+    "lon": -16.594043
+  },
+  {
+    "id": "osm_node_1604973950",
+    "name": "Drekaskáli Warden Cabin",
+    "lat": 65.042369,
+    "lon": -16.595591
+  },
+  {
+    "id": "osm_way_333123344",
+    "name": "Emstrur",
+    "lat": 63.766481,
+    "lon": -19.373276
+  },
+  {
+    "id": "osm_way_300366520",
+    "name": "Eyjólfsstaðir",
+    "lat": 64.75621,
+    "lon": -14.497936
+  },
+  {
+    "id": "osm_way_169545287",
+    "name": "Fagrabrekka",
+    "lat": 64.276843,
+    "lon": -21.095833
+  },
+  {
+    "id": "osm_node_2931428970",
+    "name": "Fljótshlíð",
+    "lat": 63.723675,
+    "lon": -20.013314
+  },
+  {
+    "id": "osm_way_494270118",
+    "name": "Fljótstunga",
+    "lat": 64.748263,
+    "lon": -20.84568
+  },
+  {
+    "id": "osm_way_484519126",
+    "name": "Flókalundur",
+    "lat": 65.577333,
+    "lon": -23.172448
+  },
+  {
+    "id": "osm_way_298941672",
+    "name": "Fossatún",
+    "lat": 64.594544,
+    "lon": -21.574509
+  },
+  {
+    "id": "osm_node_4393994970",
+    "name": "Furufjörður",
+    "lat": 66.270156,
+    "lon": -22.236435
+  },
+  {
+    "id": "osm_way_445504932",
+    "name": "Garðskagi",
+    "lat": 64.082063,
+    "lon": -22.690198
+  },
+  {
+    "id": "osm_way_485083920",
+    "name": "Gata Free Camping",
+    "lat": 63.829787,
+    "lon": -21.678618
+  },
+  {
+    "id": "osm_node_6655030457",
+    "name": "Geldingafell",
+    "lat": 64.694134,
+    "lon": -15.360801
+  },
+  {
+    "id": "osm_way_243497921",
+    "name": "Gesthús Selfoss",
+    "lat": 63.932819,
+    "lon": -20.988708
+  },
+  {
+    "id": "osm_way_1427741675",
+    "name": "Glúmsstaðir",
+    "lat": 66.410167,
+    "lon": -22.874399
+  },
+  {
+    "id": "osm_way_485357133",
+    "name": "Grenivík",
+    "lat": 65.949688,
+    "lon": -18.173145
+  },
+  {
+    "id": "osm_node_6491645585",
+    "name": "Grímsey Camping",
+    "lat": 66.540757,
+    "lon": -18.015748
+  },
+  {
+    "id": "osm_way_203775845",
+    "name": "Grundarfjörður",
+    "lat": 64.920593,
+    "lon": -23.258617
+  },
+  {
+    "id": "osm_node_8977990680",
+    "name": "Hallkelsstaðahlíð",
+    "lat": 64.903326,
+    "lon": -22.150504
+  },
+  {
+    "id": "osm_relation_11829038",
+    "name": "Hamrar",
+    "lat": 65.64763,
+    "lon": -18.10334
+  },
+  {
+    "id": "osm_way_1072059928",
+    "name": "Happy Campsite Keflavík",
+    "lat": 63.970581,
+    "lon": -22.508599
+  },
+  {
+    "id": "osm_way_38081955",
+    "name": "Haukafell",
+    "lat": 64.345656,
+    "lon": -15.503958
+  },
+  {
+    "id": "osm_node_5894882906",
+    "name": "Hegranes",
+    "lat": 65.736041,
+    "lon": -19.478603
+  },
+  {
+    "id": "osm_way_484570665",
+    "name": "Heiðarbær",
+    "lat": 65.888893,
+    "lon": -17.32009
+  },
+  {
+    "id": "osm_way_751539432",
+    "name": "Hella Gaddstaðaflatir",
+    "lat": 63.828601,
+    "lon": -20.398809
+  },
+  {
+    "id": "osm_way_484908052",
+    "name": "Hellishólar",
+    "lat": 63.726295,
+    "lon": -20.039428
+  },
+  {
+    "id": "osm_way_486524008",
+    "name": "Hengifoss",
+    "lat": 65.025821,
+    "lon": -14.971978
+  },
+  {
+    "id": "osm_node_460436747",
+    "name": "Herðubreiðarlindir",
+    "lat": 65.193181,
+    "lon": -16.222253
+  },
+  {
+    "id": "osm_way_37921519",
+    "name": "Herjólfsdalur",
+    "lat": 63.442497,
+    "lon": -20.297991
+  },
+  {
+    "id": "osm_way_496419764",
+    "name": "Heydalur",
+    "lat": 65.842303,
+    "lon": -22.675498
+  },
+  {
+    "id": "osm_way_67629319",
+    "name": "Hjalli",
+    "lat": 64.304403,
+    "lon": -21.542168
+  },
+  {
+    "id": "osm_way_368848611",
+    "name": "Hlaðir",
+    "lat": 64.410625,
+    "lon": -21.611685
+  },
+  {
+    "id": "osm_way_295074392",
+    "name": "Hlíð",
+    "lat": 65.649093,
+    "lon": -16.916278
+  },
+  {
+    "id": "osm_node_836158969",
+    "name": "Hlöðuvík",
+    "lat": 66.414501,
+    "lon": -22.670809
+  },
+  {
+    "id": "osm_way_357813328",
+    "name": "Hofsós",
+    "lat": 65.898179,
+    "lon": -19.403982
+  },
+  {
+    "id": "osm_node_4393973721",
+    "name": "Horn",
+    "lat": 66.442264,
+    "lon": -22.437906
+  },
+  {
+    "id": "osm_node_4393980657",
+    "name": "Hornbjargsviti",
+    "lat": 66.410435,
+    "lon": -22.380545
+  },
+  {
+    "id": "osm_node_836159108",
+    "name": "Hornvík",
+    "lat": 66.425928,
+    "lon": -22.490353
+  },
+  {
+    "id": "osm_way_485054825",
+    "name": "Hólaskjól",
+    "lat": 63.907059,
+    "lon": -18.604177
+  },
+  {
+    "id": "osm_relation_2350479",
+    "name": "Hólmavík",
+    "lat": 65.702711,
+    "lon": -21.684181
+  },
+  {
+    "id": "osm_way_485057090",
+    "name": "Hraunborgir",
+    "lat": 64.03213,
+    "lon": -20.814398
+  },
+  {
+    "id": "osm_way_485374065",
+    "name": "Húnavellir",
+    "lat": 65.540426,
+    "lon": -20.206138
+  },
+  {
+    "id": "osm_relation_10697895",
+    "name": "Húsafell",
+    "lat": 64.700644,
+    "lon": -20.874702
+  },
+  {
+    "id": "osm_way_484502918",
+    "name": "Hvammstangi",
+    "lat": 65.402263,
+    "lon": -20.926789
+  },
+  {
+    "id": "osm_way_28310678",
+    "name": "Hvannabrekka",
+    "lat": 64.281791,
+    "lon": -21.091355
+  },
+  {
+    "id": "osm_way_839648786",
+    "name": "Hvanngil",
+    "lat": 63.831612,
+    "lon": -19.20533
+  },
+  {
+    "id": "osm_node_12222002620",
+    "name": "Hveravellir",
+    "lat": 64.86628,
+    "lon": -19.55275
+  },
+  {
+    "id": "osm_node_11373186992",
+    "name": "Hveravík",
+    "lat": 65.700918,
+    "lon": -21.56201
+  },
+  {
+    "id": "osm_way_423709326",
+    "name": "Hverinn",
+    "lat": 64.654553,
+    "lon": -21.406202
+  },
+  {
+    "id": "osm_way_700962341",
+    "name": "Hvítárnes",
+    "lat": 64.616734,
+    "lon": -19.75692
+  },
+  {
+    "id": "osm_way_26159510",
+    "name": "Höfðavík",
+    "lat": 65.099292,
+    "lon": -14.739918
+  },
+  {
+    "id": "osm_way_485056196",
+    "name": "Hörgsland",
+    "lat": 63.842699,
+    "lon": -17.950838
+  },
+  {
+    "id": "osm_way_839657803",
+    "name": "Höskuldsskáli",
+    "lat": 63.932771,
+    "lon": -19.165292
+  },
+  {
+    "id": "osm_way_38515213",
+    "name": "Kerlingarfjöll",
+    "lat": 64.683826,
+    "lon": -19.303482
+  },
+  {
+    "id": "osm_way_485463654",
+    "name": "Kidagil",
+    "lat": 65.501613,
+    "lon": -17.459078
+  },
+  {
+    "id": "osm_way_168916937",
+    "name": "Kirkjubær II",
+    "lat": 63.792439,
+    "lon": -18.050859
+  },
+  {
+    "id": "osm_way_496422849",
+    "name": "Korpudalur",
+    "lat": 65.983829,
+    "lon": -23.339154
+  },
+  {
+    "id": "osm_way_484572426",
+    "name": "Kópasker",
+    "lat": 66.300977,
+    "lon": -16.442748
+  },
+  {
+    "id": "osm_way_236016857",
+    "name": "Krákuvör",
+    "lat": 65.372662,
+    "lon": -22.917055
+  },
+  {
+    "id": "osm_node_2397288400",
+    "name": "Kverkfjöll / Sigurðarskáli",
+    "lat": 64.747338,
+    "lon": -16.631409
+  },
+  {
+    "id": "osm_way_1347942980",
+    "name": "Lambeyri",
+    "lat": 65.464714,
+    "lon": -19.350462
+  },
+  {
+    "id": "osm_way_233318335",
+    "name": "Landmannahellir",
+    "lat": 64.053443,
+    "lon": -19.241954
+  },
+  {
+    "id": "osm_way_25469557",
+    "name": "Landmannalaugar",
+    "lat": 63.990633,
+    "lon": -19.059176
+  },
+  {
+    "id": "osm_node_5039686322",
+    "name": "Laugafell",
+    "lat": 65.027594,
+    "lon": -18.331491
+  },
+  {
+    "id": "osm_way_484904679",
+    "name": "Laugaland",
+    "lat": 63.916461,
+    "lon": -20.414488
+  },
+  {
+    "id": "osm_way_485467880",
+    "name": "Laugar Camping",
+    "lat": 65.721794,
+    "lon": -17.362383
+  },
+  {
+    "id": "osm_way_484505986",
+    "name": "Laugar í Sælingsdal",
+    "lat": 65.246883,
+    "lon": -21.802392
+  },
+  {
+    "id": "osm_node_12875022446",
+    "name": "Laugarfell Campsite",
+    "lat": 64.885345,
+    "lon": -15.351562
+  },
+  {
+    "id": "osm_node_5041029721",
+    "name": "Laugarhóll",
+    "lat": 65.781336,
+    "lon": -21.516393
+  },
+  {
+    "id": "osm_way_485061519",
+    "name": "Laugarvatn",
+    "lat": 64.221809,
+    "lon": -20.731133
+  },
+  {
+    "id": "osm_way_484905736",
+    "name": "Leirubakki",
+    "lat": 63.992983,
+    "lon": -20.012532
+  },
+  {
+    "id": "osm_node_12097315901",
+    "name": "Lindartunga",
+    "lat": 64.82082,
+    "lon": -22.256851
+  },
+  {
+    "id": "osm_way_496423588",
+    "name": "Melanes",
+    "lat": 65.445821,
+    "lon": -23.954374
+  },
+  {
+    "id": "osm_way_222003125",
+    "name": "Mosskógar",
+    "lat": 64.179757,
+    "lon": -21.61663
+  },
+  {
+    "id": "osm_way_708231840",
+    "name": "Múlaskáli",
+    "lat": 64.55192,
+    "lon": -15.1496
+  },
+  {
+    "id": "osm_node_9896956630",
+    "name": "Myllulækur",
+    "lat": 64.348133,
+    "lon": -15.258671
+  },
+  {
+    "id": "osm_way_496426811",
+    "name": "Núpur í Dýrafirði",
+    "lat": 65.929508,
+    "lon": -23.587149
+  },
+  {
+    "id": "osm_relation_9902486",
+    "name": "Nyrðri-Leirar",
+    "lat": 64.280304,
+    "lon": -21.084958
+  },
+  {
+    "id": "osm_way_978998334",
+    "name": "Nýidalur",
+    "lat": 64.735925,
+    "lon": -18.074412
+  },
+  {
+    "id": "osm_node_12968980403",
+    "name": "Rammalóðin",
+    "lat": 66.149184,
+    "lon": -18.905137
+  },
+  {
+    "id": "osm_way_771319047",
+    "name": "Reyðarfellsskógur",
+    "lat": 64.694499,
+    "lon": -20.942881
+  },
+  {
+    "id": "osm_relation_14455048",
+    "name": "Rjúpnavellir",
+    "lat": 64.034788,
+    "lon": -19.834815
+  },
+  {
+    "id": "osm_node_4328444297",
+    "name": "Saeberg Camping",
+    "lat": 65.259702,
+    "lon": -21.109645
+  },
+  {
+    "id": "osm_way_192491197",
+    "name": "Sandártunga",
+    "lat": 64.10495,
+    "lon": -19.952423
+  },
+  {
+    "id": "osm_way_243658175",
+    "name": "Selsskógur",
+    "lat": 64.527013,
+    "lon": -21.5787
+  },
+  {
+    "id": "osm_way_169885062",
+    "name": "Skaftafell",
+    "lat": 64.015957,
+    "lon": -16.97294
+  },
+  {
+    "id": "osm_way_196660982",
+    "name": "Skagaströnd",
+    "lat": 65.826144,
+    "lon": -20.291891
+  },
+  {
+    "id": "osm_way_358562074",
+    "name": "Skjól",
+    "lat": 64.310655,
+    "lon": -20.231833
+  },
+  {
+    "id": "osm_way_481201377",
+    "name": "Skjöldólfsstaðir",
+    "lat": 65.317414,
+    "lon": -15.114442
+  },
+  {
+    "id": "osm_node_2260042976",
+    "name": "Skælingar",
+    "lat": 63.980589,
+    "lon": -18.522333
+  },
+  {
+    "id": "osm_node_4393992357",
+    "name": "Smiðjuvík",
+    "lat": 66.362862,
+    "lon": -22.278156
+  },
+  {
+    "id": "osm_way_520826919",
+    "name": "Snorrastaðir",
+    "lat": 64.773475,
+    "lon": -22.30108
+  },
+  {
+    "id": "osm_way_493382103",
+    "name": "Snæfell",
+    "lat": 64.804202,
+    "lon": -15.641512
+  },
+  {
+    "id": "osm_node_4876526302",
+    "name": "Sólbrekka",
+    "lat": 65.204913,
+    "lon": -13.798961
+  },
+  {
+    "id": "osm_way_604751560",
+    "name": "Stafafell",
+    "lat": 64.421257,
+    "lon": -14.846489
+  },
+  {
+    "id": "osm_way_326993700",
+    "name": "Stokkseyri",
+    "lat": 63.836681,
+    "lon": -21.055284
+  },
+  {
+    "id": "osm_way_1418661987",
+    "name": "Stóri-Lambhagi 4 Tjaldsvæði",
+    "lat": 64.390643,
+    "lon": -21.828067
+  },
+  {
+    "id": "osm_way_1303068068",
+    "name": "Strákagil",
+    "lat": 63.675695,
+    "lon": -19.468643
+  },
+  {
+    "id": "osm_node_5777739338",
+    "name": "Strútslaug",
+    "lat": 63.87546,
+    "lon": -18.944485
+  },
+  {
+    "id": "osm_way_493382525",
+    "name": "Strútur á Mælifellssandi",
+    "lat": 63.838651,
+    "lon": -18.975844
+  },
+  {
+    "id": "osm_way_1080246473",
+    "name": "Stuðlagil",
+    "lat": 65.164322,
+    "lon": -15.310887
+  },
+  {
+    "id": "osm_node_4954364358",
+    "name": "Suðureyri",
+    "lat": 66.130938,
+    "lon": -23.529287
+  },
+  {
+    "id": "osm_way_442013614",
+    "name": "Svinafell",
+    "lat": 63.978824,
+    "lon": -16.852719
+  },
+  {
+    "id": "osm_way_485491137",
+    "name": "Systragil",
+    "lat": 65.7071,
+    "lon": -17.898263
+  },
+  {
+    "id": "osm_node_610811381",
+    "name": "Sæból",
+    "lat": 66.341415,
+    "lon": -23.097284
+  },
+  {
+    "id": "osm_node_9965622384",
+    "name": "Sælureiturinn Árblik",
+    "lat": 65.019603,
+    "lon": -21.647115
+  },
+  {
+    "id": "osm_way_484882324",
+    "name": "T-bær",
+    "lat": 63.832768,
+    "lon": -21.687583
+  },
+  {
+    "id": "osm_way_357832894",
+    "name": "Tjaldmiðstöðin á Flúðum",
+    "lat": 64.136514,
+    "lon": -20.327357
+  },
+  {
+    "id": "osm_way_241958700",
+    "name": "Tjaldmiðstöðin Flúðum",
+    "lat": 64.138295,
+    "lon": -20.329822
+  },
+  {
+    "id": "osm_way_481202141",
+    "name": "Tjaldstæði Fáskrúðsfjarðar",
+    "lat": 64.936557,
+    "lon": -14.036238
+  },
+  {
+    "id": "osm_way_244172704",
+    "name": "Tjaldstæði Húnaveri",
+    "lat": 65.522184,
+    "lon": -19.800246
+  },
+  {
+    "id": "osm_way_403279760",
+    "name": "Tjaldstæði í Reykjarfirði",
+    "lat": 66.258682,
+    "lon": -22.087537
+  },
+  {
+    "id": "osm_relation_9958075",
+    "name": "Tjaldstæði í Reykjarfirði",
+    "lat": 65.92736,
+    "lon": -22.426247
+  },
+  {
+    "id": "osm_way_208682910",
+    "name": "Tjaldstæði Raufarhafnar",
+    "lat": 66.447926,
+    "lon": -15.941953
+  },
+  {
+    "id": "osm_way_213141935",
+    "name": "Tjaldstæði Stöðvarfjarðar",
+    "lat": 64.832636,
+    "lon": -13.861684
+  },
+  {
+    "id": "osm_way_436504168",
+    "name": "Tjaldstæðið á Húsabakka",
+    "lat": 65.924756,
+    "lon": -18.567764
+  },
+  {
+    "id": "osm_way_484569756",
+    "name": "Tjaldstæðið á Möðrudal",
+    "lat": 65.372946,
+    "lon": -15.88263
+  },
+  {
+    "id": "osm_way_217543815",
+    "name": "Tjaldstæðið á Reykhólum",
+    "lat": 65.445491,
+    "lon": -22.201588
+  },
+  {
+    "id": "osm_way_484517843",
+    "name": "Tjaldstæðið Drangsnesi",
+    "lat": 65.69129,
+    "lon": -21.438593
+  },
+  {
+    "id": "osm_way_298276919",
+    "name": "Tjaldstæðið Grettislaug",
+    "lat": 65.880655,
+    "lon": -19.736842
+  },
+  {
+    "id": "osm_relation_5487708",
+    "name": "Tjaldstæðið í Ólafsvík",
+    "lat": 64.888922,
+    "lon": -23.68802
+  },
+  {
+    "id": "osm_way_484881021",
+    "name": "Tjaldstæðið Langbrók",
+    "lat": 63.732069,
+    "lon": -20.037149
+  },
+  {
+    "id": "osm_way_485355020",
+    "name": "Tjaldsvæði á Dalvík",
+    "lat": 65.967923,
+    "lon": -18.534419
+  },
+  {
+    "id": "osm_relation_9916862",
+    "name": "Tjaldsvæði á Hólum í Hjaltadal",
+    "lat": 65.736699,
+    "lon": -19.115932
+  },
+  {
+    "id": "osm_way_1206330348",
+    "name": "Tjaldsvæði á Patreksfirði",
+    "lat": 65.592067,
+    "lon": -23.972757
+  },
+  {
+    "id": "osm_way_485371939",
+    "name": "Tjaldsvæði Eyjafjarðarsveitar",
+    "lat": 65.57386,
+    "lon": -18.090192
+  },
+  {
+    "id": "osm_way_545060271",
+    "name": "Tjaldsvæði Flateyrar",
+    "lat": 66.052142,
+    "lon": -23.509892
+  },
+  {
+    "id": "osm_node_4997759823",
+    "name": "Tjaldsvæði Hauganesi",
+    "lat": 65.92379,
+    "lon": -18.305927
+  },
+  {
+    "id": "osm_way_485373297",
+    "name": "Tjaldsvæði Hríseyjar",
+    "lat": 65.978184,
+    "lon": -18.373629
+  },
+  {
+    "id": "osm_relation_4663716",
+    "name": "Tjaldsvæði í Laugardal",
+    "lat": 64.145061,
+    "lon": -21.87499
+  },
+  {
+    "id": "osm_node_610811389",
+    "name": "Tjaldsvæði Látrum",
+    "lat": 66.392084,
+    "lon": -23.030689
+  },
+  {
+    "id": "osm_way_181868067",
+    "name": "Tjaldsvæði Lundi",
+    "lat": 66.073039,
+    "lon": -16.430936
+  },
+  {
+    "id": "osm_way_197595763",
+    "name": "Tjaldsvæði Sandgerðis",
+    "lat": 64.039812,
+    "lon": -22.6969
+  },
+  {
+    "id": "osm_way_197586725",
+    "name": "Tjaldsvæði Seyðisfjarðar",
+    "lat": 65.260327,
+    "lon": -14.011835
+  },
+  {
+    "id": "osm_way_485489034",
+    "name": "Tjaldsvæði Siglufjarðar",
+    "lat": 66.149703,
+    "lon": -18.910052
+  },
+  {
+    "id": "osm_way_208260949",
+    "name": "Tjaldsvæði Skipalæk",
+    "lat": 65.280841,
+    "lon": -14.433884
+  },
+  {
+    "id": "osm_way_132253301",
+    "name": "Tjaldsvæði Starfsmannafélags ÍSAL",
+    "lat": 64.255559,
+    "lon": -20.500344
+  },
+  {
+    "id": "osm_way_713664783",
+    "name": "Tjaldsvæði Súðavíkur",
+    "lat": 66.036576,
+    "lon": -22.990784
+  },
+  {
+    "id": "osm_way_484903624",
+    "name": "Tjaldsvæði Úthlíð",
+    "lat": 64.275577,
+    "lon": -20.441345
+  },
+  {
+    "id": "osm_way_220753597",
+    "name": "Tjaldsvæði Vopnafjarðar",
+    "lat": 65.757386,
+    "lon": -14.827304
+  },
+  {
+    "id": "osm_way_712281091",
+    "name": "Tjaldsvæði VR",
+    "lat": 64.279862,
+    "lon": -20.508868
+  },
+  {
+    "id": "osm_way_481204125",
+    "name": "Tjaldsvæði Þorlákshafnar",
+    "lat": 63.852516,
+    "lon": -21.380036
+  },
+  {
+    "id": "osm_way_253768962",
+    "name": "Tjaldsvæðið á Akranesi",
+    "lat": 64.326306,
+    "lon": -22.067208
+  },
+  {
+    "id": "osm_way_444650162",
+    "name": "Tjaldsvæðið á Arnastapa",
+    "lat": 64.767888,
+    "lon": -23.633537
+  },
+  {
+    "id": "osm_way_243497925",
+    "name": "Tjaldsvæðið á Eyrarbakka",
+    "lat": 63.867317,
+    "lon": -21.166623
+  },
+  {
+    "id": "osm_relation_14452771",
+    "name": "Tjaldsvæðið á Hellissandi",
+    "lat": 64.911933,
+    "lon": -23.889567
+  },
+  {
+    "id": "osm_node_12119051101",
+    "name": "Tjaldsvæðið á Húsavík",
+    "lat": 66.051768,
+    "lon": -17.343809
+  },
+  {
+    "id": "osm_relation_13660177",
+    "name": "Tjaldsvæðið á Höfn í Hornafirði",
+    "lat": 64.258158,
+    "lon": -15.203386
+  },
+  {
+    "id": "osm_relation_9923561",
+    "name": "Tjaldsvæðið á Sauðárkróki",
+    "lat": 65.745971,
+    "lon": -19.651042
+  },
+  {
+    "id": "osm_way_1200333124",
+    "name": "Tjaldsvæðið á Skörðum",
+    "lat": 65.488425,
+    "lon": -23.27215
+  },
+  {
+    "id": "osm_way_484521228",
+    "name": "Tjaldsvæðið á Tálknafirði",
+    "lat": 65.629059,
+    "lon": -23.846275
+  },
+  {
+    "id": "osm_way_202178652",
+    "name": "Tjaldsvæðið á Þórshöfn",
+    "lat": 66.198757,
+    "lon": -15.327045
+  },
+  {
+    "id": "osm_way_320851773",
+    "name": "Tjaldsvæðið Árnesi",
+    "lat": 64.042315,
+    "lon": -20.254203
+  },
+  {
+    "id": "osm_way_207925876",
+    "name": "Tjaldsvæðið Bolungarvíkur",
+    "lat": 66.155092,
+    "lon": -23.253594
+  },
+  {
+    "id": "osm_way_295527746",
+    "name": "Tjaldsvæðið Borgarfirði eystra",
+    "lat": 65.52349,
+    "lon": -13.808193
+  },
+  {
+    "id": "osm_way_213907457",
+    "name": "Tjaldsvæðið Borgarnesi",
+    "lat": 64.552276,
+    "lon": -21.907773
+  },
+  {
+    "id": "osm_way_1085764612",
+    "name": "Tjaldsvæðið Djúpadal",
+    "lat": 65.582851,
+    "lon": -22.283489
+  },
+  {
+    "id": "osm_way_176717600",
+    "name": "Tjaldsvæðið Hvolsvelli",
+    "lat": 63.749842,
+    "lon": -20.2386
+  },
+  {
+    "id": "osm_way_481204276",
+    "name": "Tjaldsvæðið í Grindavík",
+    "lat": 63.843249,
+    "lon": -22.42186
+  },
+  {
+    "id": "osm_relation_17676926",
+    "name": "Tjaldsvæðið Í Hveragerði",
+    "lat": 63.998334,
+    "lon": -21.180358
+  },
+  {
+    "id": "osm_way_485487044",
+    "name": "Tjaldsvæðið í Ólafsfirði",
+    "lat": 66.071342,
+    "lon": -18.649065
+  },
+  {
+    "id": "osm_relation_13447523",
+    "name": "Tjaldsvæðið í Stykkishólmi",
+    "lat": 65.070259,
+    "lon": -22.730847
+  },
+  {
+    "id": "osm_way_182751315",
+    "name": "Tjaldsvæðið í Þrastaskógi",
+    "lat": 64.011001,
+    "lon": -20.976813
+  },
+  {
+    "id": "osm_way_183039802",
+    "name": "Tjaldsvæðið Kleifar",
+    "lat": 63.801324,
+    "lon": -18.057609
+  },
+  {
+    "id": "osm_way_40167535",
+    "name": "Tjaldsvæðið Norðfjarðar",
+    "lat": 65.150847,
+    "lon": -13.679179
+  },
+  {
+    "id": "osm_relation_7134891",
+    "name": "Tjaldsvæðið Reyðarfirði",
+    "lat": 65.033569,
+    "lon": -14.241561
+  },
+  {
+    "id": "osm_way_484902379",
+    "name": "Tjaldsvæðið Reykholti",
+    "lat": 64.175695,
+    "lon": -20.451108
+  },
+  {
+    "id": "osm_way_181891493",
+    "name": "Tjaldsvæðið Steinsstöðum",
+    "lat": 65.467956,
+    "lon": -19.354575
+  },
+  {
+    "id": "osm_way_485494007",
+    "name": "Tjaldsvæðið Varmahlíð",
+    "lat": 65.551711,
+    "lon": -19.455839
+  },
+  {
+    "id": "osm_way_223572826",
+    "name": "Tjaldsvæðið við Bleiksána",
+    "lat": 65.078158,
+    "lon": -14.031266
+  },
+  {
+    "id": "osm_way_485091591",
+    "name": "Tjaldsvæðið við Faxa",
+    "lat": 64.227256,
+    "lon": -20.333931
+  },
+  {
+    "id": "osm_way_466609566",
+    "name": "Tjaldsvæðið við Geysi",
+    "lat": 64.310199,
+    "lon": -20.305603
+  },
+  {
+    "id": "osm_way_182919341",
+    "name": "Tjaldsvæðið við Hótel Svartaskóg",
+    "lat": 65.512996,
+    "lon": -14.565062
+  },
+  {
+    "id": "osm_way_445082473",
+    "name": "Tjaldsvæðið við Íþróttamiðstöðina Garði",
+    "lat": 64.072318,
+    "lon": -22.655708
+  },
+  {
+    "id": "osm_way_178845446",
+    "name": "Tjaldsvæðið við Skógafoss",
+    "lat": 63.528725,
+    "lon": -19.512445
+  },
+  {
+    "id": "osm_relation_17808139",
+    "name": "Tjaldsvæðið Vík í Mýrdal",
+    "lat": 63.419384,
+    "lon": -18.995969
+  },
+  {
+    "id": "osm_way_481195992",
+    "name": "Tjaldsvæðið Vogum",
+    "lat": 63.984997,
+    "lon": -22.380177
+  },
+  {
+    "id": "osm_way_280922349",
+    "name": "Tjaldsvæðið Þingeyrarodda",
+    "lat": 65.881119,
+    "lon": -23.492904
+  },
+  {
+    "id": "osm_way_1118290426",
+    "name": "Tjaldsvæðið Þykkvabæ",
+    "lat": 63.745223,
+    "lon": -20.610573
+  },
+  {
+    "id": "osm_way_481203584",
+    "name": "Tjaldvæðið í Brautarholti",
+    "lat": 64.022098,
+    "lon": -20.522041
+  },
+  {
+    "id": "osm_way_484522631",
+    "name": "Tungudalur",
+    "lat": 66.059841,
+    "lon": -23.204866
+  },
+  {
+    "id": "osm_way_496431594",
+    "name": "Urðartindur",
+    "lat": 66.049848,
+    "lon": -21.567189
+  },
+  {
+    "id": "osm_node_1906829759",
+    "name": "Útilífsmiðstöð skáta Úlfljótsvatni",
+    "lat": 64.095323,
+    "lon": -21.04362
+  },
+  {
+    "id": "osm_relation_7138704",
+    "name": "Útilífsmiðstöð skáta Úlfljótsvatni",
+    "lat": 64.096165,
+    "lon": -21.045082
+  },
+  {
+    "id": "osm_way_485493050",
+    "name": "Vaglaskógur",
+    "lat": 65.700844,
+    "lon": -17.885761
+  },
+  {
+    "id": "osm_relation_14901669",
+    "name": "Vaglaskógur",
+    "lat": 65.716222,
+    "lon": -17.901795
+  },
+  {
+    "id": "osm_way_484507027",
+    "name": "Varmaland",
+    "lat": 64.691949,
+    "lon": -21.594991
+  },
+  {
+    "id": "osm_relation_2818785",
+    "name": "Vatnskot",
+    "lat": 64.244333,
+    "lon": -21.088062
+  },
+  {
+    "id": "osm_way_1421049645",
+    "name": "Vestrahorn",
+    "lat": 64.255132,
+    "lon": -14.994669
+  },
+  {
+    "id": "osm_way_167411303",
+    "name": "Viðistaðatúni",
+    "lat": 64.074546,
+    "lon": -21.964755
+  },
+  {
+    "id": "osm_way_295811364",
+    "name": "Vogar",
+    "lat": 65.623781,
+    "lon": -16.917537
+  },
+  {
+    "id": "osm_way_362555481",
+    "name": "Þakgil",
+    "lat": 63.530497,
+    "lon": -18.887613
+  },
+  {
+    "id": "osm_node_4778641920",
+    "name": "Þingborg",
+    "lat": 63.941899,
+    "lon": -20.821447
+  },
+  {
+    "id": "osm_way_484907346",
+    "name": "Þjórsárver",
+    "lat": 63.880623,
+    "lon": -20.755087
+  },
+  {
+    "id": "osm_way_496133563",
+    "name": "Þórisstaðir",
+    "lat": 64.436458,
+    "lon": -21.562122
+  },
+  {
+    "id": "osm_way_37918398",
+    "name": "Þórsheimilið",
+    "lat": 63.438035,
+    "lon": -20.289995
+  },
+  {
+    "id": "osm_way_839648785",
+    "name": "Þórsmörk Langidalur",
+    "lat": 63.685014,
+    "lon": -19.513145
+  },
+  {
+    "id": "osm_way_1303068070",
+    "name": "Þveraurar",
+    "lat": 63.677923,
+    "lon": -19.468006
+  },
+  {
+    "id": "osm_way_1303068067",
+    "name": "Þvergil",
+    "lat": 63.678715,
+    "lon": -19.450988
+  }
+]

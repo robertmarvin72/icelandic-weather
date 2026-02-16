@@ -51,7 +51,7 @@ async function postOverpass(query, { tries = 8 } = {}) {
 }
 
 // Output file
-const OUT_FILE = path.resolve("src/data/campsites.full.json");
+const OUT_FILE = path.resolve("server_data/campsites.full.json");
 
 // Query notes:
 // - Using ISO3166-1 alpha2 (IS) is often more reliable than name="Ísland".

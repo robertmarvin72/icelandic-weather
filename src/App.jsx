@@ -22,7 +22,7 @@ import Top5Leaderboard from "./components/Top5Leaderboard";
 import ToastHub from "./components/ToastHub";
 import { useToast } from "./hooks/useToast";
 
-import campsitesFull from "./data/campsites.full.json";
+import { useCampsites } from "./hooks/useCampsites";
 
 import { useBooting } from "./hooks/useBooting";
 import { useDistanceTo } from "./hooks/useDistanceTo";
@@ -52,9 +52,6 @@ import Pricing from "./pages/Pricing";
 // App page
 // ──────────────────────────────────────────────────────────────
 function IcelandCampingWeatherApp({ page = "home" }) {
-  const siteList = Array.isArray(campsitesFull) ? campsitesFull : [];
-
-  const [siteId, setSiteId] = useLocalStorageState("lastSite", siteList[0]?.id);
   const [units, setUnits] = useLocalStorageState("units", "metric");
   const [theme, setTheme] = useLocalStorageState("theme", "light");
   const darkMode = theme === "dark";
@@ -79,6 +76,20 @@ function IcelandCampingWeatherApp({ page = "home" }) {
     return { isPro, proUntil: serverProUntil };
   }, [devPro, serverPro, serverProUntil]);
 
+  // ✅ Campsites now come from server (real Free vs Pro gating)
+  const {
+    campsites: siteList,
+    loading: campsitesLoading,
+    error: campsitesError,
+  } = useCampsites({
+    reloadKey: entitlements.isPro,
+  });
+
+  // ✅ Gate flag (NO early returns — avoids Rules of Hooks errors)
+  const showCampsitesGate = campsitesLoading || campsitesError || !siteList?.length;
+
+  const [siteId, setSiteId] = useLocalStorageState("lastSite", null);
+
   const navigate = useNavigate();
 
   // ──────────────────────────────────────────────────────────────
@@ -89,7 +100,6 @@ function IcelandCampingWeatherApp({ page = "home" }) {
   const updateServiceWorkerRef = useRef(null);
 
   useEffect(() => {
-    // register once
     const updateSW = registerSW({
       onNeedRefresh() {
         setNeedRefresh(true);
@@ -120,7 +130,6 @@ function IcelandCampingWeatherApp({ page = "home" }) {
       message: t?.("offlineReadyMsg") ?? "CampCast is cached and can work offline.",
     });
 
-    // Reset so it doesn’t keep re-firing
     setOfflineReady(false);
   }, [offlineReady, pushToast, t]);
 
@@ -168,7 +177,6 @@ function IcelandCampingWeatherApp({ page = "home" }) {
 
         if (!r.ok || !data?.ok) {
           if (data?.code === "USER_NOT_FOUND") {
-            // New user → show pricing first (plan selection)
             navigate(`/pricing?email=${encodeURIComponent(email)}`);
             setLoginOpen(false);
             return;
@@ -179,7 +187,6 @@ function IcelandCampingWeatherApp({ page = "home" }) {
           return;
         }
 
-        // session cookie should now be set
         await refetchMe();
 
         pushToast({
@@ -189,8 +196,6 @@ function IcelandCampingWeatherApp({ page = "home" }) {
         });
 
         setLoginOpen(false);
-
-        // ✅ Continue the upgrade flow: go to Pricing (email prefill)
         navigate(`/pricing?email=${encodeURIComponent(email)}`);
       } catch (err) {
         pushToast({
@@ -226,26 +231,38 @@ function IcelandCampingWeatherApp({ page = "home" }) {
     [setUnits]
   );
 
-  // GEO
+  // GEO (use empty list during gate)
   const { userLoc, geoMsg, useMyLocation } = useMyLocationNearestSite(
-    siteList,
+    showCampsitesGate ? [] : siteList,
     handleSelectSite,
     t
   );
   const distanceTo = useDistanceTo(userLoc);
 
-  // LEADERBOARD
-  const { scoresById, loadingWave1, loadingBg } = useLeaderboardScores(siteList, siteId, userLoc);
-  const { top5 } = useTop5Campsites(siteList, scoresById, userLoc);
+  // LEADERBOARD (use empty list during gate)
+  const { scoresById, loadingWave1, loadingBg } = useLeaderboardScores(
+    showCampsitesGate ? [] : siteList,
+    siteId,
+    userLoc
+  );
+  const { top5 } = useTop5Campsites(showCampsitesGate ? [] : siteList, scoresById, userLoc);
 
   // Effects
   useThemeClass(darkMode);
   useEffect(() => {
-    if (!siteId && siteList[0]?.id) setSiteId(siteList[0].id);
-  }, [siteId, siteList, setSiteId]);
+    if (showCampsitesGate) return;
 
-  // FORECAST
-  const site = siteList.find((s) => s.id === siteId) || siteList[0];
+    if (!siteId) {
+      setSiteId(siteList[0].id);
+      return;
+    }
+
+    const exists = siteList.some((s) => s.id === siteId);
+    if (!exists) setSiteId(siteList[0].id);
+  }, [showCampsitesGate, siteId, siteList, setSiteId]);
+
+  // FORECAST (null during gate)
+  const site = showCampsitesGate ? null : siteList.find((s) => s.id === siteId) || siteList[0];
   const { rows, windDir, shelter, loading, error } = useForecast(site?.lat, site?.lon, {
     t,
     toast: pushToast,
@@ -273,7 +290,6 @@ function IcelandCampingWeatherApp({ page = "home" }) {
 
   // ✅ Checkout: if not logged in -> open login modal first
   const startCheckout = useCallback(async () => {
-    // 1) not logged in -> login
     if (!me?.user) {
       pushToast({
         type: "info",
@@ -284,7 +300,6 @@ function IcelandCampingWeatherApp({ page = "home" }) {
       return;
     }
 
-    // 2) already Pro -> don't open checkout again
     if (me?.entitlements?.pro) {
       pushToast({
         type: "success",
@@ -294,7 +309,6 @@ function IcelandCampingWeatherApp({ page = "home" }) {
       return;
     }
 
-    // 3) logged in + free -> go to pricing (prefill email)
     navigate(`/pricing?email=${encodeURIComponent(me?.user?.email || "")}`);
   }, [me, navigate, openLoginModal, pushToast, t]);
 
@@ -444,7 +458,7 @@ function IcelandCampingWeatherApp({ page = "home" }) {
             t={t}
             lang={lang}
             onToggleLanguage={toggleLanguage}
-            siteList={siteList}
+            siteList={showCampsitesGate ? [] : siteList}
             siteId={siteId}
             onSelectSite={handleSelectSite}
             onUseMyLocation={useMyLocation}
@@ -461,6 +475,30 @@ function IcelandCampingWeatherApp({ page = "home" }) {
         <div className="max-w-6xl mx-auto px-4 py-10">
           {page === "about" ? (
             <About t={t} />
+          ) : showCampsitesGate ? (
+            <div className="min-h-[50vh] flex items-center justify-center p-6">
+              <div className="max-w-md text-center">
+                <div className="text-base font-semibold mb-2">
+                  {campsitesLoading ? "Loading campsites…" : "Couldn’t load campsites"}
+                </div>
+
+                {!campsitesLoading && (
+                  <div className="text-sm opacity-80 mb-4">
+                    {String(campsitesError?.message || "Unknown error")}
+                  </div>
+                )}
+
+                {!campsitesLoading && (
+                  <button
+                    type="button"
+                    onClick={() => window.location.reload()}
+                    className="rounded-xl px-4 py-2 text-sm font-semibold bg-slate-900 text-white dark:bg-white dark:text-slate-900"
+                  >
+                    Reload
+                  </button>
+                )}
+              </div>
+            </div>
           ) : (
             <div className="grid md:grid-cols-2 gap-4">
               <ForecastTable

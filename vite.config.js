@@ -10,16 +10,13 @@ export default defineConfig({
       registerType: "autoUpdate",
       includeAssets: ["icon-192.png", "icon-512.png"],
 
-      // PWA should not interfere with local dev
       devOptions: {
         enabled: false
       },
 
       workbox: {
-        // ✅ SPA routes must always fall back to the app shell
         navigateFallback: "/index.html",
 
-        // ✅ Don't let navigation fallback hijack API or static assets
         navigateFallbackDenylist: [
           /^\/api\//,
           /^\/assets\//,
@@ -27,11 +24,7 @@ export default defineConfig({
           /\/icon-.*\.png$/
         ],
 
-        // ✅ Prevent "stuck after deploy" by cleaning old caches
         cleanupOutdatedCaches: true,
-
-        // ⛔️ IMPORTANT: remove custom globPatterns to avoid precache mismatch after deploy
-        // Workbox will inject the correct hashed assets automatically.
 
         runtimeCaching: [
           {
@@ -62,13 +55,21 @@ export default defineConfig({
     })
   ],
 
-  // 👇 DEV-ONLY proxy (npm run dev)
   server: {
     proxy: {
+      // 🔹 Keep your existing Open-Meteo proxy
       "/api/forecast": {
         target: "https://api.open-meteo.com",
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api\/forecast/, "/v1/forecast")
+        rewrite: (path) =>
+          path.replace(/^\/api\/forecast/, "/v1/forecast")
+      },
+
+      // 🔹 NEW: Proxy all other /api/* to Vercel dev
+      "/api": {
+        target: "http://localhost:3000",
+        changeOrigin: true,
+        secure: false
       }
     }
   },
