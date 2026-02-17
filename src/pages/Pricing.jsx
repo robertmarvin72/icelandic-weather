@@ -1,10 +1,12 @@
 // src/pages/Pricing.jsx
 import React, { useMemo, useState } from "react";
 import { useMe } from "../hooks/useMe";
+import { getDisplayPrices } from "../config/pricing";
 
 export default function Pricing({ onClose, lang = "is", theme = "dark", t, me }) {
   const isLight = theme === "light";
   const styles = getStyles(isLight);
+  const prices = getDisplayPrices(lang);
 
   // If route doesn't pass `me`, fetch it here so Pricing can still gate buttons.
   const { me: hookMe } = useMe();
@@ -166,8 +168,9 @@ export default function Pricing({ onClose, lang = "is", theme = "dark", t, me })
     }
   }
 
-  const yearlyPrice = "€24.99";
-  const monthlyPrice = "€4.99";
+  // Display-only prices (billing is still EUR in Paddle)
+  const yearlyPrice = prices.yearly; // "€24.99" or "3.590 kr"
+  const monthlyPrice = prices.monthly; // "€4.99"  or "790 kr"
 
   const featuresYearly = [
     T("pricingFeatureAllPro", "All Pro features unlocked"),
@@ -214,6 +217,13 @@ export default function Pricing({ onClose, lang = "is", theme = "dark", t, me })
           <p style={styles.p}>
             {T("pricingLead", "Pick monthly or yearly. Payment is handled securely by Paddle.")}
           </p>
+
+          <div style={{ ...styles.finePrint, opacity: 0.5 }}>
+            {T(
+              "pricingChargedInEur",
+              "Ath: Greitt er í evrum (€) í checkout. Bankinn umbreytir í ISK."
+            )}
+          </div>
 
           {!email ? (
             <div style={styles.note}>

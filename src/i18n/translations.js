@@ -293,6 +293,11 @@ export const translations = {
     subscribeAlreadyActive: "Your subscription is already active.",
     subscribeAlreadyMonthly: "You already have an active monthly subscription.",
 
+    pricingChargedInEur: "Payment is processed in euros (€) at checkout.",
+    pricingBestValue: "Best value",
+
+
+
   },
 
   // Icelandic (Íslenska)
@@ -593,6 +598,9 @@ export const translations = {
     pricingMonthlyNotAvailable: "Ekki í boði",
     subscribeAlreadyActive: "Áskriftin þín er nú þegar virk.",
     subscribeAlreadyMonthly: "Þú ert nú þegar með virka mánaðaráskrift.",
+
+    pricingChargedInEur: "Upphæð er rukkuð í evrum (€). Krónuverð er eingöngu til viðmiðunar.",
+    pricingBestValue: "Mest virði"
 
   },
 };
