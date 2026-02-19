@@ -1,4 +1,6 @@
+// src/components/CampsitePicker.jsx
 import { useEffect, useMemo, useRef, useState } from "react";
+import { getSiteAvailability } from "../config/availability";
 
 export default function CampsitePicker({
   siteList,
@@ -12,10 +14,25 @@ export default function CampsitePicker({
   const [q, setQ] = useState("");
   const panelRef = useRef(null);
 
+  const today = useMemo(() => new Date(), []);
+
+  // Precompute availability for fast rendering
+  const availabilityById = useMemo(() => {
+    const m = new Map();
+    for (const s of siteList || []) {
+      if (!s?.id) continue;
+      m.set(s.id, getSiteAvailability(s.id, today));
+    }
+    return m;
+  }, [siteList, today]);
+
   const selected = useMemo(
     () => siteList.find((s) => s.id === siteId) || siteList[0],
     [siteList, siteId]
   );
+
+  const selectedAvail = selected?.id ? availabilityById.get(selected.id) : null;
+  const selectedClosed = selectedAvail?.status !== "open";
 
   const filtered = useMemo(() => {
     const query = q.trim().toLowerCase();
@@ -23,8 +40,6 @@ export default function CampsitePicker({
 
     return siteList.filter((s) => {
       const name = (s.name || "").toLowerCase();
-      // Optional: add region/area fields if you have them:
-      // const region = (s.region || "").toLowerCase();
       return name.includes(query);
     });
   }, [siteList, q]);
@@ -68,7 +83,14 @@ export default function CampsitePicker({
         aria-expanded={open}
         title={t?.("selectCampsite")}
       >
-        <span className="truncate max-w-[220px]">{selected?.name || "Select campsite"}</span>
+        <span className="truncate max-w-[220px] inline-flex items-center gap-2">
+          {selectedClosed ? (
+            <span aria-hidden title="Closed">
+              🔒
+            </span>
+          ) : null}
+          <span>{selected?.name || "Select campsite"}</span>
+        </span>
         <span className="opacity-70">▾</span>
       </button>
 
@@ -96,6 +118,9 @@ export default function CampsitePicker({
               <ul className="divide-y divide-slate-100 dark:divide-slate-800">
                 {filtered.map((s) => {
                   const active = s.id === siteId;
+                  const av = availabilityById.get(s.id);
+                  const closed = av?.status !== "open";
+
                   return (
                     <li key={s.id}>
                       <button
@@ -105,10 +130,20 @@ export default function CampsitePicker({
                           hover:bg-sky-50 dark:hover:bg-slate-800/60
                           ${active ? "bg-sky-50 dark:bg-slate-800/60" : ""}`}
                       >
-                        <div className="font-medium text-slate-900 dark:text-slate-100">
-                          {s.name}
+                        <div className="font-medium text-slate-900 dark:text-slate-100 inline-flex items-center gap-2">
+                          {closed ? (
+                            <span
+                              aria-hidden
+                              title={
+                                t?.("availabilityMostOpenInMay") || "Most campsites open in May."
+                              }
+                            >
+                              🔒
+                            </span>
+                          ) : null}
+                          <span>{s.name}</span>
                         </div>
-                        {/* Optional subline if you have extra metadata */}
+                        {/* þú getur bætt region hér ef þú vilt */}
                         {/* <div className="text-xs text-slate-500 dark:text-slate-400">{s.region}</div> */}
                       </button>
                     </li>

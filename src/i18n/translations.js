@@ -296,7 +296,12 @@ export const translations = {
     pricingChargedInEur: "Payment is processed in euros (€) at checkout.",
     pricingBestValue: "Best value",
 
-
+    availabilityClosedUntilMay: "Most campsites are closed during winter (often until May).",
+    availabilityOpenSeason: "Open during the summer season.",
+    availabilityOpenAllYear: "Open all year.",
+    availabilityUnknown: "Availability unknown.",
+    availabilityMostOpenInMay: "Most campsites open in May. Check the campsite for confirmation.",
+    availabilityClosedBadge: "Closed (winter)",
 
   },
 
@@ -600,7 +605,14 @@ export const translations = {
     subscribeAlreadyMonthly: "Þú ert nú þegar með virka mánaðaráskrift.",
 
     pricingChargedInEur: "Upphæð er rukkuð í evrum (€). Krónuverð er eingöngu til viðmiðunar.",
-    pricingBestValue: "Mest virði"
+    pricingBestValue: "Mest virði",
+
+    availabilityClosedUntilMay: "Flest tjaldsvæði eru lokuð yfir veturinn (oft fram í maí).",
+    availabilityOpenSeason: "Opið á sumartíma.",
+    availabilityOpenAllYear: "Opið allt árið.",
+    availabilityUnknown: "Opnunartími óviss.",
+    availabilityMostOpenInMay: "Flest tjaldsvæði opna í maí. Athugaðu hjá tjaldsvæðinu til staðfestingar.",
+    availabilityClosedBadge: "Lokað (vetur)",
 
   },
 };

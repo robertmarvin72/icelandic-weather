@@ -3,6 +3,7 @@ import LoadingShimmer from "./LoadingShimmer";
 import { WeatherIcon } from "./WeatherIcon";
 import { mapWeatherCodeToIconId } from "../utils/WeatherIconMapping";
 import ScoreExplanation from "./ScoreExplanation";
+import { getSiteAvailability } from "../config/availability";
 
 import {
   convertTemp,
@@ -31,12 +32,67 @@ export default function ForecastTable({
 }) {
   const totalPoints = useMemo(() => rows.reduce((s, r) => s + (r.points ?? 0), 0), [rows]);
 
+  const availability = useMemo(() => {
+    if (!site?.id) return null;
+    return getSiteAvailability(site.id, new Date());
+  }, [site?.id]);
+
+  const availabilityBadge = useMemo(() => {
+    if (!availability) return null;
+
+    // --- Seasonal closed (winter) ---
+    // We don't know exact open day -> show generic "Most open in May"
+    if (availability.isClosed && availability.mode === "seasonal") {
+      const text = lang === "is" ? "🔒 Lokað" : "🔒 Closed";
+      const title =
+        typeof t === "function"
+          ? t("availabilityMostOpenInMay")
+          : lang === "is"
+            ? "Flest tjaldsvæði opna í maí."
+            : "Most campsites open in May.";
+
+      return {
+        text,
+        title,
+      };
+    }
+
+    // --- All-year limited service info ---
+    if (availability.mode === "allYear" && availability.winterStatus === "year_round_limited") {
+      const text = lang === "is" ? "ℹ️ Opið (takmörkuð þjónusta)" : "ℹ️ Open (limited service)";
+      return { text, title: availability.winterNotes || "" };
+    }
+
+    // --- All-year full ---
+    // Keep it clean: show a positive badge only if you want it.
+    // If you want less noise, return null here.
+    if (availability.mode === "allYear" && availability.winterStatus === "year_round_full") {
+      return null;
+    }
+
+    return null;
+  }, [availability, lang, t]);
+
   return (
     <div className="card rounded-2xl shadow-sm border border-slate-200 bg-white dark:bg-slate-900 dark:border-slate-700 p-4">
       {/* Header */}
       <div className="flex items-baseline justify-between mb-3">
         <h2 className="text-lg font-semibold">
-          {site?.name || "—"}
+          <span className="inline-flex items-center gap-2">
+            <span>{site?.name || "—"}</span>
+
+            {availabilityBadge ? (
+              <span
+                title={availabilityBadge.title}
+                className="inline-flex items-center rounded-full px-2.5 py-1 text-xs font-semibold
+                   border border-slate-200 dark:border-slate-700
+                   bg-white/70 dark:bg-slate-900/60 text-slate-700 dark:text-slate-200"
+              >
+                {availabilityBadge.text}
+              </span>
+            ) : null}
+          </span>
+
           {userLoc && site && distanceToKm != null && (
             <span className="ml-2 text-sm text-slate-500 dark:text-slate-300">
               · {formatNumber(convertDistanceKm(distanceToKm, units), 1)} {DIST_UNIT_LABEL[units]}{" "}
