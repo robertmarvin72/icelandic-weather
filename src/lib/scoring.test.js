@@ -1,5 +1,6 @@
 import { describe, it, expect } from "vitest";
 import {
+  getSeasonForDate,
   basePointsFromTemp,
   windPenaltyPoints,
   rainPenaltyPoints,
@@ -92,28 +93,66 @@ describe("scoring: pointsToClass()", () => {
 
 describe("scoring: scoreDay()", () => {
   it("clamps points to 0..10", () => {
-    // extremely bad conditions
     const bad = scoreDay({ tmax: 5, windMax: 30, rain: 50 });
     expect(bad.points).toBe(0);
     expect(bad.finalClass).toBe("Bad");
 
-    // extremely good (base 10 - 0 - 0)
     const good = scoreDay({ tmax: 20, windMax: 0, rain: 0 });
     expect(good.points).toBe(10);
     expect(good.finalClass).toBe("Best");
   });
 
-  it("computes a realistic example", () => {
+  it("computes a realistic summer example", () => {
     // tmax=12 => base 8
     // wind=11 => pen 5
     // rain=1.2 => pen 2
     // => 1 point => Fair
-    const r = scoreDay({ tmax: 12, windMax: 11, rain: 1.2 });
+    const r = scoreDay({
+      tmax: 12,
+      windMax: 11,
+      rain: 1.2,
+      date: "2026-06-15", // explicit summer
+    });
+
+    expect(r.season).toBe("summer");
     expect(r.basePts).toBe(8);
     expect(r.windPen).toBe(5);
     expect(r.rainPen).toBe(2);
     expect(r.points).toBe(1);
     expect(r.finalClass).toBe("Fair");
+  });
+});
+
+describe("scoring: seasonal behavior", () => {
+  it("getSeasonForDate: Oct–Apr => winter, May–Sep => summer", () => {
+    expect(getSeasonForDate("2026-01-15")).toBe("winter");
+    expect(getSeasonForDate("2026-04-30")).toBe("winter");
+    expect(getSeasonForDate("2026-05-01")).toBe("summer");
+    expect(getSeasonForDate("2026-09-30")).toBe("summer");
+    expect(getSeasonForDate("2026-10-01")).toBe("winter");
+  });
+
+  it("defaults to summer if date is missing or invalid", () => {
+    expect(getSeasonForDate()).toBe("summer");
+    expect(getSeasonForDate(null)).toBe("summer");
+    expect(getSeasonForDate("not-a-date")).toBe("summer");
+  });
+
+  it("winter reduces temperature impact compared to summer", () => {
+    const input = { tmax: 12, rain: 0, windMax: 0 };
+
+    const summer = scoreDay({ ...input, date: "2026-06-15" });
+    const winter = scoreDay({ ...input, date: "2026-01-15" });
+
+    expect(summer.season).toBe("summer");
+    expect(winter.season).toBe("winter");
+
+    // Temperature matters less in winter
+    expect(winter.basePts).toBeLessThanOrEqual(summer.basePts);
+
+    // Wind and rain penalties stay identical
+    expect(winter.windPen).toBe(summer.windPen);
+    expect(winter.rainPen).toBe(summer.rainPen);
   });
 });
 

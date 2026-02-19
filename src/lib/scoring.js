@@ -1,6 +1,42 @@
 // src/lib/scoring.js
 
-// ── Scoring model
+// ── Season helpers ---------------------------------------------------------
+
+export function getSeasonForDate(date) {
+  // Winter = Oct–Apr, Summer = May–Sep
+  // If date is missing/invalid => default to summer (keeps old behavior)
+  if (!date) return "summer";
+
+  const dt = new Date(date);
+  if (Number.isNaN(dt.getTime())) return "summer";
+
+  const m = dt.getMonth() + 1; // 1–12
+  return m >= 10 || m <= 4 ? "winter" : "summer";
+}
+
+function getSeasonConfig(season) {
+  // Tweak these numbers to taste:
+  // - tempWeight: how much temp matters
+  // - windWeight/rainWeight: penalty severity
+  // - baseFloor: minimum base points in winter so calm/dry days aren't always red
+  if (season === "winter") {
+    return {
+      tempWeight: 0.35,
+      windWeight: 1.00,
+      rainWeight: 1.00,
+      baseFloor: 4, // <- makes "calm + dry" land around Ok/Good instead of Bad
+    };
+  }
+  return {
+    tempWeight: 1,
+    windWeight: 1,
+    rainWeight: 1,
+    baseFloor: 0,
+  };
+}
+
+// ── Scoring model ----------------------------------------------------------
+
 export function basePointsFromTemp(tmax) {
   const t = tmax ?? -999;
   if (t > 14) return 10;
@@ -33,16 +69,38 @@ export function pointsToClass(p) {
   return "Bad";
 }
 
-export function scoreDay({ tmax, rain, windMax }) {
-  const basePts = basePointsFromTemp(tmax);
-  const windPen = windPenaltyPoints(windMax);
-  const rainPen = rainPenaltyPoints(rain);
+export function scoreDay({ tmax, rain, windMax, date }) {
+  const season = getSeasonForDate(date);
+  const cfg = getSeasonConfig(season);
+
+  const baseRaw = basePointsFromTemp(tmax);
+
+  // Keep deterministic ints, but allow winter floor for "nice winter conditions"
+  const baseScaled = Math.round(baseRaw * cfg.tempWeight);
+  const basePts = Math.max(cfg.baseFloor, Math.min(10, Math.max(0, baseScaled)));
+
+  const windPenRaw = windPenaltyPoints(windMax);
+  const rainPenRaw = rainPenaltyPoints(rain);
+
+  const windPen = Math.round(windPenRaw * cfg.windWeight);
+  const rainPen = Math.round(rainPenRaw * cfg.rainWeight);
+
   const points = Math.max(0, Math.min(10, basePts - windPen - rainPen));
   const finalClass = pointsToClass(points);
-  return { basePts, windPen, rainPen, points, finalClass };
+
+  return {
+    basePts,
+    windPen,
+    rainPen,
+    points,
+    finalClass,
+    season,
+    tempWeight: cfg.tempWeight,
+  };
 }
 
-// ── Units (display only; underlying stays metric)
+// ── Units (display only; underlying stays metric) --------------------------
+
 export const TEMP_UNIT_LABEL = { metric: "°C", imperial: "°F" };
 export const RAIN_UNIT_LABEL = { metric: "mm", imperial: "in" };
 export const WIND_UNIT_LABEL = { metric: "m/s", imperial: "kn" };

@@ -1,49 +1,16 @@
+// src/MapView.jsx
 import { useEffect, useState } from "react";
 import { MapContainer, TileLayer, Marker, Popup, CircleMarker, useMap } from "react-leaflet";
 import L from "leaflet";
 import { getForecast } from "./lib/forecastCache";
 import MarkerClusterGroup from "react-leaflet-cluster";
+import { scoreDay } from "./lib/scoring";
 
 // ───────────────────────────────────────────────
-// New scoring logic (same as in App.jsx)
-function basePointsFromTemp(tmax) {
-  const temp = tmax ?? -999;
-  if (temp > 14) return 10;
-  if (temp >= 12) return 8;
-  if (temp >= 8) return 5;
-  if (temp >= 6) return 2;
-  return 0;
-}
-
-function windPenaltyPoints(wind) {
-  const w = wind ?? 0;
-  if (w <= 5) return 0;
-  if (w <= 10) return 2;
-  if (w <= 15) return 5;
-  return 10;
-}
-
-function rainPenaltyPoints(mm) {
-  const r = mm ?? 0;
-  if (r < 1) return 0;
-  if (r < 4) return 2;
-  return 5;
-}
-
-function pointsToClass(points) {
-  if (points >= 9) return "Best";
-  if (points >= 7) return "Good";
-  if (points >= 4) return "Ok";
-  if (points >= 1) return "Fair";
-  return "Bad";
-}
-
-function scoreDay({ tmax, rain, windMax }) {
-  const base = basePointsFromTemp(tmax);
-  const penalty = windPenaltyPoints(windMax) + rainPenaltyPoints(rain);
-  const points = Math.max(0, Math.min(10, base - penalty));
-  const finalClass = pointsToClass(points);
-  return { basePts: base, penalty, points, finalClass };
+// Season helper (Oct–Apr = winter)
+function isWinterSeason(date = new Date()) {
+  const m = new Date(date).getMonth() + 1; // 1–12
+  return m >= 10 || m <= 4;
 }
 
 // ───────────────────────────────────────────────
@@ -62,6 +29,8 @@ async function fetchForecastAndScore({ lat, lon }) {
   const data = await getForecast({ lat, lon }); // cached
   if (!data?.daily?.time) return { score: 0, rows: [] };
 
+  const season = isWinterSeason(new Date()) ? "winter" : "summer";
+
   const rows = data.daily.time.map((t, i) => {
     const r = {
       date: t,
@@ -69,7 +38,10 @@ async function fetchForecastAndScore({ lat, lon }) {
       rain: data.daily.precipitation_sum?.[i],
       windMax: data.daily.windspeed_10m_max?.[i] ?? data.daily.wind_speed_10m_max?.[i],
     };
-    const s = scoreDay(r); // your existing scoring
+
+    // ✅ seasonal-aware scoring (requires scoreDay to accept 2nd arg options)
+    const s = scoreDay(r, { season });
+
     return { ...r, class: s.finalClass, points: s.points };
   });
 

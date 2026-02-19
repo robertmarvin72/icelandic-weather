@@ -2,6 +2,7 @@ import React from "react";
 import InstallPWA from "./InstallPWA";
 import CampsitePicker from "./CampsitePicker";
 import DevProToggle from "./DevProToggle";
+import { getSeasonForDate } from "../lib/scoring";
 
 /**
  * Toolbar
@@ -30,10 +31,21 @@ export default function Toolbar({
   devPro,
   onToggleDevPro,
 }) {
+  const season = getSeasonForDate(new Date());
   return (
     <header className="mb-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
       <div>
         <h1 className="text-2xl md:text-2xl font-black tracking-tight">{t?.("sevenDayWeather")}</h1>
+        {season === "winter" && (
+          <div className="mt-2 text-xs text-slate-500 dark:text-slate-400 flex items-center gap-2">
+            <span
+              title={t("winterModeTooltip")}
+              className="inline-flex items-center gap-1 text-xs font-medium text-sky-300 dark:text-sky-400"
+            >
+              ❄ {t("winterModeActive")}
+            </span>
+          </div>
+        )}
       </div>
 
       <div className="flex items-center gap-3">

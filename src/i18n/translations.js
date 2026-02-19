@@ -303,6 +303,10 @@ export const translations = {
     availabilityMostOpenInMay: "Most campsites open in May. Check the campsite for confirmation.",
     availabilityClosedBadge: "Closed (winter)",
 
+    winterModeActive: "Winter mode",
+winterModeTooltip: "Wind and precipitation weigh more than temperature during winter."
+
+
   },
 
   // Icelandic (Íslenska)
@@ -613,6 +617,8 @@ export const translations = {
     availabilityUnknown: "Opnunartími óviss.",
     availabilityMostOpenInMay: "Flest tjaldsvæði opna í maí. Athugaðu hjá tjaldsvæðinu til staðfestingar.",
     availabilityClosedBadge: "Lokað (vetur)",
+    winterModeActive: "Vetrarhamur",
+    winterModeTooltip: "Vindur og úrkoma vega þyngra en hitastig yfir vetrartímann."
 
   },
 };
