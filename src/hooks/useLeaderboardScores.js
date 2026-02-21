@@ -15,7 +15,7 @@ export function useLeaderboardScores(siteList, siteId, userLoc) {
     scoresRef.current = scoresById;
   }, [scoresById]);
 
-  const SCORES_CACHE_KEY = "campcast:scoresById:v3";
+  const SCORES_CACHE_KEY = "campcast:scoresById:v4";
   const SCORES_CACHE_TTL_MS = 6 * 60 * 60 * 1000; // 6 hours
 
   function loadScoresCache() {

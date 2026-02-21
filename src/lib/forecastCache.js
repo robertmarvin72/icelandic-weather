@@ -6,7 +6,7 @@ const inflight = new Map();    // coalesce duplicate requests
 function key(lat, lon) {
   // keep precision but normalize
   // Bump version when forecast shape changes (e.g., adding windgusts)
-  return `forecast:v3:${Number(lat).toFixed(4)},${Number(lon).toFixed(4)}`;
+  return `forecast:v4:${Number(lat).toFixed(4)},${Number(lon).toFixed(4)}`;
 }
 
 function readStorage(k) {
