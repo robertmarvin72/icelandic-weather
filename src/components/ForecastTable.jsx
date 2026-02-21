@@ -221,11 +221,14 @@ export default function ForecastTable({
                             {formatNumber(convertWind(r.windMax, units))} {WIND_UNIT_LABEL[units]}
                           </span>
 
-                          {r.windGust != null && Number.isFinite(Number(r.windGust)) ? (
-                            <span className="inline-flex items-center gap-1 text-xs font-semibold text-slate-500 dark:text-slate-300">
-                              <span aria-hidden title={t?.("windGust")}>
-                                🌬
-                              </span>
+                          {r.windGust != null &&
+                          Number.isFinite(Number(r.windGust)) &&
+                          Number(r.windGust) >= 15 ? (
+                            <span
+                              className="inline-flex items-center gap-1 text-xs font-semibold text-slate-500 dark:text-slate-300"
+                              title={`${t?.("windGust")}: ${formatNumber(convertWind(r.windGust, units))} ${WIND_UNIT_LABEL[units]}`}
+                            >
+                              <span aria-hidden>🌬</span>
                               <span className="opacity-80">
                                 {formatNumber(convertWind(r.windGust, units))}{" "}
                                 {WIND_UNIT_LABEL[units]}
