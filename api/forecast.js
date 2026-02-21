@@ -16,9 +16,8 @@ export default async function handler(req, res) {
     const lonRaw = q.get("lon") ?? q.get("longitude");
 
     if (!latRaw || !lonRaw) {
-        return res.status(400).json({ error: "Missing required params: latitude/longitude" });
+      return res.status(400).json({ error: "Missing required params: latitude/longitude" });
     }
-
 
     // Round lat/lon a bit -> better cache hit rate (same campsite coords)
     const lat = Number(latRaw);
@@ -35,7 +34,7 @@ export default async function handler(req, res) {
     // If you later add units toggles, you can pass these through too.
     // Open-Meteo supports temperature_unit, windspeed_unit, precipitation_unit, etc.
     const temperature_unit = q.get("temperature_unit"); // "celsius" | "fahrenheit"
-    const windspeed_unit = q.get("windspeed_unit");     // "ms" | "mph" | ...
+    const windspeed_unit = q.get("windspeed_unit"); // "ms" | "mph" | ...
     const precipitation_unit = q.get("precipitation_unit"); // "mm" | "inch"
 
     // Choose the payload your app needs (daily 7-day + codes)
@@ -51,6 +50,7 @@ export default async function handler(req, res) {
         "temperature_2m_min",
         "precipitation_sum",
         "windspeed_10m_max",
+        "windgusts_10m_max", // ✅ ADD THIS
         "winddirection_10m_dominant", // future: wind direction/shelter index
       ].join(",")
     );
@@ -78,12 +78,10 @@ export default async function handler(req, res) {
     // - stale-while-revalidate: allow serving stale while refreshing for 24h
     res.setHeader("Cache-Control", "public, s-maxage=1800, stale-while-revalidate=86400");
 
-    // Pass through status + JSON (or return error wrapper if upstream isn't ok)
     if (!r.ok) {
       return res.status(r.status).send(text);
     }
 
-    // Ensure JSON response type
     res.setHeader("Content-Type", "application/json; charset=utf-8");
     return res.status(200).send(text);
   } catch (err) {
