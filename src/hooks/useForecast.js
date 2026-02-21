@@ -138,17 +138,21 @@ function useForecast(lat, lon, opts = {}) {
     };
   }, [data]);
 
-  const rows = useMemo(() => {
+    const rows = useMemo(() => {
     if (!data?.daily) return [];
+
     const {
       time,
       temperature_2m_max,
       temperature_2m_min,
       precipitation_sum,
       windspeed_10m_max,
+      windgusts_10m_max,
       winddirection_10m_dominant,
       weathercode,
     } = data.daily;
+
+    if (!Array.isArray(time) || time.length === 0) return [];
 
     return time.map((t0, i) => {
       const row = {
@@ -157,16 +161,20 @@ function useForecast(lat, lon, opts = {}) {
         tmin: temperature_2m_min?.[i] ?? null,
         rain: precipitation_sum?.[i] ?? null,
         windMax: windspeed_10m_max?.[i] ?? null,
+        windGust: windgusts_10m_max?.[i] ?? null,
         windDir: winddirection_10m_dominant?.[i] ?? null,
         code: weathercode?.[i] ?? null,
       };
+
       const s = scoreDay(row);
+
       return {
         ...row,
         class: s.finalClass,
         points: s.points,
         basePts: s.basePts,
         windPen: s.windPen,
+        gustPen: s.gustPen,
         rainPen: s.rainPen,
       };
     });

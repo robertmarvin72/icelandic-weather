@@ -73,6 +73,23 @@ export default function ForecastTable({
     return null;
   }, [availability, lang, t]);
 
+  function shouldShowGustIcon(r) {
+    if (typeof r?.windGust !== "number" || typeof r?.windMax !== "number") return false;
+    return r.windGust - r.windMax >= 3; // same threshold as gust penalty start
+  }
+
+  function windTitle(r) {
+    if (typeof r?.windGust !== "number" || typeof r?.windMax !== "number") return "";
+    const diff = r.windGust - r.windMax;
+    if (!Number.isFinite(diff)) return "";
+
+    return `${t?.("windMax") ?? "Wind"}: ${formatNumber(convertWind(r.windMax, units))} ${
+      WIND_UNIT_LABEL[units]
+    }\n${t?.("windGust") ?? "Gusts"}: ${formatNumber(convertWind(r.windGust, units))} ${
+      WIND_UNIT_LABEL[units]
+    }\nΔ: ${formatNumber(convertWind(diff, units))} ${WIND_UNIT_LABEL[units]}`;
+  }
+
   return (
     <div className="card rounded-2xl shadow-sm border border-slate-200 bg-white dark:bg-slate-900 dark:border-slate-700 p-4">
       {/* Header */}
@@ -199,7 +216,23 @@ export default function ForecastTable({
                       </td>
 
                       <td className="py-2 pr-3">
-                        {formatNumber(convertWind(r.windMax, units))} {WIND_UNIT_LABEL[units]}
+                        <div className="flex items-center gap-2">
+                          <span>
+                            {formatNumber(convertWind(r.windMax, units))} {WIND_UNIT_LABEL[units]}
+                          </span>
+
+                          {r.windGust != null && Number.isFinite(Number(r.windGust)) ? (
+                            <span className="inline-flex items-center gap-1 text-xs font-semibold text-slate-500 dark:text-slate-300">
+                              <span aria-hidden title={t?.("windGust")}>
+                                🌬
+                              </span>
+                              <span className="opacity-80">
+                                {formatNumber(convertWind(r.windGust, units))}{" "}
+                                {WIND_UNIT_LABEL[units]}
+                              </span>
+                            </span>
+                          ) : null}
+                        </div>
                       </td>
 
                       <td className="py-2 pr-3">

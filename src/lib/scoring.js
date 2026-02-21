@@ -15,16 +15,12 @@ export function getSeasonForDate(date) {
 }
 
 function getSeasonConfig(season) {
-  // Tweak these numbers to taste:
-  // - tempWeight: how much temp matters
-  // - windWeight/rainWeight: penalty severity
-  // - baseFloor: minimum base points in winter so calm/dry days aren't always red
   if (season === "winter") {
     return {
       tempWeight: 0.35,
-      windWeight: 1.00,
-      rainWeight: 1.00,
-      baseFloor: 4, // <- makes "calm + dry" land around Ok/Good instead of Bad
+      windWeight: 1.0,
+      rainWeight: 1.0,
+      baseFloor: 4,
     };
   }
   return {
@@ -61,6 +57,38 @@ export function rainPenaltyPoints(mm) {
   return 5; // >=4mm
 }
 
+// NEW: gust penalty based on “gustiness” = gust - windMax
+export function gustPenaltyPoints(gust, windMax, season = "summer") {
+  const g = typeof gust === "number" ? gust : null;
+  const w = typeof windMax === "number" ? windMax : null;
+  if (g == null || w == null) return 0;
+
+  const diff = g - w;
+  if (!Number.isFinite(diff) || diff <= 0) return 0;
+
+  // Contract per tests:
+  // - diff < 2.9 => 0
+  // - diff >= 2.9 => start penalizing
+  if (diff < 2.9) return 0;
+
+  // Base penalty (summer scale)
+  // 2.9..5.9 => 1
+  // 6..9.9  => 2
+  // >=10    => 3
+  let base;
+  if (diff < 6) base = 1;
+  else if (diff < 10) base = 2;
+  else base = 3;
+
+  // Winter is harsher: weight ~1.6, round, cap at 5
+  if (season === "winter") {
+    const weighted = Math.round(base * 1.6);
+    return Math.min(5, weighted);
+  }
+
+  return base;
+}
+
 export function pointsToClass(p) {
   if (p >= 9) return "Best";
   if (p >= 7) return "Good";
@@ -69,7 +97,7 @@ export function pointsToClass(p) {
   return "Bad";
 }
 
-export function scoreDay({ tmax, rain, windMax, date }) {
+export function scoreDay({ tmax, rain, windMax, windGust, date }) {
   const season = getSeasonForDate(date);
   const cfg = getSeasonConfig(season);
 
@@ -81,17 +109,20 @@ export function scoreDay({ tmax, rain, windMax, date }) {
 
   const windPenRaw = windPenaltyPoints(windMax);
   const rainPenRaw = rainPenaltyPoints(rain);
+  const gustPenRaw = gustPenaltyPoints(windGust, windMax, season);
 
   const windPen = Math.round(windPenRaw * cfg.windWeight);
   const rainPen = Math.round(rainPenRaw * cfg.rainWeight);
+  const gustPen = gustPenRaw; // already weighted in function
 
-  const points = Math.max(0, Math.min(10, basePts - windPen - rainPen));
+  const points = Math.max(0, Math.min(10, basePts - windPen - rainPen - gustPen));
   const finalClass = pointsToClass(points);
 
   return {
     basePts,
     windPen,
     rainPen,
+    gustPen,
     points,
     finalClass,
     season,

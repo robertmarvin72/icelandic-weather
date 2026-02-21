@@ -7,13 +7,6 @@ import MarkerClusterGroup from "react-leaflet-cluster";
 import { scoreDay } from "./lib/scoring";
 
 // ───────────────────────────────────────────────
-// Season helper (Oct–Apr = winter)
-function isWinterSeason(date = new Date()) {
-  const m = new Date(date).getMonth() + 1; // 1–12
-  return m >= 10 || m <= 4;
-}
-
-// ───────────────────────────────────────────────
 // Color mapping by average score
 function colorForScore(score) {
   if (score >= 60) return "#22c55e"; // bright green
@@ -28,21 +21,21 @@ function colorForScore(score) {
 async function fetchForecastAndScore({ lat, lon }) {
   const data = await getForecast({ lat, lon }); // cached
   if (!data?.daily?.time) return { score: 0, rows: [] };
-
-  const season = isWinterSeason(new Date()) ? "winter" : "summer";
+  if (!Array.isArray(data?.daily?.time)) return { score: 0, rows: [] };
 
   const rows = data.daily.time.map((t, i) => {
     const r = {
       date: t,
-      tmax: data.daily.temperature_2m_max?.[i],
-      rain: data.daily.precipitation_sum?.[i],
-      windMax: data.daily.windspeed_10m_max?.[i] ?? data.daily.wind_speed_10m_max?.[i],
+      tmax: data.daily.temperature_2m_max?.[i] ?? null,
+      rain: data.daily.precipitation_sum?.[i] ?? null,
+      windMax: data.daily.windspeed_10m_max?.[i] ?? data.daily.wind_speed_10m_max?.[i] ?? null,
+      windGust: data.daily.windgusts_10m_max?.[i] ?? null,
     };
 
-    // ✅ seasonal-aware scoring (requires scoreDay to accept 2nd arg options)
-    const s = scoreDay(r, { season });
+    const s = scoreDay(r);
 
-    return { ...r, class: s.finalClass, points: s.points };
+    // ✅ keep season for UI/debug
+    return { ...r, class: s.finalClass, points: s.points, season: s.season };
   });
 
   const score = rows.reduce((sum, r) => sum + (r.points ?? 0), 0);
@@ -55,7 +48,7 @@ function FlyTo({ position }) {
   const map = useMap();
   useEffect(() => {
     if (position) map.flyTo(position, 8, { duration: 1.2 });
-  }, [position]);
+  }, [position, map]);
   return null;
 }
 
@@ -100,10 +93,10 @@ function scorePinIcon(color, isSelected = false) {
     `,
   });
 }
-// ───────────────────────────────────────────────
 
+// ───────────────────────────────────────────────
 // Main map component
-export default function MapView({ campsites, selectedId, onSelect, userLocation }) {
+export default function MapView({ campsites, selectedId, onSelect, userLocation, lang = "en", t }) {
   const [forecastById, setForecastById] = useState({});
   const [loadingById, setLoadingById] = useState({});
   const [errorById, setErrorById] = useState({});
@@ -154,24 +147,6 @@ export default function MapView({ campsites, selectedId, onSelect, userLocation 
 
   const selectedSite = campsites.find((c) => c.id === selectedId);
 
-  const defaultIcon = new L.Icon({
-    iconUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png",
-    iconRetinaUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png",
-    shadowUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png",
-    iconSize: [25, 41],
-    iconAnchor: [12, 41],
-    popupAnchor: [0, -30],
-  });
-
-  const highlightIcon = new L.Icon({
-    iconUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png",
-    iconRetinaUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png",
-    shadowUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png",
-    iconSize: [35, 55],
-    iconAnchor: [17, 55],
-    popupAnchor: [0, -40],
-  });
-
   async function loadForecast(site) {
     if (loadingById[site.id] || forecastById[site.id]) return;
     setLoadingById((s) => ({ ...s, [site.id]: true }));
@@ -179,7 +154,7 @@ export default function MapView({ campsites, selectedId, onSelect, userLocation 
       const data = await fetchForecastAndScore({ lat: site.lat, lon: site.lon });
       setForecastById((s) => ({ ...s, [site.id]: data }));
     } catch (e) {
-      setErrorById((s) => ({ ...s, [site.id]: String(e.message || e) }));
+      setErrorById((s) => ({ ...s, [site.id]: String(e?.message || e) }));
     } finally {
       setLoadingById((s) => ({ ...s, [site.id]: false }));
     }
@@ -192,6 +167,7 @@ export default function MapView({ campsites, selectedId, onSelect, userLocation 
           attribution="&copy; OpenStreetMap"
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
+
         {selectedSite && <FlyTo position={[selectedSite.lat, selectedSite.lon]} />}
 
         {/* User location marker */}
@@ -222,6 +198,9 @@ export default function MapView({ campsites, selectedId, onSelect, userLocation 
             const loading = loadingById[site.id];
             const err = errorById[site.id];
 
+            // ✅ use first day’s season as a simple “mode” hint
+            const season = fdata?.rows?.[0]?.season ?? null;
+
             return (
               <Marker
                 key={site.id}
@@ -240,13 +219,27 @@ export default function MapView({ campsites, selectedId, onSelect, userLocation 
                 <Popup>
                   <div className="text-sm">
                     <div className="font-semibold mb-1">{site.name}</div>
+
                     {loading && <div className="text-slate-600">Loading forecast…</div>}
                     {err && <div className="text-red-600">Error: {err}</div>}
+
                     {!loading && !err && (
                       <div>
                         <div className="text-slate-700">
                           Weekly score: <b>{score}</b>
                         </div>
+
+                        {season === "winter" ? (
+                          <div className="mt-1 text-xs text-slate-500">
+                            ❄️{" "}
+                            {typeof t === "function"
+                              ? t("winterModeActive")
+                              : lang === "is"
+                                ? "Vetrarhamur"
+                                : "Winter mode"}
+                          </div>
+                        ) : null}
+
                         <div className="mt-1 text-xs text-slate-500">
                           Color = weather score (green=best, red=worst)
                         </div>

@@ -304,9 +304,8 @@ export const translations = {
     availabilityClosedBadge: "Closed (winter)",
 
     winterModeActive: "Winter mode",
-winterModeTooltip: "Wind and precipitation weigh more than temperature during winter."
-
-
+    winterModeTooltip: "Wind and precipitation weigh more than temperature during winter.",
+    windGust: "Wind gust",
   },
 
   // Icelandic (Íslenska)
@@ -618,7 +617,8 @@ winterModeTooltip: "Wind and precipitation weigh more than temperature during wi
     availabilityMostOpenInMay: "Flest tjaldsvæði opna í maí. Athugaðu hjá tjaldsvæðinu til staðfestingar.",
     availabilityClosedBadge: "Lokað (vetur)",
     winterModeActive: "Vetrarhamur",
-    winterModeTooltip: "Vindur og úrkoma vega þyngra en hitastig yfir vetrartímann."
+    winterModeTooltip: "Vindur og úrkoma vega þyngra en hitastig yfir vetrartímann.",
+    windGust: "Vindhviða",
 
   },
 };

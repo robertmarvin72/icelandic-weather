@@ -7,7 +7,7 @@ const MapView = lazy(() => import("../MapView"));
  * - Prefetches MapView chunk shortly after initial render
  * - Mounts MapView only when container is near viewport (IntersectionObserver)
  */
-export default function LazyMap({ campsites, selectedId, onSelect, userLocation }) {
+export default function LazyMap({ campsites, selectedId, onSelect, userLocation, lang, t }) {
   const mapRef = useRef(null);
   const [mapInView, setMapInView] = useState(false);
 
@@ -53,6 +53,8 @@ export default function LazyMap({ campsites, selectedId, onSelect, userLocation 
             selectedId={selectedId}
             onSelect={onSelect}
             userLocation={userLocation}
+            lang={lang}
+            t={t}
           />
         </Suspense>
       )}

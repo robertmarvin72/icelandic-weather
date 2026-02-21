@@ -518,6 +518,8 @@ function IcelandCampingWeatherApp({ page = "home" }) {
                       selectedId={siteId}
                       onSelect={(id) => setSiteId(id)}
                       userLocation={userLoc}
+                      lang={lang}
+                      t={t}
                     />
                   </div>
                 }

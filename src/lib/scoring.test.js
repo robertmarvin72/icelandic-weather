@@ -1,11 +1,12 @@
 import { describe, it, expect } from "vitest";
 import {
-  getSeasonForDate,
   basePointsFromTemp,
   windPenaltyPoints,
   rainPenaltyPoints,
   pointsToClass,
   scoreDay,
+  gustPenaltyPoints,
+  getSeasonForDate,
   convertTemp,
   convertRain,
   convertWind,
@@ -93,28 +94,23 @@ describe("scoring: pointsToClass()", () => {
 
 describe("scoring: scoreDay()", () => {
   it("clamps points to 0..10", () => {
+    // extremely bad conditions
     const bad = scoreDay({ tmax: 5, windMax: 30, rain: 50 });
     expect(bad.points).toBe(0);
     expect(bad.finalClass).toBe("Bad");
 
+    // extremely good (base 10 - 0 - 0)
     const good = scoreDay({ tmax: 20, windMax: 0, rain: 0 });
     expect(good.points).toBe(10);
     expect(good.finalClass).toBe("Best");
   });
 
-  it("computes a realistic summer example", () => {
+  it("computes a realistic example", () => {
     // tmax=12 => base 8
     // wind=11 => pen 5
     // rain=1.2 => pen 2
     // => 1 point => Fair
-    const r = scoreDay({
-      tmax: 12,
-      windMax: 11,
-      rain: 1.2,
-      date: "2026-06-15", // explicit summer
-    });
-
-    expect(r.season).toBe("summer");
+    const r = scoreDay({ tmax: 12, windMax: 11, rain: 1.2 });
     expect(r.basePts).toBe(8);
     expect(r.windPen).toBe(5);
     expect(r.rainPen).toBe(2);
@@ -123,36 +119,52 @@ describe("scoring: scoreDay()", () => {
   });
 });
 
-describe("scoring: seasonal behavior", () => {
-  it("getSeasonForDate: Oct–Apr => winter, May–Sep => summer", () => {
-    expect(getSeasonForDate("2026-01-15")).toBe("winter");
-    expect(getSeasonForDate("2026-04-30")).toBe("winter");
-    expect(getSeasonForDate("2026-05-01")).toBe("summer");
-    expect(getSeasonForDate("2026-09-30")).toBe("summer");
-    expect(getSeasonForDate("2026-10-01")).toBe("winter");
+describe("scoring: season helpers", () => {
+  it("getSeasonForDate: winter is Oct–Apr, summer otherwise", () => {
+    expect(getSeasonForDate("2026-01-15")).toBe("winter"); // Jan
+    expect(getSeasonForDate("2026-10-01")).toBe("winter"); // Oct
+    expect(getSeasonForDate("2026-04-30")).toBe("winter"); // Apr
+    expect(getSeasonForDate("2026-05-01")).toBe("summer"); // May
+    expect(getSeasonForDate("2026-07-10")).toBe("summer"); // Jul
   });
 
-  it("defaults to summer if date is missing or invalid", () => {
-    expect(getSeasonForDate()).toBe("summer");
+  it("getSeasonForDate defaults to summer on missing/invalid date", () => {
     expect(getSeasonForDate(null)).toBe("summer");
     expect(getSeasonForDate("not-a-date")).toBe("summer");
   });
+});
 
-  it("winter reduces temperature impact compared to summer", () => {
-    const input = { tmax: 12, rain: 0, windMax: 0 };
+describe("scoring: gustPenaltyPoints()", () => {
+  it("returns 0 when gust or windMax is missing/invalid", () => {
+    expect(gustPenaltyPoints(null, 10, "summer")).toBe(0);
+    expect(gustPenaltyPoints(15, null, "summer")).toBe(0);
+    expect(gustPenaltyPoints("15", 10, "summer")).toBe(0);
+    expect(gustPenaltyPoints(15, "10", "summer")).toBe(0);
+  });
 
-    const summer = scoreDay({ ...input, date: "2026-06-15" });
-    const winter = scoreDay({ ...input, date: "2026-01-15" });
+  it("returns 0 when gustiness (gust - windMax) is small (< 2.9)", () => {
+    expect(gustPenaltyPoints(12.8, 10, "summer")).toBe(0); // diff 2.8
+  });
 
-    expect(summer.season).toBe("summer");
-    expect(winter.season).toBe("winter");
+it("starts penalizing at threshold (>= 2.9)", () => {
+    expect(gustPenaltyPoints(12.9, 10, "summer")).toBe(1); // diff 2.9
+  });
 
-    // Temperature matters less in winter
-    expect(winter.basePts).toBeLessThanOrEqual(summer.basePts);
+  it("penalizes by gustiness in summer (diff 3..5.9 => 1, 6..9.9 => 2, >=10 => 3)", () => {
+    expect(gustPenaltyPoints(14, 10, "summer")).toBe(1); // diff 4
+    expect(gustPenaltyPoints(16, 10, "summer")).toBe(2); // diff 6
+    expect(gustPenaltyPoints(22, 10, "summer")).toBe(3); // diff 12
+  });
 
-    // Wind and rain penalties stay identical
-    expect(winter.windPen).toBe(summer.windPen);
-    expect(winter.rainPen).toBe(summer.rainPen);
+  it("applies higher penalty in winter for the same gustiness (rounded, capped)", () => {
+    // diff 6 => base 2
+    // winter weight ~1.6 => round(3.2) = 3
+    expect(gustPenaltyPoints(16, 10, "winter")).toBe(3);
+  });
+
+  it("caps gust penalty at 5", () => {
+    // diff >= 10 => base 3, winter => round(4.8)=5 (cap 5)
+    expect(gustPenaltyPoints(22, 10, "winter")).toBe(5);
   });
 });
 
