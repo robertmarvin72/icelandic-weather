@@ -8,6 +8,7 @@ import { oppositeCompass } from "../lib/windUtils";
 import { translateCompass } from "../lib/compassUtils";
 import RequireFeature from "./RequireFeature";
 import { getFeatureLimit } from "../config/features";
+import RoutePlannerCard from "./RoutePlannerCard";
 
 function shelterPillClass(score) {
   if (score < 30) return "shelter-pill--bad";
@@ -34,6 +35,10 @@ export default function Top5Leaderboard({
   proUntil,
   subscription,
   onManageSubscription,
+
+  // ✅ IMPORTANT: pass selectedSiteId + sites from App
+  selectedSiteId,
+  sites,
 }) {
   const sheltered = windDir?.compass ? oppositeCompass(windDir.compass) : null;
 
@@ -54,7 +59,7 @@ export default function Top5Leaderboard({
   const showProUntil = isPro && isCanceled && !!proUntil;
 
   // ✅ Plan detection (important for "monthly -> upgrade" CTA)
-  const plan = (subscription?.plan || me?.subscription?.plan || "").toLowerCase(); // "monthly" | "yearly" | ""
+  const plan = (subscription?.plan || me?.subscription?.plan || "").toLowerCase();
   const isMonthly = isPro && plan === "monthly";
   const isYearly = isPro && plan === "yearly";
 
@@ -113,44 +118,33 @@ export default function Top5Leaderboard({
   );
 
   const getProLabel = () => {
-    // Free user
     if (!me?.user) return t?.("proCtaTitle") ?? "Fá Pro aðgang";
 
-    // Pro user
     if (me?.entitlements?.pro || isPro) {
-      // Monthly: show upgrade label
       if (isMonthly) return t?.("pricingCtaUpgradeToYearly") ?? "Upgrade to Yearly";
-      // Yearly: show manage label
       if (isYearly) return t?.("manageSubscription") ?? "Manage";
-      // Fallback
       return t?.("proActive") ?? "Pro virkt ✓";
     }
 
-    // Logged in but not Pro
     return t?.("proUpgrade") ?? "Uppfæra í Pro";
   };
 
-  // ✅ CTA click logic
   const handleCtaClick = () => {
-    // Not logged in -> App handles login flow
     if (!me?.user) {
       if (typeof onUpgrade === "function") onUpgrade();
       return;
     }
 
-    // Pro + monthly -> go to pricing so user can upgrade
     if (isMonthly) {
       window.location.assign("/pricing");
       return;
     }
 
-    // Pro + yearly -> manage subscription
     if (isYearly) {
       if (typeof onManageSubscription === "function") onManageSubscription();
       return;
     }
 
-    // Logged in + not Pro -> normal upgrade flow
     if (typeof onUpgrade === "function") onUpgrade();
   };
 
@@ -163,7 +157,6 @@ export default function Top5Leaderboard({
         </span>
       </h3>
 
-      {/* Show shimmer only if we have nothing yet */}
       {top5.length === 0 && loadingWave1 && <LoadingShimmer rows={5} height={20} />}
 
       <div className="mb-3 text-xs text-slate-500 dark:text-slate-400">
@@ -183,7 +176,6 @@ export default function Top5Leaderboard({
             </thead>
 
             <tbody className="[&>tr:nth-child(even)]:bg-slate-50 dark:[&>tr:nth-child(even)]:bg-slate-800/40">
-              {/* Visible rows (Free: 3, Pro: 5) */}
               {visibleTop.map((item, idx) => (
                 <tr
                   key={item.site.id}
@@ -217,7 +209,6 @@ export default function Top5Leaderboard({
                 </tr>
               ))}
 
-              {/* Locked rows (only shown when Free is limited) */}
               {lockedTop.map((item, i) => {
                 const rank = visibleCount + i + 1;
                 return (
@@ -258,7 +249,6 @@ export default function Top5Leaderboard({
 
       {/* ✅ CTA / Status */}
       {isPro && !isMonthly ? (
-        // Yearly (or unknown Pro) -> show manage box
         <div className="mt-3 rounded-xl border border-slate-200 dark:border-slate-700 p-3 text-sm">
           <div className="flex items-center justify-between gap-3">
             <div>
@@ -284,9 +274,7 @@ export default function Top5Leaderboard({
 
             <button
               type="button"
-              onClick={() => {
-                if (typeof onManageSubscription === "function") onManageSubscription();
-              }}
+              onClick={() => typeof onManageSubscription === "function" && onManageSubscription()}
               className="
                 px-3 py-2 rounded-xl text-sm font-semibold
                 border border-slate-300 bg-white text-slate-900
@@ -300,7 +288,6 @@ export default function Top5Leaderboard({
           </div>
         </div>
       ) : (
-        // Free OR Monthly -> show CTA button
         <button
           type="button"
           onClick={handleCtaClick}
@@ -354,7 +341,6 @@ export default function Top5Leaderboard({
         </div>
 
         <div className="grid gap-2">
-          {/* Wind row */}
           <div className="flex items-center justify-between gap-3">
             <div className="flex items-center gap-2">
               <span aria-hidden>🧭</span>
@@ -370,7 +356,6 @@ export default function Top5Leaderboard({
             </RequireFeature>
           </div>
 
-          {/* Shelter row */}
           <div className="flex items-center justify-between gap-3">
             <div className="flex items-center gap-2">
               <span aria-hidden>🛡️</span>
@@ -386,6 +371,22 @@ export default function Top5Leaderboard({
             </RequireFeature>
           </div>
         </div>
+      </div>
+
+      {/* ✅ Route Planner (Pro) */}
+      <div className="mt-3">
+        <RoutePlannerCard
+          t={t}
+          lang={lang}
+          entitlements={entitlements}
+          me={me}
+          onUpgrade={onUpgrade}
+          sites={sites}
+          baseSiteId={selectedSiteId}
+          radiusKmDefault={50}
+          windowDaysDefault={3}
+          wetThresholdMmDefault={3}
+        />
       </div>
     </div>
   );

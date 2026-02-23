@@ -89,6 +89,61 @@ export function gustPenaltyPoints(gust, windMax, season = "summer") {
   return base;
 }
 
+// ── Rain streak (v1) -------------------------------------------------------
+
+export function isWetDay(rainMm, wetThresholdMm = 3) {
+  const r = rainMm ?? 0;
+  return r >= wetThresholdMm;
+}
+
+export function rainStreakPenaltyPoints(streakLen) {
+  if (streakLen <= 1) return 0;
+  if (streakLen === 2) return 1;
+  if (streakLen === 3) return 2;
+  if (streakLen === 4) return 3;
+  return 4; // 5+ cap
+}
+
+/**
+ * Scores an array of days using scoreDay(), then applies rain streak penalty.
+ * Intended for Route Planner; does not affect existing Top5/Forecast unless used there.
+ *
+ * @param {Array<{tmax,rain,windMax,windGust,date}>} days
+ * @param {{ wetThresholdMm?: number }} opts
+ */
+export function scoreDaysWithRainStreak(days, opts = {}) {
+  const wetThresholdMm =
+    typeof opts.wetThresholdMm === "number" ? opts.wetThresholdMm : 3;
+
+  const scored = (days || []).map((d) => ({
+    ...d,
+    ...scoreDay(d),
+  }));
+
+  let streak = 0;
+
+  return scored.map((row) => {
+    const wet = isWetDay(row.rain, wetThresholdMm);
+    streak = wet ? streak + 1 : 0;
+
+    const rainStreak = streak;
+    const rainStreakPen = rainStreakPenaltyPoints(rainStreak);
+
+    const pointsRaw = typeof row.points === "number" ? row.points : 0;
+    const points = Math.max(0, Math.min(10, pointsRaw - rainStreakPen));
+    const finalClass = pointsToClass(points);
+
+    return {
+      ...row,
+      wetDay: wet,
+      rainStreak,
+      rainStreakPen,
+      points,
+      finalClass,
+    };
+  });
+}
+
 export function pointsToClass(p) {
   if (p >= 9) return "Best";
   if (p >= 7) return "Good";
@@ -129,6 +184,7 @@ export function scoreDay({ tmax, rain, windMax, windGust, date }) {
     tempWeight: cfg.tempWeight,
   };
 }
+
 
 // ── Units (display only; underlying stays metric) --------------------------
 

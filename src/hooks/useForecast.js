@@ -11,6 +11,7 @@ import { getWeeklyShelterScore } from "../lib/shelterUtils";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { getForecast } from "../lib/forecastCache";
 import { scoreDay } from "../lib/scoring";
+import { normalizeDailyToScoreInput } from "../lib/forecastNormalize";
 
 async function fetchForecast({ lat, lon }) {
   return getForecast({ lat, lon });
@@ -141,31 +142,10 @@ function useForecast(lat, lon, opts = {}) {
     const rows = useMemo(() => {
     if (!data?.daily) return [];
 
-    const {
-      time,
-      temperature_2m_max,
-      temperature_2m_min,
-      precipitation_sum,
-      windspeed_10m_max,
-      windgusts_10m_max,
-      winddirection_10m_dominant,
-      weathercode,
-    } = data.daily;
+    const baseRows = normalizeDailyToScoreInput(data.daily);
+    if (baseRows.length === 0) return [];
 
-    if (!Array.isArray(time) || time.length === 0) return [];
-
-    return time.map((t0, i) => {
-      const row = {
-        date: t0,
-        tmax: temperature_2m_max?.[i] ?? null,
-        tmin: temperature_2m_min?.[i] ?? null,
-        rain: precipitation_sum?.[i] ?? null,
-        windMax: windspeed_10m_max?.[i] ?? null,
-        windGust: windgusts_10m_max?.[i] ?? null,
-        windDir: winddirection_10m_dominant?.[i] ?? null,
-        code: weathercode?.[i] ?? null,
-      };
-
+    return baseRows.map((row) => {
       const s = scoreDay(row);
 
       return {
@@ -178,7 +158,7 @@ function useForecast(lat, lon, opts = {}) {
         rainPen: s.rainPen,
       };
     });
-  }, [data]);
+  }, [data?.daily]);
 
   return { data, rows, windDir, shelter, loading, error, retrying, refetch };
 }

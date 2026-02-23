@@ -306,6 +306,37 @@ export const translations = {
     winterModeActive: "Winter mode",
     winterModeTooltip: "Wind and precipitation weigh more than temperature during winter.",
     windGust: "Wind gust",
+
+    routeReasonRainStreak: "Less rain streak penalty",
+    routeReasonGust: "Calmer gust conditions",
+    routeReasonWind: "Lower wind impact",
+    routeReasonRain: "Less rainfall",
+    routeReasonTmax: "Warmer days",
+
+    routeVerdictStayTitle: "Stay put",
+    routeVerdictStayBody: "Conditions nearby aren’t meaningfully better.",
+
+    routeVerdictConsiderTitle: "Consider moving",
+    routeVerdictConsiderBody: "There’s a slightly better option within your radius.",
+
+    routeVerdictMoveTitle: "Move camp",
+    routeVerdictMoveBody: "A noticeably better option is available within your radius.",
+
+    routePlannerTitle: "Route Planner",
+    routePlannerSelectBase: "Select a campsite (or use your location) to get a recommendation.",
+    routePlannerBaseLabel: "Base",
+    routePlannerRadius: "Travel radius",
+    routePlannerWindowDays: "Window (days)",
+    routePlannerWetThreshold: "Wet day threshold",
+    routePlannerCandidateLimit: "Candidates preselected",
+    routePlannerCandidatesPreselected: "Checked nearby",
+    routePlannerCandidatesScored: "Scored",
+    routePlannerTopAlternatives: "Top alternatives",
+    routePlannerNoAlternatives: "No alternatives found within radius.",
+    routePlannerNoReasons: "No clear reasons (yet).",
+    loading: "Loading",
+
+    routePlannerLockedBody: "Unlock Route Planner to get relocation advice within your selected radius.",
   },
 
   // Icelandic (Íslenska)
@@ -620,5 +651,35 @@ export const translations = {
     winterModeTooltip: "Vindur og úrkoma vega þyngra en hitastig yfir vetrartímann.",
     windGust: "Vindhviða",
 
+    routeReasonRainStreak: "Minni rigningarruna",
+    routeReasonGust: "Minni vindhviður",
+    routeReasonWind: "Minni vindáhrif",
+    routeReasonRain: "Minni úrkoma",
+    routeReasonTmax: "Hlýrri dagar",
+
+    routeVerdictStayTitle: "Vertu kyrr",
+    routeVerdictStayBody: "Aðstæður í nágrenninu eru ekki marktækt betri.",
+
+    routeVerdictConsiderTitle: "Íhugaðu að færa þig",
+    routeVerdictConsiderBody: "Það er aðeins betri kostur innan valinnar fjarlægðar.",
+
+    routeVerdictMoveTitle: "Færðu þig",
+    routeVerdictMoveBody: "Það er greinilega betri kostur innan valinnar fjarlægðar.",
+
+    routePlannerTitle: "Ferðaráðgjafi",
+    routePlannerSelectBase: "Veldu tjaldsvæði (eða notaðu staðsetningu) til að fá ráðleggingu.",
+    routePlannerBaseLabel: "Grunnstaður",
+    routePlannerRadius: "Ferðafjarlægð",
+    routePlannerWindowDays: "Gluggi (dagar)",
+    routePlannerWetThreshold: "Votur dagur (viðmið)",
+    routePlannerCandidateLimit: "Forsíaðir kostir",
+    routePlannerCandidatesPreselected: "Skoðað í nágrenninu",
+    routePlannerCandidatesScored: "Metið",
+    routePlannerTopAlternatives: "Bestu valkostir",
+    routePlannerNoAlternatives: "Engir valkostir fundust innan valinnar fjarlægðar.",
+    routePlannerNoReasons: "Engar skýrar ástæður (ennþá).",
+    loading: "Hleður",
+
+    routePlannerLockedBody: "Opnaðu Ferðaráðgjafa til að fá ráðleggingar um að færa þig innan valinnar fjarlægðar.",
   },
 };

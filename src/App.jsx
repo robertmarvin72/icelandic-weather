@@ -528,6 +528,7 @@ function IcelandCampingWeatherApp({ page = "home" }) {
               />
 
               <Top5Leaderboard
+                sites={siteList}
                 entitlements={entitlements}
                 top5={top5}
                 lang={lang}
@@ -544,6 +545,7 @@ function IcelandCampingWeatherApp({ page = "home" }) {
                 proUntil={me?.entitlements?.proUntil ?? null}
                 subscription={me?.subscription ?? null}
                 onManageSubscription={openBillingPortal}
+                selectedSiteId={siteId}
               />
             </div>
           )}
