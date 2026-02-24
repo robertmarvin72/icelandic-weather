@@ -4,7 +4,7 @@ import { MapContainer, TileLayer, Marker, Popup, CircleMarker, useMap } from "re
 import L from "leaflet";
 import { getForecast } from "./lib/forecastCache";
 import MarkerClusterGroup from "react-leaflet-cluster";
-import { scoreDay } from "./lib/scoring";
+import { scoreSiteDay } from "./lib/scoring";
 
 // ───────────────────────────────────────────────
 // Color mapping by average score
@@ -32,7 +32,7 @@ async function fetchForecastAndScore({ lat, lon }) {
       windGust: data.daily.windgusts_10m_max?.[i] ?? null,
     };
 
-    const s = scoreDay(r);
+    const s = scoreSiteDay(r);
 
     // ✅ keep season for UI/debug
     return { ...r, class: s.finalClass, points: s.points, season: s.season };

@@ -1,22 +1,15 @@
-
 // src/hooks/useForecast.js
-import {
-  getWeeklyDominantWindDeg,
-  degreesToCompass,
-  degreesToArrow,
-} from "../lib/windUtils";
+import { getWeeklyDominantWindDeg, degreesToCompass, degreesToArrow } from "../lib/windUtils";
 import { getWeeklyShelterScore } from "../lib/shelterUtils";
-
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { getForecast } from "../lib/forecastCache";
-import { scoreDay } from "../lib/scoring";
+import { scoreSiteDay } from "../lib/scoring";
 import { normalizeDailyToScoreInput } from "../lib/forecastNormalize";
 
 async function fetchForecast({ lat, lon }) {
   return getForecast({ lat, lon });
 }
-
 
 function sleep(ms) {
   return new Promise((r) => setTimeout(r, ms));
@@ -44,7 +37,7 @@ function useForecast(lat, lon, opts = {}) {
 
   // Avoid spamming "retrying" toasts on rapid re-renders
   const lastToastAtRef = useRef(0);
-    
+
   useEffect(() => {
     if (lat == null || lon == null) return;
     let aborted = false;
@@ -55,7 +48,6 @@ function useForecast(lat, lon, opts = {}) {
       setRetrying(false);
 
       const maxAttempts = Math.max(1, 1 + Number(retries || 0));
-      
 
       for (let attempt = 1; attempt <= maxAttempts; attempt++) {
         if (aborted) return;
@@ -139,14 +131,14 @@ function useForecast(lat, lon, opts = {}) {
     };
   }, [data]);
 
-    const rows = useMemo(() => {
+  const rows = useMemo(() => {
     if (!data?.daily) return [];
 
     const baseRows = normalizeDailyToScoreInput(data.daily);
     if (baseRows.length === 0) return [];
 
     return baseRows.map((row) => {
-      const s = scoreDay(row);
+      const s = scoreSiteDay(row);
 
       return {
         ...row,

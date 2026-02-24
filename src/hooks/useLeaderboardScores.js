@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 
-import { scoreDay } from "../lib/scoring";
+import { scoreSiteDay } from "../lib/scoring";
 import { getForecast } from "../lib/forecastCache";
 import { prioritizedSites, processInBatches, sleep } from "../lib/leaderboardUtils";
 
@@ -52,10 +52,7 @@ export function useLeaderboardScores(siteList, siteId, userLoc) {
     saveTimerRef.current = setTimeout(() => {
       try {
         const scores = getLatestScoresById();
-        localStorage.setItem(
-          SCORES_CACHE_KEY,
-          JSON.stringify({ ts: Date.now(), scores })
-        );
+        localStorage.setItem(SCORES_CACHE_KEY, JSON.stringify({ ts: Date.now(), scores }));
       } catch {
         // ignore
       }
@@ -78,7 +75,7 @@ export function useLeaderboardScores(siteList, siteId, userLoc) {
           windGust: data.daily.windgusts_10m_max?.[i] ?? null,
           code: data.daily.weathercode?.[i] ?? null,
         };
-        const s = scoreDay(r);
+        const s = scoreSiteDay(r);
         return { ...r, class: s.finalClass, points: s.points };
       });
 
