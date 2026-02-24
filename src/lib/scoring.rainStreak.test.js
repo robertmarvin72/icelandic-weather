@@ -1,8 +1,5 @@
 import { describe, it, expect } from "vitest";
-import {
-  rainStreakPenaltyPoints,
-  scoreDaysWithRainStreak,
-} from "./scoring";
+import { rainStreakPenaltyPoints, scoreDaysWithRainStreak } from "./scoring";
 
 describe("Rain streak logic v1 (safe curve)", () => {
   it("rainStreakPenaltyPoints uses safe curve and caps at 4", () => {
@@ -33,11 +30,11 @@ describe("Rain streak logic v1 (safe curve)", () => {
 
   it("scoreDaysWithRainStreak applies penalty to points (never below 0)", () => {
     const days = [
-      { date: "2026-01-01", tmax: 6, rain: 3, windMax: 4, windGust: 4 },  // base about 2
-      { date: "2026-01-02", tmax: 6, rain: 3, windMax: 4, windGust: 4 },  // streak 2 => -1
-      { date: "2026-01-03", tmax: 6, rain: 3, windMax: 4, windGust: 4 },  // streak 3 => -2
-      { date: "2026-01-04", tmax: 6, rain: 3, windMax: 4, windGust: 4 },  // streak 4 => -3
-      { date: "2026-01-05", tmax: 6, rain: 3, windMax: 4, windGust: 4 },  // streak 5 => -4 cap
+      { date: "2026-01-01", tmax: 6, rain: 3, windMax: 4, windGust: 4 }, // base about 2
+      { date: "2026-01-02", tmax: 6, rain: 3, windMax: 4, windGust: 4 }, // streak 2 => -1
+      { date: "2026-01-03", tmax: 6, rain: 3, windMax: 4, windGust: 4 }, // streak 3 => -2
+      { date: "2026-01-04", tmax: 6, rain: 3, windMax: 4, windGust: 4 }, // streak 4 => -3
+      { date: "2026-01-05", tmax: 6, rain: 3, windMax: 4, windGust: 4 }, // streak 5 => -4 cap
     ];
 
     const out = scoreDaysWithRainStreak(days, { wetThresholdMm: 3 });

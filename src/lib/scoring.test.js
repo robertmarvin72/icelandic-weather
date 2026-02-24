@@ -1,3 +1,4 @@
+// src/lib/scoring.test.js
 import { describe, it, expect } from "vitest";
 import {
   basePointsFromTemp,
@@ -5,6 +6,8 @@ import {
   rainPenaltyPoints,
   pointsToClass,
   scoreDay,
+  scoreSiteDay,
+  scoreDaysWithRainStreak,
   gustPenaltyPoints,
   getSeasonForDate,
   convertTemp,
@@ -95,12 +98,12 @@ describe("scoring: pointsToClass()", () => {
 describe("scoring: scoreDay()", () => {
   it("clamps points to 0..10", () => {
     // extremely bad conditions
-    const bad = scoreDay({ tmax: 5, windMax: 30, rain: 50 });
+    const bad = scoreDay({ tmax: 5, windMax: 30, windGust: 40, rain: 50 });
     expect(bad.points).toBe(0);
     expect(bad.finalClass).toBe("Bad");
 
     // extremely good (base 10 - 0 - 0)
-    const good = scoreDay({ tmax: 20, windMax: 0, rain: 0 });
+    const good = scoreDay({ tmax: 20, windMax: 0, windGust: 0, rain: 0 });
     expect(good.points).toBe(10);
     expect(good.finalClass).toBe("Best");
   });
@@ -109,11 +112,13 @@ describe("scoring: scoreDay()", () => {
     // tmax=12 => base 8
     // wind=11 => pen 5
     // rain=1.2 => pen 2
+    // gust=0 => pen 0
     // => 1 point => Fair
-    const r = scoreDay({ tmax: 12, windMax: 11, rain: 1.2 });
+    const r = scoreDay({ tmax: 12, windMax: 11, windGust: 0, rain: 1.2 });
     expect(r.basePts).toBe(8);
     expect(r.windPen).toBe(5);
     expect(r.rainPen).toBe(2);
+    expect(r.gustPen).toBe(0);
     expect(r.points).toBe(1);
     expect(r.finalClass).toBe("Fair");
   });
@@ -146,11 +151,11 @@ describe("scoring: gustPenaltyPoints()", () => {
     expect(gustPenaltyPoints(12.8, 10, "summer")).toBe(0); // diff 2.8
   });
 
-it("starts penalizing at threshold (>= 2.9)", () => {
+  it("starts penalizing at threshold (>= 2.9)", () => {
     expect(gustPenaltyPoints(12.9, 10, "summer")).toBe(1); // diff 2.9
   });
 
-  it("penalizes by gustiness in summer (diff 3..5.9 => 1, 6..9.9 => 2, >=10 => 3)", () => {
+  it("penalizes by gustiness in summer (diff 2.9..5.9 => 1, 6..9.9 => 2, >=10 => 3)", () => {
     expect(gustPenaltyPoints(14, 10, "summer")).toBe(1); // diff 4
     expect(gustPenaltyPoints(16, 10, "summer")).toBe(2); // diff 6
     expect(gustPenaltyPoints(22, 10, "summer")).toBe(3); // diff 12
@@ -168,6 +173,57 @@ it("starts penalizing at threshold (>= 2.9)", () => {
   });
 });
 
+describe("scoring: scoreSiteDay() contract", () => {
+  it("returns total + components with stable keys (and legacy fields for compatibility)", () => {
+    const r = scoreSiteDay({
+      tmax: 12,
+      windMax: 11,
+      windGust: 0,
+      rain: 1.2,
+      date: "2026-07-01",
+    });
+
+    expect(typeof r.total).toBe("number");
+    expect(r.components).toBeTruthy();
+    expect(Object.keys(r.components)).toEqual(
+      expect.arrayContaining(["temp", "wind", "rain", "gust", "rainStreak", "shelter"])
+    );
+
+    // Legacy fields that existing UI may rely on
+    expect(typeof r.points).toBe("number");
+    expect(typeof r.finalClass).toBe("string");
+    expect(typeof r.basePts).toBe("number");
+    expect(typeof r.windPen).toBe("number");
+    expect(typeof r.rainPen).toBe("number");
+    expect(typeof r.gustPen).toBe("number");
+  });
+});
+
+describe("scoring: scoreDaysWithRainStreak()", () => {
+  it("applies penalty on consecutive wet days and resets streak on dry day", () => {
+    const days = [
+      { date: "2026-07-01", tmax: 12, windMax: 0, windGust: 0, rain: 5 }, // wet
+      { date: "2026-07-02", tmax: 12, windMax: 0, windGust: 0, rain: 5 }, // wet (streak=2 => pen 1)
+      { date: "2026-07-03", tmax: 12, windMax: 0, windGust: 0, rain: 0 }, // dry (reset)
+    ];
+
+    const out = scoreDaysWithRainStreak(days);
+
+    expect(out[0].wetDay).toBe(true);
+    expect(out[0].rainStreak).toBe(1);
+    expect(out[0].rainStreakPen).toBe(0);
+
+    expect(out[1].wetDay).toBe(true);
+    expect(out[1].rainStreak).toBe(2);
+    expect(out[1].rainStreakPen).toBe(1);
+    expect(out[1].points).toBe(out[0].points - 1);
+
+    expect(out[2].wetDay).toBe(false);
+    expect(out[2].rainStreak).toBe(0);
+    expect(out[2].rainStreakPen).toBe(0);
+  });
+});
+
 describe("units: conversions + formatting", () => {
   it("convertTemp: C <-> F", () => {
     expect(convertTemp(0, "imperial")).toBe(32);
@@ -179,16 +235,19 @@ describe("units: conversions + formatting", () => {
   it("convertRain: mm -> inches", () => {
     expect(convertRain(25.4, "imperial")).toBeCloseTo(1, 5);
     expect(convertRain(10, "metric")).toBe(10);
+    expect(convertRain(null, "imperial")).toBe(null);
   });
 
   it("convertWind: m/s -> knots", () => {
     expect(convertWind(10, "imperial")).toBeCloseTo(19.4384, 4);
     expect(convertWind(10, "metric")).toBe(10);
+    expect(convertWind(null, "imperial")).toBe(null);
   });
 
   it("convertDistanceKm: km -> miles", () => {
     expect(convertDistanceKm(1, "imperial")).toBeCloseTo(0.621371, 6);
     expect(convertDistanceKm(10, "metric")).toBe(10);
+    expect(convertDistanceKm(null, "imperial")).toBe(null);
   });
 
   it("formatNumber formats and handles missing values", () => {

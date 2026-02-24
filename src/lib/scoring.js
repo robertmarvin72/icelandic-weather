@@ -105,19 +105,18 @@ export function rainStreakPenaltyPoints(streakLen) {
 }
 
 /**
- * Scores an array of days using scoreDay(), then applies rain streak penalty.
+ * Scores an array of days using scoreSiteDay(), then applies rain streak penalty.
  * Intended for Route Planner; does not affect existing Top5/Forecast unless used there.
  *
  * @param {Array<{tmax,rain,windMax,windGust,date}>} days
  * @param {{ wetThresholdMm?: number }} opts
  */
 export function scoreDaysWithRainStreak(days, opts = {}) {
-  const wetThresholdMm =
-    typeof opts.wetThresholdMm === "number" ? opts.wetThresholdMm : 3;
+  const wetThresholdMm = typeof opts.wetThresholdMm === "number" ? opts.wetThresholdMm : 3;
 
   const scored = (days || []).map((d) => ({
     ...d,
-    ...scoreDay(d),
+    ...scoreSiteDay(d),
   }));
 
   let streak = 0;
@@ -133,13 +132,25 @@ export function scoreDaysWithRainStreak(days, opts = {}) {
     const points = Math.max(0, Math.min(10, pointsRaw - rainStreakPen));
     const finalClass = pointsToClass(points);
 
+    // ✅ Keep scoring contract consistent after streak penalty
+    const components = {
+      ...(row.components || {}),
+      rainStreak: -rainStreakPen,
+    };
+
     return {
       ...row,
       wetDay: wet,
       rainStreak,
       rainStreakPen,
+
+      // legacy
       points,
       finalClass,
+
+      // canonical
+      total: points,
+      components,
     };
   });
 }
@@ -152,7 +163,7 @@ export function pointsToClass(p) {
   return "Bad";
 }
 
-export function scoreDay({ tmax, rain, windMax, windGust, date }) {
+export function scoreSiteDay({ tmax, rain, windMax, windGust, date }, opts = {}) {
   const season = getSeasonForDate(date);
   const cfg = getSeasonConfig(season);
 
@@ -170,10 +181,31 @@ export function scoreDay({ tmax, rain, windMax, windGust, date }) {
   const rainPen = Math.round(rainPenRaw * cfg.rainWeight);
   const gustPen = gustPenRaw; // already weighted in function
 
-  const points = Math.max(0, Math.min(10, basePts - windPen - rainPen - gustPen));
+  // NOTE: shelter + rainStreak are part of the contract but are applied elsewhere for now.
+  // They are kept here so Route Planner + Leaderboard can share a single "score shape".
+  const shelterBonus = 0;
+  const rainStreakPen = 0;
+
+  const points = Math.max(
+    0,
+    Math.min(10, basePts - windPen - rainPen - gustPen - rainStreakPen + shelterBonus)
+  );
   const finalClass = pointsToClass(points);
 
   return {
+    // canonical
+    total: points,
+    components: {
+      temp: basePts,
+      wind: -windPen,
+      rain: -rainPen,
+      gust: -gustPen,
+      rainStreak: -rainStreakPen,
+      shelter: shelterBonus,
+    },
+    flags: {},
+
+    // legacy / debug fields (kept so existing UI doesn't break)
     basePts,
     windPen,
     rainPen,
@@ -185,6 +217,11 @@ export function scoreDay({ tmax, rain, windMax, windGust, date }) {
   };
 }
 
+// Legacy alias (backward compatible). Prefer scoreSiteDay() for new work.
+export function scoreDay({ tmax, rain, windMax, windGust, date }) {
+  // Backward-compatible wrapper. Prefer scoreSiteDay() for new work.
+  return scoreSiteDay({ tmax, rain, windMax, windGust, date });
+}
 
 // ── Units (display only; underlying stays metric) --------------------------
 
