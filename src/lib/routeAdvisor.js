@@ -60,12 +60,7 @@ function readScore(v) {
  *   candidatesConsidered: number
  * }}
  */
-export function getTomorrowRecommendation(
-  baseSiteId,
-  scoresById,
-  sites,
-  radiusKm = 50
-) {
+export function getTomorrowRecommendation(baseSiteId, scoresById, sites, radiusKm = 50) {
   const byId = new Map((sites || []).map((s) => [s.id, s]));
   const base = byId.get(baseSiteId);
 
@@ -116,9 +111,7 @@ export function getTomorrowRecommendation(
 
 function tomorrowISODate() {
   const now = new Date();
-  const t = new Date(
-    Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate() + 1)
-  );
+  const t = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate() + 1));
   return t.toISOString().slice(0, 10);
 }
 
@@ -143,16 +136,43 @@ function pickDayExplain(d) {
     windGust: d?.windGust ?? null,
 
     season: d?.season ?? null,
+
+    shelter: d?.shelter ?? null,
+    shelterBonus: d?.components?.shelter ?? null,
   };
 }
 
+// ── Shelter hardening helpers (Ticket #108) --------------------------------
+
+function toFiniteNumber(v) {
+  if (typeof v === "number") return Number.isFinite(v) ? v : null;
+  if (typeof v === "string" && v.trim() !== "") {
+    const n = Number(v);
+    return Number.isFinite(n) ? n : null;
+  }
+  return null;
+}
+
+function clamp01to10(v) {
+  const n = toFiniteNumber(v);
+  if (n == null) return 0;
+  return Math.max(0, Math.min(10, n));
+}
+
+function pickSiteShelter(site) {
+  // Try known fields in priority order; accept numbers or numeric strings.
+  const candidates = [site?.shelter, site?.shelterScore, site?.shelter_rating];
+
+  for (const c of candidates) {
+    const n = toFiniteNumber(c);
+    if (n != null) return clamp01to10(n);
+  }
+
+  return 0;
+}
+
 async function getScoredWindowForSite(site, opts) {
-  const {
-    windowDays = 3,
-    wetThresholdMm = 3,
-    targetDateISO,
-    getForecastFn,
-  } = opts || {};
+  const { windowDays = 3, wetThresholdMm = 3, targetDateISO, getForecastFn } = opts || {};
   if (!site || !targetDateISO) return null;
 
   const fetcher = typeof getForecastFn === "function" ? getForecastFn : getForecast;
@@ -162,18 +182,26 @@ async function getScoredWindowForSite(site, opts) {
     const days = normalizeDailyToScoreInput(raw?.daily);
     if (!days.length) return null;
 
-    const scoredDays = scoreDaysWithRainStreak(days, { wetThresholdMm });
+    // --- Shelter injection (Ticket #108) ---
+    // Always a number, always clamped 0..10, preserves 0 (no falsy bug).
+    const siteShelter = pickSiteShelter(site);
 
-    const idx = scoredDays.findIndex(
-      (d) => String(d.date).slice(0, 10) === targetDateISO
-    );
+    const daysWithShelter = days.map((d) => ({
+      ...d,
+      shelter: siteShelter, // 0..10 expected by scoring.js
+    }));
+
+    const scoredDays = scoreDaysWithRainStreak(daysWithShelter, {
+      wetThresholdMm,
+    });
+
+    const idx = scoredDays.findIndex((d) => String(d.date).slice(0, 10) === targetDateISO);
     if (idx < 0) return null;
 
     const slice = scoredDays.slice(idx, idx + windowDays);
     if (!slice.length) return null;
 
-    const windowAvg =
-      slice.reduce((s, d) => s + (d.points ?? 0), 0) / slice.length;
+    const windowAvg = slice.reduce((s, d) => s + (d.points ?? 0), 0) / slice.length;
 
     const dayScore = scoredDays[idx]?.points ?? 0;
     const rainStreakLen = scoredDays[idx]?.rainStreak ?? 0;
@@ -214,13 +242,11 @@ export async function getRouteRecommendationV2(baseSiteId, sites, opts = {}) {
 
   const radiusKm = Number.isFinite(opts.radiusKm) ? opts.radiusKm : 50;
   const windowDays = Number.isInteger(opts.windowDays) ? opts.windowDays : 3;
-  const wetThresholdMm =
-    typeof opts.wetThresholdMm === "number" ? opts.wetThresholdMm : 3;
+  const wetThresholdMm = typeof opts.wetThresholdMm === "number" ? opts.wetThresholdMm : 3;
   const limit = Number.isInteger(opts.limit) ? opts.limit : 30;
   const topN = Number.isInteger(opts.topN) ? opts.topN : 3;
 
-  const getForecastFn =
-    typeof opts.getForecastFn === "function" ? opts.getForecastFn : null;
+  const getForecastFn = typeof opts.getForecastFn === "function" ? opts.getForecastFn : null;
 
   const byId = new Map((sites || []).map((s) => [s.id, s]));
   const base = byId.get(baseSiteId);

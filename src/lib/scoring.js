@@ -163,7 +163,46 @@ export function pointsToClass(p) {
   return "Bad";
 }
 
-export function scoreSiteDay({ tmax, rain, windMax, windGust, date }, opts = {}) {
+function clamp(n, lo, hi) {
+  return Math.max(lo, Math.min(hi, n));
+}
+
+function normalizeShelter(shelter) {
+  if (typeof shelter !== "number" || !Number.isFinite(shelter)) return 0;
+  // assume 0..10
+  return clamp(shelter / 10, 0, 1);
+}
+
+function windSeverity01(windMax, windGust) {
+  const w = typeof windMax === "number" && Number.isFinite(windMax) ? windMax : 0;
+  const g = typeof windGust === "number" && Number.isFinite(windGust) ? windGust : null;
+
+  // main wind severity: 0 at 4 m/s, 1 at 18 m/s
+  const wind01 = clamp((w - 4) / (18 - 4), 0, 1);
+
+  // gustiness severity: bonus severity if gusts spike above mean wind
+  const gustiness = g == null ? 0 : Math.max(0, g - w);
+  // 0 at 0, 1 at 12 m/s gustiness
+  const gust01 = clamp(gustiness / 12, 0, 1);
+
+  // blend: mostly wind, some gustiness
+  return clamp(wind01 * 0.75 + gust01 * 0.25, 0, 1);
+}
+
+function computeShelterBonus({ shelter, windMax, windGust, season }) {
+  const s01 = normalizeShelter(shelter);
+  const sev01 = windSeverity01(windMax, windGust);
+
+  // max bonus depends slightly on season (winter harsher -> a bit more value from shelter)
+  const maxBonus = season === "winter" ? 3 : 2;
+
+  // small non-linear curve so mid shelter doesn’t overperform
+  const shelterCurve = Math.pow(s01, 1.2);
+
+  return Math.round(shelterCurve * sev01 * maxBonus);
+}
+
+export function scoreSiteDay({ tmax, rain, windMax, windGust, date, shelter }, opts = {}) {
   const season = getSeasonForDate(date);
   const cfg = getSeasonConfig(season);
 
@@ -183,7 +222,7 @@ export function scoreSiteDay({ tmax, rain, windMax, windGust, date }, opts = {})
 
   // NOTE: shelter + rainStreak are part of the contract but are applied elsewhere for now.
   // They are kept here so Route Planner + Leaderboard can share a single "score shape".
-  const shelterBonus = 0;
+  const shelterBonus = computeShelterBonus({ shelter, windMax, windGust, season });
   const rainStreakPen = 0;
 
   const points = Math.max(

@@ -257,3 +257,61 @@ describe("units: conversions + formatting", () => {
     expect(formatNumber(NaN)).toBe("—");
   });
 });
+
+describe("scoring: shelter bonus", () => {
+  it("gives little/no bonus in calm wind even with high shelter", () => {
+    const r = scoreSiteDay({
+      tmax: 12,
+      windMax: 2,
+      windGust: 2,
+      rain: 0,
+      shelter: 10,
+      date: "2026-07-01",
+    });
+    expect(r.components.shelter).toBe(0);
+  });
+
+  it("gives higher bonus in strong wind when shelter is high", () => {
+    const r = scoreSiteDay({
+      tmax: 12,
+      windMax: 16,
+      windGust: 22,
+      rain: 0,
+      shelter: 10,
+      date: "2026-07-01",
+    });
+    expect(r.components.shelter).toBeGreaterThanOrEqual(1);
+  });
+
+  it("gives less bonus when shelter is low, even in strong wind", () => {
+    const hi = scoreSiteDay({
+      tmax: 12,
+      windMax: 16,
+      windGust: 22,
+      rain: 0,
+      shelter: 10,
+      date: "2026-07-01",
+    });
+    const lo = scoreSiteDay({
+      tmax: 12,
+      windMax: 16,
+      windGust: 22,
+      rain: 0,
+      shelter: 2,
+      date: "2026-07-01",
+    });
+    expect(hi.components.shelter).toBeGreaterThan(lo.components.shelter);
+  });
+
+  it("handles missing shelter safely", () => {
+    const r = scoreSiteDay({
+      tmax: 12,
+      windMax: 16,
+      windGust: 22,
+      rain: 0,
+      shelter: null,
+      date: "2026-07-01",
+    });
+    expect(r.components.shelter).toBe(0);
+  });
+});
