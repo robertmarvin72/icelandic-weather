@@ -86,6 +86,10 @@ export async function getRelocationRecommendation(baseSiteId, campsites, opts = 
     }
   }
 
+  if (!forecastMap[baseSiteId]) {
+    throw new Error("Base site forecast missing (cannot compute recommendation)");
+  }
+
   // Run the pure engine
   const out = relocationEngine({
     baseSiteId,

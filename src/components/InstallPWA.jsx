@@ -19,9 +19,9 @@ export default function InstallPWA({ className = "" }) {
     if (isStandalone) return; // already installed, don’t show
 
     const onBeforeInstallPrompt = (e) => {
-      e.preventDefault();         // don’t let Chrome show its own mini-infobar
-      setDeferredPrompt(e);       // stash the event
-      setCanInstall(true);        // show our button
+      e.preventDefault(); // don’t let Chrome show its own mini-infobar
+      setDeferredPrompt(e); // stash the event
+      setCanInstall(true); // show our button
     };
 
     const onInstalled = () => {
@@ -42,7 +42,7 @@ export default function InstallPWA({ className = "" }) {
     if (!deferredPrompt) return;
     deferredPrompt.prompt();
 
-    const { outcome } = await deferredPrompt.userChoice;
+    await deferredPrompt.userChoice;
     // outcome: 'accepted' | 'dismissed'
     setDeferredPrompt(null);
     setCanInstall(false);
@@ -58,9 +58,9 @@ export default function InstallPWA({ className = "" }) {
       className={
         className ||
         "inline-flex items-center gap-2 px-3 py-2 rounded-xl border border-slate-300 " +
-        "bg-white text-slate-900 shadow-sm hover:bg-slate-50 " +
-        "focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 transition " +
-        "dark:bg-slate-900 dark:text-slate-100 dark:border-slate-600 dark:hover:bg-slate-800"
+          "bg-white text-slate-900 shadow-sm hover:bg-slate-50 " +
+          "focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 transition " +
+          "dark:bg-slate-900 dark:text-slate-100 dark:border-slate-600 dark:hover:bg-slate-800"
       }
       aria-label="Install CampCast as an app"
       title="Install CampCast on this device"
@@ -68,6 +68,5 @@ export default function InstallPWA({ className = "" }) {
       <span>📲</span>
       <span className="font-medium">Install</span>
     </button>
-
   );
 }

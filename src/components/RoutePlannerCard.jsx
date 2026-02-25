@@ -57,7 +57,6 @@ function tomorrowISODate() {
 
 export default function RoutePlannerCard({
   t = (k) => k,
-  lang, // unused (fine to keep)
   entitlements,
   me,
   onUpgrade,
@@ -125,7 +124,12 @@ export default function RoutePlannerCard({
 
         if (!cancelled) setResult(out);
       } catch (e) {
-        if (!cancelled) setError(e?.message || "Route planner failed");
+        const msg = e?.message || "Route planner failed";
+        if (!cancelled) {
+          setError(
+            msg.includes("Base site forecast missing") ? t("routePlannerBaseForecastMissing") : msg
+          );
+        }
       } finally {
         if (!cancelled) setLoading(false);
       }

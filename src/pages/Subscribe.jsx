@@ -2,7 +2,7 @@
 import React, { useMemo, useState } from "react";
 import { useMe } from "../hooks/useMe";
 
-export default function Subscribe({ onClose, onDone, lang = "is", theme = "dark", t }) {
+export default function Subscribe({ onClose, theme = "dark", t }) {
   const params = useMemo(() => new URLSearchParams(window.location.search), []);
 
   // ✅ NEW: read plan from querystring (monthly default)
@@ -52,7 +52,7 @@ export default function Subscribe({ onClose, onDone, lang = "is", theme = "dark"
     try {
       json = text ? JSON.parse(text) : null;
     } catch {
-      // non-JSON response
+      // ignore JSON parse errors; we'll handle this in pickErrorMessage
     }
 
     return { res, json, text };
@@ -109,7 +109,9 @@ export default function Subscribe({ onClose, onDone, lang = "is", theme = "dark"
       await ensureSessionForEmail(trimmed);
       try {
         await refetchMe?.();
-      } catch {}
+      } catch {
+        // ignore refetch errors; session is valid regardless
+      }
 
       // 2) Create checkout
       // ✅ NEW: send plan to API

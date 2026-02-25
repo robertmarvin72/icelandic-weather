@@ -13,7 +13,6 @@ export const translations = {
     day: "Day",
     weather: "Weather",
     sortedBy: "Sorted by weekly score, then nearest to you.",
-    nearest: "Nearest",
 
     // Geolocation
     geolocationNotSupported: "Geolocation not supported.",
@@ -158,8 +157,7 @@ export const translations = {
 
     aboutEmailLabel: "Reach us at",
 
-    footerDataBy:
-      "Data by Open-Meteo. Forecast includes temperature, rain, wind, & weather codes.",
+    footerDataBy: "Data by Open-Meteo. Forecast includes temperature, rain, wind, & weather codes.",
     footerAbout: "About",
     footerContact: "Contact",
     backToForecast: "Back to forecast",
@@ -239,8 +237,7 @@ export const translations = {
     successTitle: "Payment received",
     successChecking: "Verifying your Pro access…",
     successSubtitleActive: "Your CampCast Pro access is now active.",
-    successSubtitlePending:
-      "Payment received. Pro usually activates instantly — give it a moment.",
+    successSubtitlePending: "Payment received. Pro usually activates instantly — give it a moment.",
     successFine: "Try refreshing shortly.",
     successBadgeSecure: "Secure payment via Paddle",
     successBadgeInstant: "Pro activates instantly",
@@ -255,7 +252,7 @@ export const translations = {
       "If Pro access doesn’t activate immediately, it will be enabled automatically within a few minutes.",
     successSupportLine:
       "If anything doesn’t work as expected, contact us and we’ll assist you promptly.",
-    
+
     // Pricing page
     pricingBack: "← Back",
     pricingBrandTitle: "CampCast Pro",
@@ -286,7 +283,8 @@ export const translations = {
     pricingActiveUntil: "Active until",
     pricingYearlyActive: "Subscription active",
     pricingMonthlyActive: "Monthly subscription active",
-    pricingMonthlyUpgradeHint: "You can upgrade to yearly at any time. Monthly cannot be purchased twice.",
+    pricingMonthlyUpgradeHint:
+      "You can upgrade to yearly at any time. Monthly cannot be purchased twice.",
     pricingCtaUpgradeToYearly: "Upgrade to Yearly",
     pricingMonthlyAlreadyActive: "Monthly is active",
     pricingMonthlyNotAvailable: "Not available",
@@ -294,7 +292,6 @@ export const translations = {
     subscribeAlreadyMonthly: "You already have an active monthly subscription.",
 
     pricingChargedInEur: "Payment is processed in euros (€) at checkout.",
-    pricingBestValue: "Best value",
 
     availabilityClosedUntilMay: "Most campsites are closed during winter (often until May).",
     availabilityOpenSeason: "Open during the summer season.",
@@ -334,9 +331,11 @@ export const translations = {
     routePlannerTopAlternatives: "Top alternatives",
     routePlannerNoAlternatives: "No alternatives found within radius.",
     routePlannerNoReasons: "No clear reasons (yet).",
-    loading: "Loading",
 
-    routePlannerLockedBody: "Unlock Route Planner to get relocation advice within your selected radius.",
+    routePlannerLockedBody:
+      "Unlock Route Planner to get relocation advice within your selected radius.",
+
+    routePlannerBaseForecastMissing: "Missing forecast for selected base campsite.",
   },
 
   // Icelandic (Íslenska)
@@ -354,7 +353,6 @@ export const translations = {
     day: "Dagur",
     weather: "Veður",
     sortedBy: "Raðað eftir vikustigum, síðan næst þér.",
-    nearest: "Nálægast",
 
     // Geolocation
     geolocationNotSupported: "Staðsetning ekki studd.",
@@ -499,8 +497,7 @@ export const translations = {
 
     aboutEmailLabel: "Sendu okkur póst á",
 
-    footerDataBy:
-      "Gögn frá Open-Meteo. Spáin inniheldur hitastig, úrkomu, vind og veðurkóða.",
+    footerDataBy: "Gögn frá Open-Meteo. Spáin inniheldur hitastig, úrkomu, vind og veðurkóða.",
     footerAbout: "Um",
     footerContact: "Hafa samband",
 
@@ -560,14 +557,11 @@ export const translations = {
     subscribeFeatureUnlockedTitle: "Allir Pro fídusar opnast",
     subscribeFeatureUnlockedDesc: "Fullur aðgangur að Pro í appinu.",
     subscribeFeatureOverviewTitle: "Betri yfirsýn & stig",
-    subscribeFeatureOverviewDesc:
-      "Skýrari leiðsögn fyrir veður-tengdar ákvarðanir.",
+    subscribeFeatureOverviewDesc: "Skýrari leiðsögn fyrir veður-tengdar ákvarðanir.",
     subscribeFeatureAccuracyTitle: "Meiri nákvæmni & útreikningar",
-    subscribeFeatureAccuracyDesc:
-      "Aukaútreikningar þar sem það skiptir máli.",
+    subscribeFeatureAccuracyDesc: "Aukaútreikningar þar sem það skiptir máli.",
     subscribeFeatureSupportTitle: "Styður áframhaldandi þróun",
-    subscribeFeatureSupportDesc:
-      "Kaupin hjálpa okkur að bæta CampCast áfram.",
+    subscribeFeatureSupportDesc: "Kaupin hjálpa okkur að bæta CampCast áfram.",
     subscribeOopsTitle: "Úbbs!",
     subscribeMissingCheckoutUrl: "Vantar checkout URL.",
     subscribeSomethingWentWrong: "Eitthvað fór úrskeiðis.",
@@ -611,7 +605,6 @@ export const translations = {
     pricingNotLoggedIn: "Við biðjum um netfang áður en þú ferð í greiðslu.",
 
     pricingYearlyTitle: "Ársáskrift",
-    pricingBestValue: "Best value",
     pricingPerYear: "á ári",
     pricingYearlyMicro: "Ein greiðsla. Hægt að segja upp hvenær sem er.",
 
@@ -631,7 +624,8 @@ export const translations = {
     pricingActiveUntil: "Virkt til",
     pricingYearlyActive: "Áskrift virk",
     pricingMonthlyActive: "Mánaðaráskrift virk",
-    pricingMonthlyUpgradeHint: "Þú getur uppfært í ársáskrift hvenær sem er. Ekki er hægt að kaupa mánaðaráskrift tvisvar.",
+    pricingMonthlyUpgradeHint:
+      "Þú getur uppfært í ársáskrift hvenær sem er. Ekki er hægt að kaupa mánaðaráskrift tvisvar.",
     pricingCtaUpgradeToYearly: "Uppfæra í ársáskrift",
     pricingMonthlyAlreadyActive: "Mánaðaráskrift virk",
     pricingMonthlyNotAvailable: "Ekki í boði",
@@ -645,7 +639,8 @@ export const translations = {
     availabilityOpenSeason: "Opið á sumartíma.",
     availabilityOpenAllYear: "Opið allt árið.",
     availabilityUnknown: "Opnunartími óviss.",
-    availabilityMostOpenInMay: "Flest tjaldsvæði opna í maí. Athugaðu hjá tjaldsvæðinu til staðfestingar.",
+    availabilityMostOpenInMay:
+      "Flest tjaldsvæði opna í maí. Athugaðu hjá tjaldsvæðinu til staðfestingar.",
     availabilityClosedBadge: "Lokað (vetur)",
     winterModeActive: "Vetrarhamur",
     winterModeTooltip: "Vindur og úrkoma vega þyngra en hitastig yfir vetrartímann.",
@@ -678,8 +673,10 @@ export const translations = {
     routePlannerTopAlternatives: "Bestu valkostir",
     routePlannerNoAlternatives: "Engir valkostir fundust innan valinnar fjarlægðar.",
     routePlannerNoReasons: "Engar skýrar ástæður (ennþá).",
-    loading: "Hleður",
 
-    routePlannerLockedBody: "Opnaðu Ferðaráðgjafa til að fá ráðleggingar um að færa þig innan valinnar fjarlægðar.",
+    routePlannerLockedBody:
+      "Opnaðu Ferðaráðgjafa til að fá ráðleggingar um að færa þig innan valinnar fjarlægðar.",
+
+    routePlannerBaseForecastMissing: "Vantar veðurspá fyrir valið tjaldsvæði.",
   },
 };

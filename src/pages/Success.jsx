@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
-export default function Success({ lang = "is", theme = "dark", t }) {
+export default function Success({ theme = "dark", t }) {
   const [status, setStatus] = useState("checking"); // checking | active | pending
   const [logoOk, setLogoOk] = useState(true);
   const [portalLoading, setPortalLoading] = useState(false);

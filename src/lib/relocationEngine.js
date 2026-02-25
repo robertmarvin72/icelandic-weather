@@ -327,7 +327,8 @@ export function relocationEngine(input) {
 
   ranked.sort((a, b) => {
     if (b.total !== a.total) return b.total - a.total;
-    return a.distanceKm - b.distanceKm;
+    if (a.distanceKm !== b.distanceKm) return a.distanceKm - b.distanceKm;
+    return String(a.siteId).localeCompare(String(b.siteId));
   });
 
   const best = ranked.length ? ranked[0] : null;

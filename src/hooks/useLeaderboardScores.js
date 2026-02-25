@@ -177,7 +177,7 @@ export function useLeaderboardScores(siteList, siteId, userLoc) {
         saveTimerRef.current = null;
       }
     };
-    // Keep dependencies aligned with your current behavior
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [siteList?.length, siteId, userLoc?.lat, userLoc?.lon]);
 
   return { scoresById, loadingWave1, loadingBg };

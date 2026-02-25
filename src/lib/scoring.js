@@ -202,7 +202,7 @@ function computeShelterBonus({ shelter, windMax, windGust, season }) {
   return Math.round(shelterCurve * sev01 * maxBonus);
 }
 
-export function scoreSiteDay({ tmax, rain, windMax, windGust, date, shelter }, opts = {}) {
+export function scoreSiteDay({ tmax, rain, windMax, windGust, date, shelter }) {
   const season = getSeasonForDate(date);
   const cfg = getSeasonConfig(season);
 

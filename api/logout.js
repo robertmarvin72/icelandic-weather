@@ -32,7 +32,9 @@ function clearSessionCookie(res) {
     "SameSite=Lax",
     "Max-Age=0",
     secure ? "Secure" : null,
-  ].filter(Boolean).join("; ");
+  ]
+    .filter(Boolean)
+    .join("; ");
 
   res.setHeader("Set-Cookie", cookie);
 }
@@ -58,7 +60,7 @@ export default async function handler(req, res) {
 
     clearSessionCookie(res);
     res.status(200).json({ ok: true });
-  } catch (e) {
+  } catch {
     // still clear cookie even if revoke fails
     clearSessionCookie(res);
     res.status(200).json({ ok: true, note: "Cookie cleared; revoke may have failed" });

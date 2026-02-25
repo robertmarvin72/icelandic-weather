@@ -52,10 +52,7 @@ function verifyPaddleSignature({ req, rawBody, secret }) {
   if (!ts || !h1) return false;
 
   const signedPayload = `${ts}:${rawBody}`;
-  const computed = crypto
-    .createHmac("sha256", secret)
-    .update(signedPayload, "utf8")
-    .digest("hex");
+  const computed = crypto.createHmac("sha256", secret).update(signedPayload, "utf8").digest("hex");
 
   return safeEqual(h1, computed);
 }
@@ -89,10 +86,7 @@ function normalizeEvent(evt) {
   // Customer events
   if (eventType.startsWith("customer.")) {
     const customerId = data?.id || null;
-    const userId =
-      data?.custom_data?.user_id ||
-      evt?.data?.custom_data?.user_id ||
-      null;
+    const userId = data?.custom_data?.user_id || evt?.data?.custom_data?.user_id || null;
 
     return {
       kind: "customer",
@@ -106,23 +100,14 @@ function normalizeEvent(evt) {
   const subscriptionId = data?.id || null;
   const status = (data?.status || "").toLowerCase() || null;
 
-  const customerId =
-    data?.customer_id ||
-    data?.customer?.id ||
-    null;
+  const customerId = data?.customer_id || data?.customer?.id || null;
 
-  const userId =
-    data?.custom_data?.user_id ||
-    evt?.data?.custom_data?.user_id ||
-    null;
+  const userId = data?.custom_data?.user_id || evt?.data?.custom_data?.user_id || null;
 
   const firstItem = Array.isArray(data?.items) ? data.items[0] : null;
   const priceId = firstItem?.price?.id || null;
 
-  const currentPeriodEnd =
-    data?.current_billing_period?.ends_at ||
-    data?.next_billed_at ||
-    null;
+  const currentPeriodEnd = data?.current_billing_period?.ends_at || data?.next_billed_at || null;
 
   return {
     kind: "subscription",
@@ -208,7 +193,7 @@ export default async function handler(req, res) {
   let rawBody = "";
   try {
     rawBody = await readRawBody(req);
-  } catch (e) {
+  } catch {
     return res.status(400).json({ ok: false, error: "Could not read body" });
   }
 
@@ -282,14 +267,7 @@ export default async function handler(req, res) {
     // ───────────────────────────────────────────────────────────
     // Subscription events: upsert user_subscription + update cached tier
     // ───────────────────────────────────────────────────────────
-    const {
-      subscriptionId,
-      customerId,
-      userId,
-      status,
-      priceId,
-      currentPeriodEnd,
-    } = normalized;
+    const { subscriptionId, customerId, userId, status, priceId, currentPeriodEnd } = normalized;
 
     const user = await mapUser({ customerId, userId });
 
