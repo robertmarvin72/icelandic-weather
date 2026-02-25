@@ -1,10 +1,10 @@
 // src/components/RoutePlannerCard.jsx
 import React, { useEffect, useMemo, useState } from "react";
 
-import { getRouteRecommendationV2 } from "../lib/routeAdvisor";
+import { getRelocationRecommendation } from "../lib/relocationService";
 import { getRouteVerdictMeta } from "../lib/routeVerdictMeta";
 
-// NOTE: hér gerir þú reasons “human” án talna í texta
+// Map reason type -> FLAT translation key
 function reasonTypeToKey(type) {
   switch (type) {
     case "rainStreak":
@@ -15,8 +15,10 @@ function reasonTypeToKey(type) {
       return "routeReasonWind";
     case "rain":
       return "routeReasonRain";
-    case "tmax":
-      return "routeReasonTmax";
+    case "temp":
+      return "routeReasonTemp";
+    case "shelter":
+      return "routeReasonShelter";
     default:
       return null;
   }
@@ -47,28 +49,36 @@ function ProLock({ t, me, onUpgrade }) {
   );
 }
 
+function tomorrowISODate() {
+  const now = new Date();
+  const t = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate() + 1));
+  return t.toISOString().slice(0, 10);
+}
+
 export default function RoutePlannerCard({
   t = (k) => k,
-  lang,
+  lang, // unused (fine to keep)
   entitlements,
   me,
   onUpgrade,
 
-  // ✅ IMPORTANT: use the same sites list as the rest of the app (server list)
+  // IMPORTANT: pass the same sites list as rest of app
   sites = [],
 
-  // ✅ Base is always whatever the user has selected (or nearest chosen by “use my location”)
+  // Base selection from app
   baseSiteId,
 
   radiusKmDefault = 50,
   windowDaysDefault = 3,
   wetThresholdMmDefault = 3,
+  limitDefault = 30,
 }) {
   const isPro = !!entitlements?.isPro;
 
   const [radiusKm, setRadiusKm] = useState(radiusKmDefault);
   const [windowDays, setWindowDays] = useState(windowDaysDefault);
   const [wetThresholdMm, setWetThresholdMm] = useState(wetThresholdMmDefault);
+  const [limit, setLimit] = useState(limitDefault);
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -88,19 +98,32 @@ export default function RoutePlannerCard({
 
       if (!isPro) return;
       if (!baseSiteId) return;
+      if (!baseSite) return;
       if (!Array.isArray(sites) || sites.length === 0) return;
 
       setLoading(true);
       try {
-        const r = await getRouteRecommendationV2(baseSiteId, sites, {
+        const startDateISO = tomorrowISODate();
+
+        const out = await getRelocationRecommendation(baseSiteId, sites, {
           radiusKm,
-          windowDays,
+          days: windowDays,
+          startDateISO,
+          limit,
+          // keep these “simple” knobs visible for now
           wetThresholdMm,
-          limit: 30,
-          topN: 3,
+
+          // Optional: you can later expose these too:
+          // minDeltaToMove: 2,
+          // minDeltaToConsider: 1,
+          // weightDecay: 0.85,
+          // useWorstDayGuardrail: true,
+          // worstDayMin: 2,
+          // reasonMinDelta: 1,
+          // maxReasons: 4,
         });
 
-        if (!cancelled) setResult(r);
+        if (!cancelled) setResult(out);
       } catch (e) {
         if (!cancelled) setError(e?.message || "Route planner failed");
       } finally {
@@ -112,11 +135,9 @@ export default function RoutePlannerCard({
     return () => {
       cancelled = true;
     };
-  }, [isPro, baseSiteId, sites, radiusKm, windowDays, wetThresholdMm]);
+  }, [isPro, baseSiteId, baseSite, sites, radiusKm, windowDays, wetThresholdMm, limit]);
 
-  if (!isPro) {
-    return <ProLock t={t} me={me} onUpgrade={onUpgrade} />;
-  }
+  if (!isPro) return <ProLock t={t} me={me} onUpgrade={onUpgrade} />;
 
   if (!baseSiteId) {
     return (
@@ -129,7 +150,6 @@ export default function RoutePlannerCard({
     );
   }
 
-  // If baseSiteId exists but is not in sites, show a friendly diagnostic (instead of throwing).
   if (!baseSite && Array.isArray(sites) && sites.length > 0) {
     return (
       <div className="rounded-xl border border-slate-200 dark:border-slate-700 p-3">
@@ -144,7 +164,11 @@ export default function RoutePlannerCard({
     );
   }
 
-  const meta = result?.verdict ? getRouteVerdictMeta(result.verdict) : null;
+  // relocationEngine verdict is "MOVE"/"CONSIDER"/"STAY" -> meta expects lower-case keys in your codebase
+  const meta = result?.verdict ? getRouteVerdictMeta(String(result.verdict).toLowerCase()) : null;
+
+  // ranked already contains reasons + distances etc.
+  const top3 = Array.isArray(result?.ranked) ? result.ranked.slice(0, 3) : [];
 
   return (
     <div className="rounded-xl border border-slate-200 dark:border-slate-700 p-3">
@@ -156,12 +180,25 @@ export default function RoutePlannerCard({
             <span className="font-semibold">{baseSite?.name ?? baseSiteId}</span>
           </div>
         </div>
+
+        {/* tiny debug counter (optional but useful) */}
+        {result?.debugFetch && (
+          <div className="text-[11px] text-slate-500 dark:text-slate-400 text-right">
+            <div>
+              {t("routePlannerCandidatesPreselected")}:{" "}
+              {result?.debug?.candidatesPreselected ?? "—"}
+            </div>
+            <div>
+              {t("routePlannerCandidatesScored")}: {result?.debug?.candidatesScored ?? "—"}
+            </div>
+          </div>
+        )}
       </div>
 
-      {/* Controls (compact) */}
+      {/* Controls */}
       <div className="grid gap-2 mb-3">
         <label className="text-xs text-slate-600 dark:text-slate-300">
-          {t("routePlannerRadius")}
+          {t("routePlannerRadius")} ({radiusKm} km)
           <input
             className="w-full"
             type="range"
@@ -174,11 +211,11 @@ export default function RoutePlannerCard({
         </label>
 
         <label className="text-xs text-slate-600 dark:text-slate-300">
-          {t("routePlannerWindowDays")}
+          {t("routePlannerWindowDays")} ({windowDays})
           <input
             className="w-full"
             type="range"
-            min={2}
+            min={1}
             max={5}
             step={1}
             value={windowDays}
@@ -187,7 +224,7 @@ export default function RoutePlannerCard({
         </label>
 
         <label className="text-xs text-slate-600 dark:text-slate-300">
-          {t("routePlannerWetThreshold")}
+          {t("routePlannerWetThreshold")} ({wetThresholdMm} mm)
           <input
             className="w-full"
             type="range"
@@ -198,10 +235,22 @@ export default function RoutePlannerCard({
             onChange={(e) => setWetThresholdMm(Number(e.target.value))}
           />
         </label>
+
+        <label className="text-xs text-slate-600 dark:text-slate-300">
+          {t("routePlannerCandidateLimit")} ({limit})
+          <input
+            className="w-full"
+            type="range"
+            min={10}
+            max={60}
+            step={5}
+            value={limit}
+            onChange={(e) => setLimit(Number(e.target.value))}
+          />
+        </label>
       </div>
 
       {loading && <div className="text-xs text-slate-600 dark:text-slate-300">{t("loading")}…</div>}
-
       {error && <div className="text-xs text-red-600">{error}</div>}
 
       {!loading && !error && result && meta && (
@@ -216,18 +265,18 @@ export default function RoutePlannerCard({
           <div>
             <div className="text-xs font-semibold mb-2">{t("routePlannerTopAlternatives")}</div>
 
-            {Array.isArray(result.top3) && result.top3.length > 0 ? (
+            {top3.length > 0 ? (
               <ol className="grid gap-2 pl-4 text-xs">
-                {result.top3.map((x) => (
+                {top3.map((x) => (
                   <li key={x.siteId}>
                     <div className="font-semibold">{x.siteName ?? x.siteId}</div>
 
-                    {/* Reasons: NO numbers in text */}
+                    {/* Reasons: show translated reason labels (no numbers in text) */}
                     {Array.isArray(x.reasons) && x.reasons.length > 0 ? (
                       <ul className="pl-4 mt-1 grid gap-1">
-                        {x.reasons.slice(0, 3).map((r) => {
+                        {x.reasons.slice(0, 3).map((r, idx) => {
                           const key = reasonTypeToKey(r.type);
-                          return <li key={r.type}>{key ? t(key) : r.type}</li>;
+                          return <li key={`${r.type}-${idx}`}>{key ? t(key) : r.type}</li>;
                         })}
                       </ul>
                     ) : (
