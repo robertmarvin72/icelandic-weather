@@ -90,14 +90,16 @@ export default function RoutePlannerCard({
 
   radiusKmDefault = 50,
   windowDaysDefault = 3,
-  wetThresholdMmDefault = 3,
+
+  // kept for backward compat with call-sites; not used in UI anymore
+  wetThresholdMmDefault = 3, // eslint-disable-line no-unused-vars
+
   limitDefault = 30,
 }) {
   const isPro = !!entitlements?.isPro;
 
   const [radiusKm, setRadiusKm] = useState(radiusKmDefault);
   const [windowDays, setWindowDays] = useState(windowDaysDefault);
-  const [wetThresholdMm, setWetThresholdMm] = useState(wetThresholdMmDefault);
   const [limit, setLimit] = useState(limitDefault);
 
   const [loading, setLoading] = useState(false);
@@ -130,17 +132,9 @@ export default function RoutePlannerCard({
           days: windowDays,
           startDateISO,
           limit,
-          // keep these “simple” knobs visible for now
-          wetThresholdMm,
 
-          // Optional: you can later expose these too:
-          // minDeltaToMove,
-          // minDeltaToConsider,
-          // weightDecay,
-          // useWorstDayGuardrail,
-          // worstDayMin,
-          // reasonMinDelta,
-          // maxReasons,
+          // wetThresholdMm removed from UI by design (avoid “how much rain do you tolerate?”)
+          // The engine/service will use its own sane defaults unless you override in opts.config.
         });
 
         if (!cancelled) setResult(out);
@@ -160,7 +154,7 @@ export default function RoutePlannerCard({
     return () => {
       cancelled = true;
     };
-  }, [isPro, baseSiteId, baseSite, sites, radiusKm, windowDays, wetThresholdMm, limit, t]);
+  }, [isPro, baseSiteId, baseSite, sites, radiusKm, windowDays, limit, t]);
 
   if (!isPro) return <ProLock t={t} me={me} onUpgrade={onUpgrade} />;
 
@@ -280,19 +274,6 @@ export default function RoutePlannerCard({
             step={1}
             value={windowDays}
             onChange={(e) => setWindowDays(Number(e.target.value))}
-          />
-        </label>
-
-        <label className="text-xs text-slate-600 dark:text-slate-300">
-          {t("routePlannerWetThreshold")} ({wetThresholdMm} mm)
-          <input
-            className="w-full"
-            type="range"
-            min={1}
-            max={8}
-            step={1}
-            value={wetThresholdMm}
-            onChange={(e) => setWetThresholdMm(Number(e.target.value))}
           />
         </label>
       </div>
