@@ -18,6 +18,10 @@ export async function getRelocationRecommendation(baseSiteId, campsites, opts = 
   const radiusKm = Number.isFinite(opts.radiusKm) ? opts.radiusKm : 50;
   const days = Number.isInteger(opts.days) ? opts.days : 3;
 
+  const minDeltaToMoveDefault = days === 2 ? 1.8 : days === 3 ? 2.2 : days === 4 ? 2.5 : 2.8; // 5 dagar
+
+  const minDeltaToConsiderDefault = days === 2 ? 0.7 : days === 3 ? 0.9 : days === 4 ? 1.0 : 1.1;
+
   const startDateISO = String(opts.startDateISO ?? "").slice(0, 10);
   if (!startDateISO) throw new Error("startDateISO is required");
 
@@ -25,12 +29,16 @@ export async function getRelocationRecommendation(baseSiteId, campsites, opts = 
 
   // Engine config (pass-through with sane defaults handled in engine)
   const config = opts.config || {
-    wetThresholdMm: typeof opts.wetThresholdMm === "number" ? opts.wetThresholdMm : 3,
-    minDeltaToMove: typeof opts.minDeltaToMove === "number" ? opts.minDeltaToMove : 2,
-    minDeltaToConsider: typeof opts.minDeltaToConsider === "number" ? opts.minDeltaToConsider : 1,
+    wetThresholdMm: 2,
+    minDeltaToMove:
+      typeof opts.minDeltaToMove === "number" ? opts.minDeltaToMove : minDeltaToMoveDefault,
+    minDeltaToConsider:
+      typeof opts.minDeltaToConsider === "number"
+        ? opts.minDeltaToConsider
+        : minDeltaToConsiderDefault,
     weightDecay: typeof opts.weightDecay === "number" ? opts.weightDecay : 0.85,
     useWorstDayGuardrail:
-      typeof opts.useWorstDayGuardrail === "boolean" ? opts.useWorstDayGuardrail : true,
+      typeof opts.useWorstDayGuardrail === "boolean" ? opts.useWorstDayGuardrail : days === 1,
     worstDayMin: typeof opts.worstDayMin === "number" ? opts.worstDayMin : 2,
     reasonMinDelta: typeof opts.reasonMinDelta === "number" ? opts.reasonMinDelta : 1,
     maxReasons: Number.isInteger(opts.maxReasons) ? opts.maxReasons : 4,

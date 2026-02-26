@@ -314,10 +314,10 @@ export const translations = {
     routeVerdictStayBody: "Conditions nearby aren’t meaningfully better.",
 
     routeVerdictConsiderTitle: "Consider moving",
-    routeVerdictConsiderBody: "There’s a slightly better option within your radius.",
+    routeVerdictConsiderBody: "There is a slightly better option nearby.",
 
     routeVerdictMoveTitle: "Move camp",
-    routeVerdictMoveBody: "A noticeably better option is available within your radius.",
+    routeVerdictMoveBody: "There is clearly a better option nearby.",
 
     routePlannerTitle: "Route Planner",
     routePlannerSelectBase: "Select a campsite (or use your location) to get a recommendation.",
@@ -325,17 +325,29 @@ export const translations = {
     routePlannerRadius: "Travel radius",
     routePlannerWindowDays: "Window (days)",
     routePlannerWetThreshold: "Wet day threshold",
-    routePlannerCandidateLimit: "Candidates preselected",
-    routePlannerCandidatesPreselected: "Checked nearby",
+    routePlannerCandidatesPreselected: "Nearby campsites checked",
     routePlannerCandidatesScored: "Scored",
     routePlannerTopAlternatives: "Top alternatives",
-    routePlannerNoAlternatives: "No alternatives found within radius.",
+    routePlannerNoAlternatives: "No better options found nearby.",
     routePlannerNoReasons: "No clear reasons (yet).",
 
-    routePlannerLockedBody:
-      "Unlock Route Planner to get relocation advice within your selected radius.",
+    routePlannerLockedBody: "Unlock Route Planner to get relocation advice for nearby campsites.",
 
     routePlannerBaseForecastMissing: "Missing forecast for selected base campsite.",
+    routePlannerAlternativesCount: "Alternatives evaluated",
+    routePlannerMinimalDifference: "Minimal difference in conditions.",
+
+    routePlannerTrendMove: "Conditions look much better over the next {days} days.",
+    routePlannerTrendMoveWithReasons:
+      "Conditions look much better over the next {days} days — mainly because of: {reasons}.",
+
+    routePlannerTrendConsider:
+      "It might be worth relocating over the next {days} days, but the difference isn’t big.",
+    routePlannerTrendConsiderWithReasons:
+      "It might be worth relocating over the next {days} days — mainly because of: {reasons}.",
+
+    routePlannerTrendStay:
+      "It doesn’t look like any nearby location will be noticeably better over the next {days} days.",
   },
 
   // Icelandic (Íslenska)
@@ -656,10 +668,10 @@ export const translations = {
     routeVerdictStayBody: "Aðstæður í nágrenninu eru ekki marktækt betri.",
 
     routeVerdictConsiderTitle: "Íhugaðu að færa þig",
-    routeVerdictConsiderBody: "Það er aðeins betri kostur innan valinnar fjarlægðar.",
+    routeVerdictConsiderBody: "Það er aðeins betri kostur í nágrenninu.",
 
     routeVerdictMoveTitle: "Færðu þig",
-    routeVerdictMoveBody: "Það er greinilega betri kostur innan valinnar fjarlægðar.",
+    routeVerdictMoveBody: "Það er greinilega betri kostur í nágrenninu.",
 
     routePlannerTitle: "Ferðaráðgjafi",
     routePlannerSelectBase: "Veldu tjaldsvæði (eða notaðu staðsetningu) til að fá ráðleggingu.",
@@ -667,16 +679,29 @@ export const translations = {
     routePlannerRadius: "Ferðafjarlægð",
     routePlannerWindowDays: "Gluggi (dagar)",
     routePlannerWetThreshold: "Votur dagur (viðmið)",
-    routePlannerCandidateLimit: "Forsíaðir kostir",
-    routePlannerCandidatesPreselected: "Skoðað í nágrenninu",
+    routePlannerCandidatesPreselected: "Skoðuð svæði í kringum þig",
     routePlannerCandidatesScored: "Metið",
     routePlannerTopAlternatives: "Bestu valkostir",
-    routePlannerNoAlternatives: "Engir valkostir fundust innan valinnar fjarlægðar.",
+    routePlannerNoAlternatives: "Engir valkostir fundust í nágrenninu.",
     routePlannerNoReasons: "Engar skýrar ástæður (ennþá).",
 
     routePlannerLockedBody:
-      "Opnaðu Ferðaráðgjafa til að fá ráðleggingar um að færa þig innan valinnar fjarlægðar.",
+      "Opnaðu Ferðaráðgjafa til að fá ráðleggingar um að færa þig í nágrenninu.",
 
     routePlannerBaseForecastMissing: "Vantar veðurspá fyrir valið tjaldsvæði.",
+    routePlannerAlternativesCount: "Metin svæði",
+    routePlannerMinimalDifference: "Lítill munur á aðstæðum.",
+
+    routePlannerTrendMove: "Aðstæður líta mun betur út næstu {days} daga.",
+    routePlannerTrendMoveWithReasons:
+      "Aðstæður líta mun betur út næstu {days} daga — helst vegna: {reasons}.",
+
+    routePlannerTrendConsider:
+      "Það gæti borgað sig að færa sig næstu {days} daga, en munurinn er ekki stór.",
+    routePlannerTrendConsiderWithReasons:
+      "Það gæti borgað sig að færa sig næstu {days} daga — helst vegna: {reasons}.",
+
+    routePlannerTrendStay:
+      "Það lítur ekki út fyrir að neinn staður í nágrenninu verði betri næstu {days} daga.",
   },
 };

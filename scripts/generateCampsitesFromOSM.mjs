@@ -41,7 +41,7 @@ async function postOverpass(query, { tries = 8 } = {}) {
 
       console.warn(
         `Attempt ${attempt}/${tries} failed (${endpoint}). Retrying in ${waitMs}ms…\n` +
-        `  ${String(e?.message || e).slice(0, 180)}`
+          `  ${String(e?.message || e).slice(0, 180)}`
       );
       await new Promise((r) => setTimeout(r, waitMs));
     }
@@ -85,7 +85,7 @@ function pickLatLon(el) {
 }
 
 async function run() {
-  console.log("Fetching OSM campsites via Overpass…");
+  //console.log("Fetching OSM campsites via Overpass…");
 
   // ✅ Use retry/rotation helper (this was missing before)
   const json = await postOverpass(QUERY, { tries: 8 });
@@ -120,11 +120,11 @@ async function run() {
   fs.mkdirSync(path.dirname(OUT_FILE), { recursive: true });
   fs.writeFileSync(OUT_FILE, JSON.stringify(out, null, 2) + "\n", "utf8");
 
-  console.log(`✅ Wrote ${out.length} campsites to ${OUT_FILE}`);
-  console.log(`(IDs are stable OSM ids: osm_<type>_<id>)`);
+  //console.log(`✅ Wrote ${out.length} campsites to ${OUT_FILE}`);
+  //console.log(`(IDs are stable OSM ids: osm_<type>_<id>)`);
 }
 
 run().catch((e) => {
-  console.error("❌ Failed:", e);
+  //console.error("❌ Failed:", e);
   process.exit(1);
 });

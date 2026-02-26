@@ -24,6 +24,18 @@ function reasonTypeToKey(type) {
   }
 }
 
+function verdictAccentClasses(verdictLower) {
+  switch (verdictLower) {
+    case "move":
+      return "border-emerald-300 dark:border-emerald-700 bg-emerald-50/60 dark:bg-emerald-900/20";
+    case "consider":
+      return "border-amber-300 dark:border-amber-700 bg-amber-50/60 dark:bg-amber-900/20";
+    case "stay":
+    default:
+      return "border-sky-300 dark:border-sky-700 bg-sky-50/60 dark:bg-sky-900/20";
+  }
+}
+
 function ProLock({ t, me, onUpgrade }) {
   return (
     <div className="rounded-xl border border-slate-200 dark:border-slate-700 p-3">
@@ -53,6 +65,15 @@ function tomorrowISODate() {
   const now = new Date();
   const t = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate() + 1));
   return t.toISOString().slice(0, 10);
+}
+
+function interpolate(template, vars) {
+  if (typeof template !== "string") return "";
+  let out = template;
+  for (const [k, v] of Object.entries(vars || {})) {
+    out = out.replaceAll(`{${k}}`, String(v));
+  }
+  return out;
 }
 
 export default function RoutePlannerCard({
@@ -113,13 +134,13 @@ export default function RoutePlannerCard({
           wetThresholdMm,
 
           // Optional: you can later expose these too:
-          // minDeltaToMove: 2,
-          // minDeltaToConsider: 1,
-          // weightDecay: 0.85,
-          // useWorstDayGuardrail: true,
-          // worstDayMin: 2,
-          // reasonMinDelta: 1,
-          // maxReasons: 4,
+          // minDeltaToMove,
+          // minDeltaToConsider,
+          // weightDecay,
+          // useWorstDayGuardrail,
+          // worstDayMin,
+          // reasonMinDelta,
+          // maxReasons,
         });
 
         if (!cancelled) setResult(out);
@@ -139,7 +160,7 @@ export default function RoutePlannerCard({
     return () => {
       cancelled = true;
     };
-  }, [isPro, baseSiteId, baseSite, sites, radiusKm, windowDays, wetThresholdMm, limit]);
+  }, [isPro, baseSiteId, baseSite, sites, radiusKm, windowDays, wetThresholdMm, limit, t]);
 
   if (!isPro) return <ProLock t={t} me={me} onUpgrade={onUpgrade} />;
 
@@ -174,6 +195,48 @@ export default function RoutePlannerCard({
   // ranked already contains reasons + distances etc.
   const top3 = Array.isArray(result?.ranked) ? result.ranked.slice(0, 3) : [];
 
+  // ---------- Trend / “human” explanation text (under verdict) ----------
+  const best = top3[0] || null;
+
+  const reasonKeys = (best?.reasons || [])
+    .slice(0, 2)
+    .map((r) => reasonTypeToKey(r?.type))
+    .filter(Boolean);
+
+  const reasonsText = reasonKeys
+    .map((k) => t(k))
+    .filter((s) => typeof s === "string" && s.trim() !== "")
+    .join(" · ");
+
+  const trendText = (() => {
+    if (!result?.verdict) return "";
+    const v = String(result.verdict).toLowerCase();
+
+    if (v === "move") {
+      if (reasonsText) {
+        return interpolate(t("routePlannerTrendMoveWithReasons"), {
+          days: windowDays,
+          reasons: reasonsText,
+        });
+      }
+      return interpolate(t("routePlannerTrendMove"), { days: windowDays });
+    }
+
+    if (v === "consider") {
+      if (reasonsText) {
+        return interpolate(t("routePlannerTrendConsiderWithReasons"), {
+          days: windowDays,
+          reasons: reasonsText,
+        });
+      }
+      return interpolate(t("routePlannerTrendConsider"), { days: windowDays });
+    }
+
+    // stay (default)
+    return interpolate(t("routePlannerTrendStay"), { days: windowDays });
+  })();
+  // ---------------------------------------------------------------------
+
   return (
     <div className="rounded-xl border border-slate-200 dark:border-slate-700 p-3">
       <div className="flex items-start justify-between gap-3 mb-2">
@@ -185,16 +248,9 @@ export default function RoutePlannerCard({
           </div>
         </div>
 
-        {/* tiny debug counter (optional but useful) */}
-        {result?.debugFetch && (
+        {result?.debug?.candidatesScored > 0 && (
           <div className="text-[11px] text-slate-500 dark:text-slate-400 text-right">
-            <div>
-              {t("routePlannerCandidatesPreselected")}:{" "}
-              {result?.debug?.candidatesPreselected ?? "—"}
-            </div>
-            <div>
-              {t("routePlannerCandidatesScored")}: {result?.debug?.candidatesScored ?? "—"}
-            </div>
+            {t("routePlannerAlternativesCount")}: {result.debug.candidatesScored}
           </div>
         )}
       </div>
@@ -239,19 +295,6 @@ export default function RoutePlannerCard({
             onChange={(e) => setWetThresholdMm(Number(e.target.value))}
           />
         </label>
-
-        <label className="text-xs text-slate-600 dark:text-slate-300">
-          {t("routePlannerCandidateLimit")} ({limit})
-          <input
-            className="w-full"
-            type="range"
-            min={10}
-            max={60}
-            step={5}
-            value={limit}
-            onChange={(e) => setLimit(Number(e.target.value))}
-          />
-        </label>
       </div>
 
       {loading && <div className="text-xs text-slate-600 dark:text-slate-300">{t("loading")}…</div>}
@@ -260,9 +303,18 @@ export default function RoutePlannerCard({
       {!loading && !error && result && meta && (
         <div className="grid gap-3">
           {/* Verdict */}
-          <div className="rounded-lg border border-slate-200 dark:border-slate-700 p-2">
+          <div
+            className={`rounded-lg border p-2 ${verdictAccentClasses(
+              String(result.verdict).toLowerCase()
+            )}`}
+          >
             <div className="text-sm font-semibold">{t(meta.titleKey)}</div>
             <div className="text-xs text-slate-600 dark:text-slate-300">{t(meta.bodyKey)}</div>
+
+            {/* Trend explanation (human) */}
+            {trendText && (
+              <div className="text-xs text-slate-600 dark:text-slate-300 mt-1">{trendText}</div>
+            )}
           </div>
 
           {/* Top 3 */}
@@ -273,7 +325,14 @@ export default function RoutePlannerCard({
               <ol className="grid gap-2 pl-4 text-xs">
                 {top3.map((x) => (
                   <li key={x.siteId}>
-                    <div className="font-semibold">{x.siteName ?? x.siteId}</div>
+                    <div className="font-semibold flex items-center gap-2">
+                      <span>{x.siteName ?? x.siteId}</span>
+                      {typeof x.deltaVsBase === "number" && x.deltaVsBase >= 0.1 && (
+                        <span className="text-emerald-600 dark:text-emerald-400 font-medium">
+                          (+{x.deltaVsBase.toFixed(1)})
+                        </span>
+                      )}
+                    </div>
 
                     {/* Reasons: show translated reason labels (no numbers in text) */}
                     {Array.isArray(x.reasons) && x.reasons.length > 0 ? (
@@ -284,7 +343,7 @@ export default function RoutePlannerCard({
                         })}
                       </ul>
                     ) : (
-                      <div className="opacity-80 mt-1">{t("routePlannerNoReasons")}</div>
+                      <div className="opacity-80 mt-1">{t("routePlannerMinimalDifference")}</div>
                     )}
                   </li>
                 ))}
