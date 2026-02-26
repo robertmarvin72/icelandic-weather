@@ -269,7 +269,7 @@ export default function RoutePlannerCard({
           <input
             className="w-full"
             type="range"
-            min={1}
+            min={2}
             max={5}
             step={1}
             value={windowDays}
