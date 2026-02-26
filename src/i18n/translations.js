@@ -13,6 +13,7 @@ export const translations = {
     day: "Day",
     weather: "Weather",
     sortedBy: "Sorted by weekly score, then nearest to you.",
+    offlineReadyMsg: "CampCast is now ready to use offline.",
 
     // Geolocation
     geolocationNotSupported: "Geolocation not supported.",
@@ -365,6 +366,7 @@ export const translations = {
     day: "Dagur",
     weather: "Veður",
     sortedBy: "Raðað eftir vikustigum, síðan næst þér.",
+    offlineReadyMsg: "CampCast er nú tilbúið til notkunar án nettengingar.",
 
     // Geolocation
     geolocationNotSupported: "Staðsetning ekki studd.",
