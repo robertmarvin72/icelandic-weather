@@ -13,7 +13,7 @@ export const translations = {
     day: "Day",
     weather: "Weather",
     sortedBy: "Sorted by weekly score, then nearest to you.",
-    offlineReadyMsg: "CampCast is now ready to use offline.",
+    offlineRdMessage: "CampCast is now ready to use offline.",
 
     // Geolocation
     geolocationNotSupported: "Geolocation not supported.",
@@ -349,6 +349,11 @@ export const translations = {
 
     routePlannerTrendStay:
       "It doesn’t look like any nearby location will be noticeably better over the next {days} days.",
+
+    top5DistanceFromUserNote: "Distance is based on your current location.",
+    top5DistanceFromUserTooltip: "Distances in this list are calculated from your location.",
+    top5DistanceFromUserNoteWithLocation: "Distances is based on your location:",
+    unknownLocation: "Unknown location",
   },
 
   // Icelandic (Íslenska)
@@ -366,7 +371,7 @@ export const translations = {
     day: "Dagur",
     weather: "Veður",
     sortedBy: "Raðað eftir vikustigum, síðan næst þér.",
-    offlineReadyMsg: "CampCast er nú tilbúið til notkunar án nettengingar.",
+    offlineRdMessage: "CampCast er nú tilbúið til notkunar án nettengingar.",
 
     // Geolocation
     geolocationNotSupported: "Staðsetning ekki studd.",
@@ -705,5 +710,10 @@ export const translations = {
 
     routePlannerTrendStay:
       "Það lítur ekki út fyrir að neinn staður í nágrenninu verði betri næstu {days} daga.",
+
+    top5DistanceFromUserNote: "Fjarlægð miðast við núverandi staðsetningu.",
+    top5DistanceFromUserTooltip: "Fjarlægðir í þessum lista eru reiknaðar frá staðsetningu þinni.",
+    top5DistanceFromUserNoteWithLocation: "Fjarlægðir miðast við núverandi staðsetningu: ",
+    unknownLocation: "Óþekkt staðsetning",
   },
 };

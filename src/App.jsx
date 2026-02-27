@@ -247,6 +247,26 @@ function IcelandCampingWeatherApp({ page = "home" }) {
   );
   const { top5 } = useTop5Campsites(showCampsitesGate ? [] : siteList, scoresById, userLoc);
 
+  const userLocationLabel = useMemo(() => {
+    if (!userLoc || !siteList?.length) return null;
+
+    let nearest = null;
+    let minDist = Infinity;
+
+    for (const site of siteList) {
+      const dx = site.lat - userLoc.lat;
+      const dy = site.lon - userLoc.lon;
+      const dist = dx * dx + dy * dy; // nóg til að bera saman
+
+      if (dist < minDist) {
+        minDist = dist;
+        nearest = site;
+      }
+    }
+
+    return nearest?.name ?? null;
+  }, [userLoc, siteList]);
+
   // Effects
   useThemeClass(darkMode);
   useEffect(() => {
@@ -546,6 +566,7 @@ function IcelandCampingWeatherApp({ page = "home" }) {
                 subscription={me?.subscription ?? null}
                 onManageSubscription={openBillingPortal}
                 selectedSiteId={siteId}
+                userLocationLabel={userLocationLabel}
               />
             </div>
           )}

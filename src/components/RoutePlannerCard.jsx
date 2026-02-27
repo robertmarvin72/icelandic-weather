@@ -100,7 +100,7 @@ export default function RoutePlannerCard({
 
   const [radiusKm, setRadiusKm] = useState(radiusKmDefault);
   const [windowDays, setWindowDays] = useState(windowDaysDefault);
-  const [limit, setLimit] = useState(limitDefault);
+  const [limit] = useState(limitDefault);
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");

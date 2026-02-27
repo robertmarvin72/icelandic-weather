@@ -39,6 +39,7 @@ export default function Top5Leaderboard({
   // ✅ IMPORTANT: pass selectedSiteId + sites from App
   selectedSiteId,
   sites,
+  userLocationLabel,
 }) {
   const sheltered = windDir?.compass ? oppositeCompass(windDir.compass) : null;
 
@@ -161,6 +162,27 @@ export default function Top5Leaderboard({
 
       <div className="mb-3 text-xs text-slate-500 dark:text-slate-400">
         {loadingBg ? t("loadingMoreCampsites") : t("upToDate")}
+      </div>
+
+      <div className="mb-3 flex items-start justify-between gap-3 text-xs text-slate-500 dark:text-slate-400">
+        <span className="leading-5">{t("top5DistanceFromUserNoteWithLocation")}</span>
+
+        <span
+          className="
+      inline-flex items-center gap-1
+      max-w-[60%]
+      px-2 py-0.5 rounded-full
+      bg-slate-100/70 dark:bg-slate-800/60
+      dark:bg-slate-800 dark:text-slate-200
+      text-xs font-medium
+      text-right
+      whitespace-normal
+    "
+          title={userLocationLabel || t("unknownLocation")}
+        >
+          <span aria-hidden>📍</span>
+          <span className="truncate">{userLocationLabel || t("unknownLocation")}</span>
+        </span>
       </div>
 
       {top5.length > 0 && (
