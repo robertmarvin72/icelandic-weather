@@ -207,22 +207,10 @@ export default function RoutePlannerCard({
     const v = String(result.verdict).toLowerCase();
 
     if (v === "move") {
-      if (reasonsText) {
-        return interpolate(t("routePlannerTrendMoveWithReasons"), {
-          days: windowDays,
-          reasons: reasonsText,
-        });
-      }
       return interpolate(t("routePlannerTrendMove"), { days: windowDays });
     }
 
     if (v === "consider") {
-      if (reasonsText) {
-        return interpolate(t("routePlannerTrendConsiderWithReasons"), {
-          days: windowDays,
-          reasons: reasonsText,
-        });
-      }
       return interpolate(t("routePlannerTrendConsider"), { days: windowDays });
     }
 
@@ -296,6 +284,16 @@ export default function RoutePlannerCard({
             {trendText && (
               <div className="text-xs text-slate-600 dark:text-slate-300 mt-1">{trendText}</div>
             )}
+            {["move", "consider"].includes(String(result.verdict).toLowerCase()) &&
+              Array.isArray(best?.reasons) &&
+              best.reasons.length > 0 && (
+                <ul className="mt-2 pl-4 text-xs grid gap-1 list-disc text-slate-700 marker:text-emerald-500 dark:text-slate-300">
+                  {best.reasons.slice(0, 3).map((r, idx) => {
+                    const key = reasonTypeToKey(r?.type);
+                    return key ? <li key={`${r.type}-${idx}`}>{t(key)}</li> : null;
+                  })}
+                </ul>
+              )}
           </div>
 
           {/* Top 3 */}
