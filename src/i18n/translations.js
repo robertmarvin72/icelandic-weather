@@ -354,9 +354,68 @@ export const translations = {
     top5DistanceFromUserTooltip: "Distances in this list are calculated from your location.",
     top5DistanceFromUserNoteWithLocation: "Distances is based on your location:",
     unknownLocation: "Unknown location",
+
+    routeDetailsComparedTo: "Compared to",
+    routeDetailsDelta: "Delta",
+    routeDetailsWhy: "Why this is better",
+    routeDetailsNoReasons: "No explanation data available.",
+    routeDetailsDayByDay: "Day-by-day",
+    routeDetailsNoDays: "No day breakdown available.",
+    routeDetailsDate: "Date",
+    routeDetailsBasePts: "Base pts",
+    routeDetailsCandPts: "Candidate pts",
+    routeDetailsWindPen: "Wind pen",
+    routeDetailsGustPen: "Gust pen",
+    routeDetailsRainPen: "Rain pen",
+    routeDetailsStreakPen: "Streak pen",
+    routeDetailsShelter: "Shelter",
+    routeDetailsOpenHint: "Open details",
+    routeBase: "Base",
+
+    routeReason_wind: "Less wind penalty",
+    routeReason_gust: "Less gust penalty",
+    routeReason_rain: "Less rain penalty",
+    routeReason_rainStreak: "Fewer rainy days in a row",
+    routeReason_shelter: "More shelter",
+    routeReason_temp: "Warmer daytime temperatures",
+    routeReason_tmax: "Warmer daytime temperatures",
+    routeReason_score: "Higher overall weather score",
+
+    routeImproveNone: "Minimal difference",
+    routeImproveSlight: "Slightly better",
+    routeImproveBetter: "Better",
+    routeImproveMuchBetter: "Much better",
+
+    routeDayBetter: "Better",
+    routeDaySame: "Same",
+    routeDayWorse: "Worse",
+
+    routeDetailsShowAdvanced: "Show scoring details",
+    routeDetailsHideAdvanced: "Hide scoring details",
+
+    routeDayBetterSingular: "better day",
+    routeDayBetterPlural: "better days",
+
+    routeDaySameSingular: "similar day",
+    routeDaySamePlural: "similar days",
+
+    routeDayWorseSingular: "worse day",
+    routeDayWorsePlural: "worse days",
+
+    routeOverallResult: "Overall result for the selected days",
+    routeOverallNote: "Some individual days may still be worse or similar.",
+    routeDetailsPositiveDrivers: "Top positive drivers",
+
+    routeOverallNextNDays: "next",
+    routeOverallDays: "days",
+    routeOverallTotalDelta: "Total difference",
+    routeOverallSeeBreakdown: "see breakdown",
+
+    routeDecisionCounts: "{better} better days, {same} similar, {worse} worse.",
+    routePlannerTopAlternativesNoBetter: "Nearby options (none better over the next {days} days)",
   },
 
-  // Icelandic (Íslenska)
+  // Icelandic (Íslenska) -------------------------------------------------------------------------------------------------------------------
   is: {
     appTitle: "Tjaldsvæði á Íslandi",
     sevenDayWeather: "7 daga veðurspá",
@@ -715,5 +774,64 @@ export const translations = {
     top5DistanceFromUserTooltip: "Fjarlægðir í þessum lista eru reiknaðar frá staðsetningu þinni.",
     top5DistanceFromUserNoteWithLocation: "Fjarlægðir miðast við núverandi staðsetningu: ",
     unknownLocation: "Óþekkt staðsetning",
+
+    routeDetailsComparedTo: "Borið saman við",
+    routeDetailsDelta: "Mismunur",
+    routeDetailsWhy: "Af hverju þetta er betra",
+    routeDetailsNoReasons: "Engin skýringargögn tiltæk.",
+    routeDetailsDayByDay: "Dag-fyrir-dag",
+    routeDetailsNoDays: "Engin dagleg sundurliðun tiltæk.",
+    routeDetailsDate: "Dagsetning",
+    routeDetailsBasePts: "Grunn stig",
+    routeDetailsCandPts: "Stig valkosts",
+    routeDetailsWindPen: "Vind refsing",
+    routeDetailsGustPen: "Hviðu refsing",
+    routeDetailsRainPen: "Rigningar refsing",
+    routeDetailsStreakPen: "Rigningar-run refsing",
+    routeDetailsShelter: "Skjól",
+    routeDetailsOpenHint: "Sjá nánar",
+    routeBase: "Grunnstaður",
+
+    routeReason_wind: "Minni vindrefsing",
+    routeReason_gust: "Minni hviðurefsing",
+    routeReason_rain: "Minni rigningarrefsing",
+    routeReason_rainStreak: "Færri rigningardagar í röð",
+    routeReason_shelter: "Meira skjól",
+    routeReason_temp: "Hlýrra yfir daginn",
+    routeReason_tmax: "Hlýrra yfir daginn",
+    routeReason_score: "Hærra heildarveðurskor",
+
+    routeImproveNone: "Lítill munur",
+    routeImproveSlight: "Örlítið betra",
+    routeImproveBetter: "Betra",
+    routeImproveMuchBetter: "Miklu betra",
+
+    routeDayBetter: "Betra",
+    routeDaySame: "Svipað",
+    routeDayWorse: "Lakara",
+
+    routeDetailsShowAdvanced: "Sýna stig og sundurliðun",
+    routeDetailsHideAdvanced: "Fela stig og sundurliðun",
+
+    routeDayBetterSingular: "dagur betri",
+    routeDayBetterPlural: "dagar betri",
+
+    routeDaySameSingular: "dagur svipaður",
+    routeDaySamePlural: "dagar svipaðir",
+
+    routeDayWorseSingular: "dagur verri",
+    routeDayWorsePlural: "dagar verri",
+
+    routeOverallResult: "Heildarniðurstaða næstu daga",
+    routeOverallNote: "Sumir dagar geta samt verið lakari eða svipaðir.",
+    routeDetailsPositiveDrivers: "Helstu jákvæðu ástæður",
+
+    routeOverallNextNDays: "næstu",
+    routeOverallDays: "daga",
+    routeOverallTotalDelta: "Heildarmismunur",
+    routeOverallSeeBreakdown: "sjá sundurliðun",
+
+    routeDecisionCounts: "{better} dagar betri, {same} svipaðir, {worse} verri.",
+    routePlannerTopAlternativesNoBetter: "Nálægir valkostir (engin betri næstu {days} daga)",
   },
 };
