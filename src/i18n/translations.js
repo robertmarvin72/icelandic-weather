@@ -413,6 +413,12 @@ export const translations = {
 
     routeDecisionCounts: "{better} better days, {same} similar, {worse} worse.",
     routePlannerTopAlternativesNoBetter: "Nearby options (none better over the next {days} days)",
+
+    routeDaysBetter: "better days",
+    routeDaysSame: "similar days",
+    routeDaysWorse: "worse days",
+
+    routeDetailsTempBase: "Temperature base",
   },
 
   // Icelandic (Íslenska) -------------------------------------------------------------------------------------------------------------------
@@ -833,5 +839,11 @@ export const translations = {
 
     routeDecisionCounts: "{better} dagar betri, {same} svipaðir, {worse} verri.",
     routePlannerTopAlternativesNoBetter: "Nálægir valkostir (engin betri næstu {days} daga)",
+
+    routeDaysBetter: "dagar betri",
+    routeDaysSame: "svipaðir",
+    routeDaysWorse: "verri",
+
+    routeDetailsTempBase: "Hita-grunnur",
   },
 };

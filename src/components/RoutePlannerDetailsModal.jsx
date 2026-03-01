@@ -19,7 +19,7 @@ export default function RoutePlannerDetailsModal({
   t,
   baseSiteLabel,
   candidate,
-  windowDaysCount, // ✅ NEW: keep modal in sync with slider
+  windowDaysCount, // keep modal in sync with slider
 }) {
   const [showAdvanced, setShowAdvanced] = useState(false);
 
@@ -65,14 +65,13 @@ export default function RoutePlannerDetailsModal({
   if (typeof document === "undefined") return null;
 
   const deltaTotal = typeof candidate.deltaVsBase === "number" ? candidate.deltaVsBase : 0;
-
   const reasons = Array.isArray(candidate.reasons) ? candidate.reasons : [];
 
-  // ✅ Keep day list synced with slider
+  // Keep day list synced with slider
   const allDays = Array.isArray(candidate.windowDays) ? candidate.windowDays : [];
   const days = typeof windowDaysCount === "number" ? allDays.slice(0, windowDaysCount) : allDays;
 
-  // Verdict thresholds (tune later if needed)
+  // Verdict thresholds
   const THRESH = 0.2;
 
   function getVerdict(deltaDay) {
@@ -95,15 +94,31 @@ export default function RoutePlannerDetailsModal({
     return "border-slate-200 bg-slate-50 text-slate-800 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-200";
   }
 
+  // ✅ Correct comparison: candidate vs BASE SITE (camper-first points 0..10)
+  function getBasePts(d) {
+    if (typeof d?.baseSitePoints === "number") return d.baseSitePoints;
+    if (typeof d?.baseSitePointsRaw === "number") return d.baseSitePointsRaw;
+    return 0;
+  }
+
+  function getCandPts(d) {
+    if (typeof d?.points === "number") return d.points;
+    if (typeof d?.pointsRaw === "number") return d.pointsRaw;
+    return 0;
+  }
+
   const verdictRows = days.map((d) => {
-    const basePts = d?.basePts ?? 0;
-    const candPts = d?.points ?? 0;
+    const basePts = getBasePts(d);
+    const candPts = getCandPts(d);
     const dlt = candPts - basePts;
+
     return {
       date: d?.date || "—",
       delta: dlt,
       verdict: getVerdict(dlt),
       raw: d,
+      basePts,
+      candPts,
     };
   });
 
@@ -178,6 +193,11 @@ export default function RoutePlannerDetailsModal({
                 ({t?.("routeOverallSeeBreakdown") || "sjá sundurliðun"})
               </span>
             </div>
+
+            <div className="mt-2 text-xs text-slate-600 dark:text-slate-300">
+              {betterCount} {t?.("routeDaysBetter") || "dagar betri"}, {sameCount}{" "}
+              {t?.("routeDaysSame") || "svipaðir"}, {worseCount} {t?.("routeDaysWorse") || "verri"}.
+            </div>
           </div>
 
           {/* REASONS */}
@@ -193,6 +213,8 @@ export default function RoutePlannerDetailsModal({
             ) : (
               <ul className="mt-2 space-y-2">
                 {reasons.map((r, idx) => {
+                  // NOTE: your app uses FLAT keys elsewhere (routeReasonWind etc.)
+                  // Here we keep backward-compat with routeReason_<type> if you already have them.
                   const key = r?.type ? `routeReason_${r.type}` : "";
                   const label =
                     (r?.type && t?.(key)) ||
@@ -217,7 +239,7 @@ export default function RoutePlannerDetailsModal({
             )}
           </div>
 
-          {/* DAY BY DAY (decision list) */}
+          {/* DAY BY DAY */}
           <div className="mt-5">
             <div className="text-sm font-semibold text-slate-900 dark:text-slate-100">
               {t?.("routeDetailsDayByDay") || "Dag-fyrir-dag"}
@@ -240,6 +262,12 @@ export default function RoutePlannerDetailsModal({
                       className={`inline-flex items-center rounded-full border px-2.5 py-1 text-xs font-semibold ${verdictPillClass(
                         r.verdict
                       )}`}
+                      title={`${t?.("routeDetailsBasePts") || "Grunn"}: ${fmt(
+                        r.basePts,
+                        1
+                      )} • ${t?.("routeDetailsCandPts") || "Valkostur"}: ${fmt(r.candPts, 1)} • ${
+                        t?.("routeDetailsDelta") || "Mismunur"
+                      }: ${signFmt(r.delta, 1)}`}
                     >
                       {verdictLabel(r.verdict)}
                     </span>
@@ -264,13 +292,20 @@ export default function RoutePlannerDetailsModal({
             {/* ADVANCED TABLE */}
             {showAdvanced && (
               <div className="mt-3 overflow-x-auto rounded-xl border border-slate-200 dark:border-slate-800">
-                <table className="w-full min-w-[900px] text-left text-sm">
+                <table className="w-full min-w-[980px] text-left text-sm">
                   <thead className="bg-slate-50 text-slate-700 dark:bg-slate-900 dark:text-slate-200">
                     <tr>
                       <th className="px-3 py-2">{t?.("routeDetailsDate") || "Dagsetning"}</th>
+
+                      {/* ✅ Base site points (what we compare against) */}
                       <th className="px-3 py-2">{t?.("routeDetailsBasePts") || "Grunn stig"}</th>
+
+                      {/* Candidate points */}
                       <th className="px-3 py-2">{t?.("routeDetailsCandPts") || "Stig valkosts"}</th>
+
                       <th className="px-3 py-2">{t?.("routeDetailsDelta") || "Mismunur"}</th>
+
+                      {/* Keep these as-is */}
                       <th className="px-3 py-2">{t?.("routeDetailsWindPen") || "Vind refsing"}</th>
                       <th className="px-3 py-2">{t?.("routeDetailsGustPen") || "Hviðu refsing"}</th>
                       <th className="px-3 py-2">
@@ -280,11 +315,16 @@ export default function RoutePlannerDetailsModal({
                         {t?.("routeDetailsStreakPen") || "Rigning í röð refsing"}
                       </th>
                       <th className="px-3 py-2">{t?.("routeDetailsShelter") || "Skjól"}</th>
+
+                      {/* Optional: show candidate temp base so devs can debug winter-floor weirdness */}
+                      <th className="px-3 py-2">{t?.("routeDetailsTempBase") || "Hita-grunnur"}</th>
                     </tr>
                   </thead>
                   <tbody>
                     {days.map((d, i) => {
-                      const rowDelta = (d?.points ?? 0) - (d?.basePts ?? 0);
+                      const basePts = getBasePts(d);
+                      const candPts = getCandPts(d);
+                      const rowDelta = candPts - basePts;
 
                       return (
                         <tr
@@ -292,20 +332,25 @@ export default function RoutePlannerDetailsModal({
                           className="border-t border-slate-200 text-slate-800 dark:border-slate-800 dark:text-slate-100"
                         >
                           <td className="px-3 py-2">{d?.date || "—"}</td>
-                          <td className="px-3 py-2">{fmt(d?.basePts, 1)}</td>
-                          <td className="px-3 py-2">{fmt(d?.points, 1)}</td>
+
+                          <td className="px-3 py-2">{fmt(basePts, 1)}</td>
+                          <td className="px-3 py-2">{fmt(candPts, 1)}</td>
                           <td className="px-3 py-2 font-semibold">{signFmt(rowDelta, 1)}</td>
 
                           <td className="px-3 py-2">{fmt(d?.windPen, 1)}</td>
                           <td className="px-3 py-2">{fmt(d?.gustPen, 1)}</td>
                           <td className="px-3 py-2">{fmt(d?.rainPen, 1)}</td>
                           <td className="px-3 py-2">{fmt(d?.rainStreakPen, 1)}</td>
+
                           <td className="px-3 py-2">
                             {fmt(d?.shelter, 2)}{" "}
                             <span className="text-slate-500 dark:text-slate-400">
                               ({signFmt(d?.shelterBonus ?? 0, 1)})
                             </span>
                           </td>
+
+                          {/* This is the *temp base* for candidate, not base-site points */}
+                          <td className="px-3 py-2">{fmt(d?.basePts, 1)}</td>
                         </tr>
                       );
                     })}

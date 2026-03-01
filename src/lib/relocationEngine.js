@@ -5,17 +5,6 @@ import { scoreDaysWithRainStreak } from "../lib/scoring";
 
 /**
  * Relocation engine core (UI-independent).
- *
- * API:
- * relocationEngine({
- *   baseSiteId,
- *   radiusKm,
- *   startDateISO,
- *   days,
- *   campsites,
- *   forecastMap,
- *   config
- * }) => RelocationOutput
  */
 
 function toFiniteNumber(v) {
@@ -54,12 +43,12 @@ function normalizeConfig(cfg = {}) {
       typeof cfg.useWorstDayGuardrail === "boolean" ? cfg.useWorstDayGuardrail : true,
     worstDayMin: typeof cfg.worstDayMin === "number" ? cfg.worstDayMin : 2, // if worst day < 2, clamp total down
 
-    // decision
-    minDeltaToMove: typeof cfg.minDeltaToMove === "number" ? cfg.minDeltaToMove : 2, // matches your MOVE threshold vibe
+    // decision (legacy; your UI decision tool may override)
+    minDeltaToMove: typeof cfg.minDeltaToMove === "number" ? cfg.minDeltaToMove : 2,
     minDeltaToConsider: typeof cfg.minDeltaToConsider === "number" ? cfg.minDeltaToConsider : 1,
 
     // reasons
-    reasonMinDelta: typeof cfg.reasonMinDelta === "number" ? cfg.reasonMinDelta : 1, // show reason if >= 1pt swing
+    reasonMinDelta: typeof cfg.reasonMinDelta === "number" ? cfg.reasonMinDelta : 1,
     maxReasons: Number.isInteger(cfg.maxReasons) ? cfg.maxReasons : 4,
   };
 }
@@ -91,16 +80,21 @@ function weightedAvg(values, weights) {
 }
 
 function aggregateSiteWindow(windowDays, weights, cfg) {
+  // ✅ clamped (UI-friendly)
   const pointsArr = windowDays.map((d) => (typeof d.points === "number" ? d.points : 0));
-  const totalRaw = weightedAvg(pointsArr, weights);
-
+  const totalRawClamped = weightedAvg(pointsArr, weights);
   const worstDay = pointsArr.length ? Math.min(...pointsArr) : 0;
 
-  // Worst-day guardrail: if you have one atrocious day, don’t “average it away”
   const total =
     cfg.useWorstDayGuardrail && worstDay < cfg.worstDayMin
-      ? Math.min(totalRaw, worstDay)
-      : totalRaw;
+      ? Math.min(totalRawClamped, worstDay)
+      : totalRawClamped;
+
+  // ✅ raw (comparison-friendly) – can go negative
+  const pointsRawArr = windowDays.map((d) =>
+    typeof d.pointsRaw === "number" && Number.isFinite(d.pointsRaw) ? d.pointsRaw : 0
+  );
+  const totalRaw = weightedAvg(pointsRawArr, weights);
 
   // Aggregate components too (for reasons)
   const compKeys = ["temp", "wind", "rain", "gust", "rainStreak", "shelter"];
@@ -140,9 +134,6 @@ function reasonText(type, days) {
 function buildReasons(deltaComponents, cfg, days) {
   const items = [];
 
-  // Interpreting deltas:
-  // components are already “goodness” oriented in your scoring shape:
-  // temp positive, wind/rain/gust typically negative penalties (so “less penalty” => higher component value).
   const candidates = [
     { type: "wind", delta: deltaComponents.wind },
     { type: "gust", delta: deltaComponents.gust },
@@ -152,7 +143,6 @@ function buildReasons(deltaComponents, cfg, days) {
     { type: "temp", delta: deltaComponents.temp },
   ];
 
-  // Keep only meaningful improvements
   for (const c of candidates) {
     if (typeof c.delta !== "number" || !Number.isFinite(c.delta)) continue;
     if (c.delta >= cfg.reasonMinDelta) {
@@ -164,19 +154,22 @@ function buildReasons(deltaComponents, cfg, days) {
     }
   }
 
-  // Sort by biggest improvement first
   items.sort((a, b) => b.delta - a.delta);
-
   return items.slice(0, cfg.maxReasons);
 }
 
 function pickExplainDay(d) {
   return {
     date: String(d?.date ?? "").slice(0, 10),
+
+    // candidate scores
     points: d?.points ?? null,
+    pointsRaw: d?.pointsRaw ?? d?.totalRaw ?? null,
     finalClass: d?.finalClass ?? null,
 
+    // NOTE: basePts is temp-derived base, not "base site"
     basePts: d?.basePts ?? null,
+
     windPen: d?.windPen ?? null,
     rainPen: d?.rainPen ?? null,
     gustPen: d?.gustPen ?? null,
@@ -193,41 +186,13 @@ function pickExplainDay(d) {
 
     shelter: d?.shelter ?? null,
     shelterBonus: d?.components?.shelter ?? null,
+
+    // injected later (for true base-site comparison)
+    baseSitePoints: d?.baseSitePoints ?? null,
+    baseSitePointsRaw: d?.baseSitePointsRaw ?? null,
   };
 }
 
-/**
- * @returns {{
- *   verdict: "MOVE" | "STAY" | "CONSIDER",
- *   baseSiteId: string,
- *   startDateISO: string,
- *   days: number,
- *   radiusKm: number,
- *   baseTotal: number,
- *   bestSiteId: string | null,
- *   bestTotal: number,
- *   delta: number,
- *   stayRecommended: boolean,
- *   ranked: Array<{
- *     siteId: string,
- *     siteName?: string,
- *     distanceKm: number,
- *     total: number,
- *     deltaVsBase: number,
- *     worstDay: number,
- *     reasons: Array<{type:string, delta:number, text:string}>,
- *     windowDays: Array<any>,
- *   }>,
- *   explain: {
- *     base: { siteId: string, total: number, worstDay: number, windowDays: Array<any> },
- *     candidates: Record<string, { total:number, deltaVsBase:number, worstDay:number, windowDays:Array<any> }>
- *   },
- *   debug: {
- *     candidatesPreselected: number,
- *     candidatesScored: number,
- *   }
- * }}
- */
 export function relocationEngine(input) {
   const baseSiteId = String(input?.baseSiteId ?? "");
   const radiusKm = Number.isFinite(input?.radiusKm) ? input.radiusKm : 50;
@@ -265,8 +230,8 @@ export function relocationEngine(input) {
     const agg = aggregateSiteWindow(windowDays, weights, cfg);
 
     return {
-      total: agg.total,
-      totalRaw: agg.totalRaw,
+      total: agg.total, // clamped (UI-friendly)
+      totalRaw: agg.totalRaw, // raw (comparison-friendly)
       worstDay: agg.worstDay,
       components: agg.components,
       windowDays,
@@ -277,6 +242,23 @@ export function relocationEngine(input) {
   // Base score
   const baseScore = scoreOneSite(base);
   const baseTotal = baseScore?.total ?? 0;
+  const baseTotalRaw = baseScore?.totalRaw ?? 0;
+
+  // ✅ Map base-site by date so candidates can compare per day
+  const baseByDate = new Map(
+    (baseScore?.windowDays || []).map((d) => [
+      String(d?.date ?? "").slice(0, 10),
+      {
+        points: typeof d?.points === "number" ? d.points : 0,
+        pointsRaw:
+          typeof d?.pointsRaw === "number"
+            ? d.pointsRaw
+            : typeof d?.totalRaw === "number"
+              ? d.totalRaw
+              : 0,
+      },
+    ])
+  );
 
   // Preselect candidates within radius
   const candidates = campsites
@@ -292,7 +274,8 @@ export function relocationEngine(input) {
     const sc = scoreOneSite(site);
     if (!sc) continue;
 
-    const deltaVsBase = sc.total - baseTotal;
+    // ✅ Use RAW for delta so it doesn't flatline at 0 when both clamp to 0
+    const deltaVsBase = sc.totalRaw - baseTotalRaw;
 
     const deltaComponents = {};
     const compKeys = ["temp", "wind", "rain", "gust", "rainStreak", "shelter"];
@@ -304,21 +287,39 @@ export function relocationEngine(input) {
 
     const reasons = buildReasons(deltaComponents, cfg, days);
 
+    // ✅ Inject base-site points per date into each candidate day
+    const windowDaysExplained = sc.windowDays.map((day) => {
+      const dateKey = String(day?.date ?? "").slice(0, 10);
+      const baseDay = baseByDate.get(dateKey) || { points: 0, pointsRaw: 0 };
+      return pickExplainDay({
+        ...day,
+        baseSitePoints: baseDay.points,
+        baseSitePointsRaw: baseDay.pointsRaw,
+      });
+    });
+
     const row = {
       siteId: site.id,
       siteName: site.name,
       distanceKm: d,
+
+      // keep both for debugging/UX
       total: sc.total,
+      totalRaw: sc.totalRaw,
+
+      // legacy field used across UI: make it meaningful again
       deltaVsBase,
+
       worstDay: sc.worstDay,
       reasons,
-      windowDays: sc.windowDays.map(pickExplainDay),
+      windowDays: windowDaysExplained,
     };
 
     ranked.push(row);
 
     explainCandidates[site.id] = {
       total: sc.total,
+      totalRaw: sc.totalRaw,
       deltaVsBase,
       worstDay: sc.worstDay,
       windowDays: row.windowDays,
@@ -326,6 +327,8 @@ export function relocationEngine(input) {
   }
 
   ranked.sort((a, b) => {
+    // ✅ sort by raw first (comparison-friendly), then distance
+    if (b.totalRaw !== a.totalRaw) return b.totalRaw - a.totalRaw;
     if (b.total !== a.total) return b.total - a.total;
     if (a.distanceKm !== b.distanceKm) return a.distanceKm - b.distanceKm;
     return String(a.siteId).localeCompare(String(b.siteId));
@@ -333,8 +336,12 @@ export function relocationEngine(input) {
 
   const best = ranked.length ? ranked[0] : null;
   const bestSiteId = best?.siteId ?? null;
+
+  // Use RAW delta for the engine verdict too (more honest signal)
   const bestTotal = best?.total ?? baseTotal;
-  const delta = bestTotal - baseTotal;
+  const bestTotalRaw = best?.totalRaw ?? baseTotalRaw;
+
+  const delta = bestTotalRaw - baseTotalRaw;
 
   let verdict = "STAY";
   if (delta >= cfg.minDeltaToMove) verdict = "MOVE";
@@ -349,11 +356,14 @@ export function relocationEngine(input) {
     days,
     radiusKm,
 
+    // keep both
     baseTotal,
+    baseTotalRaw,
     bestSiteId,
     bestTotal,
-    delta,
+    bestTotalRaw,
 
+    delta,
     stayRecommended,
 
     ranked,
@@ -362,8 +372,9 @@ export function relocationEngine(input) {
       base: {
         siteId: baseSiteId,
         total: baseTotal,
+        totalRaw: baseTotalRaw,
         worstDay: baseScore?.worstDay ?? 0,
-        windowDays: (baseScore?.windowDays || []).map(pickExplainDay),
+        windowDays: (baseScore?.windowDays || []).map((d) => pickExplainDay(d)),
       },
       candidates: explainCandidates,
     },

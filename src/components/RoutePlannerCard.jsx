@@ -158,6 +158,33 @@ export default function RoutePlannerCard({
           // wetThresholdMm removed from UI by design
         });
 
+        // DEBUG: log raw output for easier debugging of reason labels etc.
+        console.log("ROUTE DEBUG radius/days:", { radiusKm, windowDays });
+        console.log("Candidates fetched:", out?.debugFetch?.ids);
+        console.log(
+          "Top ranked (first 10):",
+          (out?.ranked || []).slice(0, 10).map((r) => ({
+            site: r.siteName ?? r.siteId,
+            delta: r.deltaVsBase,
+            days: (r.windowDays || [])
+              .slice(0, windowDays)
+              .map((d) => (d?.points ?? 0) - (d?.basePts ?? 0)),
+          }))
+        );
+        console.log(
+          "Top 10 deltas:",
+          (out?.ranked || []).slice(0, 10).map((r) => ({
+            site: r.siteId,
+            delta: r.deltaVsBase,
+          }))
+        );
+        const best = (out?.ranked || [])[0];
+        console.log("BEST:", best?.siteId, best?.deltaVsBase, best?.windowDays?.slice(0, 2));
+
+        console.log("DAY0:", best?.windowDays?.[0]);
+        console.log("DAY0 keys:", Object.keys(best?.windowDays?.[0] || {}));
+        // DEBUG: also log the input params for easier repro
+
         if (!cancelled) setResult(out);
       } catch (e) {
         const msg = e?.message || "Route planner failed";
@@ -209,7 +236,7 @@ export default function RoutePlannerCard({
   const best = top3[0] || null;
 
   // Camper-first day verdict threshold (shared with modal)
-  const THRESH = 0.2;
+  const THRESH = 0.75;
 
   function getDayCounts(windowDaysArr, windowDaysCount) {
     const daysArr = Array.isArray(windowDaysArr) ? windowDaysArr : [];
@@ -220,8 +247,22 @@ export default function RoutePlannerCard({
       worseDays = 0;
 
     for (const d of slice) {
-      const basePts = d?.basePts ?? 0;
-      const candPts = d?.points ?? 0;
+      // ✅ Camper-first: compare clamped points (0..10)
+      // fall back to raw only if points are missing (should be rare)
+      const basePts =
+        typeof d?.baseSitePoints === "number"
+          ? d.baseSitePoints
+          : typeof d?.baseSitePointsRaw === "number"
+            ? d.baseSitePointsRaw
+            : 0;
+
+      const candPts =
+        typeof d?.points === "number"
+          ? d.points
+          : typeof d?.pointsRaw === "number"
+            ? d.pointsRaw
+            : 0;
+
       const delta = candPts - basePts;
 
       if (delta > THRESH) betterDays++;
@@ -241,8 +282,19 @@ export default function RoutePlannerCard({
 
   function getVerdictFromDays(windowDaysArr, windowDaysCount) {
     const c = getDayCounts(windowDaysArr, windowDaysCount);
-    if (c.betterDays > c.worseDays && c.betterDays > c.sameDays) return "better";
-    if (c.worseDays > c.betterDays && c.worseDays > c.sameDays) return "worse";
+
+    if (!c || c.totalDays === 0) return "same";
+
+    // Clear majority better
+    if (c.betterDays > c.worseDays && c.betterDays >= Math.ceil(c.totalDays / 2)) {
+      return "better";
+    }
+
+    // Clear majority worse
+    if (c.worseDays > c.betterDays && c.worseDays >= Math.ceil(c.totalDays / 2)) {
+      return "worse";
+    }
+
     return "same";
   }
 
@@ -327,7 +379,7 @@ export default function RoutePlannerCard({
             className="w-full"
             type="range"
             min={10}
-            max={200}
+            max={400}
             step={5}
             value={radiusKm}
             onChange={(e) => setRadiusKm(Number(e.target.value))}

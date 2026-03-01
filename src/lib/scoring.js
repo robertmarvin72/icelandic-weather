@@ -128,8 +128,20 @@ export function scoreDaysWithRainStreak(days, opts = {}) {
     const rainStreak = streak;
     const rainStreakPen = rainStreakPenaltyPoints(rainStreak);
 
-    const pointsRaw = typeof row.points === "number" ? row.points : 0;
-    const points = Math.max(0, Math.min(10, pointsRaw - rainStreakPen));
+    // ✅ Apply streak penalty to RAW points (not the clamped points)
+    const rawBefore =
+      typeof row.pointsRaw === "number"
+        ? row.pointsRaw
+        : typeof row.totalRaw === "number"
+          ? row.totalRaw
+          : typeof row.points === "number"
+            ? row.points
+            : 0;
+
+    const rawAfter = rawBefore - rainStreakPen;
+
+    // keep UI-stable clamped score too
+    const points = Math.max(0, Math.min(10, rawAfter));
     const finalClass = pointsToClass(points);
 
     // ✅ Keep scoring contract consistent after streak penalty
@@ -144,11 +156,13 @@ export function scoreDaysWithRainStreak(days, opts = {}) {
       rainStreak,
       rainStreakPen,
 
-      // legacy
+      // legacy/debug
+      pointsRaw: rawAfter,
       points,
       finalClass,
 
       // canonical
+      totalRaw: rawAfter,
       total: points,
       components,
     };
@@ -221,18 +235,19 @@ export function scoreSiteDay({ tmax, rain, windMax, windGust, date, shelter }) {
   const gustPen = gustPenRaw; // already weighted in function
 
   // NOTE: shelter + rainStreak are part of the contract but are applied elsewhere for now.
-  // They are kept here so Route Planner + Leaderboard can share a single "score shape".
   const shelterBonus = computeShelterBonus({ shelter, windMax, windGust, season });
   const rainStreakPen = 0;
 
-  const points = Math.max(
-    0,
-    Math.min(10, basePts - windPen - rainPen - gustPen - rainStreakPen + shelterBonus)
-  );
+  // ✅ RAW points (can go negative). This is what we compare across campsites.
+  const pointsRaw = basePts - windPen - rainPen - gustPen - rainStreakPen + shelterBonus;
+
+  // ✅ UI points (stable 0..10)
+  const points = Math.max(0, Math.min(10, pointsRaw));
   const finalClass = pointsToClass(points);
 
   return {
     // canonical
+    totalRaw: pointsRaw,
     total: points,
     components: {
       temp: basePts,
@@ -249,6 +264,7 @@ export function scoreSiteDay({ tmax, rain, windMax, windGust, date, shelter }) {
     windPen,
     rainPen,
     gustPen,
+    pointsRaw,
     points,
     finalClass,
     season,
@@ -258,7 +274,6 @@ export function scoreSiteDay({ tmax, rain, windMax, windGust, date, shelter }) {
 
 // Legacy alias (backward compatible). Prefer scoreSiteDay() for new work.
 export function scoreDay({ tmax, rain, windMax, windGust, date }) {
-  // Backward-compatible wrapper. Prefer scoreSiteDay() for new work.
   return scoreSiteDay({ tmax, rain, windMax, windGust, date });
 }
 
