@@ -4,6 +4,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import { getRelocationRecommendation } from "../lib/relocationService";
 import { getRouteVerdictMeta } from "../lib/routeVerdictMeta";
 import RoutePlannerDetailsModal from "./RoutePlannerDetailsModal";
+import AnimatedPill from "./AnimatedPill";
 
 // Map reason type -> FLAT translation key
 function reasonTypeToKey(type) {
@@ -257,21 +258,24 @@ export default function RoutePlannerCard({
         border border-emerald-200 bg-emerald-50 text-emerald-800
         dark:border-emerald-900/40 dark:bg-emerald-950/40 dark:text-emerald-200
         hover:bg-emerald-100 hover:border-emerald-300
+        dark:hover:bg-emerald-900/35 dark:hover:border-emerald-700/50
         focus:ring-emerald-400/50
       `;
     }
     if (v === "worse") {
       return `
-        border border-rose-200 bg-rose-50 text-rose-800
-        dark:border-rose-900/40 dark:bg-rose-950/40 dark:text-rose-200
-        hover:bg-rose-100 hover:border-rose-300
-        focus:ring-rose-400/50
-      `;
+      border border-rose-200 bg-rose-50 text-rose-800
+      dark:border-rose-900/40 dark:bg-rose-950/40 dark:text-rose-200
+      hover:bg-rose-100 hover:border-rose-300
+      dark:hover:bg-rose-900/40 dark:hover:border-rose-700/50
+      focus:ring-rose-400/50
+    `;
     }
     return `
       border border-slate-200 bg-slate-50 text-slate-800
       dark:border-slate-800 dark:bg-slate-900 dark:text-slate-200
-      hover:bg-slate-100 hover:border-slate-300 dark:hover:bg-slate-800
+      hover:bg-slate-100 hover:border-slate-300
+      dark:hover:bg-slate-800 dark:hover:border-slate-600/60
       focus:ring-slate-400/50
     `;
   }
@@ -394,6 +398,10 @@ export default function RoutePlannerCard({
                 {top3.map((x) => {
                   const v = getVerdictFromDays(x?.windowDays, windowDays);
 
+                  const triggerKey = `${x.siteId}:${windowDays}:${v}:${
+                    typeof x?.deltaVsBase === "number" ? x.deltaVsBase.toFixed(1) : "na"
+                  }`;
+
                   const deltaTitle =
                     typeof x?.deltaVsBase === "number"
                       ? `${t("routeDetailsDelta") || "Delta"}: ${
@@ -407,11 +415,11 @@ export default function RoutePlannerCard({
                     <li key={x.siteId}>
                       <div className="font-semibold flex items-center gap-2">
                         <span>{x.siteName ?? x.siteId}</span>
-
-                        <button
-                          type="button"
-                          onClick={() => openDetails(x)}
-                          className={`
+                        <AnimatedPill triggerKey={triggerKey} as="span" className="inline-flex">
+                          <button
+                            type="button"
+                            onClick={() => openDetails(x)}
+                            className={`
                             inline-flex items-center gap-1.5
                             rounded-full px-2.5 py-1
                             text-xs font-semibold
@@ -421,14 +429,15 @@ export default function RoutePlannerCard({
                             focus:outline-none focus:ring-2
                             ${verdictButtonClassFromV(v)}
                           `}
-                          title={deltaTitle}
-                          aria-label={`${verdictLabelFromV(v)}. ${
-                            oldImprovement ? `${oldImprovement}. ` : ""
-                          }${t("routeDetailsOpenHint") || "Open details"}`}
-                        >
-                          <span className="text-[11px] leading-none opacity-80">ⓘ</span>
-                          {verdictLabelFromV(v)}
-                        </button>
+                            title={deltaTitle}
+                            aria-label={`${verdictLabelFromV(v)}. ${
+                              oldImprovement ? `${oldImprovement}. ` : ""
+                            }${t("routeDetailsOpenHint") || "Open details"}`}
+                          >
+                            <span className="text-[11px] leading-none opacity-80">ⓘ</span>
+                            {verdictLabelFromV(v)}
+                          </button>
+                        </AnimatedPill>
                       </div>
 
                       {/* Reasons: show translated reason labels (no numbers in text) */}
