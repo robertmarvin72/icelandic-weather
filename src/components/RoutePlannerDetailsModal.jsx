@@ -71,8 +71,8 @@ export default function RoutePlannerDetailsModal({
   const allDays = Array.isArray(candidate.windowDays) ? candidate.windowDays : [];
   const days = typeof windowDaysCount === "number" ? allDays.slice(0, windowDaysCount) : allDays;
 
-  // Verdict thresholds
-  const THRESH = 0.2;
+  // Verdict thresholds (match card)
+  const THRESH = 0.75;
 
   function getVerdict(deltaDay) {
     if (deltaDay > THRESH) return "better";
@@ -94,31 +94,66 @@ export default function RoutePlannerDetailsModal({
     return "border-slate-200 bg-slate-50 text-slate-800 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-200";
   }
 
-  // ✅ Correct comparison: candidate vs BASE SITE (camper-first points 0..10)
+  // ✅ Base site points to compare against (camper-first 0..10, fallback raw)
   function getBasePts(d) {
     if (typeof d?.baseSitePoints === "number") return d.baseSitePoints;
     if (typeof d?.baseSitePointsRaw === "number") return d.baseSitePointsRaw;
     return 0;
   }
 
+  // ✅ Candidate points (camper-first 0..10, fallback raw)
   function getCandPts(d) {
     if (typeof d?.points === "number") return d.points;
     if (typeof d?.pointsRaw === "number") return d.pointsRaw;
     return 0;
   }
 
+  // ✅ Delta resolver:
+  // Use clamped points normally, but fall back to RAW when clamping hides the delta (0/10 saturation or near-zero delta).
+  function getDayDelta(d) {
+    const basePts =
+      typeof d?.baseSitePoints === "number"
+        ? d.baseSitePoints
+        : typeof d?.baseSitePointsRaw === "number"
+          ? d.baseSitePointsRaw
+          : 0;
+
+    const candPts =
+      typeof d?.points === "number" ? d.points : typeof d?.pointsRaw === "number" ? d.pointsRaw : 0;
+
+    const baseRaw =
+      typeof d?.baseSitePointsRaw === "number"
+        ? d.baseSitePointsRaw
+        : typeof d?.baseSitePoints === "number"
+          ? d.baseSitePoints
+          : 0;
+
+    const candRaw =
+      typeof d?.pointsRaw === "number" ? d.pointsRaw : typeof d?.points === "number" ? d.points : 0;
+
+    const deltaPts = candPts - basePts;
+    const deltaRaw = candRaw - baseRaw;
+
+    // If both are clamped equal at floor/ceiling, or deltaPts is ~0, RAW is more informative.
+    const useRaw =
+      (candPts === basePts && (candPts <= 0.0001 || candPts >= 9.9999)) ||
+      Math.abs(deltaPts) < 0.0001;
+
+    return useRaw ? deltaRaw : deltaPts;
+  }
+
   const verdictRows = days.map((d) => {
     const basePts = getBasePts(d);
     const candPts = getCandPts(d);
-    const dlt = candPts - basePts;
+    const dlt = getDayDelta(d);
 
     return {
       date: d?.date || "—",
       delta: dlt,
       verdict: getVerdict(dlt),
-      raw: d,
       basePts,
       candPts,
+      raw: d,
     };
   });
 
@@ -213,8 +248,8 @@ export default function RoutePlannerDetailsModal({
             ) : (
               <ul className="mt-2 space-y-2">
                 {reasons.map((r, idx) => {
-                  // NOTE: your app uses FLAT keys elsewhere (routeReasonWind etc.)
-                  // Here we keep backward-compat with routeReason_<type> if you already have them.
+                  // NOTE: app elsewhere uses FLAT keys (routeReasonWind etc.)
+                  // Keeping backward-compat with routeReason_<type> if you already have them.
                   const key = r?.type ? `routeReason_${r.type}` : "";
                   const label =
                     (r?.type && t?.(key)) ||
@@ -262,10 +297,10 @@ export default function RoutePlannerDetailsModal({
                       className={`inline-flex items-center rounded-full border px-2.5 py-1 text-xs font-semibold ${verdictPillClass(
                         r.verdict
                       )}`}
-                      title={`${t?.("routeDetailsBasePts") || "Grunn"}: ${fmt(
+                      title={`${t?.("routeDetailsBasePts") || "Grunn stig"}: ${fmt(
                         r.basePts,
                         1
-                      )} • ${t?.("routeDetailsCandPts") || "Valkostur"}: ${fmt(r.candPts, 1)} • ${
+                      )} • ${t?.("routeDetailsCandPts") || "Stig valkosts"}: ${fmt(r.candPts, 1)} • ${
                         t?.("routeDetailsDelta") || "Mismunur"
                       }: ${signFmt(r.delta, 1)}`}
                     >
@@ -297,7 +332,7 @@ export default function RoutePlannerDetailsModal({
                     <tr>
                       <th className="px-3 py-2">{t?.("routeDetailsDate") || "Dagsetning"}</th>
 
-                      {/* ✅ Base site points (what we compare against) */}
+                      {/* Base site points (what we compare against) */}
                       <th className="px-3 py-2">{t?.("routeDetailsBasePts") || "Grunn stig"}</th>
 
                       {/* Candidate points */}
@@ -305,7 +340,6 @@ export default function RoutePlannerDetailsModal({
 
                       <th className="px-3 py-2">{t?.("routeDetailsDelta") || "Mismunur"}</th>
 
-                      {/* Keep these as-is */}
                       <th className="px-3 py-2">{t?.("routeDetailsWindPen") || "Vind refsing"}</th>
                       <th className="px-3 py-2">{t?.("routeDetailsGustPen") || "Hviðu refsing"}</th>
                       <th className="px-3 py-2">
@@ -316,7 +350,7 @@ export default function RoutePlannerDetailsModal({
                       </th>
                       <th className="px-3 py-2">{t?.("routeDetailsShelter") || "Skjól"}</th>
 
-                      {/* Optional: show candidate temp base so devs can debug winter-floor weirdness */}
+                      {/* Candidate temp baseline (dev/debug) */}
                       <th className="px-3 py-2">{t?.("routeDetailsTempBase") || "Hita-grunnur"}</th>
                     </tr>
                   </thead>
@@ -324,7 +358,9 @@ export default function RoutePlannerDetailsModal({
                     {days.map((d, i) => {
                       const basePts = getBasePts(d);
                       const candPts = getCandPts(d);
-                      const rowDelta = candPts - basePts;
+
+                      // ✅ Use the same delta logic as verdictRows (RAW fallback when clamping hides the delta)
+                      const rowDelta = getDayDelta(d);
 
                       return (
                         <tr
@@ -349,7 +385,7 @@ export default function RoutePlannerDetailsModal({
                             </span>
                           </td>
 
-                          {/* This is the *temp base* for candidate, not base-site points */}
+                          {/* This is the *candidate temp baseline*, not base-site points */}
                           <td className="px-3 py-2">{fmt(d?.basePts, 1)}</td>
                         </tr>
                       );

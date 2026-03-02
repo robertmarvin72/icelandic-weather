@@ -1,59 +1,350 @@
 [
-  { "id": "laugardalur_reykjavik", "name": "Tjaldsvæðið í Laugardal, Reykjavík", "lat": 64.1396, "lon": -21.8850 },
-  { "id": "grindavik", "name": "Tjaldsvæðið í Grindavík", "lat": 63.8429, "lon": -22.4316 },
-  { "id": "hafnarfjordur", "name": "Hafnarfjörður Campsite", "lat": 64.0481, "lon": -21.9339 },
-  { "id": "mosfellsbaer", "name": "Varmá Campsite, Mosfellsbær", "lat": 64.1655, "lon": -21.6981 },
-  { "id": "selfoss", "name": "Selfoss Campsite", "lat": 63.9365, "lon": -21.0002 },
-  { "id": "thingvellir", "name": "Þingvellir – Vatnskot", "lat": 64.2550, "lon": -21.1290 },
-  { "id": "hveragerdi", "name": "Hveragerði Campsite", "lat": 64.0007, "lon": -21.1898 },
-  { "id": "thorlakshofn", "name": "Þorlákshöfn Campsite", "lat": 63.8594, "lon": -21.3956 },
-  { "id": "vik", "name": "Vík Campsite", "lat": 63.4204, "lon": -19.0094 },
-  { "id": "kirkjubaejarklaustur", "name": "Kirkjubæjarklaustur Campsite", "lat": 63.7915, "lon": -18.0438 },
-  { "id": "skaftafell", "name": "Skaftafell (Vatnajökull NP)", "lat": 64.0162, "lon": -16.9753 },
-  { "id": "hofn", "name": "Höfn Campsite", "lat": 64.2522, "lon": -15.2097 },
-  { "id": "djupivogur", "name": "Djúpivogur Campsite", "lat": 64.6568, "lon": -14.2823 },
-  { "id": "breiddalsvik", "name": "Breiðdalsvík Campsite", "lat": 64.7958, "lon": -14.0034 },
-  { "id": "egilsstadir", "name": "Egilsstaðir Campsite", "lat": 65.2618, "lon": -14.3949 },
-  { "id": "seydisfjordur", "name": "Seyðisfjörður Campsite", "lat": 65.2603, "lon": -14.0119 },
-  { "id": "nordfjordur", "name": "Neskaupstaður Campsite", "lat": 65.1509, "lon": -13.6862 },
-  { "id": "bakkagerdi", "name": "Borgarfjörður eystri Campsite", "lat": 65.5325, "lon": -13.8162 },
-  { "id": "asbyrgi", "name": "Ásbyrgi (Jökulsárgljúfur)", "lat": 66.0470, "lon": -16.5180 },
-  { "id": "husavik", "name": "Húsavík Campsite", "lat": 66.0476, "lon": -17.3418 },
-  { "id": "akureyri", "name": "Hamrar Campsite, Akureyri", "lat": 65.6511, "lon": -18.1205 },
-  { "id": "siglufjordur", "name": "Siglufjörður Campsite", "lat": 66.1510, "lon": -18.9070 },
-  { "id": "olafsfjordur", "name": "Ólafsfjörður Campsite", "lat": 66.0678, "lon": -18.6620 },
-  { "id": "dalvik", "name": "Dalvík Campsite", "lat": 65.9702, "lon": -18.5335 },
-  { "id": "saudarkrokur", "name": "Sauðárkrókur Campsite", "lat": 65.7502, "lon": -19.6411 },
-  { "id": "blonduos", "name": "Blönduós Campsite", "lat": 65.6601, "lon": -20.2892 },
-  { "id": "hvammstangi", "name": "Hvammstangi Campsite", "lat": 65.4028, "lon": -20.9431 },
-  { "id": "holmavik", "name": "Hólmavík Campsite", "lat": 65.7044, "lon": -21.6813 },
-  { "id": "isafjordur", "name": "Ísafjörður Campsite", "lat": 66.0715, "lon": -23.1457 },
-  { "id": "bolungarvik", "name": "Bolungarvík Campsite", "lat": 66.1518, "lon": -23.2549 },
-  { "id": "thingeyri", "name": "Þingeyri Campsite", "lat": 65.8789, "lon": -23.5057 },
-  { "id": "patreksfjordur", "name": "Patreksfjörður Campsite", "lat": 65.5951, "lon": -23.9950 },
-  { "id": "talknafjordur", "name": "Tálknafjörður Campsite", "lat": 65.6287, "lon": -23.8790 },
-  { "id": "bildudalur", "name": "Bíldudalur Campsite", "lat": 65.6841, "lon": -23.6107 },
-  { "id": "stykkisholmur", "name": "Stykkishólmur Campsite", "lat": 65.0744, "lon": -22.7329 },
-  { "id": "borgarnes", "name": "Borgarnes Campsite", "lat": 64.5443, "lon": -21.9223 },
-  { "id": "bifrost", "name": "Bifröst Campsite", "lat": 64.7621, "lon": -21.5511 },
-  { "id": "akranes", "name": "Akranes Campsite", "lat": 64.3222, "lon": -22.0746 },
-  { "id": "hellissandur", "name": "Hellissandur Campsite", "lat": 64.9245, "lon": -23.8799 },
-  { "id": "olafsvik", "name": "Ólafsvík Campsite", "lat": 64.8942, "lon": -23.7108 },
-  { "id": "grundarfjordur", "name": "Grundarfjörður Campsite", "lat": 64.9242, "lon": -23.2630 },
-  { "id": "arnafjordur", "name": "Arnarstapi Campsite", "lat": 64.7696, "lon": -23.6228 },
-  { "id": "reykholt", "name": "Reykholt Campsite", "lat": 64.6630, "lon": -21.2980 },
-  { "id": "laugarvatn", "name": "Laugarvatn Campsite", "lat": 64.2161, "lon": -20.7203 },
-  { "id": "gullfoss", "name": "Gullfoss Campsite", "lat": 64.3251, "lon": -20.1212 },
-  { "id": "fludir", "name": "Flúðir Campsite", "lat": 64.1379, "lon": -20.3206 },
-  { "id": "skerjadalsbrekka", "name": "Skjól Campsite (near Geysir)", "lat": 64.3165, "lon": -20.3181 },
-  { "id": "hella", "name": "Hella Campsite", "lat": 63.8357, "lon": -20.3993 },
-  { "id": "vikurbraut", "name": "Landmannalaugar Campsite", "lat": 63.9821, "lon": -19.0603 },
-  { "id": "thorsmork", "name": "Þórsmörk Volcano Huts Campsite", "lat": 63.6827, "lon": -19.4827 },
-  { "id": "askja", "name": "Askja Dreki Campsite", "lat": 65.0429, "lon": -16.6621 },
-  { "id": "kerlingarfjoll", "name": "Kerlingarfjöll Campsite", "lat": 64.6514, "lon": -19.3174 },
-  { "id": "hveravellir", "name": "Hveravellir Campsite", "lat": 64.8677, "lon": -19.5522 },
-  { "id": "kjolur", "name": "Kjölur Highland Route Campsite", "lat": 64.7473, "lon": -19.5477 },
-  { "id": "myvatn", "name": "Reykjahlíð (Mývatn) Campsite", "lat": 65.6443, "lon": -16.9995 },
-  { "id": "krafla", "name": "Krafla Area Campsite", "lat": 65.7152, "lon": -16.7894 },
-  { "id": "grimsey", "name": "Grímsey Island Campsite", "lat": 66.5467, "lon": -18.0069 }
+    {
+    "id": "osm_relation_12561703",
+    "name": "Atlavík",
+    "lat": 65.089634,
+    "lon": -14.768243
+  },
+  {
+    "id": "osm_way_823821729",
+    "name": "Á",
+    "lat": 65.264741,
+    "lon": -22.342116
+  },
+  {
+    "id": "osm_node_12909134201",
+    "name": "Áfangagil",
+    "lat": 64.102271,
+    "lon": -19.577598
+  },
+  {
+    "id": "osm_node_910847719",
+    "name": "Áfangi",
+    "lat": 65.148948,
+    "lon": -19.72924
+  },
+  {
+    "id": "osm_way_182765543",
+    "name": "Álfaskeið",
+    "lat": 64.085997,
+    "lon": -20.423319
+  },
+  {
+    "id": "osm_relation_11361844",
+    "name": "Álftavatn",
+    "lat": 63.856751,
+    "lon": -19.229276
+  },
+  {
+    "id": "osm_node_60714223",
+    "name": "Árbúðir",
+    "lat": 64.609222,
+    "lon": -19.703618
+  },
+  {
+    "id": "osm_way_225558183",
+    "name": "Árhús",
+    "lat": 63.832129,
+    "lon": -20.407593
+  },
+  {
+    "id": "osm_way_1303098459",
+    "name": "Ármeningaflöt",
+    "lat": 63.6779,
+    "lon": -19.476579
+  },
+  {
+    "id": "osm_way_182970919",
+    "name": "Ártún",
+    "lat": 65.906797,
+    "lon": -18.068232
+  },
+  {
+    "id": "osm_way_980883137",
+    "name": "Ásbrandsstaðir",
+    "lat": 65.704202,
+    "lon": -14.919029
+  },
+  {
+    "id": "osm_way_39690000",
+    "name": "Ásbyrgi",
+    "lat": 66.024659,
+    "lon": -16.49658
+  },
+  {
+    "id": "osm_relation_12546769",
+    "name": "Ásbyrgi í Vesturdal",
+    "lat": 65.933307,
+    "lon": -16.556818
+  },
+  {
+    "id": "osm_way_485351115",
+    "name": "Bakkafjörður",
+    "lat": 66.037118,
+    "lon": -14.802118
+  },
+  {
+    "id": "osm_way_228249502",
+    "name": "Bakkaflöt",
+    "lat": 65.463331,
+    "lon": -19.345846
+  },
+  {
+    "id": "osm_node_685898655",
+    "name": "Básar",
+    "lat": 63.677637,
+    "lon": -19.481285
+  },
+  {
+    "id": "osm_node_12985225409",
+    "name": "Bíldudalur Camping Ground",
+    "lat": 65.683381,
+    "lon": -23.603668
+  },
+  {
+    "id": "osm_way_485352747",
+    "name": "Bjarg",
+    "lat": 65.640252,
+    "lon": -16.91397
+  },
+  {
+    "id": "osm_way_911130492",
+    "name": "Bjargaflöt",
+    "lat": 63.677578,
+    "lon": -19.48265
+  },
+  {
+    "id": "osm_way_496339866",
+    "name": "Bjarkarlundur",
+    "lat": 65.556043,
+    "lon": -22.101598
+  },
+  {
+    "id": "osm_node_4393992411",
+    "name": "Bjarnarnes",
+    "lat": 66.391302,
+    "lon": -22.353015
+  },
+  {
+    "id": "osm_way_482486028",
+    "name": "Bjarteyjarsandur",
+    "lat": 64.397992,
+    "lon": -21.509964
+  },
+  {
+    "id": "osm_node_4370113492",
+    "name": "Blagil",
+    "lat": 63.966443,
+    "lon": -18.321453
+  },
+  {
+    "id": "osm_node_4305203589",
+    "name": "Blágil",
+    "lat": 64.089684,
+    "lon": -18.110116
+  },
+  {
+    "id": "osm_way_436501046",
+    "name": "Blágil",
+    "lat": 63.966982,
+    "lon": -18.324363
+  },
+  {
+    "id": "osm_way_485347177",
+    "name": "Blönduós",
+    "lat": 65.659101,
+    "lon": -20.275294
+  },
+  {
+    "id": "osm_way_305483199",
+    "name": "Borg í Grimsnesi",
+    "lat": 64.076627,
+    "lon": -20.770973
+  },
+  {
+    "id": "osm_way_1422144535",
+    "name": "Bragðavellir",
+    "lat": 64.644849,
+    "lon": -14.516095
+  },
+  {
+    "id": "osm_way_233309453",
+    "name": "Breiðavík við Latrabjarg",
+    "lat": 65.549693,
+    "lon": -24.352804
+  },
+  {
+    "id": "osm_way_727899485",
+    "name": "Breiðdalsvík",
+    "lat": 64.79285,
+    "lon": -14.007386
+  },
+  {
+    "id": "osm_way_911130491",
+    "name": "Brúðkaupflöt",
+    "lat": 63.677745,
+    "lon": -19.482886
+  },
+  {
+    "id": "osm_way_494269431",
+    "name": "Búðardalur",
+    "lat": 65.107966,
+    "lon": -21.764773
+  },
+  {
+    "id": "osm_way_249836961",
+    "name": "Camp Egilsstaðir",
+    "lat": 65.258233,
+    "lon": -14.408729
+  },
+  {
+    "id": "osm_way_712155124",
+    "name": "Camper Resort Reykjavík",
+    "lat": 64.146878,
+    "lon": -21.809832
+  },
+  {
+    "id": "osm_node_5776372647",
+    "name": "Camping 66.12° North",
+    "lat": 66.200038,
+    "lon": -17.102987
+  },
+  {
+    "id": "osm_way_1279750714",
+    "name": "Camping Berunes",
+    "lat": 64.697671,
+    "lon": -14.254113
+  },
+  {
+    "id": "osm_way_1080918601",
+    "name": "Camping Borðeyri",
+    "lat": 65.21125,
+    "lon": -21.096592
+  },
+  {
+    "id": "osm_node_13068615726",
+    "name": "Camping Mjóanes",
+    "lat": 65.151478,
+    "lon": -14.63385
+  },
+  {
+    "id": "osm_node_477368841",
+    "name": "Camping Volcano Huts",
+    "lat": 63.691248,
+    "lon": -19.540079
+  },
+  {
+    "id": "osm_way_1274063239",
+    "name": "Campsite Reception",
+    "lat": 64.015374,
+    "lon": -16.975225
+  },
+  {
+    "id": "osm_way_485468438",
+    "name": "CJA Campsite",
+    "lat": 65.702698,
+    "lon": -17.348607
+  },
+  {
+    "id": "osm_node_4336206392",
+    "name": "Dalbær",
+    "lat": 66.101031,
+    "lon": -22.571885
+  },
+  {
+    "id": "osm_way_486518346",
+    "name": "Djupivogur",
+    "lat": 64.655668,
+    "lon": -14.284642
+  },
+  {
+    "id": "osm_way_126277392",
+    "name": "Drekaskáli",
+    "lat": 65.041594,
+    "lon": -16.594043
+  },
+  {
+    "id": "osm_node_1604973950",
+    "name": "Drekaskáli Warden Cabin",
+    "lat": 65.042369,
+    "lon": -16.595591
+  },
+  {
+    "id": "osm_way_333123344",
+    "name": "Emstrur",
+    "lat": 63.766481,
+    "lon": -19.373276
+  },
+  {
+    "id": "osm_way_300366520",
+    "name": "Eyjólfsstaðir",
+    "lat": 64.75621,
+    "lon": -14.497936
+  },
+  {
+    "id": "osm_way_169545287",
+    "name": "Fagrabrekka",
+    "lat": 64.276843,
+    "lon": -21.095833
+  },
+  {
+    "id": "osm_node_2931428970",
+    "name": "Fljótshlíð",
+    "lat": 63.723675,
+    "lon": -20.013314
+  },
+  {
+    "id": "osm_way_494270118",
+    "name": "Fljótstunga",
+    "lat": 64.748263,
+    "lon": -20.84568
+  },
+  {
+    "id": "osm_way_484519126",
+    "name": "Flókalundur",
+    "lat": 65.577333,
+    "lon": -23.172448
+  },
+  {
+    "id": "osm_way_298941672",
+    "name": "Fossatún",
+    "lat": 64.594544,
+    "lon": -21.574509
+  },
+  {
+    "id": "osm_node_4393994970",
+    "name": "Furufjörður",
+    "lat": 66.270156,
+    "lon": -22.236435
+  },
+  {
+    "id": "osm_way_445504932",
+    "name": "Garðskagi",
+    "lat": 64.082063,
+    "lon": -22.690198
+  },
+  {
+    "id": "osm_way_485083920",
+    "name": "Gata Free Camping",
+    "lat": 63.829787,
+    "lon": -21.678618
+  },
+  {
+    "id": "osm_node_6655030457",
+    "name": "Geldingafell",
+    "lat": 64.694134,
+    "lon": -15.360801
+  },
+  {
+    "id": "osm_way_243497921",
+    "name": "Gesthús Selfoss",
+    "lat": 63.932819,
+    "lon": -20.988708
+  },
+  {
+    "id": "osm_way_1427741675",
+    "name": "Glúmsstaðir",
+    "lat": 66.410167,
+    "lon": -22.874399
+  }
 ]

@@ -1,2 +1,3 @@
+// ⚠️ campsites.limited.json must always be a subset of campsites.full.json. Do not hand-edit IDs.
 campsites.full.json is generated from OpenStreetMap via Overpass.
 Run npm run campsites:full to refresh.

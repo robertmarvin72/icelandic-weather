@@ -78,6 +78,45 @@ function interpolate(template, vars) {
   return out;
 }
 
+function dateKey(d) {
+  return String(d ?? "").slice(0, 10);
+}
+
+/**
+ * ✅ Enrich candidate days with base-site day points so UI can do correct deltas.
+ * - candidate.windowDays gets: baseSitePoints, baseSitePointsRaw
+ * - matched by date (YYYY-MM-DD)
+ */
+function enrichWithBaseDays(out, windowDaysCount) {
+  if (!out || !Array.isArray(out?.ranked)) return out;
+
+  const baseDays = Array.isArray(out?.explain?.base?.windowDays) ? out.explain.base.windowDays : [];
+  const baseByDate = new Map(baseDays.map((d) => [dateKey(d?.date), d]));
+
+  const ranked = out.ranked.map((c) => {
+    const allDays = Array.isArray(c?.windowDays) ? c.windowDays : [];
+    const days = typeof windowDaysCount === "number" ? allDays.slice(0, windowDaysCount) : allDays;
+
+    const enrichedDays = days.map((d) => {
+      const bd = baseByDate.get(dateKey(d?.date));
+      return {
+        ...d,
+        // ✅ for card + modal comparisons
+        baseSitePoints: typeof bd?.points === "number" ? bd.points : (d?.baseSitePoints ?? null),
+        baseSitePointsRaw:
+          typeof bd?.pointsRaw === "number" ? bd.pointsRaw : (d?.baseSitePointsRaw ?? null),
+      };
+    });
+
+    // keep full list if you ever need it later, but ensure first N days are enriched
+    const mergedWindowDays = [...enrichedDays, ...allDays.slice(enrichedDays.length).map((d) => d)];
+
+    return { ...c, windowDays: mergedWindowDays };
+  });
+
+  return { ...out, ranked };
+}
+
 export default function RoutePlannerCard({
   t = (k) => k,
   entitlements,
@@ -149,18 +188,22 @@ export default function RoutePlannerCard({
       try {
         const startDateISO = tomorrowISODate();
 
-        const out = await getRelocationRecommendation(baseSiteId, sites, {
+        const outRaw = await getRelocationRecommendation(baseSiteId, sites, {
           radiusKm,
           days: windowDays,
           startDateISO,
           limit,
-
           // wetThresholdMm removed from UI by design
         });
+
+        // ✅ IMPORTANT: enrich ranked day rows with base-site points for correct UI verdicts
+        const out = enrichWithBaseDays(outRaw, windowDays);
 
         // DEBUG: log raw output for easier debugging of reason labels etc.
         console.log("ROUTE DEBUG radius/days:", { radiusKm, windowDays });
         console.log("Candidates fetched:", out?.debugFetch?.ids);
+
+        // safer debug: compare candidate points vs baseSitePoints (not basePts)
         console.log(
           "Top ranked (first 10):",
           (out?.ranked || []).slice(0, 10).map((r) => ({
@@ -168,9 +211,10 @@ export default function RoutePlannerCard({
             delta: r.deltaVsBase,
             days: (r.windowDays || [])
               .slice(0, windowDays)
-              .map((d) => (d?.points ?? 0) - (d?.basePts ?? 0)),
+              .map((d) => (d?.points ?? 0) - (d?.baseSitePoints ?? 0)),
           }))
         );
+
         console.log(
           "Top 10 deltas:",
           (out?.ranked || []).slice(0, 10).map((r) => ({
@@ -183,9 +227,21 @@ export default function RoutePlannerCard({
 
         console.log("DAY0:", best?.windowDays?.[0]);
         console.log("DAY0 keys:", Object.keys(best?.windowDays?.[0] || {}));
-        // DEBUG: also log the input params for easier repro
 
-        if (!cancelled) setResult(out);
+        console.log("SITES SAMPLE", sites?.[0]);
+
+        if (!cancelled) {
+          setResult(out);
+
+          // ✅ ADAPTIVE DEBUG
+          console.log("[ADAPTIVE]", {
+            max: out?.debug?.adaptiveRadiusMaxKm,
+            used: out?.debug?.adaptiveRadiusUsedKm,
+            attempts: out?.debug?.adaptiveRadiusAttempts,
+            bestDelta: out?.delta,
+            verdict: out?.verdict,
+          });
+        }
       } catch (e) {
         const msg = e?.message || "Route planner failed";
         if (!cancelled) {
@@ -247,8 +303,6 @@ export default function RoutePlannerCard({
       worseDays = 0;
 
     for (const d of slice) {
-      // ✅ Camper-first: compare clamped points (0..10)
-      // fall back to raw only if points are missing (should be rare)
       const basePts =
         typeof d?.baseSitePoints === "number"
           ? d.baseSitePoints
@@ -263,7 +317,30 @@ export default function RoutePlannerCard({
             ? d.pointsRaw
             : 0;
 
-      const delta = candPts - basePts;
+      const baseRaw =
+        typeof d?.baseSitePointsRaw === "number"
+          ? d.baseSitePointsRaw
+          : typeof d?.baseSitePoints === "number"
+            ? d.baseSitePoints
+            : 0;
+
+      const candRaw =
+        typeof d?.pointsRaw === "number"
+          ? d.pointsRaw
+          : typeof d?.points === "number"
+            ? d.points
+            : 0;
+
+      const deltaPts = candPts - basePts;
+      const deltaRaw = candRaw - baseRaw;
+
+      // ✅ If clamped points are “flatlined” (0 vs 0 or 10 vs 10), use RAW delta.
+      // Also use RAW if deltaPts is basically zero but RAW shows a real difference.
+      const useRaw =
+        (candPts === basePts && (candPts <= 0.0001 || candPts >= 9.9999)) ||
+        Math.abs(deltaPts) < 0.0001;
+
+      const delta = useRaw ? deltaRaw : deltaPts;
 
       if (delta > THRESH) betterDays++;
       else if (delta < -THRESH) worseDays++;
@@ -282,7 +359,6 @@ export default function RoutePlannerCard({
 
   function getVerdictFromDays(windowDaysArr, windowDaysCount) {
     const c = getDayCounts(windowDaysArr, windowDaysCount);
-
     if (!c || c.totalDays === 0) return "same";
 
     // Clear majority better

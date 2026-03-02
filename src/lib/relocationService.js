@@ -1,116 +1,144 @@
 // src/lib/relocationService.js
-import { distanceKm } from "../utils/distance";
-import { getForecast } from "../lib/forecastCache";
-import { relocationEngine } from "../lib/relocationEngine";
+
+import { getForecast } from "./forecastCache";
+import { relocationEngine } from "./relocationEngine";
 
 /**
- * Async wrapper for relocationEngine:
- * - preselect nearest candidates within radius (limit)
- * - fetch forecasts for base + candidates (resilient)
- * - run relocationEngine() with forecastMap
- *
- * @param {string} baseSiteId
- * @param {Array} campsites  // full sites list
- * @param {Object} opts
- * @returns {Promise<RelocationOutput & { debugFetch: any }>}
+ * Build radius steps up to maxRadius (inclusive).
+ * Robust growth: 50 -> 100 -> 200 -> 300 -> 400 ... (clamped)
  */
-export async function getRelocationRecommendation(baseSiteId, campsites, opts = {}) {
-  const radiusKm = Number.isFinite(opts.radiusKm) ? opts.radiusKm : 50;
-  const days = Number.isInteger(opts.days) ? opts.days : 3;
+function buildRadiusSteps(maxRadiusKm) {
+  const maxR = Number(maxRadiusKm);
+  if (!Number.isFinite(maxR) || maxR <= 0) return [50];
 
-  const minDeltaToMoveDefault = days === 2 ? 1.8 : days === 3 ? 2.2 : days === 4 ? 2.5 : 2.8; // 5 dagar
+  if (maxR <= 50) return [maxR];
 
-  const minDeltaToConsiderDefault = days === 2 ? 0.7 : days === 3 ? 0.9 : days === 4 ? 1.0 : 1.1;
+  const steps = [];
+  let r = 50;
 
-  const startDateISO = String(opts.startDateISO ?? "").slice(0, 10);
-  if (!startDateISO) throw new Error("startDateISO is required");
+  while (r < maxR) {
+    steps.push(r);
+    if (r < 200) r = r * 2;
+    else r = r + 100;
+  }
 
-  const limit = Number.isInteger(opts.limit) ? opts.limit : 30;
+  if (steps[steps.length - 1] !== maxR) steps.push(maxR);
 
-  // Engine config (pass-through with sane defaults handled in engine)
-  const config = opts.config || {
-    wetThresholdMm: 2,
-    minDeltaToMove:
-      typeof opts.minDeltaToMove === "number" ? opts.minDeltaToMove : minDeltaToMoveDefault,
-    minDeltaToConsider:
-      typeof opts.minDeltaToConsider === "number"
-        ? opts.minDeltaToConsider
-        : minDeltaToConsiderDefault,
-    weightDecay: typeof opts.weightDecay === "number" ? opts.weightDecay : 0.85,
-    useWorstDayGuardrail:
-      typeof opts.useWorstDayGuardrail === "boolean" ? opts.useWorstDayGuardrail : days === 1,
-    worstDayMin: typeof opts.worstDayMin === "number" ? opts.worstDayMin : 2,
-    reasonMinDelta: typeof opts.reasonMinDelta === "number" ? opts.reasonMinDelta : 1,
-    maxReasons: Number.isInteger(opts.maxReasons) ? opts.maxReasons : 4,
-  };
+  return Array.from(new Set(steps)).sort((a, b) => a - b);
+}
 
-  const sites = Array.isArray(campsites) ? campsites : [];
-  const byId = new Map(sites.map((s) => [s.id, s]));
-  const base = byId.get(baseSiteId);
-  if (!base) throw new Error("Base site not found");
+/**
+ * Fetch forecasts for a list of sites and return forecastMap keyed by site.id.
+ * Uses getForecast() caching + inflight coalescing automatically.
+ */
+async function buildForecastMapForSites(sites) {
+  const list = Array.isArray(sites) ? sites : [];
 
-  // Preselect nearest candidates within radius (performance)
-  const candidates = sites
-    .filter((s) => s && s.id && s.id !== baseSiteId)
-    .map((s) => ({ site: s, d: distanceKm(base, s) }))
-    .filter(({ d }) => Number.isFinite(d) && d <= radiusKm)
-    .sort((a, b) => a.d - b.d)
-    .slice(0, limit)
-    .map((x) => x.site);
+  const entries = await Promise.all(
+    list.map(async (s) => {
+      const id = s?.id;
+      const lat = s?.lat ?? s?.latitude;
+      const lon = s?.lon ?? s?.lng ?? s?.longitude;
 
-  const toFetch = [base, ...candidates];
+      if (!id || typeof lat !== "number" || typeof lon !== "number") {
+        return [id || null, null];
+      }
 
-  // Allow dependency injection for tests
-  const fetcher = typeof opts.getForecastFn === "function" ? opts.getForecastFn : getForecast;
-
-  const forecastMap = {};
-  const fetchStats = {
-    requested: toFetch.length,
-    ok: 0,
-    failed: 0,
-    missing: 0,
-    ids: toFetch.map((s) => s.id),
-  };
-
-  // Fetch forecasts in parallel, resilient to per-site failures
-  const settled = await Promise.allSettled(
-    toFetch.map(async (s) => {
-      const raw = await fetcher({ lat: s.lat, lon: s.lon });
-      return { id: s.id, raw };
+      const data = await getForecast({ lat, lon });
+      return [id, data];
     })
   );
 
-  for (const res of settled) {
-    if (res.status === "fulfilled") {
-      const { id, raw } = res.value;
-      if (raw) {
-        forecastMap[id] = raw;
-        fetchStats.ok++;
-      } else {
-        fetchStats.missing++;
-      }
-    } else {
-      fetchStats.failed++;
-    }
+  const forecastMap = {};
+  for (const [id, data] of entries) {
+    if (id && data) forecastMap[id] = data;
   }
+  return forecastMap;
+}
 
-  if (!forecastMap[baseSiteId]) {
-    throw new Error("Base site forecast missing (cannot compute recommendation)");
-  }
+/**
+ * SINGLE run (one radius).
+ * Keep this function as the one true engine call.
+ */
+async function getRelocationRecommendationSingle(baseSiteId, sites, opts = {}) {
+  const { radiusKm = 50, days = 3, startDateISO, limit = 30, config } = opts;
 
-  // Run the pure engine
+  const campsites = Array.isArray(sites) ? sites : [];
+  if (!campsites.length) throw new Error("No campsites provided");
+
+  // Build forecast map for all sites we might score (engine will ignore missing ones)
+  const forecastMap = await buildForecastMapForSites(campsites);
+
   const out = relocationEngine({
     baseSiteId,
     radiusKm,
     startDateISO,
     days,
-    campsites: sites,
+    campsites,
     forecastMap,
     config,
   });
 
-  return {
-    ...out,
-    debugFetch: fetchStats,
-  };
+  // Respect limit without changing engine behavior
+  if (out && Array.isArray(out.ranked) && Number.isInteger(limit)) {
+    out.ranked = out.ranked.slice(0, Math.max(1, limit));
+  }
+
+  return out;
+}
+
+/**
+ * ADAPTIVE wrapper:
+ * - UI radiusKm is MAX CAP
+ * - escalates radii until it finds something >= minDeltaToConsider
+ * - returns last attempt (usually the first “good enough”)
+ */
+export async function getRelocationRecommendation(baseSiteId, sites, opts = {}) {
+  const maxRadiusKm = Number.isFinite(opts?.radiusKm) ? opts.radiusKm : 50;
+
+  const cfg = opts?.config || {};
+  const minDeltaToConsider =
+    typeof cfg.minDeltaToConsider === "number" ? cfg.minDeltaToConsider : 1;
+
+  const radiusSteps = buildRadiusSteps(maxRadiusKm);
+
+  let last = null;
+  const attempts = [];
+
+  for (const r of radiusSteps) {
+    const res = await getRelocationRecommendationSingle(baseSiteId, sites, {
+      ...opts,
+      radiusKm: r,
+    });
+
+    last = res;
+
+    const bestDelta =
+      typeof res?.delta === "number"
+        ? res.delta
+        : typeof res?.ranked?.[0]?.deltaVsBase === "number"
+          ? res.ranked[0].deltaVsBase
+          : 0;
+
+    attempts.push({
+      radiusKm: r,
+      bestDelta,
+      verdict: res?.verdict || null,
+      candidatesScored: res?.debug?.candidatesScored ?? null,
+    });
+
+    if (bestDelta >= minDeltaToConsider) break;
+  }
+
+  if (last) {
+    last.debug = {
+      ...(last.debug || {}),
+      adaptiveRadiusEnabled: true,
+      adaptiveRadiusMaxKm: maxRadiusKm,
+      adaptiveRadiusUsedKm: last.radiusKm ?? attempts[attempts.length - 1]?.radiusKm ?? maxRadiusKm,
+      adaptiveRadiusAttempts: attempts,
+    };
+  }
+
+  return last;
 }
