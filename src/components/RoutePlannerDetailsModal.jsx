@@ -1,3 +1,4 @@
+// src/components/RoutePlannerDetailsModal.jsx
 import React, { useEffect, useMemo, useState } from "react";
 import { createPortal } from "react-dom";
 
@@ -20,8 +21,27 @@ export default function RoutePlannerDetailsModal({
   baseSiteLabel,
   candidate,
   windowDaysCount, // keep modal in sync with slider
+  adaptiveUsedKm,
+  adaptiveMaxKm,
 }) {
   const [showAdvanced, setShowAdvanced] = useState(false);
+
+  // ✅ Only show when used < max
+  const showAdaptiveLine =
+    typeof adaptiveUsedKm === "number" &&
+    typeof adaptiveMaxKm === "number" &&
+    adaptiveUsedKm < adaptiveMaxKm;
+
+  // ✅ More obvious glow: triggers when modal opens AND when used/max changes
+  const [radiusGlow, setRadiusGlow] = useState(false);
+  useEffect(() => {
+    if (!open) return;
+    if (!showAdaptiveLine) return;
+
+    setRadiusGlow(true);
+    const tt = setTimeout(() => setRadiusGlow(false), 1200);
+    return () => clearTimeout(tt);
+  }, [open, adaptiveUsedKm, adaptiveMaxKm, showAdaptiveLine]);
 
   // Close on ESC
   useEffect(() => {
@@ -108,8 +128,7 @@ export default function RoutePlannerDetailsModal({
     return 0;
   }
 
-  // ✅ Delta resolver:
-  // Use clamped points normally, but fall back to RAW when clamping hides the delta (0/10 saturation or near-zero delta).
+  // ✅ Delta resolver (RAW fallback when clamping hides delta)
   function getDayDelta(d) {
     const basePts =
       typeof d?.baseSitePoints === "number"
@@ -134,7 +153,6 @@ export default function RoutePlannerDetailsModal({
     const deltaPts = candPts - basePts;
     const deltaRaw = candRaw - baseRaw;
 
-    // If both are clamped equal at floor/ceiling, or deltaPts is ~0, RAW is more informative.
     const useRaw =
       (candPts === basePts && (candPts <= 0.0001 || candPts >= 9.9999)) ||
       Math.abs(deltaPts) < 0.0001;
@@ -178,6 +196,40 @@ export default function RoutePlannerDetailsModal({
         <div className="flex items-start justify-between gap-3 p-4 border-b border-slate-200 dark:border-slate-800">
           <div>
             <div className="text-lg font-semibold text-slate-900 dark:text-slate-100">{title}</div>
+
+            {/* ✅ Adaptive line sits cleanly under title (OBVIOUS glow) */}
+            {showAdaptiveLine ? (
+              <div
+                className={`
+                  mt-2 inline-flex items-center gap-2
+                  rounded-lg px-2.5 py-1
+                  text-xs font-semibold
+                  transition-all duration-300 ease-out
+                  ${
+                    radiusGlow
+                      ? `
+                        text-emerald-800 dark:text-emerald-200
+                        bg-emerald-100/90 dark:bg-emerald-900/45
+                        ring-2 ring-emerald-400/80 dark:ring-emerald-300/60
+                        shadow-[0_0_22px_rgba(16,185,129,0.65)]
+                        animate-pulse
+                      `
+                      : `
+                        text-slate-600 dark:text-slate-300
+                        bg-slate-100/70 dark:bg-slate-900/40
+                        ring-1 ring-slate-200 dark:ring-slate-800
+                      `
+                  }
+                `}
+              >
+                <span>{t?.("routeAdaptiveUsedShort") || "Used radius"}:</span>
+                <span className="tabular-nums">
+                  {adaptiveUsedKm} / {adaptiveMaxKm} km
+                </span>
+              </div>
+            ) : null}
+
+            {/* Normal header meta line */}
             <div className="mt-1 text-sm text-slate-600 dark:text-slate-300">
               {t?.("routeDetailsComparedTo") || "Borið saman við"}:{" "}
               <span className="font-medium">
@@ -248,8 +300,6 @@ export default function RoutePlannerDetailsModal({
             ) : (
               <ul className="mt-2 space-y-2">
                 {reasons.map((r, idx) => {
-                  // NOTE: app elsewhere uses FLAT keys (routeReasonWind etc.)
-                  // Keeping backward-compat with routeReason_<type> if you already have them.
                   const key = r?.type ? `routeReason_${r.type}` : "";
                   const label =
                     (r?.type && t?.(key)) ||
@@ -331,15 +381,9 @@ export default function RoutePlannerDetailsModal({
                   <thead className="bg-slate-50 text-slate-700 dark:bg-slate-900 dark:text-slate-200">
                     <tr>
                       <th className="px-3 py-2">{t?.("routeDetailsDate") || "Dagsetning"}</th>
-
-                      {/* Base site points (what we compare against) */}
                       <th className="px-3 py-2">{t?.("routeDetailsBasePts") || "Grunn stig"}</th>
-
-                      {/* Candidate points */}
                       <th className="px-3 py-2">{t?.("routeDetailsCandPts") || "Stig valkosts"}</th>
-
                       <th className="px-3 py-2">{t?.("routeDetailsDelta") || "Mismunur"}</th>
-
                       <th className="px-3 py-2">{t?.("routeDetailsWindPen") || "Vind refsing"}</th>
                       <th className="px-3 py-2">{t?.("routeDetailsGustPen") || "Hviðu refsing"}</th>
                       <th className="px-3 py-2">
@@ -349,8 +393,6 @@ export default function RoutePlannerDetailsModal({
                         {t?.("routeDetailsStreakPen") || "Rigning í röð refsing"}
                       </th>
                       <th className="px-3 py-2">{t?.("routeDetailsShelter") || "Skjól"}</th>
-
-                      {/* Candidate temp baseline (dev/debug) */}
                       <th className="px-3 py-2">{t?.("routeDetailsTempBase") || "Hita-grunnur"}</th>
                     </tr>
                   </thead>
@@ -358,8 +400,6 @@ export default function RoutePlannerDetailsModal({
                     {days.map((d, i) => {
                       const basePts = getBasePts(d);
                       const candPts = getCandPts(d);
-
-                      // ✅ Use the same delta logic as verdictRows (RAW fallback when clamping hides the delta)
                       const rowDelta = getDayDelta(d);
 
                       return (
@@ -368,7 +408,6 @@ export default function RoutePlannerDetailsModal({
                           className="border-t border-slate-200 text-slate-800 dark:border-slate-800 dark:text-slate-100"
                         >
                           <td className="px-3 py-2">{d?.date || "—"}</td>
-
                           <td className="px-3 py-2">{fmt(basePts, 1)}</td>
                           <td className="px-3 py-2">{fmt(candPts, 1)}</td>
                           <td className="px-3 py-2 font-semibold">{signFmt(rowDelta, 1)}</td>
@@ -385,7 +424,6 @@ export default function RoutePlannerDetailsModal({
                             </span>
                           </td>
 
-                          {/* This is the *candidate temp baseline*, not base-site points */}
                           <td className="px-3 py-2">{fmt(d?.basePts, 1)}</td>
                         </tr>
                       );

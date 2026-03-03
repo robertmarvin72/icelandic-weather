@@ -419,6 +419,12 @@ export const translations = {
     routeDaysWorse: "worse days",
 
     routeDetailsTempBase: "Temperature base",
+
+    routeAdaptiveRadiusUsed: "Searched out to {used} km (max {max} km)",
+    routeAdaptiveFoundBeyond:
+      "No better option within {prev} km — but found a better one within {used} km.",
+    routeAdaptiveNoBetterWithin: "No better option found within {used} km (max {max} km).",
+    routeAdaptiveUsedShort: "Searched up to",
   },
 
   // Icelandic (Íslenska) -------------------------------------------------------------------------------------------------------------------
@@ -845,5 +851,10 @@ export const translations = {
     routeDaysWorse: "verri",
 
     routeDetailsTempBase: "Hita-grunnur",
+
+    routeAdaptiveRadiusUsed: "Leitaði út í {used} km (max {max} km)",
+    routeAdaptiveFoundBeyond: "Enginn betri innan {prev} km — en fann betri kost innan {used} km.",
+    routeAdaptiveNoBetterWithin: "Enginn betri kostur fannst innan {used} km (max {max} km).",
+    routeAdaptiveUsedShort: "Leitað út í",
   },
 };

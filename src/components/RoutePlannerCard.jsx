@@ -101,14 +101,12 @@ function enrichWithBaseDays(out, windowDaysCount) {
       const bd = baseByDate.get(dateKey(d?.date));
       return {
         ...d,
-        // ✅ for card + modal comparisons
         baseSitePoints: typeof bd?.points === "number" ? bd.points : (d?.baseSitePoints ?? null),
         baseSitePointsRaw:
           typeof bd?.pointsRaw === "number" ? bd.pointsRaw : (d?.baseSitePointsRaw ?? null),
       };
     });
 
-    // keep full list if you ever need it later, but ensure first N days are enriched
     const mergedWindowDays = [...enrichedDays, ...allDays.slice(enrichedDays.length).map((d) => d)];
 
     return { ...c, windowDays: mergedWindowDays };
@@ -122,19 +120,11 @@ export default function RoutePlannerCard({
   entitlements,
   me,
   onUpgrade,
-
-  // IMPORTANT: pass the same sites list as rest of app
   sites = [],
-
-  // Base selection from app
   baseSiteId,
-
   radiusKmDefault = 50,
   windowDaysDefault = 3,
-
-  // kept for backward compat with call-sites; not used in UI anymore
   wetThresholdMmDefault = 3, // eslint-disable-line no-unused-vars
-
   limitDefault = 30,
 }) {
   const isPro = !!entitlements?.isPro;
@@ -150,17 +140,18 @@ export default function RoutePlannerCard({
   const [detailsOpen, setDetailsOpen] = useState(false);
   const [detailsCandidate, setDetailsCandidate] = useState(null);
 
+  // ✅ Glow state (adaptive radius text)
+  const [adaptiveGlow, setAdaptiveGlow] = useState(false);
+  const prevAdaptiveUsedRef = React.useRef(null);
+
   function openDetails(candidateRow) {
     if (!candidateRow) return;
     setDetailsCandidate(candidateRow);
     setDetailsOpen(true);
   }
 
-  // Kept for backward compat (used in aria-label as extra hint)
   function getImprovementLabel(delta, tFn) {
     if (typeof delta !== "number") return null;
-
-    // thresholds (feel free to tweak later)
     if (delta < 0.1) return tFn("routeImproveNone");
     if (delta < 1.0) return tFn("routeImproveSlight");
     if (delta < 2.5) return tFn("routeImproveBetter");
@@ -193,17 +184,13 @@ export default function RoutePlannerCard({
           days: windowDays,
           startDateISO,
           limit,
-          // wetThresholdMm removed from UI by design
         });
 
-        // ✅ IMPORTANT: enrich ranked day rows with base-site points for correct UI verdicts
         const out = enrichWithBaseDays(outRaw, windowDays);
 
-        // DEBUG: log raw output for easier debugging of reason labels etc.
         console.log("ROUTE DEBUG radius/days:", { radiusKm, windowDays });
         console.log("Candidates fetched:", out?.debugFetch?.ids);
 
-        // safer debug: compare candidate points vs baseSitePoints (not basePts)
         console.log(
           "Top ranked (first 10):",
           (out?.ranked || []).slice(0, 10).map((r) => ({
@@ -222,18 +209,22 @@ export default function RoutePlannerCard({
             delta: r.deltaVsBase,
           }))
         );
-        const best = (out?.ranked || [])[0];
-        console.log("BEST:", best?.siteId, best?.deltaVsBase, best?.windowDays?.slice(0, 2));
 
-        console.log("DAY0:", best?.windowDays?.[0]);
-        console.log("DAY0 keys:", Object.keys(best?.windowDays?.[0] || {}));
+        const bestDbg = (out?.ranked || [])[0];
+        console.log(
+          "BEST:",
+          bestDbg?.siteId,
+          bestDbg?.deltaVsBase,
+          bestDbg?.windowDays?.slice(0, 2)
+        );
 
+        console.log("DAY0:", bestDbg?.windowDays?.[0]);
+        console.log("DAY0 keys:", Object.keys(bestDbg?.windowDays?.[0] || {}));
         console.log("SITES SAMPLE", sites?.[0]);
 
         if (!cancelled) {
           setResult(out);
 
-          // ✅ ADAPTIVE DEBUG
           console.log("[ADAPTIVE]", {
             max: out?.debug?.adaptiveRadiusMaxKm,
             used: out?.debug?.adaptiveRadiusUsedKm,
@@ -287,11 +278,9 @@ export default function RoutePlannerCard({
     );
   }
 
-  // ranked already contains reasons + distances etc.
   const top3 = Array.isArray(result?.ranked) ? result.ranked.slice(0, 3) : [];
   const best = top3[0] || null;
 
-  // Camper-first day verdict threshold (shared with modal)
   const THRESH = 0.75;
 
   function getDayCounts(windowDaysArr, windowDaysCount) {
@@ -334,8 +323,6 @@ export default function RoutePlannerCard({
       const deltaPts = candPts - basePts;
       const deltaRaw = candRaw - baseRaw;
 
-      // ✅ If clamped points are “flatlined” (0 vs 0 or 10 vs 10), use RAW delta.
-      // Also use RAW if deltaPts is basically zero but RAW shows a real difference.
       const useRaw =
         (candPts === basePts && (candPts <= 0.0001 || candPts >= 9.9999)) ||
         Math.abs(deltaPts) < 0.0001;
@@ -350,7 +337,6 @@ export default function RoutePlannerCard({
     return { betterDays, sameDays, worseDays, totalDays: slice.length };
   }
 
-  // Your rule: MOVE only if 2+ better days and 0 worse days
   function getDecisionFromCounts({ betterDays, worseDays }) {
     if (betterDays >= 2 && worseDays === 0) return "move";
     if (betterDays > 0 && betterDays > worseDays) return "consider";
@@ -361,16 +347,8 @@ export default function RoutePlannerCard({
     const c = getDayCounts(windowDaysArr, windowDaysCount);
     if (!c || c.totalDays === 0) return "same";
 
-    // Clear majority better
-    if (c.betterDays > c.worseDays && c.betterDays >= Math.ceil(c.totalDays / 2)) {
-      return "better";
-    }
-
-    // Clear majority worse
-    if (c.worseDays > c.betterDays && c.worseDays >= Math.ceil(c.totalDays / 2)) {
-      return "worse";
-    }
-
+    if (c.betterDays > c.worseDays && c.betterDays >= Math.ceil(c.totalDays / 2)) return "better";
+    if (c.worseDays > c.betterDays && c.worseDays >= Math.ceil(c.totalDays / 2)) return "worse";
     return "same";
   }
 
@@ -408,22 +386,84 @@ export default function RoutePlannerCard({
     `;
   }
 
-  // Decision tool: drive the main verdict box from the BEST option day-counts
   const bestCounts = best ? getDayCounts(best.windowDays, windowDays) : null;
   const decisionLower = bestCounts ? getDecisionFromCounts(bestCounts) : "stay";
-
   const meta = result && getRouteVerdictMeta(decisionLower);
 
-  // ---------- Trend / “human” explanation text (under verdict) ----------
   const trendText = (() => {
     const v = decisionLower || "stay";
     if (v === "move") return interpolate(t("routePlannerTrendMove"), { days: windowDays });
     if (v === "consider") return interpolate(t("routePlannerTrendConsider"), { days: windowDays });
     return interpolate(t("routePlannerTrendStay"), { days: windowDays });
   })();
-  // ---------------------------------------------------------------------
 
-  // For bullets, use best.reasons but only when decision says move/consider (keeps the story clean)
+  // ---------- Adaptive radius UI text ----------
+  const adaptive = result?.debug || null;
+  const adaptiveEnabled = !!adaptive?.adaptiveRadiusEnabled;
+
+  const adaptiveMaxKm =
+    typeof adaptive?.adaptiveRadiusMaxKm === "number" ? adaptive.adaptiveRadiusMaxKm : null;
+
+  const adaptiveUsedKm =
+    typeof adaptive?.adaptiveRadiusUsedKm === "number" ? adaptive.adaptiveRadiusUsedKm : null;
+
+  const adaptiveAttempts = Array.isArray(adaptive?.adaptiveRadiusAttempts)
+    ? adaptive.adaptiveRadiusAttempts
+    : [];
+
+  const adaptivePrevKm = (() => {
+    if (!adaptiveEnabled || typeof adaptiveUsedKm !== "number") return null;
+    const idx = adaptiveAttempts.findIndex((a) => a?.radiusKm === adaptiveUsedKm);
+    if (idx > 0) return adaptiveAttempts[idx - 1]?.radiusKm ?? null;
+    return null;
+  })();
+
+  const adaptiveRadiusLine =
+    adaptiveEnabled &&
+    typeof adaptiveUsedKm === "number" &&
+    typeof adaptiveMaxKm === "number" &&
+    adaptiveUsedKm < adaptiveMaxKm
+      ? interpolate(t("routeAdaptiveRadiusUsed"), { used: adaptiveUsedKm, max: adaptiveMaxKm })
+      : "";
+
+  const adaptiveVerdictLine = (() => {
+    if (!adaptiveEnabled || typeof adaptiveUsedKm !== "number") return "";
+
+    if (
+      (decisionLower === "move" || decisionLower === "consider") &&
+      typeof adaptivePrevKm === "number" &&
+      adaptiveUsedKm > adaptivePrevKm
+    ) {
+      return interpolate(t("routeAdaptiveFoundBeyond"), {
+        prev: adaptivePrevKm,
+        used: adaptiveUsedKm,
+      });
+    }
+
+    if (decisionLower === "stay" && typeof adaptiveMaxKm === "number") {
+      return interpolate(t("routeAdaptiveNoBetterWithin"), {
+        used: adaptiveUsedKm,
+        max: adaptiveMaxKm,
+      });
+    }
+
+    return "";
+  })();
+  // --------------------------------------------
+
+  // ✅ Glow effect MUST be at top-level (NOT inside getDayCounts)
+  useEffect(() => {
+    if (typeof adaptiveUsedKm !== "number") return;
+
+    if (prevAdaptiveUsedRef.current !== null && prevAdaptiveUsedRef.current !== adaptiveUsedKm) {
+      setAdaptiveGlow(true);
+      const tt = setTimeout(() => setAdaptiveGlow(false), 800);
+      return () => clearTimeout(tt);
+    }
+
+    prevAdaptiveUsedRef.current = adaptiveUsedKm;
+  }, [adaptiveUsedKm]);
+
   const showDecisionReasons =
     ["move", "consider"].includes(String(decisionLower)) &&
     Array.isArray(best?.reasons) &&
@@ -460,6 +500,20 @@ export default function RoutePlannerCard({
             value={radiusKm}
             onChange={(e) => setRadiusKm(Number(e.target.value))}
           />
+          {adaptiveRadiusLine ? (
+            <div
+              className={`
+                mt-1 text-[11px] transition-all duration-700
+                ${
+                  adaptiveGlow
+                    ? "text-emerald-600 dark:text-emerald-400 drop-shadow-[0_0_6px_rgba(16,185,129,0.6)]"
+                    : "text-slate-500 dark:text-slate-400"
+                }
+              `}
+            >
+              {adaptiveRadiusLine}
+            </div>
+          ) : null}
         </label>
 
         <label className="text-xs text-slate-600 dark:text-slate-300">
@@ -486,12 +540,10 @@ export default function RoutePlannerCard({
             <div className="text-sm font-semibold">{t(meta.titleKey)}</div>
             <div className="text-xs text-slate-600 dark:text-slate-300">{t(meta.bodyKey)}</div>
 
-            {/* Trend explanation (human) */}
             {trendText && (
               <div className="text-xs text-slate-600 dark:text-slate-300 mt-1">{trendText}</div>
             )}
 
-            {/* Decision counts (very useful for camper trust) */}
             {bestCounts && (
               <div className="text-xs text-slate-600 dark:text-slate-300 mt-1">
                 {interpolate(t("routeDecisionCounts"), {
@@ -499,10 +551,15 @@ export default function RoutePlannerCard({
                   same: bestCounts.sameDays,
                   worse: bestCounts.worseDays,
                 })}
+
+                {adaptiveVerdictLine ? (
+                  <div className="text-xs text-slate-600 dark:text-slate-300 mt-1">
+                    {adaptiveVerdictLine}
+                  </div>
+                ) : null}
               </div>
             )}
 
-            {/* Reasons bullets (only when we suggest moving/considering) */}
             {showDecisionReasons && (
               <ul className="mt-2 pl-4 text-xs grid gap-1 list-disc text-slate-700 marker:text-emerald-500 dark:text-slate-300">
                 {best.reasons.slice(0, 3).map((r, idx) => {
@@ -548,15 +605,15 @@ export default function RoutePlannerCard({
                             type="button"
                             onClick={() => openDetails(x)}
                             className={`
-                            inline-flex items-center gap-1.5
-                            rounded-full px-2.5 py-1
-                            text-xs font-semibold
-                            transition-all duration-150 ease-out
-                            hover:shadow-sm
-                            active:scale-[0.98]
-                            focus:outline-none focus:ring-2
-                            ${verdictButtonClassFromV(v)}
-                          `}
+                              inline-flex items-center gap-1.5
+                              rounded-full px-2.5 py-1
+                              text-xs font-semibold
+                              transition-all duration-150 ease-out
+                              hover:shadow-sm
+                              active:scale-[0.98]
+                              focus:outline-none focus:ring-2
+                              ${verdictButtonClassFromV(v)}
+                            `}
                             title={deltaTitle}
                             aria-label={`${verdictLabelFromV(v)}. ${
                               oldImprovement ? `${oldImprovement}. ` : ""
@@ -568,7 +625,6 @@ export default function RoutePlannerCard({
                         </AnimatedPill>
                       </div>
 
-                      {/* Reasons: show translated reason labels (no numbers in text) */}
                       {Array.isArray(x.reasons) && x.reasons.length > 0 ? (
                         <ul className="pl-4 mt-1 grid gap-1">
                           {x.reasons.slice(0, 3).map((r, idx) => {
@@ -599,6 +655,8 @@ export default function RoutePlannerCard({
         baseSiteLabel={baseSite?.name ?? baseSiteId}
         candidate={detailsCandidate}
         windowDaysCount={windowDays}
+        adaptiveUsedKm={adaptiveUsedKm}
+        adaptiveMaxKm={adaptiveMaxKm}
       />
     </div>
   );
