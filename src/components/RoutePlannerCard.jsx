@@ -237,6 +237,24 @@ export default function RoutePlannerCard({
     t,
   ]);
 
+  // ✅ MUST stay above all early returns (fixes React #310)
+  useEffect(() => {
+    const usedKm =
+      typeof result?.debug?.adaptiveRadiusUsedKm === "number"
+        ? result.debug.adaptiveRadiusUsedKm
+        : null;
+
+    if (typeof usedKm !== "number") return;
+
+    if (prevAdaptiveUsedRef.current !== null && prevAdaptiveUsedRef.current !== usedKm) {
+      setAdaptiveGlow(true);
+      const tt = setTimeout(() => setAdaptiveGlow(false), 800);
+      return () => clearTimeout(tt);
+    }
+
+    prevAdaptiveUsedRef.current = usedKm;
+  }, [result]);
+
   if (!isPro && !isPreview) return <ProLock t={t} me={me} onUpgrade={onUpgrade} />;
 
   if (!baseSiteId) {
@@ -437,18 +455,6 @@ export default function RoutePlannerCard({
     return "";
   })();
   // --------------------------------------------
-
-  useEffect(() => {
-    if (typeof adaptiveUsedKm !== "number") return;
-
-    if (prevAdaptiveUsedRef.current !== null && prevAdaptiveUsedRef.current !== adaptiveUsedKm) {
-      setAdaptiveGlow(true);
-      const tt = setTimeout(() => setAdaptiveGlow(false), 800);
-      return () => clearTimeout(tt);
-    }
-
-    prevAdaptiveUsedRef.current = adaptiveUsedKm;
-  }, [adaptiveUsedKm]);
 
   const showDecisionReasons =
     !isPreview &&
