@@ -5,6 +5,7 @@ import { getRelocationRecommendation } from "../lib/relocationService";
 import { getRouteVerdictMeta } from "../lib/routeVerdictMeta";
 import RoutePlannerDetailsModal from "./RoutePlannerDetailsModal";
 import AnimatedPill from "./AnimatedPill";
+import { isFeatureAvailable } from "../config/features";
 
 // Map reason type -> FLAT translation key
 function reasonTypeToKey(type) {
@@ -36,6 +37,12 @@ function verdictAccentClasses(verdictLower) {
     default:
       return "border-sky-300 dark:border-sky-700 bg-sky-50/60 dark:bg-sky-900/20";
   }
+}
+
+function verdictIconFromV(v) {
+  if (v === "better") return "↑";
+  if (v === "worse") return "↓";
+  return "•";
 }
 
 function ProLock({ t, me, onUpgrade }) {
@@ -108,7 +115,6 @@ function enrichWithBaseDays(out, windowDaysCount) {
     });
 
     const mergedWindowDays = [...enrichedDays, ...allDays.slice(enrichedDays.length).map((d) => d)];
-
     return { ...c, windowDays: mergedWindowDays };
   });
 
@@ -127,11 +133,18 @@ export default function RoutePlannerCard({
   wetThresholdMmDefault = 3, // eslint-disable-line no-unused-vars
   limitDefault = 30,
 }) {
-  const isPro = !!entitlements?.isPro;
+  const routeFeature = isFeatureAvailable("bestRoutePlanner", entitlements);
+  const isPro = !!routeFeature?.available;
+  const isPreview = !!routeFeature?.preview && !isPro;
 
   const [radiusKm, setRadiusKm] = useState(radiusKmDefault);
   const [windowDays, setWindowDays] = useState(windowDaysDefault);
   const [limit] = useState(limitDefault);
+
+  // ✅ Effective values for preview vs pro
+  const effectiveRadiusKm = isPreview ? 30 : radiusKm;
+  const effectiveWindowDays = isPreview ? 1 : windowDays;
+  const effectiveLimit = isPreview ? 1 : limit;
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -145,6 +158,7 @@ export default function RoutePlannerCard({
   const prevAdaptiveUsedRef = React.useRef(null);
 
   function openDetails(candidateRow) {
+    if (isPreview) return;
     if (!candidateRow) return;
     setDetailsCandidate(candidateRow);
     setDetailsOpen(true);
@@ -170,7 +184,8 @@ export default function RoutePlannerCard({
       setError("");
       setResult(null);
 
-      if (!isPro) return;
+      // ✅ allow preview to run (but limited scope)
+      if (!isPro && !isPreview) return;
       if (!baseSiteId) return;
       if (!baseSite) return;
       if (!Array.isArray(sites) || sites.length === 0) return;
@@ -180,58 +195,16 @@ export default function RoutePlannerCard({
         const startDateISO = tomorrowISODate();
 
         const outRaw = await getRelocationRecommendation(baseSiteId, sites, {
-          radiusKm,
-          days: windowDays,
+          radiusKm: effectiveRadiusKm,
+          days: effectiveWindowDays,
           startDateISO,
-          limit,
+          limit: effectiveLimit,
         });
 
-        const out = enrichWithBaseDays(outRaw, windowDays);
-
-        console.log("ROUTE DEBUG radius/days:", { radiusKm, windowDays });
-        console.log("Candidates fetched:", out?.debugFetch?.ids);
-
-        console.log(
-          "Top ranked (first 10):",
-          (out?.ranked || []).slice(0, 10).map((r) => ({
-            site: r.siteName ?? r.siteId,
-            delta: r.deltaVsBase,
-            days: (r.windowDays || [])
-              .slice(0, windowDays)
-              .map((d) => (d?.points ?? 0) - (d?.baseSitePoints ?? 0)),
-          }))
-        );
-
-        console.log(
-          "Top 10 deltas:",
-          (out?.ranked || []).slice(0, 10).map((r) => ({
-            site: r.siteId,
-            delta: r.deltaVsBase,
-          }))
-        );
-
-        const bestDbg = (out?.ranked || [])[0];
-        console.log(
-          "BEST:",
-          bestDbg?.siteId,
-          bestDbg?.deltaVsBase,
-          bestDbg?.windowDays?.slice(0, 2)
-        );
-
-        console.log("DAY0:", bestDbg?.windowDays?.[0]);
-        console.log("DAY0 keys:", Object.keys(bestDbg?.windowDays?.[0] || {}));
-        console.log("SITES SAMPLE", sites?.[0]);
+        const out = enrichWithBaseDays(outRaw, effectiveWindowDays);
 
         if (!cancelled) {
           setResult(out);
-
-          console.log("[ADAPTIVE]", {
-            max: out?.debug?.adaptiveRadiusMaxKm,
-            used: out?.debug?.adaptiveRadiusUsedKm,
-            attempts: out?.debug?.adaptiveRadiusAttempts,
-            bestDelta: out?.delta,
-            verdict: out?.verdict,
-          });
         }
       } catch (e) {
         const msg = e?.message || "Route planner failed";
@@ -249,9 +222,22 @@ export default function RoutePlannerCard({
     return () => {
       cancelled = true;
     };
-  }, [isPro, baseSiteId, baseSite, sites, radiusKm, windowDays, limit, t]);
+  }, [
+    isPro,
+    isPreview,
+    baseSiteId,
+    baseSite,
+    sites,
+    radiusKm,
+    windowDays,
+    limit,
+    effectiveRadiusKm,
+    effectiveWindowDays,
+    effectiveLimit,
+    t,
+  ]);
 
-  if (!isPro) return <ProLock t={t} me={me} onUpgrade={onUpgrade} />;
+  if (!isPro && !isPreview) return <ProLock t={t} me={me} onUpgrade={onUpgrade} />;
 
   if (!baseSiteId) {
     return (
@@ -370,12 +356,12 @@ export default function RoutePlannerCard({
     }
     if (v === "worse") {
       return `
-      border border-rose-200 bg-rose-50 text-rose-800
-      dark:border-rose-900/40 dark:bg-rose-950/40 dark:text-rose-200
-      hover:bg-rose-100 hover:border-rose-300
-      dark:hover:bg-rose-900/40 dark:hover:border-rose-700/50
-      focus:ring-rose-400/50
-    `;
+        border border-rose-200 bg-rose-50 text-rose-800
+        dark:border-rose-900/40 dark:bg-rose-950/40 dark:text-rose-200
+        hover:bg-rose-100 hover:border-rose-300
+        dark:hover:bg-rose-900/40 dark:hover:border-rose-700/50
+        focus:ring-rose-400/50
+      `;
     }
     return `
       border border-slate-200 bg-slate-50 text-slate-800
@@ -386,15 +372,16 @@ export default function RoutePlannerCard({
     `;
   }
 
-  const bestCounts = best ? getDayCounts(best.windowDays, windowDays) : null;
+  const bestCounts = best ? getDayCounts(best.windowDays, effectiveWindowDays) : null;
   const decisionLower = bestCounts ? getDecisionFromCounts(bestCounts) : "stay";
   const meta = result && getRouteVerdictMeta(decisionLower);
 
   const trendText = (() => {
     const v = decisionLower || "stay";
-    if (v === "move") return interpolate(t("routePlannerTrendMove"), { days: windowDays });
-    if (v === "consider") return interpolate(t("routePlannerTrendConsider"), { days: windowDays });
-    return interpolate(t("routePlannerTrendStay"), { days: windowDays });
+    if (v === "move") return interpolate(t("routePlannerTrendMove"), { days: effectiveWindowDays });
+    if (v === "consider")
+      return interpolate(t("routePlannerTrendConsider"), { days: effectiveWindowDays });
+    return interpolate(t("routePlannerTrendStay"), { days: effectiveWindowDays });
   })();
 
   // ---------- Adaptive radius UI text ----------
@@ -451,7 +438,6 @@ export default function RoutePlannerCard({
   })();
   // --------------------------------------------
 
-  // ✅ Glow effect MUST be at top-level (NOT inside getDayCounts)
   useEffect(() => {
     if (typeof adaptiveUsedKm !== "number") return;
 
@@ -465,6 +451,7 @@ export default function RoutePlannerCard({
   }, [adaptiveUsedKm]);
 
   const showDecisionReasons =
+    !isPreview &&
     ["move", "consider"].includes(String(decisionLower)) &&
     Array.isArray(best?.reasons) &&
     best.reasons.length > 0;
@@ -485,50 +472,60 @@ export default function RoutePlannerCard({
             {t("routePlannerAlternativesCount")}: {result.debug.candidatesScored}
           </div>
         )}
+
+        {isPreview && (
+          <div className="mt-1 text-right">
+            <span className="inline-flex items-center rounded-full px-2 py-0.5 text-[11px] font-semibold bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200">
+              {t("previewPill")}
+            </span>
+          </div>
+        )}
       </div>
 
-      {/* Controls */}
-      <div className="grid gap-2 mb-3">
-        <label className="text-xs text-slate-600 dark:text-slate-300">
-          {t("routePlannerRadius")} ({radiusKm} km)
-          <input
-            className="w-full"
-            type="range"
-            min={10}
-            max={400}
-            step={5}
-            value={radiusKm}
-            onChange={(e) => setRadiusKm(Number(e.target.value))}
-          />
-          {adaptiveRadiusLine ? (
-            <div
-              className={`
-                mt-1 text-[11px] transition-all duration-700
-                ${
-                  adaptiveGlow
-                    ? "text-emerald-600 dark:text-emerald-400 drop-shadow-[0_0_6px_rgba(16,185,129,0.6)]"
-                    : "text-slate-500 dark:text-slate-400"
-                }
-              `}
-            >
-              {adaptiveRadiusLine}
-            </div>
-          ) : null}
-        </label>
+      {/* Controls (Pro only) */}
+      {isPro && (
+        <div className="grid gap-2 mb-3">
+          <label className="text-xs text-slate-600 dark:text-slate-300">
+            {t("routePlannerRadius")} ({radiusKm} km)
+            <input
+              className="w-full"
+              type="range"
+              min={10}
+              max={400}
+              step={5}
+              value={radiusKm}
+              onChange={(e) => setRadiusKm(Number(e.target.value))}
+            />
+            {adaptiveRadiusLine ? (
+              <div
+                className={`
+                  mt-1 text-[11px] transition-all duration-700
+                  ${
+                    adaptiveGlow
+                      ? "text-emerald-600 dark:text-emerald-400 drop-shadow-[0_0_6px_rgba(16,185,129,0.6)]"
+                      : "text-slate-500 dark:text-slate-400"
+                  }
+                `}
+              >
+                {adaptiveRadiusLine}
+              </div>
+            ) : null}
+          </label>
 
-        <label className="text-xs text-slate-600 dark:text-slate-300">
-          {t("routePlannerWindowDays")} ({windowDays})
-          <input
-            className="w-full"
-            type="range"
-            min={2}
-            max={5}
-            step={1}
-            value={windowDays}
-            onChange={(e) => setWindowDays(Number(e.target.value))}
-          />
-        </label>
-      </div>
+          <label className="text-xs text-slate-600 dark:text-slate-300">
+            {t("routePlannerWindowDays")} ({windowDays})
+            <input
+              className="w-full"
+              type="range"
+              min={2}
+              max={5}
+              step={1}
+              value={windowDays}
+              onChange={(e) => setWindowDays(Number(e.target.value))}
+            />
+          </label>
+        </div>
+      )}
 
       {loading && <div className="text-xs text-slate-600 dark:text-slate-300">{t("loading")}…</div>}
       {error && <div className="text-xs text-red-600">{error}</div>}
@@ -570,36 +567,100 @@ export default function RoutePlannerCard({
             )}
           </div>
 
-          {/* Top 3 */}
+          {/* Top alternatives / Preview single best */}
           <div>
             <div className="text-xs font-semibold mb-2">
-              {decisionLower === "stay"
-                ? interpolate(t("routePlannerTopAlternativesNoBetter"), { days: windowDays })
-                : t("routePlannerTopAlternatives")}
+              {isPreview
+                ? t("routePlannerBestTomorrow")
+                : decisionLower === "stay"
+                  ? interpolate(t("routePlannerTopAlternativesNoBetter"), { days: windowDays })
+                  : t("routePlannerTopAlternatives")}
             </div>
 
-            {top3.length > 0 ? (
+            {isPreview ? (
+              decisionLower !== "stay" && top3.length > 0 ? (
+                <ol className="grid gap-2 pl-4 text-xs">
+                  {top3.slice(0, 1).map((x) => {
+                    const v = getVerdictFromDays(x?.windowDays, effectiveWindowDays);
+                    const triggerKey = `${x.siteId}:${effectiveWindowDays}:${v}:${
+                      typeof x?.deltaVsBase === "number" ? x.deltaVsBase.toFixed(1) : "na"
+                    }`;
+
+                    const oldImprovement = getImprovementLabel(x?.deltaVsBase, t);
+
+                    return (
+                      <li key={x.siteId}>
+                        <div className="font-semibold flex items-center gap-2 flex-wrap">
+                          <span>{x.siteName ?? x.siteId}</span>
+
+                          {Number.isFinite(x?.distanceKm) && (
+                            <span className="text-[11px] font-normal text-slate-500 dark:text-slate-400">
+                              • {Math.round(x.distanceKm)} km
+                            </span>
+                          )}
+
+                          <AnimatedPill triggerKey={triggerKey} as="span" className="inline-flex">
+                            <button
+                              type="button"
+                              onClick={() => openDetails(x)}
+                              disabled
+                              className={`
+                                inline-flex items-center gap-1.5
+                                rounded-full px-2.5 py-1
+                                text-xs font-semibold
+                                transition-all duration-150 ease-out
+                                focus:outline-none focus:ring-2
+                                ${verdictButtonClassFromV(v)}
+                                cursor-default opacity-90
+                              `}
+                              title=""
+                              aria-label={`${verdictLabelFromV(v)}. ${oldImprovement ? `${oldImprovement}. ` : ""}`}
+                            >
+                              <span className="inline-flex items-center justify-center w-4 h-4 rounded-full bg-white/60 dark:bg-white/10">
+                                {verdictIconFromV(v)}
+                              </span>
+                              <span>{verdictLabelFromV(v)}</span>
+                              {!isPreview && oldImprovement ? (
+                                <span className="opacity-80">• {oldImprovement}</span>
+                              ) : null}
+                            </button>
+                          </AnimatedPill>
+                        </div>
+                      </li>
+                    );
+                  })}
+                </ol>
+              ) : (
+                <div className="text-xs text-slate-600 dark:text-slate-300">
+                  {t("routePlannerPreviewNoBetter")}
+                </div>
+              )
+            ) : top3.length > 0 ? (
               <ol className="grid gap-2 pl-4 text-xs">
                 {top3.map((x) => {
                   const v = getVerdictFromDays(x?.windowDays, windowDays);
-
                   const triggerKey = `${x.siteId}:${windowDays}:${v}:${
                     typeof x?.deltaVsBase === "number" ? x.deltaVsBase.toFixed(1) : "na"
                   }`;
 
                   const deltaTitle =
                     typeof x?.deltaVsBase === "number"
-                      ? `${t("routeDetailsDelta") || "Delta"}: ${
-                          x.deltaVsBase >= 0 ? "+" : ""
-                        }${x.deltaVsBase.toFixed(1)}`
+                      ? `${t("routeDetailsDelta") || "Delta"}: ${x.deltaVsBase >= 0 ? "+" : ""}${x.deltaVsBase.toFixed(1)}`
                       : "";
 
                   const oldImprovement = getImprovementLabel(x?.deltaVsBase, t);
 
                   return (
                     <li key={x.siteId}>
-                      <div className="font-semibold flex items-center gap-2">
+                      <div className="font-semibold flex items-center gap-2 flex-wrap">
                         <span>{x.siteName ?? x.siteId}</span>
+
+                        {Number.isFinite(x?.distanceKm) && (
+                          <span className="text-[11px] font-normal text-slate-500 dark:text-slate-400">
+                            • {Math.round(x.distanceKm)} km
+                          </span>
+                        )}
+
                         <AnimatedPill triggerKey={triggerKey} as="span" className="inline-flex">
                           <button
                             type="button"
@@ -615,26 +676,18 @@ export default function RoutePlannerCard({
                               ${verdictButtonClassFromV(v)}
                             `}
                             title={deltaTitle}
-                            aria-label={`${verdictLabelFromV(v)}. ${
-                              oldImprovement ? `${oldImprovement}. ` : ""
-                            }${t("routeDetailsOpenHint") || "Open details"}`}
+                            aria-label={`${verdictLabelFromV(v)}. ${oldImprovement ? `${oldImprovement}. ` : ""}${t("routeDetailsOpenHint") || "Open details"}`}
                           >
-                            <span className="text-[11px] leading-none opacity-80">ⓘ</span>
-                            {verdictLabelFromV(v)}
+                            <span className="inline-flex items-center justify-center w-4 h-4 rounded-full bg-white/60 dark:bg-white/10">
+                              {verdictIconFromV(v)}
+                            </span>
+                            <span>{verdictLabelFromV(v)}</span>
+                            {!isPreview && oldImprovement ? (
+                              <span className="opacity-80">• {oldImprovement}</span>
+                            ) : null}
                           </button>
                         </AnimatedPill>
                       </div>
-
-                      {Array.isArray(x.reasons) && x.reasons.length > 0 ? (
-                        <ul className="pl-4 mt-1 grid gap-1">
-                          {x.reasons.slice(0, 3).map((r, idx) => {
-                            const key = reasonTypeToKey(r.type);
-                            return <li key={`${r.type}-${idx}`}>{key ? t(key) : r.type}</li>;
-                          })}
-                        </ul>
-                      ) : (
-                        <div className="opacity-80 mt-1">{t("routePlannerMinimalDifference")}</div>
-                      )}
                     </li>
                   );
                 })}
@@ -642,6 +695,21 @@ export default function RoutePlannerCard({
             ) : (
               <div className="text-xs text-slate-600 dark:text-slate-300">
                 {t("routePlannerNoAlternatives")}
+              </div>
+            )}
+
+            {isPreview && (
+              <div className="mt-3 rounded-xl border border-slate-200 dark:border-slate-700 p-3 bg-slate-50/60 dark:bg-slate-900/20">
+                <div className="text-xs text-slate-700 dark:text-slate-300 mb-2">
+                  {t("routePlannerPreviewBody")}
+                </div>
+                <button
+                  type="button"
+                  onClick={onUpgrade}
+                  className="inline-flex items-center justify-center rounded-lg px-3 py-2 text-xs font-semibold bg-emerald-600 hover:bg-emerald-700 text-white"
+                >
+                  {t("proUpgrade")}
+                </button>
               </div>
             )}
           </div>

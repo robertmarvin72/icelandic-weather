@@ -326,6 +326,12 @@ export const translations = {
     routePlannerRadius: "Travel radius",
     routePlannerWindowDays: "Window (days)",
     routePlannerWetThreshold: "Wet day threshold",
+    previewPill: "Preview",
+    routePlannerBestTomorrow: "Best place tomorrow",
+    routePlannerPreviewBody:
+      "See the single best suggestion for tomorrow. Unlock a larger area, more days, and details with Pro.",
+    routePlannerPreviewNoBetter:
+      "No better place was found within 30 km tomorrow. Pro shows a larger area and more days.",
     routePlannerCandidatesPreselected: "Nearby campsites checked",
     routePlannerCandidatesScored: "Scored",
     routePlannerTopAlternatives: "Top alternatives",
@@ -757,6 +763,12 @@ export const translations = {
     routePlannerRadius: "Ferðafjarlægð",
     routePlannerWindowDays: "Gluggi (dagar)",
     routePlannerWetThreshold: "Votur dagur (viðmið)",
+    previewPill: "Forsýn",
+    routePlannerBestTomorrow: "Besti staður á morgun",
+    routePlannerPreviewBody:
+      "Sjáðu eina bestu tillöguna fyrir morgundaginn. Opnaðu stærra svæði, fleiri daga og smáatriði með Pro.",
+    routePlannerPreviewNoBetter:
+      "Enginn betri staður fannst innan 30 km á morgun. Pro sýnir stærra svæði og fleiri daga.",
     routePlannerCandidatesPreselected: "Skoðuð svæði í kringum þig",
     routePlannerCandidatesScored: "Metið",
     routePlannerTopAlternatives: "Bestu valkostir",
