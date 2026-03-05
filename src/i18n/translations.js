@@ -431,6 +431,9 @@ export const translations = {
       "No better option within {prev} km — but found a better one within {used} km.",
     routeAdaptiveNoBetterWithin: "No better option found within {used} km (max {max} km).",
     routeAdaptiveUsedShort: "Searched up to",
+
+    routeWarningHigh: "Dangerous weather",
+    routeWarning: "Weather alert",
   },
 
   // Icelandic (Íslenska) -------------------------------------------------------------------------------------------------------------------
@@ -868,5 +871,8 @@ export const translations = {
     routeAdaptiveFoundBeyond: "Enginn betri innan {prev} km — en fann betri kost innan {used} km.",
     routeAdaptiveNoBetterWithin: "Enginn betri kostur fannst innan {used} km (max {max} km).",
     routeAdaptiveUsedShort: "Leitað út í",
+
+    routeWarningHigh: "Hættuveður",
+    routeWarning: "Veðurviðvörun",
   },
 };

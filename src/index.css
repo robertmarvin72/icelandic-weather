@@ -428,3 +428,17 @@ body {
   background-color: #020617; /* slate-950-ish */
 }
 
+@keyframes hazardGlow {
+  0%, 100% { box-shadow: 0 0 0 rgba(244,63,94,0); }
+  50%      { box-shadow: 0 0 14px rgba(244,63,94,0.55); }
+}
+
+.hazard-glow {
+  animation: hazardGlow 2.2s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hazard-glow {
+    animation: none !important;
+  }
+}

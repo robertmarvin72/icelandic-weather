@@ -2,6 +2,7 @@
 import { distanceKm } from "../utils/distance";
 import { normalizeDailyToScoreInput } from "../lib/forecastNormalize";
 import { scoreDaysWithRainStreak } from "../lib/scoring";
+import { getHazardsConfig } from "../config/hazards";
 
 /**
  * Relocation engine core (UI-independent).
@@ -50,6 +51,8 @@ function normalizeConfig(cfg = {}) {
     // reasons
     reasonMinDelta: typeof cfg.reasonMinDelta === "number" ? cfg.reasonMinDelta : 1,
     maxReasons: Number.isInteger(cfg.maxReasons) ? cfg.maxReasons : 4,
+
+    hazards: getHazardsConfig(cfg?.hazards),
   };
 }
 
@@ -158,7 +161,48 @@ function buildReasons(deltaComponents, cfg, days) {
   return items.slice(0, cfg.maxReasons);
 }
 
-function pickExplainDay(d) {
+function computeDayWarnings(d, cfg) {
+  const hz = cfg?.hazards || {};
+  const out = [];
+
+  const wind = typeof d?.windMax === "number" ? d.windMax : null;
+  const gust = typeof d?.windGust === "number" ? d.windGust : null;
+  const rain = typeof d?.rain === "number" ? d.rain : null;
+
+  // NOTE: relocationEngine day objects currently have tmax, but not tmin.
+  // Cold warnings should be based on tmin (night temps). Until we have tmin
+  // in the engine pipeline, we intentionally SKIP tempLow warnings here to avoid inconsistency.
+  const tmax = typeof d?.tmax === "number" ? d.tmax : null;
+
+  function push(type, level, value) {
+    out.push({ type, level, value });
+  }
+
+  if (wind != null) {
+    if (wind >= (hz.windHigh ?? 18)) push("wind", "high", wind);
+    else if (wind >= (hz.windWarn ?? 14)) push("wind", "warn", wind);
+  }
+
+  if (gust != null) {
+    if (gust >= (hz.gustHigh ?? 24)) push("gust", "high", gust);
+    else if (gust >= (hz.gustWarn ?? 20)) push("gust", "warn", gust);
+  }
+
+  if (rain != null) {
+    if (rain >= (hz.rainHigh ?? 20)) push("rain", "high", rain);
+    else if (rain >= (hz.rainWarn ?? 12)) push("rain", "warn", rain);
+  }
+
+  // Heat warnings (tmax is appropriate for heat risk)
+  if (tmax != null) {
+    if (tmax >= (hz.tempHighHigh ?? 28)) push("tempHigh", "high", tmax);
+    else if (tmax >= (hz.tempHighWarn ?? 24)) push("tempHigh", "warn", tmax);
+  }
+
+  return out;
+}
+
+function pickExplainDay(d, cfg) {
   return {
     date: String(d?.date ?? "").slice(0, 10),
 
@@ -190,6 +234,8 @@ function pickExplainDay(d) {
     // injected later (for true base-site comparison)
     baseSitePoints: d?.baseSitePoints ?? null,
     baseSitePointsRaw: d?.baseSitePointsRaw ?? null,
+
+    warnings: computeDayWarnings(d, cfg),
   };
 }
 
@@ -291,17 +337,32 @@ export function relocationEngine(input) {
     const windowDaysExplained = sc.windowDays.map((day) => {
       const dateKey = String(day?.date ?? "").slice(0, 10);
       const baseDay = baseByDate.get(dateKey) || { points: 0, pointsRaw: 0 };
-      return pickExplainDay({
-        ...day,
-        baseSitePoints: baseDay.points,
-        baseSitePointsRaw: baseDay.pointsRaw,
-      });
+      return pickExplainDay(
+        {
+          ...day,
+          baseSitePoints: baseDay.points,
+          baseSitePointsRaw: baseDay.pointsRaw,
+        },
+        cfg
+      );
     });
+
+    // aggregate warning flags for the candidate
+    const hasHighWarning = windowDaysExplained.some(
+      (d) => Array.isArray(d?.warnings) && d.warnings.some((w) => w?.level === "high")
+    );
+
+    const hasWarning = windowDaysExplained.some(
+      (d) => Array.isArray(d?.warnings) && d.warnings.some((w) => w?.level === "warn")
+    );
 
     const row = {
       siteId: site.id,
       siteName: site.name,
       distanceKm: d,
+
+      hasWarning,
+      hasHighWarning,
 
       // keep both for debugging/UX
       total: sc.total,
@@ -345,11 +406,17 @@ export function relocationEngine(input) {
 
   let verdict = "STAY";
 
-  // Prevent "MOVE" recommendation if the destination weather is still objectively bad
   const BAD_WEATHER_THRESHOLD = 4;
 
+  // detect if destination has any high warnings (same window as the engine uses)
+  const daysToEvaluate = Array.isArray(best?.windowDays) ? best.windowDays.slice(0, days) : [];
+
+  const destinationHasHighWarning = daysToEvaluate.some(
+    (d) => Array.isArray(d?.warnings) && d.warnings.some((w) => w?.level === "high")
+  );
+
   if (delta >= cfg.minDeltaToMove && bestTotalRaw >= BAD_WEATHER_THRESHOLD) {
-    verdict = "MOVE";
+    verdict = destinationHasHighWarning ? "CONSIDER" : "MOVE";
   } else if (delta >= cfg.minDeltaToConsider) {
     verdict = "CONSIDER";
   }
@@ -381,7 +448,7 @@ export function relocationEngine(input) {
         total: baseTotal,
         totalRaw: baseTotalRaw,
         worstDay: baseScore?.worstDay ?? 0,
-        windowDays: (baseScore?.windowDays || []).map((d) => pickExplainDay(d)),
+        windowDays: (baseScore?.windowDays || []).map((d) => pickExplainDay(d, cfg)),
       },
       candidates: explainCandidates,
     },

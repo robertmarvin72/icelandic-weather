@@ -1,9 +1,10 @@
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import LoadingShimmer from "./LoadingShimmer";
 import { WeatherIcon } from "./WeatherIcon";
 import { mapWeatherCodeToIconId } from "../utils/WeatherIconMapping";
 import ScoreExplanation from "./ScoreExplanation";
 import { getSiteAvailability } from "../config/availability";
+import { HAZARDS_V1 } from "../config/hazards";
 
 import {
   convertTemp,
@@ -16,6 +17,59 @@ import {
   WIND_UNIT_LABEL,
   DIST_UNIT_LABEL,
 } from "../lib/scoring";
+
+// --- Hazard thresholds (keep in sync with relocationEngine normalizeConfig.hazards) ---
+
+function computeWarningsFromRow(r) {
+  const out = [];
+
+  const wind = typeof r?.windMax === "number" ? r.windMax : null;
+  const gust = typeof r?.windGust === "number" ? r.windGust : null;
+  const rain = typeof r?.rain === "number" ? r.rain : null;
+  const tmin = typeof r?.tmin === "number" ? r.tmin : null;
+  const tmax = typeof r?.tmax === "number" ? r.tmax : null;
+
+  // wind
+  if (wind != null) {
+    if (wind >= HAZARDS_V1.windHigh) out.push({ type: "wind", level: "high", value: wind });
+    else if (wind >= HAZARDS_V1.windWarn) out.push({ type: "wind", level: "warn", value: wind });
+  }
+
+  // gust
+  if (gust != null) {
+    if (gust >= HAZARDS_V1.gustHigh) out.push({ type: "gust", level: "high", value: gust });
+    else if (gust >= HAZARDS_V1.gustWarn) out.push({ type: "gust", level: "warn", value: gust });
+  }
+
+  // rain (daily)
+  if (rain != null) {
+    if (rain >= HAZARDS_V1.rainHigh) out.push({ type: "rain", level: "high", value: rain });
+    else if (rain >= HAZARDS_V1.rainWarn) out.push({ type: "rain", level: "warn", value: rain });
+  }
+
+  // temp (use tmin for cold risk, tmax for heat risk)
+  if (tmin != null) {
+    if (tmin <= HAZARDS_V1.tempLowHigh) out.push({ type: "tempLow", level: "high", value: tmin });
+    else if (tmin <= HAZARDS_V1.tempLowWarn)
+      out.push({ type: "tempLow", level: "warn", value: tmin });
+  }
+
+  if (tmax != null) {
+    if (tmax >= HAZARDS_V1.tempHighHigh) out.push({ type: "tempHigh", level: "high", value: tmax });
+    else if (tmax >= HAZARDS_V1.tempHighWarn)
+      out.push({ type: "tempHigh", level: "warn", value: tmax });
+  }
+
+  return out;
+}
+
+function rowHasHighWarning(warnings) {
+  return Array.isArray(warnings) && warnings.some((w) => w?.level === "high");
+}
+
+function rowHasWarning(warnings) {
+  return Array.isArray(warnings) && warnings.some((w) => w?.level === "warn");
+}
 
 export default function ForecastTable({
   site,
@@ -72,6 +126,40 @@ export default function ForecastTable({
 
     return null;
   }, [availability, lang, t]);
+
+  // ✅ Pro hazard animation (runs briefly, then stops)
+  const [animateHighHazards, setAnimateHighHazards] = useState(true);
+
+  useEffect(() => {
+    setAnimateHighHazards(true);
+    const tt = setTimeout(() => setAnimateHighHazards(false), 6000);
+    return () => clearTimeout(tt);
+  }, [site?.id]);
+
+  const worstDate = useMemo(() => {
+    const list = Array.isArray(rows) ? rows : [];
+    let bestKey = null;
+    let bestScore = -Infinity;
+
+    for (const r of list) {
+      const warnings = computeWarningsFromRow(r);
+      const hasHigh = rowHasHighWarning(warnings);
+      const hasWarn = rowHasWarning(warnings);
+
+      // priority: high warning > warn > points
+      const severity = hasHigh ? 2 : hasWarn ? 1 : 0;
+      const points = typeof r?.points === "number" ? r.points : 0;
+
+      // Higher score = "worse"
+      const score = severity * 100 - points;
+
+      if (score > bestScore) {
+        bestScore = score;
+        bestKey = r?.date ?? null;
+      }
+    }
+    return bestKey;
+  }, [rows]);
 
   return (
     <div className="card rounded-2xl shadow-sm border border-slate-200 bg-white dark:bg-slate-900 dark:border-slate-700 p-4">
@@ -144,14 +232,44 @@ export default function ForecastTable({
                   const code = Number(r.code ?? 0);
                   const weatherKey = weatherMap?.[code]?.textKey ?? "unknown";
 
+                  const warnings = computeWarningsFromRow(r);
+                  const hasHigh = rowHasHighWarning(warnings);
+                  const hasWarn = rowHasWarning(warnings);
+
                   return (
                     <tr
                       key={r.date}
-                      className="border-b last:border-0 border-slate-100 dark:border-slate-800
-                                 hover:bg-sky-50/50 dark:hover:bg-slate-800/60"
+                      className={`
+                        border-b last:border-0 border-slate-100 dark:border-slate-800
+                        hover:bg-sky-50/50 dark:hover:bg-slate-800/60
+                      `}
                     >
                       {/* Score */}
-                      <td className="py-2 pl-4 pr-3">
+                      <td className="relative py-2 pl-4 pr-3">
+                        {hasHigh && (
+                          <>
+                            {/* Left severity bar */}
+                            <span
+                              aria-hidden
+                              className="
+                                  absolute left-0 top-0 h-full w-1
+                                  bg-rose-500/70 dark:bg-rose-400/60
+                                "
+                            />
+
+                            {/* Soft gradient overlay */}
+                            <span
+                              aria-hidden
+                              className="
+                                pointer-events-none
+                                absolute -left-4 -right-[999px] top-0 bottom-0
+                                bg-gradient-to-r from-rose-500/4 via-rose-500/3 to-transparent
+                                dark:from-rose-400/8 dark:via-rose-400/5
+                              "
+                            />
+                          </>
+                        )}
+
                         <span
                           title={`Base ${r.basePts} (Temp ${
                             formatNumber(convertTemp(r.tmax, units)) ?? "?"
@@ -161,7 +279,7 @@ export default function ForecastTable({
                             formatNumber(convertRain(r.rain, units)) ?? "?"
                           } ${RAIN_UNIT_LABEL[units]}) = ${r.points} → ${r.class}`}
                           className={
-                            "inline-flex flex-col items-center justify-center gap-0.5 rounded-full px-2 py-2 text-[9px] font-semibold cursor-help w-14 h-14 text-center " +
+                            "relative z-10 inline-flex flex-col items-center justify-center gap-0.5 rounded-full px-2 py-2 text-[9px] font-semibold cursor-help w-14 h-14 text-center " +
                             (r.class === "Best"
                               ? "bg-green-100 text-green-800"
                               : r.class === "Good"
@@ -179,7 +297,44 @@ export default function ForecastTable({
                             className="w-9 h-9"
                             role="img"
                           />
+
                           <span>{t?.(r.class?.toLowerCase?.()) ?? r.class}</span>
+
+                          {(hasHigh || hasWarn) && (
+                            <span
+                              className={`
+                                ring-offset-1 ring-offset-white dark:ring-offset-slate-900
+                                absolute -right-[4px] -top-[2px]
+                                inline-flex items-center justify-center
+                                w-[18px] h-[18px] rounded-full text-[12px] leading-none
+                                bg-white/95 dark:bg-slate-50/90
+                                shadow-sm
+                                ${
+                                  hasHigh
+                                    ? "ring-2 ring-rose-500 dark:ring-rose-400"
+                                    : "ring-1 ring-amber-400/60 dark:ring-amber-400/70"
+                                }
+                                ${
+                                  hasHigh
+                                    ? "drop-shadow-[0_0_8px_rgba(244,63,94,0.45)]"
+                                    : "drop-shadow-none"
+                                }
+                                ${hasHigh && animateHighHazards ? "hazard-glow" : ""}
+                              `}
+                              title={
+                                hasHigh
+                                  ? t?.("routeWarningHigh") || "Dangerous weather"
+                                  : t?.("routeWarning") || "Weather warning"
+                              }
+                              aria-label={
+                                hasHigh
+                                  ? t?.("routeWarningHigh") || "Dangerous weather"
+                                  : t?.("routeWarning") || "Weather warning"
+                              }
+                            >
+                              {hasHigh ? "🚨" : "⚠️"}
+                            </span>
+                          )}
                         </span>
                       </td>
 

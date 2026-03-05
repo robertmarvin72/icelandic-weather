@@ -394,6 +394,7 @@ export default function RoutePlannerDetailsModal({
                       </th>
                       <th className="px-3 py-2">{t?.("routeDetailsShelter") || "Skjól"}</th>
                       <th className="px-3 py-2">{t?.("routeDetailsTempBase") || "Hita-grunnur"}</th>
+                      <th className="px-3 py-2">{t?.("routeDetailsWarnings") || "Viðvaranir"}</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -425,6 +426,30 @@ export default function RoutePlannerDetailsModal({
                           </td>
 
                           <td className="px-3 py-2">{fmt(d?.basePts, 1)}</td>
+                          <td className="px-3 py-2">
+                            {Array.isArray(d?.warnings) && d.warnings.length > 0 ? (
+                              <div className="flex flex-wrap gap-1">
+                                {d.warnings.map((w, idx) => (
+                                  <span
+                                    key={`${w.type}_${idx}`}
+                                    className={`
+                                      inline-flex items-center rounded-full px-2 py-0.5 text-[11px] font-semibold
+                                      ${
+                                        w.level === "high"
+                                          ? "bg-rose-100 text-rose-800 dark:bg-rose-950/40 dark:text-rose-200"
+                                          : "bg-amber-100 text-amber-800 dark:bg-amber-950/40 dark:text-amber-200"
+                                      }
+                                    `}
+                                    title={`${w.type}: ${fmt(w.value, 0)}`}
+                                  >
+                                    {w.level === "high" ? "🚨" : "⚠️"} {w.type}
+                                  </span>
+                                ))}
+                              </div>
+                            ) : (
+                              <span className="text-slate-400">—</span>
+                            )}
+                          </td>
                         </tr>
                       );
                     })}

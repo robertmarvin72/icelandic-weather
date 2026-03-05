@@ -597,7 +597,29 @@ export default function RoutePlannerCard({
                     return (
                       <li key={x.siteId}>
                         <div className="font-semibold flex items-center gap-2 flex-wrap">
-                          <span>{x.siteName ?? x.siteId}</span>
+                          <span className="inline-flex items-center gap-1.5">
+                            <span>{x.siteName ?? x.siteId}</span>
+
+                            {x?.hasHighWarning ? (
+                              <span
+                                className="inline-flex items-center rounded-full px-1.5 py-0.5 text-[10px] font-semibold
+                                  bg-rose-100 text-rose-800 dark:bg-rose-950/40 dark:text-rose-200"
+                                title={t("routeWarningHigh") || "Hættuveður"}
+                                aria-label={t("routeWarningHigh") || "Hættuveður"}
+                              >
+                                🚨
+                              </span>
+                            ) : x?.hasWarning ? (
+                              <span
+                                className="inline-flex items-center rounded-full px-1.5 py-0.5 text-[10px] font-semibold
+                                  bg-amber-100 text-amber-800 dark:bg-amber-950/40 dark:text-amber-200"
+                                title={t("routeWarning") || "Viðvörun"}
+                                aria-label={t("routeWarning") || "Viðvörun"}
+                              >
+                                ⚠️
+                              </span>
+                            ) : null}
+                          </span>
 
                           {Number.isFinite(x?.distanceKm) && (
                             <span className="text-[11px] font-normal text-slate-500 dark:text-slate-400">
@@ -659,7 +681,29 @@ export default function RoutePlannerCard({
                   return (
                     <li key={x.siteId}>
                       <div className="font-semibold flex items-center gap-2 flex-wrap">
-                        <span>{x.siteName ?? x.siteId}</span>
+                        <span className="inline-flex items-center gap-1.5">
+                          <span>{x.siteName ?? x.siteId}</span>
+
+                          {x?.hasHighWarning ? (
+                            <span
+                              className="inline-flex items-center rounded-full px-1.5 py-0.5 text-[10px] font-semibold
+                                bg-rose-100 text-rose-800 dark:bg-rose-950/40 dark:text-rose-200"
+                              title={t("routeWarningHigh") || "Hættuveður"}
+                              aria-label={t("routeWarningHigh") || "Hættuveður"}
+                            >
+                              🚨
+                            </span>
+                          ) : x?.hasWarning ? (
+                            <span
+                              className="inline-flex items-center rounded-full px-1.5 py-0.5 text-[10px] font-semibold
+                                bg-amber-100 text-amber-800 dark:bg-amber-950/40 dark:text-amber-200"
+                              title={t("routeWarning") || "Viðvörun"}
+                              aria-label={t("routeWarning") || "Viðvörun"}
+                            >
+                              ⚠️
+                            </span>
+                          ) : null}
+                        </span>
 
                         {Number.isFinite(x?.distanceKm) && (
                           <span className="text-[11px] font-normal text-slate-500 dark:text-slate-400">
