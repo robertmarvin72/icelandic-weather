@@ -434,6 +434,34 @@ export const translations = {
 
     routeWarningHigh: "Dangerous weather",
     routeWarning: "Weather alert",
+    routeDetailsWarnings: "Warnings",
+
+    routeCompareDay: "Day",
+    routeCompareBase: "Current",
+    routeCompareCandidate: "Option",
+    routeCompareDiff: "Difference",
+    routeCompareWhy: "Why",
+    routeCompareNoWarnings: "No warnings",
+    routeCompareReasonLessSevere: "Less severe weather",
+    routeCompareReasonClearer: "Fewer warnings",
+    routeCompareReasonStillBad: "Still rough",
+    routeCompareReasonSimilar: "Similar warnings",
+    routeCompareReasonWorse: "More warnings",
+    routeCompareReasonGeneral: "Better conditions",
+
+    routeWarnTypeWind: "Wind",
+    routeWarnTypeGust: "Gusts",
+    routeWarnTypeRain: "Rain",
+    routeWarnTypeTempLow: "Cold",
+    routeWarnTypeTempHigh: "Heat",
+
+    routeCompareReasonHighHazard: "Dangerous weather",
+    routeCompareReasonWarnHazard: "Weather warning",
+    routeCompareReasonNoHazards: "No warnings",
+
+    routeImproveSlightWorse: "Slightly worse",
+    routeCompareDiffNA: "—",
+    routeCompareBaseNoDataTip: "Warnings for the current campsite aren't available (yet).",
   },
 
   // Icelandic (Íslenska) -------------------------------------------------------------------------------------------------------------------
@@ -874,5 +902,33 @@ export const translations = {
 
     routeWarningHigh: "Hættuveður",
     routeWarning: "Veðurviðvörun",
+
+    routeDetailsWarnings: "Viðvaranir",
+
+    routeCompareDay: "Dagur",
+    routeCompareBase: "Núverandi",
+    routeCompareCandidate: "Valkostur",
+    routeCompareDiff: "Munur",
+    routeCompareWhy: "Af hverju",
+    routeCompareNoWarnings: "Engar viðvaranir",
+    routeCompareReasonLessSevere: "Minni hætta",
+    routeCompareReasonClearer: "Færri viðvaranir",
+    routeCompareReasonStillBad: "Enn slæmt veður",
+    routeCompareReasonSimilar: "Svipaðar viðvaranir",
+    routeCompareReasonWorse: "Fleiri viðvaranir",
+    routeCompareReasonGeneral: "Betri aðstæður",
+
+    routeWarnTypeWind: "Vindur",
+    routeWarnTypeGust: "Hviður",
+    routeWarnTypeRain: "Rigning",
+    routeWarnTypeTempLow: "Kuldi",
+    routeWarnTypeTempHigh: "Hiti",
+
+    routeCompareReasonHighHazard: "Hættuveður",
+    routeCompareReasonWarnHazard: "Veðurviðvörun",
+    routeCompareReasonNoHazards: "Engar viðvaranir",
+    routeImproveSlightWorse: "Örlítið lakara",
+    routeCompareDiffNA: "—",
+    routeCompareBaseNoDataTip: "Viðvaranir fyrir núverandi tjaldsvæði eru ekki tiltækar (ennþá).",
   },
 };

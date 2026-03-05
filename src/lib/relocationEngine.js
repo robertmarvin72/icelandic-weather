@@ -234,7 +234,8 @@ function pickExplainDay(d, cfg) {
     // injected later (for true base-site comparison)
     baseSitePoints: d?.baseSitePoints ?? null,
     baseSitePointsRaw: d?.baseSitePointsRaw ?? null,
-
+    // ✅ NEW: base-site warnings for this date (so RouteCompareTable can show base chips)
+    baseSiteWarnings: Array.isArray(d?.baseSiteWarnings) ? d.baseSiteWarnings : null,
     warnings: computeDayWarnings(d, cfg),
   };
 }
@@ -292,18 +293,22 @@ export function relocationEngine(input) {
 
   // ✅ Map base-site by date so candidates can compare per day
   const baseByDate = new Map(
-    (baseScore?.windowDays || []).map((d) => [
-      String(d?.date ?? "").slice(0, 10),
-      {
-        points: typeof d?.points === "number" ? d.points : 0,
-        pointsRaw:
-          typeof d?.pointsRaw === "number"
-            ? d.pointsRaw
-            : typeof d?.totalRaw === "number"
-              ? d.totalRaw
-              : 0,
-      },
-    ])
+    (baseScore?.windowDays || []).map((d) => {
+      const dateKey = String(d?.date ?? "").slice(0, 10);
+
+      const points = typeof d?.points === "number" ? d.points : 0;
+      const pointsRaw =
+        typeof d?.pointsRaw === "number"
+          ? d.pointsRaw
+          : typeof d?.totalRaw === "number"
+            ? d.totalRaw
+            : 0;
+
+      // ✅ NEW: compute base-site warnings for this day (same logic as candidate)
+      const warnings = computeDayWarnings(d, cfg);
+
+      return [dateKey, { points, pointsRaw, warnings }];
+    })
   );
 
   // Preselect candidates within radius
@@ -336,12 +341,18 @@ export function relocationEngine(input) {
     // ✅ Inject base-site points per date into each candidate day
     const windowDaysExplained = sc.windowDays.map((day) => {
       const dateKey = String(day?.date ?? "").slice(0, 10);
-      const baseDay = baseByDate.get(dateKey) || { points: 0, pointsRaw: 0 };
+      const baseDay = baseByDate.get(dateKey) || { points: 0, pointsRaw: 0, warnings: [] };
+
       return pickExplainDay(
         {
           ...day,
+
+          // base-site points
           baseSitePoints: baseDay.points,
           baseSitePointsRaw: baseDay.pointsRaw,
+
+          // ✅ NEW: base-site warnings for the same date
+          baseSiteWarnings: baseDay.warnings,
         },
         cfg
       );

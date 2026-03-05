@@ -1,6 +1,7 @@
 // src/components/RoutePlannerDetailsModal.jsx
 import React, { useEffect, useMemo, useState } from "react";
 import { createPortal } from "react-dom";
+import RouteCompareTable from "./RouteCompareTable";
 
 function fmt(n, digits = 1) {
   if (n === null || n === undefined || Number.isNaN(n)) return "—";
@@ -330,36 +331,23 @@ export default function RoutePlannerDetailsModal({
               {t?.("routeDetailsDayByDay") || "Dag-fyrir-dag"}
             </div>
 
-            {verdictRows.length === 0 ? (
-              <div className="mt-2 text-sm text-slate-600 dark:text-slate-300">
-                {t?.("routeDetailsNoDays") || "Engin dagleg sundurliðun tiltæk."}
-              </div>
-            ) : (
-              <ul className="mt-3 space-y-2">
-                {verdictRows.map((r, i) => (
-                  <li
-                    key={`${r.date}_${i}`}
-                    className="flex items-center justify-between rounded-xl border border-slate-200 px-3 py-2 dark:border-slate-800"
-                  >
-                    <div className="text-sm text-slate-900 dark:text-slate-100">{r.date}</div>
-
-                    <span
-                      className={`inline-flex items-center rounded-full border px-2.5 py-1 text-xs font-semibold ${verdictPillClass(
-                        r.verdict
-                      )}`}
-                      title={`${t?.("routeDetailsBasePts") || "Grunn stig"}: ${fmt(
-                        r.basePts,
-                        1
-                      )} • ${t?.("routeDetailsCandPts") || "Stig valkosts"}: ${fmt(r.candPts, 1)} • ${
-                        t?.("routeDetailsDelta") || "Mismunur"
-                      }: ${signFmt(r.delta, 1)}`}
-                    >
-                      {verdictLabel(r.verdict)}
-                    </span>
-                  </li>
-                ))}
-              </ul>
-            )}
+            {/* ✅ NEW: camper-first compare table */}
+            <div className="mt-3">
+              <RouteCompareTable
+                t={t}
+                lang="is"
+                baseSiteLabel={baseSiteLabel || t?.("routeCompareBase") || "Núverandi"}
+                candidateLabel={
+                  candidate?.siteName ||
+                  candidate?.siteId ||
+                  t?.("routeCompareCandidate") ||
+                  "Valkostur"
+                }
+                windowDays={candidate?.windowDays || []}
+                windowDaysCount={windowDaysCount}
+                showScoreDelta={false}
+              />
+            </div>
 
             {/* Toggle advanced */}
             <div className="mt-3">

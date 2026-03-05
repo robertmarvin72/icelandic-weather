@@ -456,6 +456,41 @@ export default function RoutePlannerCard({
   })();
   // --------------------------------------------
 
+  // ✅ Base hazard context (same day window as the alternatives list / modal window)
+  const baseHazardWindowDaysCount = isPreview ? effectiveWindowDays : windowDays;
+  const baseExplainDays = Array.isArray(result?.explain?.base?.windowDays)
+    ? result.explain.base.windowDays
+    : [];
+  const baseSliceDays =
+    typeof baseHazardWindowDaysCount === "number"
+      ? baseExplainDays.slice(0, baseHazardWindowDaysCount)
+      : baseExplainDays;
+
+  const baseHasHighWarning = baseSliceDays.some(
+    (d) => Array.isArray(d?.warnings) && d.warnings.some((w) => w?.level === "high")
+  );
+  const baseHasWarning = baseSliceDays.some(
+    (d) => Array.isArray(d?.warnings) && d.warnings.some((w) => w?.level === "warn")
+  );
+
+  // Helper: produce a camper-first label when the improvement is mainly hazard reduction
+  function hazardFirstLabel(candidateRow) {
+    const candHigh = !!candidateRow?.hasHighWarning;
+    const candWarn = !!candidateRow?.hasWarning;
+
+    // Base has 🚨 but candidate doesn't => "less severe"
+    if (baseHasHighWarning && !candHigh) {
+      return t("routeCompareReasonLessSevere") || "Minni hætta";
+    }
+
+    // Base has ⚠️ (and no 🚨) but candidate has none => "clearer"
+    if (!baseHasHighWarning && baseHasWarning && !candWarn && !candHigh) {
+      return t("routeCompareReasonClearer") || "Færri viðvaranir";
+    }
+
+    return null;
+  }
+
   const showDecisionReasons =
     !isPreview &&
     ["move", "consider"].includes(String(decisionLower)) &&
@@ -642,7 +677,9 @@ export default function RoutePlannerCard({
                                 cursor-default opacity-90
                               `}
                               title=""
-                              aria-label={`${verdictLabelFromV(v)}. ${oldImprovement ? `${oldImprovement}. ` : ""}`}
+                              aria-label={`${verdictLabelFromV(v)}. ${
+                                oldImprovement ? `${oldImprovement}. ` : ""
+                              }`}
                             >
                               <span className="inline-flex items-center justify-center w-4 h-4 rounded-full bg-white/60 dark:bg-white/10">
                                 {verdictIconFromV(v)}
@@ -677,6 +714,10 @@ export default function RoutePlannerCard({
                       : "";
 
                   const oldImprovement = getImprovementLabel(x?.deltaVsBase, t);
+
+                  // ✅ hazard-first label (camper-first)
+                  const hazardLabel = hazardFirstLabel(x);
+                  const primaryLabel = hazardLabel || oldImprovement || verdictLabelFromV(v);
 
                   return (
                     <li key={x.siteId}>
@@ -726,14 +767,12 @@ export default function RoutePlannerCard({
                               ${verdictButtonClassFromV(v)}
                             `}
                             title={deltaTitle}
-                            aria-label={`${verdictLabelFromV(v)}. ${oldImprovement ? `${oldImprovement}. ` : ""}${t("routeDetailsOpenHint") || "Open details"}`}
+                            aria-label={`${primaryLabel}. ${t("routeDetailsOpenHint") || "Open details"}`}
                           >
                             <span className="inline-flex items-center justify-center w-4 h-4 rounded-full bg-white/60 dark:bg-white/10">
                               {verdictIconFromV(v)}
                             </span>
-                            <span>
-                              {!isPreview && oldImprovement ? oldImprovement : verdictLabelFromV(v)}
-                            </span>
+                            <span>{primaryLabel}</span>
                           </button>
                         </AnimatedPill>
                       </div>
