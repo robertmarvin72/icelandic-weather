@@ -344,8 +344,15 @@ export function relocationEngine(input) {
   const delta = bestTotalRaw - baseTotalRaw;
 
   let verdict = "STAY";
-  if (delta >= cfg.minDeltaToMove) verdict = "MOVE";
-  else if (delta >= cfg.minDeltaToConsider) verdict = "CONSIDER";
+
+  // Prevent "MOVE" recommendation if the destination weather is still objectively bad
+  const BAD_WEATHER_THRESHOLD = 4;
+
+  if (delta >= cfg.minDeltaToMove && bestTotalRaw >= BAD_WEATHER_THRESHOLD) {
+    verdict = "MOVE";
+  } else if (delta >= cfg.minDeltaToConsider) {
+    verdict = "CONSIDER";
+  }
 
   const stayRecommended = verdict !== "MOVE";
 

@@ -473,7 +473,7 @@ export default function RoutePlannerCard({
           </div>
         </div>
 
-        {result?.debug?.candidatesScored > 0 && (
+        {!isPreview && result?.debug?.candidatesScored > 0 && (
           <div className="text-[11px] text-slate-500 dark:text-slate-400 text-right">
             {t("routePlannerAlternativesCount")}: {result.debug.candidatesScored}
           </div>
@@ -687,10 +687,9 @@ export default function RoutePlannerCard({
                             <span className="inline-flex items-center justify-center w-4 h-4 rounded-full bg-white/60 dark:bg-white/10">
                               {verdictIconFromV(v)}
                             </span>
-                            <span>{verdictLabelFromV(v)}</span>
-                            {!isPreview && oldImprovement ? (
-                              <span className="opacity-80">• {oldImprovement}</span>
-                            ) : null}
+                            <span>
+                              {!isPreview && oldImprovement ? oldImprovement : verdictLabelFromV(v)}
+                            </span>
                           </button>
                         </AnimatedPill>
                       </div>
