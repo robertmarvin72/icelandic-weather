@@ -79,21 +79,22 @@ function diffLabel(delta, t) {
   return { key: "same", text: t?.("routeDaySame") || "Same" };
 }
 
-function topReasonFromWarnings(baseWarnings, candWarnings, t) {
+function topReasonFromWarnings(baseWarnings, candWarnings, diffKey, t) {
+  // If daily verdict is "same", do not show a positive/negative reason.
+  if (diffKey === "same") return null;
+
   const b = pickLevel(baseWarnings);
   const c = pickLevel(candWarnings);
 
-  // If we don't have base warnings (V1), make "Why" useful anyway:
   if (!Array.isArray(baseWarnings)) {
-    if (c === "high") return t?.("routeCompareReasonHighHazard") || "Hættuveður á valkosti";
-    if (c === "warn") return t?.("routeCompareReasonWarnHazard") || "Viðvörun á valkosti";
+    if (c === "high") return t?.("routeCompareReasonHighHazard") || "Hættuveður";
+    if (c === "warn") return t?.("routeCompareReasonWarnHazard") || "Veðurviðvörun";
     return t?.("routeCompareReasonNoHazards") || "Engar viðvaranir";
   }
 
-  if (b === "high" && c !== "high")
-    return t?.("routeCompareReasonLessSevere") || "Minna alvarlegt veður";
+  if (b === "high" && c !== "high") return t?.("routeCompareReasonLessSevere") || "Minni hætta";
   if (b === "warn" && c == null) return t?.("routeCompareReasonClearer") || "Færri viðvaranir";
-  if (b === "high" && c === "high") return t?.("routeCompareReasonStillBad") || "Enn óhagstætt";
+  if (b === "high" && c === "high") return t?.("routeCompareReasonStillBad") || "Enn slæmt veður";
   if (b === "warn" && c === "warn")
     return t?.("routeCompareReasonSimilar") || "Svipaðar viðvaranir";
   if (b == null && c != null) return t?.("routeCompareReasonWorse") || "Fleiri viðvaranir";
@@ -218,7 +219,8 @@ export default function RouteCompareTable({
       const baseWarnings = Array.isArray(d?.baseSiteWarnings) ? d.baseSiteWarnings : [];
       const candWarnings = Array.isArray(d?.warnings) ? d.warnings : [];
 
-      const reason = topReasonFromWarnings(baseWarnings, candWarnings, t);
+      const diff = diffLabel(delta, t);
+      const reason = topReasonFromWarnings(baseWarnings, candWarnings, diff.key, t);
 
       return {
         dateISO,
@@ -227,7 +229,7 @@ export default function RouteCompareTable({
         basePts,
         candPts,
         delta,
-        diff: diffLabel(delta, t),
+        diff,
 
         baseLevel: pickLevel(baseWarnings),
         candLevel: pickLevel(candWarnings),
@@ -415,7 +417,13 @@ export default function RouteCompareTable({
                 </td>
 
                 {/* Why */}
-                <td className="py-2 pr-4 text-slate-700 dark:text-slate-200 text-sm">{r.reason}</td>
+                <td className="py-2 pr-4 text-slate-700 dark:text-slate-200 text-sm">
+                  {r.reason ? (
+                    r.reason
+                  ) : (
+                    <span className="text-slate-400 dark:text-slate-500">—</span>
+                  )}
+                </td>
               </tr>
             ))}
           </tbody>

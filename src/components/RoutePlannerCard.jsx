@@ -497,6 +497,26 @@ export default function RoutePlannerCard({
     Array.isArray(best?.reasons) &&
     best.reasons.length > 0;
 
+  function getSoftAggregateLabel(candidateRow, windowDaysCount) {
+    const counts = getDayCounts(candidateRow?.windowDays, windowDaysCount);
+
+    if (!counts || counts.totalDays === 0) return null;
+
+    // If aggregate delta is positive, but no single day clears the "better" threshold,
+    // treat it as a soft aggregate improvement instead of a strong "better".
+    const hasNoClearlyBetterDays = counts.betterDays === 0 && counts.worseDays === 0;
+
+    if (
+      hasNoClearlyBetterDays &&
+      typeof candidateRow?.deltaVsBase === "number" &&
+      candidateRow.deltaVsBase > 0
+    ) {
+      return t("routeAggregateSlight") || "Lítil heildarbæting";
+    }
+
+    return null;
+  }
+
   return (
     <div className="rounded-xl border border-slate-200 dark:border-slate-700 p-3">
       <div className="flex items-start justify-between gap-3 mb-2">
@@ -627,7 +647,11 @@ export default function RoutePlannerCard({
                       typeof x?.deltaVsBase === "number" ? x.deltaVsBase.toFixed(1) : "na"
                     }`;
 
-                    const oldImprovement = getImprovementLabel(x?.deltaVsBase, t);
+                    const hazardLabel = hazardFirstLabel(x);
+                    const softAggregateLabel = getSoftAggregateLabel(x, effectiveWindowDays);
+
+                    const previewPrimaryLabel =
+                      hazardLabel || softAggregateLabel || oldImprovement || verdictLabelFromV(v);
 
                     return (
                       <li key={x.siteId}>
@@ -684,10 +708,7 @@ export default function RoutePlannerCard({
                               <span className="inline-flex items-center justify-center w-4 h-4 rounded-full bg-white/60 dark:bg-white/10">
                                 {verdictIconFromV(v)}
                               </span>
-                              <span>{verdictLabelFromV(v)}</span>
-                              {!isPreview && oldImprovement ? (
-                                <span className="opacity-80">• {oldImprovement}</span>
-                              ) : null}
+                              <span>{previewPrimaryLabel}</span>
                             </button>
                           </AnimatedPill>
                         </div>
@@ -717,7 +738,12 @@ export default function RoutePlannerCard({
 
                   // ✅ hazard-first label (camper-first)
                   const hazardLabel = hazardFirstLabel(x);
-                  const primaryLabel = hazardLabel || oldImprovement || verdictLabelFromV(v);
+
+                  // ✅ soft aggregate label when all daily verdicts are basically "same"
+                  const softAggregateLabel = getSoftAggregateLabel(x, windowDays);
+
+                  const primaryLabel =
+                    hazardLabel || softAggregateLabel || oldImprovement || verdictLabelFromV(v);
 
                   return (
                     <li key={x.siteId}>

@@ -462,6 +462,8 @@ export const translations = {
     routeImproveSlightWorse: "Slightly worse",
     routeCompareDiffNA: "—",
     routeCompareBaseNoDataTip: "Warnings for the current campsite aren't available (yet).",
+
+    routeAggregateSlight: "Slight overall improvement",
   },
 
   // Icelandic (Íslenska) -------------------------------------------------------------------------------------------------------------------
@@ -930,5 +932,6 @@ export const translations = {
     routeImproveSlightWorse: "Örlítið lakara",
     routeCompareDiffNA: "—",
     routeCompareBaseNoDataTip: "Viðvaranir fyrir núverandi tjaldsvæði eru ekki tiltækar (ennþá).",
+    routeAggregateSlight: "Lítil heildarbæting",
   },
 };
