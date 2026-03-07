@@ -115,7 +115,12 @@ function topReasonFromWarnings(baseWarnings, candWarnings, diffKey, t) {
   if (b === "high" && c === "high") return t?.("routeCompareReasonStillBad") || "Enn slæmt veður";
   if (b === "warn" && c === "warn")
     return t?.("routeCompareReasonSimilar") || "Svipaðar viðvaranir";
-  if (b == null && c != null) return t?.("routeCompareReasonWorse") || "Fleiri viðvaranir";
+  if (b == null && c != null) {
+    if (diffKey === "better" || diffKey === "slight") {
+      return t?.("routeCompareReasonBetterDespiteWarning") || "Betri aðstæður þrátt fyrir viðvörun";
+    }
+    return t?.("routeCompareReasonWorse") || "Fleiri viðvaranir";
+  }
 
   if (diffKey === "slightWorse") {
     return t?.("routeImproveSlightWorse") || "Slightly worse";
