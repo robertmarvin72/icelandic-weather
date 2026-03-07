@@ -468,6 +468,8 @@ export const translations = {
     routeDetailsRequiredDelta: "Required improvement for this distance",
     routeDetailsHazardImproved: "Lower weather risk at this location",
     routeImproveSlightWorse: "Slightly worse",
+    routeDetailsRawHint:
+      "Scores shown as 0.0 can still hide a real difference when both values appear as 0 or 10.",
   },
 
   // Icelandic (Íslenska) -------------------------------------------------------------------------------------------------------------------
@@ -941,5 +943,7 @@ export const translations = {
     routeDetailsRequiredDelta: "Lágmarksbæting miðað við fjarlægð",
     routeDetailsHazardImproved: "Minni veðuráhætta á þessum stað",
     routeImproveSlightWorse: "Örlítið lakara",
+    routeDetailsRawHint:
+      "0.0 stig geta samt falið raunverulegan mun þegar bæði gildi birtast sem 0 eða 10.",
   },
 };
