@@ -240,6 +240,147 @@ function pickExplainDay(d, cfg) {
   };
 }
 
+function requiredDeltaForDistance(distanceKm) {
+  if (!Number.isFinite(distanceKm) || distanceKm <= 0) return 0.5;
+  if (distanceKm <= 25) return 0.5;
+  if (distanceKm <= 75) return 1.5;
+  if (distanceKm <= 150) return 3;
+  return 5;
+}
+
+function getExplainDayDelta(d) {
+  const basePts =
+    typeof d?.baseSitePoints === "number"
+      ? d.baseSitePoints
+      : typeof d?.baseSitePointsRaw === "number"
+        ? d.baseSitePointsRaw
+        : 0;
+
+  const candPts =
+    typeof d?.points === "number" ? d.points : typeof d?.pointsRaw === "number" ? d.pointsRaw : 0;
+
+  const baseRaw =
+    typeof d?.baseSitePointsRaw === "number"
+      ? d.baseSitePointsRaw
+      : typeof d?.baseSitePoints === "number"
+        ? d.baseSitePoints
+        : 0;
+
+  const candRaw =
+    typeof d?.pointsRaw === "number" ? d.pointsRaw : typeof d?.points === "number" ? d.points : 0;
+
+  const deltaPts = candPts - basePts;
+  const deltaRaw = candRaw - baseRaw;
+
+  const useRaw =
+    (candPts === basePts && (candPts <= 0.0001 || candPts >= 9.9999)) ||
+    Math.abs(deltaPts) < 0.0001;
+
+  return useRaw ? deltaRaw : deltaPts;
+}
+
+function getDayCounts(windowDays, threshold = 0.75) {
+  const days = Array.isArray(windowDays) ? windowDays : [];
+
+  let betterDays = 0;
+  let sameDays = 0;
+  let worseDays = 0;
+
+  for (const d of days) {
+    const delta = getExplainDayDelta(d);
+    if (delta > threshold) betterDays += 1;
+    else if (delta < -threshold) worseDays += 1;
+    else sameDays += 1;
+  }
+
+  return {
+    betterDays,
+    sameDays,
+    worseDays,
+    totalDays: days.length,
+  };
+}
+
+function warningSeverityRank(warnings = []) {
+  if (!Array.isArray(warnings) || warnings.length === 0) return 0;
+  if (warnings.some((w) => w?.level === "high")) return 2;
+  if (warnings.some((w) => w?.level === "warn")) return 1;
+  return 0;
+}
+
+function hasHazardImprovement(windowDays) {
+  const days = Array.isArray(windowDays) ? windowDays : [];
+  return days.some((d) => {
+    const baseRank = warningSeverityRank(d?.baseSiteWarnings);
+    const candRank = warningSeverityRank(d?.warnings);
+    return candRank < baseRank;
+  });
+}
+
+function decideCandidate({ windowDays, deltaVsBase, distanceKm }) {
+  const counts = getDayCounts(windowDays, 0.75);
+  const requiredDelta = requiredDeltaForDistance(distanceKm);
+  const hazardImproved = hasHazardImprovement(windowDays);
+
+  const allDaysSame = counts.betterDays === 0 && counts.worseDays === 0;
+  const hasPositiveDelta = typeof deltaVsBase === "number" && deltaVsBase > 0;
+
+  let recommendation = "stay";
+  let aggregateType = "same";
+  let aggregateKey = "routeDaySame";
+
+  if (counts.worseDays > counts.betterDays) {
+    recommendation = "stay";
+    aggregateType = "same";
+    aggregateKey = "routeDaySame";
+  } else if (allDaysSame) {
+    recommendation = "stay";
+    aggregateType = hasPositiveDelta ? "slight" : "same";
+    aggregateKey = hasPositiveDelta ? "routeAggregateSlight" : "routeDaySame";
+  } else if (hazardImproved) {
+    if (counts.betterDays >= 2 && hasPositiveDelta) {
+      recommendation = "move";
+      aggregateType = "better";
+      aggregateKey = "routeAggregateBetter";
+    } else {
+      recommendation = "consider";
+      aggregateType = "slight";
+      aggregateKey = "routeAggregateSlight";
+    }
+  } else if (!hasPositiveDelta || deltaVsBase < requiredDelta) {
+    recommendation = "stay";
+    aggregateType = hasPositiveDelta ? "slight" : "same";
+    aggregateKey = hasPositiveDelta ? "routeAggregateSlight" : "routeDaySame";
+  } else if (counts.betterDays >= 2 && counts.betterDays > counts.worseDays) {
+    recommendation = "move";
+    aggregateType = "better";
+    aggregateKey = "routeAggregateBetter";
+  } else if (counts.betterDays > counts.worseDays) {
+    recommendation = "consider";
+    aggregateType = "slight";
+    aggregateKey = "routeAggregateSlight";
+  }
+
+  const recommendationRank =
+    recommendation === "move"
+      ? 3
+      : recommendation === "consider"
+        ? 2
+        : aggregateType === "slight"
+          ? 1
+          : 0;
+
+  return {
+    ...counts,
+    requiredDelta,
+    hazardImproved,
+    recommendation,
+    aggregateType,
+    aggregateKey,
+    recommendationRank,
+  };
+}
+
 export function relocationEngine(input) {
   const baseSiteId = String(input?.baseSiteId ?? "");
   const radiusKm = Number.isFinite(input?.radiusKm) ? input.radiusKm : 50;
@@ -367,6 +508,12 @@ export function relocationEngine(input) {
       (d) => Array.isArray(d?.warnings) && d.warnings.some((w) => w?.level === "warn")
     );
 
+    const decision = decideCandidate({
+      windowDays: windowDaysExplained,
+      deltaVsBase,
+      distanceKm: d,
+    });
+
     const row = {
       siteId: site.id,
       siteName: site.name,
@@ -375,16 +522,23 @@ export function relocationEngine(input) {
       hasWarning,
       hasHighWarning,
 
-      // keep both for debugging/UX
       total: sc.total,
       totalRaw: sc.totalRaw,
-
-      // legacy field used across UI: make it meaningful again
       deltaVsBase,
 
       worstDay: sc.worstDay,
       reasons,
       windowDays: windowDaysExplained,
+
+      betterDays: decision.betterDays,
+      sameDays: decision.sameDays,
+      worseDays: decision.worseDays,
+      requiredDelta: decision.requiredDelta,
+      hazardImproved: decision.hazardImproved,
+      recommendation: decision.recommendation,
+      aggregateType: decision.aggregateType,
+      aggregateKey: decision.aggregateKey,
+      recommendationRank: decision.recommendationRank,
     };
 
     ranked.push(row);
@@ -395,42 +549,44 @@ export function relocationEngine(input) {
       deltaVsBase,
       worstDay: sc.worstDay,
       windowDays: row.windowDays,
+
+      betterDays: row.betterDays,
+      sameDays: row.sameDays,
+      worseDays: row.worseDays,
+      requiredDelta: row.requiredDelta,
+      hazardImproved: row.hazardImproved,
+      recommendation: row.recommendation,
+      aggregateType: row.aggregateType,
+      aggregateKey: row.aggregateKey,
     };
   }
 
   ranked.sort((a, b) => {
-    // ✅ sort by raw first (comparison-friendly), then distance
+    if ((b.recommendationRank ?? 0) !== (a.recommendationRank ?? 0)) {
+      return (b.recommendationRank ?? 0) - (a.recommendationRank ?? 0);
+    }
+    if ((b.hazardImproved ? 1 : 0) !== (a.hazardImproved ? 1 : 0)) {
+      return (b.hazardImproved ? 1 : 0) - (a.hazardImproved ? 1 : 0);
+    }
+    if (b.deltaVsBase !== a.deltaVsBase) return b.deltaVsBase - a.deltaVsBase;
+    if (a.distanceKm !== b.distanceKm) return a.distanceKm - b.distanceKm;
     if (b.totalRaw !== a.totalRaw) return b.totalRaw - a.totalRaw;
     if (b.total !== a.total) return b.total - a.total;
-    if (a.distanceKm !== b.distanceKm) return a.distanceKm - b.distanceKm;
     return String(a.siteId).localeCompare(String(b.siteId));
   });
 
   const best = ranked.length ? ranked[0] : null;
   const bestSiteId = best?.siteId ?? null;
 
-  // Use RAW delta for the engine verdict too (more honest signal)
   const bestTotal = best?.total ?? baseTotal;
   const bestTotalRaw = best?.totalRaw ?? baseTotalRaw;
+  const delta = best?.deltaVsBase ?? bestTotalRaw - baseTotalRaw;
 
-  const delta = bestTotalRaw - baseTotalRaw;
+  const bestRecommendation = String(best?.recommendation || "stay").toLowerCase();
 
   let verdict = "STAY";
-
-  const BAD_WEATHER_THRESHOLD = 4;
-
-  // detect if destination has any high warnings (same window as the engine uses)
-  const daysToEvaluate = Array.isArray(best?.windowDays) ? best.windowDays.slice(0, days) : [];
-
-  const destinationHasHighWarning = daysToEvaluate.some(
-    (d) => Array.isArray(d?.warnings) && d.warnings.some((w) => w?.level === "high")
-  );
-
-  if (delta >= cfg.minDeltaToMove && bestTotalRaw >= BAD_WEATHER_THRESHOLD) {
-    verdict = destinationHasHighWarning ? "CONSIDER" : "MOVE";
-  } else if (delta >= cfg.minDeltaToConsider) {
-    verdict = "CONSIDER";
-  }
+  if (bestRecommendation === "move") verdict = "MOVE";
+  else if (bestRecommendation === "consider") verdict = "CONSIDER";
 
   const stayRecommended = verdict !== "MOVE";
 
@@ -450,6 +606,15 @@ export function relocationEngine(input) {
 
     delta,
     stayRecommended,
+
+    recommendation: bestRecommendation,
+    aggregateType: best?.aggregateType ?? "same",
+    aggregateKey: best?.aggregateKey ?? "routeDaySame",
+    betterDays: best?.betterDays ?? 0,
+    sameDays: best?.sameDays ?? 0,
+    worseDays: best?.worseDays ?? 0,
+    requiredDelta: best?.requiredDelta ?? 0,
+    hazardImproved: !!best?.hazardImproved,
 
     ranked,
 

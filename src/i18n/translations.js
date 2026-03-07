@@ -464,6 +464,10 @@ export const translations = {
     routeCompareBaseNoDataTip: "Warnings for the current campsite aren't available (yet).",
 
     routeAggregateSlight: "Slight overall improvement",
+
+    routeDetailsRequiredDelta: "Required improvement for this distance",
+    routeDetailsHazardImproved: "Lower weather risk at this location",
+    routeImproveSlightWorse: "Slightly worse",
   },
 
   // Icelandic (Íslenska) -------------------------------------------------------------------------------------------------------------------
@@ -933,5 +937,9 @@ export const translations = {
     routeCompareDiffNA: "—",
     routeCompareBaseNoDataTip: "Viðvaranir fyrir núverandi tjaldsvæði eru ekki tiltækar (ennþá).",
     routeAggregateSlight: "Lítil heildarbæting",
+
+    routeDetailsRequiredDelta: "Lágmarksbæting miðað við fjarlægð",
+    routeDetailsHazardImproved: "Minni veðuráhætta á þessum stað",
+    routeImproveSlightWorse: "Örlítið lakara",
   },
 };

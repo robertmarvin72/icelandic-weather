@@ -164,12 +164,25 @@ export default function RoutePlannerCard({
     setDetailsOpen(true);
   }
 
-  function getImprovementLabel(delta, tFn) {
+  function getImprovementLabel(candidateRow, tFn) {
+    const aggregateType = String(candidateRow?.aggregateType || "same");
+    const delta = candidateRow?.deltaVsBase;
+
+    if (aggregateType === "slight") {
+      return tFn("routeAggregateSlight");
+    }
+
+    if (aggregateType === "better") {
+      if (typeof delta !== "number") return tFn("routeImproveBetter");
+      if (delta < 1.0) return tFn("routeImproveSlight");
+      if (delta < 2.5) return tFn("routeImproveBetter");
+      return tFn("routeImproveMuchBetter");
+    }
+
     if (typeof delta !== "number") return null;
     if (delta < 0.1) return tFn("routeImproveNone");
-    if (delta < 1.0) return tFn("routeImproveSlight");
-    if (delta < 2.5) return tFn("routeImproveBetter");
-    return tFn("routeImproveMuchBetter");
+
+    return tFn("routeDaySame");
   }
 
   const baseSite = useMemo(() => {
@@ -341,12 +354,6 @@ export default function RoutePlannerCard({
     return { betterDays, sameDays, worseDays, totalDays: slice.length };
   }
 
-  function getDecisionFromCounts({ betterDays, worseDays }) {
-    if (betterDays >= 2 && worseDays === 0) return "move";
-    if (betterDays > 0 && betterDays > worseDays) return "consider";
-    return "stay";
-  }
-
   function getVerdictFromDays(windowDaysArr, windowDaysCount) {
     const c = getDayCounts(windowDaysArr, windowDaysCount);
     if (!c || c.totalDays === 0) return "same";
@@ -390,8 +397,20 @@ export default function RoutePlannerCard({
     `;
   }
 
-  const bestCounts = best ? getDayCounts(best.windowDays, effectiveWindowDays) : null;
-  const decisionLower = bestCounts ? getDecisionFromCounts(bestCounts) : "stay";
+  const bestCounts = best
+    ? {
+        betterDays: best?.betterDays ?? 0,
+        sameDays: best?.sameDays ?? 0,
+        worseDays: best?.worseDays ?? 0,
+        totalDays: Array.isArray(best?.windowDays)
+          ? best.windowDays.slice(0, effectiveWindowDays).length
+          : effectiveWindowDays,
+      }
+    : null;
+
+  const decisionLower = String(
+    result?.recommendation || best?.recommendation || "stay"
+  ).toLowerCase();
   const meta = result && getRouteVerdictMeta(decisionLower);
 
   const trendText = (() => {
@@ -497,20 +516,8 @@ export default function RoutePlannerCard({
     Array.isArray(best?.reasons) &&
     best.reasons.length > 0;
 
-  function getSoftAggregateLabel(candidateRow, windowDaysCount) {
-    const counts = getDayCounts(candidateRow?.windowDays, windowDaysCount);
-
-    if (!counts || counts.totalDays === 0) return null;
-
-    // If aggregate delta is positive, but no single day clears the "better" threshold,
-    // treat it as a soft aggregate improvement instead of a strong "better".
-    const hasNoClearlyBetterDays = counts.betterDays === 0 && counts.worseDays === 0;
-
-    if (
-      hasNoClearlyBetterDays &&
-      typeof candidateRow?.deltaVsBase === "number" &&
-      candidateRow.deltaVsBase > 0
-    ) {
+  function getSoftAggregateLabel(candidateRow) {
+    if (String(candidateRow?.aggregateType || "same") === "slight") {
       return t("routeAggregateSlight") || "Lítil heildarbæting";
     }
 
@@ -602,6 +609,12 @@ export default function RoutePlannerCard({
               <div className="text-xs text-slate-600 dark:text-slate-300 mt-1">{trendText}</div>
             )}
 
+            {best?.aggregateType === "slight" && (
+              <div className="mt-2 text-xs font-medium text-amber-700 dark:text-amber-300">
+                {t("routeAggregateSlight")}
+              </div>
+            )}
+
             {bestCounts && (
               <div className="text-xs text-slate-600 dark:text-slate-300 mt-1">
                 {interpolate(t("routeDecisionCounts"), {
@@ -648,7 +661,8 @@ export default function RoutePlannerCard({
                     }`;
 
                     const hazardLabel = hazardFirstLabel(x);
-                    const softAggregateLabel = getSoftAggregateLabel(x, effectiveWindowDays);
+                    const oldImprovement = getImprovementLabel(x, t);
+                    const softAggregateLabel = getSoftAggregateLabel(x);
 
                     const previewPrimaryLabel =
                       hazardLabel || softAggregateLabel || oldImprovement || verdictLabelFromV(v);
@@ -734,13 +748,13 @@ export default function RoutePlannerCard({
                       ? `${t("routeDetailsDelta") || "Delta"}: ${x.deltaVsBase >= 0 ? "+" : ""}${x.deltaVsBase.toFixed(1)}`
                       : "";
 
-                  const oldImprovement = getImprovementLabel(x?.deltaVsBase, t);
+                  const oldImprovement = getImprovementLabel(x, t);
 
                   // ✅ hazard-first label (camper-first)
                   const hazardLabel = hazardFirstLabel(x);
 
-                  // ✅ soft aggregate label when all daily verdicts are basically "same"
-                  const softAggregateLabel = getSoftAggregateLabel(x, windowDays);
+                  // ✅ soft aggregate label from engine
+                  const softAggregateLabel = getSoftAggregateLabel(x);
 
                   const primaryLabel =
                     hazardLabel || softAggregateLabel || oldImprovement || verdictLabelFromV(v);
@@ -836,7 +850,7 @@ export default function RoutePlannerCard({
         t={t}
         baseSiteLabel={baseSite?.name ?? baseSiteId}
         candidate={detailsCandidate}
-        windowDaysCount={windowDays}
+        windowDaysCount={effectiveWindowDays}
         adaptiveUsedKm={adaptiveUsedKm}
         adaptiveMaxKm={adaptiveMaxKm}
       />

@@ -68,20 +68,38 @@ function warningChips(warnings, t) {
 }
 
 function diffLabel(delta, t) {
-  if (typeof delta !== "number" || Number.isNaN(delta))
+  if (typeof delta !== "number" || Number.isNaN(delta)) {
     return { key: "same", text: t?.("routeDaySame") || "Same" };
+  }
 
-  if (delta >= 0.75) return { key: "better", text: t?.("routeImproveBetter") || "Better" };
-  if (delta >= 0.1) return { key: "slight", text: t?.("routeImproveSlight") || "Slightly better" };
-  if (delta <= -0.75) return { key: "worse", text: t?.("routeDayWorse") || "Worse" };
-  if (delta <= -0.1) return { key: "slightWorse", text: t?.("routeDayWorse") || "Worse" };
+  if (delta >= 0.75) {
+    return { key: "better", text: t?.("routeImproveBetter") || "Better" };
+  }
+
+  if (delta >= 0.1) {
+    return {
+      key: "slight",
+      text: t?.("routeAggregateSlight") || "Slight overall improvement",
+    };
+  }
+
+  if (delta <= -0.75) {
+    return { key: "worse", text: t?.("routeDayWorse") || "Worse" };
+  }
+
+  if (delta <= -0.1) {
+    return {
+      key: "slightWorse",
+      text: t?.("routeImproveSlightWorse") || "Slightly worse",
+    };
+  }
 
   return { key: "same", text: t?.("routeDaySame") || "Same" };
 }
 
 function topReasonFromWarnings(baseWarnings, candWarnings, diffKey, t) {
   // If daily verdict is "same", do not show a positive/negative reason.
-  if (diffKey === "same") return null;
+  if (diffKey === "same" || diffKey === "slight") return null;
 
   const b = pickLevel(baseWarnings);
   const c = pickLevel(candWarnings);
@@ -99,12 +117,19 @@ function topReasonFromWarnings(baseWarnings, candWarnings, diffKey, t) {
     return t?.("routeCompareReasonSimilar") || "Svipaðar viðvaranir";
   if (b == null && c != null) return t?.("routeCompareReasonWorse") || "Fleiri viðvaranir";
 
+  if (diffKey === "slightWorse") {
+    return t?.("routeImproveSlightWorse") || "Slightly worse";
+  }
+
   return t?.("routeCompareReasonGeneral") || "Betri skilyrði";
 }
 
 function pillClassByKey(k) {
-  if (k === "better" || k === "slight") {
+  if (k === "better") {
     return "bg-emerald-50 text-emerald-800 border-emerald-200 dark:bg-emerald-950/30 dark:text-emerald-200 dark:border-emerald-900/40";
+  }
+  if (k === "slight") {
+    return "bg-amber-50 text-amber-800 border-amber-200 dark:bg-amber-950/30 dark:text-amber-200 dark:border-amber-900/40";
   }
   if (k === "worse" || k === "slightWorse") {
     return "bg-rose-50 text-rose-800 border-rose-200 dark:bg-rose-950/30 dark:text-rose-200 dark:border-rose-900/40";
@@ -212,8 +237,34 @@ export default function RouteCompareTable({
             ? d.pointsRaw
             : null;
 
-      const delta =
+      const baseRaw =
+        typeof d?.baseSitePointsRaw === "number"
+          ? d.baseSitePointsRaw
+          : typeof d?.baseSitePoints === "number"
+            ? d.baseSitePoints
+            : null;
+
+      const candRaw =
+        typeof d?.pointsRaw === "number"
+          ? d.pointsRaw
+          : typeof d?.points === "number"
+            ? d.points
+            : null;
+
+      const deltaPts =
         typeof candPts === "number" && typeof basePts === "number" ? candPts - basePts : null;
+
+      const deltaRaw =
+        typeof candRaw === "number" && typeof baseRaw === "number" ? candRaw - baseRaw : null;
+
+      const useRaw =
+        typeof deltaPts === "number" &&
+        typeof candPts === "number" &&
+        typeof basePts === "number" &&
+        ((candPts === basePts && (candPts <= 0.0001 || candPts >= 9.9999)) ||
+          Math.abs(deltaPts) < 0.0001);
+
+      const delta = useRaw ? deltaRaw : deltaPts;
 
       // ✅ base warnings now available from engine injection
       const baseWarnings = Array.isArray(d?.baseSiteWarnings) ? d.baseSiteWarnings : [];

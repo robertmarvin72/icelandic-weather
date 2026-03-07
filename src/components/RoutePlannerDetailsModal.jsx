@@ -101,20 +101,19 @@ export default function RoutePlannerDetailsModal({
     return "same";
   }
 
-  function verdictLabel(v) {
-    if (v === "better") return t?.("routeDayBetter") || "Betra";
-    if (v === "worse") return t?.("routeDayWorse") || "Lakara";
-    return t?.("routeDaySame") || "Svipað";
-  }
-
   function overallVerdictLabel(v) {
-    if (isSoftAggregate) return t?.("routeAggregateSlight") || "Lítil heildarbæting";
+    if (aggregateType === "slight") {
+      return t?.("routeAggregateSlight") || "Lítil heildarbæting";
+    }
     if (v === "better") return t?.("routeDayBetter") || "Betra";
     if (v === "worse") return t?.("routeDayWorse") || "Lakara";
     return t?.("routeDaySame") || "Svipað";
   }
 
   function verdictPillClass(v) {
+    if (aggregateType === "slight") {
+      return "border-amber-200 bg-amber-50 text-amber-800 dark:border-amber-900/40 dark:bg-amber-950/40 dark:text-amber-200";
+    }
     if (v === "better")
       return "border-emerald-200 bg-emerald-50 text-emerald-800 dark:border-emerald-900/40 dark:bg-emerald-950/40 dark:text-emerald-200";
     if (v === "worse")
@@ -183,19 +182,26 @@ export default function RoutePlannerDetailsModal({
     };
   });
 
-  const betterCount = verdictRows.filter((r) => r.verdict === "better").length;
-  const sameCount = verdictRows.filter((r) => r.verdict === "same").length;
-  const worseCount = verdictRows.filter((r) => r.verdict === "worse").length;
+  const betterCount =
+    typeof candidate?.betterDays === "number"
+      ? candidate.betterDays
+      : verdictRows.filter((r) => r.verdict === "better").length;
 
-  // ✅ Soft aggregate state:
-  // if total delta is positive but no single day is clearly better/worse,
-  // show a softer overall label instead of strong "better"
-  const isSoftAggregate =
-    betterCount === 0 && worseCount === 0 && typeof deltaTotal === "number" && deltaTotal > 0;
+  const sameCount =
+    typeof candidate?.sameDays === "number"
+      ? candidate.sameDays
+      : verdictRows.filter((r) => r.verdict === "same").length;
+
+  const worseCount =
+    typeof candidate?.worseDays === "number"
+      ? candidate.worseDays
+      : verdictRows.filter((r) => r.verdict === "worse").length;
+
+  const aggregateType = String(candidate?.aggregateType || "same");
 
   let overallVerdict = "same";
-  if (betterCount > worseCount && betterCount > sameCount) overallVerdict = "better";
-  else if (worseCount > betterCount && worseCount > sameCount) overallVerdict = "worse";
+  if (aggregateType === "better") overallVerdict = "better";
+  else if (worseCount > betterCount) overallVerdict = "worse";
   else overallVerdict = "same";
 
   return createPortal(
@@ -281,7 +287,7 @@ export default function RoutePlannerDetailsModal({
               </span>
 
               <span className="text-sm text-slate-700 dark:text-slate-200">
-                ({t?.("routeOverallNextNDays") || "næstu"} {windowDaysCount ?? days.length}{" "}
+                ({t?.("routeOverallNextNDays") || "næstu"} {days.length}{" "}
                 {t?.("routeOverallDays") || "daga"})
               </span>
             </div>
@@ -293,6 +299,19 @@ export default function RoutePlannerDetailsModal({
                 ({t?.("routeOverallSeeBreakdown") || "sjá sundurliðun"})
               </span>
             </div>
+
+            {typeof candidate?.requiredDelta === "number" ? (
+              <div className="mt-2 text-xs text-slate-600 dark:text-slate-300">
+                {t?.("routeDetailsRequiredDelta") || "Lágmarksbæting miðað við fjarlægð"}:{" "}
+                <span className="font-semibold">{candidate.requiredDelta.toFixed(1)}</span>
+              </div>
+            ) : null}
+
+            {candidate?.hazardImproved ? (
+              <div className="mt-2 text-xs font-medium text-emerald-700 dark:text-emerald-300">
+                {t?.("routeDetailsHazardImproved") || "Minni veðuráhætta á þessum stað"}
+              </div>
+            ) : null}
 
             <div className="mt-2 text-xs text-slate-600 dark:text-slate-300">
               {betterCount} {t?.("routeDaysBetter") || "dagar betri"}, {sameCount}{" "}
