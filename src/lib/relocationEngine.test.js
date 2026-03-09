@@ -197,3 +197,117 @@ describe("relocationEngine (Ticket #119)", () => {
     expect(out.explain.candidates.C.windowDays[0].shelter).toBe(7);
   });
 });
+
+it("downgrades to stay when candidate has a high hazard day that base does not match", () => {
+  const campsites = [
+    { id: "A", name: "Base", lat: 64.145, lon: -21.875 },
+    { id: "B", name: "Candidate", lat: 64.185, lon: -21.85 },
+  ];
+
+  const baseForecast = {
+    daily: {
+      time: ["2026-07-01", "2026-07-02", "2026-07-03"],
+      temperature_2m_max: [12, 12, 12],
+      precipitation_sum: [8, 8, 8],
+      windspeed_10m_max: [10, 10, 10],
+      windgusts_10m_max: [12, 12, 12],
+    },
+  };
+
+  const candidateForecast = {
+    daily: {
+      time: ["2026-07-01", "2026-07-02", "2026-07-03"],
+      temperature_2m_max: [12, 12, 12],
+      precipitation_sum: [0, 0, 0],
+      windspeed_10m_max: [8, 8, 19], // high hazard on day 3
+      windgusts_10m_max: [10, 10, 26],
+    },
+  };
+
+  const out = relocationEngine({
+    baseSiteId: "A",
+    radiusKm: 50,
+    startDateISO: "2026-07-01",
+    days: 3,
+    campsites,
+    forecastMap: {
+      A: baseForecast,
+      B: candidateForecast,
+    },
+  });
+
+  expect(out.ranked[0].siteId).toBe("B");
+  expect(out.ranked[0].candidateHasHighHazardDay).toBe(true);
+  expect(out.ranked[0].hazardBlocked).toBe(true);
+  expect(out.ranked[0].hazardBlockMode).toBe("stay");
+  expect(out.ranked[0].recommendation).toBe("stay");
+});
+
+it("downgrades move to consider when candidate high hazard day is matched by equal-or-worse base hazard", () => {
+  const campsites = [
+    { id: "A", name: "Base", lat: 64.145, lon: -21.875 },
+    { id: "B", name: "Candidate", lat: 64.185, lon: -21.85 },
+  ];
+
+  const baseForecast = {
+    daily: {
+      time: ["2026-07-01", "2026-07-02", "2026-07-03"],
+      temperature_2m_max: [12, 12, 12],
+      precipitation_sum: [25, 6, 6], // high rain day on day 1
+      windspeed_10m_max: [10, 10, 10],
+      windgusts_10m_max: [12, 12, 12],
+    },
+  };
+
+  const candidateForecast = {
+    daily: {
+      time: ["2026-07-01", "2026-07-02", "2026-07-03"],
+      temperature_2m_max: [12, 12, 12],
+      precipitation_sum: [22, 0, 0], // also high rain day on day 1
+      windspeed_10m_max: [10, 6, 6],
+      windgusts_10m_max: [12, 8, 8],
+    },
+  };
+
+  const out = relocationEngine({
+    baseSiteId: "A",
+    radiusKm: 50,
+    startDateISO: "2026-07-01",
+    days: 3,
+    campsites,
+    forecastMap: {
+      A: baseForecast,
+      B: candidateForecast,
+    },
+  });
+
+  expect(out.ranked[0].siteId).toBe("B");
+  expect(out.ranked[0].candidateHasHighHazardDay).toBe(true);
+  expect(out.ranked[0].baseHasSameOrWorseHazardSameDay).toBe(true);
+  expect(out.ranked[0].hazardBlocked).toBe(true);
+  expect(out.ranked[0].hazardBlockMode).toBe("consider");
+  expect(out.ranked[0].recommendation).toBe("consider");
+});
+
+it("does not change normal recommendation when candidate has no high hazard day", () => {
+  const campsites = [
+    { id: "A", name: "Base", lat: 64.145, lon: -21.875 },
+    { id: "B", name: "Dry", lat: 64.185, lon: -21.85 },
+  ];
+
+  const out = relocationEngine({
+    baseSiteId: "A",
+    radiusKm: 50,
+    startDateISO: "2026-07-02",
+    days: 3,
+    campsites,
+    forecastMap: {
+      A: makeDailyRange({ startISO: "2026-07-01", days: 10, tmax: 8, rain: 6, wind: 5, gust: 6 }),
+      B: makeDailyRange({ startISO: "2026-07-01", days: 10, tmax: 8, rain: 0, wind: 5, gust: 6 }),
+    },
+  });
+
+  expect(out.ranked[0].candidateHasHighHazardDay).toBe(false);
+  expect(out.ranked[0].hazardBlocked).toBe(false);
+  expect(["move", "consider"]).toContain(out.ranked[0].recommendation);
+});

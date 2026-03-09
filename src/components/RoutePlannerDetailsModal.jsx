@@ -199,6 +199,20 @@ export default function RoutePlannerDetailsModal({
 
   const aggregateType = String(candidate?.aggregateType || "same");
 
+  const hazardBlockText =
+    candidate?.hazardBlocked && candidate?.hazardBlockMode === "stay"
+      ? t?.("routeHazardBlockerStay") ||
+        "Veðuráhætta á einum degi kemur í veg fyrir flutningsráðleggingu."
+      : candidate?.hazardBlocked && candidate?.hazardBlockMode === "consider"
+        ? t?.("routeHazardBlockerConsider") ||
+          "Veðuráhætta á einum degi dregur úr styrk ráðleggingar."
+        : null;
+
+  const hazardBlockClass =
+    candidate?.hazardBlockMode === "stay"
+      ? "text-rose-700 dark:text-rose-300 font-semibold"
+      : "text-amber-700 dark:text-amber-300";
+
   let overallVerdict = "same";
   if (aggregateType === "better") overallVerdict = "better";
   else if (worseCount > betterCount) overallVerdict = "worse";
@@ -307,9 +321,15 @@ export default function RoutePlannerDetailsModal({
               </div>
             ) : null}
 
-            {candidate?.hazardImproved ? (
+            {candidate?.hazardImproved && !candidate?.hazardBlocked ? (
               <div className="mt-2 text-xs font-medium text-emerald-700 dark:text-emerald-300">
                 {t?.("routeDetailsHazardImproved") || "Minni veðuráhætta á þessum stað"}
+              </div>
+            ) : null}
+
+            {hazardBlockText ? (
+              <div className={`mt-2 text-xs font-medium ${hazardBlockClass}`}>
+                {hazardBlockText}
               </div>
             ) : null}
 

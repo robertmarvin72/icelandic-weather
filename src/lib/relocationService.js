@@ -31,8 +31,10 @@ function buildRadiusSteps(maxRadiusKm) {
  * Fetch forecasts for a list of sites and return forecastMap keyed by site.id.
  * Uses getForecast() caching + inflight coalescing automatically.
  */
-async function buildForecastMapForSites(sites) {
+async function buildForecastMapForSites(sites, opts = {}) {
   const list = Array.isArray(sites) ? sites : [];
+  const fetchForecast =
+    typeof opts?.getForecastFn === "function" ? opts.getForecastFn : getForecast;
 
   const entries = await Promise.all(
     list.map(async (s) => {
@@ -44,7 +46,7 @@ async function buildForecastMapForSites(sites) {
         return [id || null, null];
       }
 
-      const data = await getForecast({ lat, lon });
+      const data = await fetchForecast({ lat, lon, site: s });
       return [id, data];
     })
   );
@@ -61,13 +63,17 @@ async function buildForecastMapForSites(sites) {
  * Keep this function as the one true engine call.
  */
 async function getRelocationRecommendationSingle(baseSiteId, sites, opts = {}) {
-  const { radiusKm = 50, days = 3, startDateISO, limit = 30, config } = opts;
+  const { radiusKm = 50, days = 3, startDateISO, config } = opts;
 
   const campsites = Array.isArray(sites) ? sites : [];
   if (!campsites.length) throw new Error("No campsites provided");
 
-  // Build forecast map for all sites we might score (engine will ignore missing ones)
-  const forecastMap = await buildForecastMapForSites(campsites);
+  // Build forecast map for all sites we might score
+  const forecastMap = await buildForecastMapForSites(campsites, opts);
+
+  if (!forecastMap?.[baseSiteId]) {
+    throw new Error("Base site forecast missing");
+  }
 
   const out = relocationEngine({
     baseSiteId,
@@ -79,13 +85,11 @@ async function getRelocationRecommendationSingle(baseSiteId, sites, opts = {}) {
     config,
   });
 
-  // Respect limit without changing engine behavior
-  if (out && Array.isArray(out.ranked) && Number.isInteger(limit)) {
-    out.ranked = out.ranked.slice(0, Math.max(1, limit));
-  }
-
   return out;
 }
+
+/**
+ * ADAPTIVE wrapper:
 
 /**
  * ADAPTIVE wrapper:

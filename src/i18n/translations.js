@@ -459,7 +459,6 @@ export const translations = {
     routeCompareReasonWarnHazard: "Weather warning",
     routeCompareReasonNoHazards: "No warnings",
 
-    routeImproveSlightWorse: "Slightly worse",
     routeCompareDiffNA: "—",
     routeCompareBaseNoDataTip: "Warnings for the current campsite aren't available (yet).",
 
@@ -471,6 +470,10 @@ export const translations = {
     routeDetailsRawHint:
       "Scores shown as 0.0 can still hide a real difference when both values appear as 0 or 10.",
     routeCompareReasonBetterDespiteWarning: "Better conditions despite a warning",
+
+    routeHazardBlockerStay: "A hazard day blocks a move recommendation.",
+    routeHazardBlockerConsider: "A hazard day weakens this recommendation.",
+    routeHazardBlockerShort: "Hazard day downgraded result.",
   },
 
   // Icelandic (Íslenska) -------------------------------------------------------------------------------------------------------------------
@@ -936,7 +939,6 @@ export const translations = {
     routeCompareReasonHighHazard: "Hættuveður",
     routeCompareReasonWarnHazard: "Veðurviðvörun",
     routeCompareReasonNoHazards: "Engar viðvaranir",
-    routeImproveSlightWorse: "Örlítið lakara",
     routeCompareDiffNA: "—",
     routeCompareBaseNoDataTip: "Viðvaranir fyrir núverandi tjaldsvæði eru ekki tiltækar (ennþá).",
     routeAggregateSlight: "Lítil heildarbæting",
@@ -947,5 +949,9 @@ export const translations = {
     routeDetailsRawHint:
       "0.0 stig geta samt falið raunverulegan mun þegar bæði gildi birtast sem 0 eða 10.",
     routeCompareReasonBetterDespiteWarning: "Betri aðstæður þrátt fyrir viðvörun",
+
+    routeHazardBlockerStay: "Veðuráhætta á einum degi kemur í veg fyrir flutningsráðleggingu.",
+    routeHazardBlockerConsider: "Veðuráhætta á einum degi veikir ráðlegginguna.",
+    routeHazardBlockerShort: "Veðuráhætta veikti niðurstöðuna.",
   },
 };

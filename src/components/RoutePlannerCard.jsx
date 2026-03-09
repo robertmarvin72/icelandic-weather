@@ -524,6 +524,32 @@ export default function RoutePlannerCard({
     return null;
   }
 
+  function getHazardBlockText(candidateRow) {
+    if (!candidateRow?.hazardBlocked) return null;
+
+    if (candidateRow?.hazardBlockMode === "stay") {
+      return `🚨 ${
+        t("routeHazardBlockerStay") ||
+        "Veðuráhætta á einum degi kemur í veg fyrir flutningsráðleggingu."
+      }`;
+    }
+
+    if (candidateRow?.hazardBlockMode === "consider") {
+      return `⚠️ ${
+        t("routeHazardBlockerConsider") || "Veðuráhætta á einum degi dregur úr ráðleggingu."
+      }`;
+    }
+
+    return `⚠️ ${t("routeHazardBlockerShort") || "Hazard dagur veikti niðurstöðu."}`;
+  }
+
+  const bestHazardBlockText = getHazardBlockText(best);
+
+  const bestHazardBlockClass =
+    best?.hazardBlockMode === "stay"
+      ? "text-rose-700 dark:text-rose-300"
+      : "text-amber-700 dark:text-amber-300";
+
   return (
     <div className="rounded-xl border border-slate-200 dark:border-slate-700 p-3">
       <div className="flex items-start justify-between gap-3 mb-2">
@@ -614,6 +640,12 @@ export default function RoutePlannerCard({
                 {t("routeAggregateSlight")}
               </div>
             )}
+
+            {bestHazardBlockText ? (
+              <div className={`mt-2 text-xs font-medium ${bestHazardBlockClass}`}>
+                {bestHazardBlockText}
+              </div>
+            ) : null}
 
             {bestCounts && (
               <div className="text-xs text-slate-600 dark:text-slate-300 mt-1">

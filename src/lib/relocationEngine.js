@@ -317,10 +317,58 @@ function hasHazardImprovement(windowDays) {
   });
 }
 
+function getCandidateHazardBlocker(windowDays) {
+  const days = Array.isArray(windowDays) ? windowDays : [];
+
+  let candidateHasHighHazardDay = false;
+  let baseHasSameOrWorseHazardSameDay = false;
+  let candidateOnlyHighHazardDay = false;
+
+  for (const d of days) {
+    const candRank = warningSeverityRank(d?.warnings);
+    const baseRank = warningSeverityRank(d?.baseSiteWarnings);
+
+    // We only care about candidate HIGH hazard days here
+    if (candRank < 2) continue;
+
+    candidateHasHighHazardDay = true;
+
+    if (baseRank >= candRank) {
+      baseHasSameOrWorseHazardSameDay = true;
+    } else {
+      candidateOnlyHighHazardDay = true;
+    }
+  }
+
+  let triggered = false;
+  let blockerMode = null;
+  let reasonKey = null;
+
+  if (candidateOnlyHighHazardDay) {
+    triggered = true;
+    blockerMode = "stay";
+    reasonKey = "routeHazardBlockerStay";
+  } else if (candidateHasHighHazardDay) {
+    triggered = true;
+    blockerMode = "consider";
+    reasonKey = "routeHazardBlockerConsider";
+  }
+
+  return {
+    triggered,
+    blockerMode,
+    reasonKey,
+    candidateHasHighHazardDay,
+    baseHasSameOrWorseHazardSameDay,
+    candidateOnlyHighHazardDay,
+  };
+}
+
 function decideCandidate({ windowDays, deltaVsBase, distanceKm }) {
   const counts = getDayCounts(windowDays, 0.75);
   const requiredDelta = requiredDeltaForDistance(distanceKm);
   const hazardImproved = hasHazardImprovement(windowDays);
+  const hazardBlocker = getCandidateHazardBlocker(windowDays);
 
   const allDaysSame = counts.betterDays === 0 && counts.worseDays === 0;
   const hasPositiveDelta = typeof deltaVsBase === "number" && deltaVsBase > 0;
@@ -361,6 +409,17 @@ function decideCandidate({ windowDays, deltaVsBase, distanceKm }) {
     aggregateKey = "routeAggregateSlight";
   }
 
+  // Ticket #135: candidate high-hazard blocker
+  if (hazardBlocker.candidateOnlyHighHazardDay) {
+    recommendation = "stay";
+    aggregateType = "same";
+    aggregateKey = "routeDaySame";
+  } else if (hazardBlocker.candidateHasHighHazardDay && recommendation === "move") {
+    recommendation = "consider";
+    aggregateType = "slight";
+    aggregateKey = "routeAggregateSlight";
+  }
+
   const recommendationRank =
     recommendation === "move"
       ? 3
@@ -374,10 +433,17 @@ function decideCandidate({ windowDays, deltaVsBase, distanceKm }) {
     ...counts,
     requiredDelta,
     hazardImproved,
+
     recommendation,
     aggregateType,
     aggregateKey,
     recommendationRank,
+
+    hazardBlocked: hazardBlocker.triggered,
+    hazardBlockMode: hazardBlocker.blockerMode,
+    hazardBlockReasonKey: hazardBlocker.reasonKey,
+    candidateHasHighHazardDay: hazardBlocker.candidateHasHighHazardDay,
+    baseHasSameOrWorseHazardSameDay: hazardBlocker.baseHasSameOrWorseHazardSameDay,
   };
 }
 
@@ -535,6 +601,13 @@ export function relocationEngine(input) {
       worseDays: decision.worseDays,
       requiredDelta: decision.requiredDelta,
       hazardImproved: decision.hazardImproved,
+
+      hazardBlocked: decision.hazardBlocked,
+      hazardBlockMode: decision.hazardBlockMode,
+      hazardBlockReasonKey: decision.hazardBlockReasonKey,
+      candidateHasHighHazardDay: decision.candidateHasHighHazardDay,
+      baseHasSameOrWorseHazardSameDay: decision.baseHasSameOrWorseHazardSameDay,
+
       recommendation: decision.recommendation,
       aggregateType: decision.aggregateType,
       aggregateKey: decision.aggregateKey,
@@ -555,6 +628,13 @@ export function relocationEngine(input) {
       worseDays: row.worseDays,
       requiredDelta: row.requiredDelta,
       hazardImproved: row.hazardImproved,
+
+      hazardBlocked: row.hazardBlocked,
+      hazardBlockMode: row.hazardBlockMode,
+      hazardBlockReasonKey: row.hazardBlockReasonKey,
+      candidateHasHighHazardDay: row.candidateHasHighHazardDay,
+      baseHasSameOrWorseHazardSameDay: row.baseHasSameOrWorseHazardSameDay,
+
       recommendation: row.recommendation,
       aggregateType: row.aggregateType,
       aggregateKey: row.aggregateKey,

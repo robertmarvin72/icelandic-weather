@@ -136,31 +136,6 @@ export default function ForecastTable({
     return () => clearTimeout(tt);
   }, [site?.id]);
 
-  const worstDate = useMemo(() => {
-    const list = Array.isArray(rows) ? rows : [];
-    let bestKey = null;
-    let bestScore = -Infinity;
-
-    for (const r of list) {
-      const warnings = computeWarningsFromRow(r);
-      const hasHigh = rowHasHighWarning(warnings);
-      const hasWarn = rowHasWarning(warnings);
-
-      // priority: high warning > warn > points
-      const severity = hasHigh ? 2 : hasWarn ? 1 : 0;
-      const points = typeof r?.points === "number" ? r.points : 0;
-
-      // Higher score = "worse"
-      const score = severity * 100 - points;
-
-      if (score > bestScore) {
-        bestScore = score;
-        bestKey = r?.date ?? null;
-      }
-    }
-    return bestKey;
-  }, [rows]);
-
   return (
     <div className="card rounded-2xl shadow-sm border border-slate-200 bg-white dark:bg-slate-900 dark:border-slate-700 p-4">
       {/* Header */}

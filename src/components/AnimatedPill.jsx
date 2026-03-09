@@ -25,16 +25,16 @@ export default function AnimatedPill({
     return undefined;
   }, [triggerKey]);
 
-  return (
-    <Tag
-      className={[
+  return React.createElement(
+    Tag,
+    {
+      className: [
         className,
         "transition-transform duration-200 ease-out",
         pulse ? "scale-[1.04]" : "scale-100",
-      ].join(" ")}
-      {...props}
-    >
-      {children}
-    </Tag>
+      ].join(" "),
+      ...props,
+    },
+    children
   );
 }
