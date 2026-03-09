@@ -123,6 +123,7 @@ function enrichWithBaseDays(out, windowDaysCount) {
 
 export default function RoutePlannerCard({
   t = (k) => k,
+  lang = "en",
   entitlements,
   me,
   onUpgrade,
@@ -543,10 +544,59 @@ export default function RoutePlannerCard({
     return `⚠️ ${t("routeHazardBlockerShort") || "Hazard dagur veikti niðurstöðu."}`;
   }
 
+  function formatShortDateLabel(dateISO) {
+    if (!dateISO) return "";
+
+    try {
+      const normalizedLang = String(lang || "").toLowerCase();
+      const isIcelandic = normalizedLang === "is" || normalizedLang.startsWith("is-");
+
+      const d = new Date(`${dateISO}T00:00:00Z`);
+      const weekday = d.getUTCDay();
+
+      const weekdayShort = isIcelandic
+        ? ["Sun", "Mán", "Þri", "Mið", "Fim", "Fös", "Lau"][weekday]
+        : ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"][weekday];
+
+      const day = String(d.getUTCDate()).padStart(2, "0");
+      const month = String(d.getUTCMonth() + 1).padStart(2, "0");
+
+      return `${weekdayShort} ${day}/${month}`;
+    } catch {
+      return String(dateISO).slice(5);
+    }
+  }
+
+  function getRoughWeatherWindowText(candidateRow) {
+    const rw = candidateRow?.roughWeatherWindow;
+    if (!rw?.hasWindow || !rw?.startDate || !rw?.endDate) return null;
+
+    const start = formatShortDateLabel(rw.startDate);
+    const end = formatShortDateLabel(rw.endDate);
+
+    if (rw.dayCount <= 1) {
+      return interpolate(t("routeRoughWeatherWindowSingle"), {
+        date: start,
+      });
+    }
+
+    return interpolate(t("routeRoughWeatherWindowRange"), {
+      start,
+      end,
+      days: rw.dayCount,
+    });
+  }
+
   const bestHazardBlockText = getHazardBlockText(best);
+  const bestRoughWeatherWindowText = getRoughWeatherWindowText(best);
 
   const bestHazardBlockClass =
     best?.hazardBlockMode === "stay"
+      ? "text-rose-700 dark:text-rose-300"
+      : "text-amber-700 dark:text-amber-300";
+
+  const bestRoughWeatherWindowClass =
+    best?.roughWeatherWindow?.maxSeverity === "high"
       ? "text-rose-700 dark:text-rose-300"
       : "text-amber-700 dark:text-amber-300";
 
@@ -644,6 +694,12 @@ export default function RoutePlannerCard({
             {bestHazardBlockText ? (
               <div className={`mt-2 text-xs font-medium ${bestHazardBlockClass}`}>
                 {bestHazardBlockText}
+              </div>
+            ) : null}
+
+            {!bestHazardBlockText && bestRoughWeatherWindowText ? (
+              <div className={`mt-2 text-xs font-medium ${bestRoughWeatherWindowClass}`}>
+                {bestRoughWeatherWindowText}
               </div>
             ) : null}
 

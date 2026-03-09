@@ -317,6 +317,67 @@ function hasHazardImprovement(windowDays) {
   });
 }
 
+function getRoughWeatherWindow(windowDays) {
+  const days = Array.isArray(windowDays) ? windowDays : [];
+
+  let bestStart = null;
+  let bestEnd = null;
+  let bestCount = 0;
+  let bestMaxRank = 0;
+
+  let currentStart = null;
+  let currentEnd = null;
+  let currentCount = 0;
+  let currentMaxRank = 0;
+
+  for (const d of days) {
+    const rank = warningSeverityRank(d?.warnings);
+    const isHazardDay = rank >= 1;
+
+    if (isHazardDay) {
+      if (!currentStart) currentStart = d?.date ?? null;
+      currentEnd = d?.date ?? null;
+      currentCount += 1;
+      currentMaxRank = Math.max(currentMaxRank, rank);
+    } else if (currentCount > 0) {
+      if (
+        currentCount > bestCount ||
+        (currentCount === bestCount && currentMaxRank > bestMaxRank)
+      ) {
+        bestStart = currentStart;
+        bestEnd = currentEnd;
+        bestCount = currentCount;
+        bestMaxRank = currentMaxRank;
+      }
+
+      currentStart = null;
+      currentEnd = null;
+      currentCount = 0;
+      currentMaxRank = 0;
+    }
+  }
+
+  if (
+    currentCount > 0 &&
+    (currentCount > bestCount || (currentCount === bestCount && currentMaxRank > bestMaxRank))
+  ) {
+    bestStart = currentStart;
+    bestEnd = currentEnd;
+    bestCount = currentCount;
+    bestMaxRank = currentMaxRank;
+  }
+
+  const hasWindow = bestCount > 0;
+
+  return {
+    hasWindow,
+    startDate: hasWindow ? bestStart : null,
+    endDate: hasWindow ? bestEnd : null,
+    dayCount: hasWindow ? bestCount : 0,
+    maxSeverity: bestMaxRank >= 2 ? "high" : bestMaxRank >= 1 ? "warn" : "none",
+  };
+}
+
 function getCandidateHazardBlocker(windowDays) {
   const days = Array.isArray(windowDays) ? windowDays : [];
 
@@ -369,6 +430,7 @@ function decideCandidate({ windowDays, deltaVsBase, distanceKm }) {
   const requiredDelta = requiredDeltaForDistance(distanceKm);
   const hazardImproved = hasHazardImprovement(windowDays);
   const hazardBlocker = getCandidateHazardBlocker(windowDays);
+  const roughWeatherWindow = getRoughWeatherWindow(windowDays);
 
   const allDaysSame = counts.betterDays === 0 && counts.worseDays === 0;
   const hasPositiveDelta = typeof deltaVsBase === "number" && deltaVsBase > 0;
@@ -433,6 +495,7 @@ function decideCandidate({ windowDays, deltaVsBase, distanceKm }) {
     ...counts,
     requiredDelta,
     hazardImproved,
+    roughWeatherWindow,
 
     recommendation,
     aggregateType,
@@ -601,6 +664,7 @@ export function relocationEngine(input) {
       worseDays: decision.worseDays,
       requiredDelta: decision.requiredDelta,
       hazardImproved: decision.hazardImproved,
+      roughWeatherWindow: decision.roughWeatherWindow,
 
       hazardBlocked: decision.hazardBlocked,
       hazardBlockMode: decision.hazardBlockMode,
@@ -628,6 +692,7 @@ export function relocationEngine(input) {
       worseDays: row.worseDays,
       requiredDelta: row.requiredDelta,
       hazardImproved: row.hazardImproved,
+      roughWeatherWindow: row.roughWeatherWindow,
 
       hazardBlocked: row.hazardBlocked,
       hazardBlockMode: row.hazardBlockMode,
