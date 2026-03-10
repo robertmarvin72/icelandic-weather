@@ -483,6 +483,12 @@ export const translations = {
     routeStayReasonAlreadyBest: "You are likely already in the best nearby spot.",
     routeStayGoodSpot: "Good spot to stay.",
 
+    routeEscapeStormTitle: "🚐 Escape the storm",
+    routeEscapeStormBody: "Better weather nearby",
+    routeEscapeStormDestination: "{km} km → {site}",
+    routeEscapeStormBaseWindow: "Hazard weather expected at {place}.",
+    routeEscapeStormCalmerNearby: "Calmer weather nearby.",
+
     locale: "en-GB",
   },
 
@@ -971,6 +977,12 @@ export const translations = {
     routeStayReasonSmallDifference: "Munurinn er of lítill til að réttlæta flutning.",
     routeStayReasonAlreadyBest: "Þú ert líklega nú þegar á besta staðnum í nágrenninu.",
     routeStayGoodSpot: "Góður staður núna.",
+
+    routeEscapeStormTitle: "🚐 Forðastu óveðrið",
+    routeEscapeStormBody: "Betra veður er í nágrenninu",
+    routeEscapeStormDestination: "{km} km → {site}",
+    routeEscapeStormBaseWindow: "Slæmt veður er líklegt á {place}.",
+    routeEscapeStormCalmerNearby: "Rólegra veður er í nágrenninu.",
 
     locale: "is-IS",
   },

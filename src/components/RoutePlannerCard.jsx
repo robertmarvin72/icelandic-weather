@@ -493,6 +493,84 @@ export default function RoutePlannerCard({
     (d) => Array.isArray(d?.warnings) && d.warnings.some((w) => w?.level === "warn")
   );
 
+  function warningRankFromDays(days) {
+    const list = Array.isArray(days) ? days : [];
+    let rank = 0;
+
+    for (const d of list) {
+      const warnings = Array.isArray(d?.warnings) ? d.warnings : [];
+      for (const w of warnings) {
+        if (w?.level === "high") rank = Math.max(rank, 2);
+        else if (w?.level === "warn") rank = Math.max(rank, 1);
+      }
+    }
+
+    return rank;
+  }
+
+  function getRoughWeatherWindowFromDays(days) {
+    const list = Array.isArray(days) ? days : [];
+
+    let bestStart = null;
+    let bestEnd = null;
+    let bestCount = 0;
+    let bestMaxRank = 0;
+
+    let currentStart = null;
+    let currentEnd = null;
+    let currentCount = 0;
+    let currentMaxRank = 0;
+
+    for (const d of list) {
+      const warnings = Array.isArray(d?.warnings) ? d.warnings : [];
+      const rank = warnings.some((w) => w?.level === "high")
+        ? 2
+        : warnings.some((w) => w?.level === "warn")
+          ? 1
+          : 0;
+
+      if (rank >= 1) {
+        if (!currentStart) currentStart = d?.date ?? null;
+        currentEnd = d?.date ?? null;
+        currentCount += 1;
+        currentMaxRank = Math.max(currentMaxRank, rank);
+      } else if (currentCount > 0) {
+        if (
+          currentCount > bestCount ||
+          (currentCount === bestCount && currentMaxRank > bestMaxRank)
+        ) {
+          bestStart = currentStart;
+          bestEnd = currentEnd;
+          bestCount = currentCount;
+          bestMaxRank = currentMaxRank;
+        }
+
+        currentStart = null;
+        currentEnd = null;
+        currentCount = 0;
+        currentMaxRank = 0;
+      }
+    }
+
+    if (
+      currentCount > 0 &&
+      (currentCount > bestCount || (currentCount === bestCount && currentMaxRank > bestMaxRank))
+    ) {
+      bestStart = currentStart;
+      bestEnd = currentEnd;
+      bestCount = currentCount;
+      bestMaxRank = currentMaxRank;
+    }
+
+    return {
+      hasWindow: bestCount > 0,
+      startDate: bestCount > 0 ? bestStart : null,
+      endDate: bestCount > 0 ? bestEnd : null,
+      dayCount: bestCount,
+      maxSeverity: bestMaxRank >= 2 ? "high" : bestMaxRank >= 1 ? "warn" : "none",
+    };
+  }
+
   // Helper: produce a camper-first label when the improvement is mainly hazard reduction
   function hazardFirstLabel(candidateRow) {
     const candHigh = !!candidateRow?.hasHighWarning;
@@ -597,6 +675,45 @@ export default function RoutePlannerCard({
     }
   }
 
+  function getEscapeSuggestion(candidateRow) {
+    if (!candidateRow) return null;
+    if (!["move", "consider"].includes(decisionLower)) return null;
+
+    const baseRank = warningRankFromDays(baseSliceDays);
+    const candidateRank = candidateRow?.hasHighWarning ? 2 : candidateRow?.hasWarning ? 1 : 0;
+
+    const delta = typeof candidateRow?.deltaVsBase === "number" ? candidateRow.deltaVsBase : null;
+    const requiredDelta =
+      typeof candidateRow?.requiredDelta === "number" ? candidateRow.requiredDelta : null;
+
+    const qualifiesByDelta =
+      typeof delta === "number" && typeof requiredDelta === "number"
+        ? delta >= requiredDelta
+        : typeof delta === "number" && delta > 0;
+
+    if (baseRank < 1) return null;
+    if (candidateRank >= baseRank) return null;
+    if (!qualifiesByDelta) return null;
+
+    // NEW: do not suggest escape if overall weather is worse
+    if (candidateRow?.aggregateType === "worse") return null;
+
+    const cleanSiteName = (candidateRow?.siteName || candidateRow?.siteId || "—")
+      .replace(/ campsite$/i, "")
+      .trim();
+    return {
+      title: t("routeEscapeStormTitle") || "🚐 Escape the storm",
+      body: t("routeEscapeStormBody") || "Better weather nearby",
+      destinationLine: interpolate(t("routeEscapeStormDestination"), {
+        km: Number.isFinite(candidateRow?.distanceKm) ? Math.round(candidateRow.distanceKm) : "—",
+        site: cleanSiteName,
+      }),
+      baseWindow: getRoughWeatherWindowFromDays(baseSliceDays),
+      candidateRank,
+      baseRank,
+    };
+  }
+
   function getRoughWeatherWindowText(candidateRow) {
     const rw = candidateRow?.roughWeatherWindow;
     if (!rw?.hasWindow || !rw?.startDate || !rw?.endDate) return null;
@@ -619,6 +736,7 @@ export default function RoutePlannerCard({
 
   const bestHazardBlockText = getHazardBlockText(best);
   const bestStayReasonText = getStayReasonText(best);
+  const bestEscapeSuggestion = getEscapeSuggestion(best);
   const bestRoughWeatherWindowText = getRoughWeatherWindowText(best);
 
   const bestHazardBlockClass =
@@ -715,6 +833,20 @@ export default function RoutePlannerCard({
             {trendText && (
               <div className="text-xs text-slate-600 dark:text-slate-300 mt-1">{trendText}</div>
             )}
+
+            {bestEscapeSuggestion ? (
+              <div className="mt-2 rounded-lg border border-emerald-200 bg-emerald-50/70 px-3 py-2 dark:border-emerald-800/50 dark:bg-emerald-900/20">
+                <div className="text-xs font-semibold text-emerald-800 dark:text-emerald-200">
+                  {bestEscapeSuggestion.title}
+                </div>
+                <div className="text-xs text-emerald-700 dark:text-emerald-300 mt-0.5">
+                  {bestEscapeSuggestion.body}
+                </div>
+                <div className="text-sm font-semibold text-emerald-900 dark:text-emerald-100 mt-1">
+                  {bestEscapeSuggestion.destinationLine}
+                </div>
+              </div>
+            ) : null}
 
             {best?.aggregateType === "slight" && (
               <div className="mt-2 text-xs font-medium text-amber-700 dark:text-amber-300">
@@ -984,6 +1116,7 @@ export default function RoutePlannerCard({
         windowDaysCount={effectiveWindowDays}
         adaptiveUsedKm={adaptiveUsedKm}
         adaptiveMaxKm={adaptiveMaxKm}
+        escapeSuggestion={detailsCandidate ? getEscapeSuggestion(detailsCandidate) : null}
       />
     </div>
   );

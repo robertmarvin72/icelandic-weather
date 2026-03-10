@@ -15,6 +15,15 @@ function signFmt(n, digits = 1) {
   return `${s}${v.toFixed(digits)}`;
 }
 
+function interpolate(template, vars) {
+  if (typeof template !== "string") return "";
+  let out = template;
+  for (const [k, v] of Object.entries(vars || {})) {
+    out = out.replaceAll(`{${k}}`, String(v));
+  }
+  return out;
+}
+
 export default function RoutePlannerDetailsModal({
   open,
   onClose,
@@ -24,6 +33,7 @@ export default function RoutePlannerDetailsModal({
   windowDaysCount, // keep modal in sync with slider
   adaptiveUsedKm,
   adaptiveMaxKm,
+  escapeSuggestion,
 }) {
   const [showAdvanced, setShowAdvanced] = useState(false);
 
@@ -330,6 +340,26 @@ export default function RoutePlannerDetailsModal({
             {hazardBlockText ? (
               <div className={`mt-2 text-xs font-medium ${hazardBlockClass}`}>
                 {hazardBlockText}
+              </div>
+            ) : null}
+
+            {escapeSuggestion ? (
+              <div className="mt-2 rounded-lg border border-emerald-200 bg-emerald-50/70 px-3 py-2 dark:border-emerald-800/50 dark:bg-emerald-900/20">
+                <div className="text-xs font-semibold text-emerald-800 dark:text-emerald-200">
+                  {escapeSuggestion.title}
+                </div>
+
+                {escapeSuggestion?.baseWindow?.hasWindow ? (
+                  <div className="mt-1 text-xs text-emerald-700 dark:text-emerald-300">
+                    {interpolate(t?.("routeEscapeStormBaseWindow"), {
+                      place: baseSiteLabel || "Current campsite",
+                    })}
+                  </div>
+                ) : null}
+
+                <div className="mt-1 text-xs text-emerald-700 dark:text-emerald-300">
+                  {t?.("routeEscapeStormCalmerNearby") || "Calmer weather nearby."}
+                </div>
               </div>
             ) : null}
 
