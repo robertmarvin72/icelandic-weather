@@ -544,6 +544,36 @@ export default function RoutePlannerCard({
     return `⚠️ ${t("routeHazardBlockerShort") || "Hazard dagur veikti niðurstöðu."}`;
   }
 
+  function getStayReasonText(candidateRow) {
+    if (decisionLower !== "stay") return null;
+
+    if (!candidateRow) {
+      return (
+        t("routeStayReasonAlreadyBest") || "Þú ert líklega nú þegar á besta staðnum í nágrenninu."
+      );
+    }
+
+    if (candidateRow?.hazardBlocked) {
+      return (
+        t("routeStayReasonHazard") || "Veðuráhætta annars staðar gerir flutning ekki ráðlagðan."
+      );
+    }
+
+    if (
+      typeof candidateRow?.deltaVsBase === "number" &&
+      candidateRow.deltaVsBase > 0 &&
+      candidateRow.deltaVsBase < 0.5
+    ) {
+      return (
+        t("routeStayReasonSmallDifference") || "Munurinn er of lítill til að réttlæta flutning."
+      );
+    }
+
+    return (
+      t("routeStayReasonAlreadyBest") || "Þú ert líklega nú þegar á besta staðnum í nágrenninu."
+    );
+  }
+
   function formatShortDateLabel(dateISO) {
     if (!dateISO) return "";
 
@@ -588,6 +618,7 @@ export default function RoutePlannerCard({
   }
 
   const bestHazardBlockText = getHazardBlockText(best);
+  const bestStayReasonText = getStayReasonText(best);
   const bestRoughWeatherWindowText = getRoughWeatherWindowText(best);
 
   const bestHazardBlockClass =
@@ -700,6 +731,18 @@ export default function RoutePlannerCard({
             {!bestHazardBlockText && bestRoughWeatherWindowText ? (
               <div className={`mt-2 text-xs font-medium ${bestRoughWeatherWindowClass}`}>
                 {bestRoughWeatherWindowText}
+              </div>
+            ) : null}
+
+            {decisionLower === "stay" && (
+              <div className="mt-2 text-xs font-medium text-emerald-700 dark:text-emerald-300">
+                {t("routeStayGoodSpot")}
+              </div>
+            )}
+
+            {bestStayReasonText ? (
+              <div className="mt-2 text-xs text-slate-700 dark:text-slate-300">
+                {bestStayReasonText}
               </div>
             ) : null}
 

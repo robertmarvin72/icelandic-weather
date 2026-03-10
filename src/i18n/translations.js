@@ -478,6 +478,11 @@ export const translations = {
     routeRoughWeatherWindowSingle: "⚠ Rough weather expected on {date}.",
     routeRoughWeatherWindowRange: "⚠ Rough weather window: {start} → {end} ({days} days).",
 
+    routeStayReasonHazard: "Weather risk elsewhere makes moving inadvisable.",
+    routeStayReasonSmallDifference: "The difference is too small to justify moving.",
+    routeStayReasonAlreadyBest: "You are likely already in the best nearby spot.",
+    routeStayGoodSpot: "Good spot to stay.",
+
     locale: "en-GB",
   },
 
@@ -961,6 +966,11 @@ export const translations = {
 
     routeRoughWeatherWindowSingle: "⚠ Slæmt veður er líklegt {date}.",
     routeRoughWeatherWindowRange: "⚠ Slæmt veður framundan: {start} → {end} ({days} dagar).",
+
+    routeStayReasonHazard: "Veðuráhætta annars staðar gerir flutning ekki ráðlagðan.",
+    routeStayReasonSmallDifference: "Munurinn er of lítill til að réttlæta flutning.",
+    routeStayReasonAlreadyBest: "Þú ert líklega nú þegar á besta staðnum í nágrenninu.",
+    routeStayGoodSpot: "Góður staður núna.",
 
     locale: "is-IS",
   },
