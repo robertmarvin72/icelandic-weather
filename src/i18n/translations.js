@@ -312,13 +312,13 @@ export const translations = {
     routeReasonTmax: "Warmer days",
 
     routeVerdictStayTitle: "Stay put",
-    routeVerdictStayBody: "Conditions nearby aren’t meaningfully better.",
+    routeVerdictStayBody: "Conditions nearby do not look meaningfully better.",
 
     routeVerdictConsiderTitle: "Consider moving",
-    routeVerdictConsiderBody: "There is a slightly better option nearby.",
+    routeVerdictConsiderBody: "There may be a slightly better option nearby.",
 
     routeVerdictMoveTitle: "Move camp",
-    routeVerdictMoveBody: "There is clearly a better option nearby.",
+    routeVerdictMoveBody: "There appears to be a clearly better option nearby.",
 
     routePlannerTitle: "Route Planner",
     routePlannerSelectBase: "Select a campsite (or use your location) to get a recommendation.",
@@ -335,52 +335,51 @@ export const translations = {
     routePlannerCandidatesPreselected: "Nearby campsites checked",
     routePlannerCandidatesScored: "Scored",
     routePlannerTopAlternatives: "Top alternatives",
-    routePlannerNoAlternatives: "No better options found nearby.",
-    routePlannerNoReasons: "No clear reasons (yet).",
+    routePlannerNoAlternatives: "No clearly better nearby options found.",
+    routePlannerNoReasons: "No clear reasons available yet.",
 
     routePlannerLockedBody: "Unlock Route Planner to get relocation advice for nearby campsites.",
 
-    routePlannerBaseForecastMissing: "Missing forecast for selected base campsite.",
+    routePlannerBaseForecastMissing: "Missing forecast for the selected base campsite.",
     routePlannerAlternativesCount: "Alternatives evaluated",
-    routePlannerMinimalDifference: "Minimal difference in conditions.",
+    routePlannerMinimalDifference: "Only a small difference in conditions.",
 
-    routePlannerTrendMove: "Conditions look much better over the next {days} days.",
+    routePlannerTrendMove: "Conditions look clearly better over the next {days} days.",
     routePlannerTrendMoveWithReasons:
-      "Conditions look much better over the next {days} days — mainly because of: {reasons}.",
+      "Conditions look clearly better over the next {days} days — mainly because of: {reasons}.",
 
     routePlannerTrendConsider:
-      "It might be worth relocating over the next {days} days, but the difference isn’t big.",
+      "It may be worth moving over the next {days} days, but the weather difference is small.",
     routePlannerTrendConsiderWithReasons:
-      "It might be worth relocating over the next {days} days — mainly because of: {reasons}.",
+      "It may be worth moving over the next {days} days — mainly because of: {reasons}.",
 
-    routePlannerTrendStay:
-      "It doesn’t look like any nearby location will be noticeably better over the next {days} days.",
+    routePlannerTrendStay: "No nearby location looks noticeably better over the next {days} days.",
 
     top5DistanceFromUserNote: "Distance is based on your current location.",
     top5DistanceFromUserTooltip: "Distances in this list are calculated from your location.",
-    top5DistanceFromUserNoteWithLocation: "Distances is based on your location:",
+    top5DistanceFromUserNoteWithLocation: "Distance is based on your location:",
     unknownLocation: "Unknown location",
 
     routeDetailsComparedTo: "Compared to",
-    routeDetailsDelta: "Delta",
-    routeDetailsWhy: "Why this is better",
+    routeDetailsDelta: "Difference",
+    routeDetailsWhy: "Why this looks better",
     routeDetailsNoReasons: "No explanation data available.",
-    routeDetailsDayByDay: "Day-by-day",
+    routeDetailsDayByDay: "Day by day",
     routeDetailsNoDays: "No day breakdown available.",
     routeDetailsDate: "Date",
     routeDetailsBasePts: "Base pts",
-    routeDetailsCandPts: "Candidate pts",
-    routeDetailsWindPen: "Wind pen",
-    routeDetailsGustPen: "Gust pen",
-    routeDetailsRainPen: "Rain pen",
-    routeDetailsStreakPen: "Streak pen",
+    routeDetailsCandPts: "Option pts",
+    routeDetailsWindPen: "Wind penalty",
+    routeDetailsGustPen: "Gust penalty",
+    routeDetailsRainPen: "Rain penalty",
+    routeDetailsStreakPen: "Rain streak penalty",
     routeDetailsShelter: "Shelter",
     routeDetailsOpenHint: "Open details",
     routeBase: "Base",
 
-    routeReason_wind: "Less wind penalty",
-    routeReason_gust: "Less gust penalty",
-    routeReason_rain: "Less rain penalty",
+    routeReason_wind: "Lower wind penalty",
+    routeReason_gust: "Lower gust penalty",
+    routeReason_rain: "Lower rain penalty",
     routeReason_rainStreak: "Fewer rainy days in a row",
     routeReason_shelter: "More shelter",
     routeReason_temp: "Warmer daytime temperatures",
@@ -393,7 +392,7 @@ export const translations = {
     routeImproveMuchBetter: "Much better",
 
     routeDayBetter: "Better",
-    routeDaySame: "Same",
+    routeDaySame: "Similar",
     routeDayWorse: "Worse",
 
     routeDetailsShowAdvanced: "Show scoring details",
@@ -410,19 +409,20 @@ export const translations = {
 
     routeOverallResult: "Overall result for the selected days",
     routeOverallNote: "Some individual days may still be worse or similar.",
-    routeDetailsPositiveDrivers: "Top positive drivers",
+    routeDetailsPositiveDrivers: "Main reasons",
 
     routeOverallNextNDays: "next",
     routeOverallDays: "days",
-    routeOverallTotalDelta: "Total difference",
+    routeOverallTotalDelta: "Overall difference",
     routeOverallSeeBreakdown: "see breakdown",
 
     routeDecisionCounts: "{better} better days, {same} similar, {worse} worse.",
-    routePlannerTopAlternativesNoBetter: "Nearby options (none better over the next {days} days)",
+    routePlannerTopAlternativesNoBetter:
+      "Nearby options (none clearly better over the next {days} days)",
 
     routeDaysBetter: "better days",
-    routeDaysSame: "similar days",
-    routeDaysWorse: "worse days",
+    routeDaysSame: "similar",
+    routeDaysWorse: "worse",
 
     routeDetailsTempBase: "Temperature base",
 
@@ -460,34 +460,50 @@ export const translations = {
     routeCompareReasonNoHazards: "No warnings",
 
     routeCompareDiffNA: "—",
-    routeCompareBaseNoDataTip: "Warnings for the current campsite aren't available (yet).",
+    routeCompareBaseNoDataTip: "Warnings for the current campsite are not available yet.",
 
-    routeAggregateSlight: "Slight overall improvement",
+    routeAggregateSlight: "Slightly better weather",
 
     routeDetailsRequiredDelta: "Required improvement for this distance",
-    routeDetailsHazardImproved: "Lower weather risk at this location",
+    routeDetailsHazardImproved: "Lower weather risk here than at your current campsite",
     routeImproveSlightWorse: "Slightly worse",
     routeDetailsRawHint:
       "Scores shown as 0.0 can still hide a real difference when both values appear as 0 or 10.",
     routeCompareReasonBetterDespiteWarning: "Better conditions despite a warning",
 
-    routeHazardBlockerStay: "A hazard day blocks a move recommendation.",
-    routeHazardBlockerConsider: "A hazard day weakens this recommendation.",
-    routeHazardBlockerShort: "Hazard day downgraded result.",
+    routeHazardBlockerStay: "A high-risk weather day blocks a move recommendation.",
+    routeHazardBlockerConsider: "A rough-weather day weakens this recommendation.",
+    routeHazardBlockerShort: "Weather risk lowered this result.",
 
-    routeRoughWeatherWindowSingle: "⚠ Rough weather expected on {date}.",
+    routeRoughWeatherWindowSingle: "⚠ Rough weather may affect {date}.",
     routeRoughWeatherWindowRange: "⚠ Rough weather window: {start} → {end} ({days} days).",
 
-    routeStayReasonHazard: "Weather risk elsewhere makes moving inadvisable.",
-    routeStayReasonSmallDifference: "The difference is too small to justify moving.",
-    routeStayReasonAlreadyBest: "You are likely already in the best nearby spot.",
-    routeStayGoodSpot: "Good spot to stay.",
+    routeStayReasonHazard: "Weather risk elsewhere makes moving less advisable.",
+    routeStayReasonSmallDifference: "The difference is too small to make moving worthwhile.",
+    routeStayReasonAlreadyBest: "You are likely already in one of the better nearby spots.",
+    routeStayGoodSpot: "Reasonable place to stay.",
 
     routeEscapeStormTitle: "🚐 Escape the storm",
-    routeEscapeStormBody: "Better weather nearby",
+    routeEscapeStormBody: "Better conditions may be available nearby.",
     routeEscapeStormDestination: "{km} km → {site}",
-    routeEscapeStormBaseWindow: "Hazard weather expected at {place}.",
-    routeEscapeStormCalmerNearby: "Calmer weather nearby.",
+    routeEscapeStormBaseWindow: "Hazardous weather may affect {place}.",
+    routeEscapeStormCalmerNearby: "Calmer conditions may be available nearby.",
+
+    routeRiskLabel: "Route risk",
+    routeRiskLow: "Low",
+    routeRiskMed: "Moderate",
+    routeRiskHigh: "High",
+
+    routeRiskTomorrow: "Weather on the route tomorrow",
+
+    routeRiskMaxWind: "Maximum wind",
+    routeRiskMaxGust: "Maximum gust",
+    routeRiskBasedOn: "Based on forecast wind and gust conditions along the route.",
+
+    routeRiskAffectsDecision: "Driving conditions may affect this recommendation.",
+
+    routeRiskHighTooltip: "Difficult driving conditions may occur along the route.",
+    routeRiskMedTooltip: "Wind may affect driving conditions along the route.",
 
     locale: "en-GB",
   },
@@ -540,7 +556,7 @@ export const translations = {
     // Quality scale
     excellent: "Frábært",
     goodQuality: "Gott",
-    fairQuality: "Slæm",
+    fairQuality: "Sæmilegt",
     poor: "Slakt",
     bad: "Lélegt",
 
@@ -570,7 +586,7 @@ export const translations = {
 
     showers: "Skúrir",
     heavyShowers: "Miklar skúrir",
-    violentShowers: "Ofsaveður skúra",
+    violentShowers: "Miklar skúrir með hvössu veðri",
 
     thunderstorm: "Þrumuveður",
     thunderHail: "Þruma og haglél",
@@ -666,7 +682,7 @@ export const translations = {
     close: "Loka",
     loginEmailPlaceholder: "nafn@domain.is",
     noPasswordNeeded:
-      "Lykilorð er ekki nauðsynlegt til að logga inn. Sláðu bara inn netfangið þitt og við sendum þér tengil til að logga inn.",
+      "Lykilorð er ekki nauðsynlegt til að skrá sig inn. Sláðu bara inn netfangið þitt og við sendum þér tengil til að skrá þig inn.",
     login: "Innskráning",
     enterEmailToContinue: "Sláðu inn netfang til að halda áfram",
     loading: "Hleð inn...",
@@ -712,7 +728,7 @@ export const translations = {
     subscribeFeatureUnlockedTitle: "Allir Pro fídusar opnast",
     subscribeFeatureUnlockedDesc: "Fullur aðgangur að Pro í appinu.",
     subscribeFeatureOverviewTitle: "Betri yfirsýn & stig",
-    subscribeFeatureOverviewDesc: "Skýrari leiðsögn fyrir veður-tengdar ákvarðanir.",
+    subscribeFeatureOverviewDesc: "Skýrari leiðsögn fyrir veðurtengdar ákvarðanir.",
     subscribeFeatureAccuracyTitle: "Meiri nákvæmni & útreikningar",
     subscribeFeatureAccuracyDesc: "Aukaútreikningar þar sem það skiptir máli.",
     subscribeFeatureSupportTitle: "Styður áframhaldandi þróun",
@@ -748,7 +764,7 @@ export const translations = {
     successFinePrint:
       "Ef Pro aðgangur virkjast ekki strax, uppfærist hann sjálfkrafa innan örfárra mínútna.",
     successSupportLine:
-      "Ef eitthvað virkar ekki sem skyldi, hafðu samband og við aðstoðum þig fljótt og örugglega.",
+      "Ef eitthvað virkar ekki sem skyldi, hafðu samband og við aðstoðum þig fljótt.",
 
     // Pricing page (Íslenska)
     pricingBack: "← Til baka",
@@ -808,13 +824,13 @@ export const translations = {
     routeReasonTmax: "Hlýrri dagar",
 
     routeVerdictStayTitle: "Vertu kyrr",
-    routeVerdictStayBody: "Aðstæður í nágrenninu eru ekki marktækt betri.",
+    routeVerdictStayBody: "Aðstæður í nágrenninu virðast ekki marktækt betri.",
 
     routeVerdictConsiderTitle: "Íhugaðu að færa þig",
-    routeVerdictConsiderBody: "Það er aðeins betri kostur í nágrenninu.",
+    routeVerdictConsiderBody: "Það gæti verið aðeins betri kostur í nágrenninu.",
 
     routeVerdictMoveTitle: "Færðu þig",
-    routeVerdictMoveBody: "Það er greinilega betri kostur í nágrenninu.",
+    routeVerdictMoveBody: "Það virðist vera greinilega betri kostur í nágrenninu.",
 
     routePlannerTitle: "Ferðaráðgjafi",
     routePlannerSelectBase: "Veldu tjaldsvæði (eða notaðu staðsetningu) til að fá ráðleggingu.",
@@ -831,8 +847,8 @@ export const translations = {
     routePlannerCandidatesPreselected: "Skoðuð svæði í kringum þig",
     routePlannerCandidatesScored: "Metið",
     routePlannerTopAlternatives: "Bestu valkostir",
-    routePlannerNoAlternatives: "Engir valkostir fundust í nágrenninu.",
-    routePlannerNoReasons: "Engar skýrar ástæður (ennþá).",
+    routePlannerNoAlternatives: "Engir greinilega betri valkostir fundust í nágrenninu.",
+    routePlannerNoReasons: "Engar skýrar ástæður tiltækar ennþá.",
 
     routePlannerLockedBody:
       "Opnaðu Ferðaráðgjafa til að fá ráðleggingar um að færa þig í nágrenninu.",
@@ -841,36 +857,36 @@ export const translations = {
     routePlannerAlternativesCount: "Metin svæði",
     routePlannerMinimalDifference: "Lítill munur á aðstæðum.",
 
-    routePlannerTrendMove: "Aðstæður líta mun betur út næstu {days} daga.",
+    routePlannerTrendMove: "Aðstæður líta greinilega betur út næstu {days} daga.",
     routePlannerTrendMoveWithReasons:
-      "Aðstæður líta mun betur út næstu {days} daga — helst vegna: {reasons}.",
+      "Aðstæður líta greinilega betur út næstu {days} daga — helst vegna: {reasons}.",
 
     routePlannerTrendConsider:
-      "Það gæti borgað sig að færa sig næstu {days} daga, en munurinn er ekki stór.",
+      "Það gæti borgað sig að færa sig næstu {days} daga, en veðurmunurinn er ekki mikill.",
     routePlannerTrendConsiderWithReasons:
       "Það gæti borgað sig að færa sig næstu {days} daga — helst vegna: {reasons}.",
 
     routePlannerTrendStay:
-      "Það lítur ekki út fyrir að neinn staður í nágrenninu verði betri næstu {days} daga.",
+      "Það lítur ekki út fyrir að neinn staður í nágrenninu verði greinilega betri næstu {days} daga.",
 
     top5DistanceFromUserNote: "Fjarlægð miðast við núverandi staðsetningu.",
     top5DistanceFromUserTooltip: "Fjarlægðir í þessum lista eru reiknaðar frá staðsetningu þinni.",
-    top5DistanceFromUserNoteWithLocation: "Fjarlægðir miðast við núverandi staðsetningu: ",
+    top5DistanceFromUserNoteWithLocation: "Fjarlægðir miðast við núverandi staðsetningu:",
     unknownLocation: "Óþekkt staðsetning",
 
     routeDetailsComparedTo: "Borið saman við",
     routeDetailsDelta: "Mismunur",
-    routeDetailsWhy: "Af hverju þetta er betra",
+    routeDetailsWhy: "Af hverju þetta lítur betur út",
     routeDetailsNoReasons: "Engin skýringargögn tiltæk.",
     routeDetailsDayByDay: "Dag-fyrir-dag",
     routeDetailsNoDays: "Engin dagleg sundurliðun tiltæk.",
     routeDetailsDate: "Dagsetning",
-    routeDetailsBasePts: "Grunn stig",
+    routeDetailsBasePts: "Grunnstig",
     routeDetailsCandPts: "Stig valkosts",
-    routeDetailsWindPen: "Vind refsing",
-    routeDetailsGustPen: "Hviðu refsing",
-    routeDetailsRainPen: "Rigningar refsing",
-    routeDetailsStreakPen: "Rigningar-run refsing",
+    routeDetailsWindPen: "Vindrefsing",
+    routeDetailsGustPen: "Hviðurefsing",
+    routeDetailsRainPen: "Rigningarrefsing",
+    routeDetailsStreakPen: "Rigning í röð refsing",
     routeDetailsShelter: "Skjól",
     routeDetailsOpenHint: "Sjá nánar",
     routeBase: "Grunnstaður",
@@ -907,7 +923,7 @@ export const translations = {
 
     routeOverallResult: "Heildarniðurstaða næstu daga",
     routeOverallNote: "Sumir dagar geta samt verið lakari eða svipaðir.",
-    routeDetailsPositiveDrivers: "Helstu jákvæðu ástæður",
+    routeDetailsPositiveDrivers: "Helstu ástæður",
 
     routeOverallNextNDays: "næstu",
     routeOverallDays: "daga",
@@ -915,7 +931,8 @@ export const translations = {
     routeOverallSeeBreakdown: "sjá sundurliðun",
 
     routeDecisionCounts: "{better} dagar betri, {same} svipaðir, {worse} verri.",
-    routePlannerTopAlternativesNoBetter: "Nálægir valkostir (engin betri næstu {days} daga)",
+    routePlannerTopAlternativesNoBetter:
+      "Nálægir valkostir (engir greinilega betri næstu {days} daga)",
 
     routeDaysBetter: "dagar betri",
     routeDaysSame: "svipaðir",
@@ -924,7 +941,8 @@ export const translations = {
     routeDetailsTempBase: "Hita-grunnur",
 
     routeAdaptiveRadiusUsed: "Leitaði út í {used} km (max {max} km)",
-    routeAdaptiveFoundBeyond: "Enginn betri innan {prev} km — en fann betri kost innan {used} km.",
+    routeAdaptiveFoundBeyond:
+      "Enginn betri kostur fannst innan {prev} km — en betri kostur fannst innan {used} km.",
     routeAdaptiveNoBetterWithin: "Enginn betri kostur fannst innan {used} km (max {max} km).",
     routeAdaptiveUsedShort: "Leitað út í",
 
@@ -956,33 +974,51 @@ export const translations = {
     routeCompareReasonWarnHazard: "Veðurviðvörun",
     routeCompareReasonNoHazards: "Engar viðvaranir",
     routeCompareDiffNA: "—",
-    routeCompareBaseNoDataTip: "Viðvaranir fyrir núverandi tjaldsvæði eru ekki tiltækar (ennþá).",
-    routeAggregateSlight: "Lítil heildarbæting",
+    routeCompareBaseNoDataTip: "Viðvaranir fyrir núverandi tjaldsvæði eru ekki tiltækar ennþá.",
+    routeAggregateSlight: "Örlítið betra veður",
 
     routeDetailsRequiredDelta: "Lágmarksbæting miðað við fjarlægð",
-    routeDetailsHazardImproved: "Minni veðuráhætta á þessum stað",
+    routeDetailsHazardImproved: "Minni veðuráhætta hér en á núverandi stað",
     routeImproveSlightWorse: "Örlítið lakara",
     routeDetailsRawHint:
       "0.0 stig geta samt falið raunverulegan mun þegar bæði gildi birtast sem 0 eða 10.",
     routeCompareReasonBetterDespiteWarning: "Betri aðstæður þrátt fyrir viðvörun",
 
-    routeHazardBlockerStay: "Veðuráhætta á einum degi kemur í veg fyrir flutningsráðleggingu.",
-    routeHazardBlockerConsider: "Veðuráhætta á einum degi veikir ráðlegginguna.",
-    routeHazardBlockerShort: "Veðuráhætta veikti niðurstöðuna.",
+    routeHazardBlockerStay: "Dagur með slæmu veðri kemur í veg fyrir flutningsráðleggingu.",
+    routeHazardBlockerConsider: "Dagur með slæmu veðri veikir þessa ráðleggingu.",
+    routeHazardBlockerShort: "Veðuráhætta dró úr niðurstöðunni.",
 
-    routeRoughWeatherWindowSingle: "⚠ Slæmt veður er líklegt {date}.",
-    routeRoughWeatherWindowRange: "⚠ Slæmt veður framundan: {start} → {end} ({days} dagar).",
+    routeRoughWeatherWindowSingle: "⚠ Slæmt veður gæti haft áhrif {date}.",
+    routeRoughWeatherWindowRange:
+      "⚠ Slæmt veður gæti verið framundan: {start} → {end} ({days} dagar).",
 
-    routeStayReasonHazard: "Veðuráhætta annars staðar gerir flutning ekki ráðlagðan.",
-    routeStayReasonSmallDifference: "Munurinn er of lítill til að réttlæta flutning.",
-    routeStayReasonAlreadyBest: "Þú ert líklega nú þegar á besta staðnum í nágrenninu.",
-    routeStayGoodSpot: "Góður staður núna.",
+    routeStayReasonHazard: "Veðuráhætta annars staðar gerir flutning síður ráðlegan.",
+    routeStayReasonSmallDifference: "Munurinn er of lítill til að það borgi sig að færa sig.",
+    routeStayReasonAlreadyBest: "Þú ert líklega nú þegar á einum af betri stöðunum í nágrenninu.",
+    routeStayGoodSpot: "Ágætur staður til að vera á.",
 
     routeEscapeStormTitle: "🚐 Forðastu óveðrið",
-    routeEscapeStormBody: "Betra veður er í nágrenninu",
+    routeEscapeStormBody: "Betri aðstæður gætu verið í nágrenninu.",
     routeEscapeStormDestination: "{km} km → {site}",
-    routeEscapeStormBaseWindow: "Slæmt veður er líklegt á {place}.",
-    routeEscapeStormCalmerNearby: "Rólegra veður er í nágrenninu.",
+    routeEscapeStormBaseWindow: "Slæmt veður gæti haft áhrif á {place}.",
+    routeEscapeStormCalmerNearby: "Rólegra veður gæti verið í nágrenninu.",
+
+    routeRiskLabel: "Áhætta á leið",
+    routeRiskLow: "Lág",
+    routeRiskMed: "Miðlungs",
+    routeRiskHigh: "Há",
+
+    routeRiskTomorrow: "Veður á leiðinni á morgun",
+
+    routeRiskMaxWind: "Hámarksvindur",
+    routeRiskMaxGust: "Hámarkshviða",
+
+    routeRiskBasedOn: "Byggt á spáðri vind- og hviðustyrk á leiðinni.",
+
+    routeRiskAffectsDecision: "Akstursaðstæður geta haft áhrif á þessa ráðleggingu.",
+
+    routeRiskHighTooltip: "Erfiðar akstursaðstæður geta komið upp á leiðinni.",
+    routeRiskMedTooltip: "Vindur gæti haft áhrif á akstur á leiðinni.",
 
     locale: "is-IS",
   },

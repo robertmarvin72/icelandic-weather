@@ -34,6 +34,8 @@ export default function RoutePlannerDetailsModal({
   adaptiveUsedKm,
   adaptiveMaxKm,
   escapeSuggestion,
+  routeRiskData,
+  showRouteRisk = false,
 }) {
   const [showAdvanced, setShowAdvanced] = useState(false);
 
@@ -367,6 +369,32 @@ export default function RoutePlannerDetailsModal({
               {betterCount} {t?.("routeDaysBetter") || "dagar betri"}, {sameCount}{" "}
               {t?.("routeDaysSame") || "svipaðir"}, {worseCount} {t?.("routeDaysWorse") || "verri"}.
             </div>
+
+            {showRouteRisk && routeRiskData && routeRiskData.routeRisk !== "LOW" ? (
+              <div className="mt-3 rounded-lg border border-amber-200 bg-amber-50/70 px-3 py-2 dark:border-amber-800/50 dark:bg-amber-900/20">
+                <div className="text-xs font-semibold text-amber-800 dark:text-amber-200">
+                  <span className="mr-1 text-sm">🚐</span>{" "}
+                  {t?.("routeRiskLabel") || "Áhætta á leið"}:{" "}
+                  {routeRiskData.routeRisk === "HIGH"
+                    ? t?.("routeRiskHigh") || "Mikil"
+                    : routeRiskData.routeRisk === "MED"
+                      ? t?.("routeRiskMed") || "Miðlungs"
+                      : t?.("routeRiskLow") || "Lág"}
+                </div>
+
+                {routeRiskData.routeRisk === "HIGH" && (
+                  <div className="mt-1 text-xs text-amber-700 dark:text-amber-300">
+                    {t?.("routeRiskHighTooltip") || "Difficult driving conditions along the route"}
+                  </div>
+                )}
+
+                {routeRiskData.routeRisk === "MED" && (
+                  <div className="mt-1 text-xs text-amber-700 dark:text-amber-300">
+                    {t?.("routeRiskMedTooltip") || "Some wind-related driving risk along the route"}
+                  </div>
+                )}
+              </div>
+            ) : null}
           </div>
 
           {/* REASONS */}

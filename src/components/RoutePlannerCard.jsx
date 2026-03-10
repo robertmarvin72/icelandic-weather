@@ -3,9 +3,12 @@ import React, { useEffect, useMemo, useState } from "react";
 
 import { getRelocationRecommendation } from "../lib/relocationService";
 import { getRouteVerdictMeta } from "../lib/routeVerdictMeta";
+import { getForecast } from "../lib/forecastCache";
 import RoutePlannerDetailsModal from "./RoutePlannerDetailsModal";
 import AnimatedPill from "./AnimatedPill";
 import { isFeatureAvailable } from "../config/features";
+import { estimateRouteRisk } from "../lib/routeRisk";
+import { HAZARDS_V1 } from "../config/hazards";
 
 // Map reason type -> FLAT translation key
 function reasonTypeToKey(type) {
@@ -151,6 +154,9 @@ export default function RoutePlannerCard({
   const [error, setError] = useState("");
   const [result, setResult] = useState(null);
 
+  const [routeRiskData, setRouteRiskData] = useState(null);
+  const [routeRiskLoading, setRouteRiskLoading] = useState(false);
+
   const [detailsOpen, setDetailsOpen] = useState(false);
   const [detailsCandidate, setDetailsCandidate] = useState(null);
 
@@ -197,6 +203,8 @@ export default function RoutePlannerCard({
     async function run() {
       setError("");
       setResult(null);
+      setRouteRiskData(null);
+      setRouteRiskLoading(false);
 
       // ✅ allow preview to run (but limited scope)
       if (!isPro && !isPreview) return;
@@ -251,6 +259,97 @@ export default function RoutePlannerCard({
     t,
   ]);
 
+  useEffect(() => {
+    let cancelled = false;
+
+    async function loadRouteRisk() {
+      setRouteRiskData(null);
+      setRouteRiskLoading(false);
+
+      if (!result) return;
+      if (!baseSite) return;
+      if (isPreview) return;
+
+      const topRanked = Array.isArray(result?.ranked) ? result.ranked.slice(0, 3) : [];
+      const bestCandidate = topRanked[0] || null;
+
+      const recommendation = String(
+        result?.recommendation || bestCandidate?.recommendation || "stay"
+      ).toLowerCase();
+
+      if (!bestCandidate) return;
+      if (recommendation === "stay") return;
+
+      const destinationSite =
+        (Array.isArray(sites) ? sites : []).find((s) => s?.id === bestCandidate?.siteId) ?? null;
+
+      const baseLat = baseSite?.lat ?? baseSite?.latitude;
+      const baseLon = baseSite?.lon ?? baseSite?.longitude;
+
+      const destLat =
+        destinationSite?.lat ??
+        destinationSite?.latitude ??
+        bestCandidate?.site?.lat ??
+        bestCandidate?.site?.latitude ??
+        bestCandidate?.lat ??
+        bestCandidate?.latitude;
+
+      const destLon =
+        destinationSite?.lon ??
+        destinationSite?.longitude ??
+        bestCandidate?.site?.lon ??
+        bestCandidate?.site?.longitude ??
+        bestCandidate?.lon ??
+        bestCandidate?.longitude;
+
+      if (
+        typeof baseLat !== "number" ||
+        typeof baseLon !== "number" ||
+        typeof destLat !== "number" ||
+        typeof destLon !== "number"
+      ) {
+        return;
+      }
+
+      setRouteRiskLoading(true);
+
+      try {
+        const risk = await estimateRouteRisk({
+          origin: {
+            lat: baseLat,
+            lon: baseLon,
+          },
+          destination: {
+            lat: destLat,
+            lon: destLon,
+          },
+          getForecast,
+          hazards: HAZARDS_V1,
+          samples: 7,
+        });
+
+        if (!cancelled) {
+          setRouteRiskData(risk);
+        }
+      } catch (err) {
+        console.error("Route risk failed", err);
+        if (!cancelled) {
+          setRouteRiskData(null);
+        }
+      } finally {
+        if (!cancelled) {
+          setRouteRiskLoading(false);
+        }
+      }
+    }
+
+    loadRouteRisk();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [result, baseSite, isPreview, sites]);
+
   // ✅ MUST stay above all early returns (fixes React #310)
   useEffect(() => {
     const usedKm =
@@ -298,6 +397,11 @@ export default function RoutePlannerCard({
 
   const top3 = Array.isArray(result?.ranked) ? result.ranked.slice(0, 3) : [];
   const best = top3[0] || null;
+
+  const isDetailsBestCandidate =
+    !!detailsCandidate &&
+    !!best &&
+    String(detailsCandidate?.siteId || "") === String(best?.siteId || "");
 
   const THRESH = 0.75;
 
@@ -409,9 +513,14 @@ export default function RoutePlannerCard({
       }
     : null;
 
-  const decisionLower = String(
+  let decisionLower = String(
     result?.recommendation || best?.recommendation || "stay"
   ).toLowerCase();
+
+  // 🚧 Route safety override
+  if (routeRiskData?.routeRisk === "HIGH" && decisionLower === "move") {
+    decisionLower = "consider";
+  }
   const meta = result && getRouteVerdictMeta(decisionLower);
 
   const trendText = (() => {
@@ -834,6 +943,43 @@ export default function RoutePlannerCard({
               <div className="text-xs text-slate-600 dark:text-slate-300 mt-1">{trendText}</div>
             )}
 
+            {routeRiskData?.routeRisk === "HIGH" && (
+              <div className="mt-2 text-xs font-medium text-rose-700 dark:text-rose-300">
+                🚧{" "}
+                {t("routeRiskAffectsDecision") ||
+                  "Driving conditions may affect this recommendation."}
+              </div>
+            )}
+
+            {!isPreview && routeRiskLoading && (
+              <div className="mt-2 text-xs text-slate-500 dark:text-slate-400">{t("loading")}…</div>
+            )}
+
+            {!isPreview && routeRiskData && routeRiskData.routeRisk !== "LOW" && (
+              <div className="mt-2 text-xs text-amber-700 dark:text-amber-300">
+                <div className="font-medium">
+                  <span className="mr-1 text-sm">🚐</span> {t("routeRiskLabel") || "Route risk"}:{" "}
+                  {routeRiskData.routeRisk === "HIGH"
+                    ? t("routeRiskHigh") || "High"
+                    : routeRiskData.routeRisk === "MED"
+                      ? t("routeRiskMed") || "Moderate"
+                      : t("routeRiskLow") || "Low"}
+                </div>
+
+                {routeRiskData.routeRisk === "HIGH" && (
+                  <div className="text-[11px] mt-0.5">
+                    {t("routeRiskHighTooltip") || "Difficult driving conditions along the route"}
+                  </div>
+                )}
+
+                {routeRiskData.routeRisk === "MED" && (
+                  <div className="text-[11px] mt-0.5">
+                    {t("routeRiskMedTooltip") || "Some wind-related driving risk along the route"}
+                  </div>
+                )}
+              </div>
+            )}
+
             {bestEscapeSuggestion ? (
               <div className="mt-2 rounded-lg border border-emerald-200 bg-emerald-50/70 px-3 py-2 dark:border-emerald-800/50 dark:bg-emerald-900/20">
                 <div className="text-xs font-semibold text-emerald-800 dark:text-emerald-200">
@@ -918,8 +1064,13 @@ export default function RoutePlannerCard({
               decisionLower !== "stay" && top3.length > 0 ? (
                 <ol className="grid gap-2 pl-4 text-xs">
                   {top3.slice(0, 1).map((x) => {
-                    const v = getVerdictFromDays(x?.windowDays, effectiveWindowDays);
-                    const triggerKey = `${x.siteId}:${effectiveWindowDays}:${v}:${
+                    const rawV = getVerdictFromDays(x?.windowDays, effectiveWindowDays);
+                    const visualV =
+                      x === best && routeRiskData?.routeRisk === "HIGH" && rawV === "better"
+                        ? "same"
+                        : rawV;
+
+                    const triggerKey = `${x.siteId}:${effectiveWindowDays}:${visualV}:${
                       typeof x?.deltaVsBase === "number" ? x.deltaVsBase.toFixed(1) : "na"
                     }`;
 
@@ -928,33 +1079,50 @@ export default function RoutePlannerCard({
                     const softAggregateLabel = getSoftAggregateLabel(x);
 
                     const previewPrimaryLabel =
-                      hazardLabel || softAggregateLabel || oldImprovement || verdictLabelFromV(v);
+                      hazardLabel ||
+                      softAggregateLabel ||
+                      oldImprovement ||
+                      verdictLabelFromV(visualV);
 
                     return (
                       <li key={x.siteId}>
                         <div className="font-semibold flex items-center gap-2 flex-wrap">
-                          <span className="inline-flex items-center gap-1.5">
+                          <span className="flex items-center gap-1.5">
                             <span>{x.siteName ?? x.siteId}</span>
 
-                            {x?.hasHighWarning ? (
+                            {x === best && routeRiskData?.routeRisk === "HIGH" && (
                               <span
                                 className="inline-flex items-center rounded-full px-1.5 py-0.5 text-[10px] font-semibold
                                   bg-rose-100 text-rose-800 dark:bg-rose-950/40 dark:text-rose-200"
-                                title={t("routeWarningHigh") || "Hættuveður"}
-                                aria-label={t("routeWarningHigh") || "Hættuveður"}
+                                title={
+                                  t("routeRiskHighTooltip") ||
+                                  "Difficult driving conditions along the route"
+                                }
+                                aria-label={
+                                  t("routeRiskHighTooltip") ||
+                                  "Difficult driving conditions along the route"
+                                }
                               >
                                 🚨
                               </span>
-                            ) : x?.hasWarning ? (
+                            )}
+
+                            {x === best && routeRiskData?.routeRisk === "MED" && (
                               <span
                                 className="inline-flex items-center rounded-full px-1.5 py-0.5 text-[10px] font-semibold
                                   bg-amber-100 text-amber-800 dark:bg-amber-950/40 dark:text-amber-200"
-                                title={t("routeWarning") || "Viðvörun"}
-                                aria-label={t("routeWarning") || "Viðvörun"}
+                                title={
+                                  t("routeRiskMedTooltip") ||
+                                  "Some wind-related driving risk along the route"
+                                }
+                                aria-label={
+                                  t("routeRiskMedTooltip") ||
+                                  "Some wind-related driving risk along the route"
+                                }
                               >
                                 ⚠️
                               </span>
-                            ) : null}
+                            )}
                           </span>
 
                           {Number.isFinite(x?.distanceKm) && (
@@ -974,16 +1142,16 @@ export default function RoutePlannerCard({
                                 text-xs font-semibold
                                 transition-all duration-150 ease-out
                                 focus:outline-none focus:ring-2
-                                ${verdictButtonClassFromV(v)}
+                                ${verdictButtonClassFromV(visualV)}
                                 cursor-default opacity-90
                               `}
                               title=""
-                              aria-label={`${verdictLabelFromV(v)}. ${
+                              aria-label={`${verdictLabelFromV(visualV)}. ${
                                 oldImprovement ? `${oldImprovement}. ` : ""
                               }`}
                             >
                               <span className="inline-flex items-center justify-center w-4 h-4 rounded-full bg-white/60 dark:bg-white/10">
-                                {verdictIconFromV(v)}
+                                {verdictIconFromV(visualV)}
                               </span>
                               <span>{previewPrimaryLabel}</span>
                             </button>
@@ -1001,8 +1169,13 @@ export default function RoutePlannerCard({
             ) : top3.length > 0 ? (
               <ol className="grid gap-2 pl-4 text-xs">
                 {top3.map((x) => {
-                  const v = getVerdictFromDays(x?.windowDays, windowDays);
-                  const triggerKey = `${x.siteId}:${windowDays}:${v}:${
+                  const rawV = getVerdictFromDays(x?.windowDays, windowDays);
+                  const visualV =
+                    x === best && routeRiskData?.routeRisk === "HIGH" && rawV === "better"
+                      ? "same"
+                      : rawV;
+
+                  const triggerKey = `${x.siteId}:${windowDays}:${visualV}:${
                     typeof x?.deltaVsBase === "number" ? x.deltaVsBase.toFixed(1) : "na"
                   }`;
 
@@ -1020,13 +1193,50 @@ export default function RoutePlannerCard({
                   const softAggregateLabel = getSoftAggregateLabel(x);
 
                   const primaryLabel =
-                    hazardLabel || softAggregateLabel || oldImprovement || verdictLabelFromV(v);
+                    hazardLabel ||
+                    softAggregateLabel ||
+                    oldImprovement ||
+                    verdictLabelFromV(visualV);
 
                   return (
                     <li key={x.siteId}>
                       <div className="font-semibold flex items-center gap-2 flex-wrap">
                         <span className="inline-flex items-center gap-1.5">
                           <span>{x.siteName ?? x.siteId}</span>
+
+                          {x === best && routeRiskData?.routeRisk === "HIGH" && (
+                            <span
+                              className="inline-flex items-center rounded-full px-1.5 py-0.5 text-[10px] font-semibold
+                                bg-rose-100 text-rose-800 dark:bg-rose-950/40 dark:text-rose-200"
+                              title={
+                                t("routeRiskHighTooltip") ||
+                                "Difficult driving conditions along the route"
+                              }
+                              aria-label={
+                                t("routeRiskHighTooltip") ||
+                                "Difficult driving conditions along the route"
+                              }
+                            >
+                              🚨
+                            </span>
+                          )}
+
+                          {x === best && routeRiskData?.routeRisk === "MED" && (
+                            <span
+                              className="inline-flex items-center rounded-full px-1.5 py-0.5 text-[10px] font-semibold
+                                bg-amber-100 text-amber-800 dark:bg-amber-950/40 dark:text-amber-200"
+                              title={
+                                t("routeRiskMedTooltip") ||
+                                "Some wind-related driving risk along the route"
+                              }
+                              aria-label={
+                                t("routeRiskMedTooltip") ||
+                                "Some wind-related driving risk along the route"
+                              }
+                            >
+                              ⚠️
+                            </span>
+                          )}
 
                           {x?.hasHighWarning ? (
                             <span
@@ -1067,13 +1277,13 @@ export default function RoutePlannerCard({
                               hover:shadow-sm
                               active:scale-[0.98]
                               focus:outline-none focus:ring-2
-                              ${verdictButtonClassFromV(v)}
+                              ${verdictButtonClassFromV(visualV)}
                             `}
                             title={deltaTitle}
                             aria-label={`${primaryLabel}. ${t("routeDetailsOpenHint") || "Open details"}`}
                           >
                             <span className="inline-flex items-center justify-center w-4 h-4 rounded-full bg-white/60 dark:bg-white/10">
-                              {verdictIconFromV(v)}
+                              {verdictIconFromV(visualV)}
                             </span>
                             <span>{primaryLabel}</span>
                           </button>
@@ -1117,6 +1327,8 @@ export default function RoutePlannerCard({
         adaptiveUsedKm={adaptiveUsedKm}
         adaptiveMaxKm={adaptiveMaxKm}
         escapeSuggestion={detailsCandidate ? getEscapeSuggestion(detailsCandidate) : null}
+        routeRiskData={routeRiskData}
+        showRouteRisk={isDetailsBestCandidate}
       />
     </div>
   );
