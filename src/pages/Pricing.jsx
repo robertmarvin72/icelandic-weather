@@ -30,6 +30,7 @@ export default function Pricing({ onClose, lang = "is", theme = "dark", t, me })
 
   const [busyPlan, setBusyPlan] = useState(""); // "monthly" | "yearly" | ""
   const [error, setError] = useState("");
+  const [acceptedTerms, setAcceptedTerms] = useState(false);
 
   // Translation helper (fallbacks only matter if a key is missing)
   const T = (key, fallback) => {
@@ -81,6 +82,7 @@ export default function Pricing({ onClose, lang = "is", theme = "dark", t, me })
 
   async function startCheckout(chosenPlan) {
     if (busyPlan) return;
+    if (!acceptedTerms) return;
 
     // If we don't have an email (not logged in / no identity), go through Subscribe.
     if (!email) {
@@ -201,14 +203,12 @@ export default function Pricing({ onClose, lang = "is", theme = "dark", t, me })
             {T("pricingBack", "← Back")}
           </button>
 
-          <div style={styles.brandPill} title={T("pricingBrandTitle", "CampCast Pro")}>
-            <div style={styles.brandLogoWrap}>
-              <img src="/logo.png" alt="CampCast" style={styles.brandLogo} />
-            </div>
+          <div style={styles.brandHero} title={T("pricingBrandTitle", "CampCast Pro")}>
+            <img src="/logo.png" alt="CampCast" style={styles.brandHeroLogo} />
 
-            <div style={{ display: "flex", flexDirection: "column", lineHeight: 1.1 }}>
-              <div style={styles.brandTitle}>{T("pricingBrandTitle", "CampCast Pro")}</div>
-              <div style={styles.brandSub}>{T("pricingBrandSub", "Follow the weather")}</div>
+            <div style={styles.brandHeroText}>
+              <div style={styles.brandHeroTitle}>{T("pricingBrandTitle", "CampCast Pro")}</div>
+              <div style={styles.brandHeroSub}>{T("pricingBrandSub", "Follow the weather")}</div>
             </div>
           </div>
         </div>
@@ -274,6 +274,21 @@ export default function Pricing({ onClose, lang = "is", theme = "dark", t, me })
             </div>
           ) : null}
 
+          <label style={styles.termsRow}>
+            <input
+              type="checkbox"
+              checked={acceptedTerms}
+              onChange={(e) => setAcceptedTerms(e.target.checked)}
+              style={styles.termsCheckbox}
+            />
+            <span>
+              {T("termsDisclaimerAgree", "I agree to the Terms of Service and Disclaimer")}{" "}
+              <a href="/terms" target="_blank" rel="noreferrer" style={styles.termsLink}>
+                {T("termsDisclaimerLink", "Terms and Disclaimer")}
+              </a>
+            </span>
+          </label>
+
           <div style={styles.plans}>
             {/* Yearly (featured) */}
             <div style={styles.planFeatured}>
@@ -312,9 +327,13 @@ export default function Pricing({ onClose, lang = "is", theme = "dark", t, me })
 
               <button
                 type="button"
-                style={styles.cta(true, busyPlan === "yearly")}
+                style={styles.cta(
+                  true,
+                  busyPlan === "yearly",
+                  !acceptedTerms || !!busyPlan || isYearly
+                )}
                 onClick={() => startCheckout("yearly")}
-                disabled={!!busyPlan || isYearly}
+                disabled={!acceptedTerms || !!busyPlan || isYearly}
               >
                 {busyPlan === "yearly"
                   ? T("subscribeCtaBusy", "Opening checkout…")
@@ -344,9 +363,13 @@ export default function Pricing({ onClose, lang = "is", theme = "dark", t, me })
 
               <button
                 type="button"
-                style={styles.cta(false, busyPlan === "monthly")}
+                style={styles.cta(
+                  false,
+                  busyPlan === "monthly",
+                  !acceptedTerms || !!busyPlan || isMonthly || isYearly
+                )}
                 onClick={() => startCheckout("monthly")}
-                disabled={!!busyPlan || isMonthly || isYearly}
+                disabled={!acceptedTerms || !!busyPlan || isMonthly || isYearly}
               >
                 {busyPlan === "monthly"
                   ? T("subscribeCtaBusy", "Opening checkout…")
@@ -406,11 +429,11 @@ function getStyles(isLight) {
     container: { maxWidth: 860, margin: "0 auto", position: "relative" },
 
     topBar: {
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "space-between",
+      display: "grid",
+      gridTemplateColumns: "1fr auto",
+      alignItems: "start",
       gap: 12,
-      marginBottom: 14,
+      marginBottom: 2,
     },
 
     back: {
@@ -423,32 +446,41 @@ function getStyles(isLight) {
       borderRadius: 12,
     },
 
-    brandPill: {
-      display: "inline-flex",
+    brandHero: {
+      display: "flex",
+      flexDirection: "column",
       alignItems: "center",
-      gap: 10,
-      padding: "10px 12px",
-      borderRadius: 999,
-      border,
-      background: isLight ? "rgba(255,255,255,0.7)" : "rgba(15,23,42,0.55)",
-      backdropFilter: "blur(6px)",
-      boxShadow: isLight ? "0 10px 30px rgba(2,6,23,0.08)" : "0 16px 40px rgba(0,0,0,0.35)",
+      justifyContent: "center",
+      textAlign: "center",
+      gap: 2,
+      padding: "0",
+      minWidth: 220,
+      marginTop: -6,
     },
 
-    brandLogoWrap: {
-      width: 34,
-      height: 34,
-      borderRadius: 10,
-      overflow: "hidden",
-      background: isLight ? "rgba(2,6,23,0.06)" : "rgba(255,255,255,0.06)",
-      display: "grid",
-      placeItems: "center",
-      flex: "0 0 auto",
+    brandHeroLogo: {
+      width: 250,
+      height: 250,
+      objectFit: "contain",
     },
 
-    brandLogo: { width: 28, height: 28, objectFit: "contain" },
-    brandTitle: { fontWeight: 900, fontSize: 12, letterSpacing: 0.2 },
-    brandSub: { fontSize: 11, opacity: 0.75 },
+    brandHeroText: {
+      display: "flex",
+      flexDirection: "column",
+      lineHeight: 1,
+      marginTop: -80,
+    },
+
+    brandHeroTitle: {
+      fontWeight: 900,
+      fontSize: 28,
+      letterSpacing: 0.2,
+    },
+
+    brandHeroSub: {
+      fontSize: 16,
+      opacity: 0.75,
+    },
 
     card: {
       borderRadius: 24,
@@ -493,6 +525,30 @@ function getStyles(isLight) {
       color: isLight ? "#7f1d1d" : "rgba(255,255,255,0.95)",
       fontSize: 13,
       lineHeight: 1.4,
+    },
+
+    termsRow: {
+      marginTop: 14,
+      display: "flex",
+      alignItems: "flex-start",
+      gap: 10,
+      fontSize: 12,
+      lineHeight: 1.5,
+      opacity: 0.9,
+    },
+
+    termsCheckbox: {
+      marginTop: 2,
+      width: 14,
+      height: 14,
+      flex: "0 0 auto",
+    },
+
+    termsLink: {
+      textDecoration: "underline",
+      textUnderlineOffset: 2,
+      color: "inherit",
+      fontWeight: 800,
     },
 
     plans: {
@@ -553,26 +609,33 @@ function getStyles(isLight) {
       fontWeight: 700,
     },
 
-    cta: (isFeatured, busy) => ({
+    cta: (isFeatured, busy, disabled) => ({
       marginTop: 14,
       width: "100%",
       borderRadius: 18,
       border: 0,
-      cursor: busy ? "not-allowed" : "pointer",
+      cursor: disabled ? "not-allowed" : busy ? "not-allowed" : "pointer",
       padding: "12px 14px",
       fontSize: 14,
       fontWeight: 950,
-      background: isFeatured
-        ? busy
-          ? "rgba(16,185,129,0.55)"
-          : "rgba(16,185,129,0.95)"
-        : busy
-          ? "rgba(59,130,246,0.55)"
-          : "rgba(59,130,246,0.92)",
+      background: disabled
+        ? isFeatured
+          ? "rgba(16,185,129,0.35)"
+          : "rgba(59,130,246,0.35)"
+        : isFeatured
+          ? busy
+            ? "rgba(16,185,129,0.55)"
+            : "rgba(16,185,129,0.95)"
+          : busy
+            ? "rgba(59,130,246,0.55)"
+            : "rgba(59,130,246,0.92)",
       color: "white",
-      boxShadow: isFeatured
-        ? "0 12px 30px rgba(16,185,129,0.22)"
-        : "0 12px 30px rgba(59,130,246,0.20)",
+      opacity: disabled ? 0.75 : 1,
+      boxShadow: disabled
+        ? "none"
+        : isFeatured
+          ? "0 12px 30px rgba(16,185,129,0.22)"
+          : "0 12px 30px rgba(59,130,246,0.20)",
     }),
 
     finePrint: { marginTop: 12, fontSize: 12, opacity: 0.75, textAlign: "center" },

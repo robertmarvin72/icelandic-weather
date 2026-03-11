@@ -8,11 +8,9 @@ import { useEffect, useState } from "react";
  */
 export default function Splash({ show, minMs = 600, fadeMs = 500 }) {
   const [visible, setVisible] = useState(true); // whether the DOM is mounted
-  const [ready, setReady] = useState(false);   // min display time satisfied
+  const [ready, setReady] = useState(false); // min display time satisfied
   const [isDark, setIsDark] = useState(() =>
-    typeof document !== "undefined"
-      ? document.documentElement.classList.contains("dark")
-      : false
+    typeof document !== "undefined" ? document.documentElement.classList.contains("dark") : false
   );
 
   // Minimum display time
@@ -60,11 +58,11 @@ export default function Splash({ show, minMs = 600, fadeMs = 500 }) {
       <img
         src={logoSrc}
         alt="CampCast"
-        className="h-12 w-auto mb-3 animate-bounce-slow"
+        className="h-44 md:h-52 w-auto mb-0 animate-bounce-slow"
         loading="eager"
         decoding="async"
       />
-      <p className="font-medium tracking-tight">
+      <p className="font-medium tracking-tight text-sm md:text-base opacity-80 -mt-12">
         Fetching forecasts…
       </p>
     </div>

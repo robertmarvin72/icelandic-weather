@@ -47,6 +47,7 @@ import SlimHeader from "./components/SlimHeader";
 import Subscribe from "./pages/Subscribe";
 import Success from "./pages/Success";
 import Pricing from "./pages/Pricing";
+import TermsPage from "./pages/TermsPage";
 
 // ──────────────────────────────────────────────────────────────
 // App page
@@ -602,6 +603,12 @@ function SuccessRoute() {
   return <Success lang={lang} theme={theme} t={t} />;
 }
 
+function TermsRoute() {
+  const [theme] = useLocalStorageState("theme", "light");
+  const { lang } = useLanguage();
+  const t = useT(lang);
+  return <TermsPage lang={lang} theme={theme} t={t} />;
+}
 // ──────────────────────────────────────────────────────────────
 // Router
 // ──────────────────────────────────────────────────────────────
@@ -616,6 +623,7 @@ export default function App() {
         <Route path="/pricing" element={<PricingRoute />} />
         <Route path="/subscribe" element={<SubscribeRoute />} />
         <Route path="/success" element={<SuccessRoute />} />
+        <Route path="/terms" element={<TermsRoute />} />
 
         <Route path="*" element={<NotFound />} />
       </Routes>

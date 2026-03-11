@@ -160,6 +160,9 @@ export default function RoutePlannerCard({
   const [detailsOpen, setDetailsOpen] = useState(false);
   const [detailsCandidate, setDetailsCandidate] = useState(null);
 
+  // ✅ One-time route disclaimer
+  const [showRouteDisclaimer, setShowRouteDisclaimer] = useState(false);
+
   // ✅ Glow state (adaptive radius text)
   const [adaptiveGlow, setAdaptiveGlow] = useState(false);
   const prevAdaptiveUsedRef = React.useRef(null);
@@ -308,6 +311,15 @@ export default function RoutePlannerCard({
         typeof destLat !== "number" ||
         typeof destLon !== "number"
       ) {
+        console.log("ROUTE RISK ABORTED: missing coordinates", {
+          baseSite,
+          bestCandidate,
+          destinationSite,
+          baseLat,
+          baseLon,
+          destLat,
+          destLon,
+        });
         return;
       }
 
@@ -349,6 +361,17 @@ export default function RoutePlannerCard({
       cancelled = true;
     };
   }, [result, baseSite, isPreview, sites]);
+
+  // ✅ One-time route disclaimer
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    if (!isPro && !isPreview) return;
+
+    const seen = window.localStorage.getItem("campcast_route_disclaimer_seen");
+    if (seen !== "true") {
+      setShowRouteDisclaimer(true);
+    }
+  }, [isPro, isPreview]);
 
   // ✅ MUST stay above all early returns (fixes React #310)
   useEffect(() => {
@@ -859,7 +882,7 @@ export default function RoutePlannerCard({
       : "text-amber-700 dark:text-amber-300";
 
   return (
-    <div className="rounded-xl border border-slate-200 dark:border-slate-700 p-3">
+    <div className="relative rounded-xl border border-slate-200 dark:border-slate-700 p-3">
       <div className="flex items-start justify-between gap-3 mb-2">
         <div>
           <div className="text-sm font-semibold">{t("routePlannerTitle")}</div>
@@ -956,27 +979,13 @@ export default function RoutePlannerCard({
             )}
 
             {!isPreview && routeRiskData && routeRiskData.routeRisk !== "LOW" && (
-              <div className="mt-2 text-xs text-amber-700 dark:text-amber-300">
-                <div className="font-medium">
-                  <span className="mr-1 text-sm">🚐</span> {t("routeRiskLabel") || "Route risk"}:{" "}
-                  {routeRiskData.routeRisk === "HIGH"
-                    ? t("routeRiskHigh") || "High"
-                    : routeRiskData.routeRisk === "MED"
-                      ? t("routeRiskMed") || "Moderate"
-                      : t("routeRiskLow") || "Low"}
-                </div>
-
-                {routeRiskData.routeRisk === "HIGH" && (
-                  <div className="text-[11px] mt-0.5">
-                    {t("routeRiskHighTooltip") || "Difficult driving conditions along the route"}
-                  </div>
-                )}
-
-                {routeRiskData.routeRisk === "MED" && (
-                  <div className="text-[11px] mt-0.5">
-                    {t("routeRiskMedTooltip") || "Some wind-related driving risk along the route"}
-                  </div>
-                )}
+              <div className="mt-2 text-xs font-medium text-amber-700 dark:text-amber-300">
+                🚐 {t("routeRiskLabel") || "Route risk"}:{" "}
+                {routeRiskData.routeRisk === "HIGH"
+                  ? t("routeRiskHigh") || "High"
+                  : routeRiskData.routeRisk === "MED"
+                    ? t("routeRiskMed") || "Moderate"
+                    : t("routeRiskLow") || "Low"}
               </div>
             )}
 
@@ -1301,7 +1310,7 @@ export default function RoutePlannerCard({
 
             {isPreview && (
               <div className="mt-3 rounded-xl border border-slate-200 dark:border-slate-700 p-3 bg-slate-50/60 dark:bg-slate-900/20">
-                <div className="text-xs text-slate-700 dark:text-slate-300 mb-3 leading-relaxed whitespace-pre-line">
+                <div className="text-xs text-slate-700 dark:text-slate-300 mb-2 whitespace-pre-line">
                   {t("routePlannerPreviewBody")}
                 </div>
                 <button
@@ -1313,6 +1322,41 @@ export default function RoutePlannerCard({
                 </button>
               </div>
             )}
+          </div>
+        </div>
+      )}
+
+      {showRouteDisclaimer && (
+        <div className="absolute inset-0 z-20 flex items-center justify-center rounded-xl bg-white/85 dark:bg-slate-950/85 backdrop-blur-[2px]">
+          <div className="mx-3 w-full max-w-md rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 shadow-xl p-4">
+            <div className="text-sm font-semibold text-slate-900 dark:text-slate-100">
+              {t("routeDisclaimerTitle")}
+            </div>
+
+            <div className="mt-2 space-y-2 text-xs leading-relaxed text-slate-600 dark:text-slate-300">
+              <p>{t("routeDisclaimerBody1")}</p>
+              <p>{t("routeDisclaimerBody2")}</p>
+              <p>{t("routeDisclaimerBody3")}</p>
+            </div>
+
+            <button
+              type="button"
+              onClick={() => {
+                if (typeof window !== "undefined") {
+                  window.localStorage.setItem("campcast_route_disclaimer_seen", "true");
+                }
+                setShowRouteDisclaimer(false);
+              }}
+              className="
+                mt-4 w-full rounded-xl px-3 py-2 text-sm font-semibold
+                bg-emerald-600 text-white
+                hover:bg-emerald-500
+                focus:outline-none focus:ring-2 focus:ring-emerald-400/60
+                dark:bg-emerald-500 dark:hover:bg-emerald-400
+              "
+            >
+              {t("routeDisclaimerConfirm")}
+            </button>
           </div>
         </div>
       )}

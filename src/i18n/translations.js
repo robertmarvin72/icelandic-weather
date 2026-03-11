@@ -520,6 +520,40 @@ export const translations = {
     routeRiskMedTooltip: "Wind may affect driving conditions along the route.",
 
     locale: "en-GB",
+
+    routeDisclaimerTitle: "Route Planner disclaimer",
+
+    routeDisclaimerBody1:
+      "Route Planner uses weather forecasts to estimate conditions along travel routes and at nearby campsites.",
+
+    routeDisclaimerBody2:
+      "Weather in Iceland can change rapidly and actual conditions may differ from what is shown in the app.",
+
+    routeDisclaimerBody3:
+      "CampCast provides informational guidance only. Users remain responsible for their own travel decisions.",
+
+    routeDisclaimerConfirm: "I understand",
+
+    termsTitle: "Terms and Disclaimer",
+
+    termsIntro1:
+      "CampCast provides weather forecasts and estimates of weather conditions along travel routes based on available meteorological data. This information is provided for informational purposes only and may be inaccurate, incomplete, or outdated.",
+
+    termsIntro2:
+      "Weather conditions in Iceland can change rapidly, and actual conditions may differ from forecasts or estimates shown in the service.",
+
+    termsIntro3:
+      "CampCast does not provide driving instructions and does not guarantee travel safety. Users are solely responsible for their own travel decisions and should always check official weather and road information before travelling.",
+
+    termsSourcesTitle: "Users are encouraged to consult official sources such as:",
+
+    termsLiability:
+      "CampCast and its operators accept no liability for accidents, damages, delays, or losses resulting from the use of the service or reliance on information provided within it.",
+    termsDisclaimerAgree: "I agree to the Terms of Service and Disclaimer",
+    termsDisclaimerLink: "Terms and Disclaimer",
+
+    subscribeTermsPrefix: "By continuing you agree to the",
+    subscribeEmailHelp: "We use your email for receipts and subscription information.",
   },
 
   // Icelandic (Íslenska) -------------------------------------------------------------------------------------------------------------------
@@ -1047,5 +1081,39 @@ export const translations = {
     routeRiskMedTooltip: "Vindur gæti haft áhrif á akstur á leiðinni.",
 
     locale: "is-IS",
+
+    routeDisclaimerTitle: "Fyrirvari fyrir Ferðaráðgjafa",
+
+    routeDisclaimerBody1:
+      "Ferðaráðgjafinn notar veðurspár til að meta aðstæður á ferðaleiðum og nálægum tjaldsvæðum.",
+
+    routeDisclaimerBody2:
+      "Veður á Íslandi getur breyst hratt og raunverulegar aðstæður geta verið frábrugðnar því sem birtist í appinu.",
+
+    routeDisclaimerBody3:
+      "CampCast veitir eingöngu upplýsingar til viðmiðunar. Notendur bera sjálfir ábyrgð á eigin ferðarákvörðunum.",
+
+    routeDisclaimerConfirm: "Ég skil",
+
+    termsTitle: "Skilmálar og fyrirvari",
+
+    termsIntro1:
+      "CampCast veitir veðurspár og mat á veðurskilyrðum á ferðaleiðum byggt á tiltækum veðurgögnum. Upplýsingarnar eru ætlaðar til viðmiðunar og geta verið ónákvæmar, ófullkomnar eða úreltar.",
+
+    termsIntro2:
+      "Veður á Íslandi getur breyst hratt og raunverulegar aðstæður geta verið frábrugðnar því sem birtist í þjónustunni.",
+
+    termsIntro3:
+      "CampCast veitir ekki akstursleiðsögn og ábyrgist ekki öryggi ferðalaga. Notendur bera sjálfir ábyrgð á eigin ferðarákvörðunum og skulu ávallt kynna sér opinberar upplýsingar um veður og færð áður en lagt er af stað.",
+
+    termsSourcesTitle: "Mælt er með að notendur skoði sérstaklega upplýsingar frá:",
+
+    termsLiability:
+      "CampCast og rekstraraðilar þjónustunnar bera enga ábyrgð á slysum, tjóni, töfum eða öðru tjóni sem kann að verða vegna notkunar þjónustunnar eða upplýsinga sem þar koma fram.",
+    termsDisclaimerAgree: "Ég samþykki skilmála og fyrirvara",
+    termsDisclaimerLink: "Skilmálar og fyrirvari",
+
+    subscribeTermsPrefix: "Með því að halda áfram samþykkir þú",
+    subscribeEmailHelp: "Netfangið verður notað fyrir kvittanir og áskriftarupplýsingar.",
   },
 };
