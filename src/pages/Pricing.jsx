@@ -175,11 +175,13 @@ export default function Pricing({ onClose, lang = "is", theme = "dark", t, me })
   const featuresYearly = [
     T("pricingFeatureAllPro", "All Pro features unlocked"),
     T("pricingFeatureWindShelter", "Wind direction + shelter score"),
+    T("pricingFeatureComparisons", "Detailed campsite comparisons"),
     T("pricingFeatureCancelAnytime", "Cancel anytime"),
   ];
 
   const featuresMonthly = [
     T("pricingFeatureAllPro", "All Pro features unlocked"),
+    T("pricingFeatureComparisons", "Detailed campsite comparisons"),
     T("pricingFeatureCancelAnytime", "Cancel anytime"),
   ];
 
@@ -281,6 +283,15 @@ export default function Pricing({ onClose, lang = "is", theme = "dark", t, me })
                   <div style={styles.planPriceRow}>
                     <div style={styles.planPrice}>{yearlyPrice}</div>
                     <div style={styles.planPer}>{T("pricingPerYear", "per year")}</div>
+                    <div style={{ fontSize: 12, color: "#6b7280", marginTop: 4 }}>
+                      {T("pricingYearlyEquivalentMonthly", "≈ €2 per month")}
+                    </div>
+                    <div style={{ fontSize: 12, color: "#059669", marginTop: 2 }}>
+                      {T(
+                        "pricingYearlySavings",
+                        "Sparar um 5.890 kr á ári miðað við mánaðaráskrift"
+                      )}
+                    </div>
                   </div>
                   <div style={styles.planMicro}>
                     {T("pricingYearlyMicro", "One payment. Cancel anytime.")}

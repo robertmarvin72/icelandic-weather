@@ -5,56 +5,56 @@ export default function ScoreExplanation({ t, lang = "en" }) {
   const copy =
     lang === "is"
       ? {
-          title: "Hvernig stigagjöfin virkar",
+          title: "Hvernig CampCast metur aðstæður til útilegu",
           intro:
-            "CampCast gefur hverjum degi einkunn frá 0 til 10 til að sýna fljótt hversu góðar aðstæður eru til útilegu.",
+            "CampCast gefur hverjum degi einkunn frá 0 til 10 byggt á veðuraðstæðum á tjaldsvæðinu.",
           bullets: [
             {
               h: "Hiti",
-              p: "Hlýir dagar henta betur. Kaldir dagar fá lægri einkunn, mildir og hlýir fá hærri.",
+              p: "Hlýir og mildir dagar fá hærri einkunn, en kaldari dagar lægri.",
               icon: "🌡️",
             },
             {
               h: "Vindur",
-              p: "Mikill vindur gerir tjaldlíf óþægilegt. Því sterkari sem vindurinn er, því fleiri stig dragast frá.",
+              p: "Mikill vindur gerir tjaldlíf óþægilegra og lækkar einkunnina.",
               icon: "🌬️",
             },
             {
               h: "Rigning",
-              p: "Þurrir dagar eru bestir. Lítil rigning lækkar aðeins, mikil rigning lækkar meira.",
+              p: "Þurrir dagar eru bestir. Lítil rigning lækkar einkunnina aðeins, en mikil rigning meira.",
               icon: "🌧️",
             },
           ],
           finalH: "Lokaeinkunn",
           finalP:
-            "Byrjað er á grunneinkunn út frá hita og síðan dregin frá stig fyrir vind og rigningu. Lokaeinkunnin er alltaf á bilinu 0–10.",
-          outro: "Hærri einkunn = betri aðstæður til útilegu.",
+            "Einkunnin byggir fyrst og fremst á hitastigi og er síðan aðlöguð eftir vindi og úrkomu. Lokaeinkunnin er alltaf á bilinu 0–10.",
+          outro: "Hærri einkunn þýðir yfirleitt rólegri og þægilegri aðstæður til útilegu.",
         }
       : {
-          title: "How scoring works",
+          title: "How CampCast scores camping conditions",
           intro:
-            "CampCast gives each day a score from 0 to 10 to show how good the camping conditions are.",
+            "CampCast gives each day a score from 0 to 10 based on weather conditions at the campsite.",
           bullets: [
             {
               h: "Temperature",
-              p: "Warmer days are better. Cold days score lower, mild and warm days score higher.",
+              p: "Mild and warm days score higher, while colder days score lower.",
               icon: "🌡️",
             },
             {
               h: "Wind",
-              p: "Strong wind makes camping uncomfortable. The stronger the wind, the more points are deducted.",
+              p: "Strong wind makes camping less comfortable and lowers the score.",
               icon: "🌬️",
             },
             {
               h: "Rain",
-              p: "Dry days are best. Light rain reduces the score a little, heavy rain lowers it more.",
+              p: "Dry days score highest. Light rain reduces the score slightly, while heavy rain lowers it more.",
               icon: "🌧️",
             },
           ],
           finalH: "Final score",
           finalP:
-            "We start with a base score from temperature, then subtract penalties for wind and rain. The score is always kept within 0–10.",
-          outro: "Higher score = better camping conditions.",
+            "The score starts from temperature and is adjusted based on wind and precipitation. The final score is always kept between 0 and 10.",
+          outro: "Higher scores generally mean calmer and more comfortable camping conditions.",
         };
 
   // If you later add translation keys, these will automatically override the fallback.
@@ -66,31 +66,31 @@ export default function ScoreExplanation({ t, lang = "en" }) {
         {TT("scoreExplanationTitle", copy.title)}
       </summary>
 
-      <div className="mt-2 text-xs text-slate-600 dark:text-slate-300 space-y-2">
+      <div className="mt-3 text-xs text-slate-600 dark:text-slate-300 space-y-4 leading-relaxed">
         <p>{TT("scoreExplanationIntro", copy.intro)}</p>
 
-        <div className="space-y-2">
+        <div className="space-y-4">
           {copy.bullets.map((b) => (
-            <div key={b.h} className="flex gap-2">
-              <div className="mt-0.5">{b.icon}</div>
+            <div key={b.h} className="flex gap-2.5">
+              <div className="mt-0.5 shrink-0">{b.icon}</div>
               <div>
                 <div className="font-semibold text-slate-700 dark:text-slate-200">
                   {TT(`scoreExplanation_${b.h}`, b.h)}
                 </div>
-                <div>{b.p}</div>
+                <div className="mt-0.5">{b.p}</div>
               </div>
             </div>
           ))}
         </div>
 
-        <div>
+        <div className="pt-3 border-t border-slate-200 dark:border-slate-700">
           <div className="font-semibold text-slate-700 dark:text-slate-200">
             {TT("scoreExplanationFinalTitle", copy.finalH)}
           </div>
-          <div>{TT("scoreExplanationFinalText", copy.finalP)}</div>
+          <div className="mt-0.5">{TT("scoreExplanationFinalText", copy.finalP)}</div>
         </div>
 
-        <div className="font-semibold text-slate-700 dark:text-slate-200">
+        <div className="font-medium text-slate-700 dark:text-slate-200">
           {TT("scoreExplanationOutro", copy.outro)}
         </div>
       </div>

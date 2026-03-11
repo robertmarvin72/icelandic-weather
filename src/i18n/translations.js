@@ -85,19 +85,24 @@ export const translations = {
     unknown: "Unknown weather",
 
     // Score explanation
-    scoreExplanationTitle: "How scoring works",
+    scoreExplanationTitle: "How CampCast scores camping conditions",
+
     scoreExplanationIntro:
-      "CampCast gives each day a score from 0 to 10 to show how good the camping conditions are.",
-
-    scoreExplanationFinalTitle: "Final score",
-    scoreExplanationFinalText:
-      "We start with a base score from temperature, then subtract penalties for wind and rain. The final score is always kept between 0 and 10.",
-
-    scoreExplanationOutro: "Higher score = better camping conditions.",
+      "CampCast gives each day a score from 0 to 10 based on weather conditions at the campsite.",
 
     scoreExplanation_Temperature: "Temperature",
+
     scoreExplanation_Wind: "Wind",
+
     scoreExplanation_Rain: "Rain",
+
+    scoreExplanationFinalTitle: "Final score",
+
+    scoreExplanationFinalText:
+      "The score starts from temperature and is adjusted based on wind and precipitation. The final result is always kept between 0 and 10.",
+
+    scoreExplanationOutro:
+      "Higher scores generally mean calmer and more comfortable camping conditions.",
 
     // Misc UI
     loadingMoreCampsites: "Loading more campsites…",
@@ -130,29 +135,32 @@ export const translations = {
 
     aboutTitle: "About CampCast",
 
-    aboutIntro: "CampCast is a weather app built for camping in Iceland.",
+    aboutIntro:
+      "CampCast helps campers in Iceland make better decisions based on real weather conditions.",
 
     aboutGoal:
-      "The goal is simple: to help you choose better campsites based on real conditions, not just temperature.",
+      "Instead of only showing forecasts, CampCast evaluates camping conditions and highlights when nearby campsites may offer better weather.",
 
     aboutFeaturesTitle: "CampCast includes:",
 
     aboutFeatures: [
       "7-day campsite forecasts",
-      "Wind and precipitation data",
+      "Wind, rain and temperature analysis",
       "Weekly ranking of campsites based on conditions",
+      "Route Planner suggestions when better weather may be nearby",
     ],
 
     aboutProTitle: "With CampCast Pro, you also get:",
 
     aboutProFeatures: [
-      "Wind direction",
-      "Shelter score",
-      "Deeper insight into calmer, more sheltered campsites",
+      "Wind direction information",
+      "Shelter score to identify calmer locations",
+      "Detailed campsite comparisons",
+      "More insight into when moving campsites may be worthwhile",
     ],
 
     aboutOutro:
-      "CampCast is designed specifically for Icelandic conditions and continues to evolve based on user feedback.",
+      "CampCast is designed specifically for Icelandic camping conditions and continues to evolve based on user feedback.",
 
     aboutContact: "Questions, feedback, or issues?",
 
@@ -214,7 +222,7 @@ export const translations = {
     subscribeEmailPlaceholder: "name@domain.com",
     subscribeEmailHelp: "We use your email for receipts.",
     subscribeSectionTitle: "What you get with Pro",
-    subscribeFeatureUnlockedTitle: "All Pro features unlocked",
+    subscribeFeatureUnlockedTitle: "Full Route Planner access",
     subscribeFeatureUnlockedDesc: "Full access to Pro features in the app.",
     subscribeFeatureOverviewTitle: "Better overview & scoring",
     subscribeFeatureOverviewDesc: "Clearer guidance for weather-based decisions.",
@@ -260,7 +268,8 @@ export const translations = {
     pricingBrandSub: "Follow the weather",
 
     pricingTitle: "Choose your plan",
-    pricingLead: "Pick monthly or yearly. Payment is handled securely by Paddle.",
+    pricingLead:
+      "Unlock CampCast Pro to compare nearby campsites and see where weather conditions may be better.",
     pricingNotLoggedIn: "We’ll ask for your email before checkout.",
 
     pricingYearlyTitle: "Yearly",
@@ -271,12 +280,15 @@ export const translations = {
     pricingMonthlyTitle: "Monthly",
     pricingPerMonth: "per month",
 
-    pricingFeatureAllPro: "All Pro features unlocked",
+    pricingFeatureAllPro: "Full access to the Route Planner",
     pricingFeatureWindShelter: "Wind direction + shelter score",
+    pricingFeatureComparisons: "Detailed campsite comparisons",
     pricingFeatureCancelAnytime: "Cancel anytime",
 
-    pricingCtaYearly: "Get Yearly",
-    pricingCtaMonthly: "Get Monthly",
+    pricingCtaYearly: "Unlock CampCast Pro Yearly",
+    pricingCtaMonthly: "Unlock CampCast Pro Monthly",
+    pricingYearlyEquivalentMonthly: "≈ €2 per month",
+    pricingYearlySavings: "Save about €40 per year",
 
     pricingFinePrint: "You can manage or cancel anytime in the billing portal.",
 
@@ -321,28 +333,30 @@ export const translations = {
     routeVerdictMoveBody: "There appears to be a clearly better option nearby.",
 
     routePlannerTitle: "Route Planner",
-    routePlannerSelectBase: "Select a campsite (or use your location) to get a recommendation.",
+    routePlannerSelectBase:
+      "Select a campsite (or use your location) to see if better weather may be nearby.",
     routePlannerBaseLabel: "Base",
     routePlannerRadius: "Travel radius",
     routePlannerWindowDays: "Window (days)",
     routePlannerWetThreshold: "Wet day threshold",
     previewPill: "Preview",
-    routePlannerBestTomorrow: "Best place tomorrow",
+    routePlannerBestTomorrow: "Best nearby option tomorrow",
     routePlannerPreviewBody:
-      "See the single best suggestion for tomorrow. Unlock a larger area, more days, and details with Pro.",
+      "CampCast looks at nearby campsites and highlights where weather conditions may be better tomorrow. With Pro you can search a larger area, explore more days and see detailed comparisons.",
     routePlannerPreviewNoBetter:
-      "No better place was found within 30 km tomorrow. Pro shows a larger area and more days.",
+      "No clearly better option was found within 30 km tomorrow. Pro searches a larger area and more days.",
     routePlannerCandidatesPreselected: "Nearby campsites checked",
     routePlannerCandidatesScored: "Scored",
-    routePlannerTopAlternatives: "Top alternatives",
+    routePlannerTopAlternatives: "Nearby alternatives",
     routePlannerNoAlternatives: "No clearly better nearby options found.",
     routePlannerNoReasons: "No clear reasons available yet.",
 
-    routePlannerLockedBody: "Unlock Route Planner to get relocation advice for nearby campsites.",
+    routePlannerLockedBody:
+      "Unlock Route Planner to see when nearby campsites may offer better weather.",
 
     routePlannerBaseForecastMissing: "Missing forecast for the selected base campsite.",
     routePlannerAlternativesCount: "Alternatives evaluated",
-    routePlannerMinimalDifference: "Only a small difference in conditions.",
+    routePlannerMinimalDifference: "Weather conditions are very similar.",
 
     routePlannerTrendMove: "Conditions look clearly better over the next {days} days.",
     routePlannerTrendMoveWithReasons:
@@ -595,19 +609,22 @@ export const translations = {
     unknown: "Óþekkt veður",
 
     // Stigaskýring
-    scoreExplanationTitle: "Hvernig stigagjöfin virkar",
+    scoreExplanationTitle: "Hvernig CampCast metur aðstæður til útilegu",
+
     scoreExplanationIntro:
-      "CampCast gefur hverjum degi einkunn frá 0 til 10 til að sýna fljótt hversu góðar aðstæður eru til útilegu.",
+      "CampCast gefur hverjum degi einkunn frá 0 til 10 byggt á veðuraðstæðum á tjaldsvæðinu.",
 
     scoreExplanationFinalTitle: "Lokaeinkunn",
-    scoreExplanationFinalText:
-      "Byrjað er á grunneinkunn út frá hita og síðan dregin frá stig fyrir vind og rigningu. Lokaeinkunnin er alltaf á bilinu 0 til 10.",
 
-    scoreExplanationOutro: "Hærri einkunn = betri aðstæður til útilegu.",
+    scoreExplanationFinalText:
+      "Einkunnin byggir fyrst og fremst á hitastigi og er síðan aðlöguð eftir vindi og úrkomu. Lokaeinkunnin er alltaf á bilinu 0 til 10.",
+
+    scoreExplanationOutro:
+      "Hærri einkunn þýðir yfirleitt rólegri og þægilegri aðstæður til útilegu.",
 
     scoreExplanation_Hiti: "Hiti",
     scoreExplanation_Vindur: "Vindur",
-    scoreExplanation_Rigning: "Rigning",
+    scoreExplanation_Rigning: "Úrkoma",
 
     // Misc UI
     loadingMoreCampsites: "Hleð fleiri tjaldsvæðum…",
@@ -640,29 +657,32 @@ export const translations = {
 
     aboutTitle: "Um CampCast",
 
-    aboutIntro: "CampCast er veðurapp hannað fyrir tjaldlíf á Íslandi.",
+    aboutIntro:
+      "CampCast hjálpar tjaldgestum á Íslandi að taka betri ákvarðanir út frá raunverulegum veðuraðstæðum.",
 
     aboutGoal:
-      "Markmiðið er einfalt: að hjálpa þér að velja betri tjaldsvæði miðað við veður, ekki bara hitastig.",
+      "Í stað þess að sýna aðeins veðurspá metur CampCast aðstæður á tjaldsvæðum og bendir á þegar betra veður gæti verið í nágrenninu.",
 
     aboutFeaturesTitle: "CampCast býður upp á:",
 
     aboutFeatures: [
       "7 daga veðurspá fyrir tjaldsvæði",
-      "Vindstyrk og úrkomu",
-      "Vikulega röðun tjaldsvæða út frá aðstæðum",
+      "Greiningu á vindi, úrkomu og hitastigi",
+      "Vikulega röðun tjaldsvæða eftir aðstæðum",
+      "Ferðaráðgjafa sem bendir á þegar betra veður gæti verið í nágrenninu",
     ],
 
     aboutProTitle: "Í Pro útgáfu bætist við:",
 
     aboutProFeatures: [
       "Vindátt",
-      "Skjólstuðull",
-      "Dýpri innsýn í hvaða svæði eru líklegust til að vera skjólgóð",
+      "Skjólstuðull sem hjálpar að finna rólegri staði",
+      "Nánari samanburður á tjaldsvæðum",
+      "Meiri innsýn í hvenær gæti borgað sig að færa sig",
     ],
 
     aboutOutro:
-      "Appið er hannað með íslenskar aðstæður í huga og þróast stöðugt með endurgjöf frá notendum.",
+      "CampCast er hannað sérstaklega með íslenskar aðstæður í huga og þróast áfram með endurgjöf frá notendum.",
 
     aboutContact: "Ertu með spurningu, hugmynd eða lendir í vandræðum?",
 
@@ -772,22 +792,26 @@ export const translations = {
     pricingBrandSub: "Fylgstu með veðrinu",
 
     pricingTitle: "Veldu áskrift",
-    pricingLead: "Veldu mánaðar- eða ársáskrift. Greiðsla fer örugglega í gegnum Paddle.",
+    pricingLead:
+      "Með CampCast Pro geturðu borið saman tjaldsvæði í nágrenninu og séð hvar veðuraðstæður gætu verið betri næstu daga.",
     pricingNotLoggedIn: "Við biðjum um netfang áður en þú ferð í greiðslu.",
 
     pricingYearlyTitle: "Ársáskrift",
     pricingPerYear: "á ári",
-    pricingYearlyMicro: "Ein greiðsla. Hægt að segja upp hvenær sem er.",
+    pricingYearlyMicro: "Greitt einu sinni á ári. Hægt að segja upp hvenær sem er.",
 
     pricingMonthlyTitle: "Mánaðaráskrift",
     pricingPerMonth: "á mánuði",
 
-    pricingFeatureAllPro: "Allir Pro fídusar opnir",
+    pricingFeatureAllPro: "Fullur aðgangur að Ferðaráðgjafa",
     pricingFeatureWindShelter: "Vindátt + skjólstuðull",
+    pricingFeatureComparisons: "Nánari samanburður á tjaldsvæðum",
     pricingFeatureCancelAnytime: "Hægt að segja upp hvenær sem er",
 
-    pricingCtaYearly: "Fá ársáskrift",
+    pricingCtaYearly: "Opna CampCast Pro",
     pricingCtaMonthly: "Fá mánaðaráskrift",
+    pricingYearlyEquivalentMonthly: "≈ 290 kr á mánuði",
+    pricingYearlySavings: "Sparar um 5.890 kr á ári miðað við mánaðarverð",
 
     pricingFinePrint: "Þú getur stjórnað eða sagt upp hvenær sem er í greiðslugáttinni.",
 
@@ -823,8 +847,9 @@ export const translations = {
     routeReasonRain: "Minni úrkoma",
     routeReasonTmax: "Hlýrri dagar",
 
-    routeVerdictStayTitle: "Vertu kyrr",
-    routeVerdictStayBody: "Aðstæður í nágrenninu virðast ekki marktækt betri.",
+    routeVerdictStayTitle: "Best að vera áfram",
+    routeVerdictStayBody:
+      "Aðstæður í nágrenninu virðast ekki nógu mikið betri til að það borgi sig að færa sig.",
 
     routeVerdictConsiderTitle: "Íhugaðu að færa þig",
     routeVerdictConsiderBody: "Það gæti verið aðeins betri kostur í nágrenninu.",
@@ -833,29 +858,30 @@ export const translations = {
     routeVerdictMoveBody: "Það virðist vera greinilega betri kostur í nágrenninu.",
 
     routePlannerTitle: "Ferðaráðgjafi",
-    routePlannerSelectBase: "Veldu tjaldsvæði (eða notaðu staðsetningu) til að fá ráðleggingu.",
+    routePlannerSelectBase:
+      "Veldu tjaldsvæði (eða notaðu staðsetningu) til að sjá hvort betra veður gæti verið í nágrenninu.",
     routePlannerBaseLabel: "Grunnstaður",
     routePlannerRadius: "Ferðafjarlægð",
     routePlannerWindowDays: "Gluggi (dagar)",
     routePlannerWetThreshold: "Votur dagur (viðmið)",
     previewPill: "Forsýn",
-    routePlannerBestTomorrow: "Besti staður á morgun",
+    routePlannerBestTomorrow: "Besti kostur í nágrenninu á morgun",
     routePlannerPreviewBody:
-      "Sjáðu eina bestu tillöguna fyrir morgundaginn. Opnaðu stærra svæði, fleiri daga og smáatriði með Pro.",
+      "CampCast ber saman nærliggjandi tjaldsvæði og bendir á þegar veðuraðstæður gætu verið betri annars staðar.\n\nMeð Pro geturðu skoðað stærra svæði, fleiri daga og séð nánari samanburð.",
     routePlannerPreviewNoBetter:
-      "Enginn betri staður fannst innan 30 km á morgun. Pro sýnir stærra svæði og fleiri daga.",
+      "Enginn greinilega betri kostur fannst innan 30 km á morgun. Pro leitar á stærra svæði og yfir fleiri daga.",
     routePlannerCandidatesPreselected: "Skoðuð svæði í kringum þig",
     routePlannerCandidatesScored: "Metið",
-    routePlannerTopAlternatives: "Bestu valkostir",
+    routePlannerTopAlternatives: "Valkostir í nágrenninu",
     routePlannerNoAlternatives: "Engir greinilega betri valkostir fundust í nágrenninu.",
     routePlannerNoReasons: "Engar skýrar ástæður tiltækar ennþá.",
 
     routePlannerLockedBody:
-      "Opnaðu Ferðaráðgjafa til að fá ráðleggingar um að færa þig í nágrenninu.",
+      "Opnaðu Ferðaráðgjafa til að sjá hvenær betra veður gæti verið á nærliggjandi tjaldsvæðum.",
 
     routePlannerBaseForecastMissing: "Vantar veðurspá fyrir valið tjaldsvæði.",
     routePlannerAlternativesCount: "Metin svæði",
-    routePlannerMinimalDifference: "Lítill munur á aðstæðum.",
+    routePlannerMinimalDifference: "Veðuraðstæður eru mjög svipaðar.",
 
     routePlannerTrendMove: "Aðstæður líta greinilega betur út næstu {days} daga.",
     routePlannerTrendMoveWithReasons:

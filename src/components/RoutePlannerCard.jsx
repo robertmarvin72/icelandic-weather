@@ -1301,7 +1301,7 @@ export default function RoutePlannerCard({
 
             {isPreview && (
               <div className="mt-3 rounded-xl border border-slate-200 dark:border-slate-700 p-3 bg-slate-50/60 dark:bg-slate-900/20">
-                <div className="text-xs text-slate-700 dark:text-slate-300 mb-2">
+                <div className="text-xs text-slate-700 dark:text-slate-300 mb-3 leading-relaxed whitespace-pre-line">
                   {t("routePlannerPreviewBody")}
                 </div>
                 <button
