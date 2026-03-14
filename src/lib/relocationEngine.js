@@ -3,6 +3,7 @@ import { distanceKm } from "../utils/distance";
 import { normalizeDailyToScoreInput } from "../lib/forecastNormalize";
 import { scoreDaysWithRainStreak } from "../lib/scoring";
 import { getHazardsConfig } from "../config/hazards";
+import { detectHazardWindow } from "../lib/hazardWindow";
 
 /**
  * Relocation engine core (UI-independent).
@@ -534,6 +535,8 @@ export function relocationEngine(input) {
   function scoreOneSite(site) {
     const raw = forecastMap?.[site.id];
     const daily = raw?.daily ?? raw; // allow passing either {daily:{...}} or {time:...} directly
+    const hourly = raw?.hourly ?? null;
+
     const normalized = normalizeDailyToScoreInput(daily);
     if (!normalized.length) return null;
 
@@ -544,15 +547,22 @@ export function relocationEngine(input) {
     const windowDays = sliceWindow(scored, startDateISO, days);
     if (!windowDays) return null;
 
+    const hazardWindow = detectHazardWindow({
+      hourly,
+      startDateISO,
+      days,
+      hazards: cfg.hazards,
+    });
     const agg = aggregateSiteWindow(windowDays, weights, cfg);
 
     return {
-      total: agg.total, // clamped (UI-friendly)
-      totalRaw: agg.totalRaw, // raw (comparison-friendly)
+      total: agg.total,
+      totalRaw: agg.totalRaw,
       worstDay: agg.worstDay,
       components: agg.components,
       windowDays,
       shelter,
+      hazardWindow,
     };
   }
 
@@ -665,6 +675,7 @@ export function relocationEngine(input) {
       requiredDelta: decision.requiredDelta,
       hazardImproved: decision.hazardImproved,
       roughWeatherWindow: decision.roughWeatherWindow,
+      hazardWindow: sc.hazardWindow,
 
       hazardBlocked: decision.hazardBlocked,
       hazardBlockMode: decision.hazardBlockMode,
@@ -686,6 +697,7 @@ export function relocationEngine(input) {
       deltaVsBase,
       worstDay: sc.worstDay,
       windowDays: row.windowDays,
+      hazardWindow: sc.hazardWindow,
 
       betterDays: row.betterDays,
       sameDays: row.sameDays,
@@ -760,6 +772,7 @@ export function relocationEngine(input) {
     worseDays: best?.worseDays ?? 0,
     requiredDelta: best?.requiredDelta ?? 0,
     hazardImproved: !!best?.hazardImproved,
+    hazardWindow: best?.hazardWindow ?? null,
 
     ranked,
 
@@ -769,6 +782,7 @@ export function relocationEngine(input) {
         total: baseTotal,
         totalRaw: baseTotalRaw,
         worstDay: baseScore?.worstDay ?? 0,
+        hazardWindow: baseScore?.hazardWindow ?? null,
         windowDays: (baseScore?.windowDays || []).map((d) => pickExplainDay(d, cfg)),
       },
       candidates: explainCandidates,

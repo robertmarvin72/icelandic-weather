@@ -55,6 +55,11 @@ export default async function handler(req, res) {
       ].join(",")
     );
 
+    upstream.searchParams.set(
+      "hourly",
+      ["precipitation", "windspeed_10m", "windgusts_10m"].join(",")
+    );
+
     upstream.searchParams.set("forecast_days", "7");
     upstream.searchParams.set("timezone", timezone);
 
@@ -76,7 +81,8 @@ export default async function handler(req, res) {
     // Shared edge caching:
     // - s-maxage: cache at CDN for 30 minutes
     // - stale-while-revalidate: allow serving stale while refreshing for 24h
-    res.setHeader("Cache-Control", "public, s-maxage=1800, stale-while-revalidate=86400");
+    //res.setHeader("Cache-Control", "public, s-maxage=1800, stale-while-revalidate=86400");
+    res.setHeader("Cache-Control", "no-store");
 
     if (!r.ok) {
       return res.status(r.status).send(text);

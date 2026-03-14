@@ -1,12 +1,12 @@
 // Simple local cache for Open-Meteo forecasts (stale-while-revalidate-ish)
 const TTL_MS = 30 * 60 * 1000; // 30 minutes
-const mem = new Map();         // in-memory cache (fast, per tab)
-const inflight = new Map();    // coalesce duplicate requests
+const mem = new Map(); // in-memory cache (fast, per tab)
+const inflight = new Map(); // coalesce duplicate requests
 
 function key(lat, lon) {
   // keep precision but normalize
   // Bump version when forecast shape changes (e.g., adding windgusts)
-  return `forecast:v5:${Number(lat).toFixed(4)},${Number(lon).toFixed(4)}`;
+  return `forecast:v6:${Number(lat).toFixed(4)},${Number(lon).toFixed(4)}`;
 }
 
 function readStorage(k) {
@@ -48,6 +48,7 @@ async function fetchOpenMeteo({ lat, lon }) {
       "winddirection_10m_dominant",
       "weathercode",
     ].join(","),
+    hourly: ["precipitation", "windspeed_10m", "windgusts_10m"].join(","),
   });
 
   const url = `/api/forecast?${params.toString()}`;

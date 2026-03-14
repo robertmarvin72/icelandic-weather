@@ -311,15 +311,6 @@ export default function RoutePlannerCard({
         typeof destLat !== "number" ||
         typeof destLon !== "number"
       ) {
-        console.log("ROUTE RISK ABORTED: missing coordinates", {
-          baseSite,
-          bestCandidate,
-          destinationSite,
-          baseLat,
-          baseLon,
-          destLat,
-          destLon,
-        });
         return;
       }
 
@@ -866,10 +857,89 @@ export default function RoutePlannerCard({
     });
   }
 
+  function getHazardWindowNarrative(candidateRow) {
+    const hw = candidateRow?.hazardWindow;
+    if (!hw?.type) return null;
+
+    switch (hw.type) {
+      case "passingStorm":
+        return t("routeHazardWindowPassingStorm");
+      case "roughWeather":
+        return t("routeHazardWindowRoughWeather");
+      case "stormyPeriod":
+        return t("routeHazardWindowStormyPeriod");
+      default:
+        return null;
+    }
+  }
+
+  function buildRouteNarrative({
+    baseSite,
+    best,
+    shownHazardWindowNarrative,
+    bestEscapeSuggestion,
+    routeRiskData,
+    decisionLower,
+    t,
+  }) {
+    const parts = [];
+
+    if (shownHazardWindowNarrative && baseSite?.name) {
+      parts.push(`${shownHazardWindowNarrative} á ${baseSite.name}.`);
+    } else if (shownHazardWindowNarrative) {
+      parts.push(shownHazardWindowNarrative);
+    }
+
+    if (bestEscapeSuggestion?.destinationLine) {
+      parts.push(
+        interpolate(
+          t("routeNarrativeBetterNearby") ||
+            "Betri aðstæður gætu verið í nágrenninu: {destination}.",
+          {
+            destination: bestEscapeSuggestion.destinationLine,
+          }
+        )
+      );
+    } else if (best?.siteName && Number.isFinite(best?.distanceKm) && decisionLower !== "stay") {
+      parts.push(
+        `Betri aðstæður gætu verið í ${best.siteName}, um ${Math.round(best.distanceKm)} km í burtu.`
+      );
+    }
+
+    if (routeRiskData?.routeRisk === "HIGH") {
+      parts.push(
+        t("routeNarrativeRouteRiskHigh") || "Aðstæður á leiðinni gætu þó verið erfiðar núna."
+      );
+    } else if (routeRiskData?.routeRisk === "MED") {
+      parts.push(
+        t("routeNarrativeRouteRiskMed") || "Aðstæður á leiðinni gætu verið aðeins erfiðar."
+      );
+    }
+
+    return parts.filter(Boolean);
+  }
+
   const bestHazardBlockText = getHazardBlockText(best);
   const bestStayReasonText = getStayReasonText(best);
   const bestEscapeSuggestion = getEscapeSuggestion(best);
   const bestRoughWeatherWindowText = getRoughWeatherWindowText(best);
+  const bestHazardWindowNarrative = getHazardWindowNarrative(best);
+
+  const baseHazardWindowNarrative = getHazardWindowNarrative({
+    hazardWindow: result?.explain?.base?.hazardWindow,
+  });
+
+  const shownHazardWindowNarrative = bestHazardWindowNarrative || baseHazardWindowNarrative;
+
+  const routeNarrativeLines = buildRouteNarrative({
+    baseSite,
+    best,
+    shownHazardWindowNarrative,
+    bestEscapeSuggestion,
+    routeRiskData,
+    decisionLower,
+    t,
+  });
 
   const bestHazardBlockClass =
     best?.hazardBlockMode === "stay"
@@ -1018,6 +1088,18 @@ export default function RoutePlannerCard({
             {!bestHazardBlockText && bestRoughWeatherWindowText ? (
               <div className={`mt-2 text-xs font-medium ${bestRoughWeatherWindowClass}`}>
                 {bestRoughWeatherWindowText}
+              </div>
+            ) : null}
+
+            {!bestHazardBlockText && routeNarrativeLines.length > 0 ? (
+              <div className="mt-2 rounded-lg border border-slate-200/70 bg-white/60 px-3 py-2 dark:border-slate-700 dark:bg-slate-900/30">
+                <div className="space-y-1">
+                  {routeNarrativeLines.map((line, idx) => (
+                    <div key={idx} className="text-xs text-slate-700 dark:text-slate-300">
+                      {line}
+                    </div>
+                  ))}
+                </div>
               </div>
             ) : null}
 

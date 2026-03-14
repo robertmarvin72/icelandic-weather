@@ -24,6 +24,24 @@ function interpolate(template, vars) {
   return out;
 }
 
+function getHazardWindowNarrative(candidate, t) {
+  const hw = candidate?.hazardWindow;
+  if (!hw?.type) return null;
+
+  switch (hw.type) {
+    case "passingStorm":
+      return t?.("routeHazardWindowPassingStorm") || "A short passing storm is expected.";
+    case "roughWeather":
+      return t?.("routeHazardWindowRoughWeather") || "Rough weather may persist for several hours.";
+    case "stormyPeriod":
+      return (
+        t?.("routeHazardWindowStormyPeriod") || "A longer stormy period is expected in this window."
+      );
+    default:
+      return null;
+  }
+}
+
 export default function RoutePlannerDetailsModal({
   open,
   onClose,
@@ -220,6 +238,8 @@ export default function RoutePlannerDetailsModal({
           "Veðuráhætta á einum degi dregur úr styrk ráðleggingar."
         : null;
 
+  const hazardWindowNarrative = getHazardWindowNarrative(candidate, t);
+
   const hazardBlockClass =
     candidate?.hazardBlockMode === "stay"
       ? "text-rose-700 dark:text-rose-300 font-semibold"
@@ -342,6 +362,12 @@ export default function RoutePlannerDetailsModal({
             {hazardBlockText ? (
               <div className={`mt-2 text-xs font-medium ${hazardBlockClass}`}>
                 {hazardBlockText}
+              </div>
+            ) : null}
+
+            {!hazardBlockText && hazardWindowNarrative ? (
+              <div className="mt-2 text-xs text-slate-700 dark:text-slate-300">
+                {hazardWindowNarrative}
               </div>
             ) : null}
 

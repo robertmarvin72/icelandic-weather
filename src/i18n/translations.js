@@ -554,6 +554,14 @@ export const translations = {
 
     subscribeTermsPrefix: "By continuing you agree to the",
     subscribeEmailHelp: "We use your email for receipts and subscription information.",
+
+    routeHazardWindowPassingStorm: "A short passing storm is expected.",
+    routeHazardWindowRoughWeather: "Rough weather may persist for several hours.",
+    routeHazardWindowStormyPeriod: "A longer stormy period is expected in this window.",
+
+    routeNarrativeBetterNearby: "Better conditions may be nearby: {destination}.",
+    routeNarrativeRouteRiskHigh: "Road conditions on the way may currently be difficult.",
+    routeNarrativeRouteRiskMed: "Road conditions on the way may be somewhat difficult.",
   },
 
   // Icelandic (Íslenska) -------------------------------------------------------------------------------------------------------------------
@@ -1115,5 +1123,13 @@ export const translations = {
 
     subscribeTermsPrefix: "Með því að halda áfram samþykkir þú",
     subscribeEmailHelp: "Netfangið verður notað fyrir kvittanir og áskriftarupplýsingar.",
+
+    routeHazardWindowPassingStorm: "Stuttur veðurskafli gæti gengið yfir.",
+    routeHazardWindowRoughWeather: "Slæmt veður gæti staðið yfir í nokkrar klukkustundir.",
+    routeHazardWindowStormyPeriod: "Lengra stormaskeið er líklegt á þessu tímabili.",
+
+    routeNarrativeBetterNearby: "Betri aðstæður gætu verið í nágrenninu: {destination}.",
+    routeNarrativeRouteRiskHigh: "Aðstæður á leiðinni gætu þó verið erfiðar núna.",
+    routeNarrativeRouteRiskMed: "Aðstæður á leiðinni gætu verið aðeins erfiðar.",
   },
 };
