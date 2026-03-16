@@ -537,7 +537,7 @@ export function relocationEngine(input) {
     const daily = raw?.daily ?? raw; // allow passing either {daily:{...}} or {time:...} directly
     const hourly = raw?.hourly ?? null;
 
-    const normalized = normalizeDailyToScoreInput(daily);
+    const normalized = normalizeDailyToScoreInput(daily, hourly);
     if (!normalized.length) return null;
 
     const shelter = pickSiteShelter(site);
