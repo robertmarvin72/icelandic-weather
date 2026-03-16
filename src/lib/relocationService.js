@@ -46,8 +46,19 @@ async function buildForecastMapForSites(sites, opts = {}) {
         return [id || null, null];
       }
 
-      const data = await fetchForecast({ lat, lon, site: s });
-      return [id, data];
+      try {
+        const data = await fetchForecast({ lat, lon, site: s });
+
+        if (!data?.daily || !Array.isArray(data.daily.time)) {
+          console.error("Invalid forecast payload for site:", id);
+          return [id, null];
+        }
+
+        return [id, data];
+      } catch (err) {
+        console.error("Forecast fetch failed for site:", id, err);
+        return [id, null];
+      }
     })
   );
 

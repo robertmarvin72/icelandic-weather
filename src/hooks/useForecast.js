@@ -55,6 +55,10 @@ function useForecast(lat, lon, opts = {}) {
         try {
           const j = await fetchForecast({ lat, lon });
 
+          if (!j?.daily || !Array.isArray(j.daily.time)) {
+            throw new Error("Invalid forecast payload");
+          }
+
           if (!aborted) setData(j);
           if (!aborted) setRetrying(false);
           return;

@@ -54,11 +54,18 @@ async function fetchOpenMeteo({ lat, lon }) {
   const url = `/api/forecast?${params.toString()}`;
 
   const res = await fetch(url);
+
   if (!res.ok) {
-    const body = await res.text().catch(() => "");
-    throw new Error(`Forecast failed: ${res.status}${body ? ` - ${body}` : ""}`);
+    throw new Error(`Forecast API request failed (${res.status})`);
   }
-  return res.json();
+
+  const data = await res.json();
+
+  if (!data || !data.daily || !Array.isArray(data.daily.time)) {
+    throw new Error("Forecast API returned invalid payload");
+  }
+
+  return data;
 }
 
 /**
