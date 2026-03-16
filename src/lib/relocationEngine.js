@@ -475,7 +475,7 @@ export function getCandidateHazardBlocker(windowDays, badDayScoreThreshold = 4.5
   };
 }
 
-function decideCandidate({ windowDays, deltaVsBase, distanceKm }) {
+export function decideCandidate({ windowDays, deltaVsBase, distanceKm }) {
   const counts = getDayCounts(windowDays, 0.75);
   const requiredDelta = requiredDeltaForDistance(distanceKm);
   const hazardImproved = hasHazardImprovement(windowDays);
@@ -534,6 +534,44 @@ function decideCandidate({ windowDays, deltaVsBase, distanceKm }) {
     recommendation = "consider";
     aggregateType = "slight";
     aggregateKey = "routeAggregateSlight";
+  }
+
+  // Ticket #168: rough weather window veto
+  if (recommendation === "move") {
+    const firstDate = String(windowDays?.[0]?.date ?? "").slice(0, 10);
+    const candWindow = roughWeatherWindow?.dayCount ?? 0;
+    const candStartsImmediate =
+      String(roughWeatherWindow?.startDate ?? "").slice(0, 10) === firstDate;
+
+    const baseWindow = windowDays.reduce((acc, d) => {
+      const rank = warningSeverityRank(d?.baseSiteWarnings);
+      return acc + (rank >= 1 ? 1 : 0);
+    }, 0);
+
+    const baseImmediateWindow = (() => {
+      let count = 0;
+      for (const d of windowDays) {
+        const rank = warningSeverityRank(d?.baseSiteWarnings);
+        if (rank >= 1) count += 1;
+        else break;
+      }
+      return count;
+    })();
+
+    // Stronger rule: do not move directly into a rough-weather window
+    if (candStartsImmediate && candWindow >= 2 && candWindow > baseImmediateWindow) {
+      recommendation = "stay";
+      aggregateType = "same";
+      aggregateKey = "routeDaySame";
+    } else if (candWindow >= 3 && candWindow > baseWindow) {
+      recommendation = "stay";
+      aggregateType = "same";
+      aggregateKey = "routeDaySame";
+    } else if (candWindow >= 2 && candWindow > baseWindow) {
+      recommendation = "consider";
+      aggregateType = "slight";
+      aggregateKey = "routeAggregateSlight";
+    }
   }
 
   const recommendationRank =
@@ -788,9 +826,10 @@ export function relocationEngine(input) {
       return (b.hazardImproved ? 1 : 0) - (a.hazardImproved ? 1 : 0);
     }
     if (b.deltaVsBase !== a.deltaVsBase) return b.deltaVsBase - a.deltaVsBase;
-    if (a.distanceKm !== b.distanceKm) return a.distanceKm - b.distanceKm;
     if (b.totalRaw !== a.totalRaw) return b.totalRaw - a.totalRaw;
     if (b.total !== a.total) return b.total - a.total;
+    if (a.distanceKm !== b.distanceKm) return a.distanceKm - b.distanceKm;
+
     return String(a.siteId).localeCompare(String(b.siteId));
   });
 
