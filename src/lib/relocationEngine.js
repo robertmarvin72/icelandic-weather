@@ -273,9 +273,9 @@ function getExplainDayDelta(d) {
   const deltaPts = candPts - basePts;
   const deltaRaw = candRaw - baseRaw;
 
-  const useRaw =
-    (candPts === basePts && (candPts <= 0.0001 || candPts >= 9.9999)) ||
-    Math.abs(deltaPts) < 0.0001;
+  const scoresEqual = Math.abs(candPts - basePts) < 0.0001;
+
+  const useRaw = scoresEqual || (candPts === basePts && (candPts <= 0.0001 || candPts >= 9.9999));
 
   return useRaw ? deltaRaw : deltaPts;
 }
@@ -379,26 +379,66 @@ function getRoughWeatherWindow(windowDays) {
   };
 }
 
-function getCandidateHazardBlocker(windowDays) {
+export function getCandidateHazardBlocker(windowDays, badDayScoreThreshold = 4.5) {
   const days = Array.isArray(windowDays) ? windowDays : [];
 
   let candidateHasHighHazardDay = false;
   let baseHasSameOrWorseHazardSameDay = false;
   let candidateOnlyHighHazardDay = false;
 
+  let candidateHasBadScoreDay = false;
+  let baseHasSameOrWorseBadScoreSameDay = false;
+  let candidateOnlyBadScoreDay = false;
+
   for (const d of days) {
     const candRank = warningSeverityRank(d?.warnings);
     const baseRank = warningSeverityRank(d?.baseSiteWarnings);
 
-    // We only care about candidate HIGH hazard days here
-    if (candRank < 2) continue;
+    const candScore =
+      typeof d?.points === "number"
+        ? d.points
+        : typeof d?.pointsRaw === "number"
+          ? d.pointsRaw
+          : null;
 
-    candidateHasHighHazardDay = true;
+    const baseScore =
+      typeof d?.baseSitePoints === "number"
+        ? d.baseSitePoints
+        : typeof d?.baseSitePointsRaw === "number"
+          ? d.baseSitePointsRaw
+          : null;
 
-    if (baseRank >= candRank) {
-      baseHasSameOrWorseHazardSameDay = true;
-    } else {
-      candidateOnlyHighHazardDay = true;
+    // Existing: HIGH hazard blocker
+    if (candRank >= 2) {
+      candidateHasHighHazardDay = true;
+
+      if (baseRank >= candRank) {
+        baseHasSameOrWorseHazardSameDay = true;
+      } else {
+        candidateOnlyHighHazardDay = true;
+      }
+    }
+
+    // New: bad-score veto fallback
+    const candidateBadScore =
+      typeof candScore === "number" &&
+      Number.isFinite(candScore) &&
+      candScore <= badDayScoreThreshold;
+
+    const baseSameOrWorseBadScore =
+      typeof baseScore === "number" &&
+      Number.isFinite(baseScore) &&
+      baseScore <= badDayScoreThreshold &&
+      baseScore <= candScore;
+
+    if (candidateBadScore) {
+      candidateHasBadScoreDay = true;
+
+      if (baseSameOrWorseBadScore) {
+        baseHasSameOrWorseBadScoreSameDay = true;
+      } else {
+        candidateOnlyBadScoreDay = true;
+      }
     }
   }
 
@@ -414,15 +454,24 @@ function getCandidateHazardBlocker(windowDays) {
     triggered = true;
     blockerMode = "consider";
     reasonKey = "routeHazardBlockerConsider";
+  } else if (candidateOnlyBadScoreDay) {
+    triggered = true;
+    blockerMode = "consider";
+    reasonKey = "routeHazardBlockerConsider";
   }
 
   return {
     triggered,
     blockerMode,
     reasonKey,
+
     candidateHasHighHazardDay,
     baseHasSameOrWorseHazardSameDay,
     candidateOnlyHighHazardDay,
+
+    candidateHasBadScoreDay,
+    baseHasSameOrWorseBadScoreSameDay,
+    candidateOnlyBadScoreDay,
   };
 }
 
@@ -430,7 +479,7 @@ function decideCandidate({ windowDays, deltaVsBase, distanceKm }) {
   const counts = getDayCounts(windowDays, 0.75);
   const requiredDelta = requiredDeltaForDistance(distanceKm);
   const hazardImproved = hasHazardImprovement(windowDays);
-  const hazardBlocker = getCandidateHazardBlocker(windowDays);
+  const hazardBlocker = getCandidateHazardBlocker(windowDays, 4.5);
   const roughWeatherWindow = getRoughWeatherWindow(windowDays);
 
   const allDaysSame = counts.betterDays === 0 && counts.worseDays === 0;
@@ -472,12 +521,16 @@ function decideCandidate({ windowDays, deltaVsBase, distanceKm }) {
     aggregateKey = "routeAggregateSlight";
   }
 
-  // Ticket #135: candidate high-hazard blocker
+  // High-hazard blocker stays strongest
   if (hazardBlocker.candidateOnlyHighHazardDay) {
     recommendation = "stay";
     aggregateType = "same";
     aggregateKey = "routeDaySame";
   } else if (hazardBlocker.candidateHasHighHazardDay && recommendation === "move") {
+    recommendation = "consider";
+    aggregateType = "slight";
+    aggregateKey = "routeAggregateSlight";
+  } else if (hazardBlocker.candidateOnlyBadScoreDay && recommendation === "move") {
     recommendation = "consider";
     aggregateType = "slight";
     aggregateKey = "routeAggregateSlight";
@@ -508,6 +561,9 @@ function decideCandidate({ windowDays, deltaVsBase, distanceKm }) {
     hazardBlockReasonKey: hazardBlocker.reasonKey,
     candidateHasHighHazardDay: hazardBlocker.candidateHasHighHazardDay,
     baseHasSameOrWorseHazardSameDay: hazardBlocker.baseHasSameOrWorseHazardSameDay,
+    candidateHasBadScoreDay: hazardBlocker.candidateHasBadScoreDay,
+    baseHasSameOrWorseBadScoreSameDay: hazardBlocker.baseHasSameOrWorseBadScoreSameDay,
+    candidateOnlyBadScoreDay: hazardBlocker.candidateOnlyBadScoreDay,
   };
 }
 
@@ -682,6 +738,9 @@ export function relocationEngine(input) {
       hazardBlockReasonKey: decision.hazardBlockReasonKey,
       candidateHasHighHazardDay: decision.candidateHasHighHazardDay,
       baseHasSameOrWorseHazardSameDay: decision.baseHasSameOrWorseHazardSameDay,
+      candidateHasBadScoreDay: decision.candidateHasBadScoreDay,
+      baseHasSameOrWorseBadScoreSameDay: decision.baseHasSameOrWorseBadScoreSameDay,
+      candidateOnlyBadScoreDay: decision.candidateOnlyBadScoreDay,
 
       recommendation: decision.recommendation,
       aggregateType: decision.aggregateType,
@@ -711,6 +770,9 @@ export function relocationEngine(input) {
       hazardBlockReasonKey: row.hazardBlockReasonKey,
       candidateHasHighHazardDay: row.candidateHasHighHazardDay,
       baseHasSameOrWorseHazardSameDay: row.baseHasSameOrWorseHazardSameDay,
+      candidateHasBadScoreDay: row.candidateHasBadScoreDay,
+      baseHasSameOrWorseBadScoreSameDay: row.baseHasSameOrWorseBadScoreSameDay,
+      candidateOnlyBadScoreDay: row.candidateOnlyBadScoreDay,
 
       recommendation: row.recommendation,
       aggregateType: row.aggregateType,
