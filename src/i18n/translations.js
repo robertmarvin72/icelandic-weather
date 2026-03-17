@@ -53,7 +53,7 @@ export const translations = {
     goodQuality: "Good",
     fairQuality: "Fair",
     poor: "Poor",
-    bad: "Poor",
+    bad: "Bad",
 
     // Weather descriptions
     clearSky: "Clear sky",

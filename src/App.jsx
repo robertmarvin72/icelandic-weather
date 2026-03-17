@@ -546,6 +546,7 @@ function IcelandCampingWeatherApp({ page = "home" }) {
                       userLocation={userLoc}
                       lang={lang}
                       t={t}
+                      theme={theme}
                     />
                   </div>
                 }

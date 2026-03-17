@@ -96,7 +96,15 @@ function scorePinIcon(color, isSelected = false) {
 
 // ───────────────────────────────────────────────
 // Main map component
-export default function MapView({ campsites, selectedId, onSelect, userLocation, lang = "en", t }) {
+export default function MapView({
+  campsites,
+  selectedId,
+  onSelect,
+  userLocation,
+  lang = "en",
+  t,
+  theme = "light",
+}) {
   const [forecastById, setForecastById] = useState({});
   const [loadingById, setLoadingById] = useState({});
   const [errorById, setErrorById] = useState({});
@@ -117,6 +125,11 @@ export default function MapView({ campsites, selectedId, onSelect, userLocation,
 
     return () => clearTimeout(timer);
   }, [mapReady, tileLoaded, tileErrorCount, mapFailed]);
+
+  const isDark = theme === "dark";
+
+  const tileUrl = "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
+  const tileAttribution = "&copy; OpenStreetMap";
 
   const iconCreateFunction = (cluster) => {
     const markers = cluster.getAllChildMarkers();
@@ -178,7 +191,11 @@ export default function MapView({ campsites, selectedId, onSelect, userLocation,
   }
 
   return (
-    <div className="rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 overflow-hidden h-[500px] relative">
+    <div
+      className={`rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 overflow-hidden h-[500px] relative ${
+        isDark ? "map-dark-mode" : ""
+      }`}
+    >
       <MapContainer
         center={[64.9, -18.6]}
         zoom={6}
@@ -186,8 +203,8 @@ export default function MapView({ campsites, selectedId, onSelect, userLocation,
         whenReady={() => setMapReady(true)}
       >
         <TileLayer
-          attribution="&copy; OpenStreetMap"
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          attribution={tileAttribution}
+          url={tileUrl}
           eventHandlers={{
             tileload: () => {
               setTileLoaded(true);
@@ -231,7 +248,7 @@ export default function MapView({ campsites, selectedId, onSelect, userLocation,
 
             // ✅ use first day’s season as a simple “mode” hint
             const season = fdata?.rows?.[0]?.season ?? null;
-
+            console.log("MapView theme:", theme);
             return (
               <Marker
                 key={site.id}
