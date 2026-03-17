@@ -48,7 +48,7 @@ export const translations = {
     goodQuality: "Good",
     fairQuality: "Fair",
     poor: "Poor",
-    bad: "Bad",
+    bad: "Poor",
 
     // Weather descriptions
     clearSky: "Clear sky",
@@ -619,7 +619,7 @@ export const translations = {
     goodQuality: "Gott",
     fairQuality: "Sæmilegt",
     poor: "Slakt",
-    bad: "Lélegt",
+    bad: "Slæmt",
 
     // Weather descriptions
     clearSky: "Heiðskírt",
