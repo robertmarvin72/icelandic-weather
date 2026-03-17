@@ -7,6 +7,7 @@ export default function Success({ theme = "dark", t }) {
   const [logoOk, setLogoOk] = useState(true);
   const [portalLoading, setPortalLoading] = useState(false);
   const [portalError, setPortalError] = useState("");
+  const [showDelayMessage, setShowDelayMessage] = useState(false);
 
   const isLight = theme === "light";
 
@@ -20,6 +21,10 @@ export default function Success({ theme = "dark", t }) {
 
   useEffect(() => {
     let alive = true;
+
+    const delayTimer = setTimeout(() => {
+      if (alive) setShowDelayMessage(true);
+    }, 12000);
 
     async function checkMe() {
       try {
@@ -36,8 +41,10 @@ export default function Success({ theme = "dark", t }) {
     }
 
     checkMe();
+
     return () => {
       alive = false;
+      clearTimeout(delayTimer);
     };
   }, []);
 
@@ -150,6 +157,15 @@ export default function Success({ theme = "dark", t }) {
               <span style={styles.statusDot(status)} aria-hidden />
               <span style={styles.statusText}>{statusText}</span>
             </div>
+
+            {status !== "active" && showDelayMessage ? (
+              <div style={styles.delayMessage}>
+                {T(
+                  "successDelayedActivation",
+                  "Your access will activate shortly. If this takes longer than expected, please refresh the page."
+                )}
+              </div>
+            ) : null}
           </div>
 
           <div style={{ marginTop: 14 }}>
@@ -337,6 +353,15 @@ function getStyles(isLight) {
     }),
 
     statusText: { fontSize: 12, fontWeight: 900, opacity: 0.9 },
+
+    delayMessage: {
+      marginTop: 10,
+      fontSize: 12,
+      lineHeight: 1.5,
+      textAlign: "center",
+      opacity: 0.82,
+      color: isLight ? "#475569" : "rgba(255,255,255,0.78)",
+    },
 
     ctaLink: {
       width: "100%",
