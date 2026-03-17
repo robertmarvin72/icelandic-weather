@@ -8,6 +8,7 @@ export default function Success({ theme = "dark", t }) {
   const [portalLoading, setPortalLoading] = useState(false);
   const [portalError, setPortalError] = useState("");
   const [showDelayMessage, setShowDelayMessage] = useState(false);
+  const [isPolling, setIsPolling] = useState(false);
 
   const isLight = theme === "light";
 
@@ -21,6 +22,8 @@ export default function Success({ theme = "dark", t }) {
 
   useEffect(() => {
     let alive = true;
+    let intervalId = null;
+    let stopPollingTimer = null;
 
     const delayTimer = setTimeout(() => {
       if (alive) setShowDelayMessage(true);
@@ -30,21 +33,53 @@ export default function Success({ theme = "dark", t }) {
       try {
         const res = await fetch("/api/me", { credentials: "include" });
         const json = await res.json().catch(() => null);
-        if (!alive) return;
+        if (!alive) return false;
 
-        if (res.ok && json?.entitlements?.pro) setStatus("active");
-        else setStatus("pending");
-      } catch {
-        if (!alive) return;
+        if (res.ok && json?.entitlements?.pro) {
+          setStatus("active");
+          setIsPolling(false);
+          return true;
+        }
+
         setStatus("pending");
+        return false;
+      } catch {
+        if (!alive) return false;
+        setStatus("pending");
+        return false;
       }
     }
 
-    checkMe();
+    async function startPolling() {
+      const activeNow = await checkMe();
+      if (!alive || activeNow) return;
+
+      setIsPolling(true);
+
+      intervalId = setInterval(async () => {
+        const active = await checkMe();
+        if (active && intervalId) {
+          clearInterval(intervalId);
+          intervalId = null;
+        }
+      }, 2000);
+
+      stopPollingTimer = setTimeout(() => {
+        if (intervalId) {
+          clearInterval(intervalId);
+          intervalId = null;
+        }
+        if (alive) setIsPolling(false);
+      }, 15000);
+    }
+
+    startPolling();
 
     return () => {
       alive = false;
       clearTimeout(delayTimer);
+      if (intervalId) clearInterval(intervalId);
+      if (stopPollingTimer) clearTimeout(stopPollingTimer);
     };
   }, []);
 
@@ -100,7 +135,9 @@ export default function Success({ theme = "dark", t }) {
       ? T("successStatusChecking", "Checking…")
       : status === "active"
         ? T("successStatusActive", "Pro active")
-        : T("successStatusActivating", "Activating");
+        : isPolling
+          ? T("successStatusActivating", "Activating")
+          : T("successStatusPending", "Pending activation");
 
   return (
     <div style={styles.page}>
