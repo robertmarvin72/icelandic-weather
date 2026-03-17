@@ -288,11 +288,11 @@ function getStyles(isLight) {
     container: { maxWidth: 860, margin: "0 auto", position: "relative" },
 
     topBar: {
-      display: "grid",
-      gridTemplateColumns: "1fr auto",
-      alignItems: "start",
-      gap: 12,
-      marginBottom: 2,
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+      gap: 8,
+      marginBottom: 12,
     },
 
     backLink: {
@@ -319,8 +319,8 @@ function getStyles(isLight) {
     },
 
     brandHeroLogo: {
-      width: 120,
-      height: 120,
+      width: 140,
+      height: 140,
       objectFit: "contain",
     },
 
@@ -333,7 +333,7 @@ function getStyles(isLight) {
 
     brandHeroTitle: {
       fontWeight: 900,
-      fontSize: 18,
+      fontSize: 20,
       letterSpacing: 0.2,
     },
 
