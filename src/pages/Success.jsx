@@ -292,7 +292,7 @@ function getStyles(isLight) {
       flexDirection: "column",
       alignItems: "center",
       gap: 8,
-      marginBottom: 12,
+      marginBottom: 20,
     },
 
     backLink: {
@@ -334,12 +334,12 @@ function getStyles(isLight) {
     brandHeroTitle: {
       fontWeight: 900,
       fontSize: 20,
-      letterSpacing: 0.2,
+      letterSpacing: 0.3,
     },
 
     brandHeroSub: {
       fontSize: 12,
-      opacity: 0.75,
+      opacity: 0.65,
     },
 
     card: {
