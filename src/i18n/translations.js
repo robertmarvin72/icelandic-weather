@@ -347,7 +347,7 @@ export const translations = {
     previewPill: "Preview",
     routePlannerBestTomorrow: "Best nearby option tomorrow",
     routePlannerPreviewBody:
-      "CampCast looks at nearby campsites and highlights where weather conditions may be better tomorrow. With Pro you can search a larger area, explore more days and see detailed comparisons.",
+      "CampCast looks at nearby campsites and highlights where weather conditions may be better tomorrow. \n\nWith Pro you can search a larger area, explore more days and see detailed comparisons.",
     routePlannerPreviewNoBetter:
       "No clearly better option was found within 30 km tomorrow. Pro searches a larger area and more days.",
     routePlannerCandidatesPreselected: "Nearby campsites checked",
