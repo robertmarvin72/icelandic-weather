@@ -198,7 +198,7 @@ export const translations = {
     alreadyPro: "Already Pro",
     proActive: "Pro active ✓",
     loggedIn: "Logged in",
-    proUpgrade: "Upgrade to Pro",
+    proUpgrade: "Upgrade to Pro – unlock Route Planner",
 
     // Billing portal
     manageSubscription: "Manage",
@@ -768,7 +768,7 @@ export const translations = {
     alreadyPro: "Þú ert þegar með Pro",
     proActive: "Pro virkt ✓",
     loggedIn: "Innskráður",
-    proUpgrade: "Uppfæra í Pro",
+    proUpgrade: "Uppfæra í Pro – opna Ferðaráðgjafa",
 
     // Billing portal
     proUntil: "Pro gilt til",
