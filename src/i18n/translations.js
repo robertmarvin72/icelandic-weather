@@ -577,7 +577,7 @@ export const translations = {
   // Icelandic (Íslenska) -------------------------------------------------------------------------------------------------------------------
   is: {
     appTitle: "Tjaldsvæði á Íslandi",
-    sevenDayWeather: "7 daga veður á tjaldsvæðum",
+    sevenDayWeather: "7 daga veður á tjaldsvæði",
     myLocation: "Staðsetning mín",
     dark: "Dökkt",
     light: "Ljóst",

@@ -477,26 +477,22 @@ function IcelandCampingWeatherApp({ page = "home" }) {
       )}
 
       <div className="min-h-screen font-sans bg-soft-grid text-slate-900 dark:bg-slate-950 dark:text-slate-100">
-        {page === "about" ? (
-          <SlimHeader t={t} />
-        ) : (
-          <PageHeader
-            t={t}
-            lang={lang}
-            onToggleLanguage={toggleLanguage}
-            siteList={showCampsitesGate ? [] : siteList}
-            siteId={siteId}
-            onSelectSite={handleSelectSite}
-            onUseMyLocation={useMyLocation}
-            units={units}
-            onToggleUnits={toggleUnits}
-            darkMode={darkMode}
-            onToggleTheme={toggleTheme}
-            geoMsg={geoMsg}
-            devPro={devPro}
-            onToggleDevPro={toggleDevPro}
-          />
-        )}
+        <PageHeader
+          t={t}
+          lang={lang}
+          onToggleLanguage={toggleLanguage}
+          siteList={showCampsitesGate ? [] : siteList}
+          siteId={siteId}
+          onSelectSite={handleSelectSite}
+          onUseMyLocation={useMyLocation}
+          units={units}
+          onToggleUnits={toggleUnits}
+          darkMode={darkMode}
+          onToggleTheme={toggleTheme}
+          geoMsg={geoMsg}
+          devPro={devPro}
+          onToggleDevPro={toggleDevPro}
+        />
 
         <div className="max-w-6xl mx-auto px-4 py-10">
           {page === "about" ? (
