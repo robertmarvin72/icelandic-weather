@@ -201,8 +201,14 @@ export default async function handler(req, res) {
   if (secret) {
     const sigOk = verifyPaddleSignature({ req, rawBody, secret });
     if (!sigOk) {
-      return res.status(401).json({ ok: false, error: "Invalid signature" });
+      return res.status(403).json({ ok: false, error: "invalid_webhook_signature" });
     }
+  }
+
+  if (!secret && !isProdLike()) {
+    console.warn(
+      "PADDLE_WEBHOOK_SECRET missing - signature verification skipped in non-production"
+    );
   }
 
   let evt;
