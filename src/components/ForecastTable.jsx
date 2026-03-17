@@ -195,10 +195,25 @@ export default function ForecastTable({
                   <th className="py-3 pl-4 pr-3 font-semibold">{t?.("score")}</th>
                   <th className="py-3 pr-3 font-semibold">{t?.("weather")}</th>
                   <th className="py-3 pr-3 font-semibold">{t?.("day")}</th>
-                  <th className="py-3 pr-3 font-semibold">{t?.("tempMin")}</th>
-                  <th className="py-3 pr-3 font-semibold">{t?.("tempMax")}</th>
-                  <th className="py-3 pr-3 font-semibold">{t?.("windMax")}</th>
-                  <th className="py-3 pr-3 font-semibold">{t?.("rain")}</th>
+                  <th className="py-3 pr-3 font-semibold">
+                    <span className="sm:hidden">{t?.("tempMinShort")}</span>
+                    <span className="hidden sm:inline">{t?.("tempMin")}</span>
+                  </th>
+
+                  <th className="py-3 pr-3 font-semibold">
+                    <span className="sm:hidden">{t?.("tempMaxShort")}</span>
+                    <span className="hidden sm:inline">{t?.("tempMax")}</span>
+                  </th>
+
+                  <th className="py-3 pr-3 font-semibold">
+                    <span className="sm:hidden">{t?.("windMaxShort")}</span>
+                    <span className="hidden sm:inline">{t?.("windMax")}</span>
+                  </th>
+
+                  <th className="py-3 pr-3 font-semibold">
+                    <span className="sm:hidden">{t?.("rainShort")}</span>
+                    <span className="hidden sm:inline">{t?.("rain")}</span>
+                  </th>
                 </tr>
               </thead>
 

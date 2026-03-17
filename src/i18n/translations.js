@@ -33,6 +33,11 @@ export const translations = {
     windMax: "Max wind",
     rain: "Rain",
 
+    tempMinShort: "Min",
+    tempMaxShort: "Max",
+    windMaxShort: "Wind",
+    rainShort: "Rain",
+
     // Ratings (short)
     best: "Best",
     good: "Good",
@@ -603,6 +608,11 @@ export const translations = {
     tempMax: "Hæsti hiti",
     windMax: "Mesti vindur",
     rain: "Regn",
+
+    tempMinShort: "Lágm.",
+    tempMaxShort: "Hám.",
+    windMaxShort: "Vindur",
+    rainShort: "Regn",
 
     // Ratings (short)
     best: "Best",
