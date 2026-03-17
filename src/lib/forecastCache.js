@@ -24,9 +24,33 @@ function readStorage(k) {
 
 function writeStorage(k, data) {
   try {
+    cleanupOldForecasts();
     localStorage.setItem(k, JSON.stringify({ ts: Date.now(), data }));
   } catch {
     // storage might be full — fail silently
+  }
+}
+
+function cleanupOldForecasts() {
+  const now = Date.now();
+
+  for (let i = 0; i < localStorage.length; i++) {
+    const key = localStorage.key(i);
+
+    if (!key || !key.startsWith("forecast:v6:")) continue;
+
+    try {
+      const raw = localStorage.getItem(key);
+      if (!raw) continue;
+
+      const obj = JSON.parse(raw);
+
+      if (!obj?.ts || now - obj.ts > TTL_MS) {
+        localStorage.removeItem(key);
+      }
+    } catch {
+      localStorage.removeItem(key);
+    }
   }
 }
 

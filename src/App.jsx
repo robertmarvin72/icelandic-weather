@@ -255,9 +255,14 @@ function IcelandCampingWeatherApp({ page = "home" }) {
     let minDist = Infinity;
 
     for (const site of siteList) {
-      const dx = site.lat - userLoc.lat;
-      const dy = site.lon - userLoc.lon;
-      const dist = dx * dx + dy * dy; // nóg til að bera saman
+      const siteLat = Number(site?.lat);
+      const siteLon = Number(site?.lon);
+
+      if (!Number.isFinite(siteLat) || !Number.isFinite(siteLon)) continue;
+
+      const dx = siteLat - userLoc.lat;
+      const dy = siteLon - userLoc.lon;
+      const dist = dx * dx + dy * dy;
 
       if (dist < minDist) {
         minDist = dist;
