@@ -52,13 +52,10 @@ export function detectHazardWindow({ hourly, startDateISO, days, hazards = {} })
   let bestStart = null;
   let bestEnd = null;
 
-  let hazardHits = 0;
-
   for (const h of allHours) {
     const hazard = isHazardHour(h, hazards);
 
     if (hazard) {
-      hazardHits += 1;
       if (currentStart == null) currentStart = h.time;
       currentEnd = h.time;
       currentCount += 1;
