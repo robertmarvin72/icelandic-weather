@@ -564,6 +564,7 @@ export const translations = {
     routeNarrativeRouteRiskMed: "Road conditions on the way may be somewhat difficult.",
 
     routePlannerValue: "Find better weather nearby before you move.",
+    locationEnableDistances: "Enable location to see distances to campsites",
   },
 
   // Icelandic (Íslenska) -------------------------------------------------------------------------------------------------------------------
@@ -1135,5 +1136,6 @@ export const translations = {
     routeNarrativeRouteRiskMed: "Aðstæður á leiðinni gætu verið aðeins erfiðar.",
 
     routePlannerValue: "Finndu betra veður í nágrenninu áður en þú færir þig.",
+    locationEnableDistances: "Kveiktu á staðsetningu til að sjá fjarlægðir",
   },
 };

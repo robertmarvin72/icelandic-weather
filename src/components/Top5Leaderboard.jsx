@@ -178,10 +178,10 @@ export default function Top5Leaderboard({
       text-right
       whitespace-normal
     "
-          title={userLocationLabel || t("unknownLocation")}
+          title={userLocationLabel || t("locationEnableDistances")}
         >
           <span aria-hidden>📍</span>
-          <span className="truncate">{userLocationLabel || t("unknownLocation")}</span>
+          <span className="truncate">{userLocationLabel || t("locationEnableDistances")}</span>
         </span>
       </div>
 
