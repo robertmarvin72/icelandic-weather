@@ -1,7 +1,7 @@
 export const translations = {
   en: {
     appTitle: "Iceland Camping",
-    sevenDayWeather: "7-Day Weather",
+    sevenDayWeather: "7-Day Campsite Weather",
     myLocation: "My location",
     dark: "Dark",
     light: "Light",
@@ -572,7 +572,7 @@ export const translations = {
   // Icelandic (Íslenska) -------------------------------------------------------------------------------------------------------------------
   is: {
     appTitle: "Tjaldsvæði á Íslandi",
-    sevenDayWeather: "7 daga veðurspá",
+    sevenDayWeather: "7 daga veður á tjaldsvæðum",
     myLocation: "Staðsetning mín",
     dark: "Dökkt",
     light: "Ljóst",
