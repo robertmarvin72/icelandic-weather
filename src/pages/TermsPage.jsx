@@ -1,9 +1,15 @@
 import React from "react";
 
-export default function TermsPage({ t = (k, fallback) => fallback || k, lang = "is" }) {
+export default function TermsPage({
+  t = (k, fallback) => fallback || k,
+  lang = "is",
+  theme = "light",
+}) {
   const isIcelandic = String(lang || "")
     .toLowerCase()
     .startsWith("is");
+
+  const isDark = theme === "dark";
 
   const T = (key, fallback) => {
     if (typeof t === "function") {
@@ -27,12 +33,12 @@ export default function TermsPage({ t = (k, fallback) => fallback || k, lang = "
   }
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-slate-950">
+    <div className={`min-h-screen bg-slate-50 dark:bg-slate-950 ${isDark ? "dark" : ""}`}>
       <div className="mx-auto max-w-5xl px-4 py-8">
         <div className="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm p-6 md:p-8">
           <div className="flex flex-col items-center text-center mb-8">
             <img
-              src="/logo.png"
+              src={isDark ? "/campcast-dark.png" : "/campcast-light.png"}
               alt="CampCast"
               className="w-40 md:w-52 lg:w-64 object-contain mb-6"
             />
