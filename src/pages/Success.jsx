@@ -150,21 +150,19 @@ export default function Success({ theme = "dark", t }) {
             ← {T("successBack", "Back to CampCast")}
           </Link>
 
-          <div style={styles.brandPill} title={T("successPillTitle", "CampCast Pro")}>
-            <div style={styles.brandLogoWrap}>
-              {logoOk ? (
-                <img
-                  src="/logo.png"
-                  alt={T("successBrandAlt", "CampCast")}
-                  style={styles.brandLogo}
-                  onError={() => setLogoOk(false)}
-                />
-              ) : null}
-            </div>
+          <div style={styles.brandHero} title={T("successPillTitle", "CampCast Pro")}>
+            {logoOk ? (
+              <img
+                src="/logo.png"
+                alt={T("successBrandAlt", "CampCast")}
+                style={styles.brandHeroLogo}
+                onError={() => setLogoOk(false)}
+              />
+            ) : null}
 
-            <div style={{ display: "flex", flexDirection: "column", lineHeight: 1.1 }}>
-              <div style={styles.brandTitle}>{T("successPillTitle", "CampCast Pro")}</div>
-              <div style={styles.brandSub}>{T("successPillSub", "Follow the weather")}</div>
+            <div style={styles.brandHeroText}>
+              <div style={styles.brandHeroTitle}>{T("successPillTitle", "CampCast Pro")}</div>
+              <div style={styles.brandHeroSub}>{T("successPillSub", "Follow the weather")}</div>
             </div>
           </div>
         </div>
@@ -290,11 +288,11 @@ function getStyles(isLight) {
     container: { maxWidth: 860, margin: "0 auto", position: "relative" },
 
     topBar: {
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "space-between",
+      display: "grid",
+      gridTemplateColumns: "1fr auto",
+      alignItems: "start",
       gap: 12,
-      marginBottom: 14,
+      marginBottom: 2,
     },
 
     backLink: {
@@ -308,32 +306,41 @@ function getStyles(isLight) {
       borderRadius: 12,
     },
 
-    brandPill: {
-      display: "inline-flex",
+    brandHero: {
+      display: "flex",
+      flexDirection: "column",
       alignItems: "center",
-      gap: 10,
-      padding: "10px 12px",
-      borderRadius: 999,
-      border: isLight ? "1px solid rgba(2,6,23,0.10)" : "1px solid rgba(255,255,255,0.12)",
-      background: isLight ? "rgba(255,255,255,0.7)" : "rgba(15,23,42,0.55)",
-      backdropFilter: "blur(6px)",
-      boxShadow: isLight ? "0 10px 30px rgba(2,6,23,0.08)" : "0 16px 40px rgba(0,0,0,0.35)",
+      justifyContent: "center",
+      textAlign: "center",
+      gap: 2,
+      padding: "0",
+      minWidth: 180,
+      marginTop: -4,
     },
 
-    brandLogoWrap: {
-      width: 34,
-      height: 34,
-      borderRadius: 10,
-      overflow: "hidden",
-      background: isLight ? "rgba(2,6,23,0.06)" : "rgba(255,255,255,0.06)",
-      display: "grid",
-      placeItems: "center",
-      flex: "0 0 auto",
+    brandHeroLogo: {
+      width: 120,
+      height: 120,
+      objectFit: "contain",
     },
 
-    brandLogo: { width: 28, height: 28, objectFit: "contain" },
-    brandTitle: { fontWeight: 900, fontSize: 12, letterSpacing: 0.2 },
-    brandSub: { fontSize: 11, opacity: 0.75 },
+    brandHeroText: {
+      display: "flex",
+      flexDirection: "column",
+      lineHeight: 1,
+      marginTop: -34,
+    },
+
+    brandHeroTitle: {
+      fontWeight: 900,
+      fontSize: 18,
+      letterSpacing: 0.2,
+    },
+
+    brandHeroSub: {
+      fontSize: 12,
+      opacity: 0.75,
+    },
 
     card: {
       borderRadius: 24,
