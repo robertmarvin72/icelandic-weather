@@ -100,6 +100,23 @@ export default function MapView({ campsites, selectedId, onSelect, userLocation,
   const [forecastById, setForecastById] = useState({});
   const [loadingById, setLoadingById] = useState({});
   const [errorById, setErrorById] = useState({});
+  const [mapReady, setMapReady] = useState(false);
+  const [mapFailed, setMapFailed] = useState(false);
+  const [tileLoaded, setTileLoaded] = useState(false);
+  const [tileErrorCount, setTileErrorCount] = useState(0);
+
+  useEffect(() => {
+    if (mapFailed) return;
+
+    const timeoutMs = 5000;
+    const timer = setTimeout(() => {
+      if (!mapReady || (!tileLoaded && tileErrorCount > 0)) {
+        setMapFailed(true);
+      }
+    }, timeoutMs);
+
+    return () => clearTimeout(timer);
+  }, [mapReady, tileLoaded, tileErrorCount, mapFailed]);
 
   const iconCreateFunction = (cluster) => {
     const markers = cluster.getAllChildMarkers();
@@ -162,10 +179,24 @@ export default function MapView({ campsites, selectedId, onSelect, userLocation,
 
   return (
     <div className="rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 overflow-hidden h-[500px] relative">
-      <MapContainer center={[64.9, -18.6]} zoom={6} style={{ width: "100%", height: "100%" }}>
+      <MapContainer
+        center={[64.9, -18.6]}
+        zoom={6}
+        style={{ width: "100%", height: "100%" }}
+        whenReady={() => setMapReady(true)}
+      >
         <TileLayer
           attribution="&copy; OpenStreetMap"
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          eventHandlers={{
+            tileload: () => {
+              setTileLoaded(true);
+              if (mapFailed) setMapFailed(false);
+            },
+            tileerror: () => {
+              setTileErrorCount((n) => n + 1);
+            },
+          }}
         />
 
         {selectedSite && <FlyTo position={[selectedSite.lat, selectedSite.lon]} />}
@@ -252,8 +283,20 @@ export default function MapView({ campsites, selectedId, onSelect, userLocation,
           })}
         </MarkerClusterGroup>
       </MapContainer>
+      {mapFailed && (
+        <div className="absolute inset-0 z-[500] flex items-center justify-center bg-slate-100/90 px-4 text-center dark:bg-slate-900/90">
+          <div>
+            <div className="text-sm font-medium text-slate-700 dark:text-slate-200">
+              Unable to load map.
+            </div>
+            <div className="mt-1 text-xs text-slate-500 dark:text-slate-400">
+              Please refresh the page or check your connection.
+            </div>
+          </div>
+        </div>
+      )}
 
-      {selectedSite && (
+      {selectedSite && !mapFailed && (
         <div className="absolute top-2 left-1/2 -translate-x-1/2 bg-white/80 backdrop-blur-sm px-4 py-1 rounded-full shadow text-sm font-medium text-slate-700">
           📍 {selectedSite.name}
         </div>
