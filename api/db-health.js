@@ -6,6 +6,9 @@ const sql = postgres(process.env.POSTGRES_URL, {
 });
 
 export default async function handler(req, res) {
+  if (process.env.NODE_ENV === "production" || process.env.VERCEL_ENV === "production") {
+    return res.status(404).end();
+  }
   try {
     const result = await sql`select 1 as ok`;
     res.status(200).json({ ok: true, db: result[0].ok });
