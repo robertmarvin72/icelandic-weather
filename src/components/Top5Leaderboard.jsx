@@ -245,8 +245,9 @@ export default function Top5Leaderboard({
                     </td>
                     <td className="px-3 py-2 font-medium text-slate-800 dark:text-slate-100">
                       <span className="inline-flex items-center gap-2">
-                        <span className="opacity-70">🔒 {t?.("seePro") ?? "Pro"}</span>
-                        <span className="text-slate-500 dark:text-slate-400">(#{rank})</span>
+                        <span className="opacity-70">
+                          🔒 {t?.("lockedPro") ?? "Available in Pro"}
+                        </span>
                       </span>
                     </td>
                     <td className="px-3 py-2 text-right text-slate-600 dark:text-slate-300">—</td>

@@ -565,6 +565,8 @@ export const translations = {
 
     routePlannerValue: "Find better weather nearby before you move.",
     locationEnableDistances: "Enable location to see distances to campsites",
+
+    lockedPro: "Available in Pro",
   },
 
   // Icelandic (Íslenska) -------------------------------------------------------------------------------------------------------------------
@@ -1137,5 +1139,7 @@ export const translations = {
 
     routePlannerValue: "Finndu betra veður í nágrenninu áður en þú færir þig.",
     locationEnableDistances: "Kveiktu á staðsetningu til að sjá fjarlægðir",
+
+    lockedPro: "Í boði í Pro",
   },
 };
