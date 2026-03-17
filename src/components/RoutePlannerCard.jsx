@@ -955,8 +955,16 @@ export default function RoutePlannerCard({
     <div className="relative rounded-xl border border-slate-200 dark:border-slate-700 p-3">
       <div className="flex items-start justify-between gap-3 mb-2">
         <div>
-          <div className="text-sm font-semibold">{t("routePlannerTitle")}</div>
-          <div className="text-xs text-slate-600 dark:text-slate-300">
+          <div className="flex items-center gap-2 text-sm font-semibold">
+            <span aria-hidden>🧭</span>
+            <span>{t("routePlannerTitle")}</span>
+          </div>
+
+          <div className="mt-1 text-xs text-slate-500 dark:text-slate-400">
+            {t("routePlannerValue")}
+          </div>
+
+          <div className="mt-1 text-xs text-slate-600 dark:text-slate-300">
             {t("routePlannerBaseLabel")}:{" "}
             <span className="font-semibold">{baseSite?.name ?? baseSiteId}</span>
           </div>

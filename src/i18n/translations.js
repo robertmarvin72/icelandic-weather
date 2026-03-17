@@ -562,6 +562,8 @@ export const translations = {
     routeNarrativeBetterNearby: "Better conditions may be nearby: {destination}.",
     routeNarrativeRouteRiskHigh: "Road conditions on the way may currently be difficult.",
     routeNarrativeRouteRiskMed: "Road conditions on the way may be somewhat difficult.",
+
+    routePlannerValue: "Find better weather nearby before you move.",
   },
 
   // Icelandic (Íslenska) -------------------------------------------------------------------------------------------------------------------
@@ -1131,5 +1133,7 @@ export const translations = {
     routeNarrativeBetterNearby: "Betri aðstæður gætu verið í nágrenninu: {destination}.",
     routeNarrativeRouteRiskHigh: "Aðstæður á leiðinni gætu þó verið erfiðar núna.",
     routeNarrativeRouteRiskMed: "Aðstæður á leiðinni gætu verið aðeins erfiðar.",
+
+    routePlannerValue: "Finndu betra veður í nágrenninu áður en þú færir þig.",
   },
 };
