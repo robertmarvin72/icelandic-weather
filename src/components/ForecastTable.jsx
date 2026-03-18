@@ -5,6 +5,7 @@ import { mapWeatherCodeToIconId } from "../utils/WeatherIconMapping";
 import ScoreExplanation from "./ScoreExplanation";
 import { getSiteAvailability } from "../config/availability";
 import { HAZARDS_V1 } from "../config/hazards";
+import { getPrecipitationLabel } from "../utils/precipitation";
 
 import {
   convertTemp,
@@ -338,7 +339,27 @@ export default function ForecastTable({
 
                       {/* Weather text */}
                       <td className="py-2 pr-3 text-slate-700 dark:text-slate-200">
-                        {t?.(weatherKey)}
+                        {(() => {
+                          const base = t?.(weatherKey);
+
+                          // Detect type
+                          const text = base?.toLowerCase?.() || "";
+
+                          const code = Number(r.code ?? 0);
+
+                          // Open-Meteo style mapping
+                          const SNOW_CODES = [71, 73, 75, 77, 85, 86];
+                          const RAIN_CODES = [51, 53, 55, 61, 63, 65, 80, 81, 82];
+
+                          const isSnow = SNOW_CODES.includes(code);
+                          const isRain = RAIN_CODES.includes(code);
+
+                          if (!isSnow && !isRain) return base;
+
+                          const label = getPrecipitationLabel(isSnow ? "snow" : "rain", r.rain, t);
+
+                          return label || base;
+                        })()}
                       </td>
 
                       <td className="py-2 pr-3 whitespace-nowrap font-medium">{r.dayLabel}</td>

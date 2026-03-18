@@ -576,6 +576,17 @@ export const translations = {
     weatherNearbyHint: "Weather based on nearby forecast data",
     weatherNearbyTooltip:
       "Forecast is based on the nearest available weather data and may vary slightly from exact campsite conditions.",
+
+    precipLightRain: "Light rain",
+    precipModerateRain: "Moderate rain",
+    precipHeavyRain: "Heavy rain",
+
+    precipLightSnow: "Light snow",
+    precipModerateSnow: "Moderate snow",
+    precipHeavySnow: "Heavy snow",
+
+    precipVeryHeavyRain: "Very heavy rain",
+    precipVeryHeavySnow: "Very heavy snow",
   },
 
   // Icelandic (Íslenska) -------------------------------------------------------------------------------------------------------------------
@@ -1160,5 +1171,14 @@ export const translations = {
     weatherNearbyHint: "Veður byggt á gögnum úr nágrenni",
     weatherNearbyTooltip:
       "Spáin byggir á næstu tiltæku veðurgögnum og getur verið örlítið frábrugðin aðstæðum á staðnum sjálfum.",
+    precipLightRain: "Lítil rigning",
+    precipModerateRain: "Miðlungs rigning",
+    precipHeavyRain: "Mikil rigning",
+
+    precipLightSnow: "Lítil snjókoma",
+    precipModerateSnow: "Miðlungs snjókoma",
+    precipHeavySnow: "Mikil snjókoma",
+    precipVeryHeavyRain: "Mjög mikil rigning",
+    precipVeryHeavySnow: "Mjög mikil snjókoma",
   },
 };
