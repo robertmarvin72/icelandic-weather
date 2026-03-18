@@ -11,7 +11,7 @@ export function getPrecipitationLabel(type, mm, t, opts = {}) {
     typeof tmax === "number" &&
     Number.isFinite(tmax);
 
-  const isMixedPrecip = hasValidTemps && mm >= 5 && tmin <= 0 && tmax >= 3;
+  const isMixedPrecip = hasValidTemps && mm >= 5 && tmin <= 1 && tmax >= 3;
 
   // 1) Mixed precipitation first
   if (isMixedPrecip) {
