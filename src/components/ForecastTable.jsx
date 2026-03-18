@@ -359,6 +359,8 @@ export default function ForecastTable({
                           const label = getPrecipitationLabel(isSnow ? "snow" : "rain", r.rain, t, {
                             precipStartHour: r.precipStartHour,
                             precipDurationHours: r.precipDurationHours,
+                            tmin: r.tmin,
+                            tmax: r.tmax,
                           });
 
                           return label || base;
