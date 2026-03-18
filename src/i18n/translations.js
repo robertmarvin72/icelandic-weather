@@ -592,6 +592,7 @@ export const translations = {
     precipLateSnow: "Snow late",
     precipLight: "Light precipitation",
     precipMixed: "Mixed precipitation",
+    precipShowers: "Showers",
   },
 
   // Icelandic (Íslenska) -------------------------------------------------------------------------------------------------------------------
@@ -1190,5 +1191,6 @@ export const translations = {
     precipLateSnow: "Snjókoma seint",
     precipLight: "Smávægileg úrkoma",
     precipMixed: "Slydda og rigning",
+    precipShowers: "Él",
   },
 };

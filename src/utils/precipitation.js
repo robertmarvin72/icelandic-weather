@@ -23,12 +23,17 @@ export function getPrecipitationLabel(type, mm, t, opts = {}) {
     return t("precipLight");
   }
 
-  // 3) Late precipitation
+  // 3) Showery conditions (él)
+  if (mm < 3 && precipDurationHours >= 2) {
+    return t("precipShowers");
+  }
+
+  // 4) Late precipitation
   if (precipStartHour != null && precipStartHour >= 18 && mm < 10) {
     return isSnow ? t("precipLateSnow") : t("precipLateRain");
   }
 
-  // 4) Normal intensity-based labels
+  // 5) Normal intensity-based labels
   if (isSnow) {
     if (mm <= 1) return t("precipLightSnow");
     if (mm <= 5) return t("precipModerateSnow");
