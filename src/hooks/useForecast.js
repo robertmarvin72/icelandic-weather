@@ -138,7 +138,7 @@ function useForecast(lat, lon, opts = {}) {
   const rows = useMemo(() => {
     if (!data?.daily) return [];
 
-    const baseRows = normalizeDailyToScoreInput(data.daily);
+    const baseRows = normalizeDailyToScoreInput(data.daily, data.hourly);
     if (baseRows.length === 0) return [];
 
     return baseRows.map((row) => {

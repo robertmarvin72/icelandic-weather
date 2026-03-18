@@ -33,6 +33,12 @@ export function normalizeDailyToScoreInput(daily, hourly = null) {
     let rain = 0;
     let found = false;
 
+    let precipStartHour = null;
+    let precipEndHour = null;
+    let precipDurationHours = 0;
+
+    const PRECIP_ACTIVE_THRESHOLD = 0.1;
+
     for (let j = 0; j < times.length; j++) {
       const ts = String(times[j] ?? "");
       if (!ts.startsWith(date)) continue;
@@ -56,11 +62,24 @@ export function normalizeDailyToScoreInput(daily, hourly = null) {
       windMax = windMax == null ? weightedWind : Math.max(windMax, weightedWind);
       windGust = windGust == null ? weightedGust : Math.max(windGust, weightedGust);
       rain += weightedRain;
+
+      if (rawRain >= PRECIP_ACTIVE_THRESHOLD) {
+        if (precipStartHour == null) precipStartHour = hour;
+        precipEndHour = hour;
+        precipDurationHours += 1;
+      }
     }
 
     if (!found) return null;
 
-    return { windMax, windGust, rain };
+    return {
+      windMax,
+      windGust,
+      rain,
+      precipStartHour,
+      precipEndHour,
+      precipDurationHours,
+    };
   }
 
   return time.map((date, i) => {
@@ -75,6 +94,9 @@ export function normalizeDailyToScoreInput(daily, hourly = null) {
       windGust: weighted?.windGust ?? windgusts_10m_max?.[i] ?? null,
       windDir: winddirection_10m_dominant?.[i] ?? null,
       code: weathercode?.[i] ?? null,
+      precipStartHour: weighted?.precipStartHour ?? null,
+      precipEndHour: weighted?.precipEndHour ?? null,
+      precipDurationHours: weighted?.precipDurationHours ?? 0,
     };
   });
 }
