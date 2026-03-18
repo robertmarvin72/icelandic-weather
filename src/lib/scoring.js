@@ -216,7 +216,39 @@ function computeShelterBonus({ shelter, windMax, windGust, season }) {
   return Math.round(shelterCurve * sev01 * maxBonus);
 }
 
-export function scoreSiteDay({ tmax, rain, windMax, windGust, date, shelter }) {
+function getPrecipTimingMultiplier({ rain, precipStartHour, precipDurationHours }) {
+  const mm = typeof rain === "number" && Number.isFinite(rain) ? rain : 0;
+  const start =
+    typeof precipStartHour === "number" && Number.isFinite(precipStartHour)
+      ? precipStartHour
+      : null;
+  const duration =
+    typeof precipDurationHours === "number" && Number.isFinite(precipDurationHours)
+      ? precipDurationHours
+      : 0;
+
+  // Negligible precipitation -> no penalty
+  if (mm < 1) return 0;
+
+  // Late + short + not a major precip day -> reduced penalty
+  if (start != null && start >= 18 && duration <= 2 && mm < 10) {
+    return 0.5;
+  }
+
+  // Otherwise normal/full impact
+  return 1;
+}
+
+export function scoreSiteDay({
+  tmax,
+  rain,
+  windMax,
+  windGust,
+  date,
+  shelter,
+  precipStartHour,
+  precipDurationHours,
+}) {
   const season = getSeasonForDate(date);
   const cfg = getSeasonConfig(season);
 
@@ -227,11 +259,17 @@ export function scoreSiteDay({ tmax, rain, windMax, windGust, date, shelter }) {
   const basePts = Math.max(cfg.baseFloor, Math.min(10, Math.max(0, baseScaled)));
 
   const windPenRaw = windPenaltyPoints(windMax);
-  const rainPenRaw = rainPenaltyPoints(rain);
+  const rainPenBase = rainPenaltyPoints(rain);
   const gustPenRaw = gustPenaltyPoints(windGust, windMax, season);
 
+  const precipTimingMultiplier = getPrecipTimingMultiplier({
+    rain,
+    precipStartHour,
+    precipDurationHours,
+  });
+
   const windPen = Math.round(windPenRaw * cfg.windWeight);
-  const rainPen = Math.round(rainPenRaw * cfg.rainWeight);
+  const rainPen = Math.round(rainPenBase * precipTimingMultiplier * cfg.rainWeight);
   const gustPen = gustPenRaw; // already weighted in function
 
   // NOTE: shelter + rainStreak are part of the contract but are applied elsewhere for now.
@@ -269,6 +307,7 @@ export function scoreSiteDay({ tmax, rain, windMax, windGust, date, shelter }) {
     finalClass,
     season,
     tempWeight: cfg.tempWeight,
+    precipTimingMultiplier,
   };
 }
 

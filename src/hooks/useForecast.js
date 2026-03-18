@@ -152,6 +152,8 @@ function useForecast(lat, lon, opts = {}) {
         windPen: s.windPen,
         gustPen: s.gustPen,
         rainPen: s.rainPen,
+        precipTimingMultiplier: s.precipTimingMultiplier,
+        season: s.season,
       };
     });
   }, [data?.daily, data?.hourly]);
