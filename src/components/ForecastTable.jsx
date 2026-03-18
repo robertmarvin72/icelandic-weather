@@ -177,6 +177,14 @@ export default function ForecastTable({
             {totalPoints} {t?.("pts")}
           </span>
         </span>
+        {availability?.isClosed && availability?.mode === "seasonal" && (
+          <div className="mb-4 text-xs text-slate-500 dark:text-slate-400">
+            <span className="inline-flex items-start gap-2">
+              <span className="mt-0.5">ℹ️</span>
+              <span className="max-w-[700px]">{t?.("seasonClosedInfo")}</span>
+            </span>
+          </div>
+        )}
       </div>
 
       {loading && <LoadingShimmer rows={8} />}

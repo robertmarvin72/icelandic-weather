@@ -1,7 +1,7 @@
 export const translations = {
   en: {
     appTitle: "Iceland Camping",
-    sevenDayWeather: "7-Day Campsite Weather",
+    sevenDayWeather: "7-Day Weather Nearby",
     myLocation: "My location",
     dark: "Dark",
     light: "Light",
@@ -316,7 +316,8 @@ export const translations = {
     availabilityUnknown: "Availability unknown.",
     availabilityMostOpenInMay: "Most campsites open in May. Check the campsite for confirmation.",
     availabilityClosedBadge: "Closed (winter)",
-
+    seasonClosedInfo:
+      "Many campsites are currently closed, but weather insights can still help you plan ahead or travel off-season.",
     winterModeActive: "Winter mode",
     winterModeTooltip: "Wind and precipitation weigh more than temperature during winter.",
     windGust: "Wind gust",
@@ -571,12 +572,16 @@ export const translations = {
     locationEnableDistances: "Enable location to see distances to campsites",
 
     lockedPro: "Available in Pro",
+
+    weatherNearbyHint: "Weather based on nearby forecast data",
+    weatherNearbyTooltip:
+      "Forecast is based on the nearest available weather data and may vary slightly from exact campsite conditions.",
   },
 
   // Icelandic (Íslenska) -------------------------------------------------------------------------------------------------------------------
   is: {
     appTitle: "Tjaldsvæði á Íslandi",
-    sevenDayWeather: "7 daga veður á tjaldsvæði",
+    sevenDayWeather: "7 daga veður í nágrenni",
     myLocation: "Staðsetning mín",
     dark: "Dökkt",
     light: "Ljóst",
@@ -892,6 +897,8 @@ export const translations = {
     availabilityMostOpenInMay:
       "Flest tjaldsvæði opna í maí. Athugaðu hjá tjaldsvæðinu til staðfestingar.",
     availabilityClosedBadge: "Lokað (vetur)",
+    seasonClosedInfo:
+      "Mörg tjaldsvæði eru lokuð eins og er, en veðurgögnin hjálpa þér að skipuleggja ferðina eða ferðast utan háannatíma.",
     winterModeActive: "Vetrarhamur",
     winterModeTooltip: "Vindur og úrkoma vega þyngra en hitastig yfir vetrartímann.",
     windGust: "Vindhviða",
@@ -1149,5 +1156,9 @@ export const translations = {
     locationEnableDistances: "Kveiktu á staðsetningu til að sjá fjarlægðir",
 
     lockedPro: "Í boði í Pro",
+
+    weatherNearbyHint: "Veður byggt á gögnum úr nágrenni",
+    weatherNearbyTooltip:
+      "Spáin byggir á næstu tiltæku veðurgögnum og getur verið örlítið frábrugðin aðstæðum á staðnum sjálfum.",
   },
 };
