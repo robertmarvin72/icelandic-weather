@@ -230,11 +230,6 @@ function getPrecipTimingMultiplier({ rain, precipStartHour, precipDurationHours 
   // Negligible precipitation -> no penalty
   if (mm < 1) return 0;
 
-  // Late + short + not a major precip day -> reduced penalty
-  if (start != null && start >= 18 && duration <= 2 && mm < 10) {
-    return 0.5;
-  }
-
   // Otherwise normal/full impact
   return 1;
 }
