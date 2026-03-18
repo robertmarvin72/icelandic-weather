@@ -20,7 +20,7 @@ export function normalizeDailyToScoreInput(daily, hourly = null) {
     return 0.75;
   }
 
-  function getDayHourlyMetrics(hourly, date) {
+  function getDayHourlyMetrics(hourly, date, dayCode = null, tmax = null) {
     if (!hourly?.time || !Array.isArray(hourly.time)) return null;
 
     const times = hourly.time;
@@ -36,8 +36,12 @@ export function normalizeDailyToScoreInput(daily, hourly = null) {
     let precipStartHour = null;
     let precipEndHour = null;
     let precipDurationHours = 0;
+    let precipActiveHours = 0;
 
     const PRECIP_ACTIVE_THRESHOLD = 0.1;
+
+    const SNOW_CODES = [71, 73, 75, 77, 85, 86];
+    const RAIN_CODES = [51, 53, 55, 61, 63, 65, 80, 81, 82];
 
     for (let j = 0; j < times.length; j++) {
       const ts = String(times[j] ?? "");
@@ -67,10 +71,26 @@ export function normalizeDailyToScoreInput(daily, hourly = null) {
         if (precipStartHour == null) precipStartHour = hour;
         precipEndHour = hour;
         precipDurationHours += 1;
+        precipActiveHours += 1;
       }
     }
 
     if (!found) return null;
+
+    let precipTimingBucket = null;
+    if (precipStartHour != null) {
+      if (precipStartHour >= 0 && precipStartHour < 6) precipTimingBucket = "overnight";
+      else if (precipStartHour >= 6 && precipStartHour < 12) precipTimingBucket = "early";
+      else if (precipStartHour >= 12 && precipStartHour < 18) precipTimingBucket = "midday";
+      else precipTimingBucket = "late";
+    }
+
+    let precipType = null;
+    if (rain >= PRECIP_ACTIVE_THRESHOLD) {
+      if (SNOW_CODES.includes(Number(dayCode))) precipType = "snow";
+      else if (RAIN_CODES.includes(Number(dayCode))) precipType = "rain";
+      else precipType = Number(tmax) <= 1 ? "snow" : "rain";
+    }
 
     return {
       windMax,
@@ -79,11 +99,19 @@ export function normalizeDailyToScoreInput(daily, hourly = null) {
       precipStartHour,
       precipEndHour,
       precipDurationHours,
+      precipActiveHours,
+      precipTimingBucket,
+      precipType,
     };
   }
 
   return time.map((date, i) => {
-    const weighted = getDayHourlyMetrics(hourly, date);
+    const weighted = getDayHourlyMetrics(
+      hourly,
+      date,
+      weathercode?.[i] ?? null,
+      temperature_2m_max?.[i] ?? null
+    );
 
     return {
       date,
@@ -97,6 +125,9 @@ export function normalizeDailyToScoreInput(daily, hourly = null) {
       precipStartHour: weighted?.precipStartHour ?? null,
       precipEndHour: weighted?.precipEndHour ?? null,
       precipDurationHours: weighted?.precipDurationHours ?? 0,
+      precipActiveHours: weighted?.precipActiveHours ?? 0,
+      precipTimingBucket: weighted?.precipTimingBucket ?? null,
+      precipType: weighted?.precipType ?? null,
     };
   });
 }

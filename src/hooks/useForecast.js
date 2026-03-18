@@ -154,7 +154,7 @@ function useForecast(lat, lon, opts = {}) {
         rainPen: s.rainPen,
       };
     });
-  }, [data?.daily]);
+  }, [data?.daily, data?.hourly]);
 
   return { data, rows, windDir, shelter, loading, error, retrying, refetch };
 }
