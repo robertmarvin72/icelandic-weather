@@ -2,6 +2,7 @@
 import React, { useMemo, useState } from "react";
 import { useMe } from "../hooks/useMe";
 import { getDisplayPrices } from "../config/pricing";
+import Footer from "../components/Footer";
 
 export default function Pricing({ onClose, lang = "is", theme = "dark", t, me }) {
   const isLight = theme === "light";
@@ -282,9 +283,13 @@ export default function Pricing({ onClose, lang = "is", theme = "dark", t, me })
               style={styles.termsCheckbox}
             />
             <span>
-              {T("termsDisclaimerAgree", "I agree to the Terms of Service and Disclaimer")}{" "}
+              {T("termsPrivacyAgreePrefix", "I agree to the")}{" "}
               <a href="/terms" target="_blank" rel="noreferrer" style={styles.termsLink}>
                 {T("termsDisclaimerLink", "Terms and Disclaimer")}
+              </a>{" "}
+              {T("termsPrivacyAgreeAnd", "and")}{" "}
+              <a href="/privacy" target="_blank" rel="noreferrer" style={styles.termsLink}>
+                {T("privacyLinkLabel", "Privacy Policy")}
               </a>
             </span>
           </label>
@@ -387,6 +392,7 @@ export default function Pricing({ onClose, lang = "is", theme = "dark", t, me })
           </div>
         </div>
       </div>
+      <Footer t={t} />
     </div>
   );
 }

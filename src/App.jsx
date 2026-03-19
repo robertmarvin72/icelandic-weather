@@ -48,6 +48,7 @@ import Subscribe from "./pages/Subscribe";
 import Success from "./pages/Success";
 import Pricing from "./pages/Pricing";
 import TermsPage from "./pages/TermsPage";
+import PrivacyPage from "./pages/PrivacyPage";
 
 // ──────────────────────────────────────────────────────────────
 // App page
@@ -611,6 +612,13 @@ function TermsRoute() {
   const t = useT(lang);
   return <TermsPage lang={lang} theme={theme} t={t} />;
 }
+
+function PrivacyRoute() {
+  const [theme] = useLocalStorageState("theme", "light");
+  const { lang } = useLanguage();
+  const t = useT(lang);
+  return <PrivacyPage lang={lang} theme={theme} t={t} />;
+}
 // ──────────────────────────────────────────────────────────────
 // Router
 // ──────────────────────────────────────────────────────────────
@@ -626,6 +634,7 @@ export default function App() {
         <Route path="/subscribe" element={<SubscribeRoute />} />
         <Route path="/success" element={<SuccessRoute />} />
         <Route path="/terms" element={<TermsRoute />} />
+        <Route path="/privacy" element={<PrivacyRoute />} />
 
         <Route path="*" element={<NotFound />} />
       </Routes>

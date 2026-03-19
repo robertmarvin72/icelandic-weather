@@ -593,6 +593,36 @@ export const translations = {
     precipLight: "Light precipitation",
     precipMixed: "Mixed precipitation",
     precipShowers: "Showers",
+
+    privacyTitle: "Privacy Policy",
+    privacyIntro1:
+      "CampCast respects user privacy and aims to handle personal data responsibly and securely.",
+    privacyIntro2:
+      "We may collect basic user information such as email address, account details, and general usage data in order to provide the service, maintain subscriptions, and improve the user experience.",
+    privacyPayments:
+      "Payment information is processed by Paddle and is not stored on CampCast servers.",
+    privacyUsage:
+      "We may also collect anonymous or aggregated usage data for analytics purposes to improve the functionality, stability, and user experience of the service.",
+    privacySharing:
+      "CampCast does not sell personal data and does not share it with third parties except where necessary to process payments, operate the service, or comply with legal obligations.",
+    privacyRetention:
+      "Personal data is only retained for as long as necessary for operating the service or as required by law.",
+    privacyRights:
+      "Users may request information about data connected to their account or request deletion of their data by contacting the service provider.",
+    privacyContactTitle: "Contact",
+    privacyContactText:
+      "If you have any questions about privacy or would like to request deletion of your data, you can contact us at:",
+    privacyChanges:
+      "CampCast may update this privacy policy from time to time. The latest version will always be published on the website.",
+    privacyClose: "Close",
+    footerTerms: "Terms",
+    footerPrivacy: "Privacy",
+
+    termsPrivacyAgreePrefix: "I agree to the",
+    termsPrivacyAgreeAnd: "and",
+    privacyLinkLabel: "Privacy Policy",
+    footerTerms: "Terms",
+    footerPrivacy: "Privacy",
   },
 
   // Icelandic (Íslenska) -------------------------------------------------------------------------------------------------------------------
@@ -1192,5 +1222,35 @@ export const translations = {
     precipLight: "Smávægileg úrkoma",
     precipMixed: "Slydda og rigning",
     precipShowers: "Él",
+
+    privacyTitle: "Persónuverndarstefna",
+    privacyIntro1:
+      "CampCast virðir persónuvernd notenda og leitast við að meðhöndla persónuupplýsingar á ábyrgan og öruggan hátt.",
+    privacyIntro2:
+      "Við kunnum að safna grunnupplýsingum um notendur, svo sem netfangi, reikningsupplýsingum og almennum notkunargögnum, til að geta veitt þjónustuna, viðhaldið áskriftum og bætt upplifun notenda.",
+    privacyPayments:
+      "Greiðsluupplýsingar eru unnar af Paddle og eru ekki geymdar á netþjónum CampCast.",
+    privacyUsage:
+      "Við kunnum einnig að safna nafnlausum eða samanteknum notkunargögnum í greiningarskyni til að bæta virkni, stöðugleika og notendaupplifun þjónustunnar.",
+    privacySharing:
+      "CampCast selur ekki persónuupplýsingar notenda og deilir þeim ekki með þriðju aðilum nema það sé nauðsynlegt til að vinna greiðslur, reka þjónustuna eða uppfylla lagaskyldur.",
+    privacyRetention:
+      "Persónuupplýsingar eru aðeins varðveittar eins lengi og þörf krefur vegna reksturs þjónustunnar eða samkvæmt lögum.",
+    privacyRights:
+      "Notendur geta óskað eftir upplýsingum um gögn sem tengjast reikningi þeirra eða eftir eyðingu þeirra með því að hafa samband við þjónustuaðila.",
+    privacyContactTitle: "Samskipti",
+    privacyContactText:
+      "Ef þú hefur spurningar um persónuvernd eða vilt óska eftir eyðingu gagna geturðu haft samband við okkur á:",
+    privacyChanges:
+      "CampCast kann að uppfæra þessa persónuverndarstefnu af og til. Nýjasta útgáfa verður ávallt birt á vefsvæðinu.",
+    privacyClose: "Loka",
+    footerTerms: "Skilmálar",
+    footerPrivacy: "Persónuvernd",
+
+    termsPrivacyAgreePrefix: "Ég samþykki",
+    termsPrivacyAgreeAnd: "og",
+    privacyLinkLabel: "persónuverndarstefnu",
+    footerTerms: "Skilmálar",
+    footerPrivacy: "Persónuvernd",
   },
 };
