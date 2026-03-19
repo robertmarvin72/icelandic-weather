@@ -392,7 +392,9 @@ export default function Pricing({ onClose, lang = "is", theme = "dark", t, me })
           </div>
         </div>
       </div>
-      <Footer t={t} />
+      <div style={{ maxWidth: 860, margin: "0 auto", padding: "0 16px" }}>
+        <Footer t={t} />
+      </div>
     </div>
   );
 }
