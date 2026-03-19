@@ -49,6 +49,7 @@ import Success from "./pages/Success";
 import Pricing from "./pages/Pricing";
 import TermsPage from "./pages/TermsPage";
 import PrivacyPage from "./pages/PrivacyPage";
+import RefundPage from "./pages/RefundPage";
 
 // ──────────────────────────────────────────────────────────────
 // App page
@@ -619,6 +620,13 @@ function PrivacyRoute() {
   const t = useT(lang);
   return <PrivacyPage lang={lang} theme={theme} t={t} />;
 }
+
+function RefundRoute() {
+  const [theme] = useLocalStorageState("theme", "light");
+  const { lang } = useLanguage();
+  const t = useT(lang);
+  return <RefundPage lang={lang} theme={theme} t={t} />;
+}
 // ──────────────────────────────────────────────────────────────
 // Router
 // ──────────────────────────────────────────────────────────────
@@ -635,6 +643,7 @@ export default function App() {
         <Route path="/success" element={<SuccessRoute />} />
         <Route path="/terms" element={<TermsRoute />} />
         <Route path="/privacy" element={<PrivacyRoute />} />
+        <Route path="/refund" element={<RefundRoute />} />
 
         <Route path="*" element={<NotFound />} />
       </Routes>
