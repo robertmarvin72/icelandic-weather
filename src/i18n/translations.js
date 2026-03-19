@@ -625,21 +625,16 @@ export const translations = {
     footerPrivacy: "Privacy",
 
     refundTitle: "Refund Policy",
-    refundIntro1:
+    refundIntro:
       "CampCast is a subscription service that charges monthly or yearly for access to Pro features.",
-    refundIntro2:
-      "Users may cancel their subscription at any time through the billing portal or by contacting support. Access remains active until the end of the paid billing period.",
-    refundGeneralRule:
-      "As a general rule, payments are non-refundable once a new billing period has started.",
-    refundExceptions:
-      "If you believe you were charged incorrectly or there are exceptional circumstances, you may contact support@campcast.is and your request will be reviewed on a case-by-case basis.",
-    refundDiscretion:
-      "CampCast reserves the right to assess refund requests in exceptional situations.",
-    refundContactTitle: "Contact",
-    refundContactText:
-      "If you have any questions about subscriptions or refunds, you can contact us at:",
-    refundChanges:
-      "CampCast may update this refund policy from time to time. The latest version will always be published on the website.",
+    refundCancel:
+      "Users may cancel their subscription at any time through the billing portal. Access remains active until the end of the paid billing period.",
+    refundWindow:
+      "CampCast offers a 14-day refund window from the first payment of a new subscription.",
+    refundAfterWindow: "After the 14-day refund window has passed, payments are non-refundable.",
+    refundRenewals: "Refunds do not apply to subscription renewals unless required by law.",
+    refundContact:
+      "If you have any questions about subscriptions or refunds, you can contact support@campcast.is.",
     refundClose: "Close",
     footerRefund: "Refunds",
   },
@@ -1273,21 +1268,18 @@ export const translations = {
     footerPrivacy: "Persónuvernd",
 
     refundTitle: "Endurgreiðslustefna",
-    refundIntro1:
+    refundIntro:
       "CampCast er áskriftarþjónusta sem innheimtir gjöld mánaðarlega eða árlega fyrir aðgang að Pro eiginleikum.",
-    refundIntro2:
-      "Notendur geta sagt upp áskrift hvenær sem er í gegnum greiðslugátt eða með því að hafa samband við þjónustuaðila. Aðgangur helst virkur út greitt tímabil.",
-    refundGeneralRule:
-      "Að jafnaði eru greiðslur ekki endurgreiddar eftir að nýtt áskriftartímabil hefur hafist.",
-    refundExceptions:
-      "Ef notandi telur að ranglega hafi verið innheimt eða að sérstakar aðstæður eigi við, má hafa samband við support@campcast.is og beiðni verður metin í hverju tilviki fyrir sig.",
-    refundDiscretion:
-      "CampCast áskilur sér rétt til að meta endurgreiðslubeiðnir í undantekningartilvikum.",
-    refundContactTitle: "Samskipti",
-    refundContactText:
-      "Ef þú hefur spurningar um áskriftir eða endurgreiðslur geturðu haft samband við okkur á:",
-    refundChanges:
-      "CampCast kann að uppfæra þessa endurgreiðslustefnu af og til. Nýjasta útgáfa verður ávallt birt á vefsvæðinu.",
+    refundCancel:
+      "Notendur geta sagt upp áskrift hvenær sem er í gegnum greiðslugáttina. Aðgangur helst virkur út greitt tímabil.",
+    refundWindow:
+      "CampCast veitir 14 daga endurgreiðslufrest frá fyrstu greiðslu nýrrar áskriftar.",
+    refundAfterWindow:
+      "Eftir að 14 daga endurgreiðslufresti lýkur eru greiðslur ekki endurgreiddar.",
+    refundRenewals:
+      "Endurgreiðslur eiga ekki við um endurnýjanir áskrifta nema lög kveði á um annað.",
+    refundContact:
+      "Ef þú hefur spurningar um áskriftir eða endurgreiðslur geturðu haft samband við support@campcast.is.",
     refundClose: "Loka",
     footerRefund: "Endurgreiðslur",
   },

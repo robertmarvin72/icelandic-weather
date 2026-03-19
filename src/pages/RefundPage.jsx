@@ -47,62 +47,43 @@ export default function RefundPage({
           <div className="space-y-6 text-sm leading-8 text-slate-700 dark:text-slate-300">
             <p>
               {T(
-                "refundIntro1",
+                "refundIntro",
                 "CampCast er áskriftarþjónusta sem innheimtir gjöld mánaðarlega eða árlega fyrir aðgang að Pro eiginleikum."
               )}
             </p>
 
             <p>
               {T(
-                "refundIntro2",
-                "Notendur geta sagt upp áskrift hvenær sem er í gegnum greiðslugátt eða með því að hafa samband við þjónustuaðila. Aðgangur helst virkur út greitt tímabil."
+                "refundCancel",
+                "Notendur geta sagt upp áskrift hvenær sem er í gegnum greiðslugáttina. Aðgangur helst virkur út greitt tímabil."
               )}
             </p>
 
             <p>
               {T(
-                "refundGeneralRule",
-                "Að jafnaði eru greiðslur ekki endurgreiddar eftir að nýtt áskriftartímabil hefur hafist."
+                "refundWindow",
+                "CampCast veitir 14 daga endurgreiðslufrest frá fyrstu greiðslu nýrrar áskriftar."
               )}
             </p>
 
             <p>
               {T(
-                "refundExceptions",
-                "Ef notandi telur að ranglega hafi verið innheimt eða að sérstakar aðstæður eigi við, má hafa samband við support@campcast.is og beiðni verður metin í hverju tilviki fyrir sig."
+                "refundAfterWindow",
+                "Eftir að 14 daga endurgreiðslufresti lýkur eru greiðslur ekki endurgreiddar."
               )}
             </p>
 
             <p>
               {T(
-                "refundDiscretion",
-                "CampCast áskilur sér rétt til að meta endurgreiðslubeiðnir í undantekningartilvikum."
+                "refundRenewals",
+                "Endurgreiðslur eiga ekki við um endurnýjanir áskrifta nema lög kveði á um annað."
               )}
             </p>
 
-            <div>
-              <div className="font-semibold text-slate-900 dark:text-slate-100 mb-2">
-                {T("refundContactTitle", "Samskipti")}
-              </div>
-
-              <p>
-                {T(
-                  "refundContactText",
-                  "Ef þú hefur spurningar um áskriftir eða endurgreiðslur geturðu haft samband við okkur á:"
-                )}{" "}
-                <a
-                  href="mailto:support@campcast.is"
-                  className="font-medium text-emerald-700 hover:text-emerald-600 dark:text-emerald-400 dark:hover:text-emerald-300"
-                >
-                  support@campcast.is
-                </a>
-              </p>
-            </div>
-
             <p>
               {T(
-                "refundChanges",
-                "CampCast kann að uppfæra þessa endurgreiðslustefnu af og til. Nýjasta útgáfa verður ávallt birt á vefsvæðinu."
+                "refundContact",
+                "Ef þú hefur spurningar um áskriftir eða endurgreiðslur geturðu haft samband við support@campcast.is."
               )}
             </p>
           </div>
