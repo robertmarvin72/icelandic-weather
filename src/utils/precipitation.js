@@ -24,8 +24,16 @@ export function getPrecipitationLabel(type, mm, t, opts = {}) {
   }
 
   // 3) Showery conditions (él)
-  if (mm < 3 && precipDurationHours >= 2) {
-    return t("precipShowers");
+  if (precipDurationHours >= 2) {
+    // Rain showers
+    if (mm < 3) {
+      return t("precipShowers");
+    }
+
+    // Snow showers (él can still have a bit more accumulation)
+    if (isSnow && mm <= 5) {
+      return t("precipShowers");
+    }
   }
 
   // 4) Late precipitation
