@@ -637,6 +637,16 @@ export const translations = {
       "If you have any questions about subscriptions or refunds, you can contact support@campcast.is.",
     refundClose: "Close",
     footerRefund: "Refunds",
+
+    decisionConsiderTitle: "Consider moving",
+    decisionConsiderBody: "Better weather is likely at {site}.",
+
+    decisionStayTitle: "Current campsite looks good",
+    decisionStayBodyGood:
+      "Your current campsite looks like a solid choice compared to nearby options.",
+    decisionStayBodyRough: "Weather won't be perfect, but no nearby option clearly looks better.",
+    nearbyCampsite: "a nearby campsite",
+    top5BestThisWeek: "Best this week",
   },
 
   // Icelandic (Íslenska) -------------------------------------------------------------------------------------------------------------------
@@ -1282,5 +1292,16 @@ export const translations = {
       "Ef þú hefur spurningar um áskriftir eða endurgreiðslur geturðu haft samband við support@campcast.is.",
     refundClose: "Loka",
     footerRefund: "Endurgreiðslur",
+
+    decisionConsiderTitle: "Íhugaðu að færa þig",
+    decisionConsiderBody: "Betra veður er líklegt hjá {site}.",
+
+    decisionStayTitle: "Núverandi staður lítur ágætlega út",
+    decisionStayBodyGood:
+      "Núverandi tjaldsvæði virðist vera fínn kostur miðað við nærliggjandi svæði.",
+    decisionStayBodyRough:
+      "Veðrið verður ekki fullkomið, en enginn nálægur valkostur virðist vera greinilega betri.",
+    nearbyCampsite: "nálægt tjaldsvæði",
+    top5BestThisWeek: "Best í vikunni",
   },
 };

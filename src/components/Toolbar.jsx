@@ -57,7 +57,10 @@ export default function Toolbar({
         )}
       </div>
 
-      <div className="flex items-center gap-3">
+      <div
+        className="flex flex-wrap items-center gap-2 rounded-2xl border border-slate-200/80 bg-white/70 px-3 py-2.5 shadow-sm backdrop-blur-sm
+                   dark:border-slate-700/80 dark:bg-slate-900/70"
+      >
         <label htmlFor="site" className="text-sm font-medium sr-only">
           Campsite
         </label>
@@ -81,9 +84,10 @@ export default function Toolbar({
         <button
           type="button"
           onClick={onToggleUnits}
-          className="px-3 py-2 rounded-xl border border-slate-300 bg-white shadow-sm focus-ring smooth text-sm
-                    flex items-center gap-2
-                    text-slate-900 dark:bg-slate-900 dark:border-slate-600 dark:text-slate-100"
+          className="px-3 py-2 rounded-xl border border-slate-300 bg-slate-50 shadow-sm focus-ring smooth text-sm
+                    inline-flex items-center gap-2
+                    text-slate-900 hover:bg-slate-100
+                    dark:bg-slate-900 dark:border-slate-600 dark:text-slate-100 dark:hover:bg-slate-800"
           aria-label={units === "metric" ? "Switch to imperial units" : "Switch to metric units"}
           title={units === "metric" ? "Metric units: °C, mm, m/s" : "Imperial units: °F, in, knots"}
         >
@@ -94,7 +98,9 @@ export default function Toolbar({
         <button
           type="button"
           onClick={onToggleLanguage}
-          className="px-3 py-2 rounded-xl border border-slate-300 bg-white shadow-sm focus-ring smooth text-sm dark:bg-slate-900 dark:border-slate-600"
+          className="px-3 py-2 rounded-xl border border-slate-300 bg-slate-50 shadow-sm focus-ring smooth text-sm
+                    text-slate-900 hover:bg-slate-100
+                    dark:bg-slate-900 dark:border-slate-600 dark:text-slate-100 dark:hover:bg-slate-800"
           title={t?.("toolbar.toggleLanguage") ?? "Toggle language"}
         >
           🌐 {lang === "is" ? "EN" : "IS"}
@@ -102,7 +108,9 @@ export default function Toolbar({
 
         <button
           onClick={onToggleTheme}
-          className="px-3 py-2 rounded-xl border border-slate-300 bg-white shadow-sm focus-ring smooth text-sm dark:bg-slate-900 dark:border-slate-600"
+          className="px-3 py-2 rounded-xl border border-slate-300 bg-slate-50 shadow-sm focus-ring smooth text-sm
+                    text-slate-900 hover:bg-slate-100
+                    dark:bg-slate-900 dark:border-slate-600 dark:text-slate-100 dark:hover:bg-slate-800"
           aria-label={darkMode ? "Switch to light mode" : "Switch to dark mode"}
           title="Toggle dark mode"
         >

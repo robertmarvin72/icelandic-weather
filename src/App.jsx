@@ -50,6 +50,7 @@ import Pricing from "./pages/Pricing";
 import TermsPage from "./pages/TermsPage";
 import PrivacyPage from "./pages/PrivacyPage";
 import RefundPage from "./pages/RefundPage";
+import DecisionBanner from "./components/DecisionBanner";
 
 // ──────────────────────────────────────────────────────────────
 // App page
@@ -313,6 +314,17 @@ function IcelandCampingWeatherApp({ page = "home" }) {
     [rows, lang]
   );
 
+  const currentScore = useMemo(() => {
+    return Number(scoresById?.[siteId]?.score ?? 0);
+  }, [scoresById, siteId]);
+
+  const bestNearby = useMemo(() => {
+    if (!Array.isArray(top5) || top5.length === 0) return null;
+
+    const bestOther = top5.find((item) => item?.site?.id !== siteId);
+    return bestOther || top5[0] || null;
+  }, [top5, siteId]);
+
   // Boot splash lifecycle
   const booting = useBooting(loading, rows.length);
 
@@ -524,56 +536,65 @@ function IcelandCampingWeatherApp({ page = "home" }) {
               </div>
             </div>
           ) : (
-            <div className="grid md:grid-cols-2 gap-4">
-              <ForecastTable
-                entitlements={entitlements}
-                site={site}
-                userLoc={userLoc}
-                distanceToKm={distanceTo(site)}
+            <>
+              <DecisionBanner
+                t={t}
                 rows={rowsWithDay}
-                loading={loading}
-                error={error}
-                units={units}
-                weatherMap={WEATHER_MAP}
-                mapSlot={
-                  <div ref={mapAnchorRef}>
-                    <LazyMap
-                      campsites={siteList}
-                      selectedId={siteId}
-                      onSelect={(id) => setSiteId(id)}
-                      userLocation={userLoc}
-                      lang={lang}
-                      t={t}
-                      theme={theme}
-                    />
-                  </div>
-                }
-                lang={lang}
-                t={t}
+                currentScore={currentScore}
+                bestNearby={bestNearby}
+                windowDays={7}
               />
+              <div className="grid md:grid-cols-2 gap-4">
+                <ForecastTable
+                  entitlements={entitlements}
+                  site={site}
+                  userLoc={userLoc}
+                  distanceToKm={distanceTo(site)}
+                  rows={rowsWithDay}
+                  loading={loading}
+                  error={error}
+                  units={units}
+                  weatherMap={WEATHER_MAP}
+                  mapSlot={
+                    <div ref={mapAnchorRef}>
+                      <LazyMap
+                        campsites={siteList}
+                        selectedId={siteId}
+                        onSelect={(id) => setSiteId(id)}
+                        userLocation={userLoc}
+                        lang={lang}
+                        t={t}
+                        theme={theme}
+                      />
+                    </div>
+                  }
+                  lang={lang}
+                  t={t}
+                />
 
-              <Top5Leaderboard
-                sites={siteList}
-                entitlements={entitlements}
-                top5={top5}
-                lang={lang}
-                scoredCount={Object.keys(scoresById).length}
-                loadingWave1={loadingWave1}
-                loadingBg={loadingBg}
-                units={units}
-                onSelectSite={handleSelectSite}
-                me={me}
-                onUpgrade={startCheckout}
-                t={t}
-                shelter={gatedShelter}
-                windDir={gatedWindDir}
-                proUntil={me?.entitlements?.proUntil ?? null}
-                subscription={me?.subscription ?? null}
-                onManageSubscription={openBillingPortal}
-                selectedSiteId={siteId}
-                userLocationLabel={userLocationLabel}
-              />
-            </div>
+                <Top5Leaderboard
+                  sites={siteList}
+                  entitlements={entitlements}
+                  top5={top5}
+                  lang={lang}
+                  scoredCount={Object.keys(scoresById).length}
+                  loadingWave1={loadingWave1}
+                  loadingBg={loadingBg}
+                  units={units}
+                  onSelectSite={handleSelectSite}
+                  me={me}
+                  onUpgrade={startCheckout}
+                  t={t}
+                  shelter={gatedShelter}
+                  windDir={gatedWindDir}
+                  proUntil={me?.entitlements?.proUntil ?? null}
+                  subscription={me?.subscription ?? null}
+                  onManageSubscription={openBillingPortal}
+                  selectedSiteId={siteId}
+                  userLocationLabel={userLocationLabel}
+                />
+              </div>
+            </>
           )}
         </div>
 

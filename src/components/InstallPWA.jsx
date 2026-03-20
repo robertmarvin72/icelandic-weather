@@ -58,7 +58,7 @@ export default function InstallPWA({ className = "" }) {
       className={
         className ||
         "inline-flex items-center gap-2 px-3 py-2 rounded-xl border border-slate-300 " +
-          "bg-white text-slate-900 shadow-sm hover:bg-slate-50 " +
+          "bg-slate-50 text-slate-900 shadow-sm hover:bg-slate-100 " +
           "focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 transition " +
           "dark:bg-slate-900 dark:text-slate-100 dark:border-slate-600 dark:hover:bg-slate-800"
       }

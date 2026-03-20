@@ -201,7 +201,9 @@ export default function Top5Leaderboard({
               {visibleTop.map((item, idx) => (
                 <tr
                   key={item.site.id}
-                  className="hover:bg-sky-50/60 cursor-pointer transition dark:hover:bg-slate-800/60"
+                  className={`cursor-pointer transition dark:hover:bg-slate-800/60 hover:bg-sky-50/60 ${
+                    idx === 0 ? "bg-emerald-50/70 dark:bg-emerald-950/20" : ""
+                  }`}
                   onClick={() => onSelectSite(item.site.id)}
                   title={t?.("selectOnMap")}
                 >
@@ -209,7 +211,15 @@ export default function Top5Leaderboard({
                     {idx + 1}
                   </td>
                   <td className="px-3 py-2 font-medium text-slate-800 dark:text-slate-100">
-                    {item.site.name}
+                    <div className="flex items-center gap-2">
+                      <span>{item.site.name}</span>
+
+                      {idx === 0 && (
+                        <span className="inline-flex items-center leading-none rounded-full px-2 py-0.5 text-[11px] font-medium bg-emerald-100 text-emerald-800 dark:bg-emerald-900/40 dark:text-emerald-200">
+                          {t?.("top5BestThisWeek") ?? "Best this week"}
+                        </span>
+                      )}
+                    </div>
                   </td>
                   <td className="px-3 py-2 text-right text-slate-600 dark:text-slate-300">
                     {item.dist == null

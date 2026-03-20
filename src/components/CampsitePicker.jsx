@@ -76,9 +76,9 @@ export default function CampsitePicker({
       <button
         type="button"
         onClick={() => setOpen((v) => !v)}
-        className="px-3 py-2 rounded-xl border border-slate-300 bg-white shadow-sm focus-ring smooth
+        className="px-4 py-2 rounded-xl border border-slate-300 bg-white shadow-sm focus-ring smooth
                    text-slate-900 dark:bg-slate-900 dark:border-slate-600 dark:text-slate-100
-                   inline-flex items-center gap-2 text-sm whitespace-nowrap"
+                   inline-flex items-center gap-2 text-sm font-medium whitespace-nowrap"
         aria-haspopup="dialog"
         aria-expanded={open}
         title={t?.("selectCampsite")}

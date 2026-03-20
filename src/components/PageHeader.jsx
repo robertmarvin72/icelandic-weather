@@ -31,7 +31,7 @@ export default function PageHeader({
     <>
       <Header t={t} />
 
-      <div className="max-w-6xl mx-auto px-4 py-10">
+      <div className="max-w-6xl mx-auto px-4 pt-2 pb-0">
         <Toolbar
           t={t}
           lang={lang}
@@ -50,7 +50,7 @@ export default function PageHeader({
         />
 
         {geoMsg && (
-          <div className="mb-4 text-sm text-slate-700 dark:text-slate-300">📍 {geoMsg}</div>
+          <div className="mb-2 text-sm text-slate-500 dark:text-slate-400">📍 {geoMsg}</div>
         )}
       </div>
     </>

@@ -9,7 +9,7 @@ export default function DevProToggle({ devPro, onToggleDevPro }) {
     "px-3 py-2 rounded-xl border shadow-sm focus-ring smooth text-sm inline-flex items-center gap-2 whitespace-nowrap";
   const on = "bg-emerald-600 border-emerald-500 text-white hover:bg-emerald-500";
   const off =
-    "bg-white border-slate-300 text-slate-900 hover:bg-slate-50 dark:bg-slate-900 dark:border-slate-600 dark:text-slate-100";
+    "bg-slate-50 border-slate-300 text-slate-900 hover:bg-slate-100 dark:bg-slate-900 dark:border-slate-600 dark:text-slate-100 dark:hover:bg-slate-800";
 
   return (
     <button

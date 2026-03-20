@@ -22,7 +22,7 @@ export default function Brand({ t, to = "/", size = "full" }) {
       <img
         src="/campcast-dark.png"
         alt="CampCast"
-        className={`hidden dark:block ${isSlim ? "h-10" : "h-20 md:h-24"} w-auto shrink-0`}
+        className={`hidden dark:block ${isSlim ? "h-10" : "h-24 md:h-32"} w-auto shrink-0`}
       />
 
       {/* Tagline aligns to bottom of logo text */}
