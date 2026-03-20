@@ -647,6 +647,40 @@ export const translations = {
     decisionStayBodyRough: "Weather won't be perfect, but no nearby option clearly looks better.",
     nearbyCampsite: "a nearby campsite",
     top5BestThisWeek: "Best this week",
+
+    footerPricing: "Pricing",
+
+    pricingInfoBack: "← Back to forecast",
+    pricingInfoEyebrow: "CampCast Pro",
+    pricingInfoTitle: "Know where the weather is actually better",
+    pricingInfoLead:
+      "CampCast Pro helps you avoid the worst conditions, compare nearby campsites, and make better travel decisions before you go.",
+
+    pricingInfoFeature1Title: "7-day forecast",
+    pricingInfoFeature1Body: "See more than the short view and plan further ahead.",
+    pricingInfoFeature2Title: "Route Planner",
+    pricingInfoFeature2Body: "Find nearby campsites where the weather may be better.",
+    pricingInfoFeature3Title: "Better decision support",
+    pricingInfoFeature3Body: "Get more insight into wind, gusts, rain, and overall conditions.",
+
+    pricingInfoMonthlyLabel: "Monthly",
+    pricingInfoMonthlyPrice: "€4.99 / month",
+    pricingInfoMonthlyBody: "Flexible access to CampCast Pro features.",
+    pricingInfoYearlyLabel: "Yearly",
+    pricingInfoYearlyPrice: "€24.99 / year",
+    pricingInfoYearlyBody: "Best value if you use CampCast regularly.",
+
+    pricingInfoIncludesTitle: "What’s included",
+    pricingInfoIncludes1: "Full access to Route Planner",
+    pricingInfoIncludes2: "7-day campsite forecast",
+    pricingInfoIncludes3: "Wind direction and shelter insights",
+    pricingInfoIncludes4: "Detailed campsite comparisons",
+
+    pricingInfoTrustTitle: "Good to know",
+    pricingInfoTrustBody:
+      "CampCast offers a 14-day refund period from the initial purchase of a new subscription. You can also manage your subscription through the billing portal.",
+    pricingInfoRefundLink: "Refund policy",
+    pricingInfoUpgradeLink: "Get CampCast Pro",
   },
 
   // Icelandic (Íslenska) -------------------------------------------------------------------------------------------------------------------
@@ -1303,5 +1337,39 @@ export const translations = {
       "Veðrið verður ekki fullkomið, en enginn nálægur valkostur virðist vera greinilega betri.",
     nearbyCampsite: "nálægt tjaldsvæði",
     top5BestThisWeek: "Best í vikunni",
+
+    footerPricing: "Verðskrá",
+
+    pricingInfoBack: "← Til baka í spá",
+    pricingInfoEyebrow: "CampCast Pro",
+    pricingInfoTitle: "Sjáðu hvar veðrið er í raun betra",
+    pricingInfoLead:
+      "CampCast Pro hjálpar þér að forðast verstu aðstæðurnar, bera saman nærliggjandi tjaldsvæði og taka betri ákvörðun áður en þú leggur af stað.",
+
+    pricingInfoFeature1Title: "7 daga spá",
+    pricingInfoFeature1Body: "Sjáðu lengra fram í tímann en með styttri yfirsýn.",
+    pricingInfoFeature2Title: "Route Planner",
+    pricingInfoFeature2Body: "Finndu nærliggjandi tjaldsvæði þar sem veðrið gæti verið betra.",
+    pricingInfoFeature3Title: "Betri ákvörðun",
+    pricingInfoFeature3Body: "Fáðu meiri innsýn í vind, hviður, úrkomu og heildaraðstæður.",
+
+    pricingInfoMonthlyLabel: "Mánaðaráskrift",
+    pricingInfoMonthlyPrice: "€4.99 / mánuður",
+    pricingInfoMonthlyBody: "Sveigjanlegur aðgangur að CampCast Pro eiginleikum.",
+    pricingInfoYearlyLabel: "Ársáskrift",
+    pricingInfoYearlyPrice: "€24.99 / ár",
+    pricingInfoYearlyBody: "Besti kosturinn ef þú notar CampCast reglulega.",
+
+    pricingInfoIncludesTitle: "Hvað fylgir",
+    pricingInfoIncludes1: "Fullur aðgangur að Route Planner",
+    pricingInfoIncludes2: "7 daga spá fyrir tjaldsvæði",
+    pricingInfoIncludes3: "Vindátt og skjól-innsýn",
+    pricingInfoIncludes4: "Ítarlegri samanburður milli tjaldsvæða",
+
+    pricingInfoTrustTitle: "Gott að vita",
+    pricingInfoTrustBody:
+      "CampCast býður upp á 14 daga endurgreiðslufrest frá fyrstu greiðslu nýrrar áskriftar. Þú getur einnig séð um áskriftina í gegnum greiðslugáttina.",
+    pricingInfoRefundLink: "Sjá endurgreiðslustefnu",
+    pricingInfoUpgradeLink: "Fá CampCast Pro",
   },
 };

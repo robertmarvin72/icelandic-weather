@@ -50,6 +50,7 @@ import Pricing from "./pages/Pricing";
 import TermsPage from "./pages/TermsPage";
 import PrivacyPage from "./pages/PrivacyPage";
 import RefundPage from "./pages/RefundPage";
+import PricingInfo from "./pages/PricingInfo";
 import DecisionBanner from "./components/DecisionBanner";
 
 // ──────────────────────────────────────────────────────────────
@@ -153,6 +154,17 @@ function IcelandCampingWeatherApp({ page = "home" }) {
     if (loginBusy) return;
     setLoginOpen(false);
   }, [loginBusy]);
+
+  useEffect(() => {
+    const url = new URL(window.location.href);
+    const shouldUpgrade = url.searchParams.get("upgrade");
+
+    if (shouldUpgrade === "1" && !me?.user) {
+      openLoginModal();
+      url.searchParams.delete("upgrade");
+      window.history.replaceState({}, "", url.toString());
+    }
+  }, [me, openLoginModal]);
 
   const submitLogin = useCallback(
     async (e) => {
@@ -648,6 +660,41 @@ function RefundRoute() {
   const t = useT(lang);
   return <RefundPage lang={lang} theme={theme} t={t} />;
 }
+
+function PricingInfoRoute() {
+  const [theme] = useLocalStorageState("theme", "light");
+  const { lang } = useLanguage();
+  const t = useT(lang);
+  const navigate = useNavigate();
+  const { me } = useMe();
+  const { pushToast } = useToast();
+
+  const startCheckout = async () => {
+    if (!me?.user) {
+      pushToast({
+        type: "info",
+        title: t("loginRequired"),
+        message: t("pleaseLoginToContinue"),
+      });
+      // 👉 redirect í app sem opnar login modal
+      navigate("/?upgrade=1");
+      return;
+    }
+
+    if (me?.entitlements?.pro) {
+      pushToast({
+        type: "success",
+        title: t("proActive"),
+        message: t("alreadyPro"),
+      });
+      return;
+    }
+
+    navigate(`/pricing?email=${encodeURIComponent(me?.user?.email || "")}`);
+  };
+
+  return <PricingInfo lang={lang} theme={theme} t={t} onUpgrade={startCheckout} />;
+}
 // ──────────────────────────────────────────────────────────────
 // Router
 // ──────────────────────────────────────────────────────────────
@@ -660,6 +707,7 @@ export default function App() {
 
         {/* ✅ These pages need lang/theme/t, so use wrappers */}
         <Route path="/pricing" element={<PricingRoute />} />
+        <Route path="/pricing-info" element={<PricingInfoRoute />} />
         <Route path="/subscribe" element={<SubscribeRoute />} />
         <Route path="/success" element={<SuccessRoute />} />
         <Route path="/terms" element={<TermsRoute />} />
