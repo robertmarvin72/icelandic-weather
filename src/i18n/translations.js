@@ -641,9 +641,8 @@ export const translations = {
     decisionConsiderTitle: "Consider moving",
     decisionConsiderBody: "Better weather is likely at {site}.",
 
-    decisionStayTitle: "Current campsite looks good",
-    decisionStayBodyGood:
-      "Your current campsite looks like a solid choice compared to nearby options.",
+    decisionStayTitle: "Stay put for now",
+    decisionStayBodyGood: "Conditions aren’t great, but no nearby option clearly looks better.",
     decisionStayBodyRough: "Weather won't be perfect, but no nearby option clearly looks better.",
     nearbyCampsite: "a nearby campsite",
     top5BestThisWeek: "Best this week",
@@ -1014,7 +1013,7 @@ export const translations = {
     routeReasonRain: "Minni úrkoma",
     routeReasonTmax: "Hlýrri dagar",
 
-    routeVerdictStayTitle: "Best að vera áfram",
+    routeVerdictStayTitle: "Best að vera kyrr í bili",
     routeVerdictStayBody:
       "Aðstæður í nágrenninu virðast ekki nógu mikið betri til að það borgi sig að færa sig.",
 
@@ -1330,9 +1329,9 @@ export const translations = {
     decisionConsiderTitle: "Íhugaðu að færa þig",
     decisionConsiderBody: "Betra veður er líklegt hjá {site}.",
 
-    decisionStayTitle: "Núverandi staður lítur ágætlega út",
+    decisionStayTitle: "Best að vera kyrr í bili",
     decisionStayBodyGood:
-      "Núverandi tjaldsvæði virðist vera fínn kostur miðað við nærliggjandi svæði.",
+      "Aðstæður eru ekki frábærar, en enginn nálægur staður lítur greinilega betur út.",
     decisionStayBodyRough:
       "Veðrið verður ekki fullkomið, en enginn nálægur valkostur virðist vera greinilega betri.",
     nearbyCampsite: "nálægt tjaldsvæði",

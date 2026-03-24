@@ -136,6 +136,7 @@ export default function RoutePlannerCard({
   windowDaysDefault = 3,
   wetThresholdMmDefault = 3, // eslint-disable-line no-unused-vars
   limitDefault = 30,
+  onSummaryChange,
 }) {
   const routeFeature = isFeatureAvailable("bestRoutePlanner", entitlements);
   const isPro = !!routeFeature?.available;
@@ -382,6 +383,68 @@ export default function RoutePlannerCard({
     prevAdaptiveUsedRef.current = usedKm;
   }, [result]);
 
+  // ✅ MUST stay above all early returns
+  const top3 = Array.isArray(result?.ranked) ? result.ranked.slice(0, 3) : [];
+  const best = top3[0] || null;
+
+  let decisionLower = String(
+    result?.recommendation || best?.recommendation || "stay"
+  ).toLowerCase();
+
+  // 🚧 Route safety override
+  if (routeRiskData?.routeRisk === "HIGH" && decisionLower === "move") {
+    decisionLower = "consider";
+  }
+
+  const routePlannerSummary = useMemo(() => {
+    const candidateSite = best
+      ? (Array.isArray(sites) ? sites : []).find((s) => s?.id === best?.siteId) ||
+        best?.site ||
+        null
+      : null;
+
+    return {
+      ready: !!result,
+      verdict: String(decisionLower || "stay").toLowerCase(),
+      isPreview,
+      isPro,
+      radiusKm: effectiveRadiusKm,
+      windowDays: effectiveWindowDays,
+      candidate: candidateSite
+        ? {
+            id: candidateSite?.id || best?.siteId || null,
+            name: candidateSite?.name || null,
+            distanceKm:
+              typeof best?.distanceKm === "number"
+                ? best.distanceKm
+                : typeof best?.distance === "number"
+                  ? best.distance
+                  : null,
+          }
+        : null,
+    };
+  }, [
+    result,
+    decisionLower,
+    isPreview,
+    isPro,
+    effectiveRadiusKm,
+    effectiveWindowDays,
+    best,
+    sites,
+  ]);
+
+  useEffect(() => {
+    if (typeof onSummaryChange !== "function") return;
+
+    if (!result) {
+      onSummaryChange(null);
+      return;
+    }
+
+    onSummaryChange(routePlannerSummary);
+  }, [onSummaryChange, result, routePlannerSummary]);
+
   if (!isPro && !isPreview) return <ProLock t={t} me={me} onUpgrade={onUpgrade} />;
 
   if (!baseSiteId) {
@@ -408,9 +471,6 @@ export default function RoutePlannerCard({
       </div>
     );
   }
-
-  const top3 = Array.isArray(result?.ranked) ? result.ranked.slice(0, 3) : [];
-  const best = top3[0] || null;
 
   const isDetailsBestCandidate =
     !!detailsCandidate &&
@@ -527,14 +587,6 @@ export default function RoutePlannerCard({
       }
     : null;
 
-  let decisionLower = String(
-    result?.recommendation || best?.recommendation || "stay"
-  ).toLowerCase();
-
-  // 🚧 Route safety override
-  if (routeRiskData?.routeRisk === "HIGH" && decisionLower === "move") {
-    decisionLower = "consider";
-  }
   const meta = result && getRouteVerdictMeta(decisionLower);
 
   const trendText = (() => {

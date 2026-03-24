@@ -40,6 +40,7 @@ export default function Top5Leaderboard({
   selectedSiteId,
   sites,
   userLocationLabel,
+  onRoutePlannerSummaryChange,
 }) {
   const sheltered = windDir?.compass ? oppositeCompass(windDir.compass) : null;
 
@@ -419,6 +420,7 @@ export default function Top5Leaderboard({
           radiusKmDefault={50}
           windowDaysDefault={3}
           wetThresholdMmDefault={3}
+          onSummaryChange={onRoutePlannerSummaryChange}
         />
       </div>
     </div>

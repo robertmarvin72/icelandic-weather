@@ -338,6 +338,8 @@ function IcelandCampingWeatherApp({ page = "home" }) {
     return bestOther || top5[0] || null;
   }, [top5, siteId]);
 
+  const [routePlannerSummary, setRoutePlannerSummary] = useState(null);
+
   // Boot splash lifecycle
   const booting = useBooting(loading, rows.length);
 
@@ -554,8 +556,8 @@ function IcelandCampingWeatherApp({ page = "home" }) {
                 t={t}
                 rows={rowsWithDay}
                 currentScore={currentScore}
-                bestNearby={bestNearby}
-                windowDays={7}
+                routePlannerSummary={routePlannerSummary}
+                entitlements={entitlements}
               />
               <div className="grid md:grid-cols-2 gap-4">
                 <ForecastTable
@@ -605,6 +607,7 @@ function IcelandCampingWeatherApp({ page = "home" }) {
                   onManageSubscription={openBillingPortal}
                   selectedSiteId={siteId}
                   userLocationLabel={userLocationLabel}
+                  onRoutePlannerSummaryChange={setRoutePlannerSummary}
                 />
               </div>
             </>

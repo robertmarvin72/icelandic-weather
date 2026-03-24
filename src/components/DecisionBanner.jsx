@@ -15,40 +15,44 @@ function hasRoughWeather(rows = []) {
   });
 }
 
-export default function DecisionBanner({ t, rows = [], currentScore = 0, bestNearby = null }) {
+export default function DecisionBanner({ t, rows = [], routePlannerSummary = null, entitlements }) {
   const model = useMemo(() => {
     const rough = hasRoughWeather(rows);
-    const bestScore = Number(bestNearby?.score ?? currentScore ?? 0);
-    const delta = bestScore - Number(currentScore ?? 0);
-    const bestName = bestNearby?.site?.name ?? null;
 
-    if (delta >= 2) {
+    const verdict = String(routePlannerSummary?.verdict || "").toLowerCase();
+    const candidateName = routePlannerSummary?.candidate?.name || t("nearbyCampsite");
+
+    // ✅ Source of truth = Route Planner
+    if (verdict === "move" || verdict === "consider") {
       return {
         tone: "consider",
         title: t("decisionConsiderTitle"),
-        body: t("decisionConsiderBody").replace("{site}", bestName ?? t("nearbyCampsite")),
+        body: t("decisionConsiderBody").replace("{site}", candidateName),
       };
     }
 
+    // ✅ Free / preview / missing planner data => never overpromise
     return {
-      tone: "good",
+      tone: "stay",
       title: t("decisionStayTitle"),
       body: rough ? t("decisionStayBodyRough") : t("decisionStayBodyGood"),
     };
-  }, [rows, currentScore, bestNearby, t]);
+  }, [rows, routePlannerSummary, t, entitlements]);
 
   const classes =
     model.tone === "consider"
       ? "border-amber-200/60 bg-amber-50 text-amber-950 dark:border-amber-900/60 dark:bg-amber-950/30 dark:text-amber-100"
-      : "border-emerald-200 bg-emerald-50 text-emerald-950 dark:border-emerald-900/60 dark:bg-emerald-950/30 dark:text-emerald-100";
-
-  const pill = model.tone === "consider" ? "🟡" : "🟢";
+      : "border-sky-200 bg-sky-50 text-sky-950 dark:border-sky-900/60 dark:bg-sky-950/30 dark:text-sky-100";
 
   return (
     <div className={`mb-3 rounded-2xl border px-4 py-3 shadow-sm ${classes}`}>
       <div className="flex items-start gap-3">
         <div className="mt-1">
-          <div className="w-2.5 h-2.5 rounded-full bg-amber-500 shadow-sm" />
+          <div
+            className={`w-2.5 h-2.5 rounded-full shadow-sm ${
+              model.tone === "consider" ? "bg-amber-500" : "bg-sky-500"
+            }`}
+          />
         </div>
 
         <div className="min-w-0">
