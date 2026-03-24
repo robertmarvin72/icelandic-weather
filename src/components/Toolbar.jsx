@@ -33,7 +33,7 @@ export default function Toolbar({
 }) {
   const season = getSeasonForDate(new Date());
   return (
-    <header className="mb-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+    <header className="relative z-30 mb-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
       <div>
         <h1 className="text-2xl md:text-2xl font-black tracking-tight">{t?.("sevenDayWeather")}</h1>
 
@@ -58,8 +58,8 @@ export default function Toolbar({
       </div>
 
       <div
-        className="flex flex-wrap items-center gap-2 rounded-2xl border border-slate-200/80 bg-white/70 px-3 py-2.5 shadow-sm backdrop-blur-sm
-                   dark:border-slate-700/80 dark:bg-slate-900/70"
+        className="relative z-30 flex flex-wrap items-center gap-2 rounded-2xl border border-slate-200/80 bg-white/70 px-3 py-2.5 shadow-sm backdrop-blur-sm
+             dark:border-slate-700/80 dark:bg-slate-900/70"
       >
         <label htmlFor="site" className="text-sm font-medium sr-only">
           Campsite

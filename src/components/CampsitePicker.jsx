@@ -72,7 +72,7 @@ export default function CampsitePicker({
   };
 
   return (
-    <div className="relative" ref={panelRef}>
+    <div className="relative z-20" ref={panelRef}>
       <button
         type="button"
         onClick={() => setOpen((v) => !v)}
@@ -98,7 +98,7 @@ export default function CampsitePicker({
         <div
           role="dialog"
           aria-label="Campsite picker"
-          className="absolute z-50 mt-2 w-[360px] max-w-[90vw]
+          className="absolute z-[9999] mt-2 w-[360px] max-w-[90vw]
                      rounded-2xl border border-slate-200 bg-white shadow-lg p-3
                      dark:bg-slate-900 dark:border-slate-700"
         >
@@ -143,8 +143,6 @@ export default function CampsitePicker({
                           ) : null}
                           <span>{s.name}</span>
                         </div>
-                        {/* þú getur bætt region hér ef þú vilt */}
-                        {/* <div className="text-xs text-slate-500 dark:text-slate-400">{s.region}</div> */}
                       </button>
                     </li>
                   );
