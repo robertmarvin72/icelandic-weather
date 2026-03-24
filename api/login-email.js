@@ -42,11 +42,23 @@ export default async function handler(req, res) {
   `;
 
   // 3. set cookie
-  res.setHeader(
-    "Set-Cookie",
-    `cc_session=${rawToken}; Path=/; Domain=.campcast.is; HttpOnly; SameSite=Lax; Max-Age=2592000; Secure`
-  );
+  const isLocalhost =
+    req.headers.host?.includes("localhost") || req.headers.host?.startsWith("127.0.0.1");
 
+  const cookieParts = [
+    `cc_session=${rawToken}`,
+    "Path=/",
+    "HttpOnly",
+    "SameSite=Lax",
+    "Max-Age=2592000",
+  ];
+
+  if (!isLocalhost) {
+    cookieParts.push("Domain=.campcast.is");
+    cookieParts.push("Secure");
+  }
+
+  res.setHeader("Set-Cookie", cookieParts.join("; "));
 
   res.status(200).json({ ok: true, user });
 }

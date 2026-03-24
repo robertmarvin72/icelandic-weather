@@ -52,6 +52,7 @@ import PrivacyPage from "./pages/PrivacyPage";
 import RefundPage from "./pages/RefundPage";
 import PricingInfo from "./pages/PricingInfo";
 import DecisionBanner from "./components/DecisionBanner";
+import AdminDashboard from "./pages/AdminDashboard";
 
 // ──────────────────────────────────────────────────────────────
 // App page
@@ -695,6 +696,33 @@ function PricingInfoRoute() {
 
   return <PricingInfo lang={lang} theme={theme} t={t} onUpgrade={startCheckout} />;
 }
+
+function AdminRoute() {
+  const [theme] = useLocalStorageState("theme", "light");
+  const { lang } = useLanguage();
+  const t = useT(lang);
+  const { me } = useMe();
+
+  const adminEmails = String(import.meta.env.ADMIN_EMAILS || "")
+    .split(",")
+    .map((s) => s.trim().toLowerCase())
+    .filter(Boolean);
+
+  const email = String(me?.user?.email || "")
+    .trim()
+    .toLowerCase();
+  const isAdmin = !!email && adminEmails.includes(email);
+
+  if (!me) {
+    return null;
+  }
+
+  if (!isAdmin) {
+    return <NotFound />;
+  }
+
+  return <AdminDashboard lang={lang} theme={theme} t={t} me={me} />;
+}
 // ──────────────────────────────────────────────────────────────
 // Router
 // ──────────────────────────────────────────────────────────────
@@ -713,6 +741,7 @@ export default function App() {
         <Route path="/terms" element={<TermsRoute />} />
         <Route path="/privacy" element={<PrivacyRoute />} />
         <Route path="/refund" element={<RefundRoute />} />
+        <Route path="/admin" element={<AdminDashboard />} />
 
         <Route path="*" element={<NotFound />} />
       </Routes>
