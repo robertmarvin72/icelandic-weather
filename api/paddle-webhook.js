@@ -58,8 +58,6 @@ function verifyPaddleSignature({ req, rawBody, secret }) {
 }
 
 function isProdLike() {
-  // Treat production deploys as "must verify"
-  // Vercel sets VERCEL_ENV=production for prod deployments
   const vercelEnv = String(process.env.VERCEL_ENV || "").toLowerCase();
   const nodeEnv = String(process.env.NODE_ENV || "").toLowerCase();
   return vercelEnv === "production" || nodeEnv === "production";
@@ -79,9 +77,86 @@ function inFuture(iso) {
   return t > Date.now();
 }
 
+function normalizeStatus(v) {
+  return (
+    String(v || "")
+      .trim()
+      .toLowerCase() || null
+  );
+}
+
+function parseAmountToMajor(value) {
+  if (value == null) return null;
+
+  // Already numeric
+  if (typeof value === "number") {
+    return Number.isFinite(value) ? value : null;
+  }
+
+  const s = String(value).trim();
+  if (!s) return null;
+
+  // Decimal-looking string => assume already major units
+  if (s.includes(".")) {
+    const n = Number.parseFloat(s);
+    return Number.isFinite(n) ? n : null;
+  }
+
+  // Integer-looking string => assume minor units (e.g. cents)
+  if (/^-?\d+$/.test(s)) {
+    const n = Number.parseInt(s, 10);
+    return Number.isFinite(n) ? n / 100 : null;
+  }
+
+  return null;
+}
+
+function extractTransactionAmount(data) {
+  // Prefer details totals if present.
+  const candidates = [
+    data?.details?.totals?.total,
+    data?.details?.totals?.grand_total,
+    data?.totals?.total,
+    data?.totals?.grand_total,
+    data?.payments?.[0]?.amount,
+    data?.payments?.[0]?.total,
+  ];
+
+  for (const candidate of candidates) {
+    const parsed = parseAmountToMajor(candidate);
+    if (parsed != null) return parsed;
+  }
+
+  return null;
+}
+
 function normalizeEvent(evt) {
   const eventType = evt?.event_type || "";
   const data = evt?.data || {};
+
+  // Transaction events
+  if (eventType.startsWith("transaction.")) {
+    const transactionId = data?.id || null;
+    const status = normalizeStatus(data?.status);
+    const customerId = data?.customer_id || data?.customer?.id || null;
+    const userId = data?.custom_data?.user_id || evt?.data?.custom_data?.user_id || null;
+    const currency = data?.currency_code || null;
+    const amount = extractTransactionAmount(data);
+    const occurredAt = toIsoDateOrNull(evt?.occurred_at || data?.billed_at || data?.updated_at);
+
+    return {
+      kind: "transaction",
+      eventType,
+      transactionId,
+      customerId,
+      userId,
+      status,
+      currency,
+      amount,
+      occurredAt,
+      raw: evt,
+    };
+  }
 
   // Customer events
   if (eventType.startsWith("customer.")) {
@@ -98,7 +173,7 @@ function normalizeEvent(evt) {
 
   // Subscription events
   const subscriptionId = data?.id || null;
-  const status = (data?.status || "").toLowerCase() || null;
+  const status = normalizeStatus(data?.status);
 
   const customerId = data?.customer_id || data?.customer?.id || null;
 
@@ -150,7 +225,6 @@ async function mapUser({ customerId, userId }) {
         set paddle_customer_id = ${customerId}
         where id = ${u.id} and paddle_customer_id is null
       `;
-      // return updated view
       return { ...u, paddle_customer_id: u.paddle_customer_id || customerId };
     }
 
@@ -161,11 +235,7 @@ async function mapUser({ customerId, userId }) {
 }
 
 function computeTier({ status, currentPeriodEnd }) {
-  // Paddle statuses can vary; keep this conservative.
-  // "active" / "trialing" / "past_due" => pro
-  // "canceled" / "cancelled" => pro UNTIL current_period_end (if in future), else free
-  // other => free
-  const s = (status || "").toLowerCase();
+  const s = normalizeStatus(status);
 
   const proStatuses = new Set(["active", "trialing", "past_due"]);
 
@@ -186,7 +256,6 @@ export default async function handler(req, res) {
 
   const secret = String(process.env.PADDLE_WEBHOOK_SECRET || "");
   if (!secret && isProdLike()) {
-    // Fail hard in production if signature verification can't happen
     return res.status(500).json({ ok: false, error: "Missing PADDLE_WEBHOOK_SECRET" });
   }
 
@@ -197,7 +266,6 @@ export default async function handler(req, res) {
     return res.status(400).json({ ok: false, error: "Could not read body" });
   }
 
-  // Verify signature (strict if secret exists)
   if (secret) {
     const sigOk = verifyPaddleSignature({ req, rawBody, secret });
     if (!sigOk) {
@@ -221,7 +289,7 @@ export default async function handler(req, res) {
   const eventType = evt?.event_type || "";
 
   const allowed = new Set([
-    // Customer mapping (helps avoid null paddle_customer_id)
+    // Customer mapping
     "customer.created",
     "customer.updated",
 
@@ -230,6 +298,9 @@ export default async function handler(req, res) {
     "subscription.updated",
     "subscription.canceled",
     "subscription.cancelled",
+
+    // Revenue source of truth
+    "transaction.completed",
   ]);
 
   if (!allowed.has(eventType)) {
@@ -239,6 +310,78 @@ export default async function handler(req, res) {
   const normalized = normalizeEvent(evt);
 
   try {
+    // ───────────────────────────────────────────────────────────
+    // Transaction events: upsert revenue row
+    // ───────────────────────────────────────────────────────────
+    if (normalized.kind === "transaction") {
+      const { transactionId, customerId, userId, status, currency, amount, occurredAt, raw } =
+        normalized;
+
+      if (!transactionId) {
+        return res.status(200).json({
+          ok: true,
+          saved: false,
+          event_type: eventType,
+          reason: "Missing transaction id",
+        });
+      }
+
+      if (!currency || amount == null || !occurredAt) {
+        return res.status(200).json({
+          ok: true,
+          saved: false,
+          event_type: eventType,
+          paddle_transaction_id: transactionId,
+          reason: "Missing amount, currency, or occurredAt in payload",
+        });
+      }
+
+      const user = await mapUser({ customerId, userId });
+
+      await sql`
+        insert into paddle_transaction (
+          id,
+          paddle_transaction_id,
+          user_id,
+          status,
+          amount,
+          currency,
+          occurred_at,
+          raw
+        )
+        values (
+          ${crypto.randomUUID()},
+          ${transactionId},
+          ${user?.id || null},
+          ${status || "completed"},
+          ${amount},
+          ${currency},
+          ${occurredAt},
+          ${sql.json(raw)}
+        )
+        on conflict (paddle_transaction_id)
+        do update set
+          user_id = coalesce(excluded.user_id, paddle_transaction.user_id),
+          status = excluded.status,
+          amount = excluded.amount,
+          currency = excluded.currency,
+          occurred_at = excluded.occurred_at,
+          raw = excluded.raw
+      `;
+
+      return res.status(200).json({
+        ok: true,
+        saved: true,
+        event_type: eventType,
+        paddle_transaction_id: transactionId,
+        user_id: user?.id || null,
+        status: status || "completed",
+        amount,
+        currency,
+        occurred_at: occurredAt,
+      });
+    }
+
     // ───────────────────────────────────────────────────────────
     // Customer events: write paddle_customer_id onto app_user
     // ───────────────────────────────────────────────────────────
@@ -313,7 +456,6 @@ export default async function handler(req, res) {
 
     const tier = computeTier({ status, currentPeriodEnd });
 
-    // Cached convenience
     await sql`
       update app_user
       set tier = ${tier}

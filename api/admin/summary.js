@@ -2,12 +2,6 @@ import { isAdminEmail } from "../_lib/admin.js";
 import { getMeFromRequest } from "../_lib/getMe.js";
 import postgres from "postgres";
 
-// ATH:
-// Hér þarftu að tengja við ykkar raunverulega auth/session logic.
-// Ég skil eftir getSessionUser() sem helper sem þú tengir við núverandi setup.
-
-// TODO:
-// Tengdu þessi föll við ykkar raunverulegu DB layer.
 const sql = postgres(process.env.POSTGRES_URL, { ssl: "require" });
 
 async function getUsersSummary() {
@@ -71,10 +65,42 @@ async function getProSummary() {
 }
 
 async function getRevenueSummary() {
+  const rows = await sql`
+    select
+      coalesce(
+        sum(amount) filter (
+          where lower(coalesce(status, '')) in ('completed', 'paid')
+            and occurred_at >= date_trunc('month', now())
+            and upper(coalesce(currency, '')) = 'EUR'
+        ),
+        0
+      )::numeric as month,
+
+      coalesce(
+        sum(amount) filter (
+          where lower(coalesce(status, '')) in ('completed', 'paid')
+            and occurred_at >= now() - interval '30 days'
+            and upper(coalesce(currency, '')) = 'EUR'
+        ),
+        0
+      )::numeric as last30d,
+
+      coalesce(
+        sum(amount) filter (
+          where lower(coalesce(status, '')) in ('completed', 'paid')
+            and upper(coalesce(currency, '')) = 'EUR'
+        ),
+        0
+      )::numeric as lifetime
+    from paddle_transaction
+  `;
+
+  const row = rows[0] || {};
+
   return {
-    month: 0,
-    last30d: 0,
-    lifetime: 0,
+    month: Number(row.month || 0),
+    last30d: Number(row.last30d || 0),
+    lifetime: Number(row.lifetime || 0),
   };
 }
 
