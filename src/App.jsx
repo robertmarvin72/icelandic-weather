@@ -3,60 +3,44 @@
  */
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { BrowserRouter, Route, Routes, useNavigate } from "react-router-dom";
+import { BrowserRouter, useNavigate } from "react-router-dom";
 
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/react";
-
-// ✅ PWA update detection
 import { registerSW } from "virtual:pwa-register";
-import { usePwaUpdateToast } from "./hooks/usePwaUpdateToast";
 
+import AppRoutes from "./AppRoutes";
 import BackToTop from "./components/BackToTop";
+import DecisionBanner from "./components/DecisionBanner";
 import Footer from "./components/Footer";
 import ForecastTable from "./components/ForecastTable";
 import LazyMap from "./components/LazyMap";
+import LoginModal from "./components/LoginModal";
 import PageHeader from "./components/PageHeader";
 import Splash from "./components/Splash";
-import Top5Leaderboard from "./components/Top5Leaderboard";
 import ToastHub from "./components/ToastHub";
-import { useToast } from "./hooks/useToast";
-
-import { useCampsites } from "./hooks/useCampsites";
-
+import Top5Leaderboard from "./components/Top5Leaderboard";
+import { isFeatureAvailable } from "./config/features";
 import { useBooting } from "./hooks/useBooting";
+import { useCampsites } from "./hooks/useCampsites";
+import { useCheckoutFlow } from "./hooks/useCheckoutFlow";
 import { useDistanceTo } from "./hooks/useDistanceTo";
 import { useForecast } from "./hooks/useForecast";
+import { useLanguage } from "./hooks/useLanguage";
 import { useLeaderboardScores } from "./hooks/useLeaderboardScores";
 import { useLocalStorageState } from "./hooks/useLocalStorageState";
-import { useMyLocationNearestSite } from "./hooks/useMyLocationNearestSite";
-import { useThemeClass } from "./hooks/useThemeClass";
-import { useTop5Campsites } from "./hooks/useTop5Campsites";
-import { useLanguage } from "./hooks/useLanguage";
-import { useT } from "./hooks/useT";
+import { useLoginFlow } from "./hooks/useLoginFlow";
 import { useMe } from "./hooks/useMe";
-
-import NotFound from "./pages/NotFound";
+import { useMyLocationNearestSite } from "./hooks/useMyLocationNearestSite";
+import { usePwaUpdateToast } from "./hooks/usePwaUpdateToast";
+import { useT } from "./hooks/useT";
+import { useThemeClass } from "./hooks/useThemeClass";
+import { useToast } from "./hooks/useToast";
+import { useTop5Campsites } from "./hooks/useTop5Campsites";
 import About from "./pages/About";
-
 import { formatDay } from "./utils/date";
 import { WEATHER_MAP } from "./utils/weatherMap";
-import { isFeatureAvailable } from "./config/features";
-import SlimHeader from "./components/SlimHeader";
 
-import Subscribe from "./pages/Subscribe";
-import Success from "./pages/Success";
-import Pricing from "./pages/Pricing";
-import TermsPage from "./pages/TermsPage";
-import PrivacyPage from "./pages/PrivacyPage";
-import RefundPage from "./pages/RefundPage";
-import PricingInfo from "./pages/PricingInfo";
-import DecisionBanner from "./components/DecisionBanner";
-import AdminDashboard from "./pages/AdminDashboard";
-
-// ──────────────────────────────────────────────────────────────
-// App page
-// ──────────────────────────────────────────────────────────────
 function IcelandCampingWeatherApp({ page = "home" }) {
   const [units, setUnits] = useLocalStorageState("units", "metric");
   const [theme, setTheme] = useLocalStorageState("theme", "light");
@@ -65,15 +49,13 @@ function IcelandCampingWeatherApp({ page = "home" }) {
 
   const { lang, toggleLanguage } = useLanguage();
   const t = useT(lang);
-
   const { toasts, pushToast, dismissToast } = useToast();
+  const navigate = useNavigate();
 
-  // ✅ Server identity / entitlements
   const { me, refetchMe } = useMe();
   const serverPro = !!me?.entitlements?.pro;
   const serverProUntil = me?.entitlements?.proUntil ?? null;
 
-  // ✅ Optional dev override (only in dev)
   const [devPro, setDevPro] = useLocalStorageState("devPro", false);
   const toggleDevPro = useCallback(() => setDevPro((v) => !v), [setDevPro]);
 
@@ -82,25 +64,15 @@ function IcelandCampingWeatherApp({ page = "home" }) {
     return { isPro, proUntil: serverProUntil };
   }, [devPro, serverPro, serverProUntil]);
 
-  // ✅ Campsites now come from server (real Free vs Pro gating)
   const {
     campsites: siteList,
     loading: campsitesLoading,
     error: campsitesError,
-  } = useCampsites({
-    reloadKey: entitlements.isPro,
-  });
+  } = useCampsites({ reloadKey: entitlements.isPro });
 
-  // ✅ Gate flag (NO early returns — avoids Rules of Hooks errors)
   const showCampsitesGate = campsitesLoading || campsitesError || !siteList?.length;
-
   const [siteId, setSiteId] = useLocalStorageState("lastSite", null);
 
-  const navigate = useNavigate();
-
-  // ──────────────────────────────────────────────────────────────
-  // ✅ PWA update toast (onNeedRefresh)
-  // ──────────────────────────────────────────────────────────────
   const [needRefresh, setNeedRefresh] = useState(false);
   const [offlineReady, setOfflineReady] = useState(false);
   const updateServiceWorkerRef = useRef(null);
@@ -126,7 +98,6 @@ function IcelandCampingWeatherApp({ page = "home" }) {
     t,
   });
 
-  // Optional: offline-ready toast (nice UX)
   useEffect(() => {
     if (!offlineReady) return;
 
@@ -139,97 +110,25 @@ function IcelandCampingWeatherApp({ page = "home" }) {
     setOfflineReady(false);
   }, [offlineReady, pushToast, t]);
 
-  // ──────────────────────────────────────────────────────────────
-  // Login modal state (email-based)
-  // ──────────────────────────────────────────────────────────────
-  const [loginOpen, setLoginOpen] = useState(false);
-  const [loginEmail, setLoginEmail] = useState("");
-  const [loginBusy, setLoginBusy] = useState(false);
+  const {
+    loginOpen,
+    loginEmail,
+    loginBusy,
+    setLoginEmail,
+    openLoginModal,
+    closeLoginModal,
+    submitLogin,
+  } = useLoginFlow({ me, navigate, pushToast, refetchMe, t });
 
-  const openLoginModal = useCallback(() => {
-    setLoginEmail(me?.user?.email || "");
-    setLoginOpen(true);
-  }, [me]);
+  const { startCheckout, openBillingPortal } = useCheckoutFlow({
+    me,
+    navigate,
+    openLoginModal,
+    pushToast,
+    refetchMe,
+    t,
+  });
 
-  const closeLoginModal = useCallback(() => {
-    if (loginBusy) return;
-    setLoginOpen(false);
-  }, [loginBusy]);
-
-  useEffect(() => {
-    const url = new URL(window.location.href);
-    const shouldUpgrade = url.searchParams.get("upgrade");
-
-    if (shouldUpgrade === "1" && !me?.user) {
-      openLoginModal();
-      url.searchParams.delete("upgrade");
-      window.history.replaceState({}, "", url.toString());
-    }
-  }, [me, openLoginModal]);
-
-  const submitLogin = useCallback(
-    async (e) => {
-      e?.preventDefault?.();
-
-      const email = String(loginEmail || "").trim();
-      if (!email || !email.includes("@")) {
-        pushToast({
-          type: "error",
-          title: t?.("login") ?? "Login",
-          message: t?.("invalidEmail") ?? "Please enter a valid email.",
-        });
-        return;
-      }
-
-      setLoginBusy(true);
-      try {
-        const r = await fetch("/api/login-email", {
-          method: "POST",
-          credentials: "include",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email }),
-        });
-
-        const data = await r.json().catch(() => null);
-
-        if (!r.ok || !data?.ok) {
-          if (data?.code === "USER_NOT_FOUND") {
-            navigate(`/pricing?email=${encodeURIComponent(email)}`);
-            setLoginOpen(false);
-            return;
-          }
-
-          const msg = data?.error || `Login failed (${r.status})`;
-          pushToast({ type: "error", title: t?.("login") ?? "Login", message: msg });
-          return;
-        }
-
-        await refetchMe();
-
-        pushToast({
-          type: "success",
-          title: t?.("login") ?? "Login",
-          message: t?.("loggedIn") ?? "You're logged in.",
-        });
-
-        setLoginOpen(false);
-        navigate(`/pricing?email=${encodeURIComponent(email)}`);
-      } catch (err) {
-        pushToast({
-          type: "error",
-          title: t?.("login") ?? "Login",
-          message: String(err?.message || err),
-        });
-      } finally {
-        setLoginBusy(false);
-      }
-    },
-    [loginEmail, pushToast, refetchMe, t, navigate]
-  );
-
-  // ──────────────────────────────────────────────────────────────
-  // UI handlers
-  // ──────────────────────────────────────────────────────────────
   const handleSelectSite = useCallback(
     (id) => {
       setSiteId(id);
@@ -248,7 +147,6 @@ function IcelandCampingWeatherApp({ page = "home" }) {
     [setUnits]
   );
 
-  // GEO (use empty list during gate)
   const { userLoc, geoMsg, useMyLocation } = useMyLocationNearestSite(
     showCampsitesGate ? [] : siteList,
     handleSelectSite,
@@ -256,7 +154,6 @@ function IcelandCampingWeatherApp({ page = "home" }) {
   );
   const distanceTo = useDistanceTo(userLoc);
 
-  // LEADERBOARD (use empty list during gate)
   const { scoresById, loadingWave1, loadingBg } = useLeaderboardScores(
     showCampsitesGate ? [] : siteList,
     siteId,
@@ -273,7 +170,6 @@ function IcelandCampingWeatherApp({ page = "home" }) {
     for (const site of siteList) {
       const siteLat = Number(site?.lat);
       const siteLon = Number(site?.lon);
-
       if (!Number.isFinite(siteLat) || !Number.isFinite(siteLon)) continue;
 
       const dx = siteLat - userLoc.lat;
@@ -289,7 +185,6 @@ function IcelandCampingWeatherApp({ page = "home" }) {
     return nearest?.name ?? null;
   }, [userLoc, siteList]);
 
-  // Effects
   useThemeClass(darkMode);
   useEffect(() => {
     if (showCampsitesGate) return;
@@ -303,7 +198,6 @@ function IcelandCampingWeatherApp({ page = "home" }) {
     if (!exists) setSiteId(siteList[0].id);
   }, [showCampsitesGate, siteId, siteList, setSiteId]);
 
-  // FORECAST (null during gate)
   const site = showCampsitesGate ? null : siteList.find((s) => s.id === siteId) || siteList[0];
   const { rows, windDir, shelter, loading, error } = useForecast(site?.lat, site?.lon, {
     t,
@@ -311,7 +205,6 @@ function IcelandCampingWeatherApp({ page = "home" }) {
     retries: 2,
   });
 
-  // ✅ Prevent Pro data leakage
   const gatedWindDir = useMemo(() => {
     const gate = isFeatureAvailable("windDirection", entitlements);
     return gate.available ? windDir : null;
@@ -327,176 +220,27 @@ function IcelandCampingWeatherApp({ page = "home" }) {
     [rows, lang]
   );
 
-  const currentScore = useMemo(() => {
-    return Number(scoresById?.[siteId]?.score ?? 0);
-  }, [scoresById, siteId]);
-
+  const currentScore = useMemo(
+    () => Number(scoresById?.[siteId]?.score ?? 0),
+    [scoresById, siteId]
+  );
   const [routePlannerSummary, setRoutePlannerSummary] = useState(null);
-
-  // Boot splash lifecycle
   const booting = useBooting(loading, rows.length);
-
-  // ✅ Checkout: if not logged in -> open login modal first
-  const startCheckout = useCallback(async () => {
-    if (!me?.user) {
-      pushToast({
-        type: "info",
-        title: t?.("loginRequired") ?? "Login required",
-        message: t?.("pleaseLoginToContinue") ?? "Please log in to continue.",
-      });
-      openLoginModal();
-      return;
-    }
-
-    if (me?.entitlements?.pro) {
-      pushToast({
-        type: "success",
-        title: t?.("proActive") ?? "Pro",
-        message: t?.("alreadyPro") ?? "You already have Pro 👌",
-      });
-      return;
-    }
-
-    navigate(`/pricing?email=${encodeURIComponent(me?.user?.email || "")}`);
-  }, [me, navigate, openLoginModal, pushToast, t]);
-
-  // ✅ Paddle billing portal (customer portal)
-  const openBillingPortal = useCallback(async () => {
-    if (!me?.user) {
-      openLoginModal();
-      return;
-    }
-
-    try {
-      pushToast({
-        type: "info",
-        title: t?.("billingPortal") ?? "Billing",
-        message: t?.("openingBillingPortal") ?? "Opening billing portal…",
-      });
-
-      const r = await fetch("/api/billing-portal", {
-        method: "POST",
-        credentials: "include",
-        headers: { "Content-Type": "application/json" },
-      });
-
-      const j = await r.json().catch(() => ({}));
-      if (!r.ok || !j?.ok || !j?.url) {
-        const msg =
-          j?.error ||
-          (j?.code === "MISSING_PADDLE_CUSTOMER"
-            ? (t?.("billingPortalUnavailable") ?? "Billing portal not ready for this account yet.")
-            : `Billing portal failed (${r.status})`);
-        throw new Error(msg);
-      }
-
-      window.location.assign(j.url);
-    } catch (err) {
-      pushToast({
-        type: "error",
-        title: t?.("billingPortal") ?? "Billing",
-        message: String(err?.message || err),
-      });
-    }
-  }, [me, openLoginModal, pushToast, t]);
-
-  // ✅ If we come back from Paddle success/cancel, refresh entitlements
-  useEffect(() => {
-    const url = new URL(window.location.href);
-    const status = url.searchParams.get("checkout");
-    if (!status) return;
-
-    if (status === "success") {
-      pushToast({
-        type: "success",
-        title: "Pro",
-        message: t?.("checkoutSuccess") ?? "Pro unlocked!",
-      });
-      refetchMe();
-    } else if (status === "cancel") {
-      pushToast({
-        type: "info",
-        title: "Checkout",
-        message: t?.("checkoutCancelled") ?? "Checkout cancelled.",
-      });
-      refetchMe();
-    }
-
-    url.searchParams.delete("checkout");
-    window.history.replaceState({}, "", url.toString());
-  }, [pushToast, refetchMe, t]);
 
   return (
     <div>
       <Splash show={booting} minMs={700} fadeMs={500} />
       <ToastHub toasts={toasts} onDismiss={dismissToast} />
 
-      {/* ✅ Simple login modal */}
-      {loginOpen && (
-        <div
-          className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/60 p-4"
-          role="dialog"
-          aria-modal="true"
-          onMouseDown={(e) => {
-            if (e.target === e.currentTarget) closeLoginModal();
-          }}
-        >
-          <div
-            className="w-full max-w-md rounded-2xl border border-slate-200 bg-white text-slate-900 shadow-xl p-4
-                 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100"
-          >
-            <div className="flex items-center justify-between mb-2">
-              <div className="text-base font-semibold">{t?.("login") ?? "Login"}</div>
-
-              <button
-                type="button"
-                onClick={closeLoginModal}
-                disabled={loginBusy}
-                className="rounded-lg px-2 py-1 text-sm border border-slate-300 text-slate-700 hover:bg-slate-50
-                     dark:border-slate-600 dark:text-slate-200 dark:hover:bg-slate-800"
-                aria-label="Close"
-                title="Close"
-              >
-                ✕
-              </button>
-            </div>
-
-            <div className="text-sm text-slate-600 mb-3 dark:text-slate-300">
-              {t?.("enterEmailToContinue") ?? "Enter your email to continue."}
-            </div>
-
-            <form onSubmit={submitLogin} className="grid gap-3">
-              <input
-                type="email"
-                value={loginEmail}
-                onChange={(e) => setLoginEmail(e.target.value)}
-                placeholder="you@example.com"
-                className="w-full rounded-xl border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900
-                     placeholder:text-slate-400
-                     focus:outline-none focus:ring-2 focus:ring-sky-500/40 focus:border-sky-400
-                     dark:border-slate-600 dark:bg-slate-950 dark:text-slate-100 dark:placeholder:text-slate-400
-                     dark:focus:ring-sky-400/30 dark:focus:border-sky-400"
-                autoFocus
-              />
-
-              <button
-                type="submit"
-                disabled={loginBusy}
-                className={`rounded-xl px-4 py-2 text-sm font-semibold
-                      bg-slate-900 text-white hover:opacity-100
-                      dark:bg-white dark:text-slate-900
-                      ${loginBusy ? "opacity-60 cursor-not-allowed" : "opacity-95"}`}
-              >
-                {loginBusy ? (t?.("loading") ?? "Loading…") : (t?.("continue") ?? "Continue")}
-              </button>
-            </form>
-
-            <div className="mt-3 text-xs text-slate-500 dark:text-slate-300">
-              {t?.("noPasswordNeeded") ?? "No password. Because life is hard enough already."}
-            </div>
-          </div>
-        </div>
-      )}
+      <LoginModal
+        open={loginOpen}
+        loginBusy={loginBusy}
+        loginEmail={loginEmail}
+        setLoginEmail={setLoginEmail}
+        closeLoginModal={closeLoginModal}
+        submitLogin={submitLogin}
+        t={t}
+      />
 
       <div className="min-h-screen font-sans bg-soft-grid text-slate-900 dark:bg-slate-950 dark:text-slate-100">
         <PageHeader
@@ -516,18 +260,18 @@ function IcelandCampingWeatherApp({ page = "home" }) {
           onToggleDevPro={toggleDevPro}
         />
 
-        <div className="max-w-6xl mx-auto px-4 py-10">
+        <div className="mx-auto max-w-6xl px-4 py-10">
           {page === "about" ? (
             <About t={t} />
           ) : showCampsitesGate ? (
-            <div className="min-h-[50vh] flex items-center justify-center p-6">
+            <div className="flex min-h-[50vh] items-center justify-center p-6">
               <div className="max-w-md text-center">
-                <div className="text-base font-semibold mb-2">
+                <div className="mb-2 text-base font-semibold">
                   {campsitesLoading ? "Loading campsites…" : "Couldn’t load campsites"}
                 </div>
 
                 {!campsitesLoading && (
-                  <div className="text-sm opacity-80 mb-4">
+                  <div className="mb-4 text-sm opacity-80">
                     {String(campsitesError?.message || "Unknown error")}
                   </div>
                 )}
@@ -536,7 +280,7 @@ function IcelandCampingWeatherApp({ page = "home" }) {
                   <button
                     type="button"
                     onClick={() => window.location.reload()}
-                    className="rounded-xl px-4 py-2 text-sm font-semibold bg-slate-900 text-white dark:bg-white dark:text-slate-900"
+                    className="rounded-xl bg-slate-900 px-4 py-2 text-sm font-semibold text-white dark:bg-white dark:text-slate-900"
                   >
                     Reload
                   </button>
@@ -552,7 +296,8 @@ function IcelandCampingWeatherApp({ page = "home" }) {
                 routePlannerSummary={routePlannerSummary}
                 entitlements={entitlements}
               />
-              <div className="grid md:grid-cols-2 gap-4">
+
+              <div className="grid gap-4 md:grid-cols-2">
                 <ForecastTable
                   entitlements={entitlements}
                   site={site}
@@ -615,133 +360,10 @@ function IcelandCampingWeatherApp({ page = "home" }) {
   );
 }
 
-// --- Route wrappers so Subscribe/Success can receive lang/theme/t via props ---
-function PricingRoute() {
-  const [theme] = useLocalStorageState("theme", "light");
-  const { lang } = useLanguage();
-  const t = useT(lang);
-  return <Pricing lang={lang} theme={theme} t={t} />;
-}
-
-function SubscribeRoute() {
-  const [theme] = useLocalStorageState("theme", "light");
-  const { lang } = useLanguage();
-  const t = useT(lang);
-  return <Subscribe lang={lang} theme={theme} t={t} />;
-}
-
-function SuccessRoute() {
-  const [theme] = useLocalStorageState("theme", "light");
-  const { lang } = useLanguage();
-  const t = useT(lang);
-  return <Success lang={lang} theme={theme} t={t} />;
-}
-
-function TermsRoute() {
-  const [theme] = useLocalStorageState("theme", "light");
-  const { lang } = useLanguage();
-  const t = useT(lang);
-  return <TermsPage lang={lang} theme={theme} t={t} />;
-}
-
-function PrivacyRoute() {
-  const [theme] = useLocalStorageState("theme", "light");
-  const { lang } = useLanguage();
-  const t = useT(lang);
-  return <PrivacyPage lang={lang} theme={theme} t={t} />;
-}
-
-function RefundRoute() {
-  const [theme] = useLocalStorageState("theme", "light");
-  const { lang } = useLanguage();
-  const t = useT(lang);
-  return <RefundPage lang={lang} theme={theme} t={t} />;
-}
-
-function PricingInfoRoute() {
-  const [theme] = useLocalStorageState("theme", "light");
-  const { lang } = useLanguage();
-  const t = useT(lang);
-  const navigate = useNavigate();
-  const { me } = useMe();
-  const { pushToast } = useToast();
-
-  const startCheckout = async () => {
-    if (!me?.user) {
-      pushToast({
-        type: "info",
-        title: t("loginRequired"),
-        message: t("pleaseLoginToContinue"),
-      });
-      // 👉 redirect í app sem opnar login modal
-      navigate("/?upgrade=1");
-      return;
-    }
-
-    if (me?.entitlements?.pro) {
-      pushToast({
-        type: "success",
-        title: t("proActive"),
-        message: t("alreadyPro"),
-      });
-      return;
-    }
-
-    navigate(`/pricing?email=${encodeURIComponent(me?.user?.email || "")}`);
-  };
-
-  return <PricingInfo lang={lang} theme={theme} t={t} onUpgrade={startCheckout} />;
-}
-
-function AdminRoute() {
-  const [theme] = useLocalStorageState("theme", "light");
-  const { lang } = useLanguage();
-  const t = useT(lang);
-  const { me } = useMe();
-
-  const adminEmails = String(import.meta.env.ADMIN_EMAILS || "")
-    .split(",")
-    .map((s) => s.trim().toLowerCase())
-    .filter(Boolean);
-
-  const email = String(me?.user?.email || "")
-    .trim()
-    .toLowerCase();
-  const isAdmin = !!email && adminEmails.includes(email);
-
-  if (!me) {
-    return null;
-  }
-
-  if (!isAdmin) {
-    return <NotFound />;
-  }
-
-  return <AdminDashboard lang={lang} theme={theme} t={t} me={me} />;
-}
-// ──────────────────────────────────────────────────────────────
-// Router
-// ──────────────────────────────────────────────────────────────
 export default function App() {
   return (
     <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<IcelandCampingWeatherApp />} />
-        <Route path="/about" element={<IcelandCampingWeatherApp page="about" />} />
-
-        {/* ✅ These pages need lang/theme/t, so use wrappers */}
-        <Route path="/pricing" element={<PricingRoute />} />
-        <Route path="/pricing-info" element={<PricingInfoRoute />} />
-        <Route path="/subscribe" element={<SubscribeRoute />} />
-        <Route path="/success" element={<SuccessRoute />} />
-        <Route path="/terms" element={<TermsRoute />} />
-        <Route path="/privacy" element={<PrivacyRoute />} />
-        <Route path="/refund" element={<RefundRoute />} />
-        <Route path="/admin" element={<AdminDashboard />} />
-
-        <Route path="*" element={<NotFound />} />
-      </Routes>
-
+      <AppRoutes HomeComponent={IcelandCampingWeatherApp} />
       <Analytics />
       <SpeedInsights />
     </BrowserRouter>

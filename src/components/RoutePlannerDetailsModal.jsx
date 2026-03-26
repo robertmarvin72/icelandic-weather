@@ -46,6 +46,7 @@ export default function RoutePlannerDetailsModal({
   open,
   onClose,
   t,
+  lang,
   baseSiteLabel,
   candidate,
   windowDaysCount, // keep modal in sync with slider
@@ -195,6 +196,36 @@ export default function RoutePlannerDetailsModal({
       Math.abs(deltaPts) < 0.0001;
 
     return useRaw ? deltaRaw : deltaPts;
+  }
+
+  function translateOrFallback(key, fallback) {
+    const value = t?.(key);
+
+    if (!value || value === key) {
+      if (import.meta.env.DEV) {
+        console.warn("Missing translation:", key);
+      }
+      return fallback;
+    }
+
+    return value;
+  }
+
+  function warningTypeLabel(type) {
+    switch (type) {
+      case "wind":
+        return translateOrFallback("routeWarnTypeWind", "Vindur");
+      case "gust":
+        return translateOrFallback("routeWarnTypeGust", "Hviður");
+      case "rain":
+        return translateOrFallback("routeWarnTypeRain", "Rigning");
+      case "tempLow":
+        return translateOrFallback("routeWarnTypeTempLow", "Kuldi");
+      case "tempHigh":
+        return translateOrFallback("routeWarnTypeTempHigh", "Hiti");
+      default:
+        return type || "—";
+    }
   }
 
   const verdictRows = days.map((d) => {
@@ -470,7 +501,7 @@ export default function RoutePlannerDetailsModal({
             <div className="mt-3">
               <RouteCompareTable
                 t={t}
-                lang="is"
+                lang={lang}
                 baseSiteLabel={baseSiteLabel || t?.("routeCompareBase") || "Núverandi"}
                 candidateLabel={
                   candidate?.siteName ||
@@ -565,16 +596,16 @@ export default function RoutePlannerDetailsModal({
                                     <span
                                       key={`${w.type}_${idx}`}
                                       className={`
-                                      inline-flex items-center rounded-full px-2 py-0.5 text-[11px] font-semibold
-                                      ${
-                                        w.level === "high"
-                                          ? "bg-rose-100 text-rose-800 dark:bg-rose-950/40 dark:text-rose-200"
-                                          : "bg-amber-100 text-amber-800 dark:bg-amber-950/40 dark:text-amber-200"
-                                      }
-                                    `}
-                                      title={`${w.type}: ${fmt(w.value, 0)}`}
+                                        inline-flex items-center rounded-full px-2 py-0.5 text-[11px] font-semibold
+                                        ${
+                                          w.level === "high"
+                                            ? "bg-rose-100 text-rose-800 dark:bg-rose-950/40 dark:text-rose-200"
+                                            : "bg-amber-100 text-amber-800 dark:bg-amber-950/40 dark:text-amber-200"
+                                        }
+                                      `}
+                                      title={`${warningTypeLabel(w.type)}: ${fmt(w.value, 0)}`}
                                     >
-                                      {w.level === "high" ? "🚨" : "⚠️"} {w.type}
+                                      {w.level === "high" ? "🚨" : "⚠️"} {warningTypeLabel(w.type)}
                                     </span>
                                   ))}
                                 </div>
