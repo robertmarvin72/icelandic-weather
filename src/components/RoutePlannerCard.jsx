@@ -1,14 +1,18 @@
 // src/components/RoutePlannerCard.jsx
 import React, { useEffect, useMemo, useState } from "react";
 
-import { getRelocationRecommendation } from "../lib/relocationService";
 import { getRouteVerdictMeta } from "../lib/routeVerdictMeta";
-import { getForecast } from "../lib/forecastCache";
 import RoutePlannerDetailsModal from "./RoutePlannerDetailsModal";
 import AnimatedPill from "./AnimatedPill";
 import { isFeatureAvailable } from "../config/features";
-import { estimateRouteRisk } from "../lib/routeRisk";
-import { HAZARDS_V1 } from "../config/hazards";
+import { useRoutePlanner } from "../hooks/useRoutePlanner";
+import { deriveRoutePlannerSummary } from "../lib/routePlannerSummary";
+import {
+  getHazardBlockText,
+  getStayReasonText,
+  getHazardWindowNarrative,
+  getRoughWeatherWindowText,
+} from "../lib/routePlannerNarrative";
 
 // Map reason type -> FLAT translation key
 function reasonTypeToKey(type) {
@@ -73,12 +77,6 @@ function ProLock({ t, me, onUpgrade }) {
   );
 }
 
-function tomorrowISODate() {
-  const now = new Date();
-  const tmr = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate() + 1));
-  return tmr.toISOString().slice(0, 10);
-}
-
 function interpolate(template, vars) {
   if (typeof template !== "string") return "";
   let out = template;
@@ -86,42 +84,6 @@ function interpolate(template, vars) {
     out = out.replaceAll(`{${k}}`, String(v));
   }
   return out;
-}
-
-function dateKey(d) {
-  return String(d ?? "").slice(0, 10);
-}
-
-/**
- * ✅ Enrich candidate days with base-site day points so UI can do correct deltas.
- * - candidate.windowDays gets: baseSitePoints, baseSitePointsRaw
- * - matched by date (YYYY-MM-DD)
- */
-function enrichWithBaseDays(out, windowDaysCount) {
-  if (!out || !Array.isArray(out?.ranked)) return out;
-
-  const baseDays = Array.isArray(out?.explain?.base?.windowDays) ? out.explain.base.windowDays : [];
-  const baseByDate = new Map(baseDays.map((d) => [dateKey(d?.date), d]));
-
-  const ranked = out.ranked.map((c) => {
-    const allDays = Array.isArray(c?.windowDays) ? c.windowDays : [];
-    const days = typeof windowDaysCount === "number" ? allDays.slice(0, windowDaysCount) : allDays;
-
-    const enrichedDays = days.map((d) => {
-      const bd = baseByDate.get(dateKey(d?.date));
-      return {
-        ...d,
-        baseSitePoints: typeof bd?.points === "number" ? bd.points : (d?.baseSitePoints ?? null),
-        baseSitePointsRaw:
-          typeof bd?.pointsRaw === "number" ? bd.pointsRaw : (d?.baseSitePointsRaw ?? null),
-      };
-    });
-
-    const mergedWindowDays = [...enrichedDays, ...allDays.slice(enrichedDays.length).map((d) => d)];
-    return { ...c, windowDays: mergedWindowDays };
-  });
-
-  return { ...out, ranked };
 }
 
 export default function RoutePlannerCard({
@@ -150,13 +112,6 @@ export default function RoutePlannerCard({
   const effectiveRadiusKm = isPreview ? 30 : radiusKm;
   const effectiveWindowDays = isPreview ? 1 : windowDays;
   const effectiveLimit = isPreview ? 1 : limit;
-
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
-  const [result, setResult] = useState(null);
-
-  const [routeRiskData, setRouteRiskData] = useState(null);
-  const [routeRiskLoading, setRouteRiskLoading] = useState(false);
 
   const [detailsOpen, setDetailsOpen] = useState(false);
   const [detailsCandidate, setDetailsCandidate] = useState(null);
@@ -201,158 +156,17 @@ export default function RoutePlannerCard({
     return (Array.isArray(sites) ? sites : []).find((s) => s?.id === baseSiteId) ?? null;
   }, [baseSiteId, sites]);
 
-  useEffect(() => {
-    let cancelled = false;
-
-    async function run() {
-      setError("");
-      setResult(null);
-      setRouteRiskData(null);
-      setRouteRiskLoading(false);
-
-      // ✅ allow preview to run (but limited scope)
-      if (!isPro && !isPreview) return;
-      if (!baseSiteId) return;
-      if (!baseSite) return;
-      if (!Array.isArray(sites) || sites.length === 0) return;
-
-      setLoading(true);
-      try {
-        const startDateISO = tomorrowISODate();
-
-        const outRaw = await getRelocationRecommendation(baseSiteId, sites, {
-          radiusKm: effectiveRadiusKm,
-          days: effectiveWindowDays,
-          startDateISO,
-          limit: effectiveLimit,
-        });
-
-        const out = enrichWithBaseDays(outRaw, effectiveWindowDays);
-
-        if (!cancelled) {
-          setResult(out);
-        }
-      } catch (e) {
-        const msg = e?.message || "Route planner failed";
-        if (!cancelled) {
-          setError(
-            msg.includes("Base site forecast missing") ? t("routePlannerBaseForecastMissing") : msg
-          );
-        }
-      } finally {
-        if (!cancelled) setLoading(false);
-      }
-    }
-
-    run();
-    return () => {
-      cancelled = true;
-    };
-  }, [
+  const { loading, error, result, routeRiskData, routeRiskLoading } = useRoutePlanner({
     isPro,
     isPreview,
     baseSiteId,
     baseSite,
     sites,
-    radiusKm,
-    windowDays,
-    limit,
     effectiveRadiusKm,
     effectiveWindowDays,
     effectiveLimit,
     t,
-  ]);
-
-  useEffect(() => {
-    let cancelled = false;
-
-    async function loadRouteRisk() {
-      setRouteRiskData(null);
-      setRouteRiskLoading(false);
-
-      if (!result) return;
-      if (!baseSite) return;
-      if (isPreview) return;
-
-      const topRanked = Array.isArray(result?.ranked) ? result.ranked.slice(0, 3) : [];
-      const bestCandidate = topRanked[0] || null;
-
-      const recommendation = String(
-        result?.recommendation || bestCandidate?.recommendation || "stay"
-      ).toLowerCase();
-
-      if (!bestCandidate) return;
-      if (recommendation === "stay") return;
-
-      const destinationSite =
-        (Array.isArray(sites) ? sites : []).find((s) => s?.id === bestCandidate?.siteId) ?? null;
-
-      const baseLat = baseSite?.lat ?? baseSite?.latitude;
-      const baseLon = baseSite?.lon ?? baseSite?.longitude;
-
-      const destLat =
-        destinationSite?.lat ??
-        destinationSite?.latitude ??
-        bestCandidate?.site?.lat ??
-        bestCandidate?.site?.latitude ??
-        bestCandidate?.lat ??
-        bestCandidate?.latitude;
-
-      const destLon =
-        destinationSite?.lon ??
-        destinationSite?.longitude ??
-        bestCandidate?.site?.lon ??
-        bestCandidate?.site?.longitude ??
-        bestCandidate?.lon ??
-        bestCandidate?.longitude;
-
-      if (
-        typeof baseLat !== "number" ||
-        typeof baseLon !== "number" ||
-        typeof destLat !== "number" ||
-        typeof destLon !== "number"
-      ) {
-        return;
-      }
-
-      setRouteRiskLoading(true);
-
-      try {
-        const risk = await estimateRouteRisk({
-          origin: {
-            lat: baseLat,
-            lon: baseLon,
-          },
-          destination: {
-            lat: destLat,
-            lon: destLon,
-          },
-          getForecast,
-          hazards: HAZARDS_V1,
-          samples: 7,
-        });
-
-        if (!cancelled) {
-          setRouteRiskData(risk);
-        }
-      } catch (err) {
-        console.error("Route risk failed", err);
-        if (!cancelled) {
-          setRouteRiskData(null);
-        }
-      } finally {
-        if (!cancelled) {
-          setRouteRiskLoading(false);
-        }
-      }
-    }
-
-    loadRouteRisk();
-
-    return () => {
-      cancelled = true;
-    };
-  }, [result, baseSite, isPreview, sites]);
+  });
 
   // ✅ One-time route disclaimer
   useEffect(() => {
@@ -384,55 +198,22 @@ export default function RoutePlannerCard({
   }, [result]);
 
   // ✅ MUST stay above all early returns
-  const top3 = Array.isArray(result?.ranked) ? result.ranked.slice(0, 3) : [];
-  const best = top3[0] || null;
-
-  let decisionLower = String(
-    result?.recommendation || best?.recommendation || "stay"
-  ).toLowerCase();
-
-  // 🚧 Route safety override
-  if (routeRiskData?.routeRisk === "HIGH" && decisionLower === "move") {
-    decisionLower = "consider";
-  }
-
-  const routePlannerSummary = useMemo(() => {
-    const candidateSite = best
-      ? (Array.isArray(sites) ? sites : []).find((s) => s?.id === best?.siteId) ||
-        best?.site ||
-        null
-      : null;
-
-    return {
-      ready: !!result,
-      verdict: String(decisionLower || "stay").toLowerCase(),
+  const {
+    top3,
+    best,
+    decisionLower,
+    summary: routePlannerSummary,
+  } = useMemo(() => {
+    return deriveRoutePlannerSummary({
+      result,
+      sites,
+      effectiveRadiusKm,
+      effectiveWindowDays,
+      routeRiskData,
       isPreview,
       isPro,
-      radiusKm: effectiveRadiusKm,
-      windowDays: effectiveWindowDays,
-      candidate: candidateSite
-        ? {
-            id: candidateSite?.id || best?.siteId || null,
-            name: candidateSite?.name || null,
-            distanceKm:
-              typeof best?.distanceKm === "number"
-                ? best.distanceKm
-                : typeof best?.distance === "number"
-                  ? best.distance
-                  : null,
-          }
-        : null,
-    };
-  }, [
-    result,
-    decisionLower,
-    isPreview,
-    isPro,
-    effectiveRadiusKm,
-    effectiveWindowDays,
-    best,
-    sites,
-  ]);
+    });
+  }, [result, sites, effectiveRadiusKm, effectiveWindowDays, routeRiskData, isPreview, isPro]);
 
   useEffect(() => {
     if (typeof onSummaryChange !== "function") return;
@@ -778,55 +559,6 @@ export default function RoutePlannerCard({
     return null;
   }
 
-  function getHazardBlockText(candidateRow) {
-    if (!candidateRow?.hazardBlocked) return null;
-
-    if (candidateRow?.hazardBlockMode === "stay") {
-      return `🚨 ${
-        t("routeHazardBlockerStay") ||
-        "Veðuráhætta á einum degi kemur í veg fyrir flutningsráðleggingu."
-      }`;
-    }
-
-    if (candidateRow?.hazardBlockMode === "consider") {
-      return `⚠️ ${
-        t("routeHazardBlockerConsider") || "Veðuráhætta á einum degi dregur úr ráðleggingu."
-      }`;
-    }
-
-    return `⚠️ ${t("routeHazardBlockerShort") || "Hazard dagur veikti niðurstöðu."}`;
-  }
-
-  function getStayReasonText(candidateRow) {
-    if (decisionLower !== "stay") return null;
-
-    if (!candidateRow) {
-      return (
-        t("routeStayReasonAlreadyBest") || "Þú ert líklega nú þegar á besta staðnum í nágrenninu."
-      );
-    }
-
-    if (candidateRow?.hazardBlocked) {
-      return (
-        t("routeStayReasonHazard") || "Veðuráhætta annars staðar gerir flutning ekki ráðlagðan."
-      );
-    }
-
-    if (
-      typeof candidateRow?.deltaVsBase === "number" &&
-      candidateRow.deltaVsBase > 0 &&
-      candidateRow.deltaVsBase < 0.5
-    ) {
-      return (
-        t("routeStayReasonSmallDifference") || "Munurinn er of lítill til að réttlæta flutning."
-      );
-    }
-
-    return (
-      t("routeStayReasonAlreadyBest") || "Þú ert líklega nú þegar á besta staðnum í nágrenninu."
-    );
-  }
-
   function formatShortDateLabel(dateISO) {
     if (!dateISO) return "";
 
@@ -889,42 +621,6 @@ export default function RoutePlannerCard({
     };
   }
 
-  function getRoughWeatherWindowText(candidateRow) {
-    const rw = candidateRow?.roughWeatherWindow;
-    if (!rw?.hasWindow || !rw?.startDate || !rw?.endDate) return null;
-
-    const start = formatShortDateLabel(rw.startDate);
-    const end = formatShortDateLabel(rw.endDate);
-
-    if (rw.dayCount <= 1) {
-      return interpolate(t("routeRoughWeatherWindowSingle"), {
-        date: start,
-      });
-    }
-
-    return interpolate(t("routeRoughWeatherWindowRange"), {
-      start,
-      end,
-      days: rw.dayCount,
-    });
-  }
-
-  function getHazardWindowNarrative(candidateRow) {
-    const hw = candidateRow?.hazardWindow;
-    if (!hw?.type) return null;
-
-    switch (hw.type) {
-      case "passingStorm":
-        return t("routeHazardWindowPassingStorm");
-      case "roughWeather":
-        return t("routeHazardWindowRoughWeather");
-      case "stormyPeriod":
-        return t("routeHazardWindowStormyPeriod");
-      default:
-        return null;
-    }
-  }
-
   function buildRouteNarrative({
     baseSite,
     best,
@@ -971,15 +667,21 @@ export default function RoutePlannerCard({
     return parts.filter(Boolean);
   }
 
-  const bestHazardBlockText = getHazardBlockText(best);
-  const bestStayReasonText = getStayReasonText(best);
+  const bestHazardBlockText = getHazardBlockText(best, t);
+  const bestStayReasonText = getStayReasonText(best, decisionLower, t);
   const bestEscapeSuggestion = getEscapeSuggestion(best);
-  const bestRoughWeatherWindowText = getRoughWeatherWindowText(best);
-  const bestHazardWindowNarrative = getHazardWindowNarrative(best);
+  const bestRoughWeatherWindowText = getRoughWeatherWindowText(
+    best,
+    t,
+    formatShortDateLabel,
+    interpolate
+  );
+  const bestHazardWindowNarrative = getHazardWindowNarrative(best, t);
 
-  const baseHazardWindowNarrative = getHazardWindowNarrative({
-    hazardWindow: result?.explain?.base?.hazardWindow,
-  });
+  const baseHazardWindowNarrative = getHazardWindowNarrative(
+    { hazardWindow: result?.explain?.base?.hazardWindow },
+    t
+  );
 
   const shownHazardWindowNarrative = bestHazardWindowNarrative || baseHazardWindowNarrative;
 

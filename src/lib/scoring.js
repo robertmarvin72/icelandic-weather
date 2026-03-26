@@ -216,16 +216,8 @@ function computeShelterBonus({ shelter, windMax, windGust, season }) {
   return Math.round(shelterCurve * sev01 * maxBonus);
 }
 
-function getPrecipTimingMultiplier({ rain, precipStartHour, precipDurationHours }) {
+function getPrecipTimingMultiplier({ rain }) {
   const mm = typeof rain === "number" && Number.isFinite(rain) ? rain : 0;
-  const start =
-    typeof precipStartHour === "number" && Number.isFinite(precipStartHour)
-      ? precipStartHour
-      : null;
-  const duration =
-    typeof precipDurationHours === "number" && Number.isFinite(precipDurationHours)
-      ? precipDurationHours
-      : 0;
 
   // Negligible precipitation -> no penalty
   if (mm < 1) return 0;
@@ -234,16 +226,7 @@ function getPrecipTimingMultiplier({ rain, precipStartHour, precipDurationHours 
   return 1;
 }
 
-export function scoreSiteDay({
-  tmax,
-  rain,
-  windMax,
-  windGust,
-  date,
-  shelter,
-  precipStartHour,
-  precipDurationHours,
-}) {
+export function scoreSiteDay({ tmax, rain, windMax, windGust, date, shelter }) {
   const season = getSeasonForDate(date);
   const cfg = getSeasonConfig(season);
 
@@ -259,8 +242,6 @@ export function scoreSiteDay({
 
   const precipTimingMultiplier = getPrecipTimingMultiplier({
     rain,
-    precipStartHour,
-    precipDurationHours,
   });
 
   const windPen = Math.round(windPenRaw * cfg.windWeight);

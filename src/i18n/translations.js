@@ -615,8 +615,6 @@ export const translations = {
     privacyChanges:
       "CampCast may update this privacy policy from time to time. The latest version will always be published on the website.",
     privacyClose: "Close",
-    footerTerms: "Terms",
-    footerPrivacy: "Privacy",
 
     termsPrivacyAgreePrefix: "I agree to the",
     termsPrivacyAgreeAnd: "and",
@@ -1301,8 +1299,6 @@ export const translations = {
     privacyChanges:
       "CampCast kann að uppfæra þessa persónuverndarstefnu af og til. Nýjasta útgáfa verður ávallt birt á vefsvæðinu.",
     privacyClose: "Loka",
-    footerTerms: "Skilmálar",
-    footerPrivacy: "Persónuvernd",
 
     termsPrivacyAgreePrefix: "Ég samþykki",
     termsPrivacyAgreeAnd: "og",

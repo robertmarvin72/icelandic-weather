@@ -1,14 +1,6 @@
 import React from "react";
 
-export default function PrivacyPage({
-  t = (k, fallback) => fallback || k,
-  lang = "is",
-  theme = "light",
-}) {
-  const isIcelandic = String(lang || "")
-    .toLowerCase()
-    .startsWith("is");
-
+export default function PrivacyPage({ t = (k, fallback) => fallback || k, theme = "light" }) {
   const isDark = theme === "dark";
 
   const T = (key, fallback) => {

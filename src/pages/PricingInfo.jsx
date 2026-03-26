@@ -1,7 +1,7 @@
 import React from "react";
 import Footer from "../components/Footer";
 
-export default function PricingInfo({ lang = "is", theme = "light", t, onUpgrade }) {
+export default function PricingInfo({ theme = "light", t, onUpgrade }) {
   const isLight = theme === "light";
 
   return (

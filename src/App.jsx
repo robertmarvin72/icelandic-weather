@@ -331,13 +331,6 @@ function IcelandCampingWeatherApp({ page = "home" }) {
     return Number(scoresById?.[siteId]?.score ?? 0);
   }, [scoresById, siteId]);
 
-  const bestNearby = useMemo(() => {
-    if (!Array.isArray(top5) || top5.length === 0) return null;
-
-    const bestOther = top5.find((item) => item?.site?.id !== siteId);
-    return bestOther || top5[0] || null;
-  }, [top5, siteId]);
-
   const [routePlannerSummary, setRoutePlannerSummary] = useState(null);
 
   // Boot splash lifecycle

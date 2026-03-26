@@ -342,9 +342,6 @@ export default function ForecastTable({
                         {(() => {
                           const base = t?.(weatherKey);
 
-                          // Detect type
-                          const text = base?.toLowerCase?.() || "";
-
                           const code = Number(r.code ?? 0);
 
                           // Open-Meteo style mapping

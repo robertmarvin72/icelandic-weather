@@ -15,7 +15,7 @@ function hasRoughWeather(rows = []) {
   });
 }
 
-export default function DecisionBanner({ t, rows = [], routePlannerSummary = null, entitlements }) {
+export default function DecisionBanner({ t, rows = [], routePlannerSummary = null }) {
   const model = useMemo(() => {
     const rough = hasRoughWeather(rows);
 
@@ -37,7 +37,7 @@ export default function DecisionBanner({ t, rows = [], routePlannerSummary = nul
       title: t("decisionStayTitle"),
       body: rough ? t("decisionStayBodyRough") : t("decisionStayBodyGood"),
     };
-  }, [rows, routePlannerSummary, t, entitlements]);
+  }, [rows, routePlannerSummary, t]);
 
   const classes =
     model.tone === "consider"

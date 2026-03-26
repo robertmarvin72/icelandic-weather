@@ -1,10 +1,6 @@
 import React from "react";
 
-export default function RefundPage({
-  t = (k, fallback) => fallback || k,
-  lang = "is",
-  theme = "light",
-}) {
+export default function RefundPage({ t = (k, fallback) => fallback || k, theme = "light" }) {
   const isDark = theme === "dark";
 
   const T = (key, fallback) => {
