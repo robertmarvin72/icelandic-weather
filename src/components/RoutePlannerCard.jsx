@@ -1209,6 +1209,7 @@ export default function RoutePlannerCard({
         open={detailsOpen}
         onClose={() => setDetailsOpen(false)}
         t={t}
+        lang={lang}
         baseSiteLabel={baseSite?.name ?? baseSiteId}
         candidate={detailsCandidate}
         windowDaysCount={effectiveWindowDays}
