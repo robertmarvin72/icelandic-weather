@@ -1,46 +1,20 @@
-// src/components/RoutePlannerDetailsModal.jsx
 import React, { useEffect, useMemo, useState } from "react";
 import { createPortal } from "react-dom";
 import RouteCompareTable from "./RouteCompareTable";
-
-function fmt(n, digits = 1) {
-  if (n === null || n === undefined || Number.isNaN(n)) return "—";
-  return Number(n).toFixed(digits);
-}
-
-function signFmt(n, digits = 1) {
-  if (n === null || n === undefined || Number.isNaN(n)) return "—";
-  const v = Number(n);
-  const s = v > 0 ? "+" : "";
-  return `${s}${v.toFixed(digits)}`;
-}
-
-function interpolate(template, vars) {
-  if (typeof template !== "string") return "";
-  let out = template;
-  for (const [k, v] of Object.entries(vars || {})) {
-    out = out.replaceAll(`{${k}}`, String(v));
-  }
-  return out;
-}
-
-function getHazardWindowNarrative(candidate, t) {
-  const hw = candidate?.hazardWindow;
-  if (!hw?.type) return null;
-
-  switch (hw.type) {
-    case "passingStorm":
-      return t?.("routeHazardWindowPassingStorm") || "A short passing storm is expected.";
-    case "roughWeather":
-      return t?.("routeHazardWindowRoughWeather") || "Rough weather may persist for several hours.";
-    case "stormyPeriod":
-      return (
-        t?.("routeHazardWindowStormyPeriod") || "A longer stormy period is expected in this window."
-      );
-    default:
-      return null;
-  }
-}
+import {
+  buildVerdictRows,
+  fmt,
+  getDayDelta,
+  getHazardBlockInfo,
+  getHazardWindowNarrative,
+  getOverallVerdict,
+  getOverallVerdictLabel,
+  getRouteRiskSummary,
+  getVerdictPillClass,
+  getWarningBadges,
+  interpolate,
+  signFmt,
+} from "./routePlannerDetailsHelpers";
 
 export default function RoutePlannerDetailsModal({
   open,
@@ -49,7 +23,7 @@ export default function RoutePlannerDetailsModal({
   lang,
   baseSiteLabel,
   candidate,
-  windowDaysCount, // keep modal in sync with slider
+  windowDaysCount,
   adaptiveUsedKm,
   adaptiveMaxKm,
   escapeSuggestion,
@@ -58,14 +32,13 @@ export default function RoutePlannerDetailsModal({
 }) {
   const [showAdvanced, setShowAdvanced] = useState(false);
 
-  // ✅ Only show when used < max
   const showAdaptiveLine =
     typeof adaptiveUsedKm === "number" &&
     typeof adaptiveMaxKm === "number" &&
     adaptiveUsedKm < adaptiveMaxKm;
 
-  // ✅ More obvious glow: triggers when modal opens AND when used/max changes
   const [radiusGlow, setRadiusGlow] = useState(false);
+
   useEffect(() => {
     if (!open) return;
     if (!showAdaptiveLine) return;
@@ -75,27 +48,28 @@ export default function RoutePlannerDetailsModal({
     return () => clearTimeout(tt);
   }, [open, adaptiveUsedKm, adaptiveMaxKm, showAdaptiveLine]);
 
-  // Close on ESC
   useEffect(() => {
     if (!open) return;
+
     const onKey = (e) => {
       if (e.key === "Escape") onClose?.();
     };
+
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, [open, onClose]);
 
-  // Lock body scroll while modal is open
   useEffect(() => {
     if (!open) return;
 
     const prevOverflow = document.body.style.overflow;
     const prevPaddingRight = document.body.style.paddingRight;
-
     const scrollBarWidth = window.innerWidth - document.documentElement.clientWidth;
 
     document.body.style.overflow = "hidden";
-    if (scrollBarWidth > 0) document.body.style.paddingRight = `${scrollBarWidth}px`;
+    if (scrollBarWidth > 0) {
+      document.body.style.paddingRight = `${scrollBarWidth}px`;
+    }
 
     return () => {
       document.body.style.overflow = prevOverflow;
@@ -103,7 +77,6 @@ export default function RoutePlannerDetailsModal({
     };
   }, [open]);
 
-  // Reset advanced toggle when opening
   useEffect(() => {
     if (open) setShowAdvanced(false);
   }, [open, candidate?.siteId, candidate?.siteName]);
@@ -119,181 +92,60 @@ export default function RoutePlannerDetailsModal({
   const deltaTotal = typeof candidate.deltaVsBase === "number" ? candidate.deltaVsBase : 0;
   const reasons = Array.isArray(candidate.reasons) ? candidate.reasons : [];
 
-  // Keep day list synced with slider
   const allDays = Array.isArray(candidate.windowDays) ? candidate.windowDays : [];
   const days = typeof windowDaysCount === "number" ? allDays.slice(0, windowDaysCount) : allDays;
 
-  // Verdict thresholds (match card)
-  const THRESH = 0.75;
-
-  function getVerdict(deltaDay) {
-    if (deltaDay > THRESH) return "better";
-    if (deltaDay < -THRESH) return "worse";
-    return "same";
-  }
-
-  function overallVerdictLabel(v) {
-    if (aggregateType === "slight") {
-      return t?.("routeAggregateSlight") || "Lítil heildarbæting";
-    }
-    if (v === "better") return t?.("routeDayBetter") || "Betra";
-    if (v === "worse") return t?.("routeDayWorse") || "Lakara";
-    return t?.("routeDaySame") || "Svipað";
-  }
-
-  function verdictPillClass(v) {
-    if (aggregateType === "slight") {
-      return "border-amber-200 bg-amber-50 text-amber-800 dark:border-amber-900/40 dark:bg-amber-950/40 dark:text-amber-200";
-    }
-    if (v === "better")
-      return "border-emerald-200 bg-emerald-50 text-emerald-800 dark:border-emerald-900/40 dark:bg-emerald-950/40 dark:text-emerald-200";
-    if (v === "worse")
-      return "border-rose-200 bg-rose-50 text-rose-800 dark:border-rose-900/40 dark:bg-rose-950/40 dark:text-rose-200";
-    return "border-slate-200 bg-slate-50 text-slate-800 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-200";
-  }
-
-  // ✅ Base site points to compare against (camper-first 0..10, fallback raw)
-  function getBasePts(d) {
-    if (typeof d?.baseSitePoints === "number") return d.baseSitePoints;
-    if (typeof d?.baseSitePointsRaw === "number") return d.baseSitePointsRaw;
-    return 0;
-  }
-
-  // ✅ Candidate points (camper-first 0..10, fallback raw)
-  function getCandPts(d) {
-    if (typeof d?.points === "number") return d.points;
-    if (typeof d?.pointsRaw === "number") return d.pointsRaw;
-    return 0;
-  }
-
-  // ✅ Delta resolver (RAW fallback when clamping hides delta)
-  function getDayDelta(d) {
-    const basePts =
-      typeof d?.baseSitePoints === "number"
-        ? d.baseSitePoints
-        : typeof d?.baseSitePointsRaw === "number"
-          ? d.baseSitePointsRaw
-          : 0;
-
-    const candPts =
-      typeof d?.points === "number" ? d.points : typeof d?.pointsRaw === "number" ? d.pointsRaw : 0;
-
-    const baseRaw =
-      typeof d?.baseSitePointsRaw === "number"
-        ? d.baseSitePointsRaw
-        : typeof d?.baseSitePoints === "number"
-          ? d.baseSitePoints
-          : 0;
-
-    const candRaw =
-      typeof d?.pointsRaw === "number" ? d.pointsRaw : typeof d?.points === "number" ? d.points : 0;
-
-    const deltaPts = candPts - basePts;
-    const deltaRaw = candRaw - baseRaw;
-
-    const useRaw =
-      (candPts === basePts && (candPts <= 0.0001 || candPts >= 9.9999)) ||
-      Math.abs(deltaPts) < 0.0001;
-
-    return useRaw ? deltaRaw : deltaPts;
-  }
-
-  function translateOrFallback(key, fallback) {
-    const value = t?.(key);
-
-    if (!value || value === key) {
-      if (import.meta.env.DEV) {
-        console.warn("Missing translation:", key);
-      }
-      return fallback;
-    }
-
-    return value;
-  }
-
-  function warningTypeLabel(type) {
-    switch (type) {
-      case "wind":
-        return translateOrFallback("routeWarnTypeWind", "Vindur");
-      case "gust":
-        return translateOrFallback("routeWarnTypeGust", "Hviður");
-      case "rain":
-        return translateOrFallback("routeWarnTypeRain", "Rigning");
-      case "tempLow":
-        return translateOrFallback("routeWarnTypeTempLow", "Kuldi");
-      case "tempHigh":
-        return translateOrFallback("routeWarnTypeTempHigh", "Hiti");
-      default:
-        return type || "—";
-    }
-  }
-
-  const verdictRows = days.map((d) => {
-    const basePts = getBasePts(d);
-    const candPts = getCandPts(d);
-    const dlt = getDayDelta(d);
-
-    return {
-      date: d?.date || "—",
-      delta: dlt,
-      verdict: getVerdict(dlt),
-      basePts,
-      candPts,
-      raw: d,
-    };
-  });
+  const verdictRows = buildVerdictRows(days);
 
   const betterCount =
     typeof candidate?.betterDays === "number"
       ? candidate.betterDays
-      : verdictRows.filter((r) => r.verdict === "better").length;
+      : verdictRows.filter((row) => row.verdict === "better").length;
 
   const sameCount =
     typeof candidate?.sameDays === "number"
       ? candidate.sameDays
-      : verdictRows.filter((r) => r.verdict === "same").length;
+      : verdictRows.filter((row) => row.verdict === "same").length;
 
   const worseCount =
     typeof candidate?.worseDays === "number"
       ? candidate.worseDays
-      : verdictRows.filter((r) => r.verdict === "worse").length;
+      : verdictRows.filter((row) => row.verdict === "worse").length;
 
   const aggregateType = String(candidate?.aggregateType || "same");
 
-  const hazardBlockText =
-    candidate?.hazardBlocked && candidate?.hazardBlockMode === "stay"
-      ? t?.("routeHazardBlockerStay") ||
-        "Veðuráhætta á einum degi kemur í veg fyrir flutningsráðleggingu."
-      : candidate?.hazardBlocked && candidate?.hazardBlockMode === "consider"
-        ? t?.("routeHazardBlockerConsider") ||
-          "Veðuráhætta á einum degi dregur úr styrk ráðleggingar."
-        : null;
-
+  const { text: hazardBlockText, className: hazardBlockClass } = getHazardBlockInfo(candidate, t);
   const hazardWindowNarrative = getHazardWindowNarrative(candidate, t);
 
-  const hazardBlockClass =
-    candidate?.hazardBlockMode === "stay"
-      ? "text-rose-700 dark:text-rose-300 font-semibold"
-      : "text-amber-700 dark:text-amber-300";
+  const overallVerdict = getOverallVerdict({
+    aggregateType,
+    betterCount,
+    worseCount,
+  });
 
-  let overallVerdict = "same";
-  if (aggregateType === "better") overallVerdict = "better";
-  else if (worseCount > betterCount) overallVerdict = "worse";
-  else overallVerdict = "same";
+  const overallVerdictText = getOverallVerdictLabel({
+    aggregateType,
+    verdict: overallVerdict,
+    t,
+  });
+
+  const overallVerdictClass = getVerdictPillClass({
+    aggregateType,
+    verdict: overallVerdict,
+  });
+
+  const routeRiskSummary =
+    showRouteRisk && routeRiskData ? getRouteRiskSummary(routeRiskData, t) : null;
 
   return createPortal(
     <div className="fixed inset-0 z-[9999] flex items-center justify-center p-3">
-      {/* Backdrop */}
       <button aria-label="Close" className="absolute inset-0 bg-black/60" onClick={onClose} />
 
-      {/* Panel */}
       <div className="relative z-10 w-full max-w-3xl max-h-[85vh] overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-xl dark:border-slate-800 dark:bg-slate-950">
-        {/* Header */}
         <div className="flex items-start justify-between gap-3 p-4 border-b border-slate-200 dark:border-slate-800">
           <div>
             <div className="text-lg font-semibold text-slate-900 dark:text-slate-100">{title}</div>
 
-            {/* ✅ Adaptive line sits cleanly under title (OBVIOUS glow) */}
             {showAdaptiveLine ? (
               <div
                 className={`
@@ -325,7 +177,6 @@ export default function RoutePlannerDetailsModal({
               </div>
             ) : null}
 
-            {/* Normal header meta line */}
             <div className="mt-1 text-sm text-slate-600 dark:text-slate-300">
               {t?.("routeDetailsComparedTo") || "Borið saman við"}:{" "}
               <span className="font-medium">
@@ -346,9 +197,7 @@ export default function RoutePlannerDetailsModal({
           </button>
         </div>
 
-        {/* Content */}
         <div className="p-4 overflow-y-auto overscroll-contain">
-          {/* OVERALL */}
           <div className="mb-4 rounded-xl border border-slate-200 bg-slate-50 p-4 dark:border-slate-800 dark:bg-slate-900">
             <div className="text-sm text-slate-600 dark:text-slate-300 mb-2">
               {t?.("routeOverallResult") || "Heildarniðurstaða næstu daga"}
@@ -356,11 +205,9 @@ export default function RoutePlannerDetailsModal({
 
             <div className="flex flex-wrap items-center gap-3">
               <span
-                className={`inline-flex items-center rounded-full border px-3 py-1 text-sm font-semibold ${verdictPillClass(
-                  overallVerdict
-                )}`}
+                className={`inline-flex items-center rounded-full border px-3 py-1 text-sm font-semibold ${overallVerdictClass}`}
               >
-                {overallVerdictLabel(overallVerdict)}
+                {overallVerdictText}
               </span>
 
               <span className="text-sm text-slate-700 dark:text-slate-200">
@@ -427,34 +274,22 @@ export default function RoutePlannerDetailsModal({
               {t?.("routeDaysSame") || "svipaðir"}, {worseCount} {t?.("routeDaysWorse") || "verri"}.
             </div>
 
-            {showRouteRisk && routeRiskData && routeRiskData.routeRisk !== "LOW" ? (
+            {routeRiskSummary ? (
               <div className="mt-3 rounded-lg border border-amber-200 bg-amber-50/70 px-3 py-2 dark:border-amber-800/50 dark:bg-amber-900/20">
                 <div className="text-xs font-semibold text-amber-800 dark:text-amber-200">
                   <span className="mr-1 text-sm">🚐</span>{" "}
-                  {t?.("routeRiskLabel") || "Áhætta á leið"}:{" "}
-                  {routeRiskData.routeRisk === "HIGH"
-                    ? t?.("routeRiskHigh") || "Mikil"
-                    : routeRiskData.routeRisk === "MED"
-                      ? t?.("routeRiskMed") || "Miðlungs"
-                      : t?.("routeRiskLow") || "Lág"}
+                  {t?.("routeRiskLabel") || "Áhætta á leið"}: {routeRiskSummary.level}
                 </div>
 
-                {routeRiskData.routeRisk === "HIGH" && (
+                {routeRiskSummary.tooltip ? (
                   <div className="mt-1 text-xs text-amber-700 dark:text-amber-300">
-                    {t?.("routeRiskHighTooltip") || "Difficult driving conditions along the route"}
+                    {routeRiskSummary.tooltip}
                   </div>
-                )}
-
-                {routeRiskData.routeRisk === "MED" && (
-                  <div className="mt-1 text-xs text-amber-700 dark:text-amber-300">
-                    {t?.("routeRiskMedTooltip") || "Some wind-related driving risk along the route"}
-                  </div>
-                )}
+                ) : null}
               </div>
             ) : null}
           </div>
 
-          {/* REASONS */}
           <div>
             <div className="text-sm font-semibold text-slate-900 dark:text-slate-100">
               {t?.("routeDetailsPositiveDrivers") || "Helstu jákvæðu ástæður"}
@@ -466,23 +301,23 @@ export default function RoutePlannerDetailsModal({
               </div>
             ) : (
               <ul className="mt-2 space-y-2">
-                {reasons.map((r, idx) => {
-                  const key = r?.type ? `routeReason_${r.type}` : "";
+                {reasons.map((reason, idx) => {
+                  const key = reason?.type ? `routeReason_${reason.type}` : "";
                   const label =
-                    (r?.type && t?.(key)) ||
-                    r?.text ||
-                    r?.type ||
+                    (reason?.type && t?.(key)) ||
+                    reason?.text ||
+                    reason?.type ||
                     t?.("routeDetailsReason") ||
                     "Ástæða";
 
                   return (
                     <li
-                      key={`${r?.type || "r"}_${idx}`}
+                      key={`${reason?.type || "r"}_${idx}`}
                       className="flex items-start justify-between gap-3 rounded-xl border border-slate-200 p-3 text-sm dark:border-slate-800"
                     >
                       <div className="min-w-0 text-slate-800 dark:text-slate-200">{label}</div>
                       <div className="shrink-0 tabular-nums font-semibold text-emerald-700 dark:text-emerald-300">
-                        {signFmt(r?.delta ?? 0, 1)}
+                        {signFmt(reason?.delta ?? 0, 1)}
                       </div>
                     </li>
                   );
@@ -491,13 +326,11 @@ export default function RoutePlannerDetailsModal({
             )}
           </div>
 
-          {/* DAY BY DAY */}
           <div className="mt-5">
             <div className="text-sm font-semibold text-slate-900 dark:text-slate-100">
               {t?.("routeDetailsDayByDay") || "Dag-fyrir-dag"}
             </div>
 
-            {/* ✅ NEW: camper-first compare table */}
             <div className="mt-3">
               <RouteCompareTable
                 t={t}
@@ -515,7 +348,6 @@ export default function RoutePlannerDetailsModal({
               />
             </div>
 
-            {/* Toggle advanced */}
             <div className="mt-3">
               <button
                 type="button"
@@ -528,8 +360,7 @@ export default function RoutePlannerDetailsModal({
               </button>
             </div>
 
-            {/* ADVANCED TABLE */}
-            {showAdvanced && (
+            {showAdvanced ? (
               <>
                 <div className="mt-3 overflow-x-auto rounded-xl border border-slate-200 dark:border-slate-800">
                   <table className="w-full min-w-[980px] text-left text-sm">
@@ -561,51 +392,57 @@ export default function RoutePlannerDetailsModal({
                       </tr>
                     </thead>
                     <tbody>
-                      {days.map((d, i) => {
-                        const basePts = getBasePts(d);
-                        const candPts = getCandPts(d);
-                        const rowDelta = getDayDelta(d);
+                      {days.map((day, i) => {
+                        const basePts =
+                          typeof day?.baseSitePoints === "number"
+                            ? day.baseSitePoints
+                            : typeof day?.baseSitePointsRaw === "number"
+                              ? day.baseSitePointsRaw
+                              : 0;
+
+                        const candPts =
+                          typeof day?.points === "number"
+                            ? day.points
+                            : typeof day?.pointsRaw === "number"
+                              ? day.pointsRaw
+                              : 0;
+
+                        const rowDelta = getDayDelta(day);
+                        const warningBadges = getWarningBadges(day?.warnings, t);
 
                         return (
                           <tr
-                            key={`${d?.date || "day"}_${i}`}
+                            key={`${day?.date || "day"}_${i}`}
                             className="border-t border-slate-200 text-slate-800 dark:border-slate-800 dark:text-slate-100"
                           >
-                            <td className="px-3 py-2">{d?.date || "—"}</td>
+                            <td className="px-3 py-2">{day?.date || "—"}</td>
                             <td className="px-3 py-2">{fmt(basePts, 1)}</td>
                             <td className="px-3 py-2">{fmt(candPts, 1)}</td>
                             <td className="px-3 py-2 font-semibold">{signFmt(rowDelta, 1)}</td>
 
-                            <td className="px-3 py-2">{fmt(d?.windPen, 1)}</td>
-                            <td className="px-3 py-2">{fmt(d?.gustPen, 1)}</td>
-                            <td className="px-3 py-2">{fmt(d?.rainPen, 1)}</td>
-                            <td className="px-3 py-2">{fmt(d?.rainStreakPen, 1)}</td>
+                            <td className="px-3 py-2">{fmt(day?.windPen, 1)}</td>
+                            <td className="px-3 py-2">{fmt(day?.gustPen, 1)}</td>
+                            <td className="px-3 py-2">{fmt(day?.rainPen, 1)}</td>
+                            <td className="px-3 py-2">{fmt(day?.rainStreakPen, 1)}</td>
 
                             <td className="px-3 py-2">
-                              {fmt(d?.shelter, 2)}{" "}
+                              {fmt(day?.shelter, 2)}{" "}
                               <span className="text-slate-500 dark:text-slate-400">
-                                ({signFmt(d?.shelterBonus ?? 0, 1)})
+                                ({signFmt(day?.shelterBonus ?? 0, 1)})
                               </span>
                             </td>
 
-                            <td className="px-3 py-2">{fmt(d?.basePts, 1)}</td>
+                            <td className="px-3 py-2">{fmt(day?.basePts, 1)}</td>
                             <td className="px-3 py-2">
-                              {Array.isArray(d?.warnings) && d.warnings.length > 0 ? (
+                              {warningBadges.length > 0 ? (
                                 <div className="flex flex-wrap gap-1">
-                                  {d.warnings.map((w, idx) => (
+                                  {warningBadges.map((badge) => (
                                     <span
-                                      key={`${w.type}_${idx}`}
-                                      className={`
-                                        inline-flex items-center rounded-full px-2 py-0.5 text-[11px] font-semibold
-                                        ${
-                                          w.level === "high"
-                                            ? "bg-rose-100 text-rose-800 dark:bg-rose-950/40 dark:text-rose-200"
-                                            : "bg-amber-100 text-amber-800 dark:bg-amber-950/40 dark:text-amber-200"
-                                        }
-                                      `}
-                                      title={`${warningTypeLabel(w.type)}: ${fmt(w.value, 0)}`}
+                                      key={badge.key}
+                                      className={`inline-flex items-center rounded-full px-2 py-0.5 text-[11px] font-semibold ${badge.className}`}
+                                      title={badge.title}
                                     >
-                                      {w.level === "high" ? "🚨" : "⚠️"} {warningTypeLabel(w.type)}
+                                      {badge.icon} {badge.label}
                                     </span>
                                   ))}
                                 </div>
@@ -619,16 +456,16 @@ export default function RoutePlannerDetailsModal({
                     </tbody>
                   </table>
                 </div>
+
                 <div className="mt-2 text-xs text-slate-500 dark:text-slate-400">
                   {t?.("routeDetailsRawHint") ||
                     "0.0 stig geta samt falið raunverulegan mun þegar bæði gildi eru sýnd sem 0 eða 10."}
                 </div>
               </>
-            )}
+            ) : null}
           </div>
         </div>
 
-        {/* Footer */}
         <div className="flex justify-end gap-2 p-4 border-t border-slate-200 dark:border-slate-800">
           <button
             onClick={onClose}
