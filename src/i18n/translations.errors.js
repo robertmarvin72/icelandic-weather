@@ -1,0 +1,26 @@
+export const errorsTranslations = {
+  en: {
+    geolocationNotSupported: "Geolocation not supported.",
+    couldNotReadPosition: "Could not read position.",
+    noCampsitesFound: "No campsites found.",
+    permissionDenied: "Permission denied / location unavailable.",
+    forecastLoadFailed: "Could not load forecast.",
+    invalidEmail: "Please enter a valid email.",
+    loginFailed: "Login failed",
+    billingPortalUnavailable: "Billing portal not ready for this account yet.",
+    availabilityUnknown: "Availability unknown.",
+    unknown: "Unknown weather",
+  },
+  is: {
+    geolocationNotSupported: "Staðsetning ekki studd.",
+    couldNotReadPosition: "Gat ekki lesið staðsetningu.",
+    noCampsitesFound: "Engin tjaldsvæði fundust.",
+    permissionDenied: "Aðgangi hafnað / staðsetning ekki tiltæk.",
+    forecastLoadFailed: "Tókst ekki að sækja veðurspá.",
+    invalidEmail: "Vinsamlegast sláðu inn gilt netfang.",
+    loginFailed: "Innskráning mistókst",
+    billingPortalUnavailable: "Greiðslugátt er ekki tilbúin fyrir þennan notanda enn.",
+    availabilityUnknown: "Opnunartími óviss.",
+    unknown: "Óþekkt veður",
+  },
+};
