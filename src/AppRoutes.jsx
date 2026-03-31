@@ -14,6 +14,7 @@ import AdminDashboard from "./pages/AdminDashboard";
 import { usePageRouteProps } from "./hooks/usePageRouteProps";
 import { useMe } from "./hooks/useMe";
 import { useToast } from "./hooks/useToast";
+import Landing from "./pages/Landing";
 
 function PricingRoute() {
   const pageProps = usePageRouteProps();
@@ -79,6 +80,11 @@ function PricingInfoRoute() {
   return <PricingInfo {...pageProps} onUpgrade={startCheckout} />;
 }
 
+function LandingRoute() {
+  const pageProps = usePageRouteProps();
+  return <Landing {...pageProps} />;
+}
+
 export default function AppRoutes({ HomeComponent }) {
   return (
     <Routes>
@@ -92,6 +98,7 @@ export default function AppRoutes({ HomeComponent }) {
       <Route path="/privacy" element={<PrivacyRoute />} />
       <Route path="/refund" element={<RefundRoute />} />
       <Route path="/admin" element={<AdminDashboard />} />
+      <Route path="/iceland-camping-weather" element={<LandingRoute />} />
       <Route path="*" element={<NotFound />} />
     </Routes>
   );

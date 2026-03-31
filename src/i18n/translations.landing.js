@@ -1,0 +1,311 @@
+export const landingTranslations = {
+  en: {
+    landingBrandSubtitle: "Better weather near campsites in Iceland",
+    landingNavHow: "How it works",
+    landingNavWhy: "Why CampCast",
+    landingNavScreenshots: "Screenshots",
+    landingOpenCampcast: "Open CampCast",
+
+    landingEyebrow: "Built for campers and van travel in Iceland",
+    landingHeroTitle: "Find better weather before it turns",
+    landingHeroSubtitle: "See where conditions are better nearby and whether it is worth moving.",
+    landingPrimaryCta: "Find a better spot now",
+    landingSecondaryCta: "How it works",
+
+    landingStat1Label: "For campers / vans",
+    landingStat1Value: "Avoid bad weather",
+
+    landingStat2Label: "Real-time comparison",
+    landingStat2Value: "See where it is better",
+
+    landingStat3Label: "Better decisions",
+    landingStat3Value: "Move if it is worth it",
+
+    landingHeroMockTitle: "See where the weather is better nearby",
+    landingHeroMockSubtitle: "A clear view of whether staying or moving makes more sense.",
+
+    landingProblem1Title: "Bad weather can ruin the trip",
+    landingProblem1Text:
+      "Wind, rain, and exposure can turn a good plan into a bad night very quickly.",
+    landingProblem2Title: "A normal forecast is not always enough",
+    landingProblem2Text:
+      "You do not just need the weather. You need to know if a nearby campsite is a better option.",
+    landingProblem3Title: "CampCast helps you choose better",
+    landingProblem3Text: "Compare campsite conditions and make a better decision before you drive.",
+
+    landingHowEyebrow: "How it works",
+    landingHowTitle: "Find a better spot in seconds",
+    landingHowText: "Compare nearby conditions and see if moving gives you better weather.",
+    landingStepLabel: "Step",
+    landingStep1Title: "Start where you are or pick a campsite",
+    landingStep1Text: "Start from your location or browse campsites nearby.",
+    landingStep2Title: "Compare weather nearby",
+    landingStep2Text:
+      "See where wind, rain, and overall conditions look better over the next days.",
+    landingStep3Title: "Choose the better spot",
+    landingStep3Text: "Stay or move if a better option is nearby.",
+
+    landingWhyEyebrow: "Why CampCast",
+    landingWhyTitle: "Not just weather — see where it is better to be",
+    landingWhyText:
+      "A normal forecast tells you what the weather will be. CampCast helps you decide where it is best to be.",
+
+    landingCompareHeaderLeft: "Typical weather app",
+    landingCompareHeaderRight: "CampCast",
+    landingCompareLeft1: "Shows one forecast",
+    landingCompareRight1: "Shows where it is better nearby",
+    landingCompareLeft2: "Tells you what weather is coming",
+    landingCompareRight2: "Helps you decide if moving makes sense",
+    landingCompareLeft3: "Generic location forecast",
+    landingCompareRight3: "Built around campsites in Iceland",
+
+    landingBenefit1Title: "Avoid rough conditions",
+    landingBenefit1Text: "Quickly spot wind, gusts, and rain that can affect your stay.",
+    landingBenefit2Title: "Made for campsite decisions",
+    landingBenefit2Text:
+      "Not a generic weather app. CampCast helps you compare real options nearby.",
+    landingBenefit3Title: "Built for Icelandic conditions",
+    landingBenefit3Text: "Designed for road trips, changing forecasts, and exposed campsites.",
+
+    landingScreenshotsEyebrow: "Screenshots",
+    landingScreenshotsTitle: "See where it is better to be",
+    landingScreenshotsText: "CampCast shows whether you should stay, consider moving, or move.",
+    landingScreenshot1Title: "See conditions near your campsite",
+    landingScreenshot1Subtitle:
+      "See conditions where you are and whether a better option is nearby.",
+    landingScreenshot2Title: "Find better weather nearby",
+    landingScreenshot2Subtitle: "See where conditions are better instead of guessing.",
+    landingScreenshot3Title: "Decide if moving is worth it",
+    landingScreenshot3Subtitle: "Decide before you continue your trip.",
+
+    landingFinalEyebrow: "Planning to camp in Iceland?",
+    landingFinalTitle: "Find better weather before you go.",
+    landingFinalText: "See where it is better to be and whether moving is worth it.",
+    landingFinalNote: "Make a better decision before you set off.",
+
+    landingMockTagline: "Better weather near campsites in Iceland",
+    landingMockBetterNearby: "Better nearby",
+    landingMockCurrentCampsite: "Vík Campsite",
+    landingMockCurrentRegion: "South Iceland",
+    landingMockScore: "Score",
+    landingMockWind: "Wind",
+    landingMockRain: "Rain",
+    landingMockTrend: "Trend",
+    landingMockTrendRough: "Rough",
+    landingMockRecommendationTitle1: "Better option nearby",
+    landingMockRecommendationTitle2: "Try this instead",
+    landingMockRecommendationTitle3: "Weather looks better here",
+    landingMockBetterPlace: "Þakgil",
+    landingMockBetterDistance: "24 km away",
+    landingMockBenefit1: "Lower wind exposure",
+    landingMockBenefit2: "Less rain tomorrow",
+    landingMockBenefit3: "Better overall camping conditions",
+    landingAdvisorModuleTitle: "Route Advisor",
+    landingAdvisorModuleSubtitle: "Find better weather nearby before you move.",
+
+    landingAdvisorBadge1: "Better nearby",
+    landingAdvisorBadge2: "Real example",
+    landingAdvisorBadge3: "Decision view",
+
+    landingAdvisorTitle: "Move",
+    landingAdvisorSubtitle: "There is clearly a better option nearby",
+
+    landingAdvisorAltTitle2: "Better option nearby",
+    landingAdvisorAltSubtitle2: "Conditions look better over the next days in another location.",
+
+    landingAdvisorAltTitle3: "Choose the better spot",
+    landingAdvisorAltSubtitle3: "Compare options and see if moving is worth it.",
+
+    landingAdvisorBenefit1: "Less wind exposure",
+    landingAdvisorBenefit2: "Less rain tomorrow",
+    landingAdvisorBenefit3: "Better overall camping conditions",
+
+    landingAdvisorRisk: "Current status: Manageable",
+    landingAdvisorExtra: "There is no strong reason to move right now.",
+    landingAdvisorBadgeStay: "Stay",
+    landingAdvisorBadgeConsider: "Consider moving",
+    landingAdvisorBadgeMove: "Move",
+
+    landingAdvisorStayTitle: "Stay",
+    landingAdvisorStaySubtitle: "Conditions here are acceptable over the next days",
+    landingAdvisorStayBenefit1: "Small changes ahead",
+    landingAdvisorStayBenefit2: "Conditions are manageable",
+    landingAdvisorStayBenefit3: "No clear benefit in moving",
+
+    landingAdvisorConsiderTitle: "Consider moving",
+    landingAdvisorConsiderSubtitle: "Better conditions are available nearby",
+    landingAdvisorConsiderBenefit1: "Lower wind exposure elsewhere",
+    landingAdvisorConsiderBenefit2: "Less rain nearby",
+    landingAdvisorConsiderBenefit3: "Moving could be worth it",
+
+    landingAdvisorMoveTitle: "Move",
+    landingAdvisorMoveSubtitle: "Moving is worth it based on the conditions",
+    landingAdvisorMoveBenefit1: "Less wind exposure",
+    landingAdvisorMoveBenefit2: "Less rain tomorrow",
+    landingAdvisorMoveBenefit3: "Better overall camping conditions",
+
+    landingAdvisorStayRisk: "Current status: Manageable",
+    landingAdvisorStayExtra: "There is no need to move right now.",
+
+    landingAdvisorConsiderRisk: "Current status: Changing",
+    landingAdvisorConsiderExtra: "Better conditions are nearby — moving could be worth it",
+
+    landingAdvisorMoveRisk: "Route risk: Medium",
+    landingAdvisorMoveExtra: "A longer storm period is likely on Route 1 toward Laugardalur.",
+  },
+
+  is: {
+    landingBrandSubtitle: "Veður í nágrenni tjaldsvæða á Íslandi",
+    landingNavHow: "Hvernig virkar þetta",
+    landingNavWhy: "Af hverju CampCast",
+    landingNavScreenshots: "Skjáskot",
+    landingOpenCampcast: "Opna CampCast",
+
+    landingEyebrow: "Gert fyrir fólk á ferð með tjald og húsbíla á Íslandi",
+    landingHeroTitle: "Finndu betra veður áður en það versnar",
+    landingHeroSubtitle: "Sjáðu hvar veðrið er betra og hvort þú ættir að færa þig.",
+    landingPrimaryCta: "Finndu betri stað núna",
+    landingSecondaryCta: "Hvernig þetta virkar",
+
+    landingStat1Label: "Fyrir camper / hjólhýsi",
+    landingStat1Value: "Forðastu slæmt veður",
+
+    landingStat2Label: "Rauntíma samanburður",
+    landingStat2Value: "Sjáðu hvar það er betra",
+
+    landingStat3Label: "Betri ákvarðanir",
+    landingStat3Value: "Færðu þig ef það borgar sig",
+
+    landingHeroMockTitle: "Sjáðu hvar veðrið er betra í nágrenninu",
+    landingHeroMockSubtitle: "Skýr sýn á hvort sé betra að vera áfram eða færa sig.",
+
+    landingProblem1Title: "Slæmt veður getur eyðilagt ferðina",
+    landingProblem1Text:
+      "Vindur, rigning og berskjölduð staðsetning geta breytt góðri áætlun í slæma nótt mjög hratt.",
+    landingProblem2Title: "Venjuleg veðurspá dugar ekki alltaf",
+    landingProblem2Text:
+      "Þú þarft ekki bara að sjá veðrið. Þú þarft að vita hvort annað tjaldsvæði í nágrenninu sé betri kostur.",
+    landingProblem3Title: "CampCast hjálpar þér að velja betri kost",
+    landingProblem3Text:
+      "Berðu saman aðstæður á tjaldsvæðum og taktu betri ákvörðun áður en þú keyrir af stað.",
+
+    landingHowEyebrow: "Hvernig virkar þetta",
+    landingHowTitle: "Finndu betri stað á nokkrum sekúndum",
+    landingHowText: "Berðu saman veður í nágrenninu og sjáðu hvort borgi sig að færa sig.",
+    landingStepLabel: "Skref",
+    landingStep1Title: "Byrjaðu þar sem þú ert eða veldu tjaldsvæði",
+    landingStep1Text: "Byrjaðu þar sem þú ert eða skoðaðu tjaldsvæði í nágrenninu.",
+    landingStep2Title: "Berðu saman veður í nágrenninu",
+    landingStep2Text: "Sjáðu hvar vindur, rigning og heildaraðstæður líta betur út næstu daga.",
+    landingStep3Title: "Veldu betri stað",
+    landingStep3Text: "Vertu áfram eða færðu þig ef betri kostur er í nágrenninu.",
+
+    landingWhyEyebrow: "Af hverju CampCast",
+    landingWhyTitle: "Ekki bara veður – sjáðu hvar er betra að vera",
+    landingWhyText:
+      "Venjuleg veðurspá segir þér hvernig veðrið verður. CampCast hjálpar þér að velja hvar er best að vera.",
+
+    landingCompareHeaderLeft: "Venjulegt veðurapp",
+    landingCompareHeaderRight: "CampCast",
+    landingCompareLeft1: "Sýnir eina veðurspá",
+    landingCompareRight1: "Sýnir þér hvar er betra að vera",
+    landingCompareLeft2: "Segir þér hvernig veðrið verður á einum stað",
+    landingCompareRight2: "Hjálpar þér að ákveða hvort sé skynsamlegt að færa sig",
+    landingCompareLeft3: "Almenn spá fyrir staðsetningu",
+    landingCompareRight3: "Byggt utan um tjaldsvæði á Íslandi",
+
+    landingBenefit1Title: "Forðastu slæmar aðstæður",
+    landingBenefit1Text: "Sjáðu fljótt vind, hviður og rigningu sem geta haft áhrif á dvölina.",
+    landingBenefit2Title: "Gert fyrir ákvarðanir um tjaldsvæði",
+    landingBenefit2Text:
+      "Ekki bara almennt veðurapp. CampCast hjálpar þér að bera saman raunverulega valkosti í nágrenninu.",
+    landingBenefit3Title: "Byggt fyrir íslenskar aðstæður",
+    landingBenefit3Text:
+      "Hannað með íslenskar bílferðir, breytilegar spár og berskjölduð tjaldsvæði í huga.",
+
+    landingScreenshotsEyebrow: "Skjáskot",
+    landingScreenshotsTitle: "Sjáðu hvar er betra að vera",
+    landingScreenshotsText:
+      "CampCast sýnir þér hvort þú ættir að vera áfram, íhuga að færa þig eða færa þig.",
+    landingScreenshot1Title: "Sjáðu aðstæður við tjaldsvæðið þitt",
+    landingScreenshot1Subtitle: "Sjáðu aðstæður þar sem þú ert og hvort betri kostur sé nálægt.",
+    landingScreenshot2Title: "Finndu betra veður í nágrenninu",
+    landingScreenshot2Subtitle: "Sjáðu hvar aðstæður eru betri í nágrenninu í stað þess að giska.",
+    landingScreenshot3Title: "Ákveddu hvort það borgi sig að færa sig",
+    landingScreenshot3Subtitle: "Ákveddu hvort það borgar sig að færa sig áður en þú heldur áfram.",
+
+    landingFinalEyebrow: "Ertu að fara að tjalda á Íslandi?",
+    landingFinalTitle: "Finndu betra veður áður en þú ferð.",
+    landingFinalText: "Sjáðu hvar er betra að vera og hvort það borgi sig að færa sig.",
+    landingFinalNote: "Taktu betri ákvörðun áður en þú leggur af stað.",
+
+    landingMockTagline: "Veður fyrir tjaldsvæði á Íslandi",
+    landingMockBetterNearby: "Betra í nágrenninu",
+    landingMockCurrentCampsite: "Vík tjaldsvæði",
+    landingMockCurrentRegion: "Suðurland",
+    landingMockScore: "Stig",
+    landingMockWind: "Vindur",
+    landingMockRain: "Rigning",
+    landingMockTrend: "Þróun",
+    landingMockTrendRough: "Róstusamt",
+    landingMockRecommendationTitle1: "Betri kostur í nágrenninu",
+    landingMockRecommendationTitle2: "Prófaðu þetta í staðinn",
+    landingMockRecommendationTitle3: "Veðrið lítur betur út hér",
+    landingMockBetterPlace: "Þakgil",
+    landingMockBetterDistance: "24 km í burtu",
+    landingMockBenefit1: "Minni vindálag",
+    landingMockBenefit2: "Minni rigning á morgun",
+    landingMockBenefit3: "Betri heildaraðstæður til að tjalda",
+    landingAdvisorModuleTitle: "Ferðaráðgjafi",
+    landingAdvisorModuleSubtitle: "Finndu betra veður í nágrenninu áður en þú færir þig.",
+
+    landingAdvisorBadge1: "Betra í nágrenninu",
+    landingAdvisorBadge2: "Raunverulegt dæmi",
+    landingAdvisorBadge3: "Ákvörðunarsýn",
+
+    landingAdvisorTitle: "Færðu þig",
+    landingAdvisorSubtitle: "Það virðist vera greinilega betri kostur í nágrenninu",
+
+    landingAdvisorAltTitle2: "Betri kostur í nágrenninu",
+    landingAdvisorAltSubtitle2: "Aðstæður líta betur út næstu daga á öðrum stað.",
+
+    landingAdvisorAltTitle3: "Veldu betri stað",
+    landingAdvisorAltSubtitle3: "Berðu saman valkosti og sjáðu hvort það borgi sig að færa sig.",
+
+    landingAdvisorBenefit1: "Minni vindálag",
+    landingAdvisorBenefit2: "Minni rigning á morgun",
+    landingAdvisorBenefit3: "Betri heildaraðstæður til að tjalda",
+
+    landingAdvisorRisk: "Staðan núna: Viðráðanleg",
+    landingAdvisorExtra: "Engin sterk ástæða er til að færa sig eins og er.",
+    landingAdvisorBadgeStay: "Vertu áfram",
+    landingAdvisorBadgeConsider: "Íhugaðu að færa þig",
+    landingAdvisorBadgeMove: "Færðu þig",
+
+    landingAdvisorStayTitle: "Vertu áfram",
+    landingAdvisorStaySubtitle: "Aðstæður hér eru ásættanlegar næstu daga",
+    landingAdvisorStayBenefit1: "Minni breytingar fram undan",
+    landingAdvisorStayBenefit2: "Aðstæður eru viðráðanlegar",
+    landingAdvisorStayBenefit3: "Enginn skýr ávinningur af því að færa sig",
+
+    landingAdvisorConsiderTitle: "Íhugaðu að færa þig",
+    landingAdvisorConsiderSubtitle: "Betri aðstæður eru í nágrenninu",
+    landingAdvisorConsiderBenefit1: "Minni vindálag annars staðar",
+    landingAdvisorConsiderBenefit2: "Minni rigning í nágrenninu",
+    landingAdvisorConsiderBenefit3: "Getur borgað sig að færa sig",
+
+    landingAdvisorMoveTitle: "Færðu þig",
+    landingAdvisorMoveSubtitle: "Það borgar sig að færa sig miðað við aðstæður",
+    landingAdvisorMoveBenefit1: "Minni vindálag",
+    landingAdvisorMoveBenefit2: "Minni rigning á morgun",
+    landingAdvisorMoveBenefit3: "Betri heildaraðstæður til að tjalda",
+    landingAdvisorStayRisk: "Staðan núna: Viðráðanleg",
+    landingAdvisorStayExtra: "Það er óþarfi að færa sig eins og er.",
+
+    landingAdvisorConsiderRisk: "Staðan núna: Breytileg",
+    landingAdvisorConsiderExtra: "Betri aðstæður eru nálægt — það gæti borgað sig að færa sig",
+
+    landingAdvisorMoveRisk: "Áhætta á leið: Miðlungs",
+    landingAdvisorMoveExtra: "Lengra stormaskeið er líklegt á Þjóðvegi 1 til Laugardal.",
+  },
+};
