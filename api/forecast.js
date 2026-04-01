@@ -59,9 +59,17 @@ export default async function handler(req, res) {
       ].join(",")
     );
 
+    // Hourly fields are used by campsite hourly drill-down modal
     upstream.searchParams.set(
       "hourly",
-      ["precipitation", "windspeed_10m", "windgusts_10m"].join(",")
+      [
+        "temperature_2m",
+        "weathercode",
+        "precipitation",
+        "precipitation_probability",
+        "windspeed_10m",
+        "windgusts_10m",
+      ].join(",")
     );
 
     upstream.searchParams.set("forecast_days", "7");
