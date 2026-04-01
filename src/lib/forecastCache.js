@@ -6,7 +6,7 @@ const inflight = new Map(); // coalesce duplicate requests
 function key(lat, lon) {
   // keep precision but normalize
   // Bump version when forecast shape changes (e.g., adding windgusts)
-  return `forecast:v7:${Number(lat).toFixed(4)},${Number(lon).toFixed(4)}`;
+  return `forecast:v8:${Number(lat).toFixed(4)},${Number(lon).toFixed(4)}`;
 }
 
 function readStorage(k) {
@@ -37,7 +37,7 @@ function cleanupOldForecasts() {
   for (let i = 0; i < localStorage.length; i++) {
     const key = localStorage.key(i);
 
-    if (!key || !key.startsWith("forecast:v7:")) continue;
+    if (!key || !key.startsWith("forecast:v8:")) continue;
 
     try {
       const raw = localStorage.getItem(key);
