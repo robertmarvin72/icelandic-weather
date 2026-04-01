@@ -56,7 +56,7 @@ function buildHourlyRows(data, selectedDate) {
         date: datePart,
         hour: hourPart != null ? Number(hourPart) : null,
         temp: hourly?.temperature_2m?.[i] ?? null,
-        weatherCode: hourly?.weathercode?.[i] ?? null,
+        weatherCode: hourly?.weathercode?.[i] ?? hourly?.weather_code?.[i] ?? null,
         wind: hourly?.windspeed_10m?.[i] ?? hourly?.wind_speed_10m?.[i] ?? null,
         gust: hourly?.windgusts_10m?.[i] ?? null,
         rain: hourly?.precipitation?.[i] ?? null,
