@@ -84,6 +84,7 @@ export default function ForecastTable({
   mapSlot,
   lang,
   t,
+  onSelectDay,
 }) {
   const totalPoints = useMemo(() => rows.reduce((s, r) => s + (r.points ?? 0), 0), [rows]);
 
@@ -223,6 +224,7 @@ export default function ForecastTable({
                     <span className="sm:hidden">{t?.("rainShort")}</span>
                     <span className="hidden sm:inline">{t?.("rain")}</span>
                   </th>
+                  <th className="py-3 pr-4 font-semibold sr-only">Open</th>
                 </tr>
               </thead>
 
@@ -238,9 +240,20 @@ export default function ForecastTable({
                   return (
                     <tr
                       key={r.date}
+                      onClick={() => onSelectDay?.(r)}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter" || e.key === " ") {
+                          e.preventDefault();
+                          onSelectDay?.(r);
+                        }
+                      }}
+                      tabIndex={0}
+                      role="button"
+                      aria-label={`${t?.("day") ?? "Day"} ${r.dayLabel}`}
                       className={`
                         border-b last:border-0 border-slate-100 dark:border-slate-800
                         hover:bg-sky-50/50 dark:hover:bg-slate-800/60
+                        cursor-pointer focus:outline-none focus:ring-2 focus:ring-sky-400/60
                       `}
                     >
                       {/* Score */}
@@ -399,6 +412,10 @@ export default function ForecastTable({
 
                       <td className="py-2 pr-3">
                         {formatNumber(convertRain(r.rain, units))} {RAIN_UNIT_LABEL[units]}
+                      </td>
+
+                      <td className="py-2 pr-4 text-right text-slate-400 dark:text-slate-500">
+                        <span aria-hidden>›</span>
                       </td>
                     </tr>
                   );

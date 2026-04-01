@@ -6,7 +6,7 @@ const inflight = new Map(); // coalesce duplicate requests
 function key(lat, lon) {
   // keep precision but normalize
   // Bump version when forecast shape changes (e.g., adding windgusts)
-  return `forecast:v6:${Number(lat).toFixed(4)},${Number(lon).toFixed(4)}`;
+  return `forecast:v7:${Number(lat).toFixed(4)},${Number(lon).toFixed(4)}`;
 }
 
 function readStorage(k) {
@@ -37,7 +37,7 @@ function cleanupOldForecasts() {
   for (let i = 0; i < localStorage.length; i++) {
     const key = localStorage.key(i);
 
-    if (!key || !key.startsWith("forecast:v6:")) continue;
+    if (!key || !key.startsWith("forecast:v7:")) continue;
 
     try {
       const raw = localStorage.getItem(key);
@@ -72,7 +72,14 @@ async function fetchOpenMeteo({ lat, lon }) {
       "winddirection_10m_dominant",
       "weathercode",
     ].join(","),
-    hourly: ["precipitation", "windspeed_10m", "windgusts_10m"].join(","),
+    hourly: [
+      "temperature_2m",
+      "weathercode",
+      "precipitation",
+      "precipitation_probability",
+      "windspeed_10m",
+      "windgusts_10m",
+    ].join(","),
   });
 
   const url = `/api/forecast?${params.toString()}`;

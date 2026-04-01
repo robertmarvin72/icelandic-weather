@@ -315,6 +315,17 @@ export const commonTranslations = {
     top5DistanceFromUserNoteWithLocation: "Distance is based on your location:",
     unknownLocation: "Unknown location",
 
+    bestWeatherWindow: "The best weather window today is from {from} to {to}.",
+
+    labelTemp: "Temp",
+    labelWind: "Wind",
+    labelGust: "Gust",
+    labelRain: "Rain",
+    labelPrecipProbability: "Precip. probability",
+
+    badgeGood: "Good time",
+    badgeRough: "Rough conditions",
+
     locale: "en-GB",
   },
   is: {
@@ -629,6 +640,17 @@ export const commonTranslations = {
     top5BestThisWeek: "Best í vikunni",
 
     footerPricing: "Verðskrá",
+
+    bestWeatherWindow: "Besti veðurglugginn í dag er frá {from} til {to}.",
+
+    labelTemp: "Hiti",
+    labelWind: "Vindur",
+    labelGust: "Hviður",
+    labelRain: "Regn",
+    labelPrecipProbability: "Úrkomulíkur",
+
+    badgeGood: "Góður tími",
+    badgeRough: "Rysjótt",
 
     locale: "is-IS",
   },

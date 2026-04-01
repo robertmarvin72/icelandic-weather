@@ -40,6 +40,7 @@ import { useTop5Campsites } from "./hooks/useTop5Campsites";
 import About from "./pages/About";
 import { formatDay } from "./utils/date";
 import { WEATHER_MAP } from "./utils/weatherMap";
+import HourlyForecastModal from "./components/HourlyForecastModal";
 
 function IcelandCampingWeatherApp({ page = "home" }) {
   const [units, setUnits] = useLocalStorageState("units", "metric");
@@ -76,6 +77,9 @@ function IcelandCampingWeatherApp({ page = "home" }) {
   const [needRefresh, setNeedRefresh] = useState(false);
   const [offlineReady, setOfflineReady] = useState(false);
   const updateServiceWorkerRef = useRef(null);
+
+  const [selectedHourlyDay, setSelectedHourlyDay] = useState(null);
+  const [hourlyModalOpen, setHourlyModalOpen] = useState(false);
 
   useEffect(() => {
     const updateSW = registerSW({
@@ -136,6 +140,16 @@ function IcelandCampingWeatherApp({ page = "home" }) {
     },
     [setSiteId]
   );
+
+  const handleOpenHourlyForecast = useCallback((dayRow) => {
+    setSelectedHourlyDay(dayRow);
+    setHourlyModalOpen(true);
+  }, []);
+
+  const handleCloseHourlyForecast = useCallback(() => {
+    setHourlyModalOpen(false);
+    setSelectedHourlyDay(null);
+  }, []);
 
   const toggleTheme = useCallback(
     () => setTheme((th) => (th === "dark" ? "light" : "dark")),
@@ -323,7 +337,20 @@ function IcelandCampingWeatherApp({ page = "home" }) {
                   }
                   lang={lang}
                   t={t}
+                  onSelectDay={handleOpenHourlyForecast}
                 />
+
+                {hourlyModalOpen && selectedHourlyDay && (
+                  <HourlyForecastModal
+                    site={site}
+                    day={selectedHourlyDay}
+                    units={units}
+                    lang={lang}
+                    t={t}
+                    weatherMap={WEATHER_MAP}
+                    onClose={handleCloseHourlyForecast}
+                  />
+                )}
 
                 <Top5Leaderboard
                   sites={siteList}
