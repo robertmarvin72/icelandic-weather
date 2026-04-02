@@ -326,6 +326,9 @@ export const commonTranslations = {
     badgeGood: "Good time",
     badgeRough: "Rough conditions",
 
+    decisionMoveTitle: "Move",
+    decisionMoveBody: "Better weather is likely at {site}.",
+
     locale: "en-GB",
   },
   is: {
@@ -651,6 +654,9 @@ export const commonTranslations = {
 
     badgeGood: "Góður tími",
     badgeRough: "Rysjótt",
+
+    decisionMoveTitle: "Færðu þig",
+    decisionMoveBody: "Betra veður er líklegt hjá {site}.",
 
     locale: "is-IS",
   },
