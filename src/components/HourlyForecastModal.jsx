@@ -221,8 +221,22 @@ export default function HourlyForecastModal({
       if (e.key === "Escape") onClose?.();
     }
 
+    const prevOverflow = document.body.style.overflow;
+    const prevPaddingRight = document.body.style.paddingRight;
+    const scrollBarWidth = window.innerWidth - document.documentElement.clientWidth;
+
+    document.body.style.overflow = "hidden";
+    if (scrollBarWidth > 0) {
+      document.body.style.paddingRight = `${scrollBarWidth}px`;
+    }
+
     window.addEventListener("keydown", onKeyDown);
-    return () => window.removeEventListener("keydown", onKeyDown);
+
+    return () => {
+      document.body.style.overflow = prevOverflow;
+      document.body.style.paddingRight = prevPaddingRight;
+      window.removeEventListener("keydown", onKeyDown);
+    };
   }, [onClose]);
 
   const dateLabel = useMemo(() => {
@@ -273,14 +287,14 @@ export default function HourlyForecastModal({
 
   return (
     <div
-      className="fixed inset-0 z-[9999] flex items-end justify-center bg-black/70 backdrop-blur-[2px] sm:items-center"
+      className="fixed inset-0 z-[9999] flex items-end justify-center overscroll-none bg-black/70 backdrop-blur-[2px] sm:items-center"
       onClick={onClose}
       aria-modal="true"
       role="dialog"
     >
       <div
         onClick={(e) => e.stopPropagation()}
-        className="h-[85vh] w-full max-w-5xl overflow-hidden rounded-t-2xl border border-slate-200 bg-white shadow-xl dark:border-slate-700 dark:bg-slate-900 sm:h-auto sm:max-h-[85vh] sm:rounded-2xl"
+        className="flex h-[85vh] w-full max-w-5xl flex-col overflow-hidden rounded-t-2xl border border-slate-200 bg-white shadow-xl dark:border-slate-700 dark:bg-slate-900 sm:h-auto sm:max-h-[85vh] sm:rounded-2xl"
       >
         <div className="sticky top-0 z-10 flex items-start justify-between border-b border-slate-200 bg-white/95 px-6 py-5 backdrop-blur dark:border-slate-700 dark:bg-slate-900/95">
           <div>
@@ -299,7 +313,7 @@ export default function HourlyForecastModal({
           </button>
         </div>
 
-        <div className="overflow-y-auto p-6">
+        <div className="min-h-0 flex-1 overflow-y-auto p-6 [webkit-overflow-scrolling:touch]">
           {loading && (
             <div className="space-y-3">
               <div className="rounded-2xl border border-slate-200 px-4 py-3 text-sm text-slate-600 dark:border-slate-700 dark:text-slate-300">
