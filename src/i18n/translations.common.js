@@ -329,6 +329,13 @@ export const commonTranslations = {
     decisionMoveTitle: "Move",
     decisionMoveBody: "Better weather is likely at {site}.",
 
+    blogBadge: "CampCast Blog",
+    blogTitle: "Weather tips and campsite planning for Iceland",
+    blogIntro:
+      "Practical articles focused on camper travel, wind, rain, campsite decisions, and better weather nearby.",
+    blogPublishedLabel: "Published",
+    blogReadArticle: "Read article",
+
     locale: "en-GB",
   },
   is: {
@@ -657,6 +664,13 @@ export const commonTranslations = {
 
     decisionMoveTitle: "Færðu þig",
     decisionMoveBody: "Betra veður er líklegt hjá {site}.",
+
+    blogBadge: "CampCast blogg",
+    blogTitle: "Veðurráð og skipulag fyrir tjaldsvæði á Íslandi",
+    blogIntro:
+      "Hagnýtar greinar um ferðalög á camper, vind, rigningu, val á tjaldsvæði og betra veður í nágrenninu.",
+    blogPublishedLabel: "Birt",
+    blogReadArticle: "Lesa grein",
 
     locale: "is-IS",
   },
