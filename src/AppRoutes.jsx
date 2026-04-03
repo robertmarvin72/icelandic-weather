@@ -16,6 +16,7 @@ import { useMe } from "./hooks/useMe";
 import { useToast } from "./hooks/useToast";
 import Landing from "./pages/Landing";
 import BlogIndex from "./pages/BlogIndex";
+import BlogPostPage from "./pages/BlogPostPage";
 
 function PricingRoute() {
   const pageProps = usePageRouteProps();
@@ -91,6 +92,11 @@ function BlogRoute() {
   return <BlogIndex {...pageProps} />;
 }
 
+function BlogPostRoute() {
+  const pageProps = usePageRouteProps();
+  return <BlogPostPage {...pageProps} />;
+}
+
 export default function AppRoutes({ HomeComponent }) {
   return (
     <Routes>
@@ -106,6 +112,7 @@ export default function AppRoutes({ HomeComponent }) {
       <Route path="/admin" element={<AdminDashboard />} />
       <Route path="/iceland-camping-weather" element={<LandingRoute />} />
       <Route path="/blog" element={<BlogRoute />} />
+      <Route path="/blog/:slug" element={<BlogPostRoute />} />
       <Route path="*" element={<NotFound />} />
     </Routes>
   );

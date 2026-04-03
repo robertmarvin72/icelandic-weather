@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import Footer from "../components/Footer";
+import Header from "../components/Header";
 import { blogPosts } from "../data/blogPosts";
 
 function formatPublishedDate(dateString) {
@@ -14,9 +15,28 @@ function formatPublishedDate(dateString) {
   }
 }
 
+function translateOrFallback(t, key, fallback) {
+  const value = t?.(key);
+  if (!value || value === key) return fallback;
+  return value;
+}
+
 export default function BlogIndex({ t, lang, theme }) {
   return (
     <div className="min-h-screen bg-soft-grid text-slate-900 dark:bg-slate-950 dark:text-slate-100">
+      <Header
+        t={t}
+        rightSlot={
+          <Link to="/" className="text-sm font-medium hover:underline">
+            Open CampCast
+          </Link>
+        }
+      />
+      <header className="mx-auto max-w-5xl px-4 pt-6 sm:px-6 lg:px-8">
+        <Link to="/" className="inline-flex items-center gap-2 font-semibold">
+          <span className="text-lg">CampCast</span>
+        </Link>
+      </header>
       <main className="mx-auto max-w-5xl px-4 py-10 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-3xl">
           <div className="inline-flex rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-sm font-medium text-emerald-800">
@@ -55,6 +75,7 @@ export default function BlogIndex({ t, lang, theme }) {
               <p className="mt-3 text-base leading-7 text-slate-600 dark:text-slate-300">
                 {post.excerpt}
               </p>
+              <p className="mt-2 text-sm text-slate-400 dark:text-slate-500">{post.ctaHint}</p>
 
               <div className="mt-5">
                 <Link

@@ -336,6 +336,10 @@ export const commonTranslations = {
     blogPublishedLabel: "Published",
     blogReadArticle: "Read article",
 
+    backToBlog: "Back to blog",
+    blogPostNotFoundTitle: "Article not found",
+    blogPostNotFoundText: "The article you tried to open does not exist or may have been removed.",
+
     locale: "en-GB",
   },
   is: {
@@ -671,6 +675,9 @@ export const commonTranslations = {
       "Hagnýtar greinar um ferðalög á camper, vind, rigningu, val á tjaldsvæði og betra veður í nágrenninu.",
     blogPublishedLabel: "Birt",
     blogReadArticle: "Lesa grein",
+    backToBlog: "Til baka í blogg",
+    blogPostNotFoundTitle: "Grein fannst ekki",
+    blogPostNotFoundText: "Greinin sem þú reyndir að opna er ekki til eða hefur verið fjarlægð.",
 
     locale: "is-IS",
   },
