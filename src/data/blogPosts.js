@@ -25,6 +25,8 @@ Pay attention to forecast wind speed, gusts, precipitation, and whether the rout
 ## A more practical way to plan
 
 CampCast helps compare nearby campsite conditions so you can make a more informed decision about whether to stay put or move somewhere with better weather.
+
+Want to see where conditions are better right now? [Open CampCast](/)
 `,
   },
 
@@ -46,6 +48,8 @@ Bad weather in Iceland does not always hit every area equally. One region can be
 If you only check one forecast, it is easy to assume the whole area will feel the same. In reality, nearby campsites can offer a much better experience depending on wind exposure, rain, and local shelter.
 
 This is especially useful for campers who have some flexibility and want to avoid a miserable evening fighting the tent, awning, or van door.
+
+Want to see where conditions are calmer nearby? [Compare campsites on CampCast](/)
 
 ## What makes a better campsite day
 
@@ -83,6 +87,8 @@ Weather patterns move across Iceland, and what looks like a poor choice one day 
 Checking conditions shortly before you move, and comparing nearby campsites, often leads to a better experience than sticking to a fixed plan.
 
 That is the kind of decision support CampCast is built for.
+
+See which campsites have better conditions this week → [Open CampCast](/)
 `,
   },
 ];

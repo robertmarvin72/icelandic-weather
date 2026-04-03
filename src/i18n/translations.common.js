@@ -340,6 +340,10 @@ export const commonTranslations = {
     blogPostNotFoundTitle: "Article not found",
     blogPostNotFoundText: "The article you tried to open does not exist or may have been removed.",
 
+    blogCtaTitle: "Check live campsite conditions",
+    blogCtaText: "Compare nearby campsites and see where the weather is better right now.",
+    blogCtaButton: "Open CampCast",
+
     locale: "en-GB",
   },
   is: {
@@ -678,6 +682,10 @@ export const commonTranslations = {
     backToBlog: "Til baka í blogg",
     blogPostNotFoundTitle: "Grein fannst ekki",
     blogPostNotFoundText: "Greinin sem þú reyndir að opna er ekki til eða hefur verið fjarlægð.",
+
+    blogCtaTitle: "Skoða stöðuna á tjaldsvæðum núna",
+    blogCtaText: "Berðu saman nálæg tjaldsvæði og sjáðu hvar veðrið er betra akkúrat núna.",
+    blogCtaButton: "Opna CampCast",
 
     locale: "is-IS",
   },

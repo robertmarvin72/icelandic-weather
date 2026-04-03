@@ -5,6 +5,7 @@ import { getBlogPostBySlug } from "../data/blogPosts";
 import ReactMarkdown from "react-markdown";
 import rehypeSanitize from "rehype-sanitize";
 import remarkGfm from "remark-gfm";
+import BlogPostCta from "../components/blog/BlogPostCta";
 
 function formatPublishedDate(dateString, lang = "en") {
   try {
@@ -189,36 +190,7 @@ export default function BlogPostPage({ t, lang, theme }) {
           <div className="mt-8">
             <BlogContent content={post.content} isLight={isLight} />
 
-            <div
-              className={`mt-8 rounded-3xl border p-6 sm:p-8 ${
-                isLight
-                  ? "border-emerald-200 bg-emerald-50"
-                  : "border-emerald-900/60 bg-emerald-950/30"
-              }`}
-            >
-              <h3 className="text-xl font-semibold">
-                {translateOrFallback(t, "blogCtaTitle", "Check live campsite conditions")}
-              </h3>
-
-              <p className={`mt-2 ${isLight ? "text-slate-700" : "text-slate-300"}`}>
-                {translateOrFallback(
-                  t,
-                  "blogCtaText",
-                  "Compare nearby campsites and see where the weather is better right now."
-                )}
-              </p>
-
-              <div className="mt-4">
-                <Link
-                  to="/"
-                  className={`inline-flex items-center rounded-full px-5 py-2.5 text-sm font-medium transition ${
-                    isLight ? "bg-slate-900 text-white" : "bg-white text-slate-950"
-                  }`}
-                >
-                  {translateOrFallback(t, "blogCtaButton", "Open CampCast")}
-                </Link>
-              </div>
-            </div>
+            <BlogPostCta t={t} isLight={isLight} to="/" slug={post.slug} />
           </div>
         </article>
       </main>
