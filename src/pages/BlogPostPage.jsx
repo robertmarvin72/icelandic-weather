@@ -2,6 +2,9 @@ import { Link, useParams } from "react-router-dom";
 import Footer from "../components/Footer";
 import Header from "../components/Header";
 import { getBlogPostBySlug } from "../data/blogPosts";
+import ReactMarkdown from "react-markdown";
+import rehypeSanitize from "rehype-sanitize";
+import remarkGfm from "remark-gfm";
 
 function formatPublishedDate(dateString, lang = "en") {
   try {
@@ -23,30 +26,61 @@ function translateOrFallback(t, key, fallback) {
 
 function BlogContent({ content, isLight }) {
   return (
-    <div className="mt-8 space-y-5">
-      {content.map((block, index) => {
-        if (block.type === "heading") {
-          return (
+    <div className="mt-8 max-w-2xl mx-auto">
+      <ReactMarkdown
+        remarkPlugins={[remarkGfm]}
+        rehypePlugins={[rehypeSanitize]}
+        components={{
+          h2: ({ node, ...props }) => (
             <h2
-              key={index}
-              className={`text-2xl font-semibold tracking-tight ${
+              {...props}
+              className={`mt-10 text-3xl font-semibold tracking-tight ${
                 isLight ? "text-slate-900" : "text-slate-100"
               }`}
-            >
-              {block.text}
-            </h2>
-          );
-        }
-
-        return (
-          <p
-            key={index}
-            className={`text-lg leading-8 ${isLight ? "text-slate-700" : "text-slate-300"}`}
-          >
-            {block.text}
-          </p>
-        );
-      })}
+            />
+          ),
+          p: ({ node, ...props }) => (
+            <p
+              {...props}
+              className={`mt-4 text-lg leading-8 ${isLight ? "text-slate-700" : "text-slate-300"}`}
+            />
+          ),
+          a: ({ node, ...props }) => (
+            <a
+              {...props}
+              className="text-sky-600 underline underline-offset-4 hover:text-sky-700 dark:text-sky-400 dark:hover:text-sky-300"
+            />
+          ),
+          img: ({ node, ...props }) => (
+            <img
+              {...props}
+              className="my-6 w-full rounded-2xl border border-black/10 dark:border-white/10"
+              loading="lazy"
+            />
+          ),
+          ul: ({ node, ...props }) => (
+            <ul
+              {...props}
+              className={`mt-4 list-disc pl-6 ${isLight ? "text-slate-700" : "text-slate-300"}`}
+            />
+          ),
+          ol: ({ node, ...props }) => (
+            <ol
+              {...props}
+              className={`mt-4 list-decimal pl-6 ${isLight ? "text-slate-700" : "text-slate-300"}`}
+            />
+          ),
+          li: ({ node, ...props }) => <li {...props} className="mt-2" />,
+          strong: ({ node, ...props }) => (
+            <strong
+              {...props}
+              className={isLight ? "font-semibold text-slate-900" : "font-semibold text-slate-100"}
+            />
+          ),
+        }}
+      >
+        {content}
+      </ReactMarkdown>
     </div>
   );
 }
@@ -125,15 +159,6 @@ export default function BlogPostPage({ t, lang, theme }) {
         }
       />
       <main className="mx-auto max-w-4xl px-4 py-10 sm:px-6 lg:px-8">
-        <Link
-          to="/blog"
-          className={`text-sm font-medium underline-offset-4 hover:underline ${
-            isLight ? "text-sky-700" : "text-sky-400"
-          }`}
-        >
-          ← {translateOrFallback(t, "backToBlog", "Back to blog")}
-        </Link>
-
         <article className="mt-6">
           <div className="max-w-3xl">
             <div className={`text-sm ${isLight ? "text-slate-500" : "text-slate-400"}`}>
@@ -151,7 +176,7 @@ export default function BlogPostPage({ t, lang, theme }) {
           </div>
 
           {post.coverImage ? (
-            <div className="mt-8 overflow-hidden rounded-3xl border border-black/10 dark:border-white/10">
+            <div className="mt-10 overflow-hidden rounded-3xl border border-black/10 dark:border-white/10">
               <img
                 src={post.coverImage}
                 alt={post.title}
@@ -161,11 +186,7 @@ export default function BlogPostPage({ t, lang, theme }) {
             </div>
           ) : null}
 
-          <div
-            className={`mt-8 rounded-3xl border p-6 sm:p-8 ${
-              isLight ? "border-black/10 bg-white" : "border-white/10 bg-slate-900"
-            }`}
-          >
+          <div className="mt-8">
             <BlogContent content={post.content} isLight={isLight} />
 
             <div
