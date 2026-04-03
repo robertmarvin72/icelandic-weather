@@ -5,7 +5,7 @@ export const blogPosts = [
     title: "Is It Safe to Drive a Camper in Iceland Wind?",
     ctaHint: "Helps you decide: Is it safe to drive in wind",
     excerpt:
-      "Strong wind and gusts can change camper travel plans quickly in Iceland. Here is what to watch and when to rethink the route.",
+      "Wind in Iceland can flip a camper door off its hinges. Here’s when it’s actually dangerous to drive.",
     publishedAt: "2026-04-03",
     coverImage:
       "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1600&q=80",
@@ -36,7 +36,7 @@ Want to see where conditions are better right now? [Open CampCast](/)
     title: "Where to Camp in Iceland to Avoid Bad Weather",
     ctaHint: "Helps you decide: Where to stay for better weather",
     excerpt:
-      "Some weather windows are better than others. Planning where to stay can make a big difference when wind and rain move in.",
+      "Some campsites look perfect on a map until the wind hits 20 m/s. Here’s where you actually want to be.",
     publishedAt: "2026-04-03",
     coverImage:
       "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1600&q=80",
@@ -67,7 +67,7 @@ Instead of committing too early, compare nearby options and look for the best co
     title: "Best Campsites in Iceland This Week Based on Weather",
     ctaHint: "Helps you decide: Where conditions are best this week",
     excerpt:
-      "A practical way to think about campsite choices when the forecast shifts across regions during the week.",
+      "This week’s weather isn’t equal across Iceland. These are the campsites where you’ll actually enjoy staying.",
     publishedAt: "2026-04-03",
     coverImage:
       "https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=1600&q=80",

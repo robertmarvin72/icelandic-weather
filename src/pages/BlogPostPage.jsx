@@ -6,6 +6,7 @@ import ReactMarkdown from "react-markdown";
 import rehypeSanitize from "rehype-sanitize";
 import remarkGfm from "remark-gfm";
 import BlogPostCta from "../components/blog/BlogPostCta";
+import { Helmet } from "react-helmet-async";
 
 function formatPublishedDate(dateString, lang = "en") {
   try {
@@ -89,6 +90,10 @@ function BlogContent({ content, isLight }) {
 export default function BlogPostPage({ t, lang, theme }) {
   const { slug } = useParams();
   const post = getBlogPostBySlug(slug);
+  const title = `${post?.title || "CampCast"} | CampCast`;
+  const description = post?.excerpt || "Weather tips and campsite planning for Iceland.";
+  const url = `https://campcast.is/blog/${post?.slug || ""}`;
+  const image = post?.coverImage || "https://campcast.is/og-default.jpg"; // settu default image
   const isLight = theme === "light";
 
   if (!post) {
@@ -143,59 +148,79 @@ export default function BlogPostPage({ t, lang, theme }) {
   }
 
   return (
-    <div
-      className={`min-h-screen ${
-        isLight ? "bg-[#fffaf0] text-slate-900" : "bg-slate-950 text-slate-100"
-      }`}
-    >
-      <Header
-        t={t}
-        rightSlot={
-          <Link
-            to="/blog"
-            className="text-sm font-medium text-sky-700 underline-offset-4 hover:underline dark:text-sky-400"
-          >
-            {translateOrFallback(t, "backToBlog", "Back to blog")}
-          </Link>
-        }
-      />
-      <main className="mx-auto max-w-4xl px-4 py-10 sm:px-6 lg:px-8">
-        <article className="mt-6">
-          <div className="max-w-3xl">
-            <div className={`text-sm ${isLight ? "text-slate-500" : "text-slate-400"}`}>
-              {translateOrFallback(t, "blogPublishedLabel", "Published")}{" "}
-              {formatPublishedDate(post.publishedAt, lang)}
-            </div>
+    <>
+      <Helmet>
+        <title>{title}</title>
 
-            <h1 className="mt-3 text-4xl font-bold tracking-tight sm:text-5xl">{post.title}</h1>
+        <meta name="description" content={description} />
 
-            <p
-              className={`mt-4 text-xl leading-8 ${isLight ? "text-slate-600" : "text-slate-300"}`}
+        {/* Open Graph */}
+        <meta property="og:type" content="article" />
+        <meta property="og:title" content={title} />
+        <meta property="og:description" content={description} />
+        <meta property="og:url" content={url} />
+        <meta property="og:image" content={image} />
+
+        {/* Twitter */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={title} />
+        <meta name="twitter:description" content={description} />
+        <meta name="twitter:image" content={image} />
+      </Helmet>
+      <div
+        className={`min-h-screen ${
+          isLight ? "bg-[#fffaf0] text-slate-900" : "bg-slate-950 text-slate-100"
+        }`}
+      >
+        <Header
+          t={t}
+          rightSlot={
+            <Link
+              to="/blog"
+              className="text-sm font-medium text-sky-700 underline-offset-4 hover:underline dark:text-sky-400"
             >
-              {post.excerpt}
-            </p>
-          </div>
+              {translateOrFallback(t, "backToBlog", "Back to blog")}
+            </Link>
+          }
+        />
+        <main className="mx-auto max-w-4xl px-4 py-10 sm:px-6 lg:px-8">
+          <article className="mt-6">
+            <div className="max-w-3xl">
+              <div className={`text-sm ${isLight ? "text-slate-500" : "text-slate-400"}`}>
+                {translateOrFallback(t, "blogPublishedLabel", "Published")}{" "}
+                {formatPublishedDate(post.publishedAt, lang)}
+              </div>
 
-          {post.coverImage ? (
-            <div className="mt-10 overflow-hidden rounded-3xl border border-black/10 dark:border-white/10">
-              <img
-                src={post.coverImage}
-                alt={post.title}
-                className="h-[280px] w-full object-cover sm:h-[380px]"
-                loading="lazy"
-              />
+              <h1 className="mt-3 text-4xl font-bold tracking-tight sm:text-5xl">{post.title}</h1>
+
+              <p
+                className={`mt-4 text-xl leading-8 ${isLight ? "text-slate-600" : "text-slate-300"}`}
+              >
+                {post.excerpt}
+              </p>
             </div>
-          ) : null}
 
-          <div className="mt-8">
-            <BlogContent content={post.content} isLight={isLight} />
+            {post.coverImage ? (
+              <div className="mt-10 overflow-hidden rounded-3xl border border-black/10 dark:border-white/10">
+                <img
+                  src={post.coverImage}
+                  alt={post.title}
+                  className="h-[280px] w-full object-cover sm:h-[380px]"
+                  loading="lazy"
+                />
+              </div>
+            ) : null}
 
-            <BlogPostCta t={t} isLight={isLight} to="/" slug={post.slug} />
-          </div>
-        </article>
-      </main>
+            <div className="mt-8">
+              <BlogContent content={post.content} isLight={isLight} />
 
-      <Footer t={t} lang={lang} theme={theme} />
-    </div>
+              <BlogPostCta t={t} isLight={isLight} to="/" slug={post.slug} />
+            </div>
+          </article>
+        </main>
+
+        <Footer t={t} lang={lang} theme={theme} />
+      </div>
+    </>
   );
 }
