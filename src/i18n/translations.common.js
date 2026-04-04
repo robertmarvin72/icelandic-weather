@@ -344,6 +344,10 @@ export const commonTranslations = {
     blogCtaText: "Compare nearby campsites and see where the weather is better right now.",
     blogCtaButton: "Open CampCast",
 
+    top5BestOverallThisWeek: "Best overall this week",
+    decisionMoveBodyWindowAware:
+      "Better weather is likely at {site} over the next few days, even if your current campsite scores best overall this week.",
+
     locale: "en-GB",
   },
   is: {
@@ -686,6 +690,10 @@ export const commonTranslations = {
     blogCtaTitle: "Skoða stöðuna á tjaldsvæðum núna",
     blogCtaText: "Berðu saman nálæg tjaldsvæði og sjáðu hvar veðrið er betra akkúrat núna.",
     blogCtaButton: "Opna CampCast",
+
+    top5BestOverallThisWeek: "Best overall í vikunni",
+    decisionMoveBodyWindowAware:
+      "Betra veður er líklegt hjá {site} næstu daga, jafnvel þó núverandi tjaldsvæði skori hæst yfir vikuna í heild.",
 
     locale: "is-IS",
   },

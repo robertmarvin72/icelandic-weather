@@ -28,10 +28,10 @@ export default function DecisionBanner({ t, rows = [], routePlannerSummary = nul
       return {
         tone: "move",
         title: t(meta.titleKey),
-        body: (t("decisionMoveBody") || "Betra veður er líklegt hjá {site}.").replace(
-          "{site}",
-          candidateName
-        ),
+        body: (
+          t("decisionMoveBodyWindowAware") ||
+          "Better weather is likely at {site} over the next few days, even if your current campsite scores best overall this week."
+        ).replace("{site}", candidateName),
       };
     }
 

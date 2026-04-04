@@ -4,13 +4,13 @@ export const landingTranslations = {
     landingNavHow: "How it works",
     landingNavWhy: "Why CampCast",
     landingNavScreenshots: "Screenshots",
-    landingOpenCampcast: "Open CampCast",
+    landingOpenCampcast: "Check weather now",
 
     landingEyebrow: "Built for campers and van travel in Iceland",
     landingHeroTitle: "Don’t get stuck in bad weather in Iceland",
     landingHeroSubtitle:
       "Compare nearby campsites and see where wind, rain, and conditions are better before you drive.",
-    landingPrimaryCta: "Compare nearby campsites",
+    landingPrimaryCta: "Check weather near me",
     landingSecondaryCta: "How it works",
 
     landingStat1Label: "For campers / vans",
@@ -34,7 +34,7 @@ export const landingTranslations = {
     landingProblem3Title: "CampCast helps you choose better",
     landingProblem3Text: "Compare campsite conditions and make a better decision before you drive.",
 
-    landingHowEyebrow: "How it works",
+    landingHowEyebrow: "See example",
     landingHowTitle: "Avoid bad weather in seconds",
     landingHowText:
       "Compare nearby campsites and avoid wind, rain, and bad conditions before you move.",
@@ -154,6 +154,10 @@ export const landingTranslations = {
 
     landingAdvisorMoveRisk: "Route risk: Medium",
     landingAdvisorMoveExtra: "A longer storm period is likely on Route 1 toward Laugardalur.",
+
+    landingHeroUrgency: "Weather 20 minutes away can be completely different.",
+    landingHeroNoSignup: "No signup required",
+    landingFinalCta: "Check weather near you",
   },
 
   is: {
@@ -309,5 +313,8 @@ export const landingTranslations = {
 
     landingAdvisorMoveRisk: "Áhætta á leið: Miðlungs",
     landingAdvisorMoveExtra: "Lengra stormaskeið er líklegt á Þjóðvegi 1 til Laugardal.",
+    landingHeroUrgency: "Veðrið 20 mínútum í burtu getur verið allt öðruvísi.",
+    landingHeroNoSignup: "Engin skráning nauðsynleg",
+    landingFinalCta: "Athuga veður nálægt þér",
   },
 };

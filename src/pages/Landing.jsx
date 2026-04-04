@@ -294,23 +294,33 @@ export default function Landing({ t }) {
               {tr("landingHeroSubtitle")}
             </p>
 
-            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-              <a
-                href="https://www.campcast.is"
-                className="inline-flex items-center justify-center gap-2 rounded-2xl bg-emerald-600 px-6 py-3.5 text-base font-semibold text-white shadow-lg shadow-emerald-600/20 transition hover:-translate-y-0.5"
-              >
-                {tr("landingPrimaryCta")}
-                <ArrowRight className="h-4 w-4" />
-              </a>
-              <a
-                href="#how-it-works"
-                className="inline-flex items-center justify-center rounded-2xl border border-black/10 bg-white px-6 py-3.5 text-base font-semibold text-neutral-900 transition hover:bg-neutral-50"
-              >
-                {tr("landingSecondaryCta")}
-              </a>
+            <p className="mt-3 max-w-xl text-base font-medium text-neutral-900 md:text-lg">
+              {tr("landingHeroUrgency")}
+            </p>
+
+            <div className="mt-8">
+              <div className="flex flex-col gap-3 sm:flex-row">
+                <a
+                  href="https://www.campcast.is"
+                  className="inline-flex items-center justify-center gap-2 rounded-2xl bg-emerald-600 px-6 py-3.5 text-base font-semibold text-white shadow-lg shadow-emerald-600/20 transition hover:-translate-y-0.5"
+                >
+                  {tr("landingPrimaryCta")}
+                  <ArrowRight className="h-4 w-4" />
+                </a>
+                <a
+                  href="#screenshots"
+                  className="inline-flex items-center justify-center rounded-2xl border border-black/10 bg-white px-6 py-3.5 text-base font-semibold text-neutral-900 transition hover:bg-neutral-50"
+                >
+                  {tr("landingSecondaryCta")}
+                </a>
+              </div>
+
+              <div className="mt-3 text-sm font-medium text-neutral-500">
+                {tr("landingHeroNoSignup")}
+              </div>
             </div>
 
-            <div className="mt-8 grid max-w-xl grid-cols-1 gap-3 sm:grid-cols-3">
+            <div className="mt-8 grid max-w-xl grid-cols-1 gap-3 sm:grid-cols-3 opacity-90">
               <div className="rounded-2xl border border-black/5 bg-white p-4 shadow-sm">
                 <div className="text-sm text-neutral-500">{tr("landingStat1Label")}</div>
                 <div className="mt-1 font-semibold">{tr("landingStat1Value")}</div>
@@ -509,7 +519,7 @@ export default function Landing({ t }) {
                   href="https://www.campcast.is"
                   className="inline-flex items-center justify-center gap-2 rounded-2xl bg-white px-6 py-3.5 text-base font-semibold text-neutral-950 transition hover:-translate-y-0.5"
                 >
-                  {tr("landingOpenCampcast")}
+                  {tr("landingFinalCta")}
                   <ArrowRight className="h-4 w-4" />
                 </a>
                 <div className="text-sm text-white/60">{tr("landingFinalNote")}</div>
