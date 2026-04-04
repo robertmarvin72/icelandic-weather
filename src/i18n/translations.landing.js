@@ -7,9 +7,10 @@ export const landingTranslations = {
     landingOpenCampcast: "Open CampCast",
 
     landingEyebrow: "Built for campers and van travel in Iceland",
-    landingHeroTitle: "Find better weather before it turns",
-    landingHeroSubtitle: "See where conditions are better nearby and whether it is worth moving.",
-    landingPrimaryCta: "Find a better spot now",
+    landingHeroTitle: "Don’t get stuck in bad weather in Iceland",
+    landingHeroSubtitle:
+      "Compare nearby campsites and see where wind, rain, and conditions are better before you drive.",
+    landingPrimaryCta: "Compare nearby campsites",
     landingSecondaryCta: "How it works",
 
     landingStat1Label: "For campers / vans",
@@ -34,19 +35,20 @@ export const landingTranslations = {
     landingProblem3Text: "Compare campsite conditions and make a better decision before you drive.",
 
     landingHowEyebrow: "How it works",
-    landingHowTitle: "Find a better spot in seconds",
-    landingHowText: "Compare nearby conditions and see if moving gives you better weather.",
+    landingHowTitle: "Avoid bad weather in seconds",
+    landingHowText:
+      "Compare nearby campsites and avoid wind, rain, and bad conditions before you move.",
     landingStepLabel: "Step",
-    landingStep1Title: "Start where you are or pick a campsite",
+    landingStep1Title: "Start where you are or choose a campsite",
     landingStep1Text: "Start from your location or browse campsites nearby.",
-    landingStep2Title: "Compare weather nearby",
+    landingStep2Title: "See where conditions are better nearby",
     landingStep2Text:
       "See where wind, rain, and overall conditions look better over the next days.",
-    landingStep3Title: "Choose the better spot",
+    landingStep3Title: "Stay or move based on conditions",
     landingStep3Text: "Stay or move if a better option is nearby.",
 
     landingWhyEyebrow: "Why CampCast",
-    landingWhyTitle: "Not just weather — see where it is better to be",
+    landingWhyTitle: "A forecast is not enough in Iceland",
     landingWhyText:
       "A normal forecast tells you what the weather will be. CampCast helps you decide where it is best to be.",
 
