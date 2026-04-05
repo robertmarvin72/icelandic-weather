@@ -1,6 +1,65 @@
 export const blogPosts = [
   {
     id: "1",
+    slug: "best-weather-this-week-husabakki-iceland",
+    title: "Best Weather This Week at Húsabakki Campsite",
+    ctaHint: "Helps you decide: Stay or move this week",
+    excerpt:
+      "Húsabakki stands out this week with relatively calm conditions. Here’s what the forecast says and what to explore nearby.",
+    publishedAt: "2026-04-05",
+    coverImage:
+      "https://images.unsplash.com/photo-1477414348463-c0eb7f1359b6?auto=format&fit=crop&w=1600&q=80",
+    content: `
+If you're traveling through North Iceland this week, Húsabakki is shaping up to be one of the more stable spots to stay.
+
+Not perfect, but in Iceland terms, definitely on the better side.
+
+## What the week looks like
+
+The forecast starts fairly calm with light precipitation and manageable wind during the weekend.
+
+Monday is the outlier.
+
+That day brings stronger winds and heavier showers, which is where things can become uncomfortable, especially if you're driving a camper or staying in an exposed area.
+
+After that, conditions settle again:
+- Midweek looks relatively mild and stable
+- Late week brings some rain and gusts, but nothing as rough as Monday
+
+## So… stay or move?
+
+This is a classic Iceland situation.
+
+One rough day surrounded by decent ones.
+
+If you're already at Húsabakki, the smarter move is likely:
+- Stay put through Monday
+- Avoid unnecessary driving during peak wind
+- Enjoy the calmer window midweek
+
+Moving just to escape one bad day often creates more risk than it solves.
+
+## Something worth exploring nearby
+
+Just nearby flows Skjálfandafljót, the longest glacial river in Iceland.
+
+It has shaped the surrounding landscape for thousands of years and feeds into Goðafoss, one of the most famous waterfalls in the country.
+
+Goðafoss is not just a scenic stop.
+
+Around the year 1000, Iceland’s lawspeaker Þorgeir made the decision to adopt Christianity and is said to have thrown pagan idols into the waterfall. A symbolic moment that helped unify the country.
+
+So if the weather gives you a good window midweek, this is an easy and meaningful place to visit.
+
+## A more practical way to plan
+
+CampCast helps you compare nearby campsite conditions so you can decide whether it makes sense to stay or move based on actual weather differences.
+
+Want to see if there is a better spot nearby right now? [Open CampCast](/)
+`,
+  },
+  {
+    id: "2",
     slug: "is-it-safe-to-drive-a-camper-in-iceland-wind",
     title: "Is It Safe to Drive a Camper in Iceland Wind?",
     ctaHint: "Helps you decide: Is it safe to drive in wind",
@@ -31,7 +90,7 @@ Want to see where conditions are better right now? [Open CampCast](/)
   },
 
   {
-    id: "2",
+    id: "3",
     slug: "where-to-camp-in-iceland-to-avoid-bad-weather",
     title: "Where to Camp in Iceland to Avoid Bad Weather",
     ctaHint: "Helps you decide: Where to stay for better weather",
@@ -62,7 +121,7 @@ Instead of committing too early, compare nearby options and look for the best co
   },
 
   {
-    id: "3",
+    id: "4",
     slug: "best-campsites-in-iceland-this-week-based-on-weather",
     title: "Best Campsites in Iceland This Week Based on Weather",
     ctaHint: "Helps you decide: Where conditions are best this week",
