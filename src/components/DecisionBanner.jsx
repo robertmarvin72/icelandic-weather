@@ -41,10 +41,10 @@ export default function DecisionBanner({ t, rows = [], routePlannerSummary = nul
       return {
         tone: "consider",
         title: t(meta.titleKey),
-        body: (t("decisionConsiderBody") || "Betra veður er líklegt hjá {site}.").replace(
-          "{site}",
-          candidateName
-        ),
+        body: (
+          t("decisionConsiderBodyWindowAware") ||
+          "Slightly better conditions may be available at {site} over the next few days."
+        ).replace("{site}", candidateName),
       };
     }
 

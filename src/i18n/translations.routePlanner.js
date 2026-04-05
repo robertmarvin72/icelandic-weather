@@ -222,6 +222,8 @@ export const routePlannerTranslations = {
 
     decisionConsiderTitle: "Consider moving",
     decisionConsiderBody: "Better weather is likely at {site}.",
+    decisionConsiderBodyWindowAware:
+      "Slightly better conditions may be available at {site} over the next few days.",
 
     decisionStayTitle: "Stay put for now",
     decisionStayBodyGood: "Conditions aren’t great, but no nearby option clearly looks better.",
@@ -452,6 +454,7 @@ export const routePlannerTranslations = {
 
     decisionConsiderTitle: "Íhugaðu að færa þig",
     decisionConsiderBody: "Betra veður er líklegt hjá {site}.",
+    decisionConsiderBodyWindowAware: "Aðeins betri aðstæður gætu verið hjá {site} næstu daga.",
 
     decisionStayTitle: "Best að vera kyrr í bili",
     decisionStayBodyGood:
