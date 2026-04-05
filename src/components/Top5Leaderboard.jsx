@@ -217,7 +217,7 @@ export default function Top5Leaderboard({
 
                       {idx === 0 && (
                         <span className="inline-flex items-center leading-none rounded-full px-2 py-0.5 text-[11px] font-medium bg-emerald-100 text-emerald-800 dark:bg-emerald-900/40 dark:text-emerald-200">
-                          {t?.("top5BestThisWeek") ?? "Best this week"}
+                          {t?.("top5BestOverallThisWeek") ?? "Best overall this week"}
                         </span>
                       )}
                     </div>
