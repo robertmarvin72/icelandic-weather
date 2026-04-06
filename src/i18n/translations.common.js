@@ -5,7 +5,7 @@ export const commonTranslations = {
     myLocation: "My location",
     dark: "Dark",
     light: "Light",
-    top5Title: "Top 5 Campsites This Week",
+    top5Title: "Best campsites based on your location",
     upToDate: "Up to date.",
     campsite: "Campsite",
     distance: "Distance",
@@ -313,7 +313,7 @@ export const commonTranslations = {
 
     top5DistanceFromUserNote: "Distance is based on your current location.",
     top5DistanceFromUserTooltip: "Distances in this list are calculated from your location.",
-    top5DistanceFromUserNoteWithLocation: "Distance is based on your location:",
+    top5DistanceFromUserNoteWithLocation: "Showing results near:",
     unknownLocation: "Unknown location",
 
     bestWeatherWindow: "The best weather window today is from {from} to {to}.",
