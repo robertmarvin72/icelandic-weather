@@ -378,6 +378,35 @@ export default function Landing({ t }) {
           </div>
         </section>
 
+        <section id="screenshots" className="mx-auto max-w-7xl px-6 py-20 lg:px-8">
+          <SectionTitle
+            eyebrow={tr("landingScreenshotsEyebrow")}
+            title={tr("landingScreenshotsTitle")}
+            text={tr("landingScreenshotsText")}
+            center
+          />
+
+          <div className="mt-14 grid gap-8 lg:grid-cols-3">
+            {screenshots.map((item) => (
+              <motion.div
+                key={item.title}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, amount: 0.25 }}
+                variants={fadeUp}
+                transition={{ duration: 0.4 }}
+              >
+                <AdvisorPreview
+                  t={tr}
+                  title={item.title}
+                  subtitle={item.subtitle}
+                  variant={item.variant}
+                />
+              </motion.div>
+            ))}
+          </div>
+        </section>
+
         <section id="how-it-works" className="mx-auto max-w-7xl px-6 py-20 lg:px-8">
           <SectionTitle
             eyebrow={tr("landingHowEyebrow")}
@@ -467,35 +496,6 @@ export default function Landing({ t }) {
                 );
               })}
             </div>
-          </div>
-        </section>
-
-        <section id="screenshots" className="mx-auto max-w-7xl px-6 py-20 lg:px-8">
-          <SectionTitle
-            eyebrow={tr("landingScreenshotsEyebrow")}
-            title={tr("landingScreenshotsTitle")}
-            text={tr("landingScreenshotsText")}
-            center
-          />
-
-          <div className="mt-14 grid gap-8 lg:grid-cols-3">
-            {screenshots.map((item) => (
-              <motion.div
-                key={item.title}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true, amount: 0.25 }}
-                variants={fadeUp}
-                transition={{ duration: 0.4 }}
-              >
-                <AdvisorPreview
-                  t={tr}
-                  title={item.title}
-                  subtitle={item.subtitle}
-                  variant={item.variant}
-                />
-              </motion.div>
-            ))}
           </div>
         </section>
 

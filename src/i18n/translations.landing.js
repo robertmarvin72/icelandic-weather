@@ -7,20 +7,20 @@ export const landingTranslations = {
     landingOpenCampcast: "Check weather now",
 
     landingEyebrow: "Built for campers and van travel in Iceland",
-    landingHeroTitle: "Don’t get stuck in bad weather in Iceland",
+    landingHeroTitle: "Avoid bad weather. Find a better campsite nearby.",
     landingHeroSubtitle:
-      "Compare nearby campsites and see where wind, rain, and conditions are better before you drive.",
-    landingPrimaryCta: "Check weather near me",
-    landingSecondaryCta: "How it works",
+      "Don’t get stuck in wind and rain. Compare nearby campsites and see if better conditions are just a short drive away.",
+    landingPrimaryCta: "Find better weather nearby",
+    landingSecondaryCta: "See how it works",
 
     landingStat1Label: "For campers / vans",
-    landingStat1Value: "Avoid bad weather",
+    landingStat1Value: "Avoid strong wind at your campsite",
 
-    landingStat2Label: "Real-time comparison",
-    landingStat2Value: "See where it is better",
+    landingStat2Label: "Nearby comparison",
+    landingStat2Value: "See where it is calmer",
 
     landingStat3Label: "Better decisions",
-    landingStat3Value: "Move if it is worth it",
+    landingStat3Value: "Know if moving is worth it",
 
     landingHeroMockTitle: "See where the weather is better nearby",
     landingHeroMockSubtitle: "A clear view of whether staying or moving makes more sense.",
@@ -32,18 +32,21 @@ export const landingTranslations = {
     landingProblem2Text:
       "You do not just need the weather. You need to know if a nearby campsite is a better option.",
     landingProblem3Title: "CampCast helps you choose better",
-    landingProblem3Text: "Compare campsite conditions and make a better decision before you drive.",
+    landingProblem3Text:
+      "Compare campsite conditions and decide whether to stay or move before you drive.",
 
-    landingHowEyebrow: "See example",
+    landingHowEyebrow: "How it works",
     landingHowTitle: "Avoid bad weather in seconds",
     landingHowText:
       "Compare nearby campsites and avoid wind, rain, and bad conditions before you move.",
     landingStepLabel: "Step",
     landingStep1Title: "Start where you are or choose a campsite",
     landingStep1Text: "Start from your location or browse campsites nearby.",
+
     landingStep2Title: "See where conditions are better nearby",
     landingStep2Text:
       "See where wind, rain, and overall conditions look better over the next days.",
+
     landingStep3Title: "Stay or move based on conditions",
     landingStep3Text: "Stay or move if a better option is nearby.",
 
@@ -69,7 +72,7 @@ export const landingTranslations = {
     landingBenefit3Title: "Built for Icelandic conditions",
     landingBenefit3Text: "Designed for road trips, changing forecasts, and exposed campsites.",
 
-    landingScreenshotsEyebrow: "Screenshots",
+    landingScreenshotsEyebrow: "Examples",
     landingScreenshotsTitle: "See where it is better to be",
     landingScreenshotsText: "CampCast shows whether you should stay, consider moving, or move.",
     landingScreenshot1Title: "See conditions near your campsite",
@@ -78,12 +81,13 @@ export const landingTranslations = {
     landingScreenshot2Title: "Find better weather nearby",
     landingScreenshot2Subtitle: "See where conditions are better instead of guessing.",
     landingScreenshot3Title: "Decide if moving is worth it",
-    landingScreenshot3Subtitle: "Decide before you continue your trip.",
+    landingScreenshot3Subtitle: "See whether moving is worth it before you continue your trip.",
 
     landingFinalEyebrow: "Planning to camp in Iceland?",
-    landingFinalTitle: "Find better weather before you go.",
-    landingFinalText: "See where it is better to be and whether moving is worth it.",
-    landingFinalNote: "Make a better decision before you set off.",
+    landingFinalTitle: "Find better weather before you go",
+    landingFinalText:
+      "Compare nearby campsite conditions and avoid getting stuck in bad wind, rain, or exposed locations.",
+    landingFinalNote: "No signup required.",
 
     landingMockTagline: "Better weather near campsites in Iceland",
     landingMockBetterNearby: "Better nearby",
@@ -105,25 +109,6 @@ export const landingTranslations = {
     landingAdvisorModuleTitle: "Route Advisor",
     landingAdvisorModuleSubtitle: "Find better weather nearby before you move.",
 
-    landingAdvisorBadge1: "Better nearby",
-    landingAdvisorBadge2: "Real example",
-    landingAdvisorBadge3: "Decision view",
-
-    landingAdvisorTitle: "Move",
-    landingAdvisorSubtitle: "There is clearly a better option nearby",
-
-    landingAdvisorAltTitle2: "Better option nearby",
-    landingAdvisorAltSubtitle2: "Conditions look better over the next days in another location.",
-
-    landingAdvisorAltTitle3: "Choose the better spot",
-    landingAdvisorAltSubtitle3: "Compare options and see if moving is worth it.",
-
-    landingAdvisorBenefit1: "Less wind exposure",
-    landingAdvisorBenefit2: "Less rain tomorrow",
-    landingAdvisorBenefit3: "Better overall camping conditions",
-
-    landingAdvisorRisk: "Current status: Manageable",
-    landingAdvisorExtra: "There is no strong reason to move right now.",
     landingAdvisorBadgeStay: "Stay",
     landingAdvisorBadgeConsider: "Consider moving",
     landingAdvisorBadgeMove: "Move",
@@ -155,7 +140,7 @@ export const landingTranslations = {
     landingAdvisorMoveRisk: "Route risk: Medium",
     landingAdvisorMoveExtra: "A longer storm period is likely on Route 1 toward Laugardalur.",
 
-    landingHeroUrgency: "Weather 20 minutes away can be completely different.",
+    landingHeroUrgency: "In Iceland, the weather 20 minutes away can be completely different.",
     landingHeroNoSignup: "No signup required",
     landingFinalCta: "Check weather near you",
   },
@@ -265,25 +250,6 @@ export const landingTranslations = {
     landingAdvisorModuleTitle: "Ferðaráðgjafi",
     landingAdvisorModuleSubtitle: "Finndu betra veður í nágrenninu áður en þú færir þig.",
 
-    landingAdvisorBadge1: "Betra í nágrenninu",
-    landingAdvisorBadge2: "Raunverulegt dæmi",
-    landingAdvisorBadge3: "Ákvörðunarsýn",
-
-    landingAdvisorTitle: "Færðu þig",
-    landingAdvisorSubtitle: "Það virðist vera greinilega betri kostur í nágrenninu",
-
-    landingAdvisorAltTitle2: "Betri kostur í nágrenninu",
-    landingAdvisorAltSubtitle2: "Aðstæður líta betur út næstu daga á öðrum stað.",
-
-    landingAdvisorAltTitle3: "Veldu betri stað",
-    landingAdvisorAltSubtitle3: "Berðu saman valkosti og sjáðu hvort það borgi sig að færa sig.",
-
-    landingAdvisorBenefit1: "Minni vindálag",
-    landingAdvisorBenefit2: "Minni rigning á morgun",
-    landingAdvisorBenefit3: "Betri heildaraðstæður til að tjalda",
-
-    landingAdvisorRisk: "Staðan núna: Viðráðanleg",
-    landingAdvisorExtra: "Engin sterk ástæða er til að færa sig eins og er.",
     landingAdvisorBadgeStay: "Vertu áfram",
     landingAdvisorBadgeConsider: "Íhugaðu að færa þig",
     landingAdvisorBadgeMove: "Færðu þig",
