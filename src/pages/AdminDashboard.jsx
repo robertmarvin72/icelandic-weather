@@ -73,7 +73,7 @@ export default function AdminDashboard() {
 
     async function load() {
       try {
-        const res = await fetch("/api/admin/admin", {
+        const res = await fetch("/api/admin", {
           credentials: "include",
           cache: "no-store",
         });
