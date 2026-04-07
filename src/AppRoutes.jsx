@@ -109,7 +109,7 @@ export default function AppRoutes({ HomeComponent }) {
       <Route path="/terms" element={<TermsRoute />} />
       <Route path="/privacy" element={<PrivacyRoute />} />
       <Route path="/refund" element={<RefundRoute />} />
-      <Route path="/api/admin/admin" element={<AdminDashboard />} />
+      <Route path="/admin" element={<AdminDashboard />} />
       <Route path="/iceland-camping-weather" element={<LandingRoute />} />
       <Route path="/blog" element={<BlogRoute />} />
       <Route path="/blog/:slug" element={<BlogPostRoute />} />
