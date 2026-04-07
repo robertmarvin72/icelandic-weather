@@ -1,5 +1,5 @@
-import { isAdminEmail } from "../_lib/admin.js";
-import { getMeFromRequest } from "../_lib/getMe.js";
+import { isAdminEmail } from "./_lib/admin.js";
+import { getMeFromRequest } from "./_lib/getMe.js";
 import postgres from "postgres";
 
 const sql = postgres(process.env.POSTGRES_URL, { ssl: "require" });
