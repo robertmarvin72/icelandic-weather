@@ -173,47 +173,39 @@ Region: ${context.region || "Iceland"}
 Tone:
 - Practical and experience-based
 - Written like advice from someone who knows Iceland
-- Focus on helping the reader make a decision
 - Not promotional
 
 Structure:
 - Title
 - Short intro (set context quickly, no fluff)
 - Comparison (bullet points, concrete differences only)
-- Practical weather impact (VERY IMPORTANT: explain wind, shelter, exposure, and what it means for camping)
+- Practical weather impact (explain wind, shelter, exposure, and what it means for camping)
 - Decision section: "Should you stay or move?" based on conditions
 - Soft conclusion
+- End with one short, strong takeaway sentence
 
 Rules:
-- Avoid generic travel descriptions
+- Focus on helping the reader make a decision
+- Avoid all generic travel descriptions
 - Do not describe scenery unless it affects camping conditions
 - Explain WHY differences matter, especially wind, shelter, and exposure
 - Treat campsites as decision options, not destinations
-- If weather differs, explain the real-world impact (for example tents, comfort, driving, overnight conditions)
+- If weather differs, explain the real-world impact (tents, comfort, driving, overnight conditions)
 - Keep the content grounded and specific
 - Do not invent facilities, amenities, or activities unless clearly implied by the context
-- Do not make the campsites sound equally good if the practical weather difference matters
+- Do not make the campsites sound equally good if there is a meaningful difference
 - Be specific and decisive when describing differences
-- Do not hedge with words like "can", "often", "may" unless necessary
-- If one campsite is more exposed to wind, say it clearly
+- Avoid hedging language ("can", "may", "might", "often") unless absolutely necessary
+- If one campsite is more exposed to wind, state it clearly
+- Avoid ALL of the following phrases or anything similar:
+  "Iceland offers", "stunning", "breathtaking", "unique experience", "nestled", "picturesque", "perfect for"
 
 Important:
 - Campsites in Iceland can feel very different even if they are close together
 - Focus on micro-differences in weather and shelter
 - Write like you are helping someone decide where to sleep tonight
 - Prioritize practical decision value over general travel writing
-- The reader is actively deciding where to stay
-- Write like a recommendation under uncertainty, not a neutral comparison
-
-Avoid:
-- "Iceland offers"
-- "stunning views"
-- "unique experience"
-- "breathtaking"
-- "nestled"
-- "picturesque"
-- "perfect for"
-- generic tourism language
+- The reader is actively deciding where to stay under uncertainty
 
 Return ONLY valid JSON.
 Do not wrap the JSON in markdown code fences.
