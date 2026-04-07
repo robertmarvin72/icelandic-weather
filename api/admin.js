@@ -207,6 +207,11 @@ Important:
 - Prioritize practical decision value over general travel writing
 - The reader is actively deciding where to stay under uncertainty
 
+Meta rules:
+- Meta title must include location and decision intent (e.g. where to camp, which is better, wind conditions)
+- Meta description must clearly state the practical benefit for the reader
+- Avoid generic descriptions in meta text
+
 Return ONLY valid JSON.
 Do not wrap the JSON in markdown code fences.
 Do not include any extra commentary.
@@ -231,21 +236,58 @@ Write a campsite weather blog post.
 Language: ${language}
 
 Tone:
-- Practical
-- Clear
+- Practical and experience-based
+- Clear and grounded
 - Decision-focused
 - Not promotional
 
+Structure:
+- Title
+- Short intro (set context quickly, no fluff)
+- Main weather insight
+- Practical impact for campers
+- Decision section: what the reader should consider
+- Soft conclusion
+- End with one short, strong takeaway sentence
+
 Rules:
+- Focus on helping the reader make a camping decision
 - Avoid generic travel writing
 - Focus on useful weather insight
-- Keep it specific and grounded
+- Keep the content specific and grounded
+- Explain why the weather matters in practice (wind, rain, gusts, exposure, comfort, overnight conditions, driving if relevant)
+- Treat campsites as decision options, not destinations
+- Do not invent facilities, amenities, or activities unless clearly implied by the context
+- Be specific and decisive
+- Avoid hedging language ("can", "may", "might", "often") unless absolutely necessary
+- Prefer direct, practical statements
+- Include location and decision intent in the meta title
+- Make the meta description useful and click-worthy, not generic
+
+Important:
+- The reader is actively deciding where to stay or whether to move
+- Small weather differences can matter a lot in Iceland
+- Prioritize practical decision value over general travel writing
+- Write like advice for someone planning where to sleep tonight
 
 Avoid:
+- "Iceland offers"
 - "stunning views"
 - "unique experience"
 - "breathtaking"
+- "nestled"
+- "picturesque"
+- "perfect for"
 - generic tourism language
+
+Meta rules:
+- Meta title must include location and decision intent (e.g. where to camp, weather conditions, wind, rain)
+- Meta title should be clear and slightly SEO-oriented, not generic
+- Meta description must explain the practical benefit to the reader
+- Meta description should feel like a helpful summary, not marketing text
+- Avoid vague descriptions like "explore", "discover", "learn about"
+- Prefer phrasing that reflects real user intent (e.g. "where to camp", "should you move", "best option in wind")
+- Prefer including location (e.g. Westfjords, South Iceland) in meta title
 
 Return ONLY valid JSON.
 Do not wrap the JSON in markdown code fences.
