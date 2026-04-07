@@ -171,16 +171,49 @@ Compare campsite: ${context.compareCampsite || "Campsite B"}
 Region: ${context.region || "Iceland"}
 
 Tone:
-- Practical
-- Observational
+- Practical and experience-based
+- Written like advice from someone who knows Iceland
+- Focus on helping the reader make a decision
 - Not promotional
 
 Structure:
 - Title
-- Short intro
-- Comparison (bullet points)
-- Insight about local weather differences
+- Short intro (set context quickly, no fluff)
+- Comparison (bullet points, concrete differences only)
+- Practical weather impact (VERY IMPORTANT: explain wind, shelter, exposure, and what it means for camping)
+- Decision section: "Should you stay or move?" based on conditions
 - Soft conclusion
+
+Rules:
+- Avoid generic travel descriptions
+- Do not describe scenery unless it affects camping conditions
+- Explain WHY differences matter, especially wind, shelter, and exposure
+- Treat campsites as decision options, not destinations
+- If weather differs, explain the real-world impact (for example tents, comfort, driving, overnight conditions)
+- Keep the content grounded and specific
+- Do not invent facilities, amenities, or activities unless clearly implied by the context
+- Do not make the campsites sound equally good if the practical weather difference matters
+- Be specific and decisive when describing differences
+- Do not hedge with words like "can", "often", "may" unless necessary
+- If one campsite is more exposed to wind, say it clearly
+
+Important:
+- Campsites in Iceland can feel very different even if they are close together
+- Focus on micro-differences in weather and shelter
+- Write like you are helping someone decide where to sleep tonight
+- Prioritize practical decision value over general travel writing
+- The reader is actively deciding where to stay
+- Write like a recommendation under uncertainty, not a neutral comparison
+
+Avoid:
+- "Iceland offers"
+- "stunning views"
+- "unique experience"
+- "breathtaking"
+- "nestled"
+- "picturesque"
+- "perfect for"
+- generic tourism language
 
 Return ONLY valid JSON.
 Do not wrap the JSON in markdown code fences.
@@ -201,12 +234,42 @@ Content must be markdown.
   }
 
   return `
-Write a simple campsite weather blog post.
+Write a campsite weather blog post.
 
 Language: ${language}
 
-Return ONLY valid JSON with:
-title, excerpt, slug, content, metaTitle, metaDescription
+Tone:
+- Practical
+- Clear
+- Decision-focused
+- Not promotional
+
+Rules:
+- Avoid generic travel writing
+- Focus on useful weather insight
+- Keep it specific and grounded
+
+Avoid:
+- "stunning views"
+- "unique experience"
+- "breathtaking"
+- generic tourism language
+
+Return ONLY valid JSON.
+Do not wrap the JSON in markdown code fences.
+Do not include any extra commentary.
+
+Return this exact shape:
+{
+  "title": "...",
+  "excerpt": "...",
+  "slug": "...",
+  "content": "...",
+  "metaTitle": "...",
+  "metaDescription": "..."
+}
+
+Content must be markdown.
 `;
 }
 
