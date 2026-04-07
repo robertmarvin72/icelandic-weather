@@ -193,6 +193,8 @@ Structure:
 - End with one short, strong takeaway sentence
 
 Rules:
+- Do not invent terrain details, shelter elements, or campsite facilities unless explicitly provided in the context
+- If a detail is unknown, do not guess
 - Focus on helping the reader make a decision
 - Avoid all generic travel descriptions
 - Do not describe scenery unless it affects camping conditions
@@ -259,6 +261,8 @@ Structure:
 - End with one short, strong takeaway sentence
 
 Rules:
+- Do not invent terrain details, shelter elements, or campsite facilities unless explicitly provided in the context
+- If a detail is unknown, do not guess
 - Focus on helping the reader make a camping decision
 - Avoid generic travel writing
 - Focus on useful weather insight
