@@ -143,6 +143,14 @@ async function handleGenerateDraft(req, res) {
   try {
     const { type = "weather_comparison", lang = "en", context = {} } = req.body || {};
 
+    const allowedTypes = ["campsite_weather", "weather_comparison"];
+
+    if (!allowedTypes.includes(type)) {
+      return res.status(400).json({
+        error: "Invalid blog type",
+      });
+    }
+
     const prompt = buildPrompt({ type, lang, context });
     const aiResponse = await callAI(prompt);
     const draft = normalizeDraft(aiResponse);
@@ -160,7 +168,7 @@ async function handleGenerateDraft(req, res) {
 function buildPrompt({ type, lang, context }) {
   const language = lang === "is" ? "Icelandic" : "English";
 
-  if (type === "weather_comparison") {
+  if (type === "weather_comparison" || type === "campsite_weather") {
     return `
 Write a blog post comparing two nearby campsites in Iceland.
 
@@ -374,7 +382,12 @@ function slugify(str = "") {
 ========================= */
 
 export default async function handler(req, res) {
-  console.log("ADMIN ROUTE HIT", req.method);
+  if (!process.env.OPENAI_API_KEY) {
+    return res.status(500).json({
+      error: "AI service not configured",
+    });
+  }
+
   if (req.method === "GET") {
     return handleSummary(req, res);
   }
