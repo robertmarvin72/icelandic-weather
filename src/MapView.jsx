@@ -9,11 +9,15 @@ import { scoreSiteDay } from "./lib/scoring";
 // ───────────────────────────────────────────────
 // Color mapping by average score
 function colorForScore(score) {
-  if (score >= 60) return "#22c55e"; // bright green
-  if (score >= 45) return "#84cc16"; // green-yellow
-  if (score >= 30) return "#facc15"; // yellow
-  if (score >= 15) return "#f97316"; // orange
+  if (score >= 6) return "#22c55e"; // green
+  if (score >= 3) return "#facc15"; // yellow
   return "#ef4444"; // red
+}
+
+function labelForScore(score, t) {
+  if (score >= 6) return typeof t === "function" ? t("mapConditionGood") : "Good";
+  if (score >= 4) return typeof t === "function" ? t("mapConditionFair") : "Fair";
+  return typeof t === "function" ? t("mapConditionRough") : "Rough";
 }
 
 // ───────────────────────────────────────────────
@@ -34,7 +38,6 @@ async function fetchForecastAndScore({ lat, lon }) {
 
     const s = scoreSiteDay(r);
 
-    // ✅ keep season for UI/debug
     return { ...r, class: s.finalClass, points: s.points, season: s.season };
   });
 
@@ -46,49 +49,56 @@ async function fetchForecastAndScore({ lat, lon }) {
 // Helper for smooth flyTo
 function FlyTo({ position }) {
   const map = useMap();
+
   useEffect(() => {
     if (position) map.flyTo(position, 8, { duration: 1.2 });
   }, [position, map]);
+
   return null;
 }
 
 // ───────────────────────────────────────────────
 // Custom pin icon with colored dot
 function scorePinIcon(color, isSelected = false) {
-  const size = isSelected ? 44 : 34;
-  const dot = isSelected ? 16 : 12;
+  const width = isSelected ? 30 : 24;
+  const height = isSelected ? 42 : 34;
+  const outline = isSelected ? 4 : 3;
 
   return L.divIcon({
     className: "",
-    iconSize: [size, size],
-    iconAnchor: [size / 2, size],
-    popupAnchor: [0, -size + 6],
+    iconSize: [width + 10, height + 10],
+    iconAnchor: [(width + 10) / 2, height + 8],
+    popupAnchor: [0, -height],
     html: `
       <div style="
         position: relative;
-        width: ${size}px;
-        height: ${size}px;
-        display: grid;
-        place-items: center;
-        transform: translateY(2px);
+        width: ${width + 10}px;
+        height: ${height + 10}px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
       ">
         <div style="
-          position: absolute;
-          bottom: 6px;
-          width: ${dot}px;
-          height: ${dot}px;
-          border-radius: 999px;
+          position: relative;
+          width: ${width}px;
+          height: ${height}px;
           background: ${color};
-          box-shadow: 0 0 0 3px rgba(255,255,255,0.9);
-        "></div>
-        <img
-          src="https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png"
-          style="
-            width: ${isSelected ? 30 : 25}px;
-            height: auto;
-            filter: drop-shadow(0 2px 3px rgba(0,0,0,.25));
-          "
-        />
+          border: ${outline}px solid rgba(255,255,255,0.95);
+          border-radius: ${width}px ${width}px ${width}px 0;
+          transform: rotate(-45deg);
+          box-shadow: 0 4px 10px rgba(0,0,0,0.28);
+        ">
+          <div style="
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: ${isSelected ? 10 : 8}px;
+            height: ${isSelected ? 10 : 8}px;
+            background: rgba(255,255,255,0.95);
+            border-radius: 999px;
+            transform: translate(-50%, -50%) rotate(45deg);
+          "></div>
+        </div>
       </div>
     `,
   });
@@ -112,6 +122,7 @@ export default function MapView({
   const [mapFailed, setMapFailed] = useState(false);
   const [tileLoaded, setTileLoaded] = useState(false);
   const [tileErrorCount, setTileErrorCount] = useState(0);
+  const [showWeatherOverlay, setShowWeatherOverlay] = useState(true);
 
   useEffect(() => {
     if (mapFailed) return;
@@ -126,6 +137,17 @@ export default function MapView({
     return () => clearTimeout(timer);
   }, [mapReady, tileLoaded, tileErrorCount, mapFailed]);
 
+  // Preload a first batch so overlay is useful immediately
+  useEffect(() => {
+    const initialSites = campsites.slice(0, 120);
+    initialSites.forEach((site) => {
+      if (!forecastById[site.id] && !loadingById[site.id]) {
+        loadForecast(site);
+      }
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [campsites]);
+
   const isDark = theme === "dark";
 
   const tileUrl = "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
@@ -134,7 +156,6 @@ export default function MapView({
   const iconCreateFunction = (cluster) => {
     const markers = cluster.getAllChildMarkers();
 
-    // average score across markers in this cluster (0..70)
     let sum = 0;
     let n = 0;
 
@@ -148,7 +169,8 @@ export default function MapView({
     }
 
     const avg = n ? sum / n : 0;
-    const color = colorForScore(avg);
+    const overlayColor = colorForScore(avg);
+    const color = showWeatherOverlay ? overlayColor : "#3b82f6";
 
     const count = cluster.getChildCount();
     const size = count < 10 ? 34 : count < 50 ? 40 : count < 100 ? 46 : 52;
@@ -179,7 +201,9 @@ export default function MapView({
 
   async function loadForecast(site) {
     if (loadingById[site.id] || forecastById[site.id]) return;
+
     setLoadingById((s) => ({ ...s, [site.id]: true }));
+
     try {
       const data = await fetchForecastAndScore({ lat: site.lat, lon: site.lon });
       setForecastById((s) => ({ ...s, [site.id]: data }));
@@ -218,14 +242,13 @@ export default function MapView({
 
         {selectedSite && <FlyTo position={[selectedSite.lat, selectedSite.lon]} />}
 
-        {/* User location marker */}
         {userLocation && (
           <CircleMarker
             center={[userLocation.lat, userLocation.lon]}
             radius={7}
             pathOptions={{ color: "#2563eb", fillColor: "#3b82f6", fillOpacity: 0.7 }}
           >
-            <Popup>You are here</Popup>
+            <Popup>{typeof t === "function" ? t("mapYouAreHere") : "You are here"}</Popup>
           </CircleMarker>
         )}
 
@@ -238,17 +261,17 @@ export default function MapView({
           {campsites.map((site) => {
             const fdata = forecastById[site.id];
             const score = fdata?.score ?? 0;
-            const color = colorForScore(score);
+            const overlayColor = colorForScore(score);
+            const color = showWeatherOverlay ? overlayColor : "#3b82f6";
+            const scoreLabel = labelForScore(score, t);
 
             const isSelected = site.id === selectedId;
             const icon = scorePinIcon(color, isSelected);
 
             const loading = loadingById[site.id];
             const err = errorById[site.id];
-
-            // ✅ use first day’s season as a simple “mode” hint
             const season = fdata?.rows?.[0]?.season ?? null;
-            console.log("MapView theme:", theme);
+
             return (
               <Marker
                 key={site.id}
@@ -268,28 +291,47 @@ export default function MapView({
                   <div className="text-sm">
                     <div className="font-semibold mb-1">{site.name}</div>
 
-                    {loading && <div className="text-slate-600">Loading forecast…</div>}
-                    {err && <div className="text-red-600">Error: {err}</div>}
+                    {loading && (
+                      <div className="text-slate-600">
+                        {typeof t === "function" ? t("mapLoadingForecast") : "Loading forecast…"}
+                      </div>
+                    )}
+                    {err && (
+                      <div className="text-red-600">
+                        {typeof t === "function" ? t("mapErrorPrefix") : "Error:"} {err}
+                      </div>
+                    )}
 
                     {!loading && !err && (
                       <div>
                         <div className="text-slate-700">
-                          Weekly score: <b>{score}</b>
+                          {typeof t === "function" ? t("mapWeeklyScore") : "Weekly score"}:{" "}
+                          <b>{score}</b>
                         </div>
 
                         {season === "winter" ? (
                           <div className="mt-1 text-xs text-slate-500">
-                            ❄️{" "}
-                            {typeof t === "function"
-                              ? t("winterModeActive")
-                              : lang === "is"
-                                ? "Vetrarhamur"
-                                : "Winter mode"}
+                            ❄️ {typeof t === "function" ? t("mapWinterMode") : "Winter mode"}
                           </div>
                         ) : null}
 
                         <div className="mt-1 text-xs text-slate-500">
-                          Color = weather score (green=best, red=worst)
+                          {typeof t === "function" ? t("mapCondition") : "Condition"}:{" "}
+                          <b>{scoreLabel}</b>
+                          <div className="text-xs text-slate-500 mt-1">
+                            {typeof t === "function"
+                              ? t("mapBasedOnNext7Days")
+                              : "Based on next 7 days combined"}
+                          </div>
+                        </div>
+                        <div className="mt-1 text-xs text-slate-500">
+                          {showWeatherOverlay
+                            ? typeof t === "function"
+                              ? t("mapOverlayOn")
+                              : "Weather colors are on"
+                            : typeof t === "function"
+                              ? t("mapOverlayHint")
+                              : "Turn on weather colors to color-code campsites"}
                         </div>
                       </div>
                     )}
@@ -300,14 +342,17 @@ export default function MapView({
           })}
         </MarkerClusterGroup>
       </MapContainer>
+
       {mapFailed && (
         <div className="absolute inset-0 z-[500] flex items-center justify-center bg-slate-100/90 px-4 text-center dark:bg-slate-900/90">
           <div>
             <div className="text-sm font-medium text-slate-700 dark:text-slate-200">
-              Unable to load map.
+              {typeof t === "function" ? t("mapLoadFailedTitle") : "Unable to load map."}
             </div>
             <div className="mt-1 text-xs text-slate-500 dark:text-slate-400">
-              Please refresh the page or check your connection.
+              {typeof t === "function"
+                ? t("mapLoadFailedText")
+                : "Please refresh the page or check your connection."}
             </div>
           </div>
         </div>
@@ -316,6 +361,42 @@ export default function MapView({
       {selectedSite && !mapFailed && (
         <div className="absolute top-2 left-1/2 -translate-x-1/2 bg-white/80 backdrop-blur-sm px-4 py-1 rounded-full shadow text-sm font-medium text-slate-700">
           📍 {selectedSite.name}
+        </div>
+      )}
+
+      {!mapFailed && (
+        <button
+          type="button"
+          onClick={() => setShowWeatherOverlay((v) => !v)}
+          className="absolute right-3 top-3 z-[500] rounded-full border border-slate-200 bg-white/90 px-3 py-2 text-xs font-semibold text-slate-700 shadow backdrop-blur-sm hover:bg-white"
+        >
+          {showWeatherOverlay
+            ? typeof t === "function"
+              ? t("mapHideWeatherColors")
+              : "Hide weather colors"
+            : typeof t === "function"
+              ? t("mapShowWeatherColors")
+              : "Show weather colors"}
+        </button>
+      )}
+
+      {showWeatherOverlay && !mapFailed && (
+        <div className="absolute bottom-3 right-3 z-[500] rounded-2xl border border-slate-200 bg-white/90 px-3 py-3 text-xs text-slate-700 shadow backdrop-blur-sm">
+          <div className="mb-2 font-semibold">
+            {typeof t === "function" ? t("mapWeatherConditions") : "Weather conditions"}
+          </div>
+          <div className="flex items-center gap-2">
+            <span className="inline-block h-3 w-3 rounded-full bg-[#22c55e]" />
+            <span>{typeof t === "function" ? t("mapConditionGood") : "Good"}</span>
+          </div>
+          <div className="mt-1 flex items-center gap-2">
+            <span className="inline-block h-3 w-3 rounded-full bg-[#facc15]" />
+            <span>{typeof t === "function" ? t("mapConditionFair") : "Fair"}</span>
+          </div>
+          <div className="mt-1 flex items-center gap-2">
+            <span className="inline-block h-3 w-3 rounded-full bg-[#ef4444]" />
+            <span>{typeof t === "function" ? t("mapConditionRough") : "Rough"}</span>
+          </div>
         </div>
       )}
     </div>
