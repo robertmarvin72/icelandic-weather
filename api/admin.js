@@ -1,5 +1,5 @@
-import { isAdminEmail } from "../_lib/admin.js";
-import { getMeFromRequest } from "../_lib/getMe.js";
+import { isAdminEmail } from "./_lib/admin.js";
+import { getMeFromRequest } from "./_lib/getMe.js";
 import postgres from "postgres";
 
 const sql = postgres(process.env.POSTGRES_URL, { ssl: "require" });
@@ -277,6 +277,7 @@ function slugify(str = "") {
 ========================= */
 
 export default async function handler(req, res) {
+  console.log("ADMIN ROUTE HIT", req.method);
   if (req.method === "GET") {
     return handleSummary(req, res);
   }
