@@ -397,13 +397,15 @@ async function handleGenerateDraft(req, res) {
       return res.status(400).json({ ok: false, error: "Missing blog type" });
     }
 
-    if (!context?.baseCampsite || !context?.compareCampsite || !context?.region) {
+    const isComparison = type === "weather_comparison";
+
+    if (!context?.baseCampsite || !context?.region || (isComparison && !context?.compareCampsite)) {
       return res.status(400).json({
         ok: false,
         error: "Missing required campsite context",
         details: {
           baseCampsite: !context?.baseCampsite,
-          compareCampsite: !context?.compareCampsite,
+          compareCampsite: isComparison && !context?.compareCampsite,
           region: !context?.region,
         },
       });

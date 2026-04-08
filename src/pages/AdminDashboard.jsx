@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
+import { Link } from "react-router-dom";
 import { useAdminBlogPosts } from "../hooks/useAdminBlogPosts";
 
 function formatMoney(value) {
@@ -25,7 +26,7 @@ function formatDateTime(value) {
 
 function StatRow({ label, value, muted = false }) {
   return (
-    <div className="flex items-center justify-between gap-4 py-3 border-b border-slate-200/70 dark:border-slate-800/80 last:border-b-0">
+    <div className="flex items-center justify-between gap-4 border-b border-slate-200/70 py-3 last:border-b-0 dark:border-slate-800/80">
       <div
         className={`text-sm ${
           muted ? "text-slate-500 dark:text-slate-400" : "text-slate-600 dark:text-slate-300"
@@ -85,7 +86,9 @@ function TextInput(props) {
   return (
     <input
       {...props}
-      className="w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 outline-none ring-0 focus:border-slate-500 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100"
+      className={`w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 outline-none ring-0 focus:border-slate-500 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100 ${
+        props.disabled ? "cursor-not-allowed opacity-60" : ""
+      }`}
     />
   );
 }
@@ -94,7 +97,9 @@ function TextArea(props) {
   return (
     <textarea
       {...props}
-      className="w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 outline-none ring-0 focus:border-slate-500 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100"
+      className={`w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 outline-none ring-0 focus:border-slate-500 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100 ${
+        props.disabled ? "cursor-not-allowed opacity-60" : ""
+      }`}
     />
   );
 }
@@ -119,7 +124,13 @@ function GenerateDraftCard({ onGenerated }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
-  const isComparison = form.type === "weather_comparison";
+
+  const needsCompare = form.type === "weather_comparison";
+  const disabled =
+    loading ||
+    !form.baseCampsite.trim() ||
+    !form.region.trim() ||
+    (needsCompare && !form.compareCampsite.trim());
 
   async function handleGenerate() {
     setLoading(true);
@@ -127,6 +138,8 @@ function GenerateDraftCard({ onGenerated }) {
     setSuccess("");
 
     try {
+      const isComparison = form.type === "weather_comparison";
+
       const res = await fetch("/api/admin", {
         method: "POST",
         credentials: "include",
@@ -153,6 +166,13 @@ function GenerateDraftCard({ onGenerated }) {
 
       setSuccess(`Draft created: ${json?.draft?.title || "Untitled"}`);
 
+      setForm((prev) => ({
+        ...prev,
+        baseCampsite: "",
+        compareCampsite: "",
+        region: "",
+      }));
+
       if (typeof onGenerated === "function") {
         await onGenerated(json.draft);
       }
@@ -162,14 +182,6 @@ function GenerateDraftCard({ onGenerated }) {
       setLoading(false);
     }
   }
-
-  const needsCompare = form.type === "weather_comparison";
-
-  const disabled =
-    loading ||
-    !form.baseCampsite.trim() ||
-    !form.region.trim() ||
-    (needsCompare && !form.compareCampsite.trim());
 
   return (
     <section className="rounded-3xl border border-slate-200/70 bg-white/80 p-5 shadow-sm dark:border-slate-800/80 dark:bg-slate-900/80">
@@ -199,7 +211,14 @@ function GenerateDraftCard({ onGenerated }) {
           <FieldLabel>Type</FieldLabel>
           <Select
             value={form.type}
-            onChange={(e) => setForm((prev) => ({ ...prev, type: e.target.value }))}
+            onChange={(e) =>
+              setForm((prev) => ({
+                ...prev,
+                type: e.target.value,
+                compareCampsite:
+                  e.target.value === "weather_comparison" ? prev.compareCampsite : "",
+              }))
+            }
           >
             <option value="weather_comparison">weather_comparison</option>
             <option value="campsite_weather">campsite_weather</option>
@@ -230,14 +249,7 @@ function GenerateDraftCard({ onGenerated }) {
           <FieldLabel>Compare campsite</FieldLabel>
           <TextInput
             value={form.compareCampsite}
-            onChange={(e) =>
-              setForm((prev) => ({
-                ...prev,
-                type: e.target.value,
-                compareCampsite:
-                  e.target.value === "weather_comparison" ? prev.compareCampsite : "",
-              }))
-            }
+            onChange={(e) => setForm((prev) => ({ ...prev, compareCampsite: e.target.value }))}
             placeholder={
               form.type === "weather_comparison"
                 ? "e.g. Skógar Campsite"
@@ -294,8 +306,6 @@ function BlogEditorCard({ post, onSave, onPublish, saving, publishing }) {
     );
   }, [draft, post]);
 
-  const isPublished = post.status === "published";
-
   return (
     <section className="rounded-3xl border border-slate-200/70 bg-white/80 p-5 shadow-sm dark:border-slate-800/80 dark:bg-slate-900/80">
       <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
@@ -305,13 +315,7 @@ function BlogEditorCard({ post, onSave, onPublish, saving, publishing }) {
               {post.title || "Untitled draft"}
             </span>
 
-            <span
-              className={`rounded-full px-2.5 py-1 text-xs font-semibold ${
-                isPublished
-                  ? "bg-emerald-100 text-emerald-800 dark:bg-emerald-950/50 dark:text-emerald-300"
-                  : "bg-amber-100 text-amber-800 dark:bg-amber-950/50 dark:text-amber-300"
-              }`}
-            >
+            <span className="rounded-full bg-amber-100 px-2.5 py-1 text-xs font-semibold text-amber-800 dark:bg-amber-950/50 dark:text-amber-300">
               {post.status || "draft"}
             </span>
           </div>
@@ -341,11 +345,11 @@ function BlogEditorCard({ post, onSave, onPublish, saving, publishing }) {
 
           <button
             type="button"
-            disabled={publishing || isPublished}
+            disabled={publishing}
             onClick={() => onPublish(post.id)}
             className="rounded-xl border border-emerald-300 bg-emerald-50 px-4 py-2 text-sm font-medium text-emerald-800 disabled:cursor-not-allowed disabled:opacity-50 dark:border-emerald-900/60 dark:bg-emerald-950/40 dark:text-emerald-300"
           >
-            {publishing ? "Publishing..." : isPublished ? "Published" : "Publish"}
+            {publishing ? "Publishing..." : "Publish"}
           </button>
         </div>
       </div>
@@ -378,6 +382,52 @@ function BlogEditorCard({ post, onSave, onPublish, saving, publishing }) {
         </div>
       </div>
     </section>
+  );
+}
+
+function PublishedPostRow({ post }) {
+  return (
+    <div className="rounded-2xl border border-slate-200/70 bg-white/80 p-4 shadow-sm dark:border-slate-800/80 dark:bg-slate-900/80">
+      <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
+        <div className="min-w-0">
+          <div className="flex flex-wrap items-center gap-2">
+            <h3 className="truncate text-base font-semibold text-slate-900 dark:text-slate-100">
+              {post.title || "Untitled"}
+            </h3>
+            <span className="rounded-full bg-emerald-100 px-2.5 py-1 text-xs font-semibold text-emerald-800 dark:bg-emerald-950/50 dark:text-emerald-300">
+              published
+            </span>
+          </div>
+
+          <div className="mt-2 text-sm text-slate-500 dark:text-slate-400">
+            slug: <span className="font-mono">{post.slug}</span>
+          </div>
+
+          <div className="mt-1 text-sm text-slate-500 dark:text-slate-400">
+            publishedAt: {formatDateTime(post.publishedAt)}
+          </div>
+
+          <div className="mt-1 text-sm text-slate-500 dark:text-slate-400">
+            updatedAt: {formatDateTime(post.updatedAt)}
+          </div>
+        </div>
+
+        <div className="flex shrink-0 gap-2">
+          <Link
+            to={`/blog/${post.slug}`}
+            target="_blank"
+            rel="noreferrer"
+            className="inline-flex items-center rounded-xl border border-slate-300 px-4 py-2 text-sm font-medium hover:bg-slate-50 dark:border-slate-700 dark:hover:bg-slate-800"
+          >
+            Open post
+          </Link>
+        </div>
+      </div>
+
+      {post.excerpt ? (
+        <p className="mt-3 text-sm leading-6 text-slate-600 dark:text-slate-300">{post.excerpt}</p>
+      ) : null}
+    </div>
   );
 }
 
@@ -444,6 +494,15 @@ export default function AdminDashboard() {
     await reloadPosts();
   }
 
+  const { users, pro, revenue } = state.data || {
+    users: { total: 0, new7d: 0, new30d: 0 },
+    pro: { active: 0, expired: 0, conversionRate: 0 },
+    revenue: { month: 0, last30d: 0, lifetime: 0 },
+  };
+
+  const draftPosts = posts.filter((post) => post.status !== "published");
+  const publishedPosts = posts.filter((post) => post.status === "published");
+
   if (state.loading) {
     return (
       <main className="min-h-screen bg-soft-grid text-slate-900 dark:bg-slate-950 dark:text-slate-100">
@@ -473,12 +532,6 @@ export default function AdminDashboard() {
       </main>
     );
   }
-
-  const { users, pro, revenue } = state.data || {
-    users: { total: 0, new7d: 0, new30d: 0 },
-    pro: { active: 0, expired: 0, conversionRate: 0 },
-    revenue: { month: 0, last30d: 0, lifetime: 0 },
-  };
 
   return (
     <main className="min-h-screen bg-soft-grid text-slate-900 dark:bg-slate-950 dark:text-slate-100">
@@ -528,9 +581,7 @@ export default function AdminDashboard() {
 
         <section className="mt-8">
           <div className="mb-4">
-            <h2 className="text-xl font-semibold text-slate-900 dark:text-slate-100">
-              Blog drafts and posts
-            </h2>
+            <h2 className="text-xl font-semibold text-slate-900 dark:text-slate-100">Drafts</h2>
             <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
               Edit title, excerpt and content. Publish when ready.
             </p>
@@ -546,13 +597,13 @@ export default function AdminDashboard() {
             <div className="rounded-3xl border border-slate-200/70 bg-white/75 p-6 text-sm text-slate-500 shadow-sm dark:border-slate-800/80 dark:bg-slate-900/75 dark:text-slate-400">
               Hleð blog póstum...
             </div>
-          ) : posts.length === 0 ? (
+          ) : draftPosts.length === 0 ? (
             <div className="rounded-3xl border border-slate-200/70 bg-white/75 p-6 text-sm text-slate-500 shadow-sm dark:border-slate-800/80 dark:bg-slate-900/75 dark:text-slate-400">
-              Engir blog póstar fundust.
+              Engin draft í vinnslu.
             </div>
           ) : (
             <div className="grid gap-5">
-              {posts.map((post) => (
+              {draftPosts.map((post) => (
                 <BlogEditorCard
                   key={post.id}
                   post={post}
@@ -561,6 +612,33 @@ export default function AdminDashboard() {
                   onSave={updatePost}
                   onPublish={publishPost}
                 />
+              ))}
+            </div>
+          )}
+        </section>
+
+        <section className="mt-8">
+          <div className="mb-4">
+            <h2 className="text-xl font-semibold text-slate-900 dark:text-slate-100">
+              Published posts
+            </h2>
+            <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
+              Live blog posts. Open any post to review it on the site.
+            </p>
+          </div>
+
+          {loadingPosts ? (
+            <div className="rounded-3xl border border-slate-200/70 bg-white/75 p-6 text-sm text-slate-500 shadow-sm dark:border-slate-800/80 dark:bg-slate-900/75 dark:text-slate-400">
+              Hleð published póstum...
+            </div>
+          ) : publishedPosts.length === 0 ? (
+            <div className="rounded-3xl border border-slate-200/70 bg-white/75 p-6 text-sm text-slate-500 shadow-sm dark:border-slate-800/80 dark:bg-slate-900/75 dark:text-slate-400">
+              Engir published póstar ennþá.
+            </div>
+          ) : (
+            <div className="grid gap-4">
+              {publishedPosts.map((post) => (
+                <PublishedPostRow key={post.id} post={post} />
               ))}
             </div>
           )}
