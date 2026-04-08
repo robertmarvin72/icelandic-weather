@@ -5,7 +5,52 @@ import postgres from "postgres";
 const sql = postgres(process.env.POSTGRES_URL, { ssl: "require" });
 
 /* =========================
-   SUMMARY LOGIC (UNCHANGED)
+   SHARED HELPERS
+========================= */
+
+function slugify(str = "") {
+  return str
+    .toLowerCase()
+    .replace(/[^\w\s-]/g, "")
+    .replace(/\s+/g, "-")
+    .replace(/-+/g, "-")
+    .replace(/^-+|-+$/g, "");
+}
+
+function normalizeBlogPost(row) {
+  if (!row) return null;
+
+  return {
+    id: row.id,
+    slug: row.slug,
+    title: row.title || "",
+    excerpt: row.excerpt || "",
+    content: row.content || "",
+    metaTitle: row.meta_title || "",
+    metaDescription: row.meta_description || "",
+    coverImage: row.cover_image || "",
+    ctaHint: row.cta_hint || "",
+    status: row.status || "draft",
+    publishedAt: row.published_at || null,
+    createdAt: row.created_at || null,
+    updatedAt: row.updated_at || null,
+  };
+}
+
+async function requireAdmin(req, res) {
+  const me = await getMeFromRequest(req);
+  const email = me?.user?.email;
+
+  if (!email || !isAdminEmail(email)) {
+    res.status(403).json({ ok: false, error: "Forbidden" });
+    return null;
+  }
+
+  return me;
+}
+
+/* =========================
+   SUMMARY LOGIC
 ========================= */
 
 async function getUsersSummary() {
@@ -110,12 +155,8 @@ async function getRevenueSummary() {
 
 async function handleSummary(req, res) {
   try {
-    const me = await getMeFromRequest(req);
-    const email = me?.user?.email;
-
-    if (!email || !isAdminEmail(email)) {
-      return res.status(403).json({ ok: false, error: "Forbidden" });
-    }
+    const me = await requireAdmin(req, res);
+    if (!me) return;
 
     const [users, pro, revenue] = await Promise.all([
       getUsersSummary(),
@@ -136,19 +177,229 @@ async function handleSummary(req, res) {
 }
 
 /* =========================
-   BLOG GENERATION (NEW)
+   BLOG LIST / EDIT / PUBLISH
+========================= */
+
+async function handleListBlogPosts(req, res) {
+  try {
+    const me = await requireAdmin(req, res);
+    if (!me) return;
+
+    const rows = await sql`
+      select
+        id,
+        slug,
+        title,
+        excerpt,
+        content,
+        meta_title,
+        meta_description,
+        cover_image,
+        cta_hint,
+        status,
+        published_at,
+        created_at,
+        updated_at
+      from blog_post
+      order by
+        case when lower(coalesce(status, 'draft')) = 'published' then 0 else 1 end,
+        coalesce(published_at, created_at) desc,
+        created_at desc
+    `;
+
+    return res.status(200).json({
+      ok: true,
+      posts: rows.map(normalizeBlogPost),
+    });
+  } catch (err) {
+    console.error("[admin/listBlogPosts] failed", err);
+    return res.status(500).json({ ok: false, error: "Failed to load blog posts" });
+  }
+}
+
+async function handleUpdateBlogPost(req, res) {
+  try {
+    const me = await requireAdmin(req, res);
+    if (!me) return;
+
+    const { id, title, excerpt, content, metaTitle, metaDescription, coverImage, ctaHint, slug } =
+      req.body || {};
+
+    if (!id) {
+      return res.status(400).json({ ok: false, error: "Missing post id" });
+    }
+
+    const existingRows = await sql`
+      select
+        id,
+        slug,
+        title,
+        excerpt,
+        content,
+        meta_title,
+        meta_description,
+        cover_image,
+        cta_hint,
+        status,
+        published_at,
+        created_at,
+        updated_at
+      from blog_post
+      where id = ${id}
+      limit 1
+    `;
+
+    const existing = existingRows[0];
+
+    if (!existing) {
+      return res.status(404).json({ ok: false, error: "Blog post not found" });
+    }
+
+    const nextTitle = title ?? existing.title ?? "";
+    const nextExcerpt = excerpt ?? existing.excerpt ?? "";
+    const nextContent = content ?? existing.content ?? "";
+    const nextMetaTitle = metaTitle ?? existing.meta_title ?? "";
+    const nextMetaDescription = metaDescription ?? existing.meta_description ?? "";
+    const nextCoverImage = coverImage ?? existing.cover_image ?? "";
+    const nextCtaHint = ctaHint ?? existing.cta_hint ?? "";
+    const nextSlug = slugify(slug ?? nextTitle ?? existing.slug ?? existing.title ?? "post");
+
+    const duplicateRows = await sql`
+      select id
+      from blog_post
+      where slug = ${nextSlug}
+        and id <> ${id}
+      limit 1
+    `;
+
+    if (duplicateRows[0]) {
+      return res.status(409).json({
+        ok: false,
+        error: "Slug already exists",
+      });
+    }
+
+    const rows = await sql`
+      update blog_post
+      set
+        slug = ${nextSlug},
+        title = ${nextTitle},
+        excerpt = ${nextExcerpt},
+        content = ${nextContent},
+        meta_title = ${nextMetaTitle},
+        meta_description = ${nextMetaDescription},
+        cover_image = ${nextCoverImage},
+        cta_hint = ${nextCtaHint},
+        updated_at = now()
+      where id = ${id}
+      returning
+        id,
+        slug,
+        title,
+        excerpt,
+        content,
+        meta_title,
+        meta_description,
+        cover_image,
+        cta_hint,
+        status,
+        published_at,
+        created_at,
+        updated_at
+    `;
+
+    return res.status(200).json({
+      ok: true,
+      post: normalizeBlogPost(rows[0]),
+    });
+  } catch (err) {
+    console.error("[admin/updateBlogPost] failed", err);
+    return res.status(500).json({ ok: false, error: "Failed to update blog post" });
+  }
+}
+
+async function handlePublishBlogPost(req, res) {
+  try {
+    const me = await requireAdmin(req, res);
+    if (!me) return;
+
+    const { id } = req.body || {};
+
+    if (!id) {
+      return res.status(400).json({ ok: false, error: "Missing post id" });
+    }
+
+    const existingRows = await sql`
+      select id, published_at
+      from blog_post
+      where id = ${id}
+      limit 1
+    `;
+
+    const existing = existingRows[0];
+
+    if (!existing) {
+      return res.status(404).json({ ok: false, error: "Blog post not found" });
+    }
+
+    const rows = await sql`
+      update blog_post
+      set
+        status = 'published',
+        published_at = coalesce(published_at, now()),
+        updated_at = now()
+      where id = ${id}
+      returning
+        id,
+        slug,
+        title,
+        excerpt,
+        content,
+        meta_title,
+        meta_description,
+        cover_image,
+        cta_hint,
+        status,
+        published_at,
+        created_at,
+        updated_at
+    `;
+
+    return res.status(200).json({
+      ok: true,
+      post: normalizeBlogPost(rows[0]),
+    });
+  } catch (err) {
+    console.error("[admin/publishBlogPost] failed", err);
+    return res.status(500).json({ ok: false, error: "Failed to publish blog post" });
+  }
+}
+
+/* =========================
+   BLOG GENERATION
 ========================= */
 
 async function handleGenerateDraft(req, res) {
   try {
+    const me = await requireAdmin(req, res);
+    if (!me) return;
+
+    if (!process.env.OPENAI_API_KEY) {
+      return res.status(500).json({
+        ok: false,
+        error: "AI service not configured",
+      });
+    }
+
     const { type, lang = "en", context = {} } = req.body || {};
 
     if (!type) {
-      return res.status(400).json({ error: "Missing blog type" });
+      return res.status(400).json({ ok: false, error: "Missing blog type" });
     }
 
     if (!context?.baseCampsite || !context?.compareCampsite || !context?.region) {
       return res.status(400).json({
+        ok: false,
         error: "Missing required campsite context",
         details: {
           baseCampsite: !context?.baseCampsite,
@@ -162,6 +413,7 @@ async function handleGenerateDraft(req, res) {
 
     if (!allowedTypes.includes(type)) {
       return res.status(400).json({
+        ok: false,
         error: "Invalid blog type",
         allowedTypes,
       });
@@ -171,10 +423,69 @@ async function handleGenerateDraft(req, res) {
     const aiResponse = await callAI(prompt);
     const draft = normalizeDraft(aiResponse);
 
-    return res.status(200).json(draft);
+    let baseSlug = slugify(draft.slug || draft.title || "post");
+    if (!baseSlug) baseSlug = "post";
+
+    let nextSlug = baseSlug;
+    let counter = 2;
+
+    while (true) {
+      const duplicateRows = await sql`
+        select id
+        from blog_post
+        where slug = ${nextSlug}
+        limit 1
+      `;
+
+      if (!duplicateRows[0]) break;
+
+      nextSlug = `${baseSlug}-${counter}`;
+      counter += 1;
+    }
+
+    const insertedRows = await sql`
+      insert into blog_post (
+        slug,
+        title,
+        excerpt,
+        content,
+        meta_title,
+        meta_description,
+        status
+      )
+      values (
+        ${nextSlug},
+        ${draft.title || "Untitled"},
+        ${draft.excerpt || ""},
+        ${draft.content || ""},
+        ${draft.metaTitle || draft.title || ""},
+        ${draft.metaDescription || ""},
+        'draft'
+      )
+      returning
+        id,
+        slug,
+        title,
+        excerpt,
+        content,
+        meta_title,
+        meta_description,
+        cover_image,
+        cta_hint,
+        status,
+        published_at,
+        created_at,
+        updated_at
+    `;
+
+    return res.status(200).json({
+      ok: true,
+      draft: normalizeBlogPost(insertedRows[0]),
+    });
   } catch (err) {
     console.error("generate-blog-draft error:", err);
     return res.status(500).json({
+      ok: false,
       error: "Failed to generate draft",
       details: err?.message || String(err),
     });
@@ -346,6 +657,7 @@ async function callAI(prompt) {
       model: "gpt-4o-mini",
       messages: [{ role: "user", content: prompt }],
       temperature: 0.7,
+      response_format: { type: "json_object" },
     }),
   });
 
@@ -388,27 +700,119 @@ function normalizeDraft(text) {
   }
 }
 
-function slugify(str = "") {
-  return str
-    .toLowerCase()
-    .replace(/[^\w\s-]/g, "")
-    .replace(/\s+/g, "-")
-    .replace(/-+/g, "-")
-    .replace(/^-+|-+$/g, "");
+/* =========================
+   PUBLIC BLOG READS
+========================= */
+
+async function handleGetPublishedBlogPosts(req, res) {
+  try {
+    const rows = await sql`
+      select
+        id,
+        slug,
+        title,
+        excerpt,
+        content,
+        meta_title,
+        meta_description,
+        cover_image,
+        cta_hint,
+        status,
+        published_at,
+        created_at,
+        updated_at
+      from blog_post
+      where lower(coalesce(status, 'draft')) = 'published'
+      order by published_at desc nulls last, created_at desc
+    `;
+
+    return res.status(200).json({
+      ok: true,
+      posts: rows.map(normalizeBlogPost),
+    });
+  } catch (err) {
+    console.error("[admin/getPublishedBlogPosts] failed", err);
+    return res.status(500).json({
+      ok: false,
+      error: "Failed to load blog posts",
+    });
+  }
+}
+
+async function handleGetPublishedBlogPostBySlug(req, res) {
+  try {
+    const { slug } = req.query || {};
+
+    if (!slug || typeof slug !== "string") {
+      return res.status(400).json({
+        ok: false,
+        error: "Missing slug",
+      });
+    }
+
+    const rows = await sql`
+      select
+        id,
+        slug,
+        title,
+        excerpt,
+        content,
+        meta_title,
+        meta_description,
+        cover_image,
+        cta_hint,
+        status,
+        published_at,
+        created_at,
+        updated_at
+      from blog_post
+      where slug = ${slug}
+        and lower(coalesce(status, 'draft')) = 'published'
+      limit 1
+    `;
+
+    const post = rows[0];
+
+    if (!post) {
+      return res.status(404).json({
+        ok: false,
+        error: "Blog post not found",
+      });
+    }
+
+    return res.status(200).json({
+      ok: true,
+      post: normalizeBlogPost(post),
+    });
+  } catch (err) {
+    console.error("[admin/getPublishedBlogPostBySlug] failed", err);
+    return res.status(500).json({
+      ok: false,
+      error: "Failed to load blog post",
+    });
+  }
 }
 
 /* =========================
-   MAIN HANDLER (ROUTER)
+   MAIN HANDLER
 ========================= */
 
 export default async function handler(req, res) {
-  if (!process.env.OPENAI_API_KEY) {
-    return res.status(500).json({
-      error: "AI service not configured",
-    });
-  }
-
   if (req.method === "GET") {
+    const { action } = req.query || {};
+
+    if (action === "listBlogPosts") {
+      return handleListBlogPosts(req, res);
+    }
+
+    if (action === "getPublishedBlogPosts") {
+      return handleGetPublishedBlogPosts(req, res);
+    }
+
+    if (action === "getPublishedBlogPostBySlug") {
+      return handleGetPublishedBlogPostBySlug(req, res);
+    }
+
     return handleSummary(req, res);
   }
 
@@ -419,9 +823,17 @@ export default async function handler(req, res) {
       return handleGenerateDraft(req, res);
     }
 
-    return res.status(400).json({ error: "Unknown action" });
+    if (action === "updateBlogPost") {
+      return handleUpdateBlogPost(req, res);
+    }
+
+    if (action === "publishBlogPost") {
+      return handlePublishBlogPost(req, res);
+    }
+
+    return res.status(400).json({ ok: false, error: "Unknown action" });
   }
 
   res.setHeader("Allow", "GET, POST");
-  return res.status(405).json({ error: "Method not allowed" });
+  return res.status(405).json({ ok: false, error: "Method not allowed" });
 }

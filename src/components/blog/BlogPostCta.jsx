@@ -29,7 +29,7 @@ export default function BlogPostCta({ t, isLight, to = "/", slug }) {
       <div className="mt-4">
         <Link
           to={to}
-          onClick={() => trackEvent("blog_post_bottom_cta_click", { slug })}
+          onClick={() => track("blog_post_bottom_cta_click", { slug })}
           className={`inline-flex items-center rounded-full px-5 py-2.5 text-sm font-medium transition hover:opacity-90 ${
             isLight ? "bg-slate-900 text-white" : "bg-white text-slate-950"
           }`}

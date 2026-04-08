@@ -1,7 +1,7 @@
 import { Link, useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
 import Footer from "../components/Footer";
 import Header from "../components/Header";
-import { getBlogPostBySlug } from "../data/blogPosts";
 import ReactMarkdown from "react-markdown";
 import rehypeSanitize from "rehype-sanitize";
 import remarkGfm from "remark-gfm";
@@ -89,12 +89,92 @@ function BlogContent({ content, isLight }) {
 
 export default function BlogPostPage({ t, lang, theme }) {
   const { slug } = useParams();
-  const post = getBlogPostBySlug(slug);
+  const [post, setPost] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [loadError, setLoadError] = useState("");
+  const isLight = theme === "light";
+
+  useEffect(() => {
+    let cancelled = false;
+
+    async function loadPost() {
+      setLoading(true);
+      setLoadError("");
+
+      try {
+        const res = await fetch(
+          `/api/admin?action=getPublishedBlogPostBySlug&slug=${encodeURIComponent(slug)}`,
+          {
+            cache: "no-store",
+          }
+        );
+
+        const json = await res.json().catch(() => ({}));
+
+        if (!res.ok || !json?.ok) {
+          throw new Error(json?.error || "Failed to load blog post");
+        }
+
+        if (!cancelled) {
+          setPost(json.post || null);
+        }
+      } catch (err) {
+        if (!cancelled) {
+          setPost(null);
+          setLoadError(err?.message || "Failed to load blog post");
+        }
+      } finally {
+        if (!cancelled) {
+          setLoading(false);
+        }
+      }
+    }
+
+    if (slug) {
+      loadPost();
+    } else {
+      setPost(null);
+      setLoadError("Missing blog slug");
+      setLoading(false);
+    }
+
+    return () => {
+      cancelled = true;
+    };
+  }, [slug]);
+
   const title = `${post?.title || "CampCast"} | CampCast`;
   const description = post?.excerpt || "Weather tips and campsite planning for Iceland.";
-  const url = `https://campcast.is/blog/${post?.slug || ""}`;
-  const image = post?.coverImage || "https://campcast.is/og-default.jpg"; // settu default image
-  const isLight = theme === "light";
+  const url = `https://campcast.is/blog/${post?.slug || slug || ""}`;
+  const image = post?.coverImage || "https://campcast.is/og-default.jpg";
+
+  if (loading) {
+    return (
+      <div
+        className={`min-h-screen ${
+          isLight ? "bg-[#fffaf0] text-slate-900" : "bg-slate-950 text-slate-100"
+        }`}
+      >
+        <Header
+          t={t}
+          rightSlot={
+            <Link
+              to="/blog"
+              className="text-sm font-medium text-sky-700 underline-offset-4 hover:underline dark:text-sky-400"
+            >
+              {translateOrFallback(t, "backToBlog", "Back to blog")}
+            </Link>
+          }
+        />
+        <main className="mx-auto max-w-4xl px-4 py-16 sm:px-6 lg:px-8">
+          <p className={`text-sm ${isLight ? "text-slate-500" : "text-slate-400"}`}>
+            Loading article...
+          </p>
+        </main>
+        <Footer t={t} lang={lang} theme={theme} />
+      </div>
+    );
+  }
 
   if (!post) {
     return (
@@ -133,11 +213,13 @@ export default function BlogPostPage({ t, lang, theme }) {
               {translateOrFallback(t, "blogPostNotFoundTitle", "Article not found")}
             </h1>
             <p className={`mt-4 text-lg ${isLight ? "text-slate-600" : "text-slate-300"}`}>
-              {translateOrFallback(
-                t,
-                "blogPostNotFoundText",
-                "The article you tried to open does not exist or may have been removed."
-              )}
+              {loadError
+                ? loadError
+                : translateOrFallback(
+                    t,
+                    "blogPostNotFoundText",
+                    "The article you tried to open does not exist or may have been removed."
+                  )}
             </p>
           </div>
         </main>
@@ -154,19 +236,18 @@ export default function BlogPostPage({ t, lang, theme }) {
 
         <meta name="description" content={description} />
 
-        {/* Open Graph */}
         <meta property="og:type" content="article" />
         <meta property="og:title" content={title} />
         <meta property="og:description" content={description} />
         <meta property="og:url" content={url} />
         <meta property="og:image" content={image} />
 
-        {/* Twitter */}
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content={title} />
         <meta name="twitter:description" content={description} />
         <meta name="twitter:image" content={image} />
       </Helmet>
+
       <div
         className={`min-h-screen ${
           isLight ? "bg-[#fffaf0] text-slate-900" : "bg-slate-950 text-slate-100"
@@ -213,7 +294,6 @@ export default function BlogPostPage({ t, lang, theme }) {
 
             <div className="mt-8">
               <BlogContent content={post.content} isLight={isLight} />
-
               <BlogPostCta t={t} isLight={isLight} to="/" slug={post.slug} />
             </div>
           </article>

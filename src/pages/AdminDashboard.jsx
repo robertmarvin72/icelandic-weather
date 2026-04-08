@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
+import { useAdminBlogPosts } from "../hooks/useAdminBlogPosts";
 
 function formatMoney(value) {
   if (value == null) return "—";
@@ -13,11 +14,22 @@ function formatPercent(value) {
   return `${Number(value || 0).toFixed(1)}%`;
 }
 
+function formatDateTime(value) {
+  if (!value) return "—";
+  try {
+    return new Date(value).toLocaleString("is-IS");
+  } catch {
+    return value;
+  }
+}
+
 function StatRow({ label, value, muted = false }) {
   return (
     <div className="flex items-center justify-between gap-4 py-3 border-b border-slate-200/70 dark:border-slate-800/80 last:border-b-0">
       <div
-        className={`text-sm ${muted ? "text-slate-500 dark:text-slate-400" : "text-slate-600 dark:text-slate-300"}`}
+        className={`text-sm ${
+          muted ? "text-slate-500 dark:text-slate-400" : "text-slate-600 dark:text-slate-300"
+        }`}
       >
         {label}
       </div>
@@ -61,12 +73,141 @@ function SummaryPill({ label, value }) {
   );
 }
 
+function BlogEditorCard({ post, onSave, onPublish, saving, publishing }) {
+  const [draft, setDraft] = useState({
+    title: post.title || "",
+    excerpt: post.excerpt || "",
+    content: post.content || "",
+  });
+
+  useEffect(() => {
+    setDraft({
+      title: post.title || "",
+      excerpt: post.excerpt || "",
+      content: post.content || "",
+    });
+  }, [post.id, post.title, post.excerpt, post.content]);
+
+  const dirty = useMemo(() => {
+    return (
+      draft.title !== (post.title || "") ||
+      draft.excerpt !== (post.excerpt || "") ||
+      draft.content !== (post.content || "")
+    );
+  }, [draft, post]);
+
+  const isPublished = post.status === "published";
+
+  return (
+    <section className="rounded-3xl border border-slate-200/70 bg-white/80 p-5 shadow-sm dark:border-slate-800/80 dark:bg-slate-900/80">
+      <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
+        <div>
+          <div className="flex flex-wrap items-center gap-2">
+            <span className="text-lg font-semibold text-slate-900 dark:text-slate-100">
+              {post.title || "Untitled draft"}
+            </span>
+
+            <span
+              className={`rounded-full px-2.5 py-1 text-xs font-semibold ${
+                isPublished
+                  ? "bg-emerald-100 text-emerald-800 dark:bg-emerald-950/50 dark:text-emerald-300"
+                  : "bg-amber-100 text-amber-800 dark:bg-amber-950/50 dark:text-amber-300"
+              }`}
+            >
+              {post.status || "draft"}
+            </span>
+          </div>
+
+          <div className="mt-2 text-sm text-slate-500 dark:text-slate-400">
+            slug: <span className="font-mono">{post.slug}</span>
+          </div>
+
+          <div className="mt-1 text-sm text-slate-500 dark:text-slate-400">
+            publishedAt: {formatDateTime(post.publishedAt)}
+          </div>
+
+          <div className="mt-1 text-sm text-slate-500 dark:text-slate-400">
+            updatedAt: {formatDateTime(post.updatedAt)}
+          </div>
+        </div>
+
+        <div className="flex gap-2">
+          <button
+            type="button"
+            disabled={!dirty || saving}
+            onClick={() => onSave(post.id, draft)}
+            className="rounded-xl bg-slate-900 px-4 py-2 text-sm font-medium text-white disabled:cursor-not-allowed disabled:opacity-50 dark:bg-white dark:text-slate-950"
+          >
+            {saving ? "Saving..." : "Save changes"}
+          </button>
+
+          <button
+            type="button"
+            disabled={publishing || isPublished}
+            onClick={() => onPublish(post.id)}
+            className="rounded-xl border border-emerald-300 bg-emerald-50 px-4 py-2 text-sm font-medium text-emerald-800 disabled:cursor-not-allowed disabled:opacity-50 dark:border-emerald-900/60 dark:bg-emerald-950/40 dark:text-emerald-300"
+          >
+            {publishing ? "Publishing..." : isPublished ? "Published" : "Publish"}
+          </button>
+        </div>
+      </div>
+
+      <div className="mt-5 grid gap-4">
+        <div>
+          <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300">
+            Title
+          </label>
+          <input
+            value={draft.title}
+            onChange={(e) => setDraft((prev) => ({ ...prev, title: e.target.value }))}
+            className="w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 outline-none ring-0 focus:border-slate-500 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100"
+          />
+        </div>
+
+        <div>
+          <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300">
+            Excerpt
+          </label>
+          <textarea
+            value={draft.excerpt}
+            onChange={(e) => setDraft((prev) => ({ ...prev, excerpt: e.target.value }))}
+            rows={3}
+            className="w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 outline-none ring-0 focus:border-slate-500 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100"
+          />
+        </div>
+
+        <div>
+          <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300">
+            Content
+          </label>
+          <textarea
+            value={draft.content}
+            onChange={(e) => setDraft((prev) => ({ ...prev, content: e.target.value }))}
+            rows={14}
+            className="w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 outline-none ring-0 focus:border-slate-500 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100"
+          />
+        </div>
+      </div>
+    </section>
+  );
+}
+
 export default function AdminDashboard() {
   const [state, setState] = useState({
     loading: true,
     error: "",
     data: null,
   });
+
+  const {
+    posts,
+    loading: loadingPosts,
+    savingId,
+    publishingId,
+    error: blogError,
+    updatePost,
+    publishPost,
+  } = useAdminBlogPosts();
 
   useEffect(() => {
     let cancelled = false;
@@ -103,6 +244,7 @@ export default function AdminDashboard() {
     }
 
     load();
+
     return () => {
       cancelled = true;
     };
@@ -111,7 +253,7 @@ export default function AdminDashboard() {
   if (state.loading) {
     return (
       <main className="min-h-screen bg-soft-grid text-slate-900 dark:bg-slate-950 dark:text-slate-100">
-        <div className="max-w-6xl mx-auto px-4 py-10">
+        <div className="mx-auto max-w-6xl px-4 py-10">
           <div className="rounded-3xl border border-slate-200/70 bg-white/75 p-6 shadow-sm backdrop-blur dark:border-slate-800/80 dark:bg-slate-900/75">
             <h1 className="text-2xl font-semibold">CampCast Admin</h1>
             <p className="mt-2 text-sm text-slate-500 dark:text-slate-400">
@@ -126,7 +268,7 @@ export default function AdminDashboard() {
   if (state.error) {
     return (
       <main className="min-h-screen bg-soft-grid text-slate-900 dark:bg-slate-950 dark:text-slate-100">
-        <div className="max-w-6xl mx-auto px-4 py-10">
+        <div className="mx-auto max-w-6xl px-4 py-10">
           <div className="rounded-3xl border border-rose-200/80 bg-white/80 p-6 shadow-sm dark:border-rose-900/70 dark:bg-slate-900/80">
             <h1 className="text-2xl font-semibold">CampCast Admin</h1>
             <p className="mt-3 text-sm text-rose-600 dark:text-rose-400">
@@ -138,20 +280,24 @@ export default function AdminDashboard() {
     );
   }
 
-  const { users, pro, revenue } = state.data;
+  const { users, pro, revenue } = state.data || {
+    users: { total: 0, new7d: 0, new30d: 0 },
+    pro: { active: 0, expired: 0, conversionRate: 0 },
+    revenue: { month: 0, last30d: 0, lifetime: 0 },
+  };
 
   return (
     <main className="min-h-screen bg-soft-grid text-slate-900 dark:bg-slate-950 dark:text-slate-100">
-      <div className="max-w-6xl mx-auto px-4 py-8 md:py-10">
+      <div className="mx-auto max-w-6xl px-4 py-8 md:py-10">
         <header className="mb-6 rounded-3xl border border-slate-200/70 bg-white/75 p-6 shadow-sm backdrop-blur dark:border-slate-800/80 dark:bg-slate-900/75">
           <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
             <div>
               <div className="inline-flex items-center rounded-full border border-emerald-200/70 bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-700 dark:border-emerald-900/60 dark:bg-emerald-950/50 dark:text-emerald-300">
                 Internal admin
               </div>
-              <h1 className="mt-3 text-2xl md:text-3xl font-semibold">CampCast Admin</h1>
+              <h1 className="mt-3 text-2xl font-semibold md:text-3xl">CampCast Admin</h1>
               <p className="mt-2 text-sm text-slate-500 dark:text-slate-400">
-                Read-only yfirlit yfir notendur, áskriftir og helstu rekstrartölur.
+                Admin yfirlit yfir notendur, áskriftir og blog workflow.
               </p>
             </div>
 
@@ -181,6 +327,46 @@ export default function AdminDashboard() {
             <StatRow label="Lifetime" value={formatMoney(revenue.lifetime)} muted />
           </Card>
         </div>
+
+        <section className="mt-8">
+          <div className="mb-4">
+            <h2 className="text-xl font-semibold text-slate-900 dark:text-slate-100">
+              Blog drafts and posts
+            </h2>
+            <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
+              Edit title, excerpt and content. Publish when ready.
+            </p>
+          </div>
+
+          {blogError ? (
+            <div className="mb-4 rounded-2xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-700 dark:border-rose-900/60 dark:bg-rose-950/30 dark:text-rose-300">
+              {blogError}
+            </div>
+          ) : null}
+
+          {loadingPosts ? (
+            <div className="rounded-3xl border border-slate-200/70 bg-white/75 p-6 text-sm text-slate-500 shadow-sm dark:border-slate-800/80 dark:bg-slate-900/75 dark:text-slate-400">
+              Hleð blog póstum...
+            </div>
+          ) : posts.length === 0 ? (
+            <div className="rounded-3xl border border-slate-200/70 bg-white/75 p-6 text-sm text-slate-500 shadow-sm dark:border-slate-800/80 dark:bg-slate-900/75 dark:text-slate-400">
+              Engir blog póstar fundust.
+            </div>
+          ) : (
+            <div className="grid gap-5">
+              {posts.map((post) => (
+                <BlogEditorCard
+                  key={post.id}
+                  post={post}
+                  saving={savingId === post.id}
+                  publishing={publishingId === post.id}
+                  onSave={updatePost}
+                  onPublish={publishPost}
+                />
+              ))}
+            </div>
+          )}
+        </section>
       </div>
     </main>
   );
