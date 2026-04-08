@@ -711,6 +711,15 @@ Structure:
 - End with one short, strong takeaway sentence
 
 Rules:
+- The worst weather conditions must dominate the comparison, not averages
+- If one campsite has extreme conditions (e.g. very high wind, heavy snow, heavy rain), this should strongly influence the conclusion
+- Do not treat all factors equally if one risk is clearly more severe
+- The comparison must clearly indicate which campsite is better, worse, or if both are poor choices
+- If one campsite is clearly worse overall, state that explicitly
+- Avoid neutral conclusions when the data shows a meaningful difference
+- Do not structure the content as a list of attributes (e.g. wind, rain, temperature)
+- Do not present the comparison as a table or bullet-style breakdown
+- Write as a continuous comparison driven by the actual conditions
 - Do not invent terrain details, shelter elements, campsite facilities, or amenities unless explicitly provided in the context
 - If a detail is unknown, do not guess
 - Focus on helping the reader make a decision, not describing a destination
@@ -823,6 +832,12 @@ Structure:
 - One short takeaway sentence at the end
 
 Rules:
+- Start by summarizing the overall week in 1–2 sentences, focusing on the worst conditions
+- Clearly identify when the worst conditions occur (e.g. early week, mid-week, specific days)
+- Do not structure the article as generic sections like "What to check" or "Practical effects"
+- Keep the structure natural and driven by the actual forecast, not a template
+- If conditions are difficult, state it clearly and do not soften the message
+- The goal is to help the reader decide if staying is a good idea this week
 - Focus on how weather affects camping decisions, not describing a destination
 - Treat the reader as someone deciding whether to stay overnight at this campsite
 - Do not write generic travel content
