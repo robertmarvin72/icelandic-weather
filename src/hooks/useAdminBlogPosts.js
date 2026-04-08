@@ -104,6 +104,37 @@ export function useAdminBlogPosts() {
     }
   }, []);
 
+  const deletePost = useCallback(async (id) => {
+    setError("");
+
+    try {
+      const res = await fetch("/api/admin", {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          action: "deleteBlogPost",
+          id,
+        }),
+      });
+
+      const json = await res.json().catch(() => ({}));
+
+      if (!res.ok || !json?.ok) {
+        throw new Error(json?.error || "Failed to delete blog post");
+      }
+
+      setPosts((prev) => prev.filter((post) => post.id !== id));
+
+      return { ok: true };
+    } catch (err) {
+      setError(err?.message || "Failed to delete blog post");
+      return { ok: false, error: err?.message };
+    }
+  }, []);
+
   return {
     posts,
     loading,
@@ -113,5 +144,6 @@ export function useAdminBlogPosts() {
     reloadPosts: loadPosts,
     updatePost,
     publishPost,
+    deletePost,
   };
 }

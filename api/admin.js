@@ -570,65 +570,65 @@ Content must be markdown.
   }
 
   return `
-Write a campsite weather blog post.
+Write a practical campsite weather article for ONE campsite in Iceland.
 
 Language: ${language}
 
+Campsite: ${context.baseCampsite || "Unknown campsite"}
+Region: ${context.region || "Iceland"}
+
+Important grounding rules:
+- You are writing about ONE campsite only
+- Do NOT compare it to any other campsite
+- Do NOT mention any second campsite
+- Use the provided region exactly as context
+- Do NOT replace the region with another region
+- Do NOT invent specific current weather observations unless they were explicitly provided
+- If forecast details are not provided, write in general practical terms for camping decisions, not fake live conditions
+- Do NOT invent facilities, amenities, roads, terrain, shelter, or scenery unless explicitly provided
+- Do NOT guess facts about the campsite
+- Keep the text grounded, practical, and specific
+- Avoid tourism language and avoid dramatic filler
+
 Tone:
-- Practical and experience-based
-- Clear and grounded
-- Decision-focused
+- Practical
+- Clear
+- Human
+- Advice-driven
 - Not promotional
+- Written for someone deciding how to camp safely and comfortably
 
 Structure:
 - Title
-- Short intro (set context quickly, no fluff)
-- Main weather insight
-- Practical impact for campers
-- Decision section: what the reader should consider
-- Soft conclusion
-- End with one short, strong takeaway sentence
+- Short intro
+- What campers should pay attention to
+- Practical effects on camping
+- What to check before staying overnight
+- Short conclusion
+- One short takeaway sentence at the end
 
 Rules:
-- Do not invent terrain details, shelter elements, or campsite facilities unless explicitly provided in the context
-- If a detail is unknown, do not guess
-- Focus on helping the reader make a camping decision
-- Avoid generic travel writing
-- Focus on useful weather insight
-- Keep the content specific and grounded
-- Explain why the weather matters in practice (wind, rain, gusts, exposure, comfort, overnight conditions, driving if relevant)
-- Treat campsites as decision options, not destinations
-- Do not invent facilities, amenities, or activities unless clearly implied by the context
-- Be specific and decisive
-- Avoid hedging language ("can", "may", "might", "often") unless absolutely necessary
-- Prefer direct, practical statements
-- Include location and decision intent in the meta title
-- Make the meta description useful and click-worthy, not generic
+- Focus on how weather affects camping decisions
+- Explain practical effects of rain, wind, gusts, exposure, wet ground, and comfort
+- Do not write generic travel content
+- Do not write as if this is a destination guide
+- Treat the reader as someone planning where to stay
+- Avoid vague statements unless necessary
+- Avoid all of these phrases or anything similar:
+  "Iceland offers", "stunning", "breathtaking", "unique experience", "nestled", "picturesque", "perfect for"
 
-Important:
-- The reader is actively deciding where to stay or whether to move
-- Small weather differences can matter a lot in Iceland
-- Prioritize practical decision value over general travel writing
-- Write like advice for someone planning where to sleep tonight
-
-Avoid:
-- "Iceland offers"
-- "stunning views"
-- "unique experience"
-- "breathtaking"
-- "nestled"
-- "picturesque"
-- "perfect for"
-- generic tourism language
+Extra rules for Icelandic output:
+- Use natural Icelandic
+- Prefer simple, direct sentences
+- Avoid stiff machine-like phrasing
+- Avoid overly formal wording
+- Write like practical advice, not a brochure
 
 Meta rules:
-- Meta title must include location and decision intent (e.g. where to camp, weather conditions, wind, rain)
-- Meta title should be clear and slightly SEO-oriented, not generic
-- Meta description must explain the practical benefit to the reader
-- Meta description should feel like a helpful summary, not marketing text
-- Avoid vague descriptions like "explore", "discover", "learn about"
-- Prefer phrasing that reflects real user intent (e.g. "where to camp", "should you move", "best option in wind")
-- Prefer including location (e.g. Westfjords, South Iceland) in meta title
+- Meta title must include the campsite name and region
+- Meta description must explain the practical value for campers
+- Do not use clickbait
+- Do not invent live forecast details in meta text
 
 Return ONLY valid JSON.
 Do not wrap the JSON in markdown code fences.
@@ -795,6 +795,52 @@ async function handleGetPublishedBlogPostBySlug(req, res) {
   }
 }
 
+async function handleDeleteBlogPost(req, res) {
+  try {
+    const me = await requireAdmin(req, res);
+    if (!me) return;
+
+    const { id } = req.body || {};
+
+    if (!id) {
+      return res.status(400).json({ ok: false, error: "Missing post id" });
+    }
+
+    const existingRows = await sql`
+      select id, status
+      from blog_post
+      where id = ${id}
+      limit 1
+    `;
+
+    const existing = existingRows[0];
+
+    if (!existing) {
+      return res.status(404).json({ ok: false, error: "Blog post not found" });
+    }
+
+    if (existing.status === "published") {
+      return res.status(400).json({
+        ok: false,
+        error: "Only drafts can be deleted",
+      });
+    }
+
+    await sql`
+      delete from blog_post
+      where id = ${id}
+    `;
+
+    return res.status(200).json({
+      ok: true,
+      deletedId: id,
+    });
+  } catch (err) {
+    console.error("[admin/deleteBlogPost] failed", err);
+    return res.status(500).json({ ok: false, error: "Failed to delete blog post" });
+  }
+}
+
 /* =========================
    MAIN HANDLER
 ========================= */
@@ -831,6 +877,10 @@ export default async function handler(req, res) {
 
     if (action === "publishBlogPost") {
       return handlePublishBlogPost(req, res);
+    }
+
+    if (action === "deleteBlogPost") {
+      return handleDeleteBlogPost(req, res);
     }
 
     return res.status(400).json({ ok: false, error: "Unknown action" });

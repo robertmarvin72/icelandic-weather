@@ -283,7 +283,7 @@ function GenerateDraftCard({ onGenerated }) {
   );
 }
 
-function BlogEditorCard({ post, onSave, onPublish, saving, publishing }) {
+function BlogEditorCard({ post, onSave, onPublish, onDelete, saving, publishing }) {
   const [draft, setDraft] = useState({
     title: post.title || "",
     excerpt: post.excerpt || "",
@@ -334,6 +334,13 @@ function BlogEditorCard({ post, onSave, onPublish, saving, publishing }) {
         </div>
 
         <div className="flex gap-2">
+          <button
+            type="button"
+            onClick={() => onDelete(post.id)}
+            className="rounded-xl border border-rose-300 bg-rose-50 px-4 py-2 text-sm font-medium text-rose-700 hover:bg-rose-100 dark:border-rose-900/60 dark:bg-rose-950/30 dark:text-rose-300 dark:hover:bg-rose-950/40"
+          >
+            Delete
+          </button>
           <button
             type="button"
             disabled={!dirty || saving}
@@ -447,6 +454,7 @@ export default function AdminDashboard() {
     reloadPosts,
     updatePost,
     publishPost,
+    deletePost,
   } = useAdminBlogPosts();
 
   useEffect(() => {
@@ -611,6 +619,7 @@ export default function AdminDashboard() {
                   publishing={publishingId === post.id}
                   onSave={updatePost}
                   onPublish={publishPost}
+                  onDelete={deletePost}
                 />
               ))}
             </div>
