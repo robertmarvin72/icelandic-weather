@@ -73,6 +73,186 @@ function SummaryPill({ label, value }) {
   );
 }
 
+function FieldLabel({ children }) {
+  return (
+    <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300">
+      {children}
+    </label>
+  );
+}
+
+function TextInput(props) {
+  return (
+    <input
+      {...props}
+      className="w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 outline-none ring-0 focus:border-slate-500 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100"
+    />
+  );
+}
+
+function TextArea(props) {
+  return (
+    <textarea
+      {...props}
+      className="w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 outline-none ring-0 focus:border-slate-500 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100"
+    />
+  );
+}
+
+function Select(props) {
+  return (
+    <select
+      {...props}
+      className="w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 outline-none ring-0 focus:border-slate-500 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100"
+    />
+  );
+}
+
+function GenerateDraftCard({ onGenerated }) {
+  const [form, setForm] = useState({
+    type: "weather_comparison",
+    lang: "en",
+    baseCampsite: "",
+    compareCampsite: "",
+    region: "",
+  });
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
+
+  async function handleGenerate() {
+    setLoading(true);
+    setError("");
+    setSuccess("");
+
+    try {
+      const res = await fetch("/api/admin", {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          action: "generateDraft",
+          type: form.type,
+          lang: form.lang,
+          context: {
+            baseCampsite: form.baseCampsite.trim(),
+            compareCampsite: form.compareCampsite.trim(),
+            region: form.region.trim(),
+          },
+        }),
+      });
+
+      const json = await res.json().catch(() => ({}));
+
+      if (!res.ok || !json?.ok) {
+        throw new Error(json?.error || "Failed to generate draft");
+      }
+
+      setSuccess(`Draft created: ${json?.draft?.title || "Untitled"}`);
+
+      if (typeof onGenerated === "function") {
+        await onGenerated(json.draft);
+      }
+    } catch (err) {
+      setError(err?.message || "Failed to generate draft");
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  const disabled =
+    loading || !form.baseCampsite.trim() || !form.compareCampsite.trim() || !form.region.trim();
+
+  return (
+    <section className="rounded-3xl border border-slate-200/70 bg-white/80 p-5 shadow-sm dark:border-slate-800/80 dark:bg-slate-900/80">
+      <div className="mb-4">
+        <h2 className="text-xl font-semibold text-slate-900 dark:text-slate-100">
+          Generate blog draft
+        </h2>
+        <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
+          Create a new draft from campsite comparison context.
+        </p>
+      </div>
+
+      {error ? (
+        <div className="mb-4 rounded-2xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-700 dark:border-rose-900/60 dark:bg-rose-950/30 dark:text-rose-300">
+          {error}
+        </div>
+      ) : null}
+
+      {success ? (
+        <div className="mb-4 rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-700 dark:border-emerald-900/60 dark:bg-emerald-950/30 dark:text-emerald-300">
+          {success}
+        </div>
+      ) : null}
+
+      <div className="grid gap-4 md:grid-cols-2">
+        <div>
+          <FieldLabel>Type</FieldLabel>
+          <Select
+            value={form.type}
+            onChange={(e) => setForm((prev) => ({ ...prev, type: e.target.value }))}
+          >
+            <option value="weather_comparison">weather_comparison</option>
+            <option value="campsite_weather">campsite_weather</option>
+          </Select>
+        </div>
+
+        <div>
+          <FieldLabel>Language</FieldLabel>
+          <Select
+            value={form.lang}
+            onChange={(e) => setForm((prev) => ({ ...prev, lang: e.target.value }))}
+          >
+            <option value="en">English</option>
+            <option value="is">Icelandic</option>
+          </Select>
+        </div>
+
+        <div>
+          <FieldLabel>Base campsite</FieldLabel>
+          <TextInput
+            value={form.baseCampsite}
+            onChange={(e) => setForm((prev) => ({ ...prev, baseCampsite: e.target.value }))}
+            placeholder="e.g. Vík Campsite"
+          />
+        </div>
+
+        <div>
+          <FieldLabel>Compare campsite</FieldLabel>
+          <TextInput
+            value={form.compareCampsite}
+            onChange={(e) => setForm((prev) => ({ ...prev, compareCampsite: e.target.value }))}
+            placeholder="e.g. Skógar Campsite"
+          />
+        </div>
+
+        <div className="md:col-span-2">
+          <FieldLabel>Region</FieldLabel>
+          <TextInput
+            value={form.region}
+            onChange={(e) => setForm((prev) => ({ ...prev, region: e.target.value }))}
+            placeholder="e.g. South Iceland"
+          />
+        </div>
+      </div>
+
+      <div className="mt-5">
+        <button
+          type="button"
+          disabled={disabled}
+          onClick={handleGenerate}
+          className="rounded-xl bg-slate-900 px-4 py-2 text-sm font-medium text-white disabled:cursor-not-allowed disabled:opacity-50 dark:bg-white dark:text-slate-950"
+        >
+          {loading ? "Generating..." : "Generate draft"}
+        </button>
+      </div>
+    </section>
+  );
+}
+
 function BlogEditorCard({ post, onSave, onPublish, saving, publishing }) {
   const [draft, setDraft] = useState({
     title: post.title || "",
@@ -154,37 +334,28 @@ function BlogEditorCard({ post, onSave, onPublish, saving, publishing }) {
 
       <div className="mt-5 grid gap-4">
         <div>
-          <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300">
-            Title
-          </label>
-          <input
+          <FieldLabel>Title</FieldLabel>
+          <TextInput
             value={draft.title}
             onChange={(e) => setDraft((prev) => ({ ...prev, title: e.target.value }))}
-            className="w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 outline-none ring-0 focus:border-slate-500 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100"
           />
         </div>
 
         <div>
-          <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300">
-            Excerpt
-          </label>
-          <textarea
+          <FieldLabel>Excerpt</FieldLabel>
+          <TextArea
             value={draft.excerpt}
             onChange={(e) => setDraft((prev) => ({ ...prev, excerpt: e.target.value }))}
             rows={3}
-            className="w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 outline-none ring-0 focus:border-slate-500 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100"
           />
         </div>
 
         <div>
-          <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300">
-            Content
-          </label>
-          <textarea
+          <FieldLabel>Content</FieldLabel>
+          <TextArea
             value={draft.content}
             onChange={(e) => setDraft((prev) => ({ ...prev, content: e.target.value }))}
             rows={14}
-            className="w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 outline-none ring-0 focus:border-slate-500 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100"
           />
         </div>
       </div>
@@ -205,6 +376,7 @@ export default function AdminDashboard() {
     savingId,
     publishingId,
     error: blogError,
+    reloadPosts,
     updatePost,
     publishPost,
   } = useAdminBlogPosts();
@@ -249,6 +421,10 @@ export default function AdminDashboard() {
       cancelled = true;
     };
   }, []);
+
+  async function handleGenerated() {
+    await reloadPosts();
+  }
 
   if (state.loading) {
     return (
@@ -327,6 +503,10 @@ export default function AdminDashboard() {
             <StatRow label="Lifetime" value={formatMoney(revenue.lifetime)} muted />
           </Card>
         </div>
+
+        <section className="mt-8">
+          <GenerateDraftCard onGenerated={handleGenerated} />
+        </section>
 
         <section className="mt-8">
           <div className="mb-4">
