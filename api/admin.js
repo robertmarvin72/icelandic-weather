@@ -711,6 +711,11 @@ Structure:
 - End with one short, strong takeaway sentence
 
 Rules:
+- Do not start with generic introductions or setup sentences
+- Start directly with the key condition or difference
+- If one weather factor is clearly dominant (e.g. heavy snow, extreme wind), center the comparison around that instead of listing all factors equally
+- Do not use section headers like "Comparison", "Practical Impact", "Conclusion", or "Takeaway"
+- Write as a continuous, natural comparison
 - The worst weather conditions must dominate the comparison, not averages
 - If one campsite has extreme conditions (e.g. very high wind, heavy snow, heavy rain), this should strongly influence the conclusion
 - Do not treat all factors equally if one risk is clearly more severe
@@ -832,6 +837,11 @@ Structure:
 - One short takeaway sentence at the end
 
 Rules:
+- Describe how conditions change over the week (early, mid, late) when relevant
+- Clearly state if this is a good or bad week to stay at this campsite
+- Do not soften negative conditions when the forecast is clearly poor
+- Do not give general camping advice (gear, preparation, equipment)
+- Focus on evaluating conditions, not teaching how to handle them
 - Start by summarizing the overall week in 1–2 sentences, focusing on the worst conditions
 - Clearly identify when the worst conditions occur (e.g. early week, mid-week, specific days)
 - Do not structure the article as generic sections like "What to check" or "Practical effects"
