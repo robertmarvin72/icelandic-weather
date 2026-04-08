@@ -141,13 +141,29 @@ async function handleSummary(req, res) {
 
 async function handleGenerateDraft(req, res) {
   try {
-    const { type = "weather_comparison", lang = "en", context = {} } = req.body || {};
+    const { type, lang = "en", context = {} } = req.body || {};
+
+    if (!type) {
+      return res.status(400).json({ error: "Missing blog type" });
+    }
+
+    if (!context?.baseCampsite || !context?.compareCampsite || !context?.region) {
+      return res.status(400).json({
+        error: "Missing required campsite context",
+        details: {
+          baseCampsite: !context?.baseCampsite,
+          compareCampsite: !context?.compareCampsite,
+          region: !context?.region,
+        },
+      });
+    }
 
     const allowedTypes = ["campsite_weather", "weather_comparison"];
 
     if (!allowedTypes.includes(type)) {
       return res.status(400).json({
         error: "Invalid blog type",
+        allowedTypes,
       });
     }
 
