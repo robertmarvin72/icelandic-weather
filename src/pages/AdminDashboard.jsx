@@ -119,6 +119,7 @@ function GenerateDraftCard({ onGenerated }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+  const isComparison = form.type === "weather_comparison";
 
   async function handleGenerate() {
     setLoading(true);
@@ -138,7 +139,7 @@ function GenerateDraftCard({ onGenerated }) {
           lang: form.lang,
           context: {
             baseCampsite: form.baseCampsite.trim(),
-            compareCampsite: form.compareCampsite.trim(),
+            compareCampsite: isComparison ? form.compareCampsite.trim() : "",
             region: form.region.trim(),
           },
         }),
@@ -162,8 +163,13 @@ function GenerateDraftCard({ onGenerated }) {
     }
   }
 
+  const needsCompare = form.type === "weather_comparison";
+
   const disabled =
-    loading || !form.baseCampsite.trim() || !form.compareCampsite.trim() || !form.region.trim();
+    loading ||
+    !form.baseCampsite.trim() ||
+    !form.region.trim() ||
+    (needsCompare && !form.compareCampsite.trim());
 
   return (
     <section className="rounded-3xl border border-slate-200/70 bg-white/80 p-5 shadow-sm dark:border-slate-800/80 dark:bg-slate-900/80">
@@ -224,8 +230,20 @@ function GenerateDraftCard({ onGenerated }) {
           <FieldLabel>Compare campsite</FieldLabel>
           <TextInput
             value={form.compareCampsite}
-            onChange={(e) => setForm((prev) => ({ ...prev, compareCampsite: e.target.value }))}
-            placeholder="e.g. Skógar Campsite"
+            onChange={(e) =>
+              setForm((prev) => ({
+                ...prev,
+                type: e.target.value,
+                compareCampsite:
+                  e.target.value === "weather_comparison" ? prev.compareCampsite : "",
+              }))
+            }
+            placeholder={
+              form.type === "weather_comparison"
+                ? "e.g. Skógar Campsite"
+                : "Not used for campsite_weather"
+            }
+            disabled={form.type !== "weather_comparison"}
           />
         </div>
 

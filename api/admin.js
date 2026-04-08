@@ -495,7 +495,7 @@ async function handleGenerateDraft(req, res) {
 function buildPrompt({ type, lang, context }) {
   const language = lang === "is" ? "Icelandic" : "English";
 
-  if (type === "weather_comparison" || type === "campsite_weather") {
+  if (type === "weather_comparison") {
     return `
 Write a blog post comparing two nearby campsites in Iceland.
 
