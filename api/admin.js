@@ -49,6 +49,179 @@ async function requireAdmin(req, res) {
   return me;
 }
 
+function normalizeForecastRawInput(raw = "") {
+  const text = String(raw || "")
+    .replace(/\r\n/g, "\n")
+    .replace(/\r/g, "\n")
+    .trim();
+
+  if (!text) {
+    return {
+      normalizedText: "",
+      summaryText: "",
+      metrics: null,
+    };
+  }
+
+  const lines = text
+    .split("\n")
+    .map((line) => line.replace(/\s+/g, " ").trim())
+    .filter(Boolean);
+
+  if (!lines.length) {
+    return {
+      normalizedText: "",
+      summaryText: "",
+      metrics: null,
+    };
+  }
+
+  const parsed = lines.map(parseForecastLine).filter(Boolean);
+
+  if (!parsed.length) {
+    return {
+      normalizedText: lines.join("\n"),
+      summaryText: "",
+      metrics: null,
+    };
+  }
+
+  let maxWind = null;
+  let maxWindDay = "";
+  let maxGust = null;
+  let maxGustDay = "";
+  let maxRain = null;
+  let maxRainDay = "";
+  let minTemp = null;
+  let minTempDay = "";
+
+  const roughDays = [];
+  const coldDays = [];
+
+  for (const row of parsed) {
+    if (typeof row.wind === "number" && (maxWind == null || row.wind > maxWind)) {
+      maxWind = row.wind;
+      maxWindDay = row.day;
+    }
+
+    if (typeof row.gust === "number" && (maxGust == null || row.gust > maxGust)) {
+      maxGust = row.gust;
+      maxGustDay = row.day;
+    }
+
+    if (typeof row.rain === "number" && (maxRain == null || row.rain > maxRain)) {
+      maxRain = row.rain;
+      maxRainDay = row.day;
+    }
+
+    if (typeof row.minTemp === "number" && (minTemp == null || row.minTemp < minTemp)) {
+      minTemp = row.minTemp;
+      minTempDay = row.day;
+    }
+
+    const isRough =
+      (typeof row.wind === "number" && row.wind >= 9) ||
+      (typeof row.gust === "number" && row.gust >= 14) ||
+      (typeof row.rain === "number" && row.rain >= 2);
+
+    const isCold = typeof row.minTemp === "number" && row.minTemp <= 0;
+
+    if (isRough) roughDays.push(row.day);
+    if (isCold) coldDays.push(row.day);
+  }
+
+  const summaryLines = [];
+
+  if (maxWind != null) {
+    summaryLines.push(`Highest sustained wind: ${maxWind} m/s on ${maxWindDay}`);
+  }
+
+  if (maxGust != null) {
+    summaryLines.push(`Highest gust: ${maxGust} m/s on ${maxGustDay}`);
+  }
+
+  if (maxRain != null) {
+    summaryLines.push(`Highest rain: ${maxRain} mm on ${maxRainDay}`);
+  }
+
+  if (minTemp != null) {
+    summaryLines.push(`Coldest minimum temperature: ${minTemp}°C on ${minTempDay}`);
+  }
+
+  if (roughDays.length) {
+    summaryLines.push(`Roughest days: ${roughDays.join(", ")}`);
+  }
+
+  if (coldDays.length) {
+    summaryLines.push(`Cold nights/days: ${coldDays.join(", ")}`);
+  }
+
+  return {
+    normalizedText: lines.join("\n"),
+    summaryText: summaryLines.join("\n"),
+    metrics: {
+      maxWind,
+      maxWindDay,
+      maxGust,
+      maxGustDay,
+      maxRain,
+      maxRainDay,
+      minTemp,
+      minTempDay,
+      roughDays,
+      coldDays,
+    },
+  };
+}
+
+function parseForecastLine(line = "") {
+  const text = String(line || "").trim();
+  if (!text) return null;
+
+  const dayMatch = text.match(
+    /^((mið|fim|fös|lau|sun|mán|þri|þrið|miðv|þri\.|mið\.)[^0-9]*\d{1,2}\.\s*[a-záðéíóúýþæö]{3,}\.?)/i
+  );
+
+  const day =
+    dayMatch?.[1]?.trim() || text.split(/\s{2,}|\s(?=[A-ZÁÐÉÍÓÚÝÞÆÖ])/)[0] || "Unknown day";
+
+  const temps = [...text.matchAll(/-?\d+(?:[.,]\d+)?\s*°C/gi)].map((m) =>
+    Number(m[0].replace(",", ".").replace(/[^0-9.\-]/g, ""))
+  );
+
+  const msValues = [...text.matchAll(/-?\d+(?:[.,]\d+)?\s*m\/s/gi)].map((m) =>
+    Number(m[0].replace(",", ".").replace(/[^0-9.\-]/g, ""))
+  );
+
+  const mmValues = [...text.matchAll(/-?\d+(?:[.,]\d+)?\s*mm/gi)].map((m) =>
+    Number(m[0].replace(",", ".").replace(/[^0-9.\-]/g, ""))
+  );
+
+  let wind = null;
+  let gust = null;
+
+  if (msValues.length === 1) {
+    wind = msValues[0];
+  } else if (msValues.length >= 2) {
+    wind = msValues[0];
+    gust = Math.max(...msValues.slice(1));
+  }
+
+  const minTemp = temps.length >= 1 ? Math.min(...temps) : null;
+  const maxTemp = temps.length >= 1 ? Math.max(...temps) : null;
+  const rain = mmValues.length ? Math.max(...mmValues) : null;
+
+  return {
+    day,
+    raw: text,
+    minTemp,
+    maxTemp,
+    wind,
+    gust,
+    rain,
+  };
+}
+
 /* =========================
    SUMMARY LOGIC
 ========================= */
@@ -393,6 +566,8 @@ async function handleGenerateDraft(req, res) {
 
     const { type, lang = "en", context = {} } = req.body || {};
 
+    const forecastData = normalizeForecastRawInput(context?.forecastRawInput);
+
     if (!type) {
       return res.status(400).json({ ok: false, error: "Missing blog type" });
     }
@@ -421,7 +596,15 @@ async function handleGenerateDraft(req, res) {
       });
     }
 
-    const prompt = buildPrompt({ type, lang, context });
+    const prompt = buildPrompt({
+      type,
+      lang,
+      context: {
+        ...context,
+        forecastRawInput: forecastData.normalizedText,
+        forecastSummary: forecastData.summaryText,
+      },
+    });
     const aiResponse = await callAI(prompt);
     const draft = normalizeDraft(aiResponse);
 
@@ -507,6 +690,12 @@ Base campsite: ${context.baseCampsite || "Campsite A"}
 Compare campsite: ${context.compareCampsite || "Campsite B"}
 Region: ${context.region || "Iceland"}
 
+Forecast summary:
+${context.forecastSummary || "No forecast summary available."}
+
+Raw forecast input:
+${context.forecastRawInput || "No forecast data provided."}
+
 Tone:
 - Practical and experience-based
 - Written like advice from someone who knows Iceland
@@ -522,22 +711,42 @@ Structure:
 - End with one short, strong takeaway sentence
 
 Rules:
-- Do not invent terrain details, shelter elements, or campsite facilities unless explicitly provided in the context
+- Do not invent terrain details, shelter elements, campsite facilities, or amenities unless explicitly provided in the context
 - If a detail is unknown, do not guess
-- Focus on helping the reader make a decision
+- Focus on helping the reader make a decision, not describing a destination
 - Avoid all generic travel descriptions
-- Do not describe scenery unless it affects camping conditions
-- Explain WHY differences matter, especially wind, shelter, and exposure
+- Do not describe scenery unless it directly affects camping conditions
+
 - Treat campsites as decision options, not destinations
-- If weather differs, explain the real-world impact (tents, comfort, driving, overnight conditions)
-- Keep the content grounded and specific
-- Do not invent facilities, amenities, or activities unless clearly implied by the context
-- Do not make the campsites sound equally good if there is a meaningful difference
+- Clearly explain differences between the campsites
+- Do not present both campsites as equally good if there is a meaningful difference
 - Be specific and decisive when describing differences
+- If one campsite is more exposed to wind or weather, state it clearly
+- Always explain WHY differences matter in practice (tents, comfort, sleep, driving conditions)
+
+- Keep the content grounded, practical, and specific
 - Avoid hedging language ("can", "may", "might", "often") unless absolutely necessary
-- If one campsite is more exposed to wind, state it clearly
 - Avoid ALL of the following phrases or anything similar:
   "Iceland offers", "stunning", "breathtaking", "unique experience", "nestled", "picturesque", "perfect for"
+
+- Use the following priority for weather data:
+  1. Forecast summary (highest priority)
+  2. Raw forecast input
+  3. General knowledge (only if nothing else is provided)
+
+- If forecast summary is provided:
+  - Use it to identify the roughest period and the most important risks
+  - Focus on the worst weather, not average conditions
+  - Clearly state which days look roughest if applicable
+  - If cold nights are present, explain their practical impact
+
+- Use raw forecast input as the source of truth for detailed weather values
+- Extract the weekly pattern from the raw forecast input before writing
+- Do not invent weather details beyond the provided forecast summary or raw forecast input
+
+- If weather data is provided:
+  - Prioritize it over generic advice
+  - Explain real-world impact of wind, gusts, rain, and temperature on camping decisions
 
 Important:
 - Campsites in Iceland can feel very different even if they are close together
@@ -577,6 +786,12 @@ Language: ${language}
 Campsite: ${context.baseCampsite || "Unknown campsite"}
 Region: ${context.region || "Iceland"}
 
+Forecast summary:
+${context.forecastSummary || "No forecast summary available."}
+
+Raw forecast input:
+${context.forecastRawInput || "No forecast data provided."}
+
 Important grounding rules:
 - You are writing about ONE campsite only
 - Do NOT compare it to any other campsite
@@ -608,14 +823,44 @@ Structure:
 - One short takeaway sentence at the end
 
 Rules:
-- Focus on how weather affects camping decisions
-- Explain practical effects of rain, wind, gusts, exposure, wet ground, and comfort
+- Focus on how weather affects camping decisions, not describing a destination
+- Treat the reader as someone deciding whether to stay overnight at this campsite
 - Do not write generic travel content
-- Do not write as if this is a destination guide
-- Treat the reader as someone planning where to stay
 - Avoid vague statements unless necessary
-- Avoid all of these phrases or anything similar:
+
+- Explain practical effects of weather:
+  - rain (wet ground, mud, setup difficulty)
+  - wind and gusts (exposure, tent stability, comfort)
+  - temperature (cold nights, sleeping conditions)
+- Always explain what the conditions mean in practice for campers
+
+- Avoid all of the following phrases or anything similar:
   "Iceland offers", "stunning", "breathtaking", "unique experience", "nestled", "picturesque", "perfect for"
+
+- Use the following priority for weather data:
+  1. Forecast summary (highest priority)
+  2. Raw forecast input
+  3. General knowledge (only if nothing else is provided)
+
+- If forecast summary is provided:
+  - Use it to identify the roughest days and the most important risks
+  - Focus on the worst weather, not average conditions
+  - If the week starts rough or ends colder, say that clearly
+  - Explain practical impact of those conditions
+
+- Use raw forecast input as the source of truth for detailed weather values
+- Extract the weekly pattern from the raw forecast input before writing
+- Do not invent weather details beyond the provided forecast summary or raw forecast input
+
+- If weather data is provided:
+  - Prioritize it over generic advice
+  - Clearly explain impact of wind, gusts, rain, and temperature on camping conditions
+
+- If no forecast data is provided:
+  - Stay general
+  - Do not imply knowledge of specific current conditions
+
+- If conditions look difficult, state that clearly and do not soften the message
 
 Extra rules for Icelandic output:
 - Use natural Icelandic

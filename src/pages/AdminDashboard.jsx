@@ -120,6 +120,7 @@ function GenerateDraftCard({ onGenerated }) {
     baseCampsite: "",
     compareCampsite: "",
     region: "",
+    forecastRawInput: "",
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -154,6 +155,7 @@ function GenerateDraftCard({ onGenerated }) {
             baseCampsite: form.baseCampsite.trim(),
             compareCampsite: isComparison ? form.compareCampsite.trim() : "",
             region: form.region.trim(),
+            forecastRawInput: form.forecastRawInput.trim(),
           },
         }),
       });
@@ -171,6 +173,7 @@ function GenerateDraftCard({ onGenerated }) {
         baseCampsite: "",
         compareCampsite: "",
         region: "",
+        forecastRawInput: "",
       }));
 
       if (typeof onGenerated === "function") {
@@ -190,7 +193,7 @@ function GenerateDraftCard({ onGenerated }) {
           Generate blog draft
         </h2>
         <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
-          Create a new draft from campsite comparison context.
+          Create a new draft from campsite info and optional raw forecast input.
         </p>
       </div>
 
@@ -265,6 +268,23 @@ function GenerateDraftCard({ onGenerated }) {
             value={form.region}
             onChange={(e) => setForm((prev) => ({ ...prev, region: e.target.value }))}
             placeholder="e.g. South Iceland"
+          />
+        </div>
+
+        <div className="md:col-span-2">
+          <FieldLabel>Forecast raw input</FieldLabel>
+          <TextArea
+            value={form.forecastRawInput}
+            onChange={(e) => setForm((prev) => ({ ...prev, forecastRawInput: e.target.value }))}
+            rows={8}
+            placeholder={`Paste raw forecast lines here, for example:
+
+              mið. 08. apr. Él 2.4°C 5.3°C 9.2 m/s 2.5 mm
+              fim. 09. apr. Él 1.4°C 5.6°C 10.9 m/s 2.1 mm gust 16.9 m/s
+              fös. 10. apr. Smávægileg úrkoma -1.5°C 4.6°C 6.8 m/s 0.1 mm
+              lau. 11. apr. Smávægileg úrkoma -4.2°C 0.8°C 7.7 m/s 0.2 mm
+              sun. 12. apr. Smávægileg úrkoma -0.5°C 2.4°C 5.7 m/s 0.7 mm
+              `}
           />
         </div>
       </div>
