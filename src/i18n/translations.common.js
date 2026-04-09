@@ -345,6 +345,8 @@ export const commonTranslations = {
     blogCtaTitle: "Check live campsite conditions",
     blogCtaText: "Compare nearby campsites and see where the weather is better right now.",
     blogCtaButton: "Open CampCast",
+    blogDraftPreviewBanner: "Draft preview — this post is not published.",
+    blogPreviewButton: "Preview",
 
     top5BestOverallThisWeek: "Best overall this week",
     decisionMoveBodyWindowAware:
@@ -712,6 +714,8 @@ export const commonTranslations = {
     blogCtaTitle: "Skoða stöðuna á tjaldsvæðum núna",
     blogCtaText: "Berðu saman nálæg tjaldsvæði og sjáðu hvar veðrið er betra akkúrat núna.",
     blogCtaButton: "Opna CampCast",
+    blogDraftPreviewBanner: "Drög til forskoðunar — þessi grein er ekki birt.",
+    blogPreviewButton: "Forskoðun",
 
     top5BestOverallThisWeek: "Best overall í vikunni",
     decisionMoveBodyWindowAware:

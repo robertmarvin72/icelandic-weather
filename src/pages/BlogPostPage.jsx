@@ -109,6 +109,35 @@ export default function BlogPostPage({ t, lang, theme }) {
           }
         );
 
+        if (res.status === 404) {
+          const draftRes = await fetch(
+            `/api/admin?action=getPublishedBlogPostBySlug&slug=${encodeURIComponent(slug)}&preview=draft`,
+            {
+              cache: "no-store",
+              credentials: "include",
+            }
+          );
+
+          if (draftRes.status === 403) {
+            if (!cancelled) {
+              setPost(null);
+              setLoadError("");
+            }
+            return;
+          }
+
+          const draftJson = await draftRes.json().catch(() => ({}));
+
+          if (draftRes.ok && draftJson?.ok) {
+            if (!cancelled) {
+              setPost(draftJson.post || null);
+            }
+            return;
+          }
+
+          throw new Error(draftJson?.error || "Failed to load blog post");
+        }
+
         const json = await res.json().catch(() => ({}));
 
         if (!res.ok || !json?.ok) {
@@ -231,22 +260,24 @@ export default function BlogPostPage({ t, lang, theme }) {
 
   return (
     <>
-      <Helmet>
-        <title>{title}</title>
+      {post.status !== "draft" && (
+        <Helmet>
+          <title>{title}</title>
 
-        <meta name="description" content={description} />
+          <meta name="description" content={description} />
 
-        <meta property="og:type" content="article" />
-        <meta property="og:title" content={title} />
-        <meta property="og:description" content={description} />
-        <meta property="og:url" content={url} />
-        <meta property="og:image" content={image} />
+          <meta property="og:type" content="article" />
+          <meta property="og:title" content={title} />
+          <meta property="og:description" content={description} />
+          <meta property="og:url" content={url} />
+          <meta property="og:image" content={image} />
 
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content={title} />
-        <meta name="twitter:description" content={description} />
-        <meta name="twitter:image" content={image} />
-      </Helmet>
+          <meta name="twitter:card" content="summary_large_image" />
+          <meta name="twitter:title" content={title} />
+          <meta name="twitter:description" content={description} />
+          <meta name="twitter:image" content={image} />
+        </Helmet>
+      )}
 
       <div
         className={`min-h-screen ${
@@ -265,12 +296,23 @@ export default function BlogPostPage({ t, lang, theme }) {
           }
         />
         <main className="mx-auto max-w-4xl px-4 py-10 sm:px-6 lg:px-8">
+          {post.status === "draft" && (
+            <div className="mb-6 rounded-2xl border border-amber-300 bg-amber-50 px-4 py-3 text-sm font-medium text-amber-800 dark:border-amber-600/40 dark:bg-amber-900/20 dark:text-amber-300">
+              {translateOrFallback(
+                t,
+                "blogDraftPreviewBanner",
+                "Draft preview — this post is not published."
+              )}
+            </div>
+          )}
           <article className="mt-6">
             <div className="max-w-3xl">
-              <div className={`text-sm ${isLight ? "text-slate-500" : "text-slate-400"}`}>
-                {translateOrFallback(t, "blogPublishedLabel", "Published")}{" "}
-                {formatPublishedDate(post.publishedAt, lang)}
-              </div>
+              {post.status !== "draft" && (
+                <div className={`text-sm ${isLight ? "text-slate-500" : "text-slate-400"}`}>
+                  {translateOrFallback(t, "blogPublishedLabel", "Published")}{" "}
+                  {formatPublishedDate(post.publishedAt, lang)}
+                </div>
+              )}
 
               <h1 className="mt-3 text-4xl font-bold tracking-tight sm:text-5xl">{post.title}</h1>
 

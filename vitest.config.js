@@ -1,13 +1,15 @@
 import { defineConfig } from "vitest/config";
+import react from "@vitejs/plugin-react";
 
 export default defineConfig({
+  plugins: [react()],
   test: {
     environment: "jsdom",
     globals: true,
     setupFiles: ["./src/test/setupTests.js"],
 
     // ✅ Make sure our utility tests are picked up
-    include: ["src/**/*.test.js", "src/**/*.spec.js"],
+    include: ["src/**/*.test.js", "src/**/*.spec.js", "src/**/*.test.jsx", "src/**/*.spec.jsx"],
 
     coverage: {
       provider: "v8",

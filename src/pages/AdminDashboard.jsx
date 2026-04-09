@@ -1,6 +1,8 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { useAdminBlogPosts } from "../hooks/useAdminBlogPosts";
+import { useLanguage } from "../hooks/useLanguage";
+import { useT } from "../hooks/useT";
 
 function formatMoney(value) {
   if (value == null) return "—";
@@ -304,6 +306,8 @@ function GenerateDraftCard({ onGenerated }) {
 }
 
 function BlogEditorCard({ post, onSave, onPublish, onDelete, saving, publishing }) {
+  const { lang } = useLanguage();
+  const t = useT(lang);
   const [draft, setDraft] = useState({
     title: post.title || "",
     excerpt: post.excerpt || "",
@@ -354,6 +358,16 @@ function BlogEditorCard({ post, onSave, onPublish, onDelete, saving, publishing 
         </div>
 
         <div className="flex gap-2">
+          {post.status === "draft" && (
+            <a
+              href={`/blog/${post.slug}?preview=draft`}
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center rounded-xl border border-slate-300 px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800"
+            >
+              {t("blogPreviewButton")}
+            </a>
+          )}
           <button
             type="button"
             onClick={() => onDelete(post.id)}

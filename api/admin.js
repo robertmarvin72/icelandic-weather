@@ -1022,6 +1022,45 @@ async function handleGetPublishedBlogPostBySlug(req, res) {
       });
     }
 
+    if (req.query?.preview === "draft") {
+      const me = await requireAdmin(req, res);
+      if (!me) return;
+
+      const rows = await sql`
+        select
+          id,
+          slug,
+          title,
+          excerpt,
+          content,
+          meta_title,
+          meta_description,
+          cover_image,
+          cta_hint,
+          status,
+          published_at,
+          created_at,
+          updated_at
+        from blog_post
+        where slug = ${slug}
+        limit 1
+      `;
+
+      const post = rows[0];
+
+      if (!post) {
+        return res.status(404).json({
+          ok: false,
+          error: "Blog post not found",
+        });
+      }
+
+      return res.status(200).json({
+        ok: true,
+        post: normalizeBlogPost(post),
+      });
+    }
+
     const rows = await sql`
       select
         id,
