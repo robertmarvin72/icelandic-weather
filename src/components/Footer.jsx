@@ -20,6 +20,15 @@ export default function Footer({ t }) {
           <span className="text-slate-400 dark:text-slate-600">·</span>
 
           <Link
+            to="/blog"
+            className="text-sky-600 hover:text-sky-700 dark:text-sky-400 dark:hover:text-sky-300 underline-offset-4 hover:underline"
+          >
+            {t("blogNav")}
+          </Link>
+
+          <span className="text-slate-400 dark:text-slate-600">·</span>
+
+          <Link
             to="/terms"
             className="text-sky-600 hover:text-sky-700 dark:text-sky-400 dark:hover:text-sky-300 underline-offset-4 hover:underline"
           >

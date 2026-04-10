@@ -167,6 +167,7 @@ export const commonTranslations = {
 
     footerDataBy: "Data by Open-Meteo. Forecast includes temperature, rain, wind, & weather codes.",
     footerAbout: "About",
+    blogNav: "Blog",
     footerContact: "Contact",
     backToForecast: "Back to forecast",
 
@@ -537,6 +538,7 @@ export const commonTranslations = {
 
     footerDataBy: "Gögn frá Open-Meteo. Spáin inniheldur hitastig, úrkomu, vind og veðurkóða.",
     footerAbout: "Um",
+    blogNav: "Blog",
     footerContact: "Hafa samband",
 
     backToForecast: "Til baka",
