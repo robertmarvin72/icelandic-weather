@@ -5,6 +5,7 @@ import L from "leaflet";
 import { getForecast } from "./lib/forecastCache";
 import MarkerClusterGroup from "react-leaflet-cluster";
 import { scoreSiteDay } from "./lib/scoring";
+import { normalizeDailyToScoreInput } from "./lib/forecastNormalize";
 
 // ───────────────────────────────────────────────
 // Color mapping by average score
@@ -21,23 +22,16 @@ function labelForScore(score, t) {
 }
 
 // ───────────────────────────────────────────────
-// Fetch forecast and compute weekly score
+// Fetch forecast and compute weekly score — uses the same pipeline as ForecastTable
 async function fetchForecastAndScore({ lat, lon }) {
   const data = await getForecast({ lat, lon }); // cached
   if (!data?.daily?.time) return { score: 0, rows: [] };
   if (!Array.isArray(data?.daily?.time)) return { score: 0, rows: [] };
 
-  const rows = data.daily.time.map((t, i) => {
-    const r = {
-      date: t,
-      tmax: data.daily.temperature_2m_max?.[i] ?? null,
-      rain: data.daily.precipitation_sum?.[i] ?? null,
-      windMax: data.daily.windspeed_10m_max?.[i] ?? data.daily.wind_speed_10m_max?.[i] ?? null,
-      windGust: data.daily.windgusts_10m_max?.[i] ?? null,
-    };
+  const baseRows = normalizeDailyToScoreInput(data.daily, data.hourly);
 
+  const rows = baseRows.map((r) => {
     const s = scoreSiteDay(r);
-
     return { ...r, class: s.finalClass, points: s.points, season: s.season };
   });
 
@@ -168,8 +162,8 @@ export default function MapView({
       }
     }
 
-    const avg = n ? sum / n : 0;
-    const overlayColor = colorForScore(avg);
+    const avg = n ? sum / n : null;
+    const overlayColor = avg != null ? colorForScore(avg) : "#94a3b8";
     const color = showWeatherOverlay ? overlayColor : "#3b82f6";
 
     const count = cluster.getChildCount();
@@ -260,10 +254,11 @@ export default function MapView({
         >
           {campsites.map((site) => {
             const fdata = forecastById[site.id];
+            const hasScore = fdata != null && typeof fdata.score === "number";
             const score = fdata?.score ?? 0;
-            const overlayColor = colorForScore(score);
+            const overlayColor = hasScore ? colorForScore(score) : "#94a3b8"; // gray = not yet loaded
             const color = showWeatherOverlay ? overlayColor : "#3b82f6";
-            const scoreLabel = labelForScore(score, t);
+            const scoreLabel = hasScore ? labelForScore(score, t) : "…";
 
             const isSelected = site.id === selectedId;
             const icon = scorePinIcon(color, isSelected);
