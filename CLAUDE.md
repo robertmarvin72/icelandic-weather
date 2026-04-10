@@ -4,6 +4,16 @@ Weather forecasting web app for Icelandic campsites. Provides 7-day forecasts, c
 
 ---
 
+## Dev Setup
+
+```bash
+npm install
+npx playwright install chromium
+gh auth login  # required for issue lookup
+```
+
+---
+
 ## Architecture
 
 ```
@@ -177,6 +187,9 @@ Deployment is via Vercel Git integration — push to `main` deploys automaticall
 - Components in PascalCase, hooks prefixed with `use`
 - Feature gating always through `RequireFeature` / `features.js`
 - Translations always in `i18n/` — never hardcode text in components
+- Before implementing: ask 'does the user have a UI entrypoint to reach this feature?'
+- If a bug fix reveals an adjacent UX gap, fix it in the same commit if < 25 lines — note it in the commit message
+- Cross-reference related issue numbers in commit messages when two fixes address the same root cause
 
 ---
 

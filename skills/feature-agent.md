@@ -38,3 +38,4 @@ Use this when briefing a coding subagent to implement a feature in this repo.
 - Don't add error handling for impossible cases.
 - Don't add backwards-compat shims.
 - Don't run `git add`, `git commit`, or `git push` — the CLAUDE.md constraint governs this per session.
+- Don't forget to cross-reference related issue numbers in commit messages when fixes share a root cause
