@@ -50,6 +50,16 @@ Always run the full suite (`npm test -- --run`) and report the total count. A re
 - Any config fixes made and why
 - Final pass/fail count
 
+## Browser-level (Playwright) tests
+
+For tests that require real browser rendering, route interception, or multi-step navigation,
+use Playwright instead of Vitest. See `skills/ui-test-agent.md` for setup and patterns.
+
+Vitest covers unit/component logic. Playwright covers rendered UI and network flows.
+Do not replace one with the other.
+
+---
+
 ## Common pitfalls
 
 - **JSX in test files**: requires `@vitejs/plugin-react` in vitest config — check before adding `.jsx` tests.

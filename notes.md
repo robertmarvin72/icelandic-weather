@@ -41,3 +41,40 @@
 - Add `gh` CLI to dev setup instructions in CLAUDE.md or README.
 - Add a planning checklist item: "Does the feature need a UI entrypoint?" to catch missing admin/navigation affordances earlier.
 - Consider adding `skills/` to `.gitignore` if these files are personal workflow notes rather than project docs.
+
+---
+
+## 2026-04-10 — Retro: #232 + #233 (Scoring precision) + Playwright e2e setup
+
+### What was built
+
+- **#232**: Rounded `rain`, `wind`, `gust`, and `tmax` to 1 decimal in `scoreSiteDay()` so the scoring engine evaluates exactly what the user sees in the forecast table. Added 63-line test coverage in `src/lib/scoring.test.js`.
+- **#233**: Fixed `MapView.jsx` to use `normalizeDailyToScoreInput` (same pipeline as `ForecastTable`), eliminating score divergence between map pins and the table. Added gray pins for sites not yet loaded to replace misleading red (score-0) pins.
+- **Playwright e2e**: Installed `@playwright/test`, added `playwright.config.js` (Chromium-only, `webServer` block), wrote `tests/e2e/blog-draft-preview.spec.js` covering non-admin draft access and published post rendering. Added `test:e2e` script to `package.json`. Created `skills/ui-test-agent.md`.
+
+### What went well
+
+**Tight, targeted fixes**
+- Both #232 and #233 were minimal diffs (< 25 lines each) that solved real user-visible inconsistencies. No scope creep, no refactoring of unrelated code.
+
+**UX improvement surfaced during a bug fix**
+- The gray-pin change (#233) was not in the original issue but was the correct thing to do once the scoring alignment was understood. The fix revealed a UX gap (misleading red pins) and closed it in the same commit. Good pattern: bug fixes sometimes expose adjacent UX issues worth addressing immediately.
+
+**Playwright setup was clean on first run**
+- 2/2 tests passed without any config iteration. The `stubAppBootstrapApis` + per-test `page.route()` pattern worked correctly first time.
+
+**`ui-test-agent.md` created proactively**
+- The skill file was authored alongside the tests, capturing route-order gotchas while they were fresh. This avoids a future agent rediscovering the LIFO route evaluation behaviour from scratch.
+
+### What could be improved
+
+**#232 and #233 are conceptually one fix**
+- Both address UI/engine scoring alignment and could have been a single commit. Two separate commits is fine for blame purposes, but the PR descriptions should cross-reference each other to make the connection clear.
+
+**Scoring regression not caught by existing tests**
+- The rounding issue (#232) was caught by manual comparison, not an existing test. The new tests now guard against this, but the gap existed for a while. Adding boundary-condition tests (e.g. value at exactly the penalty threshold) earlier would have caught this sooner.
+
+### Suggestions for rules / conventions
+
+- When a bug fix reveals an adjacent UX gap (e.g. misleading pins), fix it in the same commit if the change is small and self-contained — note it in the commit message.
+- Cross-reference related issue numbers in commit messages when two fixes address the same root cause.
