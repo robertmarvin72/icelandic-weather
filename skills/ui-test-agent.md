@@ -41,6 +41,8 @@ await page.route("**/api/admin**", (route) => {
 **Rule:** Register broad catch-all stubs first in `beforeEach`, then per-test specific stubs.
 Playwright evaluates routes in reverse registration order (newest wins).
 
+**Stub shapes must match the hook's parsing contract** — check the hook source to see what fields it reads (`j.ok`, `j.campsites`, `j.tier`, etc.), not just the endpoint URL. A stub that returns the wrong shape silently triggers the error branch.
+
 ### Bootstrap stub helper
 
 App-level hooks (`useForecast`, `useCampsites`, `useMe`, etc.) fire on every page load even for
@@ -115,6 +117,14 @@ Report: total tests, pass/fail count. A regression in existing tests is a blocke
   Stub them all to avoid flaky network errors that mask the real assertion.
 - **`not.toBeVisible()` vs `not.toBeAttached()`:** Use `not.toBeVisible()` unless you specifically
   need to assert the element is absent from the DOM entirely.
+
+---
+
+## Simple nav link pattern
+
+- Use `getByRole('link', { name: '...' })` to find links
+- Assert visibility before clicking
+- Assert URL after navigation with `expect(page).toHaveURL('/path')`
 
 ---
 

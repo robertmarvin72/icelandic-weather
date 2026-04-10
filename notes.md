@@ -78,3 +78,40 @@
 
 - When a bug fix reveals an adjacent UX gap (e.g. misleading pins), fix it in the same commit if the change is small and self-contained — note it in the commit message.
 - Cross-reference related issue numbers in commit messages when two fixes address the same root cause.
+
+---
+
+## 2026-04-10 — Retro: Footer Blog link + e2e test + doc updates
+
+### What was built
+
+- **CLAUDE.md**: Added `## Dev Setup` section near the top (`npm install`, `npx playwright install chromium`, `gh auth login`). Appended three convention rules (UI entrypoint check, adjacent UX gap fix policy, cross-reference commit rule).
+- **skills/feature-agent.md**: Appended cross-reference rule to "What NOT to do".
+- **Footer Blog link**: Added `blogNav: "Blog"` translation key to both `en` and `is` blocks in `translations.common.js`. Added Blog link to `Footer.jsx` between "About" and "Terms", linking to `/blog`, matching existing link styling.
+- **Playwright e2e**: `tests/e2e/footer-blog-link.spec.js` — navigates to `/`, waits for Splash to clear, asserts Blog link visible, clicks, asserts URL `/blog`.
+- **skills/ui-test-agent.md**: Appended "Simple nav link pattern" section.
+
+### What went well
+
+**Footer change was clean and minimal**
+- Three-file change (Footer, translations ×2 language blocks) with no ambiguity. Translation key placed adjacent to other footer keys in both blocks.
+
+**Retro conventions from the previous session were applied immediately**
+- The CLAUDE.md convention additions (`< 25 lines UX gap fix`, `cross-reference issue numbers`) came directly from the prior retro suggestions — closing the loop in the same session.
+
+**e2e test diagnosed Splash blocking correctly**
+- The overlay intercept error was informative. The Splash-clearing root cause (needs `!loading && rowsLength > 0`) was traced correctly through `useBooting` → `useForecast` → `useCampsites`.
+
+### What caused friction
+
+**Campsites stub shape was wrong on first attempt**
+- The stub returned a bare array; the hook expects `{ ok: true, campsites: [...], tier: "free" }`. Required reading `useCampsites.js` to find the contract. Cost two extra test runs (total 3 runs to green).
+- This is a common trap: API stubs must match the hook's response parsing contract, not the raw endpoint output shape.
+
+**`claude --model haiku` subagent can't commit non-interactively**
+- Both times the subagent was invoked for git ops, it either got permissions blocked or asked for interactive confirmation. The user ended up running git commands manually each time. This pattern doesn't work without a TTY.
+
+### Suggestions for rules / conventions
+
+- Add a note to `skills/ui-test-agent.md` under the bootstrap stub section: stub shapes must match the hook's response parsing contract — check the hook source, not just the endpoint URL.
+- The `claude --model haiku` git commit flow needs a `--yes` / non-interactive flag or an alternative approach. Consider documenting in `retro-agent.md` that git ops via subagent don't work without a TTY.

@@ -199,6 +199,7 @@ Deployment is via Vercel Git integration — push to `main` deploys automaticall
 - Tailwind v4 dark mode requires `.dark` class on `<html>` — not `prefers-color-scheme`
 - Webhook endpoint must be public (no session auth)
 - `campsites.full.json` is large — do not import directly in frontend
+- When writing Playwright stubs, match the hook's response parsing contract — not the raw endpoint shape. Check the hook source before stubbing.
 
 ---
 
@@ -210,3 +211,7 @@ Git workflow:
 - Use descriptive commit messages referencing issue number
 - Never run git push — the user always pushes manually
 - Show changes as diffs only, I manage git myself
+
+Subagent git ops:
+
+- `claude --model haiku` git commits require a TTY — does not work non-interactively. Run `git add` + `git commit` manually or inside an active Claude Code session.
