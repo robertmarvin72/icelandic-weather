@@ -258,6 +258,69 @@ describe("units: conversions + formatting", () => {
   });
 });
 
+describe("scoring: scoreSiteDay() precision alignment (round1)", () => {
+  it("rain 3.96 and rain 4.04 score identically (both round to 4.0 mm)", () => {
+    const base = { tmax: 12, windMax: 4, windGust: 4, date: "2026-07-01" };
+    const siteA = scoreSiteDay({ ...base, rain: 3.96 });
+    const siteB = scoreSiteDay({ ...base, rain: 4.04 });
+    expect(siteA.rainPen).toBe(siteB.rainPen);
+    expect(siteA.total).toBe(siteB.total);
+  });
+
+  it("rain 0.95 and rain 1.04 score identically (both round to 1.0 mm)", () => {
+    const base = { tmax: 12, windMax: 4, windGust: 4, date: "2026-07-01" };
+    const siteA = scoreSiteDay({ ...base, rain: 0.95 });
+    const siteB = scoreSiteDay({ ...base, rain: 1.04 });
+    expect(siteA.rainPen).toBe(siteB.rainPen);
+    expect(siteA.total).toBe(siteB.total);
+  });
+
+  it("windMax 4.96 and windMax 5.04 score identically (both round to 5.0 m/s)", () => {
+    const base = { tmax: 12, windGust: 0, rain: 0, date: "2026-07-01" };
+    const siteA = scoreSiteDay({ ...base, windMax: 4.96 });
+    const siteB = scoreSiteDay({ ...base, windMax: 5.04 });
+    expect(siteA.windPen).toBe(siteB.windPen);
+  });
+
+  it("windMax 9.96 and windMax 10.04 score identically (both round to 10.0 m/s)", () => {
+    const base = { tmax: 12, windGust: 0, rain: 0, date: "2026-07-01" };
+    const siteA = scoreSiteDay({ ...base, windMax: 9.96 });
+    const siteB = scoreSiteDay({ ...base, windMax: 10.04 });
+    expect(siteA.windPen).toBe(siteB.windPen);
+  });
+
+  it("windMax 14.96 and windMax 15.04 score identically (both round to 15.0 m/s)", () => {
+    const base = { tmax: 12, windGust: 0, rain: 0, date: "2026-07-01" };
+    const siteA = scoreSiteDay({ ...base, windMax: 14.96 });
+    const siteB = scoreSiteDay({ ...base, windMax: 15.04 });
+    expect(siteA.windPen).toBe(siteB.windPen);
+  });
+
+  it("tmax 13.96 and tmax 14.04 score identically (both round to 14.0°C)", () => {
+    const base = { windMax: 4, windGust: 0, rain: 0, date: "2026-07-01" };
+    const siteA = scoreSiteDay({ ...base, tmax: 13.96 });
+    const siteB = scoreSiteDay({ ...base, tmax: 14.04 });
+    expect(siteA.basePts).toBe(siteB.basePts);
+  });
+
+  it("null/undefined inputs do not throw", () => {
+    expect(() =>
+      scoreSiteDay({ tmax: null, rain: null, windMax: null, windGust: null })
+    ).not.toThrow();
+    const r = scoreSiteDay({ tmax: null, rain: null, windMax: null, windGust: null });
+    expect(r.total).toBeGreaterThanOrEqual(0);
+  });
+
+  it("clean 1-decimal inputs are unaffected (no regression)", () => {
+    const r = scoreSiteDay({ tmax: 12, windMax: 11, windGust: 0, rain: 1.2, date: "2026-07-01" });
+    expect(r.basePts).toBe(8);
+    expect(r.windPen).toBe(5);
+    expect(r.rainPen).toBe(2);
+    expect(r.gustPen).toBe(0);
+    expect(r.points).toBe(1);
+  });
+});
+
 describe("scoring: shelter bonus", () => {
   it("gives little/no bonus in calm wind even with high shelter", () => {
     const r = scoreSiteDay({

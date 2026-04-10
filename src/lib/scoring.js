@@ -181,6 +181,12 @@ function clamp(n, lo, hi) {
   return Math.max(lo, Math.min(hi, n));
 }
 
+// Rounds to 1 decimal — matches formatNumber() display precision.
+// Used in scoreSiteDay to ensure the engine evaluates exactly what the UI shows.
+function round1(v) {
+  return typeof v === "number" && Number.isFinite(v) ? Math.round(v * 10) / 10 : v;
+}
+
 function normalizeShelter(shelter) {
   if (typeof shelter !== "number" || !Number.isFinite(shelter)) return 0;
   // assume 0..10
@@ -227,21 +233,28 @@ function getPrecipTimingMultiplier({ rain }) {
 }
 
 export function scoreSiteDay({ tmax, rain, windMax, windGust, date, shelter }) {
+  // Align engine precision with the 1-decimal UI display (formatNumber).
+  // Prevents contradictory scores when two sites render identically in the UI.
+  const _tmax = round1(tmax);
+  const _rain = round1(rain);
+  const _windMax = round1(windMax);
+  const _windGust = round1(windGust);
+
   const season = getSeasonForDate(date);
   const cfg = getSeasonConfig(season);
 
-  const baseRaw = basePointsFromTemp(tmax);
+  const baseRaw = basePointsFromTemp(_tmax);
 
   // Keep deterministic ints, but allow winter floor for "nice winter conditions"
   const baseScaled = Math.round(baseRaw * cfg.tempWeight);
   const basePts = Math.max(cfg.baseFloor, Math.min(10, Math.max(0, baseScaled)));
 
-  const windPenRaw = windPenaltyPoints(windMax);
-  const rainPenBase = rainPenaltyPoints(rain);
-  const gustPenRaw = gustPenaltyPoints(windGust, windMax, season);
+  const windPenRaw = windPenaltyPoints(_windMax);
+  const rainPenBase = rainPenaltyPoints(_rain);
+  const gustPenRaw = gustPenaltyPoints(_windGust, _windMax, season);
 
   const precipTimingMultiplier = getPrecipTimingMultiplier({
-    rain,
+    rain: _rain,
   });
 
   const windPen = Math.round(windPenRaw * cfg.windWeight);
@@ -249,7 +262,7 @@ export function scoreSiteDay({ tmax, rain, windMax, windGust, date, shelter }) {
   const gustPen = gustPenRaw; // already weighted in function
 
   // NOTE: shelter + rainStreak are part of the contract but are applied elsewhere for now.
-  const shelterBonus = computeShelterBonus({ shelter, windMax, windGust, season });
+  const shelterBonus = computeShelterBonus({ shelter, windMax: _windMax, windGust: _windGust, season });
   const rainStreakPen = 0;
 
   // ✅ RAW points (can go negative). This is what we compare across campsites.
