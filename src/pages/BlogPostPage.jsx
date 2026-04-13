@@ -92,14 +92,17 @@ export default function BlogPostPage({ t, lang, theme }) {
   const [post, setPost] = useState(null);
   const [loading, setLoading] = useState(true);
   const [loadError, setLoadError] = useState("");
-  useEffect(() => {
-  if (post?.slug) {
-    window.plausible?.("Blog Post View", {
-      props: { slug: post.slug },
-    });
-  }
-}, [post?.slug]);
   const isLight = theme === "light";
+
+  useEffect(() => {
+  if (!post?.slug) return;
+
+  console.log("Blog Post View tracked:", post.slug);
+
+  window.plausible?.("Blog Post View", {
+    props: { slug: post.slug },
+  });
+}, [post]);
 
   useEffect(() => {
     let cancelled = false;
