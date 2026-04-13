@@ -1,5 +1,4 @@
 import { Link } from "react-router-dom";
-import { track } from "@vercel/analytics";
 
 function translateOrFallback(t, key, fallback) {
   const value = t?.(key);
@@ -29,7 +28,11 @@ export default function BlogPostCta({ t, isLight, to = "/", slug }) {
       <div className="mt-4">
         <Link
           to={to}
-          onClick={() => track("blog_post_bottom_cta_click", { slug })}
+          onClick={() => {
+            window.plausible?.("Blog CTA Click", {
+              props: { slug: slug || "unknown" },
+            });
+          }}
           className={`inline-flex items-center rounded-full px-5 py-2.5 text-sm font-medium transition hover:opacity-90 ${
             isLight ? "bg-slate-900 text-white" : "bg-white text-slate-950"
           }`}
