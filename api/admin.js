@@ -564,7 +564,7 @@ async function handleGenerateDraft(req, res) {
       });
     }
 
-    const { type, lang = "en", context = {} } = req.body || {};
+    const { type, lang = "en", context = {}, coverImage = "" } = req.body || {};
 
     const forecastData = normalizeForecastRawInput(context?.forecastRawInput);
 
@@ -636,6 +636,7 @@ async function handleGenerateDraft(req, res) {
         content,
         meta_title,
         meta_description,
+        cover_image,
         status
       )
       values (
@@ -645,6 +646,7 @@ async function handleGenerateDraft(req, res) {
         ${draft.content || ""},
         ${draft.metaTitle || draft.title || ""},
         ${draft.metaDescription || ""},
+        ${coverImage || null},
         'draft'
       )
       returning

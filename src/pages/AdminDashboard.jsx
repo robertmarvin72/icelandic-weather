@@ -123,6 +123,7 @@ function GenerateDraftCard({ onGenerated }) {
     compareCampsite: "",
     region: "",
     forecastRawInput: "",
+    coverImage: "",
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -153,6 +154,7 @@ function GenerateDraftCard({ onGenerated }) {
           action: "generateDraft",
           type: form.type,
           lang: form.lang,
+          coverImage: form.coverImage.trim(),
           context: {
             baseCampsite: form.baseCampsite.trim(),
             compareCampsite: isComparison ? form.compareCampsite.trim() : "",
@@ -176,6 +178,7 @@ function GenerateDraftCard({ onGenerated }) {
         compareCampsite: "",
         region: "",
         forecastRawInput: "",
+        coverImage: "",
       }));
 
       if (typeof onGenerated === "function") {
@@ -270,6 +273,16 @@ function GenerateDraftCard({ onGenerated }) {
             value={form.region}
             onChange={(e) => setForm((prev) => ({ ...prev, region: e.target.value }))}
             placeholder="e.g. South Iceland"
+          />
+        </div>
+
+        <div className="md:col-span-2">
+          <FieldLabel>Cover image URL</FieldLabel>
+          <TextInput
+            value={form.coverImage}
+            onChange={(e) => setForm((prev) => ({ ...prev, coverImage: e.target.value }))}
+            placeholder="https://..."
+            type="url"
           />
         </div>
 
