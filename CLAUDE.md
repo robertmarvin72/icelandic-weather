@@ -203,6 +203,17 @@ Deployment is via Vercel Git integration — push to `main` deploys automaticall
 
 ---
 
+## Project Rules
+
+- This project uses .jsx not .tsx — never create .tsx files
+- Never use TypeScript type annotations in any file
+- Never use explicit file extensions in imports
+- Routes must be registered in AppRoutes.jsx when adding a new page
+- Keep everything client-side, no backend, no new libraries
+- Follow existing file and component patterns before introducing anything new
+
+---
+
 ## Constraints
 
 Git workflow:

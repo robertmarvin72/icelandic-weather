@@ -17,6 +17,7 @@ import { useToast } from "./hooks/useToast";
 import Landing from "./pages/Landing";
 import BlogIndex from "./pages/BlogIndex";
 import BlogPostPage from "./pages/BlogPostPage";
+import Brochure from "./pages/Brochure";
 
 function PricingRoute() {
   const pageProps = usePageRouteProps();
@@ -113,6 +114,7 @@ export default function AppRoutes({ HomeComponent }) {
       <Route path="/iceland-camping-weather" element={<LandingRoute />} />
       <Route path="/blog" element={<BlogRoute />} />
       <Route path="/blog/:slug" element={<BlogPostRoute />} />
+      <Route path="/brochure" element={<Brochure />} />
       <Route path="*" element={<NotFound />} />
     </Routes>
   );
