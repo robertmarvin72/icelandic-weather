@@ -99,6 +99,7 @@ export default function RoutePlannerCard({
   wetThresholdMmDefault = 3, // eslint-disable-line no-unused-vars
   limitDefault = 30,
   onSummaryChange,
+  onSelectSite,
 }) {
   const routeFeature = isFeatureAvailable("bestRoutePlanner", entitlements);
   const isPro = !!routeFeature?.available;
@@ -1055,7 +1056,17 @@ export default function RoutePlannerCard({
                     <li key={x.siteId}>
                       <div className="font-semibold flex items-center gap-2 flex-wrap">
                         <span className="inline-flex items-center gap-1.5">
-                          <span>{x.siteName ?? x.siteId}</span>
+                          {typeof onSelectSite === "function" ? (
+                            <button
+                              type="button"
+                              onClick={() => onSelectSite(x.siteId)}
+                              className="hover:underline cursor-pointer focus:outline-none focus:underline"
+                            >
+                              {x.siteName ?? x.siteId}
+                            </button>
+                          ) : (
+                            <span>{x.siteName ?? x.siteId}</span>
+                          )}
 
                           {x === best && routeRiskData?.routeRisk === "HIGH" && (
                             <span

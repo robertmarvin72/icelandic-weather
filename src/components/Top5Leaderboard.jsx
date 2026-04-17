@@ -421,6 +421,7 @@ export default function Top5Leaderboard({
           windowDaysDefault={3}
           wetThresholdMmDefault={3}
           onSummaryChange={onRoutePlannerSummaryChange}
+          onSelectSite={onSelectSite}
         />
       </div>
     </div>
