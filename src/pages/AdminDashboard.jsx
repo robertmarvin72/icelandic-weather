@@ -324,6 +324,7 @@ function BlogEditorCard({ post, onSave, onPublish, onDelete, saving, publishing 
   const [draft, setDraft] = useState({
     title: post.title || "",
     excerpt: post.excerpt || "",
+    coverImage: post.coverImage || "",
     content: post.content || "",
   });
 
@@ -331,14 +332,16 @@ function BlogEditorCard({ post, onSave, onPublish, onDelete, saving, publishing 
     setDraft({
       title: post.title || "",
       excerpt: post.excerpt || "",
+      coverImage: post.coverImage || "",
       content: post.content || "",
     });
-  }, [post.id, post.title, post.excerpt, post.content]);
+  }, [post.id, post.title, post.excerpt, post.coverImage, post.content]);
 
   const dirty = useMemo(() => {
     return (
       draft.title !== (post.title || "") ||
       draft.excerpt !== (post.excerpt || "") ||
+      draft.coverImage !== (post.coverImage || "") ||
       draft.content !== (post.content || "")
     );
   }, [draft, post]);
@@ -423,6 +426,16 @@ function BlogEditorCard({ post, onSave, onPublish, onDelete, saving, publishing 
             value={draft.excerpt}
             onChange={(e) => setDraft((prev) => ({ ...prev, excerpt: e.target.value }))}
             rows={3}
+          />
+        </div>
+
+        <div>
+          <FieldLabel>Cover image URL</FieldLabel>
+          <TextInput
+            value={draft.coverImage}
+            onChange={(e) => setDraft((prev) => ({ ...prev, coverImage: e.target.value }))}
+            placeholder="https://..."
+            type="url"
           />
         </div>
 
