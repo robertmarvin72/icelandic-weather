@@ -318,13 +318,16 @@ function GenerateDraftCard({ onGenerated }) {
   );
 }
 
-function BlogEditorCard({ post, onSave, onPublish, onDelete, saving, publishing }) {
+function BlogEditorCard({ post, onSave, onPublish, onDelete, onCancel, saving, publishing }) {
   const { lang } = useLanguage();
   const t = useT(lang);
   const [draft, setDraft] = useState({
     title: post.title || "",
     excerpt: post.excerpt || "",
     coverImage: post.coverImage || "",
+    metaTitle: post.metaTitle || "",
+    metaDescription: post.metaDescription || "",
+    ctaHint: post.ctaHint || "",
     content: post.content || "",
   });
 
@@ -333,15 +336,21 @@ function BlogEditorCard({ post, onSave, onPublish, onDelete, saving, publishing 
       title: post.title || "",
       excerpt: post.excerpt || "",
       coverImage: post.coverImage || "",
+      metaTitle: post.metaTitle || "",
+      metaDescription: post.metaDescription || "",
+      ctaHint: post.ctaHint || "",
       content: post.content || "",
     });
-  }, [post.id, post.title, post.excerpt, post.coverImage, post.content]);
+  }, [post.id, post.title, post.excerpt, post.coverImage, post.metaTitle, post.metaDescription, post.ctaHint, post.content]);
 
   const dirty = useMemo(() => {
     return (
       draft.title !== (post.title || "") ||
       draft.excerpt !== (post.excerpt || "") ||
       draft.coverImage !== (post.coverImage || "") ||
+      draft.metaTitle !== (post.metaTitle || "") ||
+      draft.metaDescription !== (post.metaDescription || "") ||
+      draft.ctaHint !== (post.ctaHint || "") ||
       draft.content !== (post.content || "")
     );
   }, [draft, post]);
@@ -373,7 +382,7 @@ function BlogEditorCard({ post, onSave, onPublish, onDelete, saving, publishing 
           </div>
         </div>
 
-        <div className="flex gap-2">
+        <div className="flex flex-wrap gap-2">
           {post.status === "draft" && (
             <a
               href={`/blog/${post.slug}?preview=draft`}
@@ -384,13 +393,34 @@ function BlogEditorCard({ post, onSave, onPublish, onDelete, saving, publishing 
               {t("blogPreviewButton")}
             </a>
           )}
-          <button
-            type="button"
-            onClick={() => onDelete(post.id)}
-            className="rounded-xl border border-rose-300 bg-rose-50 px-4 py-2 text-sm font-medium text-rose-700 hover:bg-rose-100 dark:border-rose-900/60 dark:bg-rose-950/30 dark:text-rose-300 dark:hover:bg-rose-950/40"
-          >
-            Delete
-          </button>
+          {post.status === "published" && (
+            <a
+              href={`/blog/${post.slug}`}
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center rounded-xl border border-slate-300 px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800"
+            >
+              Open post
+            </a>
+          )}
+          {onCancel && (
+            <button
+              type="button"
+              onClick={onCancel}
+              className="rounded-xl border border-slate-300 px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800"
+            >
+              Cancel
+            </button>
+          )}
+          {onDelete && (
+            <button
+              type="button"
+              onClick={() => onDelete(post.id)}
+              className="rounded-xl border border-rose-300 bg-rose-50 px-4 py-2 text-sm font-medium text-rose-700 hover:bg-rose-100 dark:border-rose-900/60 dark:bg-rose-950/30 dark:text-rose-300 dark:hover:bg-rose-950/40"
+            >
+              Delete
+            </button>
+          )}
           <button
             type="button"
             disabled={!dirty || saving}
@@ -399,15 +429,16 @@ function BlogEditorCard({ post, onSave, onPublish, onDelete, saving, publishing 
           >
             {saving ? "Saving..." : "Save changes"}
           </button>
-
-          <button
-            type="button"
-            disabled={publishing}
-            onClick={() => onPublish(post.id)}
-            className="rounded-xl border border-emerald-300 bg-emerald-50 px-4 py-2 text-sm font-medium text-emerald-800 disabled:cursor-not-allowed disabled:opacity-50 dark:border-emerald-900/60 dark:bg-emerald-950/40 dark:text-emerald-300"
-          >
-            {publishing ? "Publishing..." : "Publish"}
-          </button>
+          {onPublish && (
+            <button
+              type="button"
+              disabled={publishing}
+              onClick={() => onPublish(post.id)}
+              className="rounded-xl border border-emerald-300 bg-emerald-50 px-4 py-2 text-sm font-medium text-emerald-800 disabled:cursor-not-allowed disabled:opacity-50 dark:border-emerald-900/60 dark:bg-emerald-950/40 dark:text-emerald-300"
+            >
+              {publishing ? "Publishing..." : "Publish"}
+            </button>
+          )}
         </div>
       </div>
 
@@ -440,6 +471,34 @@ function BlogEditorCard({ post, onSave, onPublish, onDelete, saving, publishing 
         </div>
 
         <div>
+          <FieldLabel>Meta title</FieldLabel>
+          <TextInput
+            value={draft.metaTitle}
+            onChange={(e) => setDraft((prev) => ({ ...prev, metaTitle: e.target.value }))}
+            placeholder="SEO title (defaults to post title if blank)"
+          />
+        </div>
+
+        <div>
+          <FieldLabel>Meta description</FieldLabel>
+          <TextArea
+            value={draft.metaDescription}
+            onChange={(e) => setDraft((prev) => ({ ...prev, metaDescription: e.target.value }))}
+            rows={2}
+            placeholder="SEO description"
+          />
+        </div>
+
+        <div>
+          <FieldLabel>CTA hint</FieldLabel>
+          <TextInput
+            value={draft.ctaHint}
+            onChange={(e) => setDraft((prev) => ({ ...prev, ctaHint: e.target.value }))}
+            placeholder="e.g. Check the forecast"
+          />
+        </div>
+
+        <div>
           <FieldLabel>Content</FieldLabel>
           <TextArea
             value={draft.content}
@@ -452,7 +511,7 @@ function BlogEditorCard({ post, onSave, onPublish, onDelete, saving, publishing 
   );
 }
 
-function PublishedPostRow({ post }) {
+function PublishedPostRow({ post, onEdit }) {
   return (
     <div className="rounded-2xl border border-slate-200/70 bg-white/80 p-4 shadow-sm dark:border-slate-800/80 dark:bg-slate-900/80">
       <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
@@ -480,6 +539,13 @@ function PublishedPostRow({ post }) {
         </div>
 
         <div className="flex shrink-0 gap-2">
+          <button
+            type="button"
+            onClick={() => onEdit(post.id)}
+            className="rounded-xl border border-slate-300 px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800"
+          >
+            Edit
+          </button>
           <Link
             to={`/blog/${post.slug}`}
             target="_blank"
@@ -567,6 +633,8 @@ export default function AdminDashboard() {
     pro: { active: 0, expired: 0, conversionRate: 0 },
     revenue: { month: 0, last30d: 0, lifetime: 0 },
   };
+
+  const [editingPublishedId, setEditingPublishedId] = useState(null);
 
   const draftPosts = posts.filter((post) => post.status !== "published");
   const publishedPosts = posts.filter((post) => post.status === "published");
@@ -706,9 +774,23 @@ export default function AdminDashboard() {
             </div>
           ) : (
             <div className="grid gap-4">
-              {publishedPosts.map((post) => (
-                <PublishedPostRow key={post.id} post={post} />
-              ))}
+              {publishedPosts.map((post) =>
+                editingPublishedId === post.id ? (
+                  <BlogEditorCard
+                    key={post.id}
+                    post={post}
+                    saving={savingId === post.id}
+                    onSave={updatePost}
+                    onCancel={() => setEditingPublishedId(null)}
+                  />
+                ) : (
+                  <PublishedPostRow
+                    key={post.id}
+                    post={post}
+                    onEdit={(id) => setEditingPublishedId(id)}
+                  />
+                )
+              )}
             </div>
           )}
         </section>
