@@ -33,20 +33,39 @@ function getSeasonConfig(season) {
 
 // ── Scoring model ----------------------------------------------------------
 
-export function basePointsFromTemp(tmax) {
+export function basePointsFromTemp(tmax, season = "summer") {
   const t = tmax ?? -999;
-  if (t > 14) return 10;
+  if (season === "winter") {
+    if (t > 14) return 10;
+    if (t >= 12) return 8;
+    if (t >= 8) return 5;
+    if (t >= 6) return 2;
+    return 0;
+  }
+  // Summer: more granular — cold but dry days still earn points
+  if (t >= 15) return 10;
   if (t >= 12) return 8;
-  if (t >= 8) return 5;
-  if (t >= 6) return 2;
+  if (t >= 9) return 6;
+  if (t >= 7) return 4;
+  if (t >= 5) return 3;
+  if (t >= 3) return 2;
+  if (t >= 0) return 1;
   return 0;
 }
 
-export function windPenaltyPoints(w) {
+export function windPenaltyPoints(w, season = "summer") {
   const v = w ?? 0;
-  if (v <= 5) return 0;
-  if (v <= 10) return 2;
-  if (v <= 15) return 5;
+  if (season === "winter") {
+    if (v <= 5) return 0;
+    if (v <= 10) return 2;
+    if (v <= 15) return 5;
+    return 10;
+  }
+  // Summer: moderate wind is normal in Iceland — less aggressive penalties
+  if (v <= 7) return 0;
+  if (v <= 10) return 1;
+  if (v <= 13) return 3;
+  if (v <= 16) return 6;
   return 10;
 }
 
@@ -243,13 +262,13 @@ export function scoreSiteDay({ tmax, rain, windMax, windGust, date, shelter }) {
   const season = getSeasonForDate(date);
   const cfg = getSeasonConfig(season);
 
-  const baseRaw = basePointsFromTemp(_tmax);
+  const baseRaw = basePointsFromTemp(_tmax, season);
 
   // Keep deterministic ints, but allow winter floor for "nice winter conditions"
   const baseScaled = Math.round(baseRaw * cfg.tempWeight);
   const basePts = Math.max(cfg.baseFloor, Math.min(10, Math.max(0, baseScaled)));
 
-  const windPenRaw = windPenaltyPoints(_windMax);
+  const windPenRaw = windPenaltyPoints(_windMax, season);
   const rainPenBase = rainPenaltyPoints(_rain);
   const gustPenRaw = gustPenaltyPoints(_windGust, _windMax, season);
 

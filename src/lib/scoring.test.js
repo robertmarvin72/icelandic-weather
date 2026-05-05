@@ -17,51 +17,120 @@ import {
   formatNumber,
 } from "./scoring";
 
-describe("scoring: basePointsFromTemp()", () => {
-  it("returns 10 when tmax > 14", () => {
+describe("scoring: basePointsFromTemp() — summer (default)", () => {
+  it("returns 10 for >= 15", () => {
     expect(basePointsFromTemp(15)).toBe(10);
+    expect(basePointsFromTemp(20)).toBe(10);
   });
 
-  it("returns 8 for 12–14 inclusive", () => {
+  it("returns 8 for 12–14.999", () => {
     expect(basePointsFromTemp(12)).toBe(8);
     expect(basePointsFromTemp(14)).toBe(8);
   });
 
-  it("returns 5 for 8–11.999", () => {
-    expect(basePointsFromTemp(8)).toBe(5);
-    expect(basePointsFromTemp(11.9)).toBe(5);
+  it("returns 6 for 9–11.999", () => {
+    expect(basePointsFromTemp(9)).toBe(6);
+    expect(basePointsFromTemp(11.9)).toBe(6);
   });
 
-  it("returns 2 for 6–7.999", () => {
-    expect(basePointsFromTemp(6)).toBe(2);
-    expect(basePointsFromTemp(7.9)).toBe(2);
+  it("returns 4 for 7–8.999", () => {
+    expect(basePointsFromTemp(7)).toBe(4);
+    expect(basePointsFromTemp(8)).toBe(4);
   });
 
-  it("returns 0 below 6", () => {
-    expect(basePointsFromTemp(5.9)).toBe(0);
+  it("returns 3 for 5–6.999", () => {
+    expect(basePointsFromTemp(5)).toBe(3);
+    expect(basePointsFromTemp(6)).toBe(3);
+  });
+
+  it("returns 2 for 3–4.999", () => {
+    expect(basePointsFromTemp(3)).toBe(2);
+    expect(basePointsFromTemp(4.9)).toBe(2);
+  });
+
+  it("returns 1 for 0–2.999", () => {
+    expect(basePointsFromTemp(0)).toBe(1);
+    expect(basePointsFromTemp(2.9)).toBe(1);
+  });
+
+  it("returns 0 below 0", () => {
+    expect(basePointsFromTemp(-1)).toBe(0);
     expect(basePointsFromTemp(null)).toBe(0);
   });
 });
 
-describe("scoring: windPenaltyPoints()", () => {
-  it("returns 0 for <= 5", () => {
+describe("scoring: basePointsFromTemp() — winter", () => {
+  it("returns 10 for > 14", () => {
+    expect(basePointsFromTemp(15, "winter")).toBe(10);
+  });
+
+  it("returns 8 for 12–14", () => {
+    expect(basePointsFromTemp(12, "winter")).toBe(8);
+    expect(basePointsFromTemp(14, "winter")).toBe(8);
+  });
+
+  it("returns 5 for 8–11.999", () => {
+    expect(basePointsFromTemp(8, "winter")).toBe(5);
+    expect(basePointsFromTemp(11.9, "winter")).toBe(5);
+  });
+
+  it("returns 2 for 6–7.999", () => {
+    expect(basePointsFromTemp(6, "winter")).toBe(2);
+    expect(basePointsFromTemp(7.9, "winter")).toBe(2);
+  });
+
+  it("returns 0 below 6", () => {
+    expect(basePointsFromTemp(5.9, "winter")).toBe(0);
+    expect(basePointsFromTemp(null, "winter")).toBe(0);
+  });
+});
+
+describe("scoring: windPenaltyPoints() — summer (default)", () => {
+  it("returns 0 for <= 7", () => {
     expect(windPenaltyPoints(0)).toBe(0);
-    expect(windPenaltyPoints(5)).toBe(0);
+    expect(windPenaltyPoints(7)).toBe(0);
     expect(windPenaltyPoints(null)).toBe(0);
   });
 
-  it("returns 2 for 5.0001–10", () => {
-    expect(windPenaltyPoints(6)).toBe(2);
-    expect(windPenaltyPoints(10)).toBe(2);
+  it("returns 1 for 7.001–10", () => {
+    expect(windPenaltyPoints(8)).toBe(1);
+    expect(windPenaltyPoints(10)).toBe(1);
   });
 
-  it("returns 5 for 10.0001–15", () => {
-    expect(windPenaltyPoints(11)).toBe(5);
-    expect(windPenaltyPoints(15)).toBe(5);
+  it("returns 3 for 10.001–13", () => {
+    expect(windPenaltyPoints(11)).toBe(3);
+    expect(windPenaltyPoints(13)).toBe(3);
+  });
+
+  it("returns 6 for 13.001–16", () => {
+    expect(windPenaltyPoints(14)).toBe(6);
+    expect(windPenaltyPoints(16)).toBe(6);
+  });
+
+  it("returns 10 for > 16", () => {
+    expect(windPenaltyPoints(17)).toBe(10);
+  });
+});
+
+describe("scoring: windPenaltyPoints() — winter", () => {
+  it("returns 0 for <= 5", () => {
+    expect(windPenaltyPoints(0, "winter")).toBe(0);
+    expect(windPenaltyPoints(5, "winter")).toBe(0);
+    expect(windPenaltyPoints(null, "winter")).toBe(0);
+  });
+
+  it("returns 2 for 5.001–10", () => {
+    expect(windPenaltyPoints(6, "winter")).toBe(2);
+    expect(windPenaltyPoints(10, "winter")).toBe(2);
+  });
+
+  it("returns 5 for 10.001–15", () => {
+    expect(windPenaltyPoints(11, "winter")).toBe(5);
+    expect(windPenaltyPoints(15, "winter")).toBe(5);
   });
 
   it("returns 10 for > 15", () => {
-    expect(windPenaltyPoints(16)).toBe(10);
+    expect(windPenaltyPoints(16, "winter")).toBe(10);
   });
 });
 
@@ -113,13 +182,13 @@ describe("scoring: scoreDay()", () => {
     // wind=11 => pen 5
     // rain=1.2 => pen 2
     // gust=0 => pen 0
-    // => 1 point => Fair
+    // => 3 points => Fair
     const r = scoreDay({ tmax: 12, windMax: 11, windGust: 0, rain: 1.2 });
     expect(r.basePts).toBe(8);
-    expect(r.windPen).toBe(5);
+    expect(r.windPen).toBe(3);
     expect(r.rainPen).toBe(2);
     expect(r.gustPen).toBe(0);
-    expect(r.points).toBe(1);
+    expect(r.points).toBe(3);
     expect(r.finalClass).toBe("Fair");
   });
 });
@@ -314,10 +383,10 @@ describe("scoring: scoreSiteDay() precision alignment (round1)", () => {
   it("clean 1-decimal inputs are unaffected (no regression)", () => {
     const r = scoreSiteDay({ tmax: 12, windMax: 11, windGust: 0, rain: 1.2, date: "2026-07-01" });
     expect(r.basePts).toBe(8);
-    expect(r.windPen).toBe(5);
+    expect(r.windPen).toBe(3);
     expect(r.rainPen).toBe(2);
     expect(r.gustPen).toBe(0);
-    expect(r.points).toBe(1);
+    expect(r.points).toBe(3);
   });
 });
 
