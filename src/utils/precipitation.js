@@ -1,3 +1,19 @@
+function resolvePrecipLabel({ tmin, tmax, rain, baseLabel }) {
+  const min = typeof tmin === "number" ? tmin : 0;
+  const max = typeof tmax === "number" ? tmax : 0;
+  const r = typeof rain === "number" ? rain : 0;
+  if (r <= 0) return baseLabel;
+  if (max <= 4 && min <= 1) {
+    return "Él";
+  }
+  if (max > 4) {
+    if (r >= 2) return "Rigning með köflum";
+    if (r >= 0.5) return "Skúrir";
+    return "Smávægileg úrkoma";
+  }
+  return baseLabel;
+}
+
 export function getPrecipitationLabel(type, mm, t, opts = {}) {
   if (mm == null || mm <= 0) return null;
 
@@ -13,44 +29,50 @@ export function getPrecipitationLabel(type, mm, t, opts = {}) {
 
   const isMixedPrecip = hasValidTemps && mm >= 5 && tmin <= 1 && tmax >= 3;
 
+  let baseLabel;
+
   // 1) Mixed precipitation first
   if (isMixedPrecip) {
-    return t("precipMixed");
+    baseLabel = t("precipMixed");
   }
 
   // 2) Very light / short-lived precipitation
-  if (mm < 1 || (precipDurationHours > 0 && precipDurationHours <= 2)) {
-    return t("precipLight");
+  else if (mm < 1 || (precipDurationHours > 0 && precipDurationHours <= 2)) {
+    baseLabel = t("precipLight");
   }
 
   // 3) Showery conditions (él)
-  if (precipDurationHours >= 2) {
-    // Rain showers
+  else if (precipDurationHours >= 2) {
     if (mm < 3) {
-      return t("precipShowers");
-    }
-
-    // Snow showers (él can still have a bit more accumulation)
-    if (isSnow && mm <= 5) {
-      return t("precipShowers");
+      baseLabel = t("precipShowers");
+    } else if (isSnow && mm <= 5) {
+      baseLabel = t("precipShowers");
+    } else {
+      baseLabel = null;
     }
   }
 
   // 4) Late precipitation
-  if (precipStartHour != null && precipStartHour >= 18 && mm < 10) {
-    return isSnow ? t("precipLateSnow") : t("precipLateRain");
+  else if (precipStartHour != null && precipStartHour >= 18 && mm < 10) {
+    baseLabel = isSnow ? t("precipLateSnow") : t("precipLateRain");
   }
 
   // 5) Normal intensity-based labels
-  if (isSnow) {
-    if (mm <= 1) return t("precipLightSnow");
-    if (mm <= 5) return t("precipModerateSnow");
-    if (mm <= 15) return t("precipHeavySnow");
-    return t("precipVeryHeavySnow") || t("precipHeavySnow");
+  else if (isSnow) {
+    if (mm <= 1) baseLabel = t("precipLightSnow");
+    else if (mm <= 5) baseLabel = t("precipModerateSnow");
+    else if (mm <= 15) baseLabel = t("precipHeavySnow");
+    else baseLabel = t("precipVeryHeavySnow") || t("precipHeavySnow");
   }
 
-  if (mm <= 1) return t("precipLightRain");
-  if (mm <= 10) return t("precipModerateRain");
-  if (mm <= 25) return t("precipHeavyRain");
-  return t("precipVeryHeavyRain") || t("precipHeavyRain");
+  else {
+    if (mm <= 1) baseLabel = t("precipLightRain");
+    else if (mm <= 10) baseLabel = t("precipModerateRain");
+    else if (mm <= 25) baseLabel = t("precipHeavyRain");
+    else baseLabel = t("precipVeryHeavyRain") || t("precipHeavyRain");
+  }
+
+  if (baseLabel == null) return null;
+
+  return resolvePrecipLabel({ tmin, tmax, rain: mm, baseLabel });
 }
