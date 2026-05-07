@@ -6,10 +6,10 @@ export const landingTranslations = {
     landingNavScreenshots: "Screenshots",
     landingOpenCampcast: "Check weather now",
 
-    landingEyebrow: "Built for campers and van travel in Iceland",
-    landingHeroTitle: "Avoid bad weather. Find a better campsite nearby.",
+    landingEyebrow: "Built for Iceland camping, caravans, campervans, and tents.",
+    landingHeroTitle: "Avoid the worst camping weather in Iceland",
     landingHeroSubtitle:
-      "Don’t get stuck in wind and rain. Compare nearby campsites and see if better conditions are just a short drive away.",
+      "Compare nearby campsites, check wind and rain risks, and see when moving could give you better conditions.",
     landingPrimaryCta: "Find better weather nearby",
     landingSecondaryCta: "See how it works",
 
@@ -152,10 +152,11 @@ export const landingTranslations = {
     landingNavScreenshots: "Skjáskot",
     landingOpenCampcast: "Opna CampCast",
 
-    landingEyebrow: "Gert fyrir fólk á ferð með tjald og húsbíla á Íslandi",
-    landingHeroTitle: "Finndu betra veður áður en það versnar",
-    landingHeroSubtitle: "Sjáðu hvar veðrið er betra og hvort þú ættir að færa þig.",
-    landingPrimaryCta: "Finndu betri stað núna",
+    landingEyebrow: "Hannað fyrir tjaldsvæði, húsbíla, hjólhýsi og tjöld á Íslandi.",
+    landingHeroTitle: "Forðastu versta tjaldveðrið á Íslandi",
+    landingHeroSubtitle:
+      "Berðu saman nálæg tjaldsvæði, skoðaðu vind og rigningu og sjáðu hvenær betra veður gæti verið í nágrenninu.",
+    landingPrimaryCta: "Finna betra veður í nágrenninu",
     landingSecondaryCta: "Hvernig þetta virkar",
 
     landingStat1Label: "Fyrir camper / hjólhýsi",

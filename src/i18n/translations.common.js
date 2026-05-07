@@ -2,6 +2,8 @@ export const commonTranslations = {
   en: {
     appTitle: "Iceland Camping",
     sevenDayWeather: "7-Day Weather Nearby",
+    heroStayMoveTitle: "Know when to stay or move",
+    heroStayMoveSubtitle: "Compare nearby campsite forecasts and see where conditions look better over the next few days.",
     myLocation: "My location",
     dark: "Dark",
     light: "Light",
@@ -376,6 +378,8 @@ export const commonTranslations = {
   is: {
     appTitle: "Tjaldsvæði á Íslandi",
     sevenDayWeather: "7 daga veður í nágrenni",
+    heroStayMoveTitle: "Vita hvenær á að vera kyrr eða færa sig",
+    heroStayMoveSubtitle: "Berðu saman spár fyrir nálæg tjaldsvæði og sjáðu hvar aðstæður líta betur út næstu daga.",
     myLocation: "Staðsetning mín",
     dark: "Dökkt",
     light: "Ljóst",
