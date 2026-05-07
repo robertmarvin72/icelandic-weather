@@ -76,6 +76,54 @@ export function rainPenaltyPoints(mm) {
   return 5; // >=4mm
 }
 
+// ── Comfort / pleasantness layer ------------------------------------------
+
+export function getColdWindPenalty(tmax, windMax) {
+  const t = typeof tmax === 'number' ? tmax : 10;
+  const w = typeof windMax === 'number' ? windMax : 0;
+  if (t > 8 || w < 5) return 0;
+  if (t <= 0) {
+    if (w >= 10) return 3;
+    if (w >= 7) return 2;
+    return 1;
+  }
+  if (t <= 4) {
+    if (w >= 10) return 2;
+    if (w >= 8) return 1;
+    return 0;
+  }
+  // t: 5–8
+  if (w >= 12) return 1;
+  return 0;
+}
+
+export function getSkyComfortModifier(weatherCode) {
+  if (weatherCode == null) return 0;
+  const c = weatherCode;
+  if (c === 0 || c === 1) return 1;    // clear / mainly clear
+  if (c === 3) return -1;              // overcast
+  if (c === 45 || c === 48) return -1; // fog
+  return 0;
+}
+
+export function getWintryPrecipPenalty(weatherCode, tmax) {
+  if (weatherCode == null) return 0;
+  const t = typeof tmax === 'number' ? tmax : 10;
+  const c = weatherCode;
+  const isSnow = (c >= 71 && c <= 77) || c === 85 || c === 86;
+  const isFreezingRain = c === 66 || c === 67;
+  if (isSnow) return t <= 2 ? 3 : 2;
+  if (isFreezingRain) return 2;
+  return 0;
+}
+
+export function getPleasantnessModifier({ tmax, windMax, weatherCode }) {
+  const sky = getSkyComfortModifier(weatherCode);
+  const coldWind = getColdWindPenalty(tmax, windMax);
+  const wintry = getWintryPrecipPenalty(weatherCode, tmax);
+  return sky - coldWind - wintry;
+}
+
 // NEW: gust penalty based on “gustiness” = gust - windMax
 export function gustPenaltyPoints(gust, windMax, season = "summer") {
   const g = typeof gust === "number" ? gust : null;
@@ -251,7 +299,7 @@ function getPrecipTimingMultiplier({ rain }) {
   return 1;
 }
 
-export function scoreSiteDay({ tmax, rain, windMax, windGust, date, shelter }) {
+export function scoreSiteDay({ tmax, rain, windMax, windGust, date, shelter, tmin, weatherCode, code }) {
   // Align engine precision with the 1-decimal UI display (formatNumber).
   // Prevents contradictory scores when two sites render identically in the UI.
   const _tmax = round1(tmax);
@@ -284,8 +332,11 @@ export function scoreSiteDay({ tmax, rain, windMax, windGust, date, shelter }) {
   const shelterBonus = computeShelterBonus({ shelter, windMax: _windMax, windGust: _windGust, season });
   const rainStreakPen = 0;
 
+  const _weatherCode = weatherCode ?? code ?? null;
+  const pleasantness = getPleasantnessModifier({ tmax: _tmax, windMax: _windMax, weatherCode: _weatherCode });
+
   // ✅ RAW points (can go negative). This is what we compare across campsites.
-  const pointsRaw = basePts - windPen - rainPen - gustPen - rainStreakPen + shelterBonus;
+  const pointsRaw = basePts - windPen - rainPen - gustPen - rainStreakPen + shelterBonus + pleasantness;
 
   // ✅ UI points (stable 0..10)
   const points = Math.max(0, Math.min(10, pointsRaw));
@@ -302,6 +353,7 @@ export function scoreSiteDay({ tmax, rain, windMax, windGust, date, shelter }) {
       gust: -gustPen,
       rainStreak: -rainStreakPen,
       shelter: shelterBonus,
+      pleasantness,
     },
     flags: {},
 

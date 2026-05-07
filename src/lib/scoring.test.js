@@ -10,6 +10,10 @@ import {
   scoreDaysWithRainStreak,
   gustPenaltyPoints,
   getSeasonForDate,
+  getColdWindPenalty,
+  getSkyComfortModifier,
+  getWintryPrecipPenalty,
+  getPleasantnessModifier,
   convertTemp,
   convertRain,
   convertWind,
@@ -445,5 +449,158 @@ describe("scoring: shelter bonus", () => {
       date: "2026-07-01",
     });
     expect(r.components.shelter).toBe(0);
+  });
+});
+
+describe("scoring: getColdWindPenalty()", () => {
+  it("returns 0 when temp > 8 regardless of wind", () => {
+    expect(getColdWindPenalty(9, 20)).toBe(0);
+  });
+
+  it("returns 0 when wind < 5 regardless of temp", () => {
+    expect(getColdWindPenalty(-5, 4)).toBe(0);
+  });
+
+  it("freezing temp (<=0) with strong wind => 3", () => {
+    expect(getColdWindPenalty(0, 10)).toBe(3);
+    expect(getColdWindPenalty(-3, 12)).toBe(3);
+  });
+
+  it("freezing temp (<=0) with moderate wind (7-9) => 2", () => {
+    expect(getColdWindPenalty(0, 7)).toBe(2);
+  });
+
+  it("freezing temp (<=0) with light wind (5-6) => 1", () => {
+    expect(getColdWindPenalty(0, 5)).toBe(1);
+  });
+
+  it("cold temp (1-4) with wind >= 10 => 2", () => {
+    expect(getColdWindPenalty(2, 10)).toBe(2);
+    expect(getColdWindPenalty(4, 11)).toBe(2);
+  });
+
+  it("cold temp (1-4) with wind 8-9 => 1", () => {
+    expect(getColdWindPenalty(3, 8)).toBe(1);
+  });
+
+  it("cold temp (1-4) with wind 5-7 => 0", () => {
+    expect(getColdWindPenalty(3, 6)).toBe(0);
+  });
+
+  it("cool temp (5-8) with wind >= 12 => 1", () => {
+    expect(getColdWindPenalty(6, 12)).toBe(1);
+  });
+
+  it("cool temp (5-8) with wind < 12 => 0", () => {
+    expect(getColdWindPenalty(6, 11)).toBe(0);
+  });
+});
+
+describe("scoring: getSkyComfortModifier()", () => {
+  it("returns +1 for clear (0) and mainly clear (1)", () => {
+    expect(getSkyComfortModifier(0)).toBe(1);
+    expect(getSkyComfortModifier(1)).toBe(1);
+  });
+
+  it("returns -1 for overcast (3)", () => {
+    expect(getSkyComfortModifier(3)).toBe(-1);
+  });
+
+  it("returns -1 for fog (45, 48)", () => {
+    expect(getSkyComfortModifier(45)).toBe(-1);
+    expect(getSkyComfortModifier(48)).toBe(-1);
+  });
+
+  it("returns 0 for partly cloudy (2) and other codes", () => {
+    expect(getSkyComfortModifier(2)).toBe(0);
+    expect(getSkyComfortModifier(61)).toBe(0);
+  });
+
+  it("returns 0 for null", () => {
+    expect(getSkyComfortModifier(null)).toBe(0);
+  });
+});
+
+describe("scoring: getWintryPrecipPenalty()", () => {
+  it("returns 3 for snow codes when tmax <= 2", () => {
+    expect(getWintryPrecipPenalty(71, 1)).toBe(3);
+    expect(getWintryPrecipPenalty(77, 0)).toBe(3);
+    expect(getWintryPrecipPenalty(85, 2)).toBe(3);
+    expect(getWintryPrecipPenalty(86, -1)).toBe(3);
+  });
+
+  it("returns 2 for snow codes when tmax > 2", () => {
+    expect(getWintryPrecipPenalty(71, 3)).toBe(2);
+    expect(getWintryPrecipPenalty(73, 5)).toBe(2);
+  });
+
+  it("returns 2 for freezing rain (66, 67)", () => {
+    expect(getWintryPrecipPenalty(66, 0)).toBe(2);
+    expect(getWintryPrecipPenalty(67, 1)).toBe(2);
+  });
+
+  it("returns 0 for non-wintry codes", () => {
+    expect(getWintryPrecipPenalty(61, 5)).toBe(0);
+    expect(getWintryPrecipPenalty(0, 0)).toBe(0);
+  });
+
+  it("returns 0 for null", () => {
+    expect(getWintryPrecipPenalty(null, 0)).toBe(0);
+  });
+});
+
+describe("scoring: pleasantness — scoreSiteDay() integration scenarios", () => {
+  it("S1: sunny summer day (code=0) => +1 pleasantness, total clamped at 10", () => {
+    // base=10(>=15), wind=0, rain=0 => raw=10+1=11 => clamped 10
+    const r = scoreSiteDay({ tmax: 18, rain: 0, windMax: 3, windGust: 3, date: "2026-07-15", weatherCode: 0 });
+    expect(r.components.pleasantness).toBe(1);
+    expect(r.total).toBe(10);
+    expect(r.finalClass).toBe("Best");
+  });
+
+  it("S2: overcast mild day (code=3) => -1 pleasantness, Good", () => {
+    // base=8(12), wind=0, rain=0 => raw=8-1=7
+    const r = scoreSiteDay({ tmax: 12, rain: 0, windMax: 5, windGust: 5, date: "2026-07-15", weatherCode: 3 });
+    expect(r.components.pleasantness).toBe(-1);
+    expect(r.total).toBe(7);
+    expect(r.finalClass).toBe("Good");
+  });
+
+  it("S3: cold + windy (code=2) => coldWind penalty, Bad", () => {
+    // base=1(t=2), windPen=3(12m/s summer), pleasantness=0-2-0=-2 => raw=1-3-2=-4 => 0
+    const r = scoreSiteDay({ tmax: 2, rain: 0, windMax: 12, windGust: 12, date: "2026-07-15", weatherCode: 2 });
+    expect(r.components.pleasantness).toBe(-2);
+    expect(r.total).toBe(0);
+    expect(r.finalClass).toBe("Bad");
+  });
+
+  it("S4: snowy winter day (code=71, tmax=1) => wintryPrecip=3, Bad", () => {
+    // winter: basePts=max(4,0)=4, windPen=0(5m/s), rainPen=2, pleasantness=0-0-3=-3 => 4-0-2-3=-1 => 0
+    const r = scoreSiteDay({ tmax: 1, rain: 2, windMax: 5, windGust: 5, date: "2026-01-15", weatherCode: 71 });
+    expect(r.components.pleasantness).toBe(-3);
+    expect(r.total).toBe(0);
+    expect(r.finalClass).toBe("Bad");
+  });
+
+  it("S5: foggy mild day (code=45) => -1 pleasantness, Ok", () => {
+    // base=6(t=10), windPen=0, rainPen=0, pleasantness=-1 => raw=5
+    const r = scoreSiteDay({ tmax: 10, rain: 0, windMax: 4, windGust: 4, date: "2026-07-15", weatherCode: 45 });
+    expect(r.components.pleasantness).toBe(-1);
+    expect(r.total).toBe(5);
+    expect(r.finalClass).toBe("Ok");
+  });
+
+  it("S6: no weatherCode (backward compat) => pleasantness=0, unchanged score", () => {
+    // base=8, windPen=0(6m/s), rainPen=0, pleasantness=0 => raw=8
+    const r = scoreSiteDay({ tmax: 12, rain: 0, windMax: 6, windGust: 6, date: "2026-07-15" });
+    expect(r.components.pleasantness).toBe(0);
+    expect(r.total).toBe(8);
+    expect(r.finalClass).toBe("Good");
+  });
+
+  it("accepts code as alias for weatherCode", () => {
+    const withCode = scoreSiteDay({ tmax: 18, rain: 0, windMax: 3, windGust: 3, date: "2026-07-15", code: 0 });
+    const withWeatherCode = scoreSiteDay({ tmax: 18, rain: 0, windMax: 3, windGust: 3, date: "2026-07-15", weatherCode: 0 });
+    expect(withCode.components.pleasantness).toBe(withWeatherCode.components.pleasantness);
   });
 });
