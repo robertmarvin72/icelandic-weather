@@ -807,6 +807,26 @@ export default function RoutePlannerCard({
                   : t("routeStateStayDescription")}
             </div>
 
+            {decisionLower === "move" && (
+              <ul className="mt-2 pl-4 text-xs grid gap-0.5 list-disc text-slate-700 dark:text-slate-300">
+                <li>{t("routePainMoveBulletAvoidWorst")}</li>
+                <li>{t("routePainMoveBulletStuckInside")}</li>
+                <li>{t("routePainMoveBulletTentCaravan")}</li>
+              </ul>
+            )}
+            {decisionLower === "consider" && (
+              <ul className="mt-2 pl-4 text-xs grid gap-0.5 list-disc text-slate-700 dark:text-slate-300">
+                <li>{t("routePainConsiderBulletCheckNearby")}</li>
+                <li>{t("routePainConsiderBulletLessPleasant")}</li>
+              </ul>
+            )}
+            {decisionLower === "stay" && (
+              <ul className="mt-2 pl-4 text-xs grid gap-0.5 list-disc text-slate-700 dark:text-slate-300">
+                <li>{t("routePainStayBulletNotEnoughGain")}</li>
+                <li>{t("routePainStayBulletNotMissingMuch")}</li>
+              </ul>
+            )}
+
             {trendText && (
               <div className="text-sm text-slate-600 dark:text-slate-300 mt-1">{trendText}</div>
             )}

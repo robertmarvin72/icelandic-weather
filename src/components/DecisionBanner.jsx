@@ -32,6 +32,7 @@ export default function DecisionBanner({ t, rows = [], routePlannerSummary = nul
           t("decisionMoveBodyWindowAware") ||
           "Better weather is likely at {site} over the next few days, even if your current campsite scores best overall this week."
         ).replace("{site}", candidateName),
+        painLine: t("routePainMoveBody"),
       };
     }
 
@@ -45,6 +46,7 @@ export default function DecisionBanner({ t, rows = [], routePlannerSummary = nul
           t("decisionConsiderBodyWindowAware") ||
           "Slightly better conditions may be available at {site} over the next few days."
         ).replace("{site}", candidateName),
+        painLine: t("routePainConsiderBody"),
       };
     }
 
@@ -55,6 +57,7 @@ export default function DecisionBanner({ t, rows = [], routePlannerSummary = nul
         tone: "stay",
         title: t(meta.titleKey),
         body: rough ? t("decisionStayBodyRough") : t("decisionStayBodyGood"),
+        painLine: t("routePainStayBody"),
       };
     }
 
@@ -62,6 +65,7 @@ export default function DecisionBanner({ t, rows = [], routePlannerSummary = nul
       tone: "stay",
       title: t("routeVerdictStayTitle"),
       body: rough ? t("decisionStayBodyRough") : t("decisionStayBodyGood"),
+      painLine: null,
     };
   }, [rows, routePlannerSummary, t]);
 
@@ -90,6 +94,9 @@ export default function DecisionBanner({ t, rows = [], routePlannerSummary = nul
         <div className="min-w-0">
           <div className="text-sm font-semibold">{model.title}</div>
           <div className="mt-1.5 text-sm opacity-90">{model.body}</div>
+          {model.painLine && (
+            <div className="mt-1 text-xs opacity-75">{model.painLine}</div>
+          )}
         </div>
       </div>
     </div>
