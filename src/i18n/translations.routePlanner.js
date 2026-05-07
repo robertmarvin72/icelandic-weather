@@ -234,6 +234,18 @@ export const routePlannerTranslations = {
 
     travelAdvisorTitle: "Better weather nearby",
     travelAdvisorSubtitle: "Check whether conditions at a nearby campsite may be better",
+
+    routeStateMove: "Move",
+    routeStateStay: "Stay",
+    routeStateConsider: "Consider moving",
+    routeStateBetterNearby: "Better weather nearby",
+    routeStateFewerWarningsNearby: "Fewer warnings nearby",
+
+    routeStateMoveDescription: "A nearby campsite looks better for the selected days.",
+    routeStateStayDescription: "This campsite is still one of the better options nearby.",
+    routeStateConsiderDescription: "There may be a better option nearby, but the difference is not huge.",
+    routeStateBetterNearbyDescription: "Nearby conditions look calmer or drier for part of your stay.",
+    routeStateFewerWarningsNearbyDescription: "Nearby campsites show fewer rough weather warnings.",
   },
   is: {
     routeReasonRainStreak: "Minni rigningarruna",
@@ -473,5 +485,17 @@ export const routePlannerTranslations = {
 
     travelAdvisorTitle: "Betra veður í nágrenninu",
     travelAdvisorSubtitle: "Skoðaðu hvort aðstæður séu betri á nærliggjandi tjaldsvæði",
+
+    routeStateMove: "Færa sig",
+    routeStateStay: "Vera áfram",
+    routeStateConsider: "Íhuga að færa sig",
+    routeStateBetterNearby: "Betra veður í nágrenninu",
+    routeStateFewerWarningsNearby: "Færri veðurviðvaranir í nágrenninu",
+
+    routeStateMoveDescription: "Nálægt tjaldsvæði lítur betur út fyrir valda daga.",
+    routeStateStayDescription: "Þetta tjaldsvæði er enn einn betri kosturinn í nágrenninu.",
+    routeStateConsiderDescription: "Það gæti verið betri kostur í nágrenninu, en munurinn er ekki mjög mikill.",
+    routeStateBetterNearbyDescription: "Veðrið í nágrenninu virðist rólegra eða þurrara hluta dvalarinnar.",
+    routeStateFewerWarningsNearbyDescription: "Nálæg tjaldsvæði sýna færri erfiðar veðurviðvaranir.",
   },
 };

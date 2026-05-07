@@ -792,8 +792,20 @@ export default function RoutePlannerCard({
         <div className="grid gap-3">
           {/* Verdict (Decision Tool) */}
           <div className={`rounded-xl border p-4 ${verdictAccentClasses(decisionLower)}`}>
-            <div className="text-base font-bold">{t(meta.titleKey)}</div>
-            <div className="text-sm text-slate-600 dark:text-slate-300 mt-0.5">{t(meta.bodyKey)}</div>
+            <div className="text-xl font-black tracking-tight">
+              {decisionLower === "move"
+                ? t("routeStateMove")
+                : decisionLower === "consider"
+                  ? t("routeStateConsider")
+                  : t("routeStateStay")}
+            </div>
+            <div className="text-sm text-slate-600 dark:text-slate-300 mt-1">
+              {decisionLower === "move"
+                ? t("routeStateMoveDescription")
+                : decisionLower === "consider"
+                  ? t("routeStateConsiderDescription")
+                  : t("routeStateStayDescription")}
+            </div>
 
             {trendText && (
               <div className="text-sm text-slate-600 dark:text-slate-300 mt-1">{trendText}</div>
