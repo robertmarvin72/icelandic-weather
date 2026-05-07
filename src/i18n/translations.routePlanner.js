@@ -225,9 +225,15 @@ export const routePlannerTranslations = {
     decisionConsiderBodyWindowAware:
       "Slightly better conditions may be available at {site} over the next few days.",
 
+    decisionMoveBodyWindowAware:
+      "Better weather is likely at {site} over the next few days, even if your current campsite scores best overall this week.",
+
     decisionStayTitle: "Stay put for now",
     decisionStayBodyGood: "Conditions aren’t great, but no nearby option clearly looks better.",
-    decisionStayBodyRough: "Weather won't be perfect, but no nearby option clearly looks better.",
+    decisionStayBodyRough: "Weather won’t be perfect, but no nearby option clearly looks better.",
+
+    travelAdvisorTitle: "Better weather nearby",
+    travelAdvisorSubtitle: "Check whether conditions at a nearby campsite may be better",
   },
   is: {
     routeReasonRainStreak: "Minni rigningarruna",
@@ -456,10 +462,16 @@ export const routePlannerTranslations = {
     decisionConsiderBody: "Betra veður er líklegt hjá {site}.",
     decisionConsiderBodyWindowAware: "Aðeins betri aðstæður gætu verið hjá {site} næstu daga.",
 
+    decisionMoveBodyWindowAware:
+      "Betra veður er líklegt hjá {site} næstu daga, jafnvel þótt núverandi tjaldsvæði skori hæst þessa vikuna.",
+
     decisionStayTitle: "Best að vera kyrr í bili",
     decisionStayBodyGood:
       "Aðstæður eru ekki frábærar, en enginn nálægur staður lítur greinilega betur út.",
     decisionStayBodyRough:
       "Veðrið verður ekki fullkomið, en enginn nálægur valkostur virðist vera greinilega betri.",
+
+    travelAdvisorTitle: "Betra veður í nágrenninu",
+    travelAdvisorSubtitle: "Skoðaðu hvort aðstæður séu betri á nærliggjandi tjaldsvæði",
   },
 };

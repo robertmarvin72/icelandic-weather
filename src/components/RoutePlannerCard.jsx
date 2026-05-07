@@ -54,9 +54,9 @@ function verdictIconFromV(v) {
 
 function ProLock({ t, me, onUpgrade }) {
   return (
-    <div className="rounded-xl border border-slate-200 dark:border-slate-700 p-3">
-      <div className="text-sm font-semibold mb-1">{t("routePlannerTitle")}</div>
-      <div className="text-xs text-slate-600 dark:text-slate-300 mb-3">
+    <div className="rounded-2xl border border-slate-200 dark:border-slate-700 p-5 shadow-sm bg-white dark:bg-slate-900">
+      <div className="text-base font-bold mb-1">{t("travelAdvisorTitle")}</div>
+      <div className="text-sm text-slate-600 dark:text-slate-300 mb-3">
         {t("routePlannerLockedBody")}
       </div>
 
@@ -231,9 +231,9 @@ export default function RoutePlannerCard({
 
   if (!baseSiteId) {
     return (
-      <div className="rounded-xl border border-slate-200 dark:border-slate-700 p-3">
-        <div className="text-sm font-semibold mb-1">{t("routePlannerTitle")}</div>
-        <div className="text-xs text-slate-600 dark:text-slate-300">
+      <div className="rounded-2xl border border-slate-200 dark:border-slate-700 p-5 shadow-sm bg-white dark:bg-slate-900">
+        <div className="text-base font-bold mb-1">{t("travelAdvisorTitle")}</div>
+        <div className="text-sm text-slate-600 dark:text-slate-300">
           {t("routePlannerSelectBase")}
         </div>
       </div>
@@ -242,8 +242,8 @@ export default function RoutePlannerCard({
 
   if (!baseSite && Array.isArray(sites) && sites.length > 0) {
     return (
-      <div className="rounded-xl border border-slate-200 dark:border-slate-700 p-3">
-        <div className="text-sm font-semibold mb-1">{t("routePlannerTitle")}</div>
+      <div className="rounded-2xl border border-slate-200 dark:border-slate-700 p-5 shadow-sm bg-white dark:bg-slate-900">
+        <div className="text-base font-bold mb-1">{t("travelAdvisorTitle")}</div>
         <div className="text-xs text-slate-600 dark:text-slate-300">
           {t("routePlannerBaseLabel")}: <span className="font-semibold">{baseSiteId}</span>
         </div>
@@ -707,19 +707,19 @@ export default function RoutePlannerCard({
       : "text-amber-700 dark:text-amber-300";
 
   return (
-    <div className="relative rounded-xl border border-slate-200 dark:border-slate-700 p-3">
-      <div className="flex items-start justify-between gap-3 mb-2">
+    <div className="relative rounded-2xl border border-slate-200 dark:border-slate-700 p-5 shadow-sm bg-white dark:bg-slate-900">
+      <div className="flex items-start justify-between gap-3 mb-3">
         <div>
-          <div className="flex items-center gap-2 text-sm font-semibold">
+          <div className="flex items-center gap-2 text-base font-bold">
             <span aria-hidden>🧭</span>
-            <span>{t("routePlannerTitle")}</span>
+            <span>{t("travelAdvisorTitle")}</span>
           </div>
 
-          <div className="mt-1 text-xs text-slate-500 dark:text-slate-400">
-            {t("routePlannerValue")}
+          <div className="mt-1 text-sm text-slate-500 dark:text-slate-400">
+            {t("travelAdvisorSubtitle")}
           </div>
 
-          <div className="mt-1 text-xs text-slate-600 dark:text-slate-300">
+          <div className="mt-1.5 text-sm text-slate-600 dark:text-slate-300">
             {t("routePlannerBaseLabel")}:{" "}
             <span className="font-semibold">{baseSite?.name ?? baseSiteId}</span>
           </div>
@@ -791,12 +791,12 @@ export default function RoutePlannerCard({
       {!loading && !error && result && meta && (
         <div className="grid gap-3">
           {/* Verdict (Decision Tool) */}
-          <div className={`rounded-lg border p-2 ${verdictAccentClasses(decisionLower)}`}>
-            <div className="text-sm font-semibold">{t(meta.titleKey)}</div>
-            <div className="text-xs text-slate-600 dark:text-slate-300">{t(meta.bodyKey)}</div>
+          <div className={`rounded-xl border p-4 ${verdictAccentClasses(decisionLower)}`}>
+            <div className="text-base font-bold">{t(meta.titleKey)}</div>
+            <div className="text-sm text-slate-600 dark:text-slate-300 mt-0.5">{t(meta.bodyKey)}</div>
 
             {trendText && (
-              <div className="text-xs text-slate-600 dark:text-slate-300 mt-1">{trendText}</div>
+              <div className="text-sm text-slate-600 dark:text-slate-300 mt-1">{trendText}</div>
             )}
 
             {routeRiskData?.routeRisk === "HIGH" && (
@@ -906,7 +906,7 @@ export default function RoutePlannerCard({
 
           {/* Top alternatives / Preview single best */}
           <div>
-            <div className="text-xs font-semibold mb-2">
+            <div className="text-sm font-semibold mb-2">
               {isPreview
                 ? t("routePlannerBestTomorrow")
                 : decisionLower === "stay"

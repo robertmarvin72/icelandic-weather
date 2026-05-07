@@ -8,7 +8,6 @@ import { oppositeCompass } from "../lib/windUtils";
 import { translateCompass } from "../lib/compassUtils";
 import RequireFeature from "./RequireFeature";
 import { getFeatureLimit } from "../config/features";
-import RoutePlannerCard from "./RoutePlannerCard";
 
 function shelterPillClass(score) {
   if (score < 30) return "shelter-pill--bad";
@@ -29,18 +28,14 @@ export default function Top5Leaderboard({
   shelter,
   windDir,
 
-  // ✅ new (optional) props for CTA + messaging
+  // props for CTA + messaging
   me,
   onUpgrade,
   proUntil,
   subscription,
   onManageSubscription,
 
-  // ✅ IMPORTANT: pass selectedSiteId + sites from App
-  selectedSiteId,
-  sites,
   userLocationLabel,
-  onRoutePlannerSummaryChange,
 }) {
   const sheltered = windDir?.compass ? oppositeCompass(windDir.compass) : null;
 
@@ -407,23 +402,6 @@ export default function Top5Leaderboard({
         </div>
       </div>
 
-      {/* ✅ Route Planner (Pro) */}
-      <div className="mt-3">
-        <RoutePlannerCard
-          t={t}
-          lang={lang}
-          entitlements={entitlements}
-          me={me}
-          onUpgrade={onUpgrade}
-          sites={sites}
-          baseSiteId={selectedSiteId}
-          radiusKmDefault={50}
-          windowDaysDefault={3}
-          wetThresholdMmDefault={3}
-          onSummaryChange={onRoutePlannerSummaryChange}
-          onSelectSite={onSelectSite}
-        />
-      </div>
     </div>
   );
 }

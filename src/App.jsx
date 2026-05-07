@@ -17,6 +17,7 @@ import ForecastTable from "./components/ForecastTable";
 import LazyMap from "./components/LazyMap";
 import LoginModal from "./components/LoginModal";
 import PageHeader from "./components/PageHeader";
+import RoutePlannerCard from "./components/RoutePlannerCard";
 import Splash from "./components/Splash";
 import ToastHub from "./components/ToastHub";
 import Top5Leaderboard from "./components/Top5Leaderboard";
@@ -311,6 +312,23 @@ function IcelandCampingWeatherApp({ page = "home" }) {
                 entitlements={entitlements}
               />
 
+              <div className="mb-4">
+                <RoutePlannerCard
+                  t={t}
+                  lang={lang}
+                  entitlements={entitlements}
+                  me={me}
+                  onUpgrade={startCheckout}
+                  sites={siteList}
+                  baseSiteId={siteId}
+                  radiusKmDefault={50}
+                  windowDaysDefault={3}
+                  wetThresholdMmDefault={3}
+                  onSummaryChange={setRoutePlannerSummary}
+                  onSelectSite={handleSelectSite}
+                />
+              </div>
+
               <div className="grid gap-4 md:grid-cols-2">
                 <ForecastTable
                   entitlements={entitlements}
@@ -353,7 +371,6 @@ function IcelandCampingWeatherApp({ page = "home" }) {
                 )}
 
                 <Top5Leaderboard
-                  sites={siteList}
                   entitlements={entitlements}
                   top5={top5}
                   lang={lang}
@@ -370,9 +387,7 @@ function IcelandCampingWeatherApp({ page = "home" }) {
                   proUntil={me?.entitlements?.proUntil ?? null}
                   subscription={me?.subscription ?? null}
                   onManageSubscription={openBillingPortal}
-                  selectedSiteId={siteId}
                   userLocationLabel={userLocationLabel}
-                  onRoutePlannerSummaryChange={setRoutePlannerSummary}
                 />
               </div>
             </>
