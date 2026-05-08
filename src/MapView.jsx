@@ -210,7 +210,7 @@ export default function MapView({
 
   return (
     <div
-      className={`relative z-0 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 overflow-hidden h-[500px] ${
+      className={`relative z-0 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 overflow-hidden h-[300px] md:h-[500px] ${
         isDark ? "map-dark-mode" : ""
       }`}
     >

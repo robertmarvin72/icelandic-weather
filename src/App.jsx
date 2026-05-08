@@ -275,7 +275,7 @@ function IcelandCampingWeatherApp({ page = "home" }) {
           onToggleDevPro={toggleDevPro}
         />
 
-        <div className="mx-auto max-w-6xl px-4 py-10">
+        <div className="mx-auto max-w-6xl px-4 pt-3 pb-10 md:py-10">
           {page === "about" ? (
             <About t={t} />
           ) : showCampsitesGate ? (
@@ -340,19 +340,6 @@ function IcelandCampingWeatherApp({ page = "home" }) {
                   error={error}
                   units={units}
                   weatherMap={WEATHER_MAP}
-                  mapSlot={
-                    <div ref={mapAnchorRef}>
-                      <LazyMap
-                        campsites={siteList}
-                        selectedId={siteId}
-                        onSelect={(id) => setSiteId(id)}
-                        userLocation={userLoc}
-                        lang={lang}
-                        t={t}
-                        theme={theme}
-                      />
-                    </div>
-                  }
                   lang={lang}
                   t={t}
                   onSelectDay={handleOpenHourlyForecast}
@@ -370,24 +357,38 @@ function IcelandCampingWeatherApp({ page = "home" }) {
                   />
                 )}
 
-                <Top5Leaderboard
-                  entitlements={entitlements}
-                  top5={top5}
+                <div className="order-first md:order-last">
+                  <Top5Leaderboard
+                    entitlements={entitlements}
+                    top5={top5}
+                    lang={lang}
+                    scoredCount={Object.keys(scoresById).length}
+                    loadingWave1={loadingWave1}
+                    loadingBg={loadingBg}
+                    units={units}
+                    onSelectSite={handleSelectSite}
+                    me={me}
+                    onUpgrade={startCheckout}
+                    t={t}
+                    shelter={gatedShelter}
+                    windDir={gatedWindDir}
+                    proUntil={me?.entitlements?.proUntil ?? null}
+                    subscription={me?.subscription ?? null}
+                    onManageSubscription={openBillingPortal}
+                    userLocationLabel={userLocationLabel}
+                  />
+                </div>
+              </div>
+
+              <div ref={mapAnchorRef} className="mt-4">
+                <LazyMap
+                  campsites={siteList}
+                  selectedId={siteId}
+                  onSelect={(id) => setSiteId(id)}
+                  userLocation={userLoc}
                   lang={lang}
-                  scoredCount={Object.keys(scoresById).length}
-                  loadingWave1={loadingWave1}
-                  loadingBg={loadingBg}
-                  units={units}
-                  onSelectSite={handleSelectSite}
-                  me={me}
-                  onUpgrade={startCheckout}
                   t={t}
-                  shelter={gatedShelter}
-                  windDir={gatedWindDir}
-                  proUntil={me?.entitlements?.proUntil ?? null}
-                  subscription={me?.subscription ?? null}
-                  onManageSubscription={openBillingPortal}
-                  userLocationLabel={userLocationLabel}
+                  theme={theme}
                 />
               </div>
             </>
