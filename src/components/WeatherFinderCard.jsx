@@ -1,4 +1,6 @@
 // src/components/WeatherFinderCard.jsx
+const MODE_ICON = { calmest: "🌫️", warmest: "🔥", driest: "💧" };
+
 export default function WeatherFinderCard({ result, rank, mode, units, t }) {
   const isImperial = units === "imperial";
 
@@ -25,7 +27,9 @@ export default function WeatherFinderCard({ result, rank, mode, units, t }) {
         {rank}
       </div>
       <div className="min-w-0 flex-1 truncate text-sm font-medium">{result.name}</div>
-      <div className="shrink-0 text-right text-sm text-slate-600 dark:text-slate-300">{metricString}</div>
+      <div className="shrink-0 text-right text-sm text-slate-600 dark:text-slate-300">
+        <span className="mr-1 text-xs" aria-hidden="true">{MODE_ICON[mode]}</span>{metricString}
+      </div>
     </div>
   );
 }
