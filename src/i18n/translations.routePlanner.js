@@ -272,6 +272,13 @@ export const routePlannerTranslations = {
     routePainStayBody: "You do not appear to be missing much better conditions nearby.",
     routePainStayBulletNotEnoughGain: "There does not seem to be enough improvement nearby to justify moving.",
     routePainStayBulletNotMissingMuch: "You do not appear to be missing much better conditions in this area.",
+
+    freeRecommendationBadge: "1 free today",
+    freeRecommendationAvailable: "You have one free recommendation today.",
+    freeRecommendationUsed: "You have used your free recommendation for today.",
+    freeRecommendationUpgrade: "Upgrade to Pro for unlimited daily recommendations.",
+    freeRecommendationCta: "Upgrade to Pro",
+    freeRecommendationProCta: "Get unlimited access",
   },
   is: {
     routeReasonRainStreak: "Færri rigningardagar í röð",
@@ -549,5 +556,12 @@ export const routePlannerTranslations = {
     routePainStayBody: "Þú virðist ekki vera að missa af miklu betri aðstæðum í nágrenninu.",
     routePainStayBulletNotEnoughGain: "Það virðist ekki vera nægur veðurmunur til að réttlæta ferðalagið.",
     routePainStayBulletNotMissingMuch: "Þú virðist ekki vera að missa af miklu betri aðstæðum á þessu svæði.",
+
+    freeRecommendationBadge: "1 ókeypis í dag",
+    freeRecommendationAvailable: "Þú átt eina ókeypis ráðleggingu í dag.",
+    freeRecommendationUsed: "Þú hefur notað þína ókeypis ráðleggingu í dag.",
+    freeRecommendationUpgrade: "Uppfærðu í Pro fyrir ótakmarkaðar ráðleggingar á dag.",
+    freeRecommendationCta: "Uppfærðu í Pro",
+    freeRecommendationProCta: "Fáðu ótakmarkaðan aðgang",
   },
 };

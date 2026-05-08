@@ -6,6 +6,7 @@ import RoutePlannerDetailsModal from "./RoutePlannerDetailsModal";
 import AnimatedPill from "./AnimatedPill";
 import { isFeatureAvailable } from "../config/features";
 import { useRoutePlanner } from "../hooks/useRoutePlanner";
+import { useFreeRecommendation } from "../hooks/useFreeRecommendation";
 import { deriveRoutePlannerSummary } from "../lib/routePlannerSummary";
 import {
   getHazardBlockText,
@@ -77,6 +78,34 @@ function ProLock({ t, me, onUpgrade }) {
   );
 }
 
+function FreeUsedLock({ t, me, onUpgrade }) {
+  return (
+    <div className="rounded-2xl border border-slate-200 dark:border-slate-700 p-5 shadow-sm bg-white dark:bg-slate-900">
+      <div className="text-base font-bold mb-1">{t("travelAdvisorTitle")}</div>
+      <div className="text-sm text-slate-600 dark:text-slate-300 mb-1">
+        {t("freeRecommendationUsed")}
+      </div>
+      <div className="text-sm text-slate-500 dark:text-slate-400 mb-3">
+        {t("freeRecommendationUpgrade")}
+      </div>
+
+      <button
+        type="button"
+        onClick={() => typeof onUpgrade === "function" && onUpgrade()}
+        className="
+          w-full rounded-xl px-3 py-2 text-sm font-semibold
+          bg-emerald-600 text-white
+          hover:bg-emerald-500
+          focus:outline-none focus:ring-2 focus:ring-emerald-400/60
+          dark:bg-emerald-500 dark:hover:bg-emerald-400
+        "
+      >
+        {me?.user ? t("freeRecommendationCta") : t("freeRecommendationProCta")}
+      </button>
+    </div>
+  );
+}
+
 function interpolate(template, vars) {
   if (typeof template !== "string") return "";
   let out = template;
@@ -104,6 +133,8 @@ export default function RoutePlannerCard({
   const routeFeature = isFeatureAvailable("bestRoutePlanner", entitlements);
   const isPro = !!routeFeature?.available;
   const isPreview = !!routeFeature?.preview && !isPro;
+
+  const { hasFreeUsed, markFreeUsed } = useFreeRecommendation();
 
   const [radiusKm, setRadiusKm] = useState(radiusKmDefault);
   const [windowDays, setWindowDays] = useState(windowDaysDefault);
@@ -217,6 +248,12 @@ export default function RoutePlannerCard({
   }, [result, sites, effectiveRadiusKm, effectiveWindowDays, routeRiskData, isPreview, isPro]);
 
   useEffect(() => {
+    if (isPro) return;
+    if (!result) return;
+    markFreeUsed();
+  }, [isPro, result, markFreeUsed]);
+
+  useEffect(() => {
     if (typeof onSummaryChange !== "function") return;
 
     if (!result) {
@@ -228,6 +265,7 @@ export default function RoutePlannerCard({
   }, [onSummaryChange, result, routePlannerSummary]);
 
   if (!isPro && !isPreview) return <ProLock t={t} me={me} onUpgrade={onUpgrade} />;
+  if (!isPro && hasFreeUsed) return <FreeUsedLock t={t} me={me} onUpgrade={onUpgrade} />;
 
   if (!baseSiteId) {
     return (
@@ -733,8 +771,8 @@ export default function RoutePlannerCard({
 
         {isPreview && (
           <div className="mt-1 text-right">
-            <span className="inline-flex items-center rounded-full px-2 py-0.5 text-[11px] font-semibold bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200">
-              {t("previewPill")}
+            <span className="inline-flex items-center rounded-full px-2 py-0.5 text-[11px] font-semibold bg-emerald-100 dark:bg-emerald-900/40 text-emerald-800 dark:text-emerald-200">
+              {t("freeRecommendationBadge")}
             </span>
           </div>
         )}
