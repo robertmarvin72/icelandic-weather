@@ -18,6 +18,7 @@ import Landing from "./pages/Landing";
 import BlogIndex from "./pages/BlogIndex";
 import BlogPostPage from "./pages/BlogPostPage";
 import Brochure from "./pages/Brochure";
+import CampaignLandingPage from "./pages/CampaignLandingPage";
 
 function PricingRoute() {
   const pageProps = usePageRouteProps();
@@ -88,6 +89,51 @@ function LandingRoute() {
   return <Landing {...pageProps} />;
 }
 
+const CAMPAIGN_CONFIGS = {
+  avoidBadWeather: {
+    headlineKey: "campaignAvoidBadWeatherHeadline",
+    subheadlineKey: "campaignAvoidBadWeatherSubheadline",
+    ctaKey: "campaignAvoidBadWeatherCta",
+    metaTitle: "Avoid Bad Camping Weather in Iceland | CampCast",
+    metaDescription:
+      "Compare nearby Iceland campsites and find calmer, drier camping conditions before you settle in.",
+    canonicalPath: "/avoid-bad-weather",
+  },
+  caravanWeather: {
+    headlineKey: "campaignCaravanWeatherHeadline",
+    subheadlineKey: "campaignCaravanWeatherSubheadline",
+    ctaKey: "campaignCaravanWeatherCta",
+    metaTitle: "Caravan Weather Planning in Iceland | CampCast",
+    metaDescription:
+      "Check wind, gusts, rain, and nearby campsite options before towing or parking your caravan in Iceland.",
+    canonicalPath: "/caravan-weather",
+  },
+  campingWind: {
+    headlineKey: "campaignCampingWindHeadline",
+    subheadlineKey: "campaignCampingWindSubheadline",
+    ctaKey: "campaignCampingWindCta",
+    metaTitle: "Camping Wind Forecasts in Iceland | CampCast",
+    metaDescription:
+      "Compare wind and gust conditions across nearby Iceland campsites before choosing where to stay.",
+    canonicalPath: "/camping-wind",
+  },
+  weekendCamping: {
+    headlineKey: "campaignWeekendCampingHeadline",
+    subheadlineKey: "campaignWeekendCampingSubheadline",
+    ctaKey: "campaignWeekendCampingCta",
+    metaTitle: "Weekend Camping Weather in Iceland | CampCast",
+    metaDescription:
+      "Plan a better weekend camping trip in Iceland by comparing nearby campsite weather conditions.",
+    canonicalPath: "/weekend-camping",
+  },
+};
+
+function CampaignRoute({ configKey }) {
+  const { t, lang, theme } = usePageRouteProps();
+  const config = CAMPAIGN_CONFIGS[configKey];
+  return <CampaignLandingPage t={t} lang={lang} theme={theme} {...config} />;
+}
+
 function BlogRoute() {
   const pageProps = usePageRouteProps();
   return <BlogIndex {...pageProps} />;
@@ -112,6 +158,10 @@ export default function AppRoutes({ HomeComponent }) {
       <Route path="/refund" element={<RefundRoute />} />
       <Route path="/admin" element={<AdminDashboard />} />
       <Route path="/iceland-camping-weather" element={<LandingRoute />} />
+      <Route path="/avoid-bad-weather" element={<CampaignRoute configKey="avoidBadWeather" />} />
+      <Route path="/caravan-weather" element={<CampaignRoute configKey="caravanWeather" />} />
+      <Route path="/camping-wind" element={<CampaignRoute configKey="campingWind" />} />
+      <Route path="/weekend-camping" element={<CampaignRoute configKey="weekendCamping" />} />
       <Route path="/blog" element={<BlogRoute />} />
       <Route path="/blog/:slug" element={<BlogPostRoute />} />
       <Route path="/brochure" element={<Brochure />} />

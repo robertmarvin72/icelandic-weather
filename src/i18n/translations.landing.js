@@ -170,6 +170,22 @@ export const landingTranslations = {
     comparisonBetterComfort: "More comfortable conditions",
     comparisonFewerWarnings: "Fewer weather warnings",
     comparisonBetterDriving: "Better driving conditions",
+
+    campaignAvoidBadWeatherHeadline: "Avoid the worst camping weather in Iceland",
+    campaignAvoidBadWeatherSubheadline: "Compare nearby campsites and spot calmer, drier options before you settle in.",
+    campaignAvoidBadWeatherCta: "Find better weather nearby",
+
+    campaignCaravanWeatherHeadline: "Plan calmer campsite moves with your caravan",
+    campaignCaravanWeatherSubheadline: "Check wind, gusts, rain, and nearby alternatives before towing or parking up.",
+    campaignCaravanWeatherCta: "Compare caravan conditions",
+
+    campaignCampingWindHeadline: "Check wind and gusts before choosing a campsite",
+    campaignCampingWindSubheadline: "Spot exposed campsites and find calmer nearby options for tents, campervans, and caravans.",
+    campaignCampingWindCta: "Find calmer campsites nearby",
+
+    campaignWeekendCampingHeadline: "Find better camping weather for the weekend",
+    campaignWeekendCampingSubheadline: "Compare nearby campsites before leaving so wind or rain does not catch you out.",
+    campaignWeekendCampingCta: "Plan this weekend",
   },
 
   is: {
@@ -337,5 +353,21 @@ export const landingTranslations = {
     comparisonBetterComfort: "Þægilegri aðstæður",
     comparisonFewerWarnings: "Færri veðurviðvaranir",
     comparisonBetterDriving: "Betri akstursaðstæður",
+
+    campaignAvoidBadWeatherHeadline: "Forðastu versta tjaldveðrið á Íslandi",
+    campaignAvoidBadWeatherSubheadline: "Berðu saman nálæg tjaldsvæði og finndu rólegri og þurrari kosti áður en þú kemur þér fyrir.",
+    campaignAvoidBadWeatherCta: "Finna betra veður í nágrenninu",
+
+    campaignCaravanWeatherHeadline: "Skipuleggðu rólegri ferð með hjólhýsi",
+    campaignCaravanWeatherSubheadline: "Skoðaðu vind, vindhviður, rigningu og nálæga valkosti áður en þú leggur af stað eða kemur þér fyrir.",
+    campaignCaravanWeatherCta: "Bera saman aðstæður fyrir hjólhýsi",
+
+    campaignCampingWindHeadline: "Skoðaðu vind og vindhviður áður en þú velur tjaldsvæði",
+    campaignCampingWindSubheadline: "Finndu berskjölduð tjaldsvæði og rólegri valkosti í nágrenninu fyrir tjöld, húsbíla og hjólhýsi.",
+    campaignCampingWindCta: "Finna rólegri tjaldsvæði",
+
+    campaignWeekendCampingHeadline: "Finndu betra tjaldveður fyrir helgina",
+    campaignWeekendCampingSubheadline: "Berðu saman nálæg tjaldsvæði áður en þú leggur af stað svo vindur eða rigning komi síður á óvart.",
+    campaignWeekendCampingCta: "Skipuleggja helgina",
   },
 };
