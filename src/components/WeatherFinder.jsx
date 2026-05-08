@@ -166,11 +166,11 @@ export default function WeatherFinder({ siteList, scoresById, userLoc, entitleme
 
       {/* Free upsell */}
       {!isPro && (
-        <div className="mt-3 text-center">
+        <div className="mt-3">
           <button
             type="button"
             onClick={() => typeof onUpgrade === "function" && onUpgrade()}
-            className="text-xs text-slate-400 underline underline-offset-2 hover:text-slate-600 dark:text-slate-500 dark:hover:text-slate-300"
+            className="w-full rounded-xl px-3 py-2 text-sm font-semibold bg-emerald-600 text-white hover:bg-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-400/60 dark:bg-emerald-500 dark:hover:bg-emerald-400"
           >
             {t("weatherFinderUpgradeForMore")}
           </button>
