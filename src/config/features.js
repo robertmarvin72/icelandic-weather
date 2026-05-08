@@ -14,6 +14,9 @@ export const FEATURES = {
 
   // 4) Best route planner (Pro-only, teaser allowed)
   bestRoutePlanner: { tier: "pro", preview: true, label: "Best route planner" },
+
+  // 5) Weather Finder results count (Free sees top 3, Pro sees all)
+  weatherFinderResultsCount: { type: "limit", free: 3, pro: 999, label: "Weather Finder results" },
 };
 
 export const TIERS = {

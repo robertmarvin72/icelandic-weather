@@ -21,6 +21,7 @@ import RoutePlannerCard from "./components/RoutePlannerCard";
 import Splash from "./components/Splash";
 import ToastHub from "./components/ToastHub";
 import Top5Leaderboard from "./components/Top5Leaderboard";
+import WeatherFinder from "./components/WeatherFinder";
 import { isFeatureAvailable } from "./config/features";
 import { useBooting } from "./hooks/useBooting";
 import { useCampsites } from "./hooks/useCampsites";
@@ -378,6 +379,19 @@ function IcelandCampingWeatherApp({ page = "home" }) {
                     userLocationLabel={userLocationLabel}
                   />
                 </div>
+              </div>
+
+              <div className="mt-4">
+                <WeatherFinder
+                  siteList={siteList}
+                  scoresById={scoresById}
+                  userLoc={userLoc}
+                  entitlements={entitlements}
+                  units={units}
+                  t={t}
+                  me={me}
+                  onUpgrade={startCheckout}
+                />
               </div>
 
               <div ref={mapAnchorRef} className="mt-4">

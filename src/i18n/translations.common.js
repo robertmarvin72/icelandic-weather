@@ -373,6 +373,20 @@ export const commonTranslations = {
     mapWeatherConditions: "Weather conditions",
     mapWinterMode: "Winter mode",
 
+    // Weather Finder
+    weatherFinderTitle: "Weather Finder",
+    weatherFinderCalmest: "Calmest",
+    weatherFinderWarmest: "Warmest",
+    weatherFinderDriest: "Driest",
+    weatherFinderNoResults: "No campsites found nearby.",
+    weatherFinderUnlimited: "Unlimited",
+    weatherFinderUpgradeForMore: "Upgrade to Pro to see all results",
+    weatherFinderAvgWind: "Avg wind",
+    weatherFinderAvgTemp: "Avg temp",
+    weatherFinderRainDays: "Rain days",
+    weatherFinderRadius: "Radius",
+    weatherFinderDays: "Days",
+
     locale: "en-GB",
   },
   is: {
@@ -744,6 +758,20 @@ export const commonTranslations = {
     mapShowWeatherColors: "Sýna veðurliti",
     mapWeatherConditions: "Veðuraðstæður",
     mapWinterMode: "Vetrarhamur",
+
+    // Weather Finder
+    weatherFinderTitle: "Veðurleit",
+    weatherFinderCalmest: "Rólegast",
+    weatherFinderWarmest: "Hlýjast",
+    weatherFinderDriest: "Þurrast",
+    weatherFinderNoResults: "Engin tjaldsvæði fundust í nágrenninu.",
+    weatherFinderUnlimited: "Ótakmarkað",
+    weatherFinderUpgradeForMore: "Uppfærðu í Pro til að sjá fleiri niðurstöður",
+    weatherFinderAvgWind: "Meðalvindur",
+    weatherFinderAvgTemp: "Meðalhiti",
+    weatherFinderRainDays: "Regnsdagar",
+    weatherFinderRadius: "Radíus",
+    weatherFinderDays: "Dagar",
 
     locale: "is-IS",
   },
