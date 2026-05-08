@@ -143,6 +143,33 @@ export const landingTranslations = {
     landingHeroUrgency: "In Iceland, the weather 20 minutes away can be completely different.",
     landingHeroNoSignup: "No signup required",
     landingFinalCta: "Check weather near you",
+
+    comparisonSectionTitle: "Better weather may be closer than you think",
+    comparisonSectionSubtitle:
+      "CampCast compares nearby campsites to help you spot calmer, drier, and more comfortable options.",
+    comparisonCurrentLabel: "Current campsite",
+    comparisonBetterLabel: "Nearby alternative",
+
+    comparisonRowGust: "Gusts",
+    comparisonRowRain: "Rain",
+    comparisonRowConditions: "Conditions",
+    comparisonRowWarnings: "Warnings",
+
+    comparisonCurrentGust: "20 m/s",
+    comparisonCurrentRain: "Heavy",
+    comparisonCurrentConditions: "Difficult",
+    comparisonCurrentWarnings: "2 active",
+
+    comparisonBetterGust: "10 m/s",
+    comparisonBetterRain: "Light",
+    comparisonBetterConditions: "Manageable",
+    comparisonBetterWarnings: "None",
+
+    comparisonLessWind: "Lower wind exposure",
+    comparisonLessRain: "Less rain",
+    comparisonBetterComfort: "More comfortable conditions",
+    comparisonFewerWarnings: "Fewer weather warnings",
+    comparisonBetterDriving: "Better driving conditions",
   },
 
   is: {
@@ -283,5 +310,32 @@ export const landingTranslations = {
     landingHeroUrgency: "Veðrið 20 mínútum í burtu getur verið allt öðruvísi.",
     landingHeroNoSignup: "Engin skráning nauðsynleg",
     landingFinalCta: "Athuga veður nálægt þér",
+
+    comparisonSectionTitle: "Betra veður gæti verið nær en þú heldur",
+    comparisonSectionSubtitle:
+      "CampCast ber saman nálæg tjaldsvæði til að hjálpa þér að finna rólegra og þægilegra veður.",
+    comparisonCurrentLabel: "Núverandi tjaldsvæði",
+    comparisonBetterLabel: "Nálægur valkostur",
+
+    comparisonRowGust: "Hviður",
+    comparisonRowRain: "Rigning",
+    comparisonRowConditions: "Aðstæður",
+    comparisonRowWarnings: "Viðvaranir",
+
+    comparisonCurrentGust: "20 m/s",
+    comparisonCurrentRain: "Mikil",
+    comparisonCurrentConditions: "Erfiðar",
+    comparisonCurrentWarnings: "2 virkar",
+
+    comparisonBetterGust: "10 m/s",
+    comparisonBetterRain: "Lítil",
+    comparisonBetterConditions: "Viðráðanlegar",
+    comparisonBetterWarnings: "Engar",
+
+    comparisonLessWind: "Minni vindur",
+    comparisonLessRain: "Minni rigning",
+    comparisonBetterComfort: "Þægilegri aðstæður",
+    comparisonFewerWarnings: "Færri veðurviðvaranir",
+    comparisonBetterDriving: "Betri akstursaðstæður",
   },
 };

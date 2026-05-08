@@ -137,6 +137,117 @@ function AdvisorPreview({ t, title, subtitle, variant = 3 }) {
   );
 }
 
+function ComparisonSection({ tr }) {
+  const rows = [
+    {
+      label: tr("comparisonRowGust"),
+      current: tr("comparisonCurrentGust"),
+      better: tr("comparisonBetterGust"),
+    },
+    {
+      label: tr("comparisonRowRain"),
+      current: tr("comparisonCurrentRain"),
+      better: tr("comparisonBetterRain"),
+    },
+    {
+      label: tr("comparisonRowConditions"),
+      current: tr("comparisonCurrentConditions"),
+      better: tr("comparisonBetterConditions"),
+    },
+    {
+      label: tr("comparisonRowWarnings"),
+      current: tr("comparisonCurrentWarnings"),
+      better: tr("comparisonBetterWarnings"),
+    },
+  ];
+
+  const bullets = [
+    tr("comparisonLessWind"),
+    tr("comparisonLessRain"),
+    tr("comparisonBetterComfort"),
+    tr("comparisonFewerWarnings"),
+  ];
+
+  return (
+    <section className="bg-neutral-50">
+      <div className="mx-auto max-w-7xl px-6 py-20 lg:px-8">
+        <div className="mx-auto max-w-3xl text-center">
+          <h2 className="text-3xl font-bold tracking-tight text-neutral-950 md:text-4xl">
+            {tr("comparisonSectionTitle")}
+          </h2>
+          <p className="mt-4 text-lg leading-8 text-neutral-600">
+            {tr("comparisonSectionSubtitle")}
+          </p>
+        </div>
+
+        <div className="mt-12 grid gap-5 lg:grid-cols-2">
+          {/* Current campsite */}
+          <div className="rounded-[28px] border border-black/5 bg-white p-7">
+            <div className="mb-1 text-xs font-medium uppercase tracking-wide text-neutral-400">
+              {tr("comparisonCurrentLabel")}
+            </div>
+            <div className="mb-5 text-xl font-semibold text-neutral-950">
+              {tr("landingMockCurrentCampsite")}
+            </div>
+            <div className="grid gap-2">
+              {rows.map((row) => (
+                <div
+                  key={row.label}
+                  className="flex items-center justify-between rounded-2xl border border-black/5 bg-neutral-50 px-4 py-3"
+                >
+                  <span className="text-sm text-neutral-500">{row.label}</span>
+                  <span className="text-sm font-semibold text-amber-700">{row.current}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Nearby alternative */}
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.3 }}
+            variants={fadeUp}
+            transition={{ duration: 0.4 }}
+            className="rounded-[28px] border border-emerald-200 bg-emerald-50/50 p-7"
+          >
+            <div className="mb-1 flex items-center justify-between gap-3">
+              <div className="text-xs font-medium uppercase tracking-wide text-emerald-700">
+                {tr("comparisonBetterLabel")}
+              </div>
+            </div>
+            <div className="text-xl font-semibold text-neutral-950">
+              {tr("landingMockBetterPlace")}
+            </div>
+            <div className="mb-5 mt-0.5 text-sm text-neutral-500">
+              {tr("landingMockBetterDistance")}
+            </div>
+            <div className="grid gap-2">
+              {rows.map((row) => (
+                <div
+                  key={row.label}
+                  className="flex items-center justify-between rounded-2xl border border-emerald-100 bg-white/80 px-4 py-3"
+                >
+                  <span className="text-sm text-neutral-500">{row.label}</span>
+                  <span className="text-sm font-semibold text-emerald-700">{row.better}</span>
+                </div>
+              ))}
+            </div>
+            <div className="mt-5 grid gap-2.5">
+              {bullets.map((b) => (
+                <div key={b} className="flex items-center gap-2.5 text-sm text-emerald-900">
+                  <Check className="h-4 w-4 shrink-0 text-emerald-600" />
+                  {b}
+                </div>
+              ))}
+            </div>
+          </motion.div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function SectionTitle({ eyebrow, title, text, center = false }) {
   return (
     <div className={center ? "mx-auto max-w-3xl text-center" : "max-w-3xl"}>
@@ -377,6 +488,8 @@ export default function Landing({ t }) {
             </div>
           </div>
         </section>
+
+        <ComparisonSection tr={tr} />
 
         <section id="screenshots" className="mx-auto max-w-7xl px-6 py-20 lg:px-8">
           <SectionTitle
