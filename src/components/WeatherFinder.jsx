@@ -16,6 +16,8 @@ const MODE_KEY = {
   driest: "weatherFinderDriest",
 };
 
+const MODE_ICON = { calmest: "🌫️", warmest: "🔥", driest: "💧" };
+
 const RESULT_TITLE_KEY = {
   calmest: "weatherFinderResultTitleCalmest",
   warmest: "weatherFinderResultTitleWarmest",
@@ -88,7 +90,7 @@ export default function WeatherFinder({ siteList, scoresById, userLoc, entitleme
             onClick={() => setMode(m)}
             className={`rounded-lg px-3 py-1.5 text-sm font-medium transition-colors ${mode === m ? activeBtn : inactiveBtn}`}
           >
-            {t(MODE_KEY[m])}
+            <span aria-hidden="true">{MODE_ICON[m]}</span>{" "}{t(MODE_KEY[m])}
           </button>
         ))}
       </div>
