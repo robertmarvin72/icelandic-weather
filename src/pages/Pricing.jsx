@@ -3,6 +3,7 @@ import React, { useMemo, useState } from "react";
 import { useMe } from "../hooks/useMe";
 import { getDisplayPrices } from "../config/pricing";
 import Footer from "../components/Footer";
+import { getStoredAttribution } from "../lib/attribution";
 
 export default function Pricing({ onClose, lang = "is", theme = "dark", t, me }) {
   const isLight = theme === "light";
@@ -97,7 +98,11 @@ export default function Pricing({ onClose, lang = "is", theme = "dark", t, me })
     try {
       // Pricing is plan selector; if logged in, /api/checkout uses session.
       // We send only { plan } (backend ignores email anyway).
-      const { res, json, text } = await postJson("/api/checkout", { plan: chosenPlan });
+      const attribution = getStoredAttribution();
+      const { res, json, text } = await postJson("/api/checkout", {
+        plan: chosenPlan,
+        ...(attribution ? { attribution } : {}),
+      });
 
       // Subscription already active / upgrade rules
       if (res.status === 409) {

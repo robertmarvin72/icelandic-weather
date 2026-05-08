@@ -1,6 +1,7 @@
 // src/pages/Subscribe.jsx
 import React, { useMemo, useState } from "react";
 import { useMe } from "../hooks/useMe";
+import { getStoredAttribution } from "../lib/attribution";
 
 export default function Subscribe({ onClose, theme = "dark", t }) {
   const params = useMemo(() => new URLSearchParams(window.location.search), []);
@@ -115,13 +116,15 @@ export default function Subscribe({ onClose, theme = "dark", t }) {
 
       // 2) Create checkout
       // ✅ NEW: send plan to API
-      let { res, json, text } = await postJson("/api/checkout", { email: trimmed, plan });
+      const attribution = getStoredAttribution();
+      const checkoutBody = { email: trimmed, plan, ...(attribution ? { attribution } : {}) };
+      let { res, json, text } = await postJson("/api/checkout", checkoutBody);
 
       // 2b) If we still get 401, retry login ONCE and retry checkout.
       // This covers cookie edge cases / stale sessions.
       if (res.status === 401) {
         await ensureSessionForEmail(trimmed);
-        ({ res, json, text } = await postJson("/api/checkout", { email: trimmed, plan }));
+        ({ res, json, text } = await postJson("/api/checkout", checkoutBody));
       }
 
       if (!res.ok || !json?.ok) {

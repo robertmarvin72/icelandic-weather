@@ -148,6 +148,10 @@ export default async function handler(req, res) {
 
     const body = typeof req.body === "string" ? JSON.parse(req.body) : (req.body || {});
     const plan = (body?.plan || "monthly").toLowerCase();
+    const attribution =
+      body?.attribution && typeof body.attribution === "object" && !Array.isArray(body.attribution)
+        ? body.attribution
+        : null;
 
     const priceMonthly = process.env.PADDLE_PRICE_ID_MONTHLY;
     const priceYearly = process.env.PADDLE_PRICE_ID_YEARLY;
@@ -254,7 +258,13 @@ export default async function handler(req, res) {
       body: {
         customer_id: customerId,
         items: [{ price_id: priceId, quantity: 1 }],
-        custom_data: { app: "campcast", user_id: user.id, email: user.email, plan },
+        custom_data: {
+            app: "campcast",
+            user_id: user.id,
+            email: user.email,
+            plan,
+            ...(attribution ?? {}),
+          },
         checkout: {
           success_url: successUrl,
           cancel_url: cancelUrl,

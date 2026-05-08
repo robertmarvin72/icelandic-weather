@@ -1,5 +1,8 @@
 import "./sentry";
 
+import { saveAttributionIfPresent } from "./lib/attribution";
+saveAttributionIfPresent();
+
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import * as Sentry from "@sentry/react";
