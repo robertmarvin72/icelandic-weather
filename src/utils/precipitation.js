@@ -1,15 +1,15 @@
-function resolvePrecipLabel({ tmin, tmax, rain, baseLabel }) {
+function resolvePrecipLabel({ tmin, tmax, rain, baseLabel, t }) {
   const min = typeof tmin === "number" ? tmin : 0;
   const max = typeof tmax === "number" ? tmax : 0;
   const r = typeof rain === "number" ? rain : 0;
   if (r <= 0) return baseLabel;
   if (max <= 4 && min <= 1) {
-    return "Él";
+    return t("precipShowers");
   }
   if (max > 4) {
-    if (r >= 2) return "Rigning með köflum";
-    if (r >= 0.5) return "Skúrir";
-    return "Smávægileg úrkoma";
+    if (r >= 2) return t("precipIntermittentRain");
+    if (r >= 0.5) return t("showers");
+    return t("precipLight");
   }
   return baseLabel;
 }
@@ -74,5 +74,5 @@ export function getPrecipitationLabel(type, mm, t, opts = {}) {
 
   if (baseLabel == null) return null;
 
-  return resolvePrecipLabel({ tmin, tmax, rain: mm, baseLabel });
+  return resolvePrecipLabel({ tmin, tmax, rain: mm, baseLabel, t });
 }

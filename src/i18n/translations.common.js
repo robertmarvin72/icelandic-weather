@@ -263,6 +263,7 @@ export const commonTranslations = {
     precipLateRain: "Rain late",
     precipLateSnow: "Snow late",
     precipLight: "Light precipitation",
+    precipIntermittentRain: "Intermittent rain",
     precipMixed: "Mixed precipitation",
     precipShowers: "Showers",
 
@@ -660,6 +661,7 @@ export const commonTranslations = {
     precipLateRain: "Rigning seint",
     precipLateSnow: "Snjókoma seint",
     precipLight: "Smávægileg úrkoma",
+    precipIntermittentRain: "Rigning með köflum",
     precipMixed: "Slydda og rigning",
     precipShowers: "Él",
 
