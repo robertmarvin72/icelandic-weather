@@ -3,7 +3,7 @@ export const commonTranslations = {
     appTitle: "Iceland Camping",
     sevenDayWeather: "7-Day Weather Nearby",
     heroStayMoveTitle: "Know when to stay or move",
-    heroStayMoveSubtitle: "Compare nearby campsite forecasts and see where conditions look better over the next few days.",
+    heroStayMoveSubtitle: "See where the weather looks better over the next few days.",
     myLocation: "My location",
     dark: "Dark",
     light: "Light",
@@ -173,7 +173,7 @@ export const commonTranslations = {
     footerContact: "Contact",
     backToForecast: "Back to forecast",
 
-    brandTagline: "Iceland Camping",
+    brandTagline: "Find better weather",
 
     nearest: "Nearest",
 
@@ -401,11 +401,11 @@ export const commonTranslations = {
     appTitle: "Tjaldsvæði á Íslandi",
     sevenDayWeather: "7 daga veður í nágrenni",
     heroStayMoveTitle: "Vita hvenær á að vera kyrr eða færa sig",
-    heroStayMoveSubtitle: "Berðu saman spár fyrir nálæg tjaldsvæði og sjáðu hvar aðstæður líta betur út næstu daga.",
+    heroStayMoveSubtitle: "Sjáðu hvar er betra veður í nágrenninu næstu daga.",
     myLocation: "Staðsetning mín",
     dark: "Dökkt",
     light: "Ljóst",
-    top5Title: "Topp 5 tjaldsvæði í þessari viku",
+    top5Title: "Bestu staðirnir þessa vikuna",
     upToDate: "Uppfært.",
     campsite: "Tjaldsvæði",
     distance: "Fjarlægð",
@@ -441,8 +441,8 @@ export const commonTranslations = {
     fair: "Sæm",
 
     // Install
-    installAsApp: "Setja upp sem app",
-    installOnDevice: "Setja upp á þessu tæki",
+    installAsApp: "Setja upp",
+    installOnDevice: "Setja upp",
 
     // Quality scale
     excellent: "Frábært",
@@ -569,7 +569,7 @@ export const commonTranslations = {
 
     backToForecast: "Til baka",
 
-    brandTagline: "Tjaldsvæði á Íslandi",
+    brandTagline: "Finndu betra veður",
 
     nearest: "Næst",
 

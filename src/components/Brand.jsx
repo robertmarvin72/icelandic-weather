@@ -8,7 +8,7 @@ export default function Brand({ t, to = "/", size = "full", lang = "en" }) {
   const altText = lang === "is" ? "Eltum Veðrið" : "Chase the Weather";
 
   // FLAT key (valfrjálst): brandTagline
-  const tagline = t?.("brandTagline") ?? "Iceland Camping";
+  const tagline = t?.("brandTagline") ?? "Find better weather";
 
   // Size presets (minnst inngrip)
   const isSlim = size === "slim";
