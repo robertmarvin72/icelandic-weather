@@ -291,7 +291,7 @@ export default async function handler(req, res) {
     const checkoutUrlRaw = txn?.data?.checkout?.url;
     if (!checkoutUrlRaw) throw new Error("No checkout URL returned from Paddle");
 
-    const checkoutUrl = forcePayHost(checkoutUrlRaw);
+    const checkoutUrl = forcePayHost(checkoutUrlRaw) + `&origin=${encodeURIComponent(appBase)}`;
 
     if (shouldRedirect(req)) {
       res.setHeader("Cache-Control", "no-store");
