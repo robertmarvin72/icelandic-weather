@@ -1,6 +1,7 @@
 // api/login-email.js
 import postgres from "postgres";
 import crypto from "crypto";
+import { setSessionCookie } from "./_lib/setCookie.js";
 
 const sql = postgres(process.env.POSTGRES_URL, { ssl: "require" });
 
@@ -42,23 +43,7 @@ export default async function handler(req, res) {
   `;
 
   // 3. set cookie
-  const isLocalhost =
-    req.headers.host?.includes("localhost") || req.headers.host?.startsWith("127.0.0.1");
-
-  const cookieParts = [
-    `cc_session=${rawToken}`,
-    "Path=/",
-    "HttpOnly",
-    "SameSite=Lax",
-    "Max-Age=2592000",
-  ];
-
-  if (!isLocalhost) {
-    cookieParts.push("Domain=.campcast.is");
-    cookieParts.push("Secure");
-  }
-
-  res.setHeader("Set-Cookie", cookieParts.join("; "));
+  setSessionCookie(res, rawToken, req.headers.host);
 
   res.status(200).json({ ok: true, user });
 }

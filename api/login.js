@@ -1,9 +1,9 @@
 import postgres from "postgres";
 import crypto from "crypto";
+import { setSessionCookie } from "./_lib/setCookie.js";
 
 const sql = postgres(process.env.POSTGRES_URL, { ssl: "require" });
 
-const SESSION_COOKIE = "cc_session";
 const SESSION_DAYS = 30;
 
 function makeSessionToken() {
@@ -18,39 +18,6 @@ function normalizeEmail(v) {
   return String(v || "").trim().toLowerCase();
 }
 
-function buildCookie({ name, value, maxAgeSeconds, secure, domain }) {
-  const parts = [
-    `${name}=${encodeURIComponent(value)}`,
-    "Path=/",
-    "HttpOnly",
-    "SameSite=Lax",
-    `Max-Age=${maxAgeSeconds}`,
-    `Expires=${new Date(Date.now() + maxAgeSeconds * 1000).toUTCString()}`,
-    secure ? "Secure" : null,
-    domain ? `Domain=${domain}` : null,
-    "Priority=High",
-  ].filter(Boolean);
-
-  return parts.join("; ");
-}
-
-function setSessionCookie(res, token, maxAgeSeconds) {
-  const secure = process.env.NODE_ENV === "production";
-
-  // Only set this if you truly need cookie shared across subdomains:
-  // e.g. ".campcast.is"
-  const domain = process.env.SESSION_COOKIE_DOMAIN || "";
-
-  const cookie = buildCookie({
-    name: SESSION_COOKIE,
-    value: token,
-    maxAgeSeconds,
-    secure,
-    domain: domain || null,
-  });
-
-  res.setHeader("Set-Cookie", cookie);
-}
 
 async function findUserByEmail(emailLower) {
   const rows = await sql`
@@ -125,7 +92,7 @@ export default async function handler(req, res) {
     `;
 
     // 3) Set cookie
-    setSessionCookie(res, rawToken, maxAgeSeconds);
+    setSessionCookie(res, rawToken, req.headers.host);
 
     return res.status(200).json({ ok: true, user });
   } catch (e) {

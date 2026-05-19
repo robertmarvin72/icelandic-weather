@@ -109,16 +109,32 @@ function normalizeBaseUrl(s) {
   return String(s || "").replace(/\/+$/, "");
 }
 
+function getAllowedOrigins() {
+  return String(process.env.ALLOWED_ORIGINS || "")
+    .split(",")
+    .map((s) => s.trim())
+    .filter(Boolean);
+}
+
 function appBaseUrl(req) {
   if (process.env.APP_URL) return normalizeBaseUrl(process.env.APP_URL);
 
   const proto = req.headers["x-forwarded-proto"] || "https";
   const host = req.headers["x-forwarded-host"] || req.headers.host;
-  return normalizeBaseUrl(`${proto}://${host}`);
+  const derived = normalizeBaseUrl(`${proto}://${host}`);
+
+  const allowed = getAllowedOrigins();
+  if (allowed.length > 0 && !allowed.includes(derived)) {
+    console.warn(`[checkout] appBaseUrl: host "${derived}" is not in ALLOWED_ORIGINS`);
+  }
+
+  return derived;
 }
 
 function payBaseUrl() {
-  return normalizeBaseUrl(process.env.PAY_URL || "https://pay.campcast.is");
+  const url = process.env.PAY_URL;
+  if (!url) throw new Error("Missing PAY_URL environment variable");
+  return normalizeBaseUrl(url);
 }
 
 function forcePayHost(url) {
