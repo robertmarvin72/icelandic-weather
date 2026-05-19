@@ -15,7 +15,7 @@ export const commonTranslations = {
     day: "Day",
     weather: "Weather",
     sortedBy: "Sorted by weekly score, then nearest to you.",
-    offlineRdMessage: "CampCast is now ready to use offline.",
+    offlineRdMessage: "Chase the Weather is now ready to use offline.",
 
     // Geolocation
 
@@ -44,8 +44,8 @@ export const commonTranslations = {
     fair: "Fair",
 
     // Install
-    installAsApp: "Install CampCast as an app",
-    installOnDevice: "Install CampCast on this device",
+    installAsApp: "Install as an app",
+    installOnDevice: "Install on this device",
 
     // Quality scale
     excellent: "Excellent",
@@ -87,10 +87,10 @@ export const commonTranslations = {
     severeThunderHail: "Severe thunder + hail",
 
     // Score explanation
-    scoreExplanationTitle: "How CampCast scores camping conditions",
+    scoreExplanationTitle: "How camping conditions are scored",
 
     scoreExplanationIntro:
-      "CampCast gives each day a score from 0 to 10 based on weather conditions at the campsite.",
+      "Chase the Weather gives each day a score from 0 to 10 based on weather conditions at the campsite.",
 
     scoreExplanation_Temperature: "Temperature",
 
@@ -134,15 +134,15 @@ export const commonTranslations = {
     retrying: "Retrying…",
     retry: "Retry",
 
-    aboutTitle: "About CampCast",
+    aboutTitle: "About Chase the Weather",
 
     aboutIntro:
-      "CampCast helps campers in Iceland make better decisions based on real weather conditions.",
+      "Chase the Weather helps campers in Iceland make better decisions based on real weather conditions.",
 
     aboutGoal:
-      "Instead of only showing forecasts, CampCast evaluates camping conditions and highlights when nearby campsites may offer better weather.",
+      "Instead of only showing forecasts, Chase the Weather evaluates camping conditions and highlights when nearby campsites may offer better weather.",
 
-    aboutFeaturesTitle: "CampCast includes:",
+    aboutFeaturesTitle: "Chase the Weather includes:",
 
     aboutFeatures: [
       "7-day campsite forecasts",
@@ -151,7 +151,7 @@ export const commonTranslations = {
       "Route Planner suggestions when better weather may be nearby",
     ],
 
-    aboutProTitle: "With CampCast Pro, you also get:",
+    aboutProTitle: "With Chase the Weather Pro, you also get:",
 
     aboutProFeatures: [
       "Wind direction information",
@@ -161,7 +161,7 @@ export const commonTranslations = {
     ],
 
     aboutOutro:
-      "CampCast is designed specifically for Icelandic camping conditions and continues to evolve based on user feedback.",
+      "Chase the Weather is designed specifically for Icelandic camping conditions and continues to evolve based on user feedback.",
 
     aboutContact: "Questions, feedback, or issues?",
 
@@ -223,18 +223,18 @@ export const commonTranslations = {
     termsTitle: "Terms and Disclaimer",
 
     termsIntro1:
-      "CampCast provides weather forecasts and estimates of weather conditions along travel routes based on available meteorological data. This information is provided for informational purposes only and may be inaccurate, incomplete, or outdated.",
+      "Chase the Weather provides weather forecasts and estimates of weather conditions along travel routes based on available meteorological data. This information is provided for informational purposes only and may be inaccurate, incomplete, or outdated.",
 
     termsIntro2:
       "Weather conditions in Iceland can change rapidly, and actual conditions may differ from forecasts or estimates shown in the service.",
 
     termsIntro3:
-      "CampCast does not provide driving instructions and does not guarantee travel safety. Users are solely responsible for their own travel decisions and should always check official weather and road information before travelling.",
+      "Chase the Weather does not provide driving instructions and does not guarantee travel safety. Users are solely responsible for their own travel decisions and should always check official weather and road information before travelling.",
 
     termsSourcesTitle: "Users are encouraged to consult official sources such as:",
 
     termsLiability:
-      "CampCast and its operators accept no liability for accidents, damages, delays, or losses resulting from the use of the service or reliance on information provided within it.",
+      "Chase the Weather and its operators accept no liability for accidents, damages, delays, or losses resulting from the use of the service or reliance on information provided within it.",
     termsDisclaimerAgree: "I agree to the Terms of Service and Disclaimer",
     termsDisclaimerLink: "Terms and Disclaimer",
 
@@ -269,15 +269,15 @@ export const commonTranslations = {
 
     privacyTitle: "Privacy Policy",
     privacyIntro1:
-      "CampCast respects user privacy and aims to handle personal data responsibly and securely.",
+      "Chase the Weather respects user privacy and aims to handle personal data responsibly and securely.",
     privacyIntro2:
       "We may collect basic user information such as email address, account details, and general usage data in order to provide the service, maintain subscriptions, and improve the user experience.",
     privacyPayments:
-      "Payment information is processed by Paddle and is not stored on CampCast servers.",
+      "Payment information is processed by Paddle and is not stored on Chase the Weather servers.",
     privacyUsage:
       "We may also collect anonymous or aggregated usage data for analytics purposes to improve the functionality, stability, and user experience of the service.",
     privacySharing:
-      "CampCast does not sell personal data and does not share it with third parties except where necessary to process payments, operate the service, or comply with legal obligations.",
+      "Chase the Weather does not sell personal data and does not share it with third parties except where necessary to process payments, operate the service, or comply with legal obligations.",
     privacyRetention:
       "Personal data is only retained for as long as necessary for operating the service or as required by law.",
     privacyRights:
@@ -286,7 +286,7 @@ export const commonTranslations = {
     privacyContactText:
       "If you have any questions about privacy or would like to request deletion of your data, you can contact us at:",
     privacyChanges:
-      "CampCast may update this privacy policy from time to time. The latest version will always be published on the website.",
+      "Chase the Weather may update this privacy policy from time to time. The latest version will always be published on the website.",
     privacyClose: "Close",
 
     termsPrivacyAgreePrefix: "I agree to the",
@@ -297,11 +297,11 @@ export const commonTranslations = {
 
     refundTitle: "Refund Policy",
     refundIntro:
-      "CampCast is a subscription service that charges monthly or yearly for access to Pro features.",
+      "Chase the Weather is a subscription service that charges monthly or yearly for access to Pro features.",
     refundCancel:
       "Users may cancel their subscription at any time through the billing portal. Access remains active until the end of the paid billing period.",
     refundWindow:
-      "CampCast offers a 14-day refund window from the first payment of a new subscription.",
+      "Chase the Weather offers a 14-day refund window from the first payment of a new subscription.",
     refundAfterWindow: "After the 14-day refund window has passed, payments are non-refundable.",
     refundRenewals: "Refunds do not apply to subscription renewals unless required by law.",
     refundContact:
@@ -335,7 +335,7 @@ export const commonTranslations = {
     decisionMoveBody: "Better weather is likely at {site}.",
     decisionMoveBodyWindowAware: "Better conditions are likely at {site} over the next few days.",
 
-    blogBadge: "CampCast Blog",
+    blogBadge: "Chase the Weather Blog",
     blogTitle: "Weather tips and campsite planning for Iceland",
     blogIntro:
       "Practical articles focused on camper travel, wind, rain, campsite decisions, and better weather nearby.",
@@ -348,7 +348,7 @@ export const commonTranslations = {
 
     blogCtaTitle: "Check live campsite conditions",
     blogCtaText: "Compare nearby campsites and see where the weather is better right now.",
-    blogCtaButton: "Open CampCast",
+    blogCtaButton: "Open Chase the Weather",
     blogDraftPreviewBanner: "Draft preview — this post is not published.",
     blogPreviewButton: "Preview",
 
@@ -413,7 +413,7 @@ export const commonTranslations = {
     day: "Dagur",
     weather: "Veður",
     sortedBy: "Raðað eftir vikustigum, síðan næst þér.",
-    offlineRdMessage: "CampCast er nú tilbúið til notkunar án nettengingar.",
+    offlineRdMessage: "Eltum Veðrið er nú tilbúið til notkunar án nettengingar.",
 
     // Geolocation
     locating: "Leita að staðsetningu…",
@@ -441,8 +441,8 @@ export const commonTranslations = {
     fair: "Sæm",
 
     // Install
-    installAsApp: "Setja CampCast upp sem app",
-    installOnDevice: "Setja CampCast upp á þessu tæki",
+    installAsApp: "Setja upp sem app",
+    installOnDevice: "Setja upp á þessu tæki",
 
     // Quality scale
     excellent: "Frábært",
@@ -484,10 +484,10 @@ export const commonTranslations = {
     severeThunderHail: "Mikið þrumuveður og haglél",
 
     // Stigaskýring
-    scoreExplanationTitle: "Hvernig CampCast metur aðstæður til útilegu",
+    scoreExplanationTitle: "Hvernig aðstæðurnar eru metnar",
 
     scoreExplanationIntro:
-      "CampCast gefur hverjum degi einkunn frá 0 til 10 byggt á veðuraðstæðum á tjaldsvæðinu.",
+      "Eltum Veðrið gefur hverjum degi einkunn frá 0 til 10 byggt á veðuraðstæðum á tjaldsvæðinu.",
 
     scoreExplanationFinalTitle: "Lokaeinkunn",
 
@@ -529,15 +529,15 @@ export const commonTranslations = {
     retrying: "Reyni aftur…",
     retry: "Reyna aftur",
 
-    aboutTitle: "Um CampCast",
+    aboutTitle: "Um Eltum Veðrið",
 
     aboutIntro:
-      "CampCast hjálpar tjaldgestum á Íslandi að taka betri ákvarðanir út frá raunverulegum veðuraðstæðum.",
+      "Eltum Veðrið hjálpar tjaldgestum á Íslandi að taka betri ákvarðanir út frá raunverulegum veðuraðstæðum.",
 
     aboutGoal:
-      "Í stað þess að sýna aðeins veðurspá metur CampCast aðstæður á tjaldsvæðum og bendir á þegar betra veður gæti verið í nágrenninu.",
+      "Í stað þess að sýna aðeins veðurspá metur Eltum Veðrið aðstæður á tjaldsvæðum og bendir á þegar betra veður gæti verið í nágrenninu.",
 
-    aboutFeaturesTitle: "CampCast býður upp á:",
+    aboutFeaturesTitle: "Eltum Veðrið býður upp á:",
 
     aboutFeatures: [
       "7 daga veðurspá fyrir tjaldsvæði",
@@ -556,7 +556,7 @@ export const commonTranslations = {
     ],
 
     aboutOutro:
-      "CampCast er hannað sérstaklega með íslenskar aðstæður í huga og þróast áfram með endurgjöf frá notendum.",
+      "Eltum Veðrið er hannað sérstaklega með íslenskar aðstæður í huga og þróast áfram með endurgjöf frá notendum.",
 
     aboutContact: "Ertu með spurningu, hugmynd eða lendir í vandræðum?",
 
@@ -623,18 +623,18 @@ export const commonTranslations = {
     termsTitle: "Skilmálar og fyrirvari",
 
     termsIntro1:
-      "CampCast veitir veðurspár og mat á veðurskilyrðum á ferðaleiðum byggt á tiltækum veðurgögnum. Upplýsingarnar eru ætlaðar til viðmiðunar og geta verið ónákvæmar, ófullkomnar eða úreltar.",
+      "Eltum Veðrið veitir veðurspár og mat á veðurskilyrðum á ferðaleiðum byggt á tiltækum veðurgögnum. Upplýsingarnar eru ætlaðar til viðmiðunar og geta verið ónákvæmar, ófullkomnar eða úreltar.",
 
     termsIntro2:
       "Veður á Íslandi getur breyst hratt og raunverulegar aðstæður geta verið frábrugðnar því sem birtist í þjónustunni.",
 
     termsIntro3:
-      "CampCast veitir ekki akstursleiðsögn og ábyrgist ekki öryggi ferðalaga. Notendur bera sjálfir ábyrgð á eigin ferðarákvörðunum og skulu ávallt kynna sér opinberar upplýsingar um veður og færð áður en lagt er af stað.",
+      "Eltum Veðrið veitir ekki akstursleiðsögn og ábyrgist ekki öryggi ferðalaga. Notendur bera sjálfir ábyrgð á eigin ferðarákvörðunum og skulu ávallt kynna sér opinberar upplýsingar um veður og færð áður en lagt er af stað.",
 
     termsSourcesTitle: "Mælt er með að notendur skoði sérstaklega upplýsingar frá:",
 
     termsLiability:
-      "CampCast og rekstraraðilar þjónustunnar bera enga ábyrgð á slysum, tjóni, töfum eða öðru tjóni sem kann að verða vegna notkunar þjónustunnar eða upplýsinga sem þar koma fram.",
+      "Eltum Veðrið og rekstraraðilar þjónustunnar bera enga ábyrgð á slysum, tjóni, töfum eða öðru tjóni sem kann að verða vegna notkunar þjónustunnar eða upplýsinga sem þar koma fram.",
     termsDisclaimerAgree: "Ég samþykki skilmála og fyrirvara",
     termsDisclaimerLink: "Skilmálar og fyrirvari",
 
@@ -667,15 +667,15 @@ export const commonTranslations = {
 
     privacyTitle: "Persónuverndarstefna",
     privacyIntro1:
-      "CampCast virðir persónuvernd notenda og leitast við að meðhöndla persónuupplýsingar á ábyrgan og öruggan hátt.",
+      "Eltum Veðrið virðir persónuvernd notenda og leitast við að meðhöndla persónuupplýsingar á ábyrgan og öruggan hátt.",
     privacyIntro2:
       "Við kunnum að safna grunnupplýsingum um notendur, svo sem netfangi, reikningsupplýsingum og almennum notkunargögnum, til að geta veitt þjónustuna, viðhaldið áskriftum og bætt upplifun notenda.",
     privacyPayments:
-      "Greiðsluupplýsingar eru unnar af Paddle og eru ekki geymdar á netþjónum CampCast.",
+      "Greiðsluupplýsingar eru unnar af Paddle og eru ekki geymdar á netþjónum Eltum Veðrið.",
     privacyUsage:
       "Við kunnum einnig að safna nafnlausum eða samanteknum notkunargögnum í greiningarskyni til að bæta virkni, stöðugleika og notendaupplifun þjónustunnar.",
     privacySharing:
-      "CampCast selur ekki persónuupplýsingar notenda og deilir þeim ekki með þriðju aðilum nema það sé nauðsynlegt til að vinna greiðslur, reka þjónustuna eða uppfylla lagaskyldur.",
+      "Eltum Veðrið selur ekki persónuupplýsingar notenda og deilir þeim ekki með þriðju aðilum nema það sé nauðsynlegt til að vinna greiðslur, reka þjónustuna eða uppfylla lagaskyldur.",
     privacyRetention:
       "Persónuupplýsingar eru aðeins varðveittar eins lengi og þörf krefur vegna reksturs þjónustunnar eða samkvæmt lögum.",
     privacyRights:
@@ -684,7 +684,7 @@ export const commonTranslations = {
     privacyContactText:
       "Ef þú hefur spurningar um persónuvernd eða vilt óska eftir eyðingu gagna geturðu haft samband við okkur á:",
     privacyChanges:
-      "CampCast kann að uppfæra þessa persónuverndarstefnu af og til. Nýjasta útgáfa verður ávallt birt á vefsvæðinu.",
+      "Eltum Veðrið kann að uppfæra þessa persónuverndarstefnu af og til. Nýjasta útgáfa verður ávallt birt á vefsvæðinu.",
     privacyClose: "Loka",
 
     termsPrivacyAgreePrefix: "Ég samþykki",
@@ -695,11 +695,11 @@ export const commonTranslations = {
 
     refundTitle: "Endurgreiðslustefna",
     refundIntro:
-      "CampCast er áskriftarþjónusta sem innheimtir gjöld mánaðarlega eða árlega fyrir aðgang að Pro eiginleikum.",
+      "Eltum Veðrið er áskriftarþjónusta sem innheimtir gjöld mánaðarlega eða árlega fyrir aðgang að Pro eiginleikum.",
     refundCancel:
       "Notendur geta sagt upp áskrift hvenær sem er í gegnum greiðslugáttina. Aðgangur helst virkur út greitt tímabil.",
     refundWindow:
-      "CampCast veitir 14 daga endurgreiðslufrest frá fyrstu greiðslu nýrrar áskriftar.",
+      "Eltum Veðrið veitir 14 daga endurgreiðslufrest frá fyrstu greiðslu nýrrar áskriftar.",
     refundAfterWindow:
       "Eftir að 14 daga endurgreiðslufresti lýkur eru greiðslur ekki endurgreiddar.",
     refundRenewals:
@@ -730,7 +730,7 @@ export const commonTranslations = {
     decisionMoveBody: "Betra veður er líklegt hjá {site}.",
     decisionMoveBodyWindowAware: "Betri aðstæður eru líklegar hjá {site} næstu daga.",
 
-    blogBadge: "CampCast blogg",
+    blogBadge: "Eltum Veðrið blogg",
     blogTitle: "Veðurráð og skipulag fyrir tjaldsvæði á Íslandi",
     blogIntro:
       "Hagnýtar greinar um ferðalög á camper, vind, rigningu, val á tjaldsvæði og betra veður í nágrenninu.",
@@ -742,7 +742,7 @@ export const commonTranslations = {
 
     blogCtaTitle: "Skoða stöðuna á tjaldsvæðum núna",
     blogCtaText: "Berðu saman nálæg tjaldsvæði og sjáðu hvar veðrið er betra akkúrat núna.",
-    blogCtaButton: "Opna CampCast",
+    blogCtaButton: "Opna Eltum Veðrið",
     blogDraftPreviewBanner: "Drög til forskoðunar — þessi grein er ekki birt.",
     blogPreviewButton: "Forskoðun",
 

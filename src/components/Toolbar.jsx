@@ -99,7 +99,7 @@ export default function Toolbar({
         <button
           type="button"
           onClick={onToggleLanguage}
-          className="px-3 py-2 rounded-xl border border-slate-300 bg-slate-50 shadow-sm focus-ring smooth text-sm
+          className="px-3 py-2 rounded-xl border border-slate-300 bg-slate-50 shadow-sm focus-ring smooth text-xs
                     text-slate-900 hover:bg-slate-100
                     dark:bg-slate-900 dark:border-slate-600 dark:text-slate-100 dark:hover:bg-slate-800"
           title={t?.("toolbar.toggleLanguage") ?? "Toggle language"}

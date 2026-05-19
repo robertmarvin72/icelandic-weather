@@ -19,14 +19,14 @@ export default function Brand({ t, to = "/", size = "full", lang = "en" }) {
       <img
         src={logoLight}
         alt={altText}
-        className={`block dark:hidden ${isSlim ? "h-10" : "h-16 md:h-28"} w-auto shrink-0`}
+        className={`block dark:hidden ${isSlim ? "h-10" : "h-20 md:h-32"} w-auto shrink-0`}
       />
 
       {/* Dark mode logo */}
       <img
         src={logoDark}
         alt={altText}
-        className={`hidden dark:block ${isSlim ? "h-10" : "h-16 md:h-28"} w-auto shrink-0`}
+        className={`hidden dark:block ${isSlim ? "h-10" : "h-20 md:h-32"} w-auto shrink-0`}
       />
 
       {/* Tagline aligns to bottom of logo text */}

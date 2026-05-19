@@ -5,9 +5,9 @@ export default function ScoreExplanation({ t, lang = "en" }) {
   const copy =
     lang === "is"
       ? {
-          title: "Hvernig CampCast metur aðstæður til útilegu",
+          title: "Hvernig aðstæðurnar eru metnar",
           intro:
-            "CampCast gefur hverjum degi einkunn frá 0 til 10 byggt á veðuraðstæðum á tjaldsvæðinu.",
+            "Eltum Veðrið gefur hverjum degi einkunn frá 0 til 10 byggt á veðuraðstæðum á tjaldsvæðinu.",
           bullets: [
             {
               h: "Hiti",
