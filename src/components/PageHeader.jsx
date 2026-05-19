@@ -29,7 +29,7 @@ export default function PageHeader({
 }) {
   return (
     <>
-      <Header t={t} />
+      <Header t={t} lang={lang} />
 
       <div className="max-w-6xl mx-auto px-4 pt-2 pb-0">
         <Toolbar

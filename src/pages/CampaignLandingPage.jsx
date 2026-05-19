@@ -7,6 +7,7 @@ import { useThemeClass } from "../hooks/useThemeClass";
 
 export default function CampaignLandingPage({
   t,
+  lang,
   theme,
   headlineKey,
   subheadlineKey,
@@ -52,7 +53,7 @@ export default function CampaignLandingPage({
         {/* Sticky header */}
         <header className="sticky top-0 z-30 border-b border-slate-200/60 bg-white/80 backdrop-blur-sm dark:border-slate-800/60 dark:bg-slate-950/80">
           <div className="mx-auto flex max-w-4xl items-center justify-between gap-4 px-6 py-3">
-            <Brand t={t} size="slim" />
+            <Brand t={t} size="slim" lang={lang} />
             <Link
               to={ctaTo}
               className="rounded-xl bg-slate-900 px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-slate-700 dark:bg-white dark:text-slate-900 dark:hover:bg-slate-200"

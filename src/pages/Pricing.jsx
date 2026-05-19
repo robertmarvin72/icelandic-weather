@@ -210,7 +210,13 @@ export default function Pricing({ onClose, lang = "is", theme = "dark", t, me })
           </button>
 
           <div style={styles.brandHero} title={T("pricingBrandTitle", "CampCast Pro")}>
-            <img src="/logo.png" alt="CampCast" style={styles.brandHeroLogo} />
+            <img
+              src={!isLight
+                ? (lang === "is" ? "/eltumvedrid-dark-is.png" : "/chasetheweather-dark-en.png")
+                : (lang === "is" ? "/eltumvedrid-light-is.png" : "/chasetheweather-light-en.png")}
+              alt={lang === "is" ? "Eltum Veðrið" : "Chase the Weather"}
+              style={styles.brandHeroLogo}
+            />
 
             <div style={styles.brandHeroText}>
               <div style={styles.brandHeroTitle}>{T("pricingBrandTitle", "CampCast Pro")}</div>

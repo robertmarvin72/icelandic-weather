@@ -2,7 +2,11 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-export default function Brand({ t, to = "/", size = "full" }) {
+export default function Brand({ t, to = "/", size = "full", lang = "en" }) {
+  const logoLight = lang === "is" ? "/eltumvedrid-light-is.png" : "/chasetheweather-light-en.png";
+  const logoDark = lang === "is" ? "/eltumvedrid-dark-is.png" : "/chasetheweather-dark-en.png";
+  const altText = lang === "is" ? "Eltum Veðrið" : "Chase the Weather";
+
   // FLAT key (valfrjálst): brandTagline
   const tagline = t?.("brandTagline") ?? "Iceland Camping";
 
@@ -13,15 +17,15 @@ export default function Brand({ t, to = "/", size = "full" }) {
     <Link to={to} className="flex flex-col items-center min-w-0">
       {/* Light mode logo */}
       <img
-        src="/campcast-light.png"
-        alt="CampCast"
+        src={logoLight}
+        alt={altText}
         className={`block dark:hidden ${isSlim ? "h-10" : "h-16 md:h-28"} w-auto shrink-0`}
       />
 
       {/* Dark mode logo */}
       <img
-        src="/campcast-dark.png"
-        alt="CampCast"
+        src={logoDark}
+        alt={altText}
         className={`hidden dark:block ${isSlim ? "h-10" : "h-16 md:h-28"} w-auto shrink-0`}
       />
 

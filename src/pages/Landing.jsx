@@ -334,15 +334,10 @@ export default function Landing({ t }) {
         <div className="mx-auto flex max-w-7xl items-center justify-between px-5 py-4 lg:px-6">
           <a href="/" className="flex items-center gap-2">
             <img
-              src="/landing-light.png"
-              alt="CampCast logo"
-              className="h-20 w-20 object-contain shrink-0"
+              src={lang === "is" ? "/eltumvedrid-light-is.png" : "/chasetheweather-light-en.png"}
+              alt={lang === "is" ? "Eltum Veðrið" : "Chase the Weather"}
+              className="h-32 w-auto object-contain shrink-0"
             />
-
-            <div className="leading-tight">
-              <div className="text-xl font-semibold tracking-tight text-neutral-950">CampCast</div>
-              <div className="text-sm text-neutral-500">{tr("landingBrandSubtitle")}</div>
-            </div>
           </a>
 
           <nav className="hidden items-center gap-8 text-sm text-neutral-600 md:flex">

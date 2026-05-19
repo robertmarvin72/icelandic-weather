@@ -44,7 +44,11 @@ export default function Splash({ show, minMs = 600, fadeMs = 500 }) {
 
   if (!visible) return null;
 
-  const logoSrc = isDark ? "/campcast-dark.png" : "/campcast-light.png";
+  const lang = (typeof localStorage !== "undefined" && localStorage.getItem("lang")) || "is";
+  const logoSrc = isDark
+    ? (lang === "is" ? "/eltumvedrid-dark-is.png" : "/chasetheweather-dark-en.png")
+    : (lang === "is" ? "/eltumvedrid-light-is.png" : "/chasetheweather-light-en.png");
+  const altText = lang === "is" ? "Eltum Veðrið" : "Chase the Weather";
 
   return (
     <div
@@ -57,7 +61,7 @@ export default function Splash({ show, minMs = 600, fadeMs = 500 }) {
     >
       <img
         src={logoSrc}
-        alt="CampCast"
+        alt={altText}
         className="h-44 md:h-52 w-auto mb-0 animate-bounce-slow"
         loading="eager"
         decoding="async"

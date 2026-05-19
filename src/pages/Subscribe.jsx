@@ -3,7 +3,7 @@ import React, { useMemo, useState } from "react";
 import { useMe } from "../hooks/useMe";
 import { getStoredAttribution } from "../lib/attribution";
 
-export default function Subscribe({ onClose, theme = "dark", t }) {
+export default function Subscribe({ onClose, lang = "en", theme = "dark", t }) {
   const params = useMemo(() => new URLSearchParams(window.location.search), []);
 
   // ✅ NEW: read plan from querystring (monthly default)
@@ -204,8 +204,10 @@ export default function Subscribe({ onClose, theme = "dark", t }) {
 
           <div style={styles.brandHero} title={T("subscribeBrandTitle", "CampCast Pro")}>
             <img
-              src="/logo.png"
-              alt={T("subscribeBrandAlt", "CampCast")}
+              src={!isLight
+                ? (lang === "is" ? "/eltumvedrid-dark-is.png" : "/chasetheweather-dark-en.png")
+                : (lang === "is" ? "/eltumvedrid-light-is.png" : "/chasetheweather-light-en.png")}
+              alt={lang === "is" ? "Eltum Veðrið" : "Chase the Weather"}
               style={styles.brandHeroLogo}
             />
 

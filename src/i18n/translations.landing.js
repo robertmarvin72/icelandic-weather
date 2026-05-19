@@ -2,7 +2,7 @@ export const landingTranslations = {
   en: {
     landingBrandSubtitle: "Better weather near campsites in Iceland",
     landingNavHow: "How it works",
-    landingNavWhy: "Why CampCast",
+    landingNavWhy: "Why",
     landingNavScreenshots: "Screenshots",
     landingOpenCampcast: "Check weather now",
 
@@ -31,7 +31,7 @@ export const landingTranslations = {
     landingProblem2Title: "A normal forecast is not always enough",
     landingProblem2Text:
       "You do not just need the weather. You need to know if a nearby campsite is a better option.",
-    landingProblem3Title: "CampCast helps you choose better",
+    landingProblem3Title: "Chase the Weather helps you choose better",
     landingProblem3Text:
       "Compare campsite conditions and decide whether to stay or move before you drive.",
 
@@ -50,13 +50,13 @@ export const landingTranslations = {
     landingStep3Title: "Stay or move based on conditions",
     landingStep3Text: "Stay or move if a better option is nearby.",
 
-    landingWhyEyebrow: "Why CampCast",
+    landingWhyEyebrow: "Why",
     landingWhyTitle: "A forecast is not enough in Iceland",
     landingWhyText:
-      "A normal forecast tells you what the weather will be. CampCast helps you decide where it is best to be.",
+      "A normal forecast tells you what the weather will be. Chase the Weather helps you decide where it is best to be.",
 
     landingCompareHeaderLeft: "Typical weather app",
-    landingCompareHeaderRight: "CampCast",
+    landingCompareHeaderRight: "Chase the Weather",
     landingCompareLeft1: "Shows one forecast",
     landingCompareRight1: "Shows where it is better nearby",
     landingCompareLeft2: "Tells you what weather is coming",
@@ -68,13 +68,13 @@ export const landingTranslations = {
     landingBenefit1Text: "Quickly spot wind, gusts, and rain that can affect your stay.",
     landingBenefit2Title: "Made for campsite decisions",
     landingBenefit2Text:
-      "Not a generic weather app. CampCast helps you compare real options nearby.",
+      "Not a generic weather app. Chase the Weather helps you compare real options nearby.",
     landingBenefit3Title: "Built for Icelandic conditions",
     landingBenefit3Text: "Designed for road trips, changing forecasts, and exposed campsites.",
 
     landingScreenshotsEyebrow: "Examples",
     landingScreenshotsTitle: "See where it is better to be",
-    landingScreenshotsText: "CampCast shows whether you should stay, consider moving, or move.",
+    landingScreenshotsText: "Chase the Weather shows whether you should stay, consider moving, or move.",
     landingScreenshot1Title: "See conditions near your campsite",
     landingScreenshot1Subtitle:
       "See conditions where you are and whether a better option is nearby.",
@@ -146,7 +146,7 @@ export const landingTranslations = {
 
     comparisonSectionTitle: "Better weather may be closer than you think",
     comparisonSectionSubtitle:
-      "CampCast compares nearby campsites to help you spot calmer, drier, and more comfortable options.",
+      "Chase the Weather compares nearby campsites to help you spot calmer, drier, and more comfortable options.",
     comparisonCurrentLabel: "Current campsite",
     comparisonBetterLabel: "Nearby alternative",
 
@@ -191,9 +191,9 @@ export const landingTranslations = {
   is: {
     landingBrandSubtitle: "Veður í nágrenni tjaldsvæða á Íslandi",
     landingNavHow: "Hvernig virkar þetta",
-    landingNavWhy: "Af hverju CampCast",
+    landingNavWhy: "Af hverju",
     landingNavScreenshots: "Skjáskot",
-    landingOpenCampcast: "Opna CampCast",
+    landingOpenCampcast: "Opna Eltum Veðrið",
 
     landingEyebrow: "Hannað fyrir tjaldsvæði, húsbíla, hjólhýsi og tjöld á Íslandi.",
     landingHeroTitle: "Forðastu versta tjaldveðrið á Íslandi",
@@ -220,7 +220,7 @@ export const landingTranslations = {
     landingProblem2Title: "Venjuleg veðurspá dugar ekki alltaf",
     landingProblem2Text:
       "Þú þarft ekki bara að sjá veðrið. Þú þarft að vita hvort annað tjaldsvæði í nágrenninu sé betri kostur.",
-    landingProblem3Title: "CampCast hjálpar þér að velja betri kost",
+    landingProblem3Title: "Eltum Veðrið hjálpar þér að velja betri kost",
     landingProblem3Text:
       "Berðu saman aðstæður á tjaldsvæðum og taktu betri ákvörðun áður en þú keyrir af stað.",
 
@@ -235,13 +235,13 @@ export const landingTranslations = {
     landingStep3Title: "Veldu betri stað",
     landingStep3Text: "Vertu áfram eða færðu þig ef betri kostur er í nágrenninu.",
 
-    landingWhyEyebrow: "Af hverju CampCast",
+    landingWhyEyebrow: "Af hverju",
     landingWhyTitle: "Ekki bara veður – sjáðu hvar er betra að vera",
     landingWhyText:
-      "Venjuleg veðurspá segir þér hvernig veðrið verður. CampCast hjálpar þér að velja hvar er best að vera.",
+      "Venjuleg veðurspá segir þér hvernig veðrið verður. Eltum Veðrið hjálpar þér að velja hvar er best að vera.",
 
     landingCompareHeaderLeft: "Venjulegt veðurapp",
-    landingCompareHeaderRight: "CampCast",
+    landingCompareHeaderRight: "Eltum Veðrið",
     landingCompareLeft1: "Sýnir eina veðurspá",
     landingCompareRight1: "Sýnir þér hvar er betra að vera",
     landingCompareLeft2: "Segir þér hvernig veðrið verður á einum stað",
@@ -253,7 +253,7 @@ export const landingTranslations = {
     landingBenefit1Text: "Sjáðu fljótt vind, hviður og rigningu sem geta haft áhrif á dvölina.",
     landingBenefit2Title: "Gert fyrir ákvarðanir um tjaldsvæði",
     landingBenefit2Text:
-      "Ekki bara almennt veðurapp. CampCast hjálpar þér að bera saman raunverulega valkosti í nágrenninu.",
+      "Ekki bara almennt veðurapp. Eltum Veðrið hjálpar þér að bera saman raunverulega valkosti í nágrenninu.",
     landingBenefit3Title: "Byggt fyrir íslenskar aðstæður",
     landingBenefit3Text:
       "Hannað með íslenskar bílferðir, breytilegar spár og berskjölduð tjaldsvæði í huga.",
@@ -261,7 +261,7 @@ export const landingTranslations = {
     landingScreenshotsEyebrow: "Skjáskot",
     landingScreenshotsTitle: "Sjáðu hvar er betra að vera",
     landingScreenshotsText:
-      "CampCast sýnir þér hvort þú ættir að vera áfram, íhuga að færa þig eða færa þig.",
+      "Eltum Veðrið sýnir þér hvort þú ættir að vera áfram, íhuga að færa þig eða færa þig.",
     landingScreenshot1Title: "Sjáðu aðstæður við tjaldsvæðið þitt",
     landingScreenshot1Subtitle: "Sjáðu aðstæður þar sem þú ert og hvort betri kostur sé nálægt.",
     landingScreenshot2Title: "Finndu betra veður í nágrenninu",
@@ -329,7 +329,7 @@ export const landingTranslations = {
 
     comparisonSectionTitle: "Betra veður gæti verið nær en þú heldur",
     comparisonSectionSubtitle:
-      "CampCast ber saman nálæg tjaldsvæði til að hjálpa þér að finna rólegra og þægilegra veður.",
+      "Eltum Veðrið ber saman nálæg tjaldsvæði til að hjálpa þér að finna rólegra og þægilegra veður.",
     comparisonCurrentLabel: "Núverandi tjaldsvæði",
     comparisonBetterLabel: "Nálægur valkostur",
 

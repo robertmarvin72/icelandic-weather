@@ -54,7 +54,7 @@ export default function Brochure() {
   return (
     <main className="min-h-screen bg-soft-grid text-slate-900 dark:bg-slate-950 dark:text-slate-100 flex flex-col items-center justify-center px-6 py-16">
       <div className="w-full max-w-sm flex flex-col items-center gap-8 text-center">
-        <Brand t={() => undefined} />
+        <Brand t={() => undefined} lang={lang} />
 
         <div className="flex flex-col gap-3">
           <h1 className="text-3xl font-extrabold tracking-tight text-slate-900 dark:text-slate-100">
