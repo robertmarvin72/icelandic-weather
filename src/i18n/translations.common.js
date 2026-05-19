@@ -204,6 +204,8 @@ export const commonTranslations = {
     manageSubscription: "Manage",
     billingPortal: "Billing portal",
     openingBillingPortal: "Opening billing portal…",
+    successStatusPending: "Pending activation",
+    successDelayedActivation: "Your access will activate shortly. If this takes longer than expected, please refresh the page.",
 
     proUntil: "Pro until",
     proManageHint: "Manage your subscription and invoices.",
@@ -602,6 +604,8 @@ export const commonTranslations = {
     manageSubscription: "Stjórna",
     billingPortal: "Greiðslusíða",
     openingBillingPortal: "Opna greiðslugátt…",
+    successStatusPending: "Bíður virkjunar",
+    successDelayedActivation: "Aðgangur virkjast innan skamms. Ef þetta tekur lengri tíma en búist er við, endurhladdu síðuna.",
 
     availabilityClosedUntilMay: "Flest tjaldsvæði eru lokuð yfir veturinn (oft fram í maí).",
     availabilityOpenSeason: "Opið á sumartíma.",
