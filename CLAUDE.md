@@ -226,3 +226,36 @@ Git workflow:
 Subagent git ops:
 
 - `claude --model haiku` git commits require a TTY — does not work non-interactively. Run `git add` + `git commit` manually or inside an active Claude Code session.
+
+---
+
+## Branding — CampCast → Eltum Veðrið / Chase the Weather
+
+Rebranding is in progress. Both domains are live simultaneously.
+
+### Active domains
+- campcast.is — still live, do not redirect
+- eltumvedrid.is — new domain, fully supported
+
+### Logo assets
+Language and dark mode aware. Pattern:
+- IS + light → /eltumvedrid-light-is.png
+- IS + dark  → /eltumvedrid-dark-is.png
+- EN + light → /chasetheweather-light-en.png
+- EN + dark  → /chasetheweather-dark-en.png
+
+Default language is "is". Stored in localStorage key "lang".
+
+### Brand name in UI
+- lang === "is" → "Eltum Veðrið"
+- lang === "en" → "Chase the Weather"
+- Never use "CampCast" in new user-facing IS/EN strings
+
+### Translation files
+- src/i18n/translations.common.js — main app
+- src/i18n/translations.landing.js — landing page only
+
+### Do not change
+- campcast-light.png / campcast-dark.png — legacy, still referenced in some places
+- logo.png — legacy
+- Any string containing "formerly CampCast"
