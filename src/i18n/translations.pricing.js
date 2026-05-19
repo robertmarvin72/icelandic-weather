@@ -2,11 +2,11 @@ export const pricingTranslations = {
   en: {
     // Subscribe page (FLAT keys)
     subscribeBack: "← Back",
-    subscribeBrandTitle: "CampCast Pro",
+    subscribeBrandTitle: "Chase the Weather Pro",
     subscribeBrandSub: "Follow the weather",
-    subscribeBrandAlt: "CampCast",
+    subscribeBrandAlt: "Chase the Weather",
     subscribeTitle: "Activate Pro access",
-    subscribeLead: "You’ll complete payment with Paddle.",
+    subscribeLead: "You'll complete payment with Paddle.",
     subscribeBadgeSecure: "Secure checkout via Paddle",
     subscribeBadgeCancel: "Cancel anytime",
     subscribeBadgeInstant: "Pro activates instantly",
@@ -20,7 +20,7 @@ export const pricingTranslations = {
     subscribeFeatureAccuracyTitle: "More accuracy & calculations",
     subscribeFeatureAccuracyDesc: "Extra calculations where it matters.",
     subscribeFeatureSupportTitle: "Supports ongoing development",
-    subscribeFeatureSupportDesc: "Your purchase helps us keep improving CampCast.",
+    subscribeFeatureSupportDesc: "Your purchase helps us keep improving Chase the Weather.",
     subscribeOopsTitle: "Oops!",
     subscribeMissingCheckoutUrl: "Missing checkout URL.",
     subscribeSomethingWentWrong: "Something went wrong.",
@@ -32,11 +32,11 @@ export const pricingTranslations = {
     subscribeFooter: "Questions? Email us.",
 
     // Success page (FLAT keys)
-    successBack: "Back to CampCast",
+    successBack: "Back to Chase the Weather",
     successBackToHome: "Back to home",
     successTitle: "Payment received",
     successChecking: "Verifying your Pro access…",
-    successSubtitleActive: "Your CampCast Pro access is now active.",
+    successSubtitleActive: "Your Chase the Weather Pro access is now active.",
     successSubtitlePending: "Payment received. Pro usually activates instantly — give it a moment.",
     successFine: "Try refreshing shortly.",
     successBadgeSecure: "Secure payment via Paddle",
@@ -45,23 +45,23 @@ export const pricingTranslations = {
     successStatusChecking: "Checking…",
     successStatusActive: "Pro active",
     successStatusActivating: "Activating",
-    successPillTitle: "CampCast Pro",
+    successPillTitle: "Chase the Weather Pro",
     successPillSub: "Follow the weather",
-    successBrandAlt: "CampCast",
+    successBrandAlt: "Chase the Weather",
     successFinePrint:
-      "If Pro access doesn’t activate immediately, it will be enabled automatically within a few minutes.",
+      "If Pro access doesn't activate immediately, it will be enabled automatically within a few minutes.",
     successSupportLine:
-      "If anything doesn’t work as expected, contact us and we’ll assist you promptly.",
+      "If anything doesn't work as expected, contact us and we'll assist you promptly.",
 
     // Pricing page
     pricingBack: "← Back",
-    pricingBrandTitle: "CampCast Pro",
+    pricingBrandTitle: "Chase the Weather Pro",
     pricingBrandSub: "Follow the weather",
 
     pricingTitle: "Choose your plan",
     pricingLead:
-      "Unlock CampCast Pro to compare nearby campsites and see where weather conditions may be better.",
-    pricingNotLoggedIn: "We’ll ask for your email before checkout.",
+      "Unlock Chase the Weather Pro to compare nearby conditions and find better weather nearby.",
+    pricingNotLoggedIn: "We'll ask for your email before checkout.",
 
     pricingYearlyTitle: "Yearly",
     pricingBestValue: "Best value",
@@ -76,8 +76,8 @@ export const pricingTranslations = {
     pricingFeatureComparisons: "Detailed campsite comparisons",
     pricingFeatureCancelAnytime: "Cancel anytime",
 
-    pricingCtaYearly: "Unlock CampCast Pro Yearly",
-    pricingCtaMonthly: "Unlock CampCast Pro Monthly",
+    pricingCtaYearly: "Unlock Chase the Weather Pro Yearly",
+    pricingCtaMonthly: "Unlock Chase the Weather Pro Monthly",
     pricingYearlyEquivalentMonthly: "≈ €2 per month",
     pricingYearlySavings: "Save about €40 per year",
 
@@ -98,10 +98,10 @@ export const pricingTranslations = {
     pricingChargedInEur: "Payment is processed in euros (€) at checkout.",
 
     pricingInfoBack: "← Back to forecast",
-    pricingInfoEyebrow: "CampCast Pro",
+    pricingInfoEyebrow: "Chase the Weather Pro",
     pricingInfoTitle: "Know where the weather is actually better",
     pricingInfoLead:
-      "CampCast Pro helps you avoid the worst conditions, compare nearby campsites, and make better travel decisions before you go.",
+      "Chase the Weather Pro helps you avoid the worst conditions, compare nearby campsites, and make better travel decisions before you go.",
 
     pricingInfoFeature1Title: "7-day forecast",
     pricingInfoFeature1Body: "See more than the short view and plan further ahead.",
@@ -112,12 +112,12 @@ export const pricingTranslations = {
 
     pricingInfoMonthlyLabel: "Monthly",
     pricingInfoMonthlyPrice: "€4.99 / month",
-    pricingInfoMonthlyBody: "Flexible access to CampCast Pro features.",
+    pricingInfoMonthlyBody: "Flexible access to Chase the Weather Pro features.",
     pricingInfoYearlyLabel: "Yearly",
     pricingInfoYearlyPrice: "€24.99 / year",
-    pricingInfoYearlyBody: "Best value if you use CampCast regularly.",
+    pricingInfoYearlyBody: "Best value if you use Chase the Weather regularly.",
 
-    pricingInfoIncludesTitle: "What’s included",
+    pricingInfoIncludesTitle: "What's included",
     pricingInfoIncludes1: "Full access to Route Planner",
     pricingInfoIncludes2: "7-day campsite forecast",
     pricingInfoIncludes3: "Wind direction and shelter insights",
@@ -125,16 +125,16 @@ export const pricingTranslations = {
 
     pricingInfoTrustTitle: "Good to know",
     pricingInfoTrustBody:
-      "CampCast offers a 14-day refund period from the initial purchase of a new subscription. You can also manage your subscription through the billing portal.",
+      "Chase the Weather offers a 14-day refund period from the initial purchase of a new subscription. You can also manage your subscription through the billing portal.",
     pricingInfoRefundLink: "Refund policy",
-    pricingInfoUpgradeLink: "Get CampCast Pro",
+    pricingInfoUpgradeLink: "Get Chase the Weather Pro",
   },
   is: {
     // Subscribe page (FLAT keys)
     subscribeBack: "← Til baka",
-    subscribeBrandTitle: "CampCast Pro",
+    subscribeBrandTitle: "Eltum Veðrið Pro",
     subscribeBrandSub: "Eltum veðrið",
-    subscribeBrandAlt: "CampCast",
+    subscribeBrandAlt: "Eltum Veðrið",
     subscribeTitle: "Virkja Pro aðgang",
     subscribeLead: "Þú greiðir í gegnum Paddle.",
     subscribeBadgeSecure: "Örugg greiðsla í gegnum Paddle",
@@ -150,7 +150,7 @@ export const pricingTranslations = {
     subscribeFeatureAccuracyTitle: "Meiri nákvæmni & útreikningar",
     subscribeFeatureAccuracyDesc: "Aukaútreikningar þar sem það skiptir máli.",
     subscribeFeatureSupportTitle: "Styður áframhaldandi þróun",
-    subscribeFeatureSupportDesc: "Kaupin hjálpa okkur að bæta CampCast áfram.",
+    subscribeFeatureSupportDesc: "Kaupin hjálpa okkur að bæta Eltum Veðrið áfram.",
     subscribeOopsTitle: "Úbbs!",
     subscribeMissingCheckoutUrl: "Vantar checkout URL.",
     subscribeSomethingWentWrong: "Eitthvað fór úrskeiðis.",
@@ -162,11 +162,11 @@ export const pricingTranslations = {
     subscribeFooter: "Spurningar? Sendu okkur línu.",
 
     // Success page (FLAT keys)
-    successBack: "Fara í CampCast",
+    successBack: "Fara í Eltum Veðrið",
     successBackToHome: "Til baka heim",
     successTitle: "Greiðsla móttekin",
     successChecking: "Staðfesti Pro aðgang…",
-    successSubtitleActive: "CampCast Pro aðgangur hefur verið virkjaður.",
+    successSubtitleActive: "Eltum Veðrið Pro aðgangur hefur verið virkjaður.",
     successSubtitlePending:
       "Greiðsla móttekin. Pro virkjast yfirleitt strax — gefðu þessu smá stund.",
     successFine: "Prófaðu að endurhlaða eftir smá stund.",
@@ -176,9 +176,9 @@ export const pricingTranslations = {
     successStatusChecking: "Athuga…",
     successStatusActive: "Pro virkt",
     successStatusActivating: "Virkjar",
-    successPillTitle: "CampCast Pro",
+    successPillTitle: "Eltum Veðrið Pro",
     successPillSub: "Eltum veðrið",
-    successBrandAlt: "CampCast",
+    successBrandAlt: "Eltum Veðrið",
     successFinePrint:
       "Ef Pro aðgangur virkjast ekki strax, uppfærist hann sjálfkrafa innan örfárra mínútna.",
     successSupportLine:
@@ -186,12 +186,12 @@ export const pricingTranslations = {
 
     // Pricing page (Íslenska)
     pricingBack: "← Til baka",
-    pricingBrandTitle: "CampCast Pro",
+    pricingBrandTitle: "Eltum Veðrið Pro",
     pricingBrandSub: "Fylgstu með veðrinu",
 
     pricingTitle: "Veldu áskrift",
     pricingLead:
-      "Með CampCast Pro geturðu borið saman tjaldsvæði í nágrenninu og séð hvar veðuraðstæður gætu verið betri næstu daga.",
+      "Með Eltum Veðrið Pro færðu betri yfirsýn yfir aðstæður og getur séð hvar veðrið lítur betur út.",
     pricingNotLoggedIn: "Við biðjum um netfang áður en þú ferð í greiðslu.",
 
     pricingYearlyTitle: "Ársáskrift",
@@ -206,7 +206,7 @@ export const pricingTranslations = {
     pricingFeatureComparisons: "Nánari samanburður á tjaldsvæðum",
     pricingFeatureCancelAnytime: "Hægt að segja upp hvenær sem er",
 
-    pricingCtaYearly: "Opna CampCast Pro",
+    pricingCtaYearly: "Opna Eltum Veðrið Pro",
     pricingCtaMonthly: "Fá mánaðaráskrift",
     pricingYearlyEquivalentMonthly: "≈ 290 kr á mánuði",
     pricingYearlySavings: "Sparar um 5.890 kr á ári miðað við mánaðarverð",
@@ -229,10 +229,10 @@ export const pricingTranslations = {
     pricingBestValue: "Mest virði",
 
     pricingInfoBack: "← Til baka í spá",
-    pricingInfoEyebrow: "CampCast Pro",
+    pricingInfoEyebrow: "Eltum Veðrið Pro",
     pricingInfoTitle: "Sjáðu hvar veðrið er í raun betra",
     pricingInfoLead:
-      "CampCast Pro hjálpar þér að forðast verstu aðstæðurnar, bera saman nærliggjandi tjaldsvæði og taka betri ákvörðun áður en þú leggur af stað.",
+      "Eltum Veðrið Pro hjálpar þér að forðast verstu aðstæðurnar, bera saman nærliggjandi tjaldsvæði og taka betri ákvörðun áður en þú leggur af stað.",
 
     pricingInfoFeature1Title: "7 daga spá",
     pricingInfoFeature1Body: "Sjáðu lengra fram í tímann en með styttri yfirsýn.",
@@ -243,10 +243,10 @@ export const pricingTranslations = {
 
     pricingInfoMonthlyLabel: "Mánaðaráskrift",
     pricingInfoMonthlyPrice: "€4.99 / mánuður",
-    pricingInfoMonthlyBody: "Sveigjanlegur aðgangur að CampCast Pro eiginleikum.",
+    pricingInfoMonthlyBody: "Sveigjanlegur aðgangur að Eltum Veðrið Pro eiginleikum.",
     pricingInfoYearlyLabel: "Ársáskrift",
     pricingInfoYearlyPrice: "€24.99 / ár",
-    pricingInfoYearlyBody: "Besti kosturinn ef þú notar CampCast reglulega.",
+    pricingInfoYearlyBody: "Besti kosturinn ef þú notar Eltum Veðrið reglulega.",
 
     pricingInfoIncludesTitle: "Hvað fylgir",
     pricingInfoIncludes1: "Fullur aðgangur að Route Planner",
@@ -256,8 +256,8 @@ export const pricingTranslations = {
 
     pricingInfoTrustTitle: "Gott að vita",
     pricingInfoTrustBody:
-      "CampCast býður upp á 14 daga endurgreiðslufrest frá fyrstu greiðslu nýrrar áskriftar. Þú getur einnig séð um áskriftina í gegnum greiðslugáttina.",
+      "Eltum Veðrið býður upp á 14 daga endurgreiðslufrest frá fyrstu greiðslu nýrrar áskriftar. Þú getur einnig séð um áskriftina í gegnum greiðslugáttina.",
     pricingInfoRefundLink: "Sjá endurgreiðslustefnu",
-    pricingInfoUpgradeLink: "Fá CampCast Pro",
+    pricingInfoUpgradeLink: "Fá Eltum Veðrið Pro",
   },
 };

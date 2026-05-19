@@ -73,7 +73,7 @@ export default function Footer({ t }) {
 
         {/* Row 2: attribution (subtle) */}
         <div className="mt-2 text-xs text-slate-500 dark:text-slate-400">
-          © {year} CampCast · {t("footerDataBy")}{" "}
+          © {year} Eltum Veðrið · {t("footerDataBy")}{" "}
           <a
             href="https://open-meteo.com/"
             target="_blank"

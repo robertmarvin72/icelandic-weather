@@ -176,7 +176,7 @@ export default function Subscribe({ onClose, lang = "en", theme = "dark", t }) {
     {
       icon: "🤝",
       title: T("subscribeFeatureSupportTitle", "Supports ongoing development"),
-      desc: T("subscribeFeatureSupportDesc", "Your purchase helps us keep improving CampCast."),
+      desc: T("subscribeFeatureSupportDesc", "Your purchase helps us keep improving Chase the Weather."),
     },
   ];
 
@@ -202,7 +202,7 @@ export default function Subscribe({ onClose, lang = "en", theme = "dark", t }) {
             {T("subscribeBack", "← Back")}
           </button>
 
-          <div style={styles.brandHero} title={T("subscribeBrandTitle", "CampCast Pro")}>
+          <div style={styles.brandHero} title={T("subscribeBrandTitle", "Chase the Weather Pro")}>
             <img
               src={!isLight
                 ? (lang === "is" ? "/eltumvedrid-dark-is.png" : "/chasetheweather-dark-en.png")
@@ -212,7 +212,7 @@ export default function Subscribe({ onClose, lang = "en", theme = "dark", t }) {
             />
 
             <div style={styles.brandHeroText}>
-              <div style={styles.brandHeroTitle}>{T("subscribeBrandTitle", "CampCast Pro")}</div>
+              <div style={styles.brandHeroTitle}>{T("subscribeBrandTitle", "Chase the Weather Pro")}</div>
               <div style={styles.brandHeroSub}>{T("subscribeBrandSub", "Follow the weather")}</div>
             </div>
           </div>
@@ -314,7 +314,7 @@ export default function Subscribe({ onClose, lang = "en", theme = "dark", t }) {
           <div style={styles.footer}>
             {T("subscribeFooter", "Questions? Email us.")}{" "}
             <a
-              href="mailto:support@campcast.is?subject=CampCast%20Pro%20Support"
+              href="mailto:support@campcast.is?subject=Eltum%20Ve%C3%B0r%C3%AD%C3%B0%20Pro%20Support"
               style={{ fontWeight: 600, color: "#10b981", textDecoration: "none" }}
             >
               hello@campcast.is
