@@ -118,7 +118,7 @@ export default function Top5Leaderboard({
     if (!me?.user) return t?.("proCtaTitle") ?? "Fá Pro aðgang";
 
     if (me?.entitlements?.pro || isPro) {
-      if (isMonthly) return t?.("pricingCtaUpgradeToYearly") ?? "Upgrade to Yearly";
+      if (isMonthly) return t?.("manageSubscription") ?? "Manage";
       if (isYearly) return t?.("manageSubscription") ?? "Manage";
       return t?.("proActive") ?? "Pro virkt ✓";
     }
@@ -133,7 +133,7 @@ export default function Top5Leaderboard({
     }
 
     if (isMonthly) {
-      window.location.assign("/pricing");
+      if (typeof onManageSubscription === "function") onManageSubscription();
       return;
     }
 
@@ -277,7 +277,7 @@ export default function Top5Leaderboard({
       <hr />
 
       {/* ✅ CTA / Status */}
-      {isPro && !isMonthly ? (
+      {isPro ? (
         <div className="mt-3 rounded-xl border border-slate-200 dark:border-slate-700 p-3 text-sm">
           <div className="flex items-center justify-between gap-3">
             <div>
