@@ -1,6 +1,7 @@
 // src/pages/Success.jsx
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { useLanguage } from "../hooks/useLanguage";
 
 export default function Success({ theme = "dark", t }) {
   const [status, setStatus] = useState("checking"); // checking | active | pending
@@ -11,6 +12,11 @@ export default function Success({ theme = "dark", t }) {
   const [isPolling, setIsPolling] = useState(false);
 
   const isLight = theme === "light";
+  const { lang } = useLanguage();
+  const logoSrc = !isLight
+    ? (lang === "is" ? "/eltumvedrid-dark-is.png" : "/chasetheweather-dark-en.png")
+    : (lang === "is" ? "/eltumvedrid-light-is.png" : "/chasetheweather-light-en.png");
+  const logoAlt = lang === "is" ? "Eltum Veðrið" : "Chase the Weather";
 
   const T = (key, fallback) => {
     if (typeof t === "function") {
@@ -147,22 +153,21 @@ export default function Success({ theme = "dark", t }) {
       <div style={styles.container}>
         <div style={styles.topBar}>
           <Link to="/" style={styles.backLink}>
-            ← {T("successBack", "Back to CampCast")}
+            ← {T("successBack", "Back to Chase the Weather")}
           </Link>
 
-          <div style={styles.brandHero} title={T("successPillTitle", "CampCast Pro")}>
+          <div style={styles.brandHero} title={T("successPillTitle", "Chase the Weather Pro")}>
             {logoOk ? (
               <img
-                src="/logo.png"
-                alt={T("successBrandAlt", "CampCast")}
-                style={styles.brandHeroLogo}
+                src={logoSrc}
+                alt={logoAlt}
+                className="h-40 w-auto object-contain"
                 onError={() => setLogoOk(false)}
               />
             ) : null}
 
             <div style={styles.brandHeroText}>
-              <div style={styles.brandHeroTitle}>{T("successPillTitle", "CampCast Pro")}</div>
-              <div style={styles.brandHeroSub}>{T("successPillSub", "Follow the weather")}</div>
+              <div style={styles.brandHeroTitle}>{T("successPillTitle", "Chase the Weather Pro")}</div>
             </div>
           </div>
         </div>
