@@ -184,7 +184,7 @@ export default function BlogPostPage({ t, lang, theme }) {
 
   const title = `${post?.title || "CampCast"} | CampCast`;
   const description = post?.excerpt || "Weather tips and campsite planning for Iceland.";
-  const url = `https://campcast.is/blog/${post?.slug || slug || ""}`;
+  const url = `${typeof window !== "undefined" ? window.location.origin : "https://campcast.is"}/blog/${post?.slug || slug || ""}`;
   const image = post?.coverImage || "https://campcast.is/og-default.jpg";
 
   if (loading) {

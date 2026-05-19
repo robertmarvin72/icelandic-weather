@@ -39,10 +39,10 @@ export default function CampaignLandingPage({
       <Helmet>
         <title>{metaTitle}</title>
         <meta name="description" content={metaDescription} />
-        <link rel="canonical" href={`https://www.campcast.is${canonicalPath}`} />
+        <link rel="canonical" href={`${typeof window !== "undefined" ? window.location.origin : "https://campcast.is"}${canonicalPath}`} />
         <meta property="og:title" content={metaTitle} />
         <meta property="og:description" content={metaDescription} />
-        <meta property="og:url" content={`https://www.campcast.is${canonicalPath}`} />
+        <meta property="og:url" content={`${typeof window !== "undefined" ? window.location.origin : "https://campcast.is"}${canonicalPath}`} />
         <meta name="twitter:card" content="summary" />
         <meta name="twitter:title" content={metaTitle} />
         <meta name="twitter:description" content={metaDescription} />
