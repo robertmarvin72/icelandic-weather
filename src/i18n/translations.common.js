@@ -517,7 +517,7 @@ export const commonTranslations = {
 
     // Pro (Vindátt og skjól)
     proPreviewCta: "Forskoðun Pro",
-    windDirectionShelterTitle: "Vindátt og skjól (Pro)",
+    windDirectionShelterTitle: "Vindátt og skjól",
     windDirectionShelterSubtitle:
       "Opnaðu vindátt og skjólstuðul til að velja skjólmeiri tjaldsvæði.",
     windLabel: "VINDUR",
@@ -536,18 +536,18 @@ export const commonTranslations = {
     aboutTitle: "Um Eltum Veðrið",
 
     aboutIntro:
-      "Eltum Veðrið hjálpar tjaldgestum á Íslandi að taka betri ákvarðanir út frá raunverulegum veðuraðstæðum.",
+      "Eltum Veðrið hjálpar þér að sjá hvar veðrið lítur betur út næstu daga.",
 
     aboutGoal:
-      "Í stað þess að sýna aðeins veðurspá metur Eltum Veðrið aðstæður á tjaldsvæðum og bendir á þegar betra veður gæti verið í nágrenninu.",
+      "Eltum Veðrið ber saman aðstæður í nágrenninu og bendir á þegar betra veður gæti verið stutt frá.",
 
     aboutFeaturesTitle: "Eltum Veðrið býður upp á:",
 
     aboutFeatures: [
-      "7 daga veðurspá fyrir tjaldsvæði",
-      "Greiningu á vindi, úrkomu og hitastigi",
-      "Vikulega röðun tjaldsvæða eftir aðstæðum",
-      "Ferðaráðgjafa sem bendir á þegar betra veður gæti verið í nágrenninu",
+      "7 daga yfirsýn yfir aðstæður",
+      "Greiningu á vindi, rigningu og hitastigi",
+      "Yfirsýn yfir bestu staðina þessa vikuna",
+      "Leiðsögn sem hjálpar þér að ákveða hvort betra sé að vera áfram eða færa sig",
     ],
 
     aboutProTitle: "Í Pro útgáfu bætist við:",
@@ -555,12 +555,12 @@ export const commonTranslations = {
     aboutProFeatures: [
       "Vindátt",
       "Skjólstuðull sem hjálpar að finna rólegri staði",
-      "Nánari samanburður á svæðum",
+      "Nánari samanburður á stöðum",
       "Meiri innsýn í hvenær gæti borgað sig að færa sig",
     ],
 
     aboutOutro:
-      "Eltum Veðrið er hannað sérstaklega með íslenskar aðstæður í huga og þróast áfram með endurgjöf frá notendum.",
+      "Eltum Veðrið er byggt fyrir íslenskt veður og aðstæður á ferðalögum.",
 
     aboutContact: "Ertu með spurningu, hugmynd eða lendir í vandræðum?",
 
@@ -791,7 +791,7 @@ export const commonTranslations = {
     weatherFinderRainDay: "regnsdagur",
     weatherFinderRadius: "Radíus",
     weatherFinderDays: "Dagar",
-    weatherFinderResultTitleCalmest: "Rólegustu tjaldsvæði í nágrenninu",
+    weatherFinderResultTitleCalmest: "Rólegustu staðirnir í nágrenninu",
     weatherFinderResultTitleWarmest: "Hlýjustu tjaldsvæði í nágrenninu",
     weatherFinderResultTitleDriest: "Þurrstu tjaldsvæði í nágrenninu",
     weatherFinderShowFull: "Sýna alla röðun",
