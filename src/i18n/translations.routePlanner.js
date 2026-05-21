@@ -527,7 +527,7 @@ export const routePlannerTranslations = {
       "Veðrið verður ekki fullkomið, en enginn nálægur valkostur virðist vera greinilega betri.",
 
     travelAdvisorTitle: "Betra veður í nágrenninu",
-    travelAdvisorSubtitle: "Skoðaðu hvort aðstæður séu betri á nærliggjandi tjaldsvæði",
+    travelAdvisorSubtitle: "Sjáðu hvort betra veður sé í nágrenninu.",
 
     routeStateMove: "Færa sig",
     routeStateStay: "Vera áfram",
