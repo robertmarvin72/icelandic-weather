@@ -1,6 +1,6 @@
 import React from "react";
 
-export default function PrivacyPage({ t = (k, fallback) => fallback || k, lang = "en", theme = "light" }) {
+export default function PrivacyPage({ t = (k, fallback) => fallback || k, theme = "light" }) {
   const isDark = theme === "dark";
 
   const T = (key, fallback) => {
@@ -30,10 +30,8 @@ export default function PrivacyPage({ t = (k, fallback) => fallback || k, lang =
         <div className="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm p-6 md:p-8">
           <div className="flex flex-col items-center text-center mb-8">
             <img
-              src={isDark
-                ? (lang === "is" ? "/eltumvedrid-dark-is.png" : "/chasetheweather-dark-en.png")
-                : (lang === "is" ? "/eltumvedrid-light-is.png" : "/chasetheweather-light-en.png")}
-              alt={lang === "is" ? "Eltum Veðrið" : "Chase the Weather"}
+              src={isDark ? "/eltumvedrid-dark-is.png" : "/eltumvedrid-light-is.png"}
+              alt="Eltum Veðrið"
               className="w-40 md:w-52 lg:w-64 object-contain mb-6"
             />
 

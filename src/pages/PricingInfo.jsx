@@ -1,7 +1,7 @@
 import React from "react";
 import Footer from "../components/Footer";
 
-export default function PricingInfo({ theme = "light", lang = "is", t, onUpgrade }) {
+export default function PricingInfo({ theme = "light", t, onUpgrade }) {
   const isLight = theme === "light";
   const isDark = !isLight;
 
@@ -24,10 +24,8 @@ export default function PricingInfo({ theme = "light", lang = "is", t, onUpgrade
         <div className="rounded-3xl border border-slate-200/70 bg-white/80 p-6 shadow-sm backdrop-blur-sm dark:border-slate-700/70 dark:bg-slate-900/70 md:p-8">
           <div className="flex justify-center mb-6">
             <img
-              src={isDark
-                ? (lang === "is" ? "/eltumvedrid-dark-is.png" : "/chasetheweather-dark-en.png")
-                : (lang === "is" ? "/eltumvedrid-light-is.png" : "/chasetheweather-light-en.png")}
-              alt={lang === "is" ? "Eltum Veðrið" : "Chase the Weather"}
+              src={isDark ? "/eltumvedrid-dark-is.png" : "/eltumvedrid-light-is.png"}
+              alt="Eltum Veðrið"
               className="h-32 w-auto object-contain"
             />
           </div>

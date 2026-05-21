@@ -105,7 +105,6 @@ export default function MapView({
   selectedId,
   onSelect,
   userLocation,
-  lang = "en",
   t,
   theme = "light",
 }) {

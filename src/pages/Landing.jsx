@@ -334,8 +334,8 @@ export default function Landing({ t }) {
         <div className="mx-auto flex max-w-7xl items-center justify-between px-5 py-4 lg:px-6">
           <a href="/" className="flex items-center gap-2">
             <img
-              src={lang === "is" ? "/eltumvedrid-light-is.png" : "/chasetheweather-light-en.png"}
-              alt={lang === "is" ? "Eltum Veðrið" : "Chase the Weather"}
+              src="/eltumvedrid-light-is.png"
+              alt="Eltum Veðrið"
               className="h-32 w-auto object-contain shrink-0"
             />
           </a>

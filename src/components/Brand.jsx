@@ -2,10 +2,10 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-export default function Brand({ t, to = "/", size = "full", lang = "en" }) {
-  const logoLight = lang === "is" ? "/eltumvedrid-light-is.png" : "/chasetheweather-light-en.png";
-  const logoDark = lang === "is" ? "/eltumvedrid-dark-is.png" : "/chasetheweather-dark-en.png";
-  const altText = lang === "is" ? "Eltum Veðrið" : "Chase the Weather";
+export default function Brand({ t, to = "/", size = "full" }) {
+  const logoLight = "/eltumvedrid-light-is.png";
+  const logoDark = "/eltumvedrid-dark-is.png";
+  const altText = "Eltum Veðrið";
 
   // FLAT key (valfrjálst): brandTagline
   const tagline = t?.("brandTagline") ?? "Find better weather";

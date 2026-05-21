@@ -1,8 +1,6 @@
 // src/pages/Success.jsx
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { useLanguage } from "../hooks/useLanguage";
-
 export default function Success({ theme = "dark", t }) {
   const [status, setStatus] = useState("checking"); // checking | active | pending
   const [logoOk, setLogoOk] = useState(true);
@@ -12,11 +10,8 @@ export default function Success({ theme = "dark", t }) {
   const [isPolling, setIsPolling] = useState(false);
 
   const isLight = theme === "light";
-  const { lang } = useLanguage();
-  const logoSrc = !isLight
-    ? (lang === "is" ? "/eltumvedrid-dark-is.png" : "/chasetheweather-dark-en.png")
-    : (lang === "is" ? "/eltumvedrid-light-is.png" : "/chasetheweather-light-en.png");
-  const logoAlt = lang === "is" ? "Eltum Veðrið" : "Chase the Weather";
+  const logoSrc = !isLight ? "/eltumvedrid-dark-is.png" : "/eltumvedrid-light-is.png";
+  const logoAlt = "Eltum Veðrið";
 
   const T = (key, fallback) => {
     if (typeof t === "function") {
