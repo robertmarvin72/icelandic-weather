@@ -506,7 +506,7 @@ export const commonTranslations = {
     scoreExplanation_Rigning: "Úrkoma",
 
     // Misc UI
-    loadingMoreCampsites: "Hleð fleiri tjaldsvæðum…",
+    loadingMoreCampsites: "Hleð fleiri stöðum…",
     weeklyScore: "Vikueinkunn:",
     from: "af",
     scored: "reiknuð",
@@ -555,7 +555,7 @@ export const commonTranslations = {
     aboutProFeatures: [
       "Vindátt",
       "Skjólstuðull sem hjálpar að finna rólegri staði",
-      "Nánari samanburður á tjaldsvæðum",
+      "Nánari samanburður á svæðum",
       "Meiri innsýn í hvenær gæti borgað sig að færa sig",
     ],
 
