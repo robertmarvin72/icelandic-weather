@@ -44,7 +44,6 @@ export default function Splash({ show, minMs = 600, fadeMs = 500 }) {
 
   if (!visible) return null;
 
-  const lang = (typeof localStorage !== "undefined" && localStorage.getItem("lang")) || "is";
   const logoSrc = isDark ? "/eltumvedrid-dark-is.png" : "/eltumvedrid-light-is.png";
   const altText = "Eltum Veðrið";
 
@@ -65,7 +64,7 @@ export default function Splash({ show, minMs = 600, fadeMs = 500 }) {
         decoding="async"
       />
       <p className="font-medium tracking-tight text-sm md:text-base opacity-80 -mt-12">
-        {lang === "is" ? "Hleð veðurgögnum…" : "Fetching forecasts…"}
+        Athuga aðstæður…
       </p>
     </div>
   );
