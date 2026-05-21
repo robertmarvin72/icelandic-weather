@@ -631,18 +631,18 @@ export const commonTranslations = {
     termsTitle: "Skilmálar og fyrirvari",
 
     termsIntro1:
-      "Eltum Veðrið veitir veðurspár og mat á veðurskilyrðum á ferðaleiðum byggt á tiltækum veðurgögnum. Upplýsingarnar eru ætlaðar til viðmiðunar og geta verið ónákvæmar, ófullkomnar eða úreltar.",
+      "Eltum Veðrið sýnir veðurupplýsingar og mat á aðstæðum byggt á tiltækum veðurgögnum. Upplýsingarnar eru eingöngu til viðmiðunar og geta verið ónákvæmar eða breyst hratt.",
 
     termsIntro2:
-      "Veður á Íslandi getur breyst hratt og raunverulegar aðstæður geta verið frábrugðnar því sem birtist í þjónustunni.",
+      "Veður og aðstæður á Íslandi geta breyst hratt og verið frábrugðin því sem birtist í þjónustunni.",
 
     termsIntro3:
-      "Eltum Veðrið veitir ekki akstursleiðsögn og ábyrgist ekki öryggi ferðalaga. Notendur bera sjálfir ábyrgð á eigin ferðarákvörðunum og skulu ávallt kynna sér opinberar upplýsingar um veður og færð áður en lagt er af stað.",
+      "Eltum Veðrið veitir ekki akstursleiðsögn og ábyrgist ekki öryggi ferðalaga. Notendur bera sjálfir ábyrgð á ferðalögum og ákvörðunum sínum og skulu ávallt kynna sér opinberar upplýsingar um veður og færð áður en haldið er af stað.",
 
     termsSourcesTitle: "Mælt er með að notendur skoði sérstaklega upplýsingar frá:",
 
     termsLiability:
-      "Eltum Veðrið og rekstraraðilar þjónustunnar bera enga ábyrgð á slysum, tjóni, töfum eða öðru tjóni sem kann að verða vegna notkunar þjónustunnar eða upplýsinga sem þar koma fram.",
+      "Eltum Veðrið ber ekki ábyrgð á tjóni, töfum eða öðrum vandamálum sem kunna að verða vegna notkunar þjónustunnar eða upplýsinga sem þar birtast.",
     termsDisclaimerAgree: "Ég samþykki skilmála og fyrirvara",
     termsDisclaimerLink: "Skilmálar og fyrirvari",
 
