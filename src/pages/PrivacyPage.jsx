@@ -53,7 +53,7 @@ export default function PrivacyPage({ t = (k, fallback) => fallback || k, lang =
             <p>
               {T(
                 "privacyIntro2",
-                "Við kunnum að safna grunnupplýsingum um notendur, svo sem netfangi, reikningsupplýsingum og almennum notkunargögnum, til að geta veitt þjónustuna, viðhaldið áskriftum og bætt upplifun notenda."
+                "Við söfnum nauðsynlegum upplýsingum, svo sem netfangi, reikningsupplýsingum og almennum notkunargögnum, til að reka þjónustuna og halda utan um áskriftir."
               )}
             </p>
 
@@ -67,7 +67,7 @@ export default function PrivacyPage({ t = (k, fallback) => fallback || k, lang =
             <p>
               {T(
                 "privacyUsage",
-                "Við kunnum einnig að safna nafnlausum eða samanteknum notkunargögnum í greiningarskyni til að bæta virkni, stöðugleika og notendaupplifun þjónustunnar."
+                "Við getum einnig notað nafnlaus notkunargögn til að bæta virkni og notendaupplifun þjónustunnar."
               )}
             </p>
 
@@ -81,14 +81,14 @@ export default function PrivacyPage({ t = (k, fallback) => fallback || k, lang =
             <p>
               {T(
                 "privacyRetention",
-                "Persónuupplýsingar eru aðeins varðveittar eins lengi og þörf krefur vegna reksturs þjónustunnar eða samkvæmt lögum."
+                "Persónuupplýsingar eru aðeins varðveittar eins lengi og nauðsynlegt er vegna þjónustunnar eða samkvæmt lögum."
               )}
             </p>
 
             <p>
               {T(
                 "privacyRights",
-                "Notendur geta óskað eftir upplýsingum um gögn sem tengjast reikningi þeirra eða eftir eyðingu þeirra með því að hafa samband við þjónustuaðila."
+                "Notendur geta óskað eftir upplýsingum um gögn tengd reikningi sínum eða beðið um eyðingu þeirra með því að hafa samband við okkur."
               )}
             </p>
 

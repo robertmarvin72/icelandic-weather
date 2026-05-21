@@ -675,24 +675,24 @@ export const commonTranslations = {
 
     privacyTitle: "Persónuverndarstefna",
     privacyIntro1:
-      "Eltum Veðrið virðir persónuvernd notenda og leitast við að meðhöndla persónuupplýsingar á ábyrgan og öruggan hátt.",
+      "Eltum Veðrið leggur áherslu á að meðhöndla persónuupplýsingar á öruggan og ábyrgan hátt.",
     privacyIntro2:
-      "Við kunnum að safna grunnupplýsingum um notendur, svo sem netfangi, reikningsupplýsingum og almennum notkunargögnum, til að geta veitt þjónustuna, viðhaldið áskriftum og bætt upplifun notenda.",
+      "Við söfnum nauðsynlegum upplýsingum, svo sem netfangi, reikningsupplýsingum og almennum notkunargögnum, til að reka þjónustuna og halda utan um áskriftir.",
     privacyPayments:
-      "Greiðsluupplýsingar eru unnar af Paddle og eru ekki geymdar á netþjónum Eltum Veðrið.",
+      "Greiðslur eru unnar af Paddle og greiðsluupplýsingar eru ekki geymdar hjá Eltum Veðrið.",
     privacyUsage:
-      "Við kunnum einnig að safna nafnlausum eða samanteknum notkunargögnum í greiningarskyni til að bæta virkni, stöðugleika og notendaupplifun þjónustunnar.",
+      "Við getum einnig notað nafnlaus notkunargögn til að bæta virkni og notendaupplifun þjónustunnar.",
     privacySharing:
-      "Eltum Veðrið selur ekki persónuupplýsingar notenda og deilir þeim ekki með þriðju aðilum nema það sé nauðsynlegt til að vinna greiðslur, reka þjónustuna eða uppfylla lagaskyldur.",
+      "Eltum Veðrið selur ekki persónuupplýsingar og deilir þeim aðeins þegar það er nauðsynlegt til að vinna greiðslur, reka þjónustuna eða uppfylla lagaskyldur.",
     privacyRetention:
-      "Persónuupplýsingar eru aðeins varðveittar eins lengi og þörf krefur vegna reksturs þjónustunnar eða samkvæmt lögum.",
+      "Persónuupplýsingar eru aðeins varðveittar eins lengi og nauðsynlegt er vegna þjónustunnar eða samkvæmt lögum.",
     privacyRights:
-      "Notendur geta óskað eftir upplýsingum um gögn sem tengjast reikningi þeirra eða eftir eyðingu þeirra með því að hafa samband við þjónustuaðila.",
+      "Notendur geta óskað eftir upplýsingum um gögn tengd reikningi sínum eða beðið um eyðingu þeirra með því að hafa samband við okkur.",
     privacyContactTitle: "Samskipti",
     privacyContactText:
       "Ef þú hefur spurningar um persónuvernd eða vilt óska eftir eyðingu gagna geturðu haft samband við okkur á:",
     privacyChanges:
-      "Eltum Veðrið kann að uppfæra þessa persónuverndarstefnu af og til. Nýjasta útgáfa verður ávallt birt á vefsvæðinu.",
+      "Eltum Veðrið getur uppfært þessa persónuverndarstefnu af og til. Nýjasta útgáfa verður ávallt birt á vefsvæðinu.",
     privacyClose: "Loka",
 
     termsPrivacyAgreePrefix: "Ég samþykki",
