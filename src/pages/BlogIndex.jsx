@@ -67,21 +67,21 @@ export default function BlogIndex({ t, lang, theme }) {
         t={t}
         rightSlot={
           <Link to="/" className="text-sm font-medium hover:underline">
-            Opna Eltum Veðrið
+            {lang === "is" ? "Opna Eltum Veðrið" : "Open Chase the Weather"}
           </Link>
         }
       />
 
       <header className="mx-auto max-w-5xl px-4 pt-6 sm:px-6 lg:px-8">
         <Link to="/" className="inline-flex items-center gap-2 font-semibold">
-          <span className="text-lg">Eltum Veðrið</span>
+          <span className="text-lg">{lang === "is" ? "Eltum Veðrið" : "Chase the Weather"}</span>
         </Link>
       </header>
 
       <main className="mx-auto max-w-5xl px-4 py-10 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-3xl">
           <div className="inline-flex rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-sm font-medium text-emerald-800">
-            {translateOrFallback(t, "blogBadge", "CampCast Blog")}
+            {translateOrFallback(t, "blogBadge", "Eltum Veðrið Blog")}
           </div>
 
           <h1 className="mt-4 text-4xl font-bold tracking-tight sm:text-5xl">
@@ -94,7 +94,7 @@ export default function BlogIndex({ t, lang, theme }) {
               onClick={() => track("blog_index_top_cta_click")}
               className="inline-block rounded-xl bg-slate-900 px-5 py-3 font-medium text-white transition hover:opacity-90"
             >
-              Check live campsite conditions
+              {translateOrFallback(t, "blogCtaTitle", "Check live campsite conditions")}
             </a>
           </div>
 
@@ -153,16 +153,18 @@ export default function BlogIndex({ t, lang, theme }) {
 
                 {(i + 1) % 3 === 0 && (
                   <div className="rounded-3xl border border-emerald-200 bg-emerald-50 p-6 shadow-sm">
-                    <h3 className="mb-2 text-lg font-semibold">Not sure where to go next?</h3>
+                    <h3 className="mb-2 text-lg font-semibold">
+                      {translateOrFallback(t, "blogMidCtaTitle", "Not sure where to go next?")}
+                    </h3>
                     <p className="mb-4 text-sm text-slate-600">
-                      Compare nearby campsites and see where the weather is better right now.
+                      {translateOrFallback(t, "blogCtaText", "Compare nearby campsites and see where the weather is better right now.")}
                     </p>
                     <a
                       href="/"
                       onClick={() => track("blog_index_mid_cta_click")}
                       className="inline-block rounded-lg bg-slate-900 px-4 py-2 text-sm text-white"
                     >
-                      Opna Eltum Veðrið
+                      {translateOrFallback(t, "blogCtaButton", lang === "is" ? "Opna Eltum Veðrið" : "Open Chase the Weather")}
                     </a>
                   </div>
                 )}

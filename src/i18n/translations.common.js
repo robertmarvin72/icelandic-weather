@@ -345,6 +345,7 @@ export const commonTranslations = {
       "Practical articles focused on camper travel, wind, rain, campsite decisions, and better weather nearby.",
     blogPublishedLabel: "Published",
     blogReadArticle: "Read article",
+    blogMidCtaTitle: "Not sure where to go next?",
 
     backToBlog: "Back to blog",
     blogPostNotFoundTitle: "Article not found",
@@ -741,15 +742,16 @@ export const commonTranslations = {
     blogBadge: "Eltum Veðrið blogg",
     blogTitle: "Veðurráð og skipulag fyrir tjaldsvæði á Íslandi",
     blogIntro:
-      "Hagnýtar greinar um ferðalög á camper, vind, rigningu, val á tjaldsvæði og betra veður í nágrenninu.",
+      "Hagnýtar greinar um ferðalög, vind, rigningu og hvar veðrið gæti verið betra.",
     blogPublishedLabel: "Birt",
     blogReadArticle: "Lesa grein",
+    blogMidCtaTitle: "Ekki viss hvert á að fara?",
     backToBlog: "Til baka í blogg",
     blogPostNotFoundTitle: "Grein fannst ekki",
     blogPostNotFoundText: "Greinin sem þú reyndir að opna er ekki til eða hefur verið fjarlægð.",
 
-    blogCtaTitle: "Skoða stöðuna á tjaldsvæðum núna",
-    blogCtaText: "Berðu saman nálæg tjaldsvæði og sjáðu hvar veðrið er betra akkúrat núna.",
+    blogCtaTitle: "Skoða aðstæður núna",
+    blogCtaText: "Berðu saman staði í nágrenninu og sjáðu hvar veðrið lítur betur út.",
     blogCtaButton: "Opna Eltum Veðrið",
     blogDraftPreviewBanner: "Drög til forskoðunar — þessi grein er ekki birt.",
     blogPreviewButton: "Forskoðun",
