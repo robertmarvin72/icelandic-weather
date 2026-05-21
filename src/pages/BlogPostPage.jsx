@@ -182,10 +182,10 @@ export default function BlogPostPage({ t, lang, theme }) {
     };
   }, [slug]);
 
-  const title = `${post?.title || "CampCast"} | CampCast`;
+  const title = `${post?.title || "Eltum Veðrið"} | Eltum Veðrið`;
   const description = post?.excerpt || "Weather tips and campsite planning for Iceland.";
   const url = `${typeof window !== "undefined" ? window.location.origin : "https://campcast.is"}/blog/${post?.slug || slug || ""}`;
-  const image = post?.coverImage || "https://campcast.is/og-default.jpg";
+  const image = post?.coverImage || "https://eltumvedrid.is/og-default.jpg";
 
   if (loading) {
     return (

@@ -110,7 +110,7 @@ function IcelandCampingWeatherApp({ page = "home" }) {
     pushToast({
       type: "success",
       title: t?.("offlineReadyTitle") ?? "Ready for offline",
-      message: t?.("offlineReadyMsg") ?? "CampCast is cached and can work offline.",
+      message: t?.("offlineReadyMsg") ?? "Eltum Veðrið er vistað og getur virkað án nettengingar.",
     });
 
     setOfflineReady(false);

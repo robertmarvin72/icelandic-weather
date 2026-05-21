@@ -27,7 +27,7 @@ export const routePlannerTranslations = {
     previewPill: "Preview",
     routePlannerBestTomorrow: "Best nearby option tomorrow",
     routePlannerPreviewBody:
-      "CampCast looks at nearby campsites and highlights where weather conditions may be better tomorrow. \n\nWith Pro you can search a larger area, explore more days and see detailed comparisons.",
+      "Chase the Weather compares nearby conditions and highlights where weather may be better tomorrow. \n\nWith Pro you can search a larger area, explore more days and see detailed comparisons.",
     routePlannerPreviewNoBetter:
       "No clearly better option was found within 30 km tomorrow. Pro searches a larger area and more days.",
     routePlannerCandidatesPreselected: "Nearby campsites checked",
@@ -216,7 +216,7 @@ export const routePlannerTranslations = {
       "Weather in Iceland can change rapidly and actual conditions may differ from what is shown in the app.",
 
     routeDisclaimerBody3:
-      "CampCast provides informational guidance only. Users remain responsible for their own travel decisions.",
+      "Chase the Weather provides informational guidance only. Users remain responsible for their own travel decisions.",
 
     routeDisclaimerConfirm: "I understand",
 
@@ -309,7 +309,7 @@ export const routePlannerTranslations = {
     previewPill: "Forsýn",
     routePlannerBestTomorrow: "Besti kostur í nágrenninu á morgun",
     routePlannerPreviewBody:
-      "CampCast ber saman nærliggjandi tjaldsvæði og bendir á þegar veðuraðstæður gætu verið betri annars staðar.\n\nMeð Pro geturðu skoðað stærra svæði, fleiri daga og séð nánari samanburð.",
+      "Eltum Veðrið ber saman aðstæður í nágrenninu og bendir á hvar veðrið gæti verið betra.\n\nMeð Pro geturðu skoðað stærra svæði, fleiri daga og séð nánari samanburð.",
     routePlannerPreviewNoBetter:
       "Enginn greinilega betri kostur fannst innan 30 km á morgun. Pro leitar á stærra svæði og yfir fleiri daga.",
     routePlannerCandidatesPreselected: "Skoðuð svæði í kringum þig",
@@ -499,7 +499,7 @@ export const routePlannerTranslations = {
       "Veður á Íslandi getur breyst hratt og raunverulegar aðstæður geta verið frábrugðnar því sem birtist í appinu.",
 
     routeDisclaimerBody3:
-      "CampCast veitir eingöngu upplýsingar til viðmiðunar. Notendur bera sjálfir ábyrgð á eigin ferðarákvörðunum.",
+      "Eltum Veðrið veitir eingöngu upplýsingar til viðmiðunar. Notendur bera sjálfir ábyrgð á eigin ferðarákvörðunum.",
 
     routeDisclaimerConfirm: "Ég skil",
 

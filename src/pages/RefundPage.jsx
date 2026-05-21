@@ -31,7 +31,7 @@ export default function RefundPage({ t = (k, fallback) => fallback || k, theme =
           <div className="flex flex-col items-center text-center mb-8">
             <img
               src={isDark ? "/campcast-dark.png" : "/campcast-light.png"}
-              alt="CampCast"
+              alt="Eltum Veðrið"
               className="w-40 md:w-52 lg:w-64 object-contain mb-6"
             />
 

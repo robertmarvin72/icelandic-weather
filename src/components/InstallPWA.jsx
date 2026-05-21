@@ -62,8 +62,8 @@ export default function InstallPWA({ className = "" }) {
           "focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 transition " +
           "dark:bg-slate-900 dark:text-slate-100 dark:border-slate-600 dark:hover:bg-slate-800"
       }
-      aria-label="Install CampCast as an app"
-      title="Install CampCast on this device"
+      aria-label="Setja Eltum Veðrið upp sem app"
+      title="Setja Eltum Veðrið upp á þessu tæki"
     >
       <span>📲</span>
       <span className="font-medium">Install</span>

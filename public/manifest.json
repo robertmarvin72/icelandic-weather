@@ -1,7 +1,7 @@
 {
-  "name": "CampCast — Iceland Campsite Weather",
-  "short_name": "CampCast",
-  "description": "Get real-time campsite weather forecasts across Iceland with CampCast.",
+  "name": "Eltum Veðrið",
+  "short_name": "Eltum",
+  "description": "Berðu saman aðstæður og finndu betra veður í nágrenninu.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#fff6e3",

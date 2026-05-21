@@ -206,6 +206,8 @@ export const commonTranslations = {
     openingBillingPortal: "Opening billing portal…",
     successStatusPending: "Pending activation",
     successDelayedActivation: "Your access will activate shortly. If this takes longer than expected, please refresh the page.",
+    offlineReadyTitle: "Ready for offline",
+    offlineReadyMsg: "Chase the Weather is cached and can work offline.",
 
     proUntil: "Pro until",
     proManageHint: "Manage your subscription and invoices.",
@@ -606,6 +608,8 @@ export const commonTranslations = {
     openingBillingPortal: "Opna greiðslugátt…",
     successStatusPending: "Bíður virkjunar",
     successDelayedActivation: "Aðgangur virkjast innan skamms. Ef þetta tekur lengri tíma en búist er við, endurhladdu síðuna.",
+    offlineReadyTitle: "Tilbúið án nettengingar",
+    offlineReadyMsg: "Eltum Veðrið er vistað og getur virkað án nettengingar.",
 
     availabilityClosedUntilMay: "Flest tjaldsvæði eru lokuð yfir veturinn (oft fram í maí).",
     availabilityOpenSeason: "Opið á sumartíma.",

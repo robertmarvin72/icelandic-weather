@@ -94,7 +94,7 @@ const CAMPAIGN_CONFIGS = {
     headlineKey: "campaignAvoidBadWeatherHeadline",
     subheadlineKey: "campaignAvoidBadWeatherSubheadline",
     ctaKey: "campaignAvoidBadWeatherCta",
-    metaTitle: "Avoid Bad Camping Weather in Iceland | CampCast",
+    metaTitle: "Avoid Bad Camping Weather in Iceland | Eltum Veðrið",
     metaDescription:
       "Compare nearby Iceland campsites and find calmer, drier camping conditions before you settle in.",
     canonicalPath: "/avoid-bad-weather",
@@ -103,7 +103,7 @@ const CAMPAIGN_CONFIGS = {
     headlineKey: "campaignCaravanWeatherHeadline",
     subheadlineKey: "campaignCaravanWeatherSubheadline",
     ctaKey: "campaignCaravanWeatherCta",
-    metaTitle: "Caravan Weather Planning in Iceland | CampCast",
+    metaTitle: "Caravan Weather Planning in Iceland | Eltum Veðrið",
     metaDescription:
       "Check wind, gusts, rain, and nearby campsite options before towing or parking your caravan in Iceland.",
     canonicalPath: "/caravan-weather",
@@ -112,7 +112,7 @@ const CAMPAIGN_CONFIGS = {
     headlineKey: "campaignCampingWindHeadline",
     subheadlineKey: "campaignCampingWindSubheadline",
     ctaKey: "campaignCampingWindCta",
-    metaTitle: "Camping Wind Forecasts in Iceland | CampCast",
+    metaTitle: "Camping Wind Forecasts in Iceland | Eltum Veðrið",
     metaDescription:
       "Compare wind and gust conditions across nearby Iceland campsites before choosing where to stay.",
     canonicalPath: "/camping-wind",
@@ -121,7 +121,7 @@ const CAMPAIGN_CONFIGS = {
     headlineKey: "campaignWeekendCampingHeadline",
     subheadlineKey: "campaignWeekendCampingSubheadline",
     ctaKey: "campaignWeekendCampingCta",
-    metaTitle: "Weekend Camping Weather in Iceland | CampCast",
+    metaTitle: "Weekend Camping Weather in Iceland | Eltum Veðrið",
     metaDescription:
       "Plan a better weekend camping trip in Iceland by comparing nearby campsite weather conditions.",
     canonicalPath: "/weekend-camping",
