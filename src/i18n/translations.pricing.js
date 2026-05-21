@@ -232,12 +232,12 @@ export const pricingTranslations = {
     pricingInfoEyebrow: "Eltum Veðrið Pro",
     pricingInfoTitle: "Sjáðu hvar veðrið er í raun betra",
     pricingInfoLead:
-      "Eltum Veðrið Pro hjálpar þér að forðast verstu aðstæðurnar, bera saman nærliggjandi tjaldsvæði og taka betri ákvörðun áður en þú leggur af stað.",
+      "Eltum Veðrið Pro hjálpar þér að forðast verstu aðstæðurnar, bera saman staði í nágrenninu og taka betri ákvörðun áður en þú leggur af stað.",
 
     pricingInfoFeature1Title: "7 daga spá",
     pricingInfoFeature1Body: "Sjáðu lengra fram í tímann en með styttri yfirsýn.",
-    pricingInfoFeature2Title: "Route Planner",
-    pricingInfoFeature2Body: "Finndu nærliggjandi tjaldsvæði þar sem veðrið gæti verið betra.",
+    pricingInfoFeature2Title: "Ferðaráðgjafi",
+    pricingInfoFeature2Body: "Finndu staði í nágrenninu þar sem veðrið gæti verið betra.",
     pricingInfoFeature3Title: "Betri ákvörðun",
     pricingInfoFeature3Body: "Fáðu meiri innsýn í vind, hviður, úrkomu og heildaraðstæður.",
 
@@ -249,10 +249,10 @@ export const pricingTranslations = {
     pricingInfoYearlyBody: "Besti kosturinn ef þú notar Eltum Veðrið reglulega.",
 
     pricingInfoIncludesTitle: "Hvað fylgir",
-    pricingInfoIncludes1: "Fullur aðgangur að Route Planner",
-    pricingInfoIncludes2: "7 daga spá fyrir tjaldsvæði",
+    pricingInfoIncludes1: "Fullur aðgangur að Ferðaráðgjafa",
+    pricingInfoIncludes2: "7 daga yfirsýn yfir aðstæður",
     pricingInfoIncludes3: "Vindátt og skjól-innsýn",
-    pricingInfoIncludes4: "Ítarlegri samanburður milli tjaldsvæða",
+    pricingInfoIncludes4: "Ítarlegri samanburður milli staða",
 
     pricingInfoTrustTitle: "Gott að vita",
     pricingInfoTrustBody:
