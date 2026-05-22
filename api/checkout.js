@@ -75,18 +75,41 @@ async function getUserFromSession(req) {
 }
 
 async function ensurePaddleCustomer(user) {
-  if (user.paddle_customer_id) return user.paddle_customer_id;
+  if (user.paddle_customer_id) {
+    console.log(`[checkout] using stored Paddle customer: ${user.paddle_customer_id}`);
+    return user.paddle_customer_id;
+  }
 
-  const created = await paddleFetch("/customers", {
-    method: "POST",
-    body: {
-      email: user.email,
-      custom_data: { app: "campcast", user_id: user.id },
-    },
-  });
+  const email = user.email.trim().toLowerCase();
+  let customerId = null;
 
-  const customerId = created?.data?.id;
-  if (!customerId) throw new Error("Failed to create Paddle customer (missing id)");
+  try {
+    const lookup = await paddleFetch(`/customers?email=${encodeURIComponent(email)}`);
+    const match = (lookup?.data || []).find(
+      (c) => c.email?.toLowerCase() === email && !c.deleted_at
+    );
+    if (match?.id) {
+      customerId = match.id;
+      console.log(`[checkout] Paddle customer found by email lookup: ${customerId}`);
+    } else {
+      console.log(`[checkout] No existing Paddle customer found for email, creating new`);
+    }
+  } catch (e) {
+    console.warn(`[checkout] Paddle customer lookup by email failed, will attempt create: ${e?.message}`);
+  }
+
+  if (!customerId) {
+    const created = await paddleFetch("/customers", {
+      method: "POST",
+      body: {
+        email: user.email,
+        custom_data: { app: "campcast", user_id: user.id },
+      },
+    });
+
+    customerId = created?.data?.id;
+    if (!customerId) throw new Error("Failed to create Paddle customer (missing id)");
+  }
 
   await sql`
     update app_user
