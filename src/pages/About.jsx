@@ -29,10 +29,10 @@ export default function About({ t }) {
         <br />
         {t("aboutEmailLabel")}:{" "}
         <a
-          href="mailto:hello@campcast.is"
+          href="mailto:hello@eltumvedrid.is"
           className="text-sky-600 hover:text-sky-700 dark:text-sky-400 dark:hover:text-sky-300 underline-offset-4 hover:underline"
         >
-          hello@campcast.is
+          hello@eltumvedrid.is
         </a>
       </p>
     </main>
