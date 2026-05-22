@@ -325,6 +325,16 @@ export default async function handler(req, res) {
     res.setHeader("Cache-Control", "no-store");
     return res.status(200).json({ ok: true, url: checkoutUrl });
   } catch (e) {
-    return res.status(500).json({ ok: false, error: String(e?.message || e) });
+    const msg = String(e?.message || e);
+    if (msg.toLowerCase().includes("customer email conflicts")) {
+      console.warn(`[checkout] Paddle customer email conflict intercepted: ${msg}`);
+      return res.status(409).json({
+        ok: false,
+        code: "CUSTOMER_EMAIL_CONFLICT",
+        error: "Reikningur þinn er þegar til. Hafðu samband við hello@eltumvedrid.is",
+        errorEN: "Your account already exists. Please contact support at hello@eltumvedrid.is",
+      });
+    }
+    return res.status(500).json({ ok: false, error: msg });
   }
 }
