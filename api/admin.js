@@ -728,7 +728,14 @@ async function handleGenerateDraft(req, res) {
 
     return res.status(200).json({
       ok: true,
-      draft: normalizeBlogPost(insertedRows[0]),
+      draft: {
+        ...normalizeBlogPost(insertedRows[0]),
+        weatherNarrative: draft.weatherNarrative,
+        movementNarrative: draft.movementNarrative,
+        nearbyHighlights: draft.nearbyHighlights,
+        nearbyAttractions: draft.nearbyAttractions,
+        whyThisArea: draft.whyThisArea,
+      },
     });
   } catch (err) {
     console.error("generate-blog-draft error:", err);
@@ -781,6 +788,11 @@ function normalizeDraft(text) {
       content: parsed.content || "",
       metaTitle: parsed.metaTitle || parsed.title || "",
       metaDescription: parsed.metaDescription || "",
+      weatherNarrative: typeof parsed.weatherNarrative === "string" ? parsed.weatherNarrative : null,
+      movementNarrative: typeof parsed.movementNarrative === "string" ? parsed.movementNarrative : null,
+      nearbyHighlights: typeof parsed.nearbyHighlights === "string" ? parsed.nearbyHighlights : null,
+      nearbyAttractions: typeof parsed.nearbyAttractions === "string" ? parsed.nearbyAttractions : null,
+      whyThisArea: typeof parsed.whyThisArea === "string" ? parsed.whyThisArea : null,
     };
   } catch (e) {
     return {
@@ -790,6 +802,11 @@ function normalizeDraft(text) {
       content: text || "",
       metaTitle: "",
       metaDescription: "",
+      weatherNarrative: null,
+      movementNarrative: null,
+      nearbyHighlights: null,
+      nearbyAttractions: null,
+      whyThisArea: null,
     };
   }
 }

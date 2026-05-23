@@ -21,24 +21,30 @@ function languageLine(lang) {
 
 function sharedTone() {
   return `Tone:
+- Weather-first: lead with what the weather means for the reader, not with descriptions of places
 - Practical and advice-driven
-- Clear and direct
+- Clear and direct — short sentences, no filler
 - Written like advice from someone who knows Iceland well
 - Written for someone making an active travel or camping decision
-- Not promotional, not touristic`;
+- Not promotional, not touristic, not clickbait
+- Icelandic-first: write primarily for an Icelandic-speaking audience making real decisions`;
 }
 
 function sharedAntiHallucinationRules() {
   return `Anti-hallucination rules:
-- Do NOT invent specific weather observations unless explicitly provided
+- Do NOT invent specific weather observations unless explicitly provided in the forecast data
 - Do NOT invent terrain details, shelter, facilities, or amenities
 - Do NOT invent nearby attractions, roads, or points of interest
-- Do NOT invent warnings or road conditions
+- Do NOT invent road conditions or road closures
+- Do NOT invent weather warnings or safety claims
+- Do NOT claim live conditions unless they are explicitly provided in the input data
 - Do NOT generate generic tourism content
+- If nearby highlights are not provided in the input, keep the section general or omit it entirely
 - If a detail is unknown, omit it — do not guess
 - Only use information explicitly provided in the input data
 - Avoid all of the following phrases or anything similar:
-  "Iceland offers", "stunning", "breathtaking", "unique experience", "nestled", "picturesque", "perfect for"`;
+  "Iceland offers", "stunning", "breathtaking", "unique experience", "nestled", "picturesque", "perfect for",
+  "hidden gem paradise", "best place in Iceland", "guaranteed perfect weather", "safe to drive", "official warning"`;
 }
 
 function sharedWeatherDataPriority() {
@@ -69,6 +75,26 @@ function sharedInternalLinkingInstruction() {
 - Do not force internal links — only include if it fits the content organically`;
 }
 
+function sharedMovementGuidance() {
+  return `Movement guidance:
+- If the forecast data suggests conditions are significantly better at a nearby location, mention it briefly
+- Use phrasing such as: "weather may be calmer further east", "drier conditions expected in the south this week", "more shelter available in nearby valleys"
+- Icelandic examples: "veðrið lítur betur út í austurátt", "minnsta rigning er spáð á Suðurlandi þessa viku", "minni vindur er á völlunum neðar"
+- Do NOT invent specific alternative campsites unless they are provided in the input data
+- Do NOT claim a specific place is better unless the forecast data supports it
+- If no nearby alternatives are provided, use directional or regional guidance only (e.g. "further south", "the eastern fjords")
+- Frame movement as a practical option, not a requirement`;
+}
+
+function sharedNearbyPlacesRules() {
+  return `Nearby places rules:
+- Only mention nearby places if they are explicitly provided in the input data or structured context
+- Acceptable nearby place types (if provided): waterfalls, hot springs, viewpoints, towns, scenic drives, swimming pools, short walks
+- Do NOT invent nearby attractions, distances, or access routes
+- Do NOT describe scenery unless it directly affects camping conditions (e.g. exposed ridge, valley shelter)
+- If no nearby places are provided, omit this section entirely — do not generalize`;
+}
+
 function icelandicOutputRules(lang) {
   if (lang !== "is") return "";
   return `Extra rules for Icelandic output:
@@ -76,7 +102,11 @@ function icelandicOutputRules(lang) {
 - Prefer simple, direct sentences
 - Avoid stiff machine-like phrasing
 - Avoid overly formal wording
-- Write like practical advice, not a brochure`;
+- Write like practical advice, not a brochure
+- Do not use slang or idioms that translate poorly from English
+- Do not mimic English sentence structure — restructure for Icelandic where needed
+- Avoid compound words that sound unnatural in spoken Icelandic
+- Aim for sentences that would feel natural if read aloud by an Icelander`;
 }
 
 function jsonOutputShape() {
@@ -84,15 +114,28 @@ function jsonOutputShape() {
 Do not wrap the JSON in markdown code fences.
 Do not include any extra commentary.
 
-Return this exact shape:
+Return this exact shape. Required fields must always be present. Optional fields must be null if you do not have sufficient grounded input data — never invent content for them:
+
 {
   "title": "...",
   "excerpt": "...",
   "slug": "...",
   "content": "...",
   "metaTitle": "...",
-  "metaDescription": "..."
+  "metaDescription": "...",
+  "weatherNarrative": null,
+  "movementNarrative": null,
+  "nearbyHighlights": null,
+  "nearbyAttractions": null,
+  "whyThisArea": null
 }
+
+Optional field rules:
+- "weatherNarrative": A focused 1-3 sentence narrative about the weather conditions. Only fill if forecast data was provided. Otherwise null.
+- "movementNarrative": A practical stay-vs-move narrative. Only fill if comparing locations or if forecast clearly suggests moving. Otherwise null.
+- "nearbyHighlights": Only fill if nearby highlights were explicitly stated in the input. Do NOT invent. Otherwise null.
+- "nearbyAttractions": Only fill if nearby attractions were explicitly stated in the input. Do NOT invent. Otherwise null.
+- "whyThisArea": A 1-2 sentence explanation of why this area or period is recommended. Only fill if there is a clear positive signal from the provided data. Otherwise null.
 
 Content must be markdown.`;
 }
@@ -146,6 +189,9 @@ Rules:
 - Do not present the comparison as a table or bullet-style breakdown
 - Write as a continuous comparison driven by the actual conditions
 - Do not invent terrain details, shelter elements, campsite facilities, or amenities unless explicitly provided in the context
+- Do not invent road conditions or road closures
+- Do not invent weather warnings or safety claims
+- Do not claim live conditions unless explicitly provided in the input data
 - If a detail is unknown, do not guess
 - Focus on helping the reader make a decision, not describing a destination
 - Avoid all generic travel descriptions
@@ -189,6 +235,10 @@ Important:
 - Prioritize practical decision value over general travel writing
 - The reader is actively deciding where to stay under uncertainty
 
+${sharedMovementGuidance()}
+
+${sharedNearbyPlacesRules()}
+
 Meta rules:
 - Meta title must include location and decision intent (e.g. where to camp, which is better, wind conditions)
 - Meta description must clearly state the practical benefit for the reader
@@ -223,6 +273,9 @@ Important grounding rules:
 - Do NOT invent specific current weather observations unless they were explicitly provided
 - If forecast details are not provided, write in general practical terms for camping decisions, not fake live conditions
 - Do NOT invent facilities, amenities, roads, terrain, shelter, or scenery unless explicitly provided
+- Do NOT invent road conditions or road closures
+- Do NOT invent weather warnings or safety claims
+- Do NOT claim live conditions unless explicitly provided in the input data
 - Do NOT guess facts about the campsite
 - Keep the text grounded, practical, and specific
 - Avoid tourism language and avoid dramatic filler
@@ -302,6 +355,10 @@ Extra rules for Icelandic output:
 - Avoid overly formal wording
 - Write like practical advice, not a brochure
 
+${sharedMovementGuidance()}
+
+${sharedNearbyPlacesRules()}
+
 Meta rules:
 - Meta title must include the campsite name and region
 - Meta description must explain the practical value for campers
@@ -341,6 +398,10 @@ Structure:
 - End with a brief CTA to check live conditions
 
 ${sharedWeatherDataPriority()}
+
+${sharedMovementGuidance()}
+
+${sharedNearbyPlacesRules()}
 
 ${sharedAntiHallucinationRules()}
 
@@ -396,6 +457,10 @@ Rules:
 
 ${sharedWeatherDataPriority()}
 
+${sharedMovementGuidance()}
+
+${sharedNearbyPlacesRules()}
+
 ${sharedAntiHallucinationRules()}
 
 ${sharedCtaInstruction()}
@@ -448,6 +513,10 @@ Rules:
 - Do not make this article feel like a "do not travel" warning — frame as decision support
 
 ${sharedWeatherDataPriority()}
+
+${sharedMovementGuidance()}
+
+${sharedNearbyPlacesRules()}
 
 ${sharedAntiHallucinationRules()}
 
