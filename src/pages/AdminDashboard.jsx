@@ -334,8 +334,10 @@ function BlogEditorCard({ post, onSave, onPublish, onDelete, onCancel, saving, p
     ctaText: post.ctaText || "",
     ctaButton: post.ctaButton || "",
     ctaTarget: post.ctaTarget || "",
+    nearbyHighlightsJson: post.nearbyHighlights ? JSON.stringify(post.nearbyHighlights, null, 2) : "",
     content: post.content || "",
   });
+  const [nearbyHighlightsError, setNearbyHighlightsError] = useState("");
 
   useEffect(() => {
     setDraft({
@@ -351,9 +353,11 @@ function BlogEditorCard({ post, onSave, onPublish, onDelete, onCancel, saving, p
       ctaText: post.ctaText || "",
       ctaButton: post.ctaButton || "",
       ctaTarget: post.ctaTarget || "",
+      nearbyHighlightsJson: post.nearbyHighlights ? JSON.stringify(post.nearbyHighlights, null, 2) : "",
       content: post.content || "",
     });
-  }, [post.id, post.title, post.excerpt, post.coverImage, post.metaTitle, post.metaDescription, post.ctaHint, post.sourceType, post.topic, post.ctaTitle, post.ctaText, post.ctaButton, post.ctaTarget, post.content]);
+    setNearbyHighlightsError("");
+  }, [post.id, post.title, post.excerpt, post.coverImage, post.metaTitle, post.metaDescription, post.ctaHint, post.sourceType, post.topic, post.ctaTitle, post.ctaText, post.ctaButton, post.ctaTarget, post.nearbyHighlights, post.content]);
 
   const dirty = useMemo(() => {
     return (
@@ -369,6 +373,7 @@ function BlogEditorCard({ post, onSave, onPublish, onDelete, onCancel, saving, p
       draft.ctaText !== (post.ctaText || "") ||
       draft.ctaButton !== (post.ctaButton || "") ||
       draft.ctaTarget !== (post.ctaTarget || "") ||
+      draft.nearbyHighlightsJson !== (post.nearbyHighlights ? JSON.stringify(post.nearbyHighlights, null, 2) : "") ||
       draft.content !== (post.content || "")
     );
   }, [draft, post]);
@@ -442,7 +447,20 @@ function BlogEditorCard({ post, onSave, onPublish, onDelete, onCancel, saving, p
           <button
             type="button"
             disabled={!dirty || saving}
-            onClick={() => onSave(post.id, draft)}
+            onClick={() => {
+              const raw = draft.nearbyHighlightsJson.trim();
+              if (raw) {
+                try {
+                  const parsed = JSON.parse(raw);
+                  onSave(post.id, { ...draft, nearbyHighlights: parsed, nearbyHighlightsJson: undefined });
+                } catch {
+                  setNearbyHighlightsError(lang === "is" ? "Ógilt JSON" : "Invalid JSON");
+                  return;
+                }
+              } else {
+                onSave(post.id, { ...draft, nearbyHighlights: null, nearbyHighlightsJson: undefined });
+              }
+            }}
             className="rounded-xl bg-slate-900 px-4 py-2 text-sm font-medium text-white disabled:cursor-not-allowed disabled:opacity-50 dark:bg-white dark:text-slate-950"
           >
             {saving ? "Saving..." : "Save changes"}
@@ -577,6 +595,22 @@ function BlogEditorCard({ post, onSave, onPublish, onDelete, onCancel, saving, p
               />
             </div>
           </div>
+        </div>
+
+        <div>
+          <FieldLabel>{lang === "is" ? "Nálægar athyglisverðar staðir" : "Nearby highlights"}</FieldLabel>
+          <TextArea
+            value={draft.nearbyHighlightsJson}
+            onChange={(e) => {
+              setDraft((prev) => ({ ...prev, nearbyHighlightsJson: e.target.value }));
+              setNearbyHighlightsError("");
+            }}
+            rows={4}
+            placeholder='[{"name":"Seljalandsfoss","type":"waterfall"}]'
+          />
+          {nearbyHighlightsError && (
+            <p className="mt-1 text-sm text-rose-600 dark:text-rose-400">{nearbyHighlightsError}</p>
+          )}
         </div>
 
         <div>

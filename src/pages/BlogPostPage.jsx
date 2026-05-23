@@ -346,6 +346,33 @@ export default function BlogPostPage({ t, lang, theme }) {
 
             <div className="mt-8">
               <BlogContent content={post.content} isLight={isLight} />
+              {Array.isArray(post.nearbyHighlights) && post.nearbyHighlights.length > 0 && (
+                <div className="mt-10 max-w-2xl mx-auto">
+                  <h2
+                    className={`text-2xl font-semibold tracking-tight ${
+                      isLight ? "text-slate-900" : "text-slate-100"
+                    }`}
+                  >
+                    {lang === "is" ? "Í nágrenninu" : "Nearby"}
+                  </h2>
+                  <ul
+                    className={`mt-4 space-y-2 ${isLight ? "text-slate-700" : "text-slate-300"}`}
+                  >
+                    {post.nearbyHighlights.map((item, i) => (
+                      <li key={i} className="flex items-baseline gap-2 text-base">
+                        <span className="font-medium">{item.name}</span>
+                        {item.type && (
+                          <span
+                            className={`text-sm ${isLight ? "text-slate-500" : "text-slate-400"}`}
+                          >
+                            {item.type}
+                          </span>
+                        )}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
               <BlogPostCta
                 t={t}
                 isLight={isLight}

@@ -37,6 +37,7 @@ function normalizeBlogPost(row) {
     ctaText: row.cta_text || null,
     ctaButton: row.cta_button || null,
     ctaTarget: row.cta_target || null,
+    nearbyHighlights: row.nearby_highlights || null,
     status: row.status || "draft",
     publishedAt: row.published_at || null,
     createdAt: row.created_at || null,
@@ -382,6 +383,7 @@ async function handleListBlogPosts(req, res) {
         cta_text,
         cta_button,
         cta_target,
+        nearby_highlights,
         status,
         published_at,
         created_at,
@@ -409,7 +411,7 @@ async function handleUpdateBlogPost(req, res) {
     if (!me) return;
 
     const { id, title, excerpt, content, metaTitle, metaDescription, coverImage, ctaHint, slug,
-      sourceType, topic, ctaTitle, ctaText, ctaButton, ctaTarget } =
+      sourceType, topic, ctaTitle, ctaText, ctaButton, ctaTarget, nearbyHighlights } =
       req.body || {};
 
     if (!id) {
@@ -433,6 +435,7 @@ async function handleUpdateBlogPost(req, res) {
         cta_text,
         cta_button,
         cta_target,
+        nearby_highlights,
         status,
         published_at,
         created_at,
@@ -461,6 +464,7 @@ async function handleUpdateBlogPost(req, res) {
     const nextCtaText = ctaText ?? existing.cta_text ?? null;
     const nextCtaButton = ctaButton ?? existing.cta_button ?? null;
     const nextCtaTarget = ctaTarget ?? existing.cta_target ?? null;
+    const nextNearbyHighlights = nearbyHighlights !== undefined ? (nearbyHighlights || null) : (existing.nearby_highlights ?? null);
     const nextSlug = slugify(slug ?? nextTitle ?? existing.slug ?? existing.title ?? "post");
 
     const duplicateRows = await sql`
@@ -495,6 +499,7 @@ async function handleUpdateBlogPost(req, res) {
         cta_text = ${nextCtaText},
         cta_button = ${nextCtaButton},
         cta_target = ${nextCtaTarget},
+        nearby_highlights = ${nextNearbyHighlights},
         updated_at = now()
       where id = ${id}
       returning
@@ -513,6 +518,7 @@ async function handleUpdateBlogPost(req, res) {
         cta_text,
         cta_button,
         cta_target,
+        nearby_highlights,
         status,
         published_at,
         created_at,
@@ -576,6 +582,7 @@ async function handlePublishBlogPost(req, res) {
         cta_text,
         cta_button,
         cta_target,
+        nearby_highlights,
         status,
         published_at,
         created_at,
@@ -686,6 +693,7 @@ async function handleGenerateDraft(req, res) {
         cta_text,
         cta_button,
         cta_target,
+        nearby_highlights,
         status
       )
       values (
@@ -697,6 +705,7 @@ async function handleGenerateDraft(req, res) {
         ${draft.metaDescription || ""},
         ${coverImage || null},
         'automated',
+        ${null},
         ${null},
         ${null},
         ${null},
@@ -720,6 +729,7 @@ async function handleGenerateDraft(req, res) {
         cta_text,
         cta_button,
         cta_target,
+        nearby_highlights,
         status,
         published_at,
         created_at,
@@ -790,7 +800,7 @@ function normalizeDraft(text) {
       metaDescription: parsed.metaDescription || "",
       weatherNarrative: typeof parsed.weatherNarrative === "string" ? parsed.weatherNarrative : null,
       movementNarrative: typeof parsed.movementNarrative === "string" ? parsed.movementNarrative : null,
-      nearbyHighlights: typeof parsed.nearbyHighlights === "string" ? parsed.nearbyHighlights : null,
+      nearbyHighlights: Array.isArray(parsed.nearbyHighlights) ? parsed.nearbyHighlights : null,
       nearbyAttractions: typeof parsed.nearbyAttractions === "string" ? parsed.nearbyAttractions : null,
       whyThisArea: typeof parsed.whyThisArea === "string" ? parsed.whyThisArea : null,
     };
@@ -834,6 +844,7 @@ async function handleGetPublishedBlogPosts(req, res) {
         cta_text,
         cta_button,
         cta_target,
+        nearby_highlights,
         status,
         published_at,
         created_at,
@@ -888,6 +899,7 @@ async function handleGetPublishedBlogPostBySlug(req, res) {
           cta_text,
           cta_button,
           cta_target,
+          nearby_highlights,
           status,
           published_at,
           created_at,
@@ -929,6 +941,7 @@ async function handleGetPublishedBlogPostBySlug(req, res) {
         cta_text,
         cta_button,
         cta_target,
+        nearby_highlights,
         status,
         published_at,
         created_at,
