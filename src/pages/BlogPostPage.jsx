@@ -346,7 +346,16 @@ export default function BlogPostPage({ t, lang, theme }) {
 
             <div className="mt-8">
               <BlogContent content={post.content} isLight={isLight} />
-              <BlogPostCta t={t} isLight={isLight} to="/" slug={post.slug} />
+              <BlogPostCta
+                t={t}
+                isLight={isLight}
+                to="/"
+                slug={post.slug}
+                ctaTitle={post.ctaTitle}
+                ctaText={post.ctaText}
+                ctaButton={post.ctaButton}
+                ctaTarget={post.ctaTarget}
+              />
             </div>
           </article>
         </main>

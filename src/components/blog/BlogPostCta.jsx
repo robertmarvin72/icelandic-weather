@@ -6,7 +6,12 @@ function translateOrFallback(t, key, fallback) {
   return value;
 }
 
-export default function BlogPostCta({ t, isLight, to = "/", slug }) {
+export default function BlogPostCta({ t, isLight, to = "/", slug, ctaTitle, ctaText, ctaButton, ctaTarget }) {
+  const resolvedTo = ctaTarget || to;
+  const resolvedTitle = ctaTitle || translateOrFallback(t, "blogCtaTitle", "Check live campsite conditions");
+  const resolvedText = ctaText || translateOrFallback(t, "blogCtaText", "Compare nearby campsites and see where the weather is better right now.");
+  const resolvedButton = ctaButton || translateOrFallback(t, "blogCtaButton", "Open CampCast");
+
   return (
     <div
       className={`mt-10 rounded-3xl border p-6 sm:p-8 ${
@@ -14,20 +19,16 @@ export default function BlogPostCta({ t, isLight, to = "/", slug }) {
       }`}
     >
       <h3 className="text-xl font-semibold">
-        {translateOrFallback(t, "blogCtaTitle", "Check live campsite conditions")}
+        {resolvedTitle}
       </h3>
 
       <p className={`mt-2 text-base leading-7 ${isLight ? "text-slate-700" : "text-slate-300"}`}>
-        {translateOrFallback(
-          t,
-          "blogCtaText",
-          "Compare nearby campsites and see where the weather is better right now."
-        )}
+        {resolvedText}
       </p>
 
       <div className="mt-4">
         <Link
-          to={to}
+          to={resolvedTo}
           onClick={() => {
             window.plausible?.("Blog CTA Click", {
               props: { slug: slug || "unknown" },
@@ -37,7 +38,7 @@ export default function BlogPostCta({ t, isLight, to = "/", slug }) {
             isLight ? "bg-slate-900 text-white" : "bg-white text-slate-950"
           }`}
         >
-          {translateOrFallback(t, "blogCtaButton", "Open CampCast")}
+          {resolvedButton}
         </Link>
       </div>
     </div>

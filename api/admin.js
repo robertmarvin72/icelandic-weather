@@ -30,6 +30,12 @@ function normalizeBlogPost(row) {
     metaDescription: row.meta_description || "",
     coverImage: row.cover_image || "",
     ctaHint: row.cta_hint || "",
+    sourceType: row.source_type || null,
+    topic: row.topic || null,
+    ctaTitle: row.cta_title || null,
+    ctaText: row.cta_text || null,
+    ctaButton: row.cta_button || null,
+    ctaTarget: row.cta_target || null,
     status: row.status || "draft",
     publishedAt: row.published_at || null,
     createdAt: row.created_at || null,
@@ -369,6 +375,12 @@ async function handleListBlogPosts(req, res) {
         meta_description,
         cover_image,
         cta_hint,
+        source_type,
+        topic,
+        cta_title,
+        cta_text,
+        cta_button,
+        cta_target,
         status,
         published_at,
         created_at,
@@ -395,7 +407,8 @@ async function handleUpdateBlogPost(req, res) {
     const me = await requireAdmin(req, res);
     if (!me) return;
 
-    const { id, title, excerpt, content, metaTitle, metaDescription, coverImage, ctaHint, slug } =
+    const { id, title, excerpt, content, metaTitle, metaDescription, coverImage, ctaHint, slug,
+      sourceType, topic, ctaTitle, ctaText, ctaButton, ctaTarget } =
       req.body || {};
 
     if (!id) {
@@ -413,6 +426,12 @@ async function handleUpdateBlogPost(req, res) {
         meta_description,
         cover_image,
         cta_hint,
+        source_type,
+        topic,
+        cta_title,
+        cta_text,
+        cta_button,
+        cta_target,
         status,
         published_at,
         created_at,
@@ -435,6 +454,12 @@ async function handleUpdateBlogPost(req, res) {
     const nextMetaDescription = metaDescription ?? existing.meta_description ?? "";
     const nextCoverImage = coverImage ?? existing.cover_image ?? "";
     const nextCtaHint = ctaHint ?? existing.cta_hint ?? "";
+    const nextSourceType = sourceType ?? existing.source_type ?? null;
+    const nextTopic = topic ?? existing.topic ?? null;
+    const nextCtaTitle = ctaTitle ?? existing.cta_title ?? null;
+    const nextCtaText = ctaText ?? existing.cta_text ?? null;
+    const nextCtaButton = ctaButton ?? existing.cta_button ?? null;
+    const nextCtaTarget = ctaTarget ?? existing.cta_target ?? null;
     const nextSlug = slugify(slug ?? nextTitle ?? existing.slug ?? existing.title ?? "post");
 
     const duplicateRows = await sql`
@@ -463,6 +488,12 @@ async function handleUpdateBlogPost(req, res) {
         meta_description = ${nextMetaDescription},
         cover_image = ${nextCoverImage},
         cta_hint = ${nextCtaHint},
+        source_type = ${nextSourceType},
+        topic = ${nextTopic},
+        cta_title = ${nextCtaTitle},
+        cta_text = ${nextCtaText},
+        cta_button = ${nextCtaButton},
+        cta_target = ${nextCtaTarget},
         updated_at = now()
       where id = ${id}
       returning
@@ -475,6 +506,12 @@ async function handleUpdateBlogPost(req, res) {
         meta_description,
         cover_image,
         cta_hint,
+        source_type,
+        topic,
+        cta_title,
+        cta_text,
+        cta_button,
+        cta_target,
         status,
         published_at,
         created_at,
@@ -532,6 +569,12 @@ async function handlePublishBlogPost(req, res) {
         meta_description,
         cover_image,
         cta_hint,
+        source_type,
+        topic,
+        cta_title,
+        cta_text,
+        cta_button,
+        cta_target,
         status,
         published_at,
         created_at,
@@ -637,6 +680,12 @@ async function handleGenerateDraft(req, res) {
         meta_title,
         meta_description,
         cover_image,
+        source_type,
+        topic,
+        cta_title,
+        cta_text,
+        cta_button,
+        cta_target,
         status
       )
       values (
@@ -647,6 +696,12 @@ async function handleGenerateDraft(req, res) {
         ${draft.metaTitle || draft.title || ""},
         ${draft.metaDescription || ""},
         ${coverImage || null},
+        'automated',
+        ${null},
+        ${null},
+        ${null},
+        ${null},
+        ${null},
         'draft'
       )
       returning
@@ -659,6 +714,12 @@ async function handleGenerateDraft(req, res) {
         meta_description,
         cover_image,
         cta_hint,
+        source_type,
+        topic,
+        cta_title,
+        cta_text,
+        cta_button,
+        cta_target,
         status,
         published_at,
         created_at,
@@ -991,6 +1052,12 @@ async function handleGetPublishedBlogPosts(req, res) {
         meta_description,
         cover_image,
         cta_hint,
+        source_type,
+        topic,
+        cta_title,
+        cta_text,
+        cta_button,
+        cta_target,
         status,
         published_at,
         created_at,
@@ -1039,6 +1106,12 @@ async function handleGetPublishedBlogPostBySlug(req, res) {
           meta_description,
           cover_image,
           cta_hint,
+          source_type,
+          topic,
+          cta_title,
+          cta_text,
+          cta_button,
+          cta_target,
           status,
           published_at,
           created_at,
@@ -1074,6 +1147,12 @@ async function handleGetPublishedBlogPostBySlug(req, res) {
         meta_description,
         cover_image,
         cta_hint,
+        source_type,
+        topic,
+        cta_title,
+        cta_text,
+        cta_button,
+        cta_target,
         status,
         published_at,
         created_at,

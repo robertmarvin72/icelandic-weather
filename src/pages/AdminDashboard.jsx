@@ -328,6 +328,12 @@ function BlogEditorCard({ post, onSave, onPublish, onDelete, onCancel, saving, p
     metaTitle: post.metaTitle || "",
     metaDescription: post.metaDescription || "",
     ctaHint: post.ctaHint || "",
+    sourceType: post.sourceType || "manual",
+    topic: post.topic || "",
+    ctaTitle: post.ctaTitle || "",
+    ctaText: post.ctaText || "",
+    ctaButton: post.ctaButton || "",
+    ctaTarget: post.ctaTarget || "",
     content: post.content || "",
   });
 
@@ -339,9 +345,15 @@ function BlogEditorCard({ post, onSave, onPublish, onDelete, onCancel, saving, p
       metaTitle: post.metaTitle || "",
       metaDescription: post.metaDescription || "",
       ctaHint: post.ctaHint || "",
+      sourceType: post.sourceType || "manual",
+      topic: post.topic || "",
+      ctaTitle: post.ctaTitle || "",
+      ctaText: post.ctaText || "",
+      ctaButton: post.ctaButton || "",
+      ctaTarget: post.ctaTarget || "",
       content: post.content || "",
     });
-  }, [post.id, post.title, post.excerpt, post.coverImage, post.metaTitle, post.metaDescription, post.ctaHint, post.content]);
+  }, [post.id, post.title, post.excerpt, post.coverImage, post.metaTitle, post.metaDescription, post.ctaHint, post.sourceType, post.topic, post.ctaTitle, post.ctaText, post.ctaButton, post.ctaTarget, post.content]);
 
   const dirty = useMemo(() => {
     return (
@@ -351,6 +363,12 @@ function BlogEditorCard({ post, onSave, onPublish, onDelete, onCancel, saving, p
       draft.metaTitle !== (post.metaTitle || "") ||
       draft.metaDescription !== (post.metaDescription || "") ||
       draft.ctaHint !== (post.ctaHint || "") ||
+      draft.sourceType !== (post.sourceType || "manual") ||
+      draft.topic !== (post.topic || "") ||
+      draft.ctaTitle !== (post.ctaTitle || "") ||
+      draft.ctaText !== (post.ctaText || "") ||
+      draft.ctaButton !== (post.ctaButton || "") ||
+      draft.ctaTarget !== (post.ctaTarget || "") ||
       draft.content !== (post.content || "")
     );
   }, [draft, post]);
@@ -496,6 +514,69 @@ function BlogEditorCard({ post, onSave, onPublish, onDelete, onCancel, saving, p
             onChange={(e) => setDraft((prev) => ({ ...prev, ctaHint: e.target.value }))}
             placeholder="e.g. Check the forecast"
           />
+        </div>
+
+        <div className="grid gap-4 md:grid-cols-2">
+          <div>
+            <FieldLabel>{lang === "is" ? "Tegund" : "Source type"}</FieldLabel>
+            <Select
+              value={draft.sourceType}
+              onChange={(e) => setDraft((prev) => ({ ...prev, sourceType: e.target.value }))}
+            >
+              <option value="manual">manual</option>
+              <option value="automated">automated</option>
+            </Select>
+          </div>
+
+          <div>
+            <FieldLabel>{lang === "is" ? "Efni" : "Topic"}</FieldLabel>
+            <TextInput
+              value={draft.topic}
+              onChange={(e) => setDraft((prev) => ({ ...prev, topic: e.target.value }))}
+              placeholder={lang === "is" ? "t.d. veður, ferðalög" : "e.g. weather, travel"}
+            />
+          </div>
+        </div>
+
+        <div className="rounded-2xl border border-slate-200/70 bg-slate-50/60 p-4 dark:border-slate-700/70 dark:bg-slate-800/40">
+          <div className="mb-3 text-sm font-semibold text-slate-700 dark:text-slate-300">
+            {lang === "is" ? "Sérsniðið CTA" : "Custom CTA"}
+          </div>
+          <div className="grid gap-3">
+            <div>
+              <FieldLabel>{lang === "is" ? "CTA titill" : "CTA title"}</FieldLabel>
+              <TextInput
+                value={draft.ctaTitle}
+                onChange={(e) => setDraft((prev) => ({ ...prev, ctaTitle: e.target.value }))}
+                placeholder={lang === "is" ? "Hnekkir sjálfgefnum titli ef fyllt út" : "Overrides global default if filled in"}
+              />
+            </div>
+            <div>
+              <FieldLabel>{lang === "is" ? "CTA texti" : "CTA text"}</FieldLabel>
+              <TextArea
+                value={draft.ctaText}
+                onChange={(e) => setDraft((prev) => ({ ...prev, ctaText: e.target.value }))}
+                rows={2}
+                placeholder={lang === "is" ? "Hnekkir sjálfgefnum texta ef fyllt út" : "Overrides global default if filled in"}
+              />
+            </div>
+            <div>
+              <FieldLabel>{lang === "is" ? "CTA takki" : "CTA button"}</FieldLabel>
+              <TextInput
+                value={draft.ctaButton}
+                onChange={(e) => setDraft((prev) => ({ ...prev, ctaButton: e.target.value }))}
+                placeholder={lang === "is" ? "Hnekkir sjálfgefnum takka ef fyllt út" : "Overrides global default if filled in"}
+              />
+            </div>
+            <div>
+              <FieldLabel>{lang === "is" ? "CTA slóð" : "CTA target URL"}</FieldLabel>
+              <TextInput
+                value={draft.ctaTarget}
+                onChange={(e) => setDraft((prev) => ({ ...prev, ctaTarget: e.target.value }))}
+                placeholder="e.g. /pricing"
+              />
+            </div>
+          </div>
         </div>
 
         <div>
