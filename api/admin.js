@@ -1,5 +1,6 @@
 import { isAdminEmail } from "./_lib/admin.js";
 import { getMeFromRequest } from "./_lib/getMe.js";
+import { buildBlogPrompt, BLOG_POST_TYPES } from "./_lib/buildBlogPrompt.js";
 import postgres from "postgres";
 
 const sql = postgres(process.env.POSTGRES_URL, { ssl: "require" });
@@ -629,7 +630,7 @@ async function handleGenerateDraft(req, res) {
       });
     }
 
-    const allowedTypes = ["campsite_weather", "weather_comparison"];
+    const allowedTypes = BLOG_POST_TYPES;
 
     if (!allowedTypes.includes(type)) {
       return res.status(400).json({
@@ -639,8 +640,7 @@ async function handleGenerateDraft(req, res) {
       });
     }
 
-    const prompt = buildPrompt({
-      type,
+    const prompt = buildBlogPrompt(type, {
       lang,
       context: {
         ...context,
@@ -738,247 +738,6 @@ async function handleGenerateDraft(req, res) {
       details: err?.message || String(err),
     });
   }
-}
-
-function buildPrompt({ type, lang, context }) {
-  const language = lang === "is" ? "Icelandic" : "English";
-
-  if (type === "weather_comparison") {
-    return `
-Write a blog post comparing two nearby campsites in Iceland.
-
-Language: ${language}
-
-Base campsite: ${context.baseCampsite || "Campsite A"}
-Compare campsite: ${context.compareCampsite || "Campsite B"}
-Region: ${context.region || "Iceland"}
-
-Forecast summary:
-${context.forecastSummary || "No forecast summary available."}
-
-Raw forecast input:
-${context.forecastRawInput || "No forecast data provided."}
-
-Tone:
-- Practical and experience-based
-- Written like advice from someone who knows Iceland
-- Not promotional
-
-Structure:
-- Title
-- Short intro (set context quickly, no fluff)
-- Comparison (bullet points, concrete differences only)
-- Practical weather impact (explain wind, shelter, exposure, and what it means for camping)
-- Decision section: "Should you stay or move?" based on conditions
-- Soft conclusion
-- End with one short, strong takeaway sentence
-
-Rules:
-- Do not start with generic introductions or setup sentences
-- Start directly with the key condition or difference
-- If one weather factor is clearly dominant (e.g. heavy snow, extreme wind), center the comparison around that instead of listing all factors equally
-- Do not use section headers like "Comparison", "Practical Impact", "Conclusion", or "Takeaway"
-- Write as a continuous, natural comparison
-- The worst weather conditions must dominate the comparison, not averages
-- If one campsite has extreme conditions (e.g. very high wind, heavy snow, heavy rain), this should strongly influence the conclusion
-- Do not treat all factors equally if one risk is clearly more severe
-- The comparison must clearly indicate which campsite is better, worse, or if both are poor choices
-- If one campsite is clearly worse overall, state that explicitly
-- Avoid neutral conclusions when the data shows a meaningful difference
-- Do not structure the content as a list of attributes (e.g. wind, rain, temperature)
-- Do not present the comparison as a table or bullet-style breakdown
-- Write as a continuous comparison driven by the actual conditions
-- Do not invent terrain details, shelter elements, campsite facilities, or amenities unless explicitly provided in the context
-- If a detail is unknown, do not guess
-- Focus on helping the reader make a decision, not describing a destination
-- Avoid all generic travel descriptions
-- Do not describe scenery unless it directly affects camping conditions
-
-- Treat campsites as decision options, not destinations
-- Clearly explain differences between the campsites
-- Do not present both campsites as equally good if there is a meaningful difference
-- Be specific and decisive when describing differences
-- If one campsite is more exposed to wind or weather, state it clearly
-- Always explain WHY differences matter in practice (tents, comfort, sleep, driving conditions)
-
-- Keep the content grounded, practical, and specific
-- Avoid hedging language ("can", "may", "might", "often") unless absolutely necessary
-- Avoid ALL of the following phrases or anything similar:
-  "Iceland offers", "stunning", "breathtaking", "unique experience", "nestled", "picturesque", "perfect for"
-
-- Use the following priority for weather data:
-  1. Forecast summary (highest priority)
-  2. Raw forecast input
-  3. General knowledge (only if nothing else is provided)
-
-- If forecast summary is provided:
-  - Use it to identify the roughest period and the most important risks
-  - Focus on the worst weather, not average conditions
-  - Clearly state which days look roughest if applicable
-  - If cold nights are present, explain their practical impact
-
-- Use raw forecast input as the source of truth for detailed weather values
-- Extract the weekly pattern from the raw forecast input before writing
-- Do not invent weather details beyond the provided forecast summary or raw forecast input
-
-- If weather data is provided:
-  - Prioritize it over generic advice
-  - Explain real-world impact of wind, gusts, rain, and temperature on camping decisions
-
-Important:
-- Campsites in Iceland can feel very different even if they are close together
-- Focus on micro-differences in weather and shelter
-- Write like you are helping someone decide where to sleep tonight
-- Prioritize practical decision value over general travel writing
-- The reader is actively deciding where to stay under uncertainty
-
-Meta rules:
-- Meta title must include location and decision intent (e.g. where to camp, which is better, wind conditions)
-- Meta description must clearly state the practical benefit for the reader
-- Avoid generic descriptions in meta text
-
-Return ONLY valid JSON.
-Do not wrap the JSON in markdown code fences.
-Do not include any extra commentary.
-
-Return this exact shape:
-{
-  "title": "...",
-  "excerpt": "...",
-  "slug": "...",
-  "content": "...",
-  "metaTitle": "...",
-  "metaDescription": "..."
-}
-
-Content must be markdown.
-`;
-  }
-
-  return `
-Write a practical campsite weather article for ONE campsite in Iceland.
-
-Language: ${language}
-
-Campsite: ${context.baseCampsite || "Unknown campsite"}
-Region: ${context.region || "Iceland"}
-
-Forecast summary:
-${context.forecastSummary || "No forecast summary available."}
-
-Raw forecast input:
-${context.forecastRawInput || "No forecast data provided."}
-
-Important grounding rules:
-- You are writing about ONE campsite only
-- Do NOT compare it to any other campsite
-- Do NOT mention any second campsite
-- Use the provided region exactly as context
-- Do NOT replace the region with another region
-- Do NOT invent specific current weather observations unless they were explicitly provided
-- If forecast details are not provided, write in general practical terms for camping decisions, not fake live conditions
-- Do NOT invent facilities, amenities, roads, terrain, shelter, or scenery unless explicitly provided
-- Do NOT guess facts about the campsite
-- Keep the text grounded, practical, and specific
-- Avoid tourism language and avoid dramatic filler
-
-Tone:
-- Practical
-- Clear
-- Human
-- Advice-driven
-- Not promotional
-- Written for someone deciding how to camp safely and comfortably
-
-Structure:
-- Title
-- Short intro
-- What campers should pay attention to
-- Practical effects on camping
-- What to check before staying overnight
-- Short conclusion
-- One short takeaway sentence at the end
-
-Rules:
-- Describe how conditions change over the week (early, mid, late) when relevant
-- Clearly state if this is a good or bad week to stay at this campsite
-- Do not soften negative conditions when the forecast is clearly poor
-- Do not give general camping advice (gear, preparation, equipment)
-- Focus on evaluating conditions, not teaching how to handle them
-- Start by summarizing the overall week in 1–2 sentences, focusing on the worst conditions
-- Clearly identify when the worst conditions occur (e.g. early week, mid-week, specific days)
-- Do not structure the article as generic sections like "What to check" or "Practical effects"
-- Keep the structure natural and driven by the actual forecast, not a template
-- If conditions are difficult, state it clearly and do not soften the message
-- The goal is to help the reader decide if staying is a good idea this week
-- Focus on how weather affects camping decisions, not describing a destination
-- Treat the reader as someone deciding whether to stay overnight at this campsite
-- Do not write generic travel content
-- Avoid vague statements unless necessary
-
-- Explain practical effects of weather:
-  - rain (wet ground, mud, setup difficulty)
-  - wind and gusts (exposure, tent stability, comfort)
-  - temperature (cold nights, sleeping conditions)
-- Always explain what the conditions mean in practice for campers
-
-- Avoid all of the following phrases or anything similar:
-  "Iceland offers", "stunning", "breathtaking", "unique experience", "nestled", "picturesque", "perfect for"
-
-- Use the following priority for weather data:
-  1. Forecast summary (highest priority)
-  2. Raw forecast input
-  3. General knowledge (only if nothing else is provided)
-
-- If forecast summary is provided:
-  - Use it to identify the roughest days and the most important risks
-  - Focus on the worst weather, not average conditions
-  - If the week starts rough or ends colder, say that clearly
-  - Explain practical impact of those conditions
-
-- Use raw forecast input as the source of truth for detailed weather values
-- Extract the weekly pattern from the raw forecast input before writing
-- Do not invent weather details beyond the provided forecast summary or raw forecast input
-
-- If weather data is provided:
-  - Prioritize it over generic advice
-  - Clearly explain impact of wind, gusts, rain, and temperature on camping conditions
-
-- If no forecast data is provided:
-  - Stay general
-  - Do not imply knowledge of specific current conditions
-
-- If conditions look difficult, state that clearly and do not soften the message
-
-Extra rules for Icelandic output:
-- Use natural Icelandic
-- Prefer simple, direct sentences
-- Avoid stiff machine-like phrasing
-- Avoid overly formal wording
-- Write like practical advice, not a brochure
-
-Meta rules:
-- Meta title must include the campsite name and region
-- Meta description must explain the practical value for campers
-- Do not use clickbait
-- Do not invent live forecast details in meta text
-
-Return ONLY valid JSON.
-Do not wrap the JSON in markdown code fences.
-Do not include any extra commentary.
-
-Return this exact shape:
-{
-  "title": "...",
-  "excerpt": "...",
-  "slug": "...",
-  "content": "...",
-  "metaTitle": "...",
-  "metaDescription": "..."
-}
-
-Content must be markdown.
-`;
 }
 
 async function callAI(prompt) {
