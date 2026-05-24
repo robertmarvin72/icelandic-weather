@@ -601,7 +601,7 @@ function BlogEditorCard({ post, onSave, onPublish, onDelete, onCancel, saving, p
         </div>
 
         <div>
-          <FieldLabel>{lang === "is" ? "Nálægar athyglisverðar staðir" : "Nearby highlights"}</FieldLabel>
+          <FieldLabel>{lang === "is" ? "Nálægar staðir (JSON)" : "Nearby highlights (JSON)"}</FieldLabel>
           <TextArea
             value={draft.nearbyHighlightsJson}
             onChange={(e) => {
@@ -617,7 +617,7 @@ function BlogEditorCard({ post, onSave, onPublish, onDelete, onCancel, saving, p
         </div>
 
         <div>
-          <FieldLabel>{lang === "is" ? "Nálægar athyglisverðar staðir" : "Nearby attractions"}</FieldLabel>
+          <FieldLabel>{lang === "is" ? "Nálægar staðir (texti)" : "Nearby attractions (text)"}</FieldLabel>
           <TextArea
             value={draft.nearbyAttractions}
             onChange={(e) => setDraft((prev) => ({ ...prev, nearbyAttractions: e.target.value }))}
