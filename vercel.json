@@ -23,9 +23,6 @@
   "functions": {
     "api/**/*.js": {
       "includeFiles": "server_data/**"
-    },
-    "api/blog-meta.js": {
-      "includeFiles": "dist/index.html"
     }
   }
 }
