@@ -5,6 +5,10 @@
       "destination": "/api/$1"
     },
     {
+      "source": "/blog/:slug",
+      "destination": "/api/blog-meta?slug=:slug"
+    },
+    {
       "source": "/(.*)",
       "destination": "/"
     }
@@ -13,6 +17,9 @@
   "functions": {
     "api/**/*.js": {
       "includeFiles": "server_data/**"
+    },
+    "api/blog-meta.js": {
+      "includeFiles": "dist/index.html"
     }
   }
 }
