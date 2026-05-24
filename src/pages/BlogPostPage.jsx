@@ -346,17 +346,75 @@ export default function BlogPostPage({ t, lang, theme }) {
 
             <div className="mt-8">
               <BlogContent content={post.content} isLight={isLight} />
+
+              {post.weatherNarrative && (
+                <div className="mt-10 max-w-2xl mx-auto">
+                  <h2
+                    className={`text-xl font-semibold ${
+                      isLight ? "text-slate-900" : "text-slate-100"
+                    }`}
+                  >
+                    {lang === "is" ? "Veðurleg samhengi" : "Weather context"}
+                  </h2>
+                  <p
+                    className={`mt-3 text-base leading-7 ${
+                      isLight ? "text-slate-700" : "text-slate-300"
+                    }`}
+                  >
+                    {post.weatherNarrative}
+                  </p>
+                </div>
+              )}
+
+              {post.movementNarrative && (
+                <div className="mt-10 max-w-2xl mx-auto">
+                  <h2
+                    className={`text-xl font-semibold ${
+                      isLight ? "text-slate-900" : "text-slate-100"
+                    }`}
+                  >
+                    {lang === "is" ? "Fara eða vera?" : "Stay or move?"}
+                  </h2>
+                  <p
+                    className={`mt-3 text-base leading-7 ${
+                      isLight ? "text-slate-700" : "text-slate-300"
+                    }`}
+                  >
+                    {post.movementNarrative}
+                  </p>
+                </div>
+              )}
+
+              {post.whyThisArea && (
+                <div className="mt-10 max-w-2xl mx-auto">
+                  <h2
+                    className={`text-xl font-semibold ${
+                      isLight ? "text-slate-900" : "text-slate-100"
+                    }`}
+                  >
+                    {lang === "is" ? "Af hverju þetta svæði?" : "Why this area?"}
+                  </h2>
+                  <p
+                    className={`mt-3 text-base leading-7 ${
+                      isLight ? "text-slate-700" : "text-slate-300"
+                    }`}
+                  >
+                    {post.whyThisArea}
+                  </p>
+                </div>
+              )}
+
               {Array.isArray(post.nearbyHighlights) && post.nearbyHighlights.length > 0 && (
                 <div className="mt-10 max-w-2xl mx-auto">
                   <h2
-                    className={`text-2xl font-semibold tracking-tight ${
+                    className={`text-xl font-semibold ${
                       isLight ? "text-slate-900" : "text-slate-100"
                     }`}
                   >
                     {lang === "is" ? "Í nágrenninu" : "Nearby"}
                   </h2>
                   <ul
-                    className={`mt-4 space-y-2 ${isLight ? "text-slate-700" : "text-slate-300"}`}
+                    className={`mt-3 space-y-2 ${isLight ? "text-slate-700" : "text-slate-300"}`}
                   >
                     {post.nearbyHighlights.map((item, i) => (
                       <li key={i} className="flex items-baseline gap-2 text-base">
@@ -373,6 +431,32 @@ export default function BlogPostPage({ t, lang, theme }) {
                   </ul>
                 </div>
               )}
+
+              {post.nearbyAttractions && (
+                <div className="mt-10 max-w-2xl mx-auto">
+                  <h2
+                    className={`text-xl font-semibold ${
+                      isLight ? "text-slate-900" : "text-slate-100"
+                    }`}
+                  >
+                    {lang === "is" ? "Vert að skoða" : "Worth seeing"}
+                  </h2>
+                  <ul
+                    className={`mt-3 list-disc pl-5 space-y-1 text-base ${
+                      isLight ? "text-slate-700" : "text-slate-300"
+                    }`}
+                  >
+                    {post.nearbyAttractions
+                      .split("\n")
+                      .map((line) => line.replace(/^[-*]\s*/, "").trim())
+                      .filter(Boolean)
+                      .map((item, i) => (
+                        <li key={i}>{item}</li>
+                      ))}
+                  </ul>
+                </div>
+              )}
+
               <BlogPostCta
                 t={t}
                 isLight={isLight}
