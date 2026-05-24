@@ -351,7 +351,7 @@ export const commonTranslations = {
     blogPostNotFoundTitle: "Article not found",
     blogPostNotFoundText: "The article you tried to open does not exist or may have been removed.",
 
-    blogCtaTitle: "Check live campsite conditions",
+    blogCtaTitle: "Skoða aðstæður núna",
     blogCtaText: "Compare nearby campsites and see where the weather is better right now.",
     blogCtaButton: "Open Chase the Weather",
     blogDraftPreviewBanner: "Draft preview — this post is not published.",
@@ -742,7 +742,7 @@ export const commonTranslations = {
     blogBadge: "Eltum Veðrið blogg",
     blogTitle: "Veðurráð og skipulag fyrir tjaldsvæði á Íslandi",
     blogIntro:
-      "Hagnýtar greinar um ferðalög, vind, rigningu og hvar veðrið gæti verið betra.",
+      "Hagnýtar greinar um ferðalög, veður og hvar betra gæti verið að vera næstu daga.",
     blogPublishedLabel: "Birt",
     blogReadArticle: "Lesa grein",
     blogMidCtaTitle: "Ekki viss hvert á að fara?",

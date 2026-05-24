@@ -94,7 +94,7 @@ export default function BlogIndex({ t, lang, theme }) {
               onClick={() => track("blog_index_top_cta_click")}
               className="inline-block rounded-xl bg-slate-900 px-5 py-3 font-medium text-white transition hover:opacity-90"
             >
-              {translateOrFallback(t, "blogCtaTitle", "Check live campsite conditions")}
+              {translateOrFallback(t, "blogCtaTitle", "Skoða aðstæður núna")}
             </a>
           </div>
 
