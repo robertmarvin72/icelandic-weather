@@ -352,7 +352,7 @@ export const commonTranslations = {
     blogPostNotFoundText: "The article you tried to open does not exist or may have been removed.",
 
     blogCtaTitle: "Skoða aðstæður núna",
-    blogCtaText: "Compare nearby campsites and see where the weather is better right now.",
+    blogCtaText: "See where the weather looks better nearby.",
     blogCtaButton: "Open Chase the Weather",
     blogDraftPreviewBanner: "Draft preview — this post is not published.",
     blogPreviewButton: "Preview",

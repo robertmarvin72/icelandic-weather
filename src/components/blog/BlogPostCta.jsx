@@ -8,9 +8,9 @@ function translateOrFallback(t, key, fallback) {
 
 export default function BlogPostCta({ t, isLight, to = "/", slug, ctaTitle, ctaText, ctaButton, ctaTarget }) {
   const resolvedTo = ctaTarget || to;
-  const resolvedTitle = ctaTitle || translateOrFallback(t, "blogCtaTitle", "Check live campsite conditions");
-  const resolvedText = ctaText || translateOrFallback(t, "blogCtaText", "Compare nearby campsites and see where the weather is better right now.");
-  const resolvedButton = ctaButton || translateOrFallback(t, "blogCtaButton", "Open CampCast");
+  const resolvedTitle = ctaTitle || translateOrFallback(t, "blogCtaTitle", "Skoða aðstæður núna");
+  const resolvedText = ctaText || translateOrFallback(t, "blogCtaText", "See where the weather looks better nearby.");
+  const resolvedButton = ctaButton || translateOrFallback(t, "blogCtaButton", "Open Chase the Weather");
 
   return (
     <div
