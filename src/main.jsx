@@ -15,6 +15,8 @@ import "leaflet/dist/leaflet.css";
 import "leaflet.markercluster/dist/MarkerCluster.css";
 import "leaflet.markercluster/dist/MarkerCluster.Default.css";
 
+import { initAnalytics } from "./lib/analytics";
+
 // ✅ PWA registration (vite-plugin-pwa)
 import { registerSW } from "virtual:pwa-register";
 import { HelmetProvider } from "react-helmet-async";
@@ -25,6 +27,8 @@ registerSW({
     window.location.reload();
   },
 });
+
+initAnalytics();
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>

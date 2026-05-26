@@ -9,6 +9,7 @@ import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/react";
 import { registerSW } from "virtual:pwa-register";
 
+import AnalyticsTracker from "./components/AnalyticsTracker";
 import AppRoutes from "./AppRoutes";
 import BackToTop from "./components/BackToTop";
 import DecisionBanner from "./components/DecisionBanner";
@@ -420,6 +421,7 @@ function IcelandCampingWeatherApp({ page = "home" }) {
 export default function App() {
   return (
     <BrowserRouter>
+      <AnalyticsTracker />
       <AppRoutes HomeComponent={IcelandCampingWeatherApp} />
       <Analytics />
       <SpeedInsights />
