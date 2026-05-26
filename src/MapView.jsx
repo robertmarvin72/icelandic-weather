@@ -8,16 +8,20 @@ import { scoreSiteDay } from "./lib/scoring";
 import { normalizeDailyToScoreInput } from "./lib/forecastNormalize";
 
 // ───────────────────────────────────────────────
-// Color mapping by average score
+// Color mapping by weekly total score (0–70: sum of 7 daily scores, each 0–10).
+// Thresholds must match the 0–70 scale used by ForecastTable and scorePillClass.
+//   35–70 → green  (Gott)      good week overall
+//   20–34 → yellow (Sæmilegt)  mixed / fair week
+//    0–19 → red    (Slæmt)     poor week
 function colorForScore(score) {
-  if (score >= 6) return "#22c55e"; // green
-  if (score >= 3) return "#facc15"; // yellow
+  if (score >= 35) return "#22c55e"; // green
+  if (score >= 20) return "#facc15"; // yellow
   return "#ef4444"; // red
 }
 
 function labelForScore(score, t) {
-  if (score >= 6) return typeof t === "function" ? t("mapConditionGood") : "Good";
-  if (score >= 4) return typeof t === "function" ? t("mapConditionFair") : "Fair";
+  if (score >= 35) return typeof t === "function" ? t("mapConditionGood") : "Good";
+  if (score >= 20) return typeof t === "function" ? t("mapConditionFair") : "Fair";
   return typeof t === "function" ? t("mapConditionRough") : "Rough";
 }
 
