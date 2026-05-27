@@ -1,6 +1,7 @@
 // src/components/RoutePlannerCard.jsx
 import React, { useEffect, useMemo, useState } from "react";
 
+import { trackEvent } from "../lib/analytics";
 import { getRouteVerdictMeta } from "../lib/routeVerdictMeta";
 import RoutePlannerDetailsModal from "./RoutePlannerDetailsModal";
 import AnimatedPill from "./AnimatedPill";
@@ -247,6 +248,25 @@ export default function RoutePlannerCard({
       isPro,
     });
   }, [result, sites, effectiveRadiusKm, effectiveWindowDays, routeRiskData, isPreview, isPro]);
+
+  const lastDecisionRef = React.useRef(null);
+  useEffect(() => {
+    if (!decisionLower || decisionLower === lastDecisionRef.current) return;
+    lastDecisionRef.current = decisionLower;
+    if (decisionLower === "stay") {
+      trackEvent("stay_recommended", {
+        recommendation: "stay",
+        radiusKm: effectiveRadiusKm,
+        windowDays: effectiveWindowDays,
+      });
+    } else if (decisionLower === "move") {
+      trackEvent("move_recommended", {
+        recommendation: "move",
+        radiusKm: effectiveRadiusKm,
+        windowDays: effectiveWindowDays,
+      });
+    }
+  }, [decisionLower, effectiveRadiusKm, effectiveWindowDays]);
 
   useEffect(() => {
     if (isPro) return;

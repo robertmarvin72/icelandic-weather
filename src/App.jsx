@@ -10,6 +10,7 @@ import { SpeedInsights } from "@vercel/speed-insights/react";
 import { registerSW } from "virtual:pwa-register";
 
 import AnalyticsTracker from "./components/AnalyticsTracker";
+import { trackEvent } from "./lib/analytics";
 import AppRoutes from "./AppRoutes";
 import BackToTop from "./components/BackToTop";
 import DecisionBanner from "./components/DecisionBanner";
@@ -242,6 +243,25 @@ function IcelandCampingWeatherApp({ page = "home" }) {
     () => Number(scoresById?.[siteId]?.score ?? 0),
     [scoresById, siteId]
   );
+
+  useEffect(() => {
+    trackEvent("homepage_loaded", {
+      lang,
+      isPro: entitlements.isPro,
+      mobile: typeof window !== "undefined" && window.innerWidth < 768,
+    });
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  const initialSiteRef = useRef(true);
+  useEffect(() => {
+    if (initialSiteRef.current) {
+      initialSiteRef.current = false;
+      return;
+    }
+    if (!siteId || !site) return;
+    trackEvent("campsite_selected", { siteId, siteName: site.name });
+  }, [siteId, site]);
+
   const [routePlannerSummary, setRoutePlannerSummary] = useState(null);
   const booting = useBooting(loading, rows.length);
 

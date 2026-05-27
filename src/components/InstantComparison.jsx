@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useMemo, useRef, useEffect } from "react";
 import { trackEvent } from "../lib/analytics";
 import { haversine } from "../lib/geo";
 
@@ -182,6 +182,34 @@ export default function InstantComparison({ site, currentScore, rows, top5, scor
     [currentMetrics, nearbyMetrics]
   );
 
+  const tier = showComparison ? Math.min(scoreTier(scoreDiff), metricCap(strength)) : -1;
+  const isStrongOrDecent = strength === "strong" || strength === "decent";
+
+  const comparisonFiredRef = useRef(null);
+  useEffect(() => {
+    if (!showComparison || !best) return;
+    const key = `${best.site?.id}:${tier}`;
+    if (comparisonFiredRef.current === key) return;
+    comparisonFiredRef.current = key;
+
+    const dist = best.distFromBase;
+    const distanceBucket = dist < 50 ? "< 50km" : dist < 150 ? "50-150km" : "> 150km";
+
+    trackEvent("comparison_viewed", {
+      comparisonTier: BADGE_LABELS[tier] ?? "unknown",
+      distanceBucket,
+      recommendation: strength,
+    });
+
+    if (isStrongOrDecent) {
+      trackEvent("better_nearby_found", {
+        recommendation: "move",
+        comparisonTier: BADGE_LABELS[tier] ?? "unknown",
+        radiusKm,
+      });
+    }
+  }, [best, tier, strength, isStrongOrDecent, showComparison, radiusKm]);
+
   function scrollToTop5() {
     document
       .getElementById("comparison-section")
@@ -202,7 +230,6 @@ export default function InstantComparison({ site, currentScore, rows, top5, scor
     );
   }
 
-  const tier = Math.min(scoreTier(scoreDiff), metricCap(strength));
   const badge = BADGE_LABELS[tier];
 
   const badgeClass =
@@ -211,8 +238,6 @@ export default function InstantComparison({ site, currentScore, rows, top5, scor
       : tier >= 2
         ? "bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-300"
         : "bg-slate-100 text-slate-600 dark:bg-slate-700/50 dark:text-slate-400";
-
-  const isStrongOrDecent = strength === "strong" || strength === "decent";
 
   // Label always reflects actual distance; metric reasons override only when clear improvement exists
   const nearbyLabel =
