@@ -263,6 +263,14 @@ function IcelandCampingWeatherApp({ page = "home" }) {
   }, [siteId, site]);
 
   const [routePlannerSummary, setRoutePlannerSummary] = useState(null);
+
+  const homepageRecommendation = useMemo(() => {
+    const verdict = String(routePlannerSummary?.verdict || "").toLowerCase();
+    if (verdict === "move") return "move";
+    if (verdict === "consider") return "consider";
+    return "stay";
+  }, [routePlannerSummary]);
+
   const booting = useBooting(loading, rows.length);
 
   return (
@@ -342,6 +350,7 @@ function IcelandCampingWeatherApp({ page = "home" }) {
                 top5={top5}
                 scoresById={scoresById}
                 radiusKm={50}
+                homepageRecommendation={homepageRecommendation}
               />
 
               <div className="mb-4">

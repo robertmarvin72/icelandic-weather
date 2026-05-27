@@ -161,7 +161,7 @@ function SiteCard({ label, name, metrics, dist, muted, highlight }) {
   );
 }
 
-export default function InstantComparison({ site, currentScore, rows, top5, scoresById, radiusKm = 50 }) {
+export default function InstantComparison({ site, currentScore, rows, top5, scoresById, radiusKm = 50, homepageRecommendation = "stay" }) {
   const best = useMemo(
     () => selectBestCandidate(top5, site, currentScore, radiusKm),
     [top5, site, currentScore, radiusKm]
@@ -218,6 +218,22 @@ export default function InstantComparison({ site, currentScore, rows, top5, scor
   }
 
   if (!showComparison) {
+    // Move state: DecisionBanner already communicates the move recommendation.
+    // Do not show a contradictory stay-positive fallback.
+    if (homepageRecommendation === "move") return null;
+
+    // Consider state: neutral copy — not stay-positive, not move-alarmist.
+    if (homepageRecommendation === "consider") {
+      return (
+        <div className="mb-3 rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 shadow-sm dark:border-slate-700/60 dark:bg-slate-900/40">
+          <div className="mt-1 text-xs text-slate-500 dark:text-slate-400">
+            Veðrið er ekki hættulegt, en það gæti verið þess virði að skoða valkosti í nágrenninu.
+          </div>
+        </div>
+      );
+    }
+
+    // Stay state: positive fallback is appropriate.
     return (
       <div className="mb-3 rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 shadow-sm dark:border-slate-700/60 dark:bg-slate-900/40">
         <div className="text-sm font-semibold text-slate-700 dark:text-slate-200">
