@@ -103,6 +103,91 @@ Centralized free/pro feature definitions. `RequireFeature` component wraps gated
 
 ---
 
+## UX Philosophy — Decision First
+
+Eltum Veðrið is not a generic weather dashboard.
+
+The primary UX goal is:
+Help campers quickly decide whether they should stay or move.
+
+Homepage hierarchy should prioritize:
+1. Decision clarity
+2. Nearby comparison
+3. Recommendation confidence
+4. Detailed forecast data
+5. Advanced controls/settings
+
+### Core UX Principles
+
+- Show the recommendation before the raw data
+- Show comparisons before detailed tables
+- Avoid a "control panel" feeling above the fold
+- Use progressive disclosure for advanced settings
+- Primary first action must be obvious within 3-5 seconds
+- Hero sections should communicate emotional outcome, not technical forecasting
+- Nearby weather differences are the key product insight
+- Mobile-first readability is more important than data density
+
+### Homepage Rules
+
+The homepage should prioritize:
+- Hero message
+- Primary CTA
+- Stay/move recommendation
+- Instant nearby comparison
+
+The homepage should de-emphasize:
+- Utility controls
+- Advanced sliders
+- Debug/scoring-style controls
+- Secondary settings
+
+### Instant Comparison
+
+InstantComparison exists to create an immediate "aha moment".
+
+Goals:
+- Compare current campsite vs nearby option visually
+- Explain why a nearby option is better
+- Use understandable metrics such as wind, rain and temperature
+- Avoid overconfident recommendations when differences are weak or mixed
+- Use softer language for weak improvements
+
+### Progressive Disclosure
+
+Advanced controls should:
+- Default collapsed
+- Be discoverable but not dominant
+- Never compete visually with the main recommendation
+
+Examples:
+- Route planner sliders
+- Utility/settings controls
+- Experimental/debug controls
+
+### Analytics Priorities
+
+Homepage optimization should prioritize:
+- engagement time
+- CTA interaction
+- scroll depth
+- comparison interaction
+- return visits
+
+Key events:
+- `homepage_hero_cta_click`
+- `homepage_instant_comparison_cta_click`
+
+### Tone
+
+User-facing copy should:
+- sound human
+- avoid generic weather-app language
+- focus on practical camping decisions
+- avoid overwhelming technical terminology
+
+---
+
 ## API Routes
 
 | Route                 | Method   | Auth           | Purpose                         |

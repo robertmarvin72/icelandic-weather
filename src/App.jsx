@@ -278,7 +278,7 @@ function IcelandCampingWeatherApp({ page = "home" }) {
           onToggleDevPro={toggleDevPro}
         />
 
-        <div id="comparison-section" className="mx-auto max-w-6xl px-4 pt-3 pb-10 md:py-10">
+        <div id="comparison-section" className="mx-auto max-w-6xl px-4 pt-3 pb-10 md:pt-4 md:pb-10">
           {page === "about" ? (
             <About t={t} />
           ) : showCampsitesGate ? (

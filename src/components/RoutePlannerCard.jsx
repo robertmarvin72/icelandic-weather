@@ -147,6 +147,7 @@ export default function RoutePlannerCard({
 
   const [detailsOpen, setDetailsOpen] = useState(false);
   const [detailsCandidate, setDetailsCandidate] = useState(null);
+  const [advancedOpen, setAdvancedOpen] = useState(false);
 
   // ✅ One-time route disclaimer
   const [showRouteDisclaimer, setShowRouteDisclaimer] = useState(false);
@@ -778,48 +779,82 @@ export default function RoutePlannerCard({
         )}
       </div>
 
-      {/* Controls (Pro only) */}
+      {/* Controls (Pro only) — collapsed by default */}
       {isPro && (
-        <div className="grid gap-2 mb-3">
-          <label className="text-xs text-slate-600 dark:text-slate-300">
-            {t("routePlannerRadius")} ({radiusKm} km)
-            <input
-              className="w-full"
-              type="range"
-              min={10}
-              max={400}
-              step={5}
-              value={radiusKm}
-              onChange={(e) => setRadiusKm(Number(e.target.value))}
-            />
-            {adaptiveRadiusLine ? (
-              <div
-                className={`
-                  mt-1 text-[11px] transition-all duration-700
-                  ${
-                    adaptiveGlow
-                      ? "text-emerald-600 dark:text-emerald-400 drop-shadow-[0_0_6px_rgba(16,185,129,0.6)]"
-                      : "text-slate-500 dark:text-slate-400"
-                  }
-                `}
+        <div className="mb-3">
+          <button
+            type="button"
+            aria-expanded={advancedOpen}
+            aria-controls="route-planner-advanced"
+            onClick={() => setAdvancedOpen((v) => !v)}
+            className="w-full flex items-center justify-between gap-2 px-3 py-2 rounded-lg border border-slate-200 bg-slate-50/60 text-xs text-slate-600 cursor-pointer transition-colors hover:bg-slate-100 hover:border-slate-300 focus:outline-none focus:ring-2 focus:ring-slate-300/60 dark:border-slate-700/60 dark:bg-slate-800/30 dark:text-slate-300 dark:hover:bg-slate-700/40 dark:hover:border-slate-600 active:bg-slate-100 dark:active:bg-slate-700/50"
+          >
+            <span className="inline-flex items-center gap-1.5">
+              <span aria-hidden className="text-slate-400 dark:text-slate-500">⚙</span>
+              <span className="font-medium">{advancedOpen ? t("routePlannerHideAdvanced") : t("routePlannerShowAdvanced")}</span>
+            </span>
+            <span className="inline-flex items-center gap-2 text-slate-400 dark:text-slate-500">
+              {!advancedOpen && (
+                <span className="text-[11px]">{radiusKm} km · {windowDays} dagar</span>
+              )}
+              <span
+                aria-hidden
+                className={`text-sm leading-none transition-transform duration-200 ${advancedOpen ? "rotate-180" : ""}`}
               >
-                {adaptiveRadiusLine}
-              </div>
-            ) : null}
-          </label>
+                ▼
+              </span>
+            </span>
+          </button>
 
-          <label className="text-xs text-slate-600 dark:text-slate-300">
-            {t("routePlannerWindowDays")} ({windowDays})
-            <input
-              className="w-full"
-              type="range"
-              min={2}
-              max={5}
-              step={1}
-              value={windowDays}
-              onChange={(e) => setWindowDays(Number(e.target.value))}
-            />
-          </label>
+          {!advancedOpen && (
+            <p className="mt-1 px-1 text-[11px] text-slate-400 dark:text-slate-500">
+              Breyta fjarlægð og tímaglugga
+            </p>
+          )}
+
+          {advancedOpen && (
+            <div id="route-planner-advanced" className="mt-2 grid gap-2">
+              <label className="text-xs text-slate-600 dark:text-slate-300">
+                {t("routePlannerRadius")} ({radiusKm} km)
+                <input
+                  className="w-full"
+                  type="range"
+                  min={10}
+                  max={400}
+                  step={5}
+                  value={radiusKm}
+                  onChange={(e) => setRadiusKm(Number(e.target.value))}
+                />
+                {adaptiveRadiusLine ? (
+                  <div
+                    className={`
+                      mt-1 text-[11px] transition-all duration-700
+                      ${
+                        adaptiveGlow
+                          ? "text-emerald-600 dark:text-emerald-400 drop-shadow-[0_0_6px_rgba(16,185,129,0.6)]"
+                          : "text-slate-500 dark:text-slate-400"
+                      }
+                    `}
+                  >
+                    {adaptiveRadiusLine}
+                  </div>
+                ) : null}
+              </label>
+
+              <label className="text-xs text-slate-600 dark:text-slate-300">
+                {t("routePlannerWindowDays")} ({windowDays})
+                <input
+                  className="w-full"
+                  type="range"
+                  min={2}
+                  max={5}
+                  step={1}
+                  value={windowDays}
+                  onChange={(e) => setWindowDays(Number(e.target.value))}
+                />
+              </label>
+            </div>
+          )}
         </div>
       )}
 

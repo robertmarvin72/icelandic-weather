@@ -1,6 +1,6 @@
-# AGENTS.md — CampCast
+# AGENTS.md — Eltum Veðrið
 
-Weather forecasting web app for Icelandic campsites. Provides 7-day forecasts, campsite scoring/ranking, interactive map, and route planning. Freemium model (free/pro tier) with Paddle payments.
+Decision-first weather tool for campers, caravan owners and RV users in Iceland. Helps users decide whether to stay or move by comparing nearby campsite weather.
 
 ---
 
@@ -79,7 +79,7 @@ Centralized free/pro feature definitions. `RequireFeature` component wraps gated
 
 ### Authentication
 
-- Email-only login → `/api/login` creates user + session
+- Email-only login → `/api/login-email` creates user + session
 - Session token (SHA256 hash) stored in `cc_session` cookie (30-day)
 - Tables: `app_user`, `user_session`, `user_subscription`
 
@@ -114,10 +114,10 @@ Centralized free/pro feature definitions. `RequireFeature` component wraps gated
 | `/api/me`             | GET      | session cookie | Current user profile            |
 | `/api/checkout`       | POST     | session cookie | Initiate Paddle payment         |
 | `/api/billing-portal` | GET      | session cookie | Paddle customer portal link     |
-| `/api/paddle-webhook` | POST     | signature      | Payment event handler           |
-| `/api/users`          | GET      | admin email    | List users (admin)              |
-| `/api/db-health`      | GET      | —              | Database health check           |
-| `/api/admin`          | GET/POST | admin email    | Admin operations                |
+| `/api/paddle-webhook`              | POST     | signature      | Payment event handler                       |
+| `/api/admin`                       | GET/POST | admin email    | Admin operations                            |
+| `/api/blog-meta`                   | GET      | —              | OG meta injection for blog posts            |
+| `/api/cron/generate-blog-draft`    | POST     | CRON_SECRET    | Weekly automated blog draft                 |
 
 ---
 
@@ -127,7 +127,7 @@ Centralized free/pro feature definitions. `RequireFeature` component wraps gated
 app_user          -- id, email, tier, display_name, paddle_customer_id, created_at
 user_session      -- id, user_id, token_hash, expires_at, revoked_at
 user_subscription -- id, user_id, status, current_period_end, paddle_subscription_id, ...
-blog_posts        -- blog content managed via admin panel
+blog_posts        -- id, slug, title, excerpt, content, meta_title, meta_description, cover_image, cta_hint, status, published_at, source_type, topic, cta_title, cta_text, cta_button, cta_target, nearby_highlights, nearby_attractions, created_at, updated_at
 ```
 
 No ORM — all queries use tagged template literals via the `postgres` package.
@@ -157,8 +157,17 @@ ADMIN_EMAILS=robert@...
 VITE_SENTRY_DSN=https://...
 VITE_SENTRY_TRACES_SAMPLE_RATE=0.05
 
+# Google Analytics 4 (frontend, must be prefixed VITE_)
+VITE_GA_MEASUREMENT_ID=G-XXXXXXXXXX
+
 # OpenAI (blog generation)
 OPENAI_API_KEY=sk-proj-...
+
+# Multi-domain support
+ALLOWED_ORIGINS=https://campcast.is,https://www.campcast.is,https://eltumvedrid.is,https://www.eltumvedrid.is
+
+# Cron job
+CRON_SECRET=...
 ```
 
 ---
