@@ -24,19 +24,19 @@ function classifyMetrics(current, nearby) {
   const worsenings = [];
 
   if (current.avgWind != null && nearby.avgWind != null) {
-    const diff = current.avgWind - nearby.avgWind; // positive = nearby has less wind
+    const diff = current.avgWind - nearby.avgWind;
     if (diff >= 1.5) improvements.push("wind");
     else if (diff <= -1.5) worsenings.push("wind");
   }
 
   if (current.totalRain != null && nearby.totalRain != null) {
-    const diff = current.totalRain - nearby.totalRain; // positive = nearby has less rain
+    const diff = current.totalRain - nearby.totalRain;
     if (diff >= 2) improvements.push("rain");
     else if (diff <= -2) worsenings.push("rain");
   }
 
   if (current.avgHighTemp != null && nearby.avgHighTemp != null) {
-    const diff = nearby.avgHighTemp - current.avgHighTemp; // positive = nearby is warmer
+    const diff = nearby.avgHighTemp - current.avgHighTemp;
     if (diff >= 1.5) improvements.push("temp");
     else if (diff <= -1.5) worsenings.push("temp");
   }
@@ -53,6 +53,37 @@ function classifyMetrics(current, nearby) {
   return { strength, primaryReason };
 }
 
+// Distance-aware label for the right-hand card
+function distanceCategoryLabel(dist) {
+  if (dist == null || !isFinite(dist)) return "Nálægur kostur";
+  if (dist < 80) return "Nálægur kostur";
+  if (dist < 200) return "Annar kostur";
+  return "Lengra í burtu";
+}
+
+// Prefer a close candidate when score difference is similar to the best candidate.
+// Does NOT touch relocationEngine — scoped to display selection only.
+function selectBestCandidate(top5, siteId, currentScore) {
+  if (!top5?.length) return null;
+
+  const eligible = top5.filter(
+    (c) => c.site?.id !== siteId && c.score - currentScore >= 5
+  );
+  if (!eligible.length) return null;
+
+  // eligible[0] is the highest-scored (top5 is already sorted score desc, dist asc)
+  const bestScore = eligible[0].score;
+
+  // Prefer a candidate within 150 km if its score is within 8 points of the best
+  const NEARBY_KM = 150;
+  const SCORE_TOLERANCE = 8;
+  const nearbyGood = eligible.find(
+    (c) => isFinite(c.dist) && c.dist < NEARBY_KM && bestScore - c.score <= SCORE_TOLERANCE
+  );
+
+  return nearbyGood ?? eligible[0];
+}
+
 // Badge tier index: 0=Svipað, 1=Örlítið betra, 2=Betra, 3=Miklu betra
 const BADGE_LABELS = ["Svipað", "Örlítið betra", "Betra", "Miklu betra"];
 
@@ -64,10 +95,10 @@ function scoreTier(diff) {
 }
 
 function metricCap(strength) {
-  if (strength === "strong") return 3; // no cap
-  if (strength === "decent") return 2; // cap at "Betra"
-  if (strength === "weak") return 1;   // cap at "Örlítið betra"
-  return 0;                            // cap at "Svipað"
+  if (strength === "strong") return 3;
+  if (strength === "decent") return 2;
+  if (strength === "weak") return 1;
+  return 0;
 }
 
 function fmt(val) {
@@ -118,8 +149,8 @@ function SiteCard({ label, name, metrics, dist, muted, highlight }) {
         <MetricRow icon="🌡" value={tempFmt} unit="°C" />
       </div>
       {dist != null && isFinite(dist) && (
-        <div className="mt-1.5 text-[10px] text-slate-400 dark:text-slate-500">
-          {Number(dist).toFixed(1)} km í burtu
+        <div className="mt-2 text-xs font-medium text-slate-500 dark:text-slate-400">
+          {Math.round(dist)} km í burtu
         </div>
       )}
     </div>
@@ -127,9 +158,13 @@ function SiteCard({ label, name, metrics, dist, muted, highlight }) {
 }
 
 export default function InstantComparison({ site, currentScore, rows, top5, scoresById }) {
-  const best = top5?.[0];
+  const best = useMemo(
+    () => selectBestCandidate(top5, site?.id, currentScore),
+    [top5, site, currentScore]
+  );
+
   const scoreDiff = best ? best.score - currentScore : 0;
-  const showComparison = best != null && best.site?.id !== site?.id && scoreDiff >= 5;
+  const showComparison = best != null;
 
   const currentMetrics = useMemo(() => calcMetrics(rows), [rows]);
   const nearbyMetrics = useMemo(() => {
@@ -175,16 +210,16 @@ export default function InstantComparison({ site, currentScore, rows, top5, scor
 
   const isStrongOrDecent = strength === "strong" || strength === "decent";
 
-  const nearbyLabel = isStrongOrDecent
-    ? (primaryReason ?? "Betri kostur í nágrenninu")
-    : "Nálægur kostur";
+  // Label always reflects actual distance; metric reasons override only when clear improvement exists
+  const nearbyLabel =
+    isStrongOrDecent && primaryReason ? primaryReason : distanceCategoryLabel(best.dist);
 
   const explanatoryText =
     isStrongOrDecent
-      ? "Nálægt tjaldsvæði lítur greinilega betur út næstu 3 daga."
+      ? "Tjaldsvæðið lítur greinilega betur út næstu 3 daga."
       : strength === "weak"
-        ? "Nálægt tjaldsvæði gæti verið aðeins betra, en munurinn er ekki mikill."
-        : "Veðrið í nágrenninu virðist svipað miðað við næstu 3 daga.";
+        ? "Þetta tjaldsvæði gæti verið aðeins betra, en munurinn er ekki mikill."
+        : "Veðrið á þessum stað virðist svipað miðað við næstu 3 daga.";
 
   const ctaLabel = tier >= 2 ? "Skoða þennan kost" : "Skoða samanburð";
 
