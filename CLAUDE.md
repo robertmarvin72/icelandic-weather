@@ -153,6 +153,11 @@ Goals:
 - Avoid overconfident recommendations when differences are weak or mixed
 - Use softer language for weak improvements
 
+#### Radius Rule
+InstantComparison must ONLY compare campsites within the active Route Planner radius.
+Never fall back to distant "best overall" campsites when no nearby option exists.
+If no candidate exists within radius → show stay-positive state.
+
 ### Progressive Disclosure
 
 Advanced controls should:

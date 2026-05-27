@@ -101,6 +101,15 @@ Centralized free/pro feature definitions. `RequireFeature` component wraps gated
 - Core logic in `src/lib/relocationEngine.js` and `relocationService.js`
 - Narrative generation in `routePlannerNarrative.js`
 
+### InstantComparison
+
+Homepage component that compares current campsite against best nearby alternative.
+- Candidates must be within active radiusKm (default 50 km) — no fallback to distant sites
+- Uses haversine distance calculation, not top5 leaderboard directly
+- Shows stay-positive state when no qualifying nearby candidate exists
+- Selection logic lives in selectBestCandidate() inside InstantComparison.jsx
+- Do NOT use top5[0] directly — it may be outside the active radius
+
 ---
 
 ## API Routes

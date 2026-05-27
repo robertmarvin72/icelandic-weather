@@ -1,5 +1,6 @@
 import React, { useMemo } from "react";
 import { trackEvent } from "../lib/analytics";
+import { haversine } from "../lib/geo";
 
 function calcMetrics(rows) {
   const slice = (rows || []).slice(0, 3);
@@ -61,27 +62,30 @@ function distanceCategoryLabel(dist) {
   return "Lengra í burtu";
 }
 
-// Prefer a close candidate when score difference is similar to the best candidate.
-// Does NOT touch relocationEngine — scoped to display selection only.
-function selectBestCandidate(top5, siteId, currentScore) {
-  if (!top5?.length) return null;
+// Hard-enforces radiusKm campsite-to-campsite distance. Returns null when no nearby
+// candidate qualifies — never falls back to a distant "best in Iceland" result.
+function selectBestCandidate(top5, site, currentScore, radiusKm) {
+  if (!top5?.length || !site) return null;
 
-  const eligible = top5.filter(
-    (c) => c.site?.id !== siteId && c.score - currentScore >= 5
-  );
+  const baseLat = Number(site.lat);
+  const baseLon = Number(site.lon);
+  if (!isFinite(baseLat) || !isFinite(baseLon)) return null;
+
+  const eligible = top5
+    .filter((c) => c.site?.id !== site.id && c.score - currentScore >= 5)
+    .map((c) => {
+      const cLat = Number(c.site?.lat);
+      const cLon = Number(c.site?.lon);
+      const distFromBase =
+        isFinite(cLat) && isFinite(cLon) ? haversine(baseLat, baseLon, cLat, cLon) : Infinity;
+      return { ...c, distFromBase };
+    })
+    .filter((c) => c.distFromBase <= radiusKm);
+
   if (!eligible.length) return null;
 
-  // eligible[0] is the highest-scored (top5 is already sorted score desc, dist asc)
-  const bestScore = eligible[0].score;
-
-  // Prefer a candidate within 150 km if its score is within 8 points of the best
-  const NEARBY_KM = 150;
-  const SCORE_TOLERANCE = 8;
-  const nearbyGood = eligible.find(
-    (c) => isFinite(c.dist) && c.dist < NEARBY_KM && bestScore - c.score <= SCORE_TOLERANCE
-  );
-
-  return nearbyGood ?? eligible[0];
+  // Among within-radius candidates, prefer highest score
+  return eligible.reduce((best, c) => (c.score > best.score ? c : best));
 }
 
 // Badge tier index: 0=Svipað, 1=Örlítið betra, 2=Betra, 3=Miklu betra
@@ -157,10 +161,10 @@ function SiteCard({ label, name, metrics, dist, muted, highlight }) {
   );
 }
 
-export default function InstantComparison({ site, currentScore, rows, top5, scoresById }) {
+export default function InstantComparison({ site, currentScore, rows, top5, scoresById, radiusKm = 50 }) {
   const best = useMemo(
-    () => selectBestCandidate(top5, site?.id, currentScore),
-    [top5, site, currentScore]
+    () => selectBestCandidate(top5, site, currentScore, radiusKm),
+    [top5, site, currentScore, radiusKm]
   );
 
   const scoreDiff = best ? best.score - currentScore : 0;
@@ -212,7 +216,7 @@ export default function InstantComparison({ site, currentScore, rows, top5, scor
 
   // Label always reflects actual distance; metric reasons override only when clear improvement exists
   const nearbyLabel =
-    isStrongOrDecent && primaryReason ? primaryReason : distanceCategoryLabel(best.dist);
+    isStrongOrDecent && primaryReason ? primaryReason : distanceCategoryLabel(best.distFromBase);
 
   const explanatoryText =
     isStrongOrDecent
@@ -244,7 +248,7 @@ export default function InstantComparison({ site, currentScore, rows, top5, scor
           label={nearbyLabel}
           name={best.site?.name}
           metrics={nearbyMetrics}
-          dist={best.dist}
+          dist={best.distFromBase}
           highlight={isStrongOrDecent}
         />
       </div>
