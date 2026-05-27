@@ -2,8 +2,9 @@ export const commonTranslations = {
   en: {
     appTitle: "Iceland Camping",
     sevenDayWeather: "7-Day Weather Nearby",
-    heroStayMoveTitle: "Know when to stay or move",
-    heroStayMoveSubtitle: "See where the weather looks better over the next few days.",
+    heroStayMoveTitle: "Find calmer camping before the weather turns.",
+    heroStayMoveSubtitle: "Chase the Weather compares nearby campsites and shows where conditions are likely calmer, drier or warmer over the next few days.",
+    heroCta: "Find a better spot",
     myLocation: "My location",
     dark: "Dark",
     light: "Light",
@@ -405,8 +406,9 @@ export const commonTranslations = {
   is: {
     appTitle: "Tjaldsvæði á Íslandi",
     sevenDayWeather: "7 daga veður í nágrenni",
-    heroStayMoveTitle: "Vita hvenær á að vera kyrr eða færa sig",
-    heroStayMoveSubtitle: "Sjáðu hvar er betra veður í nágrenninu næstu daga.",
+    heroStayMoveTitle: "Finndu rólegra tjaldsvæði áður en veðrið versnar.",
+    heroStayMoveSubtitle: "Eltum Veðrið ber saman tjaldsvæði í nágrenninu og sýnir hvar líklegt er að vera rólegra, þurrara eða hlýrra næstu daga.",
+    heroCta: "Finna betri stað",
     myLocation: "Staðsetning mín",
     dark: "Dökkt",
     light: "Ljóst",
