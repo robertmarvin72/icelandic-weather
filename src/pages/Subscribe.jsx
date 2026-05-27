@@ -2,6 +2,7 @@
 import React, { useMemo, useState } from "react";
 import { useMe } from "../hooks/useMe";
 import { getStoredAttribution } from "../lib/attribution";
+import { trackEvent } from "../lib/analytics";
 
 export default function Subscribe({ onClose, theme = "dark", t }) {
   const params = useMemo(() => new URLSearchParams(window.location.search), []);
@@ -102,6 +103,13 @@ export default function Subscribe({ onClose, theme = "dark", t }) {
       return;
     }
 
+    trackEvent("subscription_cta_clicked", {
+      plan,
+      billingCycle: plan,
+      source: "subscribe",
+      lang: typeof localStorage !== "undefined" ? (localStorage.getItem("lang") || "is") : "is",
+    });
+
     setBusy(true);
     setError("");
 
@@ -146,6 +154,11 @@ export default function Subscribe({ onClose, theme = "dark", t }) {
         throw new Error(T("subscribeMissingCheckoutUrl", "Missing checkout URL."));
       }
 
+      trackEvent("checkout_started", {
+        plan,
+        billingCycle: plan,
+        priceIdType: "paddle",
+      });
       // Redirect to Paddle checkout
       window.location.assign(json.url);
     } catch (e) {

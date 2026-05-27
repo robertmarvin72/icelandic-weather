@@ -1,6 +1,7 @@
 // src/pages/Success.jsx
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
+import { trackEvent } from "../lib/analytics";
 export default function Success({ theme = "dark", t }) {
   const [status, setStatus] = useState("checking"); // checking | active | pending
   const [logoOk, setLogoOk] = useState(true);
@@ -8,6 +9,19 @@ export default function Success({ theme = "dark", t }) {
   const [portalError, setPortalError] = useState("");
   const [showDelayMessage, setShowDelayMessage] = useState(false);
   const [isPolling, setIsPolling] = useState(false);
+
+  const planRef = useRef(null);
+  const checkoutFiredRef = useRef(false);
+  useEffect(() => {
+    if (status !== "active") return;
+    if (checkoutFiredRef.current) return;
+    checkoutFiredRef.current = true;
+    trackEvent("checkout_completed", {
+      plan: planRef.current || "unknown",
+      billingCycle: planRef.current || "unknown",
+      status: "active",
+    });
+  }, [status]);
 
   const isLight = theme === "light";
   const logoSrc = !isLight ? "/eltumvedrid-dark-is.png" : "/eltumvedrid-light-is.png";
@@ -37,6 +51,7 @@ export default function Success({ theme = "dark", t }) {
         if (!alive) return false;
 
         if (res.ok && json?.entitlements?.pro) {
+          if (json?.subscription?.plan) planRef.current = json.subscription.plan;
           setStatus("active");
           setIsPolling(false);
           return true;
@@ -86,6 +101,7 @@ export default function Success({ theme = "dark", t }) {
 
   async function openPortal() {
     if (portalLoading) return;
+    trackEvent("cancellation_started", { source: "success_page", currentTier: "pro" });
     setPortalLoading(true);
     setPortalError("");
 

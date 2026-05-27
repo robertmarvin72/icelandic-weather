@@ -1,9 +1,10 @@
 // src/pages/Pricing.jsx
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useRef, useMemo, useState } from "react";
 import { useMe } from "../hooks/useMe";
 import { getDisplayPrices } from "../config/pricing";
 import Footer from "../components/Footer";
 import { getStoredAttribution } from "../lib/attribution";
+import { trackEvent } from "../lib/analytics";
 
 export default function Pricing({ onClose, lang = "is", theme = "dark", t, me }) {
   const isLight = theme === "light";
@@ -33,6 +34,17 @@ export default function Pricing({ onClose, lang = "is", theme = "dark", t, me })
   const [busyPlan, setBusyPlan] = useState(""); // "monthly" | "yearly" | ""
   const [error, setError] = useState("");
   const [acceptedTerms, setAcceptedTerms] = useState(false);
+
+  const viewFiredRef = useRef(false);
+  useEffect(() => {
+    if (viewFiredRef.current) return;
+    viewFiredRef.current = true;
+    trackEvent("pricing_page_viewed", {
+      source: params.get("src") || "direct",
+      lang,
+      isPro: proActive,
+    });
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Translation helper (fallbacks only matter if a key is missing)
   const T = (key, fallback) => {
@@ -83,6 +95,13 @@ export default function Pricing({ onClose, lang = "is", theme = "dark", t, me })
   }
 
   async function startCheckout(chosenPlan) {
+    trackEvent("subscription_cta_clicked", {
+      plan: chosenPlan,
+      billingCycle: chosenPlan,
+      source: "pricing",
+      lang,
+    });
+
     if (busyPlan) return;
     if (!acceptedTerms) return;
 
@@ -90,6 +109,15 @@ export default function Pricing({ onClose, lang = "is", theme = "dark", t, me })
     if (!email) {
       goSubscribe(chosenPlan);
       return;
+    }
+
+    const isUpgrade = isMonthly && chosenPlan === "yearly";
+    if (isUpgrade) {
+      trackEvent("upgrade_started", {
+        fromTier: "monthly",
+        toTier: "yearly",
+        billingCycle: "yearly",
+      });
     }
 
     setBusyPlan(chosenPlan);
@@ -159,6 +187,11 @@ export default function Pricing({ onClose, lang = "is", theme = "dark", t, me })
 
       // ✅ Monthly -> Yearly upgrade can return { ok:true, upgraded:true } (no checkout URL)
       if (json?.upgraded) {
+        trackEvent("upgrade_completed", {
+          fromTier: "monthly",
+          toTier: "yearly",
+          billingCycle: "yearly",
+        });
         window.location.assign("/?checkout=success&upgrade=1");
         return;
       }
@@ -168,6 +201,11 @@ export default function Pricing({ onClose, lang = "is", theme = "dark", t, me })
         throw new Error(T("subscribeMissingCheckoutUrl", "Missing checkout URL."));
       }
 
+      trackEvent("checkout_started", {
+        plan: chosenPlan,
+        billingCycle: chosenPlan,
+        priceIdType: "paddle",
+      });
       window.location.assign(json.url);
     } catch (e) {
       setError(String(e?.message || e));

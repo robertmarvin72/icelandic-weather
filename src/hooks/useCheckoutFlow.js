@@ -1,4 +1,5 @@
 import { useCallback, useEffect } from "react";
+import { trackEvent } from "../lib/analytics";
 
 export function useCheckoutFlow({ me, navigate, openLoginModal, pushToast, t, refetchMe }) {
   const startCheckout = useCallback(async () => {
@@ -29,6 +30,11 @@ export function useCheckoutFlow({ me, navigate, openLoginModal, pushToast, t, re
       openLoginModal();
       return;
     }
+
+    trackEvent("cancellation_started", {
+      source: "app",
+      currentTier: me?.entitlements?.pro ? "pro" : "free",
+    });
 
     try {
       pushToast({
