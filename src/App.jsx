@@ -44,6 +44,7 @@ import About from "./pages/About";
 import { formatDay } from "./utils/date";
 import { WEATHER_MAP } from "./utils/weatherMap";
 import HourlyForecastModal from "./components/HourlyForecastModal";
+import InstantComparison from "./components/InstantComparison";
 
 function IcelandCampingWeatherApp({ page = "home" }) {
   const [units, setUnits] = useLocalStorageState("units", "metric");
@@ -312,6 +313,14 @@ function IcelandCampingWeatherApp({ page = "home" }) {
                 currentScore={currentScore}
                 routePlannerSummary={routePlannerSummary}
                 entitlements={entitlements}
+              />
+
+              <InstantComparison
+                site={site}
+                currentScore={currentScore}
+                rows={rows}
+                top5={top5}
+                scoresById={scoresById}
               />
 
               <div className="mb-4">
