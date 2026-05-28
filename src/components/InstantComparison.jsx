@@ -62,30 +62,40 @@ function distanceCategoryLabel(dist) {
   return "Lengra í burtu";
 }
 
-// Hard-enforces radiusKm campsite-to-campsite distance. Returns null when no nearby
-// candidate qualifies — never falls back to a distant "best in Iceland" result.
-function selectBestCandidate(top5, site, currentScore, radiusKm) {
-  if (!top5?.length || !site) return null;
+// Searches ALL scored campsites within radiusKm of the base site.
+// Using top5 (global best) caused all candidates to fail the radius filter when
+// the globally best sites were far away. This searches the full scored set instead,
+// matching the same candidate pool that RoutePlannerCard's relocationEngine uses.
+function selectBestCandidate(siteList, scoresById, site, currentScore, radiusKm) {
+  if (!siteList?.length || !site) return null;
 
   const baseLat = Number(site.lat);
   const baseLon = Number(site.lon);
   if (!isFinite(baseLat) || !isFinite(baseLon)) return null;
 
-  const eligible = top5
-    .filter((c) => c.site?.id !== site.id && c.score - currentScore >= 5)
-    .map((c) => {
-      const cLat = Number(c.site?.lat);
-      const cLon = Number(c.site?.lon);
-      const distFromBase =
-        isFinite(cLat) && isFinite(cLon) ? haversine(baseLat, baseLon, cLat, cLon) : Infinity;
-      return { ...c, distFromBase };
-    })
-    .filter((c) => c.distFromBase <= radiusKm);
+  const MIN_SCORE_DIFF = 5;
+  let best = null;
 
-  if (!eligible.length) return null;
+  for (const s of siteList) {
+    if (s.id === site.id) continue;
 
-  // Among within-radius candidates, prefer highest score
-  return eligible.reduce((best, c) => (c.score > best.score ? c : best));
+    const scored = scoresById?.[s.id];
+    if (!scored || scored.score == null) continue;
+    if (scored.score - currentScore < MIN_SCORE_DIFF) continue;
+
+    const sLat = Number(s.lat);
+    const sLon = Number(s.lon);
+    if (!isFinite(sLat) || !isFinite(sLon)) continue;
+
+    const distFromBase = haversine(baseLat, baseLon, sLat, sLon);
+    if (distFromBase > radiusKm) continue;
+
+    if (!best || scored.score > best.score) {
+      best = { site: s, score: scored.score, distFromBase };
+    }
+  }
+
+  return best;
 }
 
 // Badge tier index: 0=Svipað, 1=Örlítið betra, 2=Betra, 3=Miklu betra
@@ -161,10 +171,10 @@ function SiteCard({ label, name, metrics, dist, muted, highlight }) {
   );
 }
 
-export default function InstantComparison({ site, currentScore, rows, top5, scoresById, radiusKm = 50, homepageRecommendation = "stay" }) {
+export default function InstantComparison({ site, currentScore, rows, siteList, scoresById, radiusKm = 50, homepageRecommendation = "stay" }) {
   const best = useMemo(
-    () => selectBestCandidate(top5, site, currentScore, radiusKm),
-    [top5, site, currentScore, radiusKm]
+    () => selectBestCandidate(siteList, scoresById, site, currentScore, radiusKm),
+    [siteList, scoresById, site, currentScore, radiusKm]
   );
 
   const scoreDiff = best ? best.score - currentScore : 0;
