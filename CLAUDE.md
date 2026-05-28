@@ -142,6 +142,15 @@ The homepage should de-emphasize:
 - Debug/scoring-style controls
 - Secondary settings
 
+### Brochure / Landing Pages
+
+Brochure and landing pages should:
+- explain the product within 3–5 seconds
+- prioritize emotional clarity over feature density
+- use nearby comparison as the primary storytelling mechanism
+- avoid dashboard-like layouts
+- focus on practical camping outcomes and comfort
+
 ### Instant Comparison
 
 InstantComparison exists to create an immediate "aha moment".
@@ -157,6 +166,16 @@ Goals:
 InstantComparison must ONLY compare campsites within the active Route Planner radius.
 Never fall back to distant "best overall" campsites when no nearby option exists.
 If no candidate exists within radius → show stay-positive state.
+
+### Distance Display
+
+Distance values use geographic/haversine distance, not driving distance.
+UI wording should communicate approximate straight-line distance:
+
+- IS: `~25 km í beinni línu`
+- EN: `~25 km in a straight line`
+
+Do not present haversine distance as exact driving distance.
 
 ### Progressive Disclosure
 
@@ -183,6 +202,28 @@ Key events:
 - `homepage_hero_cta_click`
 - `homepage_instant_comparison_cta_click`
 
+#### Analytics Conventions
+
+Analytics events should:
+- use snake_case
+- avoid personally identifiable information
+- include lightweight metadata only
+- avoid duplicate firing caused by rerenders/effects
+
+Primary homepage funnel:
+- `homepage_loaded`
+- `homepage_hero_cta_click`
+- `comparison_viewed`
+- `better_nearby_found`
+- `stay_recommended`
+- `move_recommended`
+
+Primary monetization funnel:
+- `pricing_page_viewed`
+- `subscription_cta_clicked`
+- `checkout_started`
+- `checkout_completed`
+
 ### Tone
 
 User-facing copy should:
@@ -190,6 +231,20 @@ User-facing copy should:
 - avoid generic weather-app language
 - focus on practical camping decisions
 - avoid overwhelming technical terminology
+
+### Semantic Weather Labels
+
+Prefer emotional and comfort-oriented wording over technical terminology.
+
+Prefer:
+- "Rólegra"
+- "Þurrara"
+- "Hlýrra"
+
+Avoid overly technical labels such as:
+- "Minni vindur"
+
+Users care about comfort and practical camping experience, not raw metrics alone.
 
 ---
 

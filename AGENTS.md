@@ -112,6 +112,57 @@ Homepage component that compares current campsite against best nearby alternativ
 
 ---
 
+## UX Guardrails
+
+Prioritize:
+- hero clarity
+- nearby comparison
+- recommendation confidence
+- emotional clarity
+- mobile readability
+
+Avoid:
+- dashboard-like layouts
+- excessive controls above the fold
+- cluttered first-screen experiences
+- overly technical weather terminology
+
+---
+
+## Copy Tone
+
+Prefer emotional and comfort-oriented wording over technical terminology.
+
+Prefer:
+- "Rólegra"
+- "Þurrara"
+- "Hlýrra"
+
+Avoid:
+- "Minni vindur"
+
+Users care more about practical comfort and decision-making than raw weather metrics.
+
+---
+
+## Analytics Conventions
+
+Analytics events should:
+- use snake_case
+- avoid PII
+- include lightweight metadata only
+- avoid duplicate firing caused by rerenders/effects
+
+Core homepage funnel:
+- `homepage_loaded`
+- `homepage_hero_cta_click`
+- `comparison_viewed`
+- `better_nearby_found`
+- `stay_recommended`
+- `move_recommended`
+
+---
+
 ## API Routes
 
 | Route                 | Method   | Auth           | Purpose                         |
