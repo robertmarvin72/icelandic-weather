@@ -287,7 +287,7 @@ export const landingTranslations = {
     landingMockRecommendationTitle2: "Prófaðu þetta í staðinn",
     landingMockRecommendationTitle3: "Veðrið lítur betur út hér",
     landingMockBetterPlace: "Þakgil",
-    landingMockBetterDistance: "24 km í burtu",
+    landingMockBetterDistance: "~24 km í beinni línu",
     landingMockBenefit1: "Minni vindálag",
     landingMockBenefit2: "Minni rigning á morgun",
     landingMockBenefit3: "Betri heildaraðstæður til að tjalda",

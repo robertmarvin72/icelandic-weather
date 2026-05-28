@@ -2,7 +2,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-export default function Brand({ t, to = "/", size = "full" }) {
+export default function Brand({ t, to = "/", size = "full", hideTagline = false }) {
   const logoLight = "/eltumvedrid-light-is.png";
   const logoDark = "/eltumvedrid-dark-is.png";
   const altText = "Eltum Veðrið";
@@ -29,14 +29,15 @@ export default function Brand({ t, to = "/", size = "full" }) {
         className={`hidden dark:block ${isSlim ? "h-10" : "h-20 md:h-32"} w-auto shrink-0`}
       />
 
-      {/* Tagline aligns to bottom of logo text */}
-      <span
-        className={`header-title header-title-brand dark:text-slate-100 ${
-          isSlim ? "text-xs -mt-7" : "text-sm -mt-"
-        }`}
-      >
-        {tagline}
-      </span>
+      {!hideTagline && (
+        <span
+          className={`header-title header-title-brand dark:text-slate-100 ${
+            isSlim ? "text-xs -mt-7" : "text-sm -mt-"
+          }`}
+        >
+          {tagline}
+        </span>
+      )}
     </Link>
   );
 }

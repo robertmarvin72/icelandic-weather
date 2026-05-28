@@ -48,10 +48,11 @@ function classifyMetrics(current, nearby) {
   else if (improvements.length >= 1) strength = "weak";
   else strength = "mixed";
 
-  const reasonLabels = { wind: "Minni vindur", rain: "Þurrara", temp: "Hlýrra" };
-  const primaryReason = improvements.length > 0 ? reasonLabels[improvements[0]] : null;
+  const reasonLabels = { wind: "Rólegra", rain: "Þurrara", temp: "Hlýrra" };
+  const primaryKey = improvements.length > 0 ? improvements[0] : null;
+  const primaryReason = primaryKey ? reasonLabels[primaryKey] : null;
 
-  return { strength, primaryReason };
+  return { strength, primaryReason, primaryKey };
 }
 
 // Distance-aware label for the right-hand card
@@ -60,6 +61,32 @@ function distanceCategoryLabel(dist) {
   if (dist < 80) return "Nálægur kostur";
   if (dist < 200) return "Annar kostur";
   return "Lengra í burtu";
+}
+
+// Builds a short human-readable delta string for the strongest improvement.
+function buildDeltaText(primaryKey, current, nearby) {
+  if (!primaryKey || !current || !nearby) return null;
+  if (primaryKey === "wind") {
+    const curr = current.avgWind;
+    const near = nearby.avgWind;
+    if (curr == null || near == null || !isFinite(curr) || !isFinite(near) || curr <= 0) return null;
+    const pct = Math.round(((curr - near) / curr) * 100);
+    if (pct < 5) return null;
+    return `${pct}% minni vindur`;
+  }
+  if (primaryKey === "rain") {
+    if (current.totalRain == null || nearby.totalRain == null) return null;
+    const diff = current.totalRain - nearby.totalRain;
+    if (!isFinite(diff) || diff < 1) return null;
+    return `${Math.round(diff)} mm minna regn`;
+  }
+  if (primaryKey === "temp") {
+    if (current.avgHighTemp == null || nearby.avgHighTemp == null) return null;
+    const diff = nearby.avgHighTemp - current.avgHighTemp;
+    if (!isFinite(diff) || diff < 0.5) return null;
+    return `${Math.round(diff)}°C hlýrra`;
+  }
+  return null;
 }
 
 // Searches ALL scored campsites within radiusKm of the base site.
@@ -132,7 +159,7 @@ function MetricRow({ icon, value, unit }) {
   );
 }
 
-function SiteCard({ label, name, metrics, dist, muted, highlight }) {
+function SiteCard({ label, name, metrics, dist, muted, highlight, deltaText }) {
   const windFmt = fmt(metrics?.avgWind);
   const rainFmt = fmt(metrics?.totalRain);
   const tempFmt = fmt(metrics?.avgHighTemp);
@@ -162,16 +189,21 @@ function SiteCard({ label, name, metrics, dist, muted, highlight }) {
         <MetricRow icon="🌧" value={rainFmt} unit="mm" />
         <MetricRow icon="🌡" value={tempFmt} unit="°C" />
       </div>
+      {deltaText && (
+        <div className="mt-1.5 text-xs font-semibold text-emerald-600 dark:text-emerald-400">
+          {deltaText}
+        </div>
+      )}
       {dist != null && isFinite(dist) && (
         <div className="mt-2 text-xs font-medium text-slate-500 dark:text-slate-400">
-          {Math.round(dist)} km í burtu
+          ~{Math.round(dist)} km í beinni línu
         </div>
       )}
     </div>
   );
 }
 
-export default function InstantComparison({ site, currentScore, rows, siteList, scoresById, radiusKm = 50, homepageRecommendation = "stay" }) {
+export default function InstantComparison({ site, currentScore, rows, siteList, scoresById, radiusKm = 50, homepageRecommendation = "stay", onCtaClick }) {
   const best = useMemo(
     () => selectBestCandidate(siteList, scoresById, site, currentScore, radiusKm),
     [siteList, scoresById, site, currentScore, radiusKm]
@@ -187,13 +219,18 @@ export default function InstantComparison({ site, currentScore, rows, siteList, 
     return calcMetrics(nearbyRows);
   }, [best, scoresById]);
 
-  const { strength, primaryReason } = useMemo(
+  const { strength, primaryReason, primaryKey } = useMemo(
     () => classifyMetrics(currentMetrics, nearbyMetrics),
     [currentMetrics, nearbyMetrics]
   );
 
   const tier = showComparison ? Math.min(scoreTier(scoreDiff), metricCap(strength)) : -1;
   const isStrongOrDecent = strength === "strong" || strength === "decent";
+
+  const deltaText = useMemo(
+    () => (isStrongOrDecent ? buildDeltaText(primaryKey, currentMetrics, nearbyMetrics) : null),
+    [isStrongOrDecent, primaryKey, currentMetrics, nearbyMetrics]
+  );
 
   const comparisonFiredRef = useRef(null);
   useEffect(() => {
@@ -260,7 +297,7 @@ export default function InstantComparison({ site, currentScore, rows, siteList, 
 
   const badgeClass =
     tier >= 3
-      ? "bg-emerald-100 text-emerald-800 dark:bg-emerald-900/40 dark:text-emerald-300"
+      ? "bg-emerald-50 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400"
       : tier >= 2
         ? "bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-300"
         : "bg-slate-100 text-slate-600 dark:bg-slate-700/50 dark:text-slate-400";
@@ -271,7 +308,7 @@ export default function InstantComparison({ site, currentScore, rows, siteList, 
 
   const explanatoryText =
     isStrongOrDecent
-      ? "Tjaldsvæðið lítur greinilega betur út næstu 3 daga."
+      ? "Veðrið lítur mun betur út næstu daga."
       : strength === "weak"
         ? "Þetta tjaldsvæði gæti verið aðeins betra, en munurinn er ekki mikill."
         : "Veðrið á þessum stað virðist svipað miðað við næstu 3 daga.";
@@ -290,7 +327,7 @@ export default function InstantComparison({ site, currentScore, rows, siteList, 
 
         <div className="flex shrink-0 items-center justify-center gap-1.5 sm:flex-col">
           <span className="text-lg text-slate-400 dark:text-slate-500">→</span>
-          <span className={`rounded-full px-2 py-0.5 text-xs font-semibold ${badgeClass}`}>
+          <span className={`rounded-full px-1.5 py-0.5 text-[11px] font-medium ${badgeClass}`}>
             {badge}
           </span>
         </div>
@@ -301,6 +338,7 @@ export default function InstantComparison({ site, currentScore, rows, siteList, 
           metrics={nearbyMetrics}
           dist={best.distFromBase}
           highlight={isStrongOrDecent}
+          deltaText={deltaText}
         />
       </div>
 
@@ -308,7 +346,7 @@ export default function InstantComparison({ site, currentScore, rows, siteList, 
         <p className="text-xs text-slate-500 dark:text-slate-400">{explanatoryText}</p>
         <button
           type="button"
-          onClick={scrollToTop5}
+          onClick={onCtaClick ?? scrollToTop5}
           className="inline-flex items-center gap-1.5 whitespace-nowrap rounded-full bg-emerald-600 px-4 py-1.5 text-xs font-semibold text-white shadow-sm transition-colors hover:bg-emerald-700 active:bg-emerald-800"
         >
           {ctaLabel} →

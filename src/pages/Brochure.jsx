@@ -1,31 +1,55 @@
-import { useMemo } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { useCallback, useMemo } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import Brand from "../components/Brand";
+import InstantComparison from "../components/InstantComparison";
+import { trackEvent } from "../lib/analytics";
+
+// Static mock data for the comparison demo — no API calls on this page
+const MOCK_CURRENT = { id: "brochure-laugarvatn", name: "Laugarvatn", lat: 64.12, lon: -20.72 };
+const MOCK_NEARBY  = { id: "brochure-selfoss",    name: "Selfoss",     lat: 63.93, lon: -20.99 };
+const MOCK_SITE_LIST = [MOCK_CURRENT, MOCK_NEARBY];
+
+const MOCK_CURRENT_ROWS = [
+  { windMax: 9,   rain: 5,   tmax: 11 },
+  { windMax: 7,   rain: 3,   tmax: 12 },
+  { windMax: 8,   rain: 4,   tmax: 12 },
+];
+const MOCK_NEARBY_ROWS = [
+  { windMax: 2.5, rain: 0.5, tmax: 15 },
+  { windMax: 3.0, rain: 1.0, tmax: 14 },
+  { windMax: 3.5, rain: 0.5, tmax: 15 },
+];
+
+const MOCK_SCORES = {
+  "brochure-laugarvatn": { score: 42, rows: MOCK_CURRENT_ROWS },
+  "brochure-selfoss":    { score: 58, rows: MOCK_NEARBY_ROWS },
+};
 
 const content = {
   en: {
-    title: "Chase better weather",
-    subtitle: "Find better weather nearby before you set off.",
-    bullets: ["Sun in one place", "Rain 40 km away", "Shelter in the valley", "Wind by the coast"],
-    cta: "Check the weather",
-    footer: "Built for Icelandic conditions",
+    tagline:  "Find better weather",
+    title:    "Better weather might be nearby",
+    subtitle: "Compare nearby areas before you set off.",
+    bullets:  ["Calmer camping nearby", "Drier nearby conditions", "Shelter from strong wind", "Less chance of getting stuck inside"],
+    footer:   "Built for Icelandic conditions",
   },
   is: {
-    title: "Eltu veðrið",
-    subtitle: "Finndu betra veður nálægt þér áður en þú ferð af stað.",
-    bullets: ["Sól á einum stað", "Rigning í 40 km fjarlægð", "Logn í dalnum", "Hvass við ströndina"],
-    cta: "Skoða veðrið",
-    footer: "Hannað fyrir íslenskar aðstæður",
+    tagline:  "Finndu betra veður",
+    title:    "40 km geta breytt öllu",
+    subtitle: "Berðu saman nærliggjandi svæði áður en þú ferð af stað.",
+    bullets:  ["Rólegra veður í nágrenninu", "Þurrara svæði í nágrenninu", "Skjól frá sterkum vindi", "Minni líkur á að sitja fastur inni"],
+    footer:   "Hannað fyrir íslenskar aðstæður",
   },
 };
 
 const ctaCopy = {
-  A: { en: "Find better weather nearby", is: "Finndu betra veður nálægt þér" },
-  B: { en: "See better weather nearby",  is: "Sjáðu betra veður nálægt þér" },
+  A: { en: "See where the weather is calmer", is: "Sjá hvar veðrið er rólegra" },
+  B: { en: "See where the weather is calmer", is: "Sjá hvar veðrið er rólegra" },
 };
 
 export default function Brochure() {
   const { search } = useLocation();
+  const navigate = useNavigate();
 
   const lang = useMemo(() => {
     const params = new URLSearchParams(search);
@@ -51,18 +75,41 @@ export default function Brochure() {
     return qs ? `/?${qs}` : "/";
   }, [search]);
 
-  return (
-    <main className="min-h-screen bg-soft-grid text-slate-900 dark:bg-slate-950 dark:text-slate-100 flex flex-col items-center justify-center px-6 py-16">
-      <div className="w-full max-w-sm flex flex-col items-center gap-8 text-center">
-        <Brand t={() => undefined} lang={lang} />
+  const handleComparisonCta = useCallback(() => {
+    trackEvent("brochure_comparison_cta_click", { lang, source: "brochure_comparison" });
+    navigate(ctaTo);
+  }, [lang, ctaTo, navigate]);
 
-        <div className="flex flex-col gap-3">
+  return (
+    <main className="min-h-screen bg-soft-grid text-slate-900 dark:bg-slate-950 dark:text-slate-100 flex flex-col items-center px-6 py-16">
+      <div className="w-full max-w-md flex flex-col items-center gap-6 text-center">
+
+        <Brand t={() => undefined} lang={lang} hideTagline />
+
+        <div className="flex flex-col gap-2">
+          <p className="text-xs font-semibold uppercase tracking-widest text-emerald-600 dark:text-emerald-400">
+            {copy.tagline}
+          </p>
           <h1 className="text-3xl font-extrabold tracking-tight text-slate-900 dark:text-slate-100">
             {copy.title}
           </h1>
-          <p className="text-base text-slate-600 dark:text-slate-400">
+          <p className="text-base text-slate-600 dark:text-slate-400 max-w-sm mx-auto">
             {copy.subtitle}
           </p>
+        </div>
+
+        {/* Comparison demo is the visual focal point — sits directly below hero text */}
+        <div className="w-full" id="comparison-section">
+          <InstantComparison
+            site={MOCK_CURRENT}
+            currentScore={42}
+            rows={MOCK_CURRENT_ROWS}
+            siteList={MOCK_SITE_LIST}
+            scoresById={MOCK_SCORES}
+            radiusKm={50}
+            homepageRecommendation="move"
+            onCtaClick={handleComparisonCta}
+          />
         </div>
 
         <ul className="w-full flex flex-col gap-2">
@@ -90,6 +137,7 @@ export default function Brochure() {
         <p className="text-xs text-slate-500 dark:text-slate-500">
           {copy.footer}
         </p>
+
       </div>
     </main>
   );
