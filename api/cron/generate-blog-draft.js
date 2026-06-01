@@ -1,3 +1,4 @@
+import { randomUUID } from "crypto";
 import postgres from "postgres";
 import { buildBlogPrompt } from "../_lib/buildBlogPrompt.js";
 
@@ -109,6 +110,7 @@ export default async function handler(req, res) {
     const recentRows = await sql`
       SELECT id FROM blog_post
       WHERE source_type = 'automated'
+        AND coalesce(language, 'is') = 'is'
         AND created_at > now() - interval '5 days'
       LIMIT 1
     `;
@@ -163,33 +165,63 @@ export default async function handler(req, res) {
       counter++;
     }
 
+    const groupId = randomUUID();
+
     await sql`
       INSERT INTO blog_post (
-        slug,
-        title,
-        excerpt,
-        content,
-        meta_title,
-        meta_description,
-        source_type,
-        topic,
-        nearby_attractions,
-        status
+        slug, title, excerpt, content,
+        meta_title, meta_description,
+        source_type, topic, nearby_attractions,
+        status, language, translation_group_id
       ) VALUES (
-        ${nextSlug},
-        ${draft.title},
-        ${draft.excerpt},
-        ${draft.content},
-        ${draft.metaTitle || draft.title},
-        ${draft.metaDescription},
-        'automated',
-        ${type},
-        ${draft.nearbyAttractions},
-        'draft'
+        ${nextSlug}, ${draft.title}, ${draft.excerpt}, ${draft.content},
+        ${draft.metaTitle || draft.title}, ${draft.metaDescription},
+        'automated', ${type}, ${draft.nearbyAttractions},
+        'draft', 'is', ${groupId}
       )
     `;
 
-    console.log(`[cron/generate-blog-draft] Saved draft: "${draft.title}" (type=${type})`);
+    console.log(`[cron/generate-blog-draft] Saved IS draft: "${draft.title}" (type=${type})`);
+
+    // Generate and save EN version — failure does not fail the cron job
+    try {
+      const enPrompt = buildBlogPrompt(type, { lang: "en", context });
+      const enAiText = await callAI(enPrompt);
+      const enDraft = parseDraft(enAiText);
+
+      if (isValidDraft(enDraft)) {
+        let enBase = enDraft.slug || "post";
+        let enSlug = enBase;
+        let enCounter = 2;
+        while (true) {
+          const enDup = await sql`SELECT id FROM blog_post WHERE slug = ${enSlug} LIMIT 1`;
+          if (!enDup[0]) break;
+          enSlug = `${enBase}-${enCounter}`;
+          enCounter++;
+        }
+
+        await sql`
+          INSERT INTO blog_post (
+            slug, title, excerpt, content,
+            meta_title, meta_description,
+            source_type, topic, nearby_attractions,
+            status, language, translation_group_id
+          ) VALUES (
+            ${enSlug}, ${enDraft.title}, ${enDraft.excerpt}, ${enDraft.content},
+            ${enDraft.metaTitle || enDraft.title}, ${enDraft.metaDescription},
+            'automated', ${type}, ${enDraft.nearbyAttractions},
+            'draft', 'en', ${groupId}
+          )
+        `;
+
+        console.log(`[cron/generate-blog-draft] Saved EN draft: "${enDraft.title}"`);
+      } else {
+        console.warn("[cron/generate-blog-draft] EN draft invalid shape — skipped");
+      }
+    } catch (enErr) {
+      console.error("[cron/generate-blog-draft] EN generation failed:", enErr?.message);
+    }
+
     return res.status(200).json({ ok: true, type, title: draft.title });
   } catch (err) {
     console.error("[cron/generate-blog-draft] Unexpected error:", err?.message);

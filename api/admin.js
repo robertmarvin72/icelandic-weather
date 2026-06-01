@@ -1,3 +1,4 @@
+import { randomUUID } from "crypto";
 import { isAdminEmail } from "./_lib/admin.js";
 import { getMeFromRequest } from "./_lib/getMe.js";
 import { buildBlogPrompt, BLOG_POST_TYPES } from "./_lib/buildBlogPrompt.js";
@@ -16,6 +17,17 @@ function slugify(str = "") {
     .replace(/\s+/g, "-")
     .replace(/-+/g, "-")
     .replace(/^-+|-+$/g, "");
+}
+
+async function deduplicateSlug(base) {
+  let slug = base || "post";
+  let counter = 2;
+  while (true) {
+    const dup = await sql`SELECT id FROM blog_post WHERE slug = ${slug} LIMIT 1`;
+    if (!dup[0]) return slug;
+    slug = `${base}-${counter}`;
+    counter += 1;
+  }
 }
 
 function normalizeBlogPost(row) {
@@ -664,112 +676,122 @@ async function handleGenerateDraft(req, res) {
       });
     }
 
-    const prompt = buildBlogPrompt(type, {
-      lang,
-      context: {
-        ...context,
-        forecastRawInput: forecastData.normalizedText,
-        forecastSummary: forecastData.summaryText,
-      },
-    });
-    const aiResponse = await callAI(prompt);
-    const draft = normalizeDraft(aiResponse);
+    const enrichedContext = {
+      ...context,
+      forecastRawInput: forecastData.normalizedText,
+      forecastSummary: forecastData.summaryText,
+    };
 
-    let baseSlug = slugify(draft.slug || draft.title || "post");
-    if (!baseSlug) baseSlug = "post";
+    // Generate IS version
+    const isPrompt = buildBlogPrompt(type, { lang: "is", context: enrichedContext });
+    const isAiResponse = await callAI(isPrompt);
+    const isDraft = normalizeDraft(isAiResponse);
 
-    let nextSlug = baseSlug;
-    let counter = 2;
-
-    while (true) {
-      const duplicateRows = await sql`
-        select id
-        from blog_post
-        where slug = ${nextSlug}
-        limit 1
-      `;
-
-      if (!duplicateRows[0]) break;
-
-      nextSlug = `${baseSlug}-${counter}`;
-      counter += 1;
+    // Generate EN version — failure does not abort the request
+    let enDraft = null;
+    try {
+      const enPrompt = buildBlogPrompt(type, { lang: "en", context: enrichedContext });
+      const enAiResponse = await callAI(enPrompt);
+      enDraft = normalizeDraft(enAiResponse);
+    } catch (enErr) {
+      console.error("[generate-draft] EN generation failed:", enErr?.message);
     }
 
-    const insertedRows = await sql`
+    const groupId = randomUUID();
+
+    const RETURNING_COLS = sql`
+      id, slug, title, excerpt, content,
+      meta_title, meta_description, cover_image, cta_hint,
+      source_type, topic,
+      cta_title, cta_text, cta_button, cta_target,
+      nearby_highlights, nearby_attractions,
+      status, published_at, created_at, updated_at,
+      language, translation_group_id
+    `;
+
+    // Insert IS row
+    const isSlug = await deduplicateSlug(slugify(isDraft.slug || isDraft.title || "post") || "post");
+    const isRows = await sql`
       insert into blog_post (
-        slug,
-        title,
-        excerpt,
-        content,
-        meta_title,
-        meta_description,
-        cover_image,
-        source_type,
-        topic,
-        cta_title,
-        cta_text,
-        cta_button,
-        cta_target,
-        nearby_highlights,
-        nearby_attractions,
-        status,
-        language
-      )
-      values (
-        ${nextSlug},
-        ${draft.title || "Untitled"},
-        ${draft.excerpt || ""},
-        ${draft.content || ""},
-        ${draft.metaTitle || draft.title || ""},
-        ${draft.metaDescription || ""},
+        slug, title, excerpt, content,
+        meta_title, meta_description, cover_image,
+        source_type, topic,
+        cta_title, cta_text, cta_button, cta_target,
+        nearby_highlights, nearby_attractions,
+        status, language, translation_group_id
+      ) values (
+        ${isSlug},
+        ${isDraft.title || "Untitled"},
+        ${isDraft.excerpt || ""},
+        ${isDraft.content || ""},
+        ${isDraft.metaTitle || isDraft.title || ""},
+        ${isDraft.metaDescription || ""},
         ${coverImage || null},
         'automated',
         ${null},
+        ${null}, ${null}, ${null}, ${null},
         ${null},
-        ${null},
-        ${null},
-        ${null},
-        ${null},
-        ${draft.nearbyAttractions || null},
-        'draft',
-        ${lang || "is"}
+        ${isDraft.nearbyAttractions || null},
+        'draft', 'is', ${groupId}
       )
-      returning
-        id,
-        slug,
-        title,
-        excerpt,
-        content,
-        meta_title,
-        meta_description,
-        cover_image,
-        cta_hint,
-        source_type,
-        topic,
-        cta_title,
-        cta_text,
-        cta_button,
-        cta_target,
-        nearby_highlights,
-        nearby_attractions,
-        status,
-        published_at,
-        created_at,
-        updated_at,
-        language,
-        translation_group_id
+      returning ${RETURNING_COLS}
     `;
+
+    // Insert EN row — failure logged, not thrown
+    let enRows = null;
+    if (enDraft) {
+      try {
+        const enSlug = await deduplicateSlug(slugify(enDraft.slug || enDraft.title || "post") || "post");
+        enRows = await sql`
+          insert into blog_post (
+            slug, title, excerpt, content,
+            meta_title, meta_description, cover_image,
+            source_type, topic,
+            cta_title, cta_text, cta_button, cta_target,
+            nearby_highlights, nearby_attractions,
+            status, language, translation_group_id
+          ) values (
+            ${enSlug},
+            ${enDraft.title || "Untitled"},
+            ${enDraft.excerpt || ""},
+            ${enDraft.content || ""},
+            ${enDraft.metaTitle || enDraft.title || ""},
+            ${enDraft.metaDescription || ""},
+            ${coverImage || null},
+            'automated',
+            ${null},
+            ${null}, ${null}, ${null}, ${null},
+            ${null},
+            ${enDraft.nearbyAttractions || null},
+            'draft', 'en', ${groupId}
+          )
+          returning ${RETURNING_COLS}
+        `;
+      } catch (enInsertErr) {
+        console.error("[generate-draft] EN insert failed:", enInsertErr?.message);
+      }
+    }
 
     return res.status(200).json({
       ok: true,
       draft: {
-        ...normalizeBlogPost(insertedRows[0]),
-        weatherNarrative: draft.weatherNarrative,
-        movementNarrative: draft.movementNarrative,
-        nearbyHighlights: draft.nearbyHighlights,
-        nearbyAttractions: draft.nearbyAttractions,
-        whyThisArea: draft.whyThisArea,
+        ...normalizeBlogPost(isRows[0]),
+        weatherNarrative: isDraft.weatherNarrative,
+        movementNarrative: isDraft.movementNarrative,
+        nearbyHighlights: isDraft.nearbyHighlights,
+        nearbyAttractions: isDraft.nearbyAttractions,
+        whyThisArea: isDraft.whyThisArea,
       },
+      ...(enRows?.[0] ? {
+        draftEn: {
+          ...normalizeBlogPost(enRows[0]),
+          weatherNarrative: enDraft?.weatherNarrative,
+          movementNarrative: enDraft?.movementNarrative,
+          nearbyHighlights: enDraft?.nearbyHighlights,
+          nearbyAttractions: enDraft?.nearbyAttractions,
+          whyThisArea: enDraft?.whyThisArea,
+        },
+      } : {}),
     });
   } catch (err) {
     console.error("generate-blog-draft error:", err);

@@ -153,6 +153,7 @@ Return this exact shape. Required fields must always be present. Optional fields
   "content": "...",
   "metaTitle": "...",
   "metaDescription": "...",
+  "language": "...",
   "weatherNarrative": null,
   "movementNarrative": null,
   "nearbyHighlights": null,
@@ -161,6 +162,7 @@ Return this exact shape. Required fields must always be present. Optional fields
 }
 
 Optional field rules:
+- "language": Required. Must match the language this post was written in — "is" for Icelandic, "en" for English.
 - "weatherNarrative": A focused 1-3 sentence narrative about the weather conditions. Only fill if forecast data was provided. Otherwise null.
 - "movementNarrative": A practical stay-vs-move narrative. Only fill if comparing locations or if forecast clearly suggests moving. Otherwise null.
 - "nearbyHighlights": Only fill if nearby highlights were explicitly stated in the input. Do NOT invent. Otherwise null.

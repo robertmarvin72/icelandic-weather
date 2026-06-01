@@ -170,7 +170,8 @@ function GenerateDraftCard({ onGenerated }) {
         throw new Error(json?.error || "Failed to generate draft");
       }
 
-      setSuccess(`Draft created: ${json?.draft?.title || "Untitled"}`);
+      const isTitle = json?.draft?.title || "Untitled";
+      setSuccess(json?.draftEn ? `Draft pair created: "${isTitle}" (IS + EN)` : `Draft created: "${isTitle}" (IS)`);
 
       setForm((prev) => ({
         ...prev,
@@ -318,7 +319,7 @@ function GenerateDraftCard({ onGenerated }) {
   );
 }
 
-function BlogEditorCard({ post, onSave, onPublish, onDelete, onCancel, saving, publishing }) {
+function BlogEditorCard({ post, pairedPost, onSave, onPublish, onDelete, onCancel, saving, publishing }) {
   const { lang } = useLanguage();
   const t = useT(lang);
   const [draft, setDraft] = useState({
@@ -388,6 +389,9 @@ function BlogEditorCard({ post, onSave, onPublish, onDelete, onCancel, saving, p
             <span className="rounded-full bg-amber-100 px-2.5 py-1 text-xs font-semibold text-amber-800 dark:bg-amber-950/50 dark:text-amber-300">
               {post.status || "draft"}
             </span>
+            <span className="rounded-full bg-sky-100 px-2 py-0.5 text-xs font-semibold uppercase text-sky-700 dark:bg-sky-950/50 dark:text-sky-300">
+              {post.language || "is"}
+            </span>
           </div>
 
           <div className="mt-2 text-sm text-slate-500 dark:text-slate-400">
@@ -400,6 +404,22 @@ function BlogEditorCard({ post, onSave, onPublish, onDelete, onCancel, saving, p
 
           <div className="mt-1 text-sm text-slate-500 dark:text-slate-400">
             updatedAt: {formatDateTime(post.updatedAt)}
+          </div>
+
+          {post.translationGroupId && (
+            <div className="mt-1 text-xs text-slate-400 dark:text-slate-500 font-mono">
+              group: {post.translationGroupId.slice(0, 8)}…
+            </div>
+          )}
+
+          <div className="mt-1 text-sm">
+            {pairedPost ? (
+              <span className="text-emerald-600 dark:text-emerald-400">
+                ✓ Þýtt — {post.language === "en" ? "IS" : "EN"}: {pairedPost.title || pairedPost.slug}
+              </span>
+            ) : (
+              <span className="text-slate-400 dark:text-slate-500">— Vantar þýðingu</span>
+            )}
           </div>
         </div>
 
@@ -464,6 +484,38 @@ function BlogEditorCard({ post, onSave, onPublish, onDelete, onCancel, saving, p
       </div>
 
       <div className="mt-5 grid gap-4">
+        <div className="grid gap-3 rounded-2xl border border-slate-200/70 bg-slate-50/60 p-3 dark:border-slate-700/70 dark:bg-slate-800/40 md:grid-cols-2">
+          <div>
+            <FieldLabel>Language (read-only)</FieldLabel>
+            <TextInput value={post.language || "is"} disabled />
+          </div>
+          <div>
+            <FieldLabel>Translation group (read-only)</FieldLabel>
+            <TextInput
+              value={post.translationGroupId ? `${post.translationGroupId.slice(0, 8)}…` : "—"}
+              disabled
+            />
+          </div>
+          {pairedPost && (
+            <div className="md:col-span-2">
+              <FieldLabel>Paired {post.language === "en" ? "IS" : "EN"} post</FieldLabel>
+              <div className="flex items-center gap-3">
+                <span className="text-sm text-slate-700 dark:text-slate-300 truncate">
+                  {pairedPost.title || pairedPost.slug}
+                </span>
+                <a
+                  href={`/blog/${pairedPost.slug}`}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="shrink-0 text-xs text-sky-600 underline hover:text-sky-700 dark:text-sky-400"
+                >
+                  Open ↗
+                </a>
+              </div>
+            </div>
+          )}
+        </div>
+
         <div>
           <FieldLabel>Title</FieldLabel>
           <TextInput
@@ -605,7 +657,7 @@ function BlogEditorCard({ post, onSave, onPublish, onDelete, onCancel, saving, p
   );
 }
 
-function PublishedPostRow({ post, onEdit }) {
+function PublishedPostRow({ post, pairedPost, onEdit }) {
   return (
     <div className="rounded-2xl border border-slate-200/70 bg-white/80 p-4 shadow-sm dark:border-slate-800/80 dark:bg-slate-900/80">
       <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
@@ -616,6 +668,9 @@ function PublishedPostRow({ post, onEdit }) {
             </h3>
             <span className="rounded-full bg-emerald-100 px-2.5 py-1 text-xs font-semibold text-emerald-800 dark:bg-emerald-950/50 dark:text-emerald-300">
               published
+            </span>
+            <span className="rounded-full bg-sky-100 px-2 py-0.5 text-xs font-semibold uppercase text-sky-700 dark:bg-sky-950/50 dark:text-sky-300">
+              {post.language || "is"}
             </span>
           </div>
 
@@ -629,6 +684,16 @@ function PublishedPostRow({ post, onEdit }) {
 
           <div className="mt-1 text-sm text-slate-500 dark:text-slate-400">
             updatedAt: {formatDateTime(post.updatedAt)}
+          </div>
+
+          <div className="mt-1 text-sm">
+            {pairedPost ? (
+              <span className="text-emerald-600 dark:text-emerald-400">
+                ✓ Þýtt — {(post.language === "en" ? "IS" : "EN")}: {pairedPost.title || pairedPost.slug}
+              </span>
+            ) : (
+              <span className="text-slate-400 dark:text-slate-500">— Vantar þýðingu</span>
+            )}
           </div>
         </div>
 
@@ -732,6 +797,22 @@ export default function AdminDashboard() {
 
   const draftPosts = posts.filter((post) => post.status !== "published");
   const publishedPosts = posts.filter((post) => post.status === "published");
+
+  const translationPairMap = useMemo(() => {
+    const map = {};
+    for (const p of posts) {
+      if (!p.translationGroupId) continue;
+      if (!map[p.translationGroupId]) map[p.translationGroupId] = [];
+      map[p.translationGroupId].push(p);
+    }
+    return map;
+  }, [posts]);
+
+  function getPairedPost(post) {
+    if (!post.translationGroupId) return null;
+    const group = translationPairMap[post.translationGroupId] || [];
+    return group.find((p) => p.id !== post.id) || null;
+  }
 
   if (state.loading) {
     return (
@@ -837,6 +918,7 @@ export default function AdminDashboard() {
                 <BlogEditorCard
                   key={post.id}
                   post={post}
+                  pairedPost={getPairedPost(post)}
                   saving={savingId === post.id}
                   publishing={publishingId === post.id}
                   onSave={updatePost}
@@ -873,6 +955,7 @@ export default function AdminDashboard() {
                   <BlogEditorCard
                     key={post.id}
                     post={post}
+                    pairedPost={getPairedPost(post)}
                     saving={savingId === post.id}
                     onSave={updatePost}
                     onCancel={() => setEditingPublishedId(null)}
@@ -881,6 +964,7 @@ export default function AdminDashboard() {
                   <PublishedPostRow
                     key={post.id}
                     post={post}
+                    pairedPost={getPairedPost(post)}
                     onEdit={(id) => setEditingPublishedId(id)}
                   />
                 )
