@@ -30,6 +30,36 @@ function sharedTone() {
 - Icelandic-first: write primarily for an Icelandic-speaking audience making real decisions`;
 }
 
+function sharedSeverityToneRules() {
+  return `Severity-based tone rules:
+Match the tone to actual forecast severity — do not over- or under-state conditions.
+
+Favorable weather (light wind, little/no precipitation, no active warnings):
+- Tone: positive and useful
+- Highlight good camping conditions clearly
+
+Mixed/typical Icelandic weather (drizzle, scattered showers, cool temperatures, light-to-moderate wind):
+- Tone: balanced and practical
+- Allowed: "gott að vera undirbúinn", "fylgjast með þróuninni"
+- Avoid: "hættulegt", "forðast svæðið", "slæm veðurskilyrði"
+- Do NOT escalate drizzle or typical Icelandic conditions into dramatic warnings
+
+Challenging weather (heavy rain, strong sustained wind, repeated poor days):
+- Tone: cautious
+- Allowed: "aðstæður geta orðið krefjandi", "ferðaplön gætu þurft að breytast"
+- Do not frame as dangerous unless thresholds or official warnings support it
+
+Hazardous weather (official severe weather warnings, dangerous gust thresholds, flooding risk, travel safety impact):
+- Tone: direct and safety-focused
+- Allowed: "íhugaðu að fresta ferð", "fylgdu leiðbeiningum yfirvalda"
+- This language is only appropriate when justified by explicit data or warnings in the input
+
+Hard rules:
+- Moderate drizzle and cool temperatures must NOT produce dramatic safety warnings
+- "hættulegt", "forðast svæðið", "jafnvel hættulegt", "ráðlagt að forðast" must ONLY appear when forecast data or active official warnings explicitly justify them
+- Write like an experienced Iceland travel guide, not an emergency broadcaster`;
+}
+
 function sharedAntiHallucinationRules() {
   return `Anti-hallucination rules:
 - Do NOT invent specific weather observations unless explicitly provided in the forecast data
@@ -164,6 +194,8 @@ Tone:
 - Written like advice from someone who knows Iceland
 - Not promotional
 
+${sharedSeverityToneRules()}
+
 Structure:
 - Title
 - Short intro (set context quickly, no fluff)
@@ -288,6 +320,8 @@ Tone:
 - Not promotional
 - Written for someone deciding how to camp safely and comfortably
 
+${sharedSeverityToneRules()}
+
 Structure:
 - Title
 - Short intro
@@ -389,6 +423,8 @@ ${context.forecastRawInput || "No forecast data provided."}
 
 ${sharedTone()}
 
+${sharedSeverityToneRules()}
+
 Structure:
 - Title that clearly signals "best this week" and the region
 - One-paragraph summary of the forecast window
@@ -437,6 +473,8 @@ Raw forecast input:
 ${context.forecastRawInput || "No forecast data provided."}
 
 ${sharedTone()}
+
+${sharedSeverityToneRules()}
 
 Structure:
 - Title that includes the location and wind as the key theme
@@ -494,6 +532,8 @@ Raw forecast input:
 ${context.forecastRawInput || "No forecast data provided."}
 
 ${sharedTone()}
+
+${sharedSeverityToneRules()}
 
 Structure:
 - Title that signals a poor-weather window and the location
