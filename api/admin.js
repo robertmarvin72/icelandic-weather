@@ -43,6 +43,8 @@ function normalizeBlogPost(row) {
     publishedAt: row.published_at || null,
     createdAt: row.created_at || null,
     updatedAt: row.updated_at || null,
+    language: row.language || "is",
+    translationGroupId: row.translation_group_id || null,
   };
 }
 
@@ -389,7 +391,9 @@ async function handleListBlogPosts(req, res) {
         status,
         published_at,
         created_at,
-        updated_at
+        updated_at,
+        language,
+        translation_group_id
       from blog_post
       order by
         case when lower(coalesce(status, 'draft')) = 'published' then 0 else 1 end,
@@ -442,7 +446,9 @@ async function handleUpdateBlogPost(req, res) {
         status,
         published_at,
         created_at,
-        updated_at
+        updated_at,
+        language,
+        translation_group_id
       from blog_post
       where id = ${id}
       limit 1
@@ -528,7 +534,9 @@ async function handleUpdateBlogPost(req, res) {
         status,
         published_at,
         created_at,
-        updated_at
+        updated_at,
+        language,
+        translation_group_id
     `;
 
     return res.status(200).json({
@@ -593,7 +601,9 @@ async function handlePublishBlogPost(req, res) {
         status,
         published_at,
         created_at,
-        updated_at
+        updated_at,
+        language,
+        translation_group_id
     `;
 
     return res.status(200).json({
@@ -702,7 +712,8 @@ async function handleGenerateDraft(req, res) {
         cta_target,
         nearby_highlights,
         nearby_attractions,
-        status
+        status,
+        language
       )
       values (
         ${nextSlug},
@@ -720,7 +731,8 @@ async function handleGenerateDraft(req, res) {
         ${null},
         ${null},
         ${draft.nearbyAttractions || null},
-        'draft'
+        'draft',
+        ${lang || "is"}
       )
       returning
         id,
@@ -743,7 +755,9 @@ async function handleGenerateDraft(req, res) {
         status,
         published_at,
         created_at,
-        updated_at
+        updated_at,
+        language,
+        translation_group_id
     `;
 
     return res.status(200).json({
@@ -837,6 +851,8 @@ function normalizeDraft(text) {
 
 async function handleGetPublishedBlogPosts(req, res) {
   try {
+    const language = req.query?.language || "is";
+
     const rows = await sql`
       select
         id,
@@ -859,9 +875,12 @@ async function handleGetPublishedBlogPosts(req, res) {
         status,
         published_at,
         created_at,
-        updated_at
+        updated_at,
+        language,
+        translation_group_id
       from blog_post
       where lower(coalesce(status, 'draft')) = 'published'
+        and coalesce(language, 'is') = ${language}
       order by published_at desc nulls last, created_at desc
     `;
 
@@ -880,7 +899,7 @@ async function handleGetPublishedBlogPosts(req, res) {
 
 async function handleGetPublishedBlogPostBySlug(req, res) {
   try {
-    const { slug } = req.query || {};
+    const { slug, language = "is" } = req.query || {};
 
     if (!slug || typeof slug !== "string") {
       return res.status(400).json({
@@ -915,9 +934,12 @@ async function handleGetPublishedBlogPostBySlug(req, res) {
           status,
           published_at,
           created_at,
-          updated_at
+          updated_at,
+          language,
+          translation_group_id
         from blog_post
         where slug = ${slug}
+          and coalesce(language, 'is') = ${language}
         limit 1
       `;
 
@@ -958,10 +980,13 @@ async function handleGetPublishedBlogPostBySlug(req, res) {
         status,
         published_at,
         created_at,
-        updated_at
+        updated_at,
+        language,
+        translation_group_id
       from blog_post
       where slug = ${slug}
         and lower(coalesce(status, 'draft')) = 'published'
+        and coalesce(language, 'is') = ${language}
       limit 1
     `;
 

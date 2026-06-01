@@ -134,14 +134,14 @@ function CampaignRoute({ configKey }) {
   return <CampaignLandingPage t={t} lang={lang} theme={theme} {...config} />;
 }
 
-function BlogRoute() {
+function BlogRoute({ langOverride }) {
   const pageProps = usePageRouteProps();
-  return <BlogIndex {...pageProps} />;
+  return <BlogIndex {...pageProps} lang={langOverride || pageProps.lang} />;
 }
 
-function BlogPostRoute() {
+function BlogPostRoute({ langOverride }) {
   const pageProps = usePageRouteProps();
-  return <BlogPostPage {...pageProps} />;
+  return <BlogPostPage {...pageProps} lang={langOverride || pageProps.lang} />;
 }
 
 export default function AppRoutes({ HomeComponent }) {
@@ -164,6 +164,8 @@ export default function AppRoutes({ HomeComponent }) {
       <Route path="/weekend-camping" element={<CampaignRoute configKey="weekendCamping" />} />
       <Route path="/blog" element={<BlogRoute />} />
       <Route path="/blog/:slug" element={<BlogPostRoute />} />
+      <Route path="/en/blog" element={<BlogRoute langOverride="en" />} />
+      <Route path="/en/blog/:slug" element={<BlogPostRoute langOverride="en" />} />
       <Route path="/brochure" element={<Brochure />} />
       <Route path="*" element={<NotFound />} />
     </Routes>

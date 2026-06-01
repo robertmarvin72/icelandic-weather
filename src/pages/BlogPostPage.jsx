@@ -112,8 +112,10 @@ export default function BlogPostPage({ t, lang, theme }) {
       setLoadError("");
 
       try {
+        const language = lang || "is";
+
         const res = await fetch(
-          `/api/admin?action=getPublishedBlogPostBySlug&slug=${encodeURIComponent(slug)}`,
+          `/api/admin?action=getPublishedBlogPostBySlug&slug=${encodeURIComponent(slug)}&language=${language}`,
           {
             cache: "no-store",
           }
@@ -121,7 +123,7 @@ export default function BlogPostPage({ t, lang, theme }) {
 
         if (res.status === 404) {
           const draftRes = await fetch(
-            `/api/admin?action=getPublishedBlogPostBySlug&slug=${encodeURIComponent(slug)}&preview=draft`,
+            `/api/admin?action=getPublishedBlogPostBySlug&slug=${encodeURIComponent(slug)}&preview=draft&language=${language}`,
             {
               cache: "no-store",
               credentials: "include",
@@ -180,7 +182,7 @@ export default function BlogPostPage({ t, lang, theme }) {
     return () => {
       cancelled = true;
     };
-  }, [slug]);
+  }, [slug, lang]);
 
   const title = `${post?.title || "Eltum Veðrið"} | Eltum Veðrið`;
   const description = post?.excerpt || "Weather tips and campsite planning for Iceland.";

@@ -4,9 +4,9 @@ import Footer from "../components/Footer";
 import Header from "../components/Header";
 import { track } from "@vercel/analytics";
 
-function formatPublishedDate(dateString) {
+function formatPublishedDate(dateString, lang = "is") {
   try {
-    return new Date(dateString).toLocaleDateString("en-GB", {
+    return new Date(dateString).toLocaleDateString(lang === "is" ? "is-IS" : "en-GB", {
       year: "numeric",
       month: "long",
       day: "numeric",
@@ -32,7 +32,7 @@ export default function BlogIndex({ t, lang, theme }) {
 
     async function load() {
       try {
-        const res = await fetch("/api/admin?action=getPublishedBlogPosts", {
+        const res = await fetch(`/api/admin?action=getPublishedBlogPosts&language=${lang || "is"}`, {
           cache: "no-store",
         });
 
@@ -59,7 +59,7 @@ export default function BlogIndex({ t, lang, theme }) {
     return () => {
       cancelled = true;
     };
-  }, []);
+  }, [lang]);
 
   return (
     <div className="min-h-screen bg-soft-grid text-slate-900 dark:bg-slate-950 dark:text-slate-100">
@@ -119,7 +119,7 @@ export default function BlogIndex({ t, lang, theme }) {
               <div key={post.id}>
                 <article className="rounded-3xl border border-black/10 bg-white p-6 shadow-sm transition hover:shadow-md dark:border-white/10 dark:bg-slate-900">
                   <div className="text-sm text-slate-500 dark:text-slate-400">
-                    Published {formatPublishedDate(post.publishedAt)}
+                    Published {formatPublishedDate(post.publishedAt, lang)}
                   </div>
 
                   <h2 className="mt-2 text-2xl font-semibold tracking-tight">

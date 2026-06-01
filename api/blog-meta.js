@@ -59,6 +59,9 @@ function readBaseHtml() {
 
 export default async function handler(req, res) {
   const slug = typeof req.query?.slug === "string" ? req.query.slug.trim() : "";
+  const rawLang = req.query?.language || req.query?.lang;
+  const urlPath = req.url || "";
+  const language = rawLang || (urlPath.includes("/en/") ? "en" : "is");
 
   res.setHeader("Content-Type", "text/html; charset=utf-8");
 
@@ -80,6 +83,7 @@ export default async function handler(req, res) {
       FROM blog_post
       WHERE slug = ${slug}
         AND lower(coalesce(status, 'draft')) = 'published'
+        AND coalesce(language, 'is') = ${language}
       LIMIT 1
     `;
     post = rows[0] || null;
@@ -95,7 +99,9 @@ export default async function handler(req, res) {
   const title = post.meta_title || `${post.title || "Eltum Veðrið"} | Eltum Veðrið`;
   const description = post.meta_description || post.excerpt || "";
   const ogImage = post.cover_image || FALLBACK_IMAGE;
-  const ogUrl = `${SITE_ORIGIN}/blog/${post.slug}`;
+  const ogUrl = language === "en"
+    ? `${SITE_ORIGIN}/en/blog/${post.slug}`
+    : `${SITE_ORIGIN}/blog/${post.slug}`;
 
   const modifiedHtml = injectBlogMeta(baseHtml, { title, description, ogImage, ogUrl });
 
