@@ -246,6 +246,19 @@ Avoid overly technical labels such as:
 
 Users care about comfort and practical camping experience, not raw metrics alone.
 
+### Analytics — Plausible Removed
+
+Plausible has been fully removed. Do not reintroduce `window.plausible` calls.
+All event tracking goes through `trackEvent()` in `src/lib/analytics.js` → GA4.
+
+### Blog — Bilingual Support
+
+Generated blog posts create two rows (IS + EN) with shared `translation_group_id`.
+UI labels must use translation keys — never hardcode Icelandic strings in blog template.
+Post language determines UI chrome language, not global localStorage lang alone.
+`/blog/:slug` serves IS, `/en/blog/:slug` serves EN.
+`coalesce(language,'is')` pattern ensures existing NULL posts remain readable.
+
 ---
 
 ## API Routes

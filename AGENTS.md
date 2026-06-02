@@ -110,6 +110,26 @@ Homepage component that compares current campsite against best nearby alternativ
 - Selection logic lives in selectBestCandidate() inside InstantComparison.jsx
 - Do NOT use top5[0] directly — it may be outside the active radius
 
+### Analytics
+
+- Analytics helper: `src/lib/analytics.js` (GA4 via react-ga4)
+- Plausible has been fully removed — do not reintroduce
+- Checkout source attribution: `src/lib/checkoutSource.js`
+- Source persists via sessionStorage key: `"checkout_source"`
+- TODO exists in checkoutSource.js for Paddle success_url source propagation
+- Core homepage funnel: `homepage_loaded`, `homepage_hero_cta_click`, `comparison_viewed`, `better_nearby_found`, `stay_recommended`, `move_recommended`
+- Core monetization funnel: `pricing_page_viewed`, `subscription_cta_clicked`, `checkout_started`, `checkout_completed`
+
+### Blog — Bilingual
+
+- IS posts served at `/blog/:slug`
+- EN posts served at `/en/blog/:slug`
+- Both language rows share `translation_group_id`
+- `language=NULL` treated as `"is"` via `coalesce(language,'is')`
+- Generation creates IS + EN rows with shared UUID
+- EN generation failure is graceful — IS row always saved
+- UI labels must use translation keys — never hardcode Icelandic strings in blog template
+
 ---
 
 ## UX Guardrails
