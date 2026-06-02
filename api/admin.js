@@ -961,7 +961,9 @@ async function handleGetPublishedBlogPostBySlug(req, res) {
           translation_group_id
         from blog_post
         where slug = ${slug}
-          and coalesce(language, 'is') = ${language}
+        order by
+          case when coalesce(language, 'is') = ${language} then 0 else 1 end,
+          case when coalesce(language, 'is') = 'is' then 0 else 1 end
         limit 1
       `;
 
@@ -1008,7 +1010,9 @@ async function handleGetPublishedBlogPostBySlug(req, res) {
       from blog_post
       where slug = ${slug}
         and lower(coalesce(status, 'draft')) = 'published'
-        and coalesce(language, 'is') = ${language}
+      order by
+        case when coalesce(language, 'is') = ${language} then 0 else 1 end,
+        case when coalesce(language, 'is') = 'is' then 0 else 1 end
       limit 1
     `;
 
@@ -1018,6 +1022,8 @@ async function handleGetPublishedBlogPostBySlug(req, res) {
       return res.status(404).json({
         ok: false,
         error: "Blog post not found",
+        slug,
+        language,
       });
     }
 
