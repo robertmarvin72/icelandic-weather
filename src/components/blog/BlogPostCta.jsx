@@ -6,7 +6,7 @@ function translateOrFallback(t, key, fallback) {
   return value;
 }
 
-export default function BlogPostCta({ t, isLight, to = "/", slug, ctaTitle, ctaText, ctaButton, ctaTarget }) {
+export default function BlogPostCta({ t, isLight, to = "/", ctaTitle, ctaText, ctaButton, ctaTarget }) {
   const resolvedTo = ctaTarget || to;
   const resolvedTitle = ctaTitle || translateOrFallback(t, "blogNearbyWeatherCtaTitle", "Check Nearby Weather");
   const resolvedText = ctaText || translateOrFallback(t, "blogCtaText", "See where the weather looks better nearby.");
@@ -29,11 +29,6 @@ export default function BlogPostCta({ t, isLight, to = "/", slug, ctaTitle, ctaT
       <div className="mt-4">
         <Link
           to={resolvedTo}
-          onClick={() => {
-            window.plausible?.("Blog CTA Click", {
-              props: { slug: slug || "unknown" },
-            });
-          }}
           className={`inline-flex items-center rounded-full px-5 py-2.5 text-sm font-medium transition hover:opacity-90 ${
             isLight ? "bg-slate-900 text-white" : "bg-white text-slate-950"
           }`}

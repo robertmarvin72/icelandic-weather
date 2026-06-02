@@ -14,10 +14,6 @@ export function trackPageView(path) {
 }
 
 export function trackEvent(name, data = {}) {
-  if (typeof window !== "undefined" && window.plausible) {
-    window.plausible(name, { props: data });
-  }
-
   if (gaId) {
     ReactGA.event(name, data);
   }

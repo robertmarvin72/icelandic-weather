@@ -126,9 +126,6 @@ export default function Brochure() {
 
         <Link
           to={ctaTo}
-          onClick={() => {
-            window.plausible?.("Brochure CTA Click", { props: { variant, lang } });
-          }}
           className="w-full rounded-xl bg-slate-900 px-6 py-3 text-sm font-semibold text-white text-center dark:bg-white dark:text-slate-950"
         >
           {copy.cta}

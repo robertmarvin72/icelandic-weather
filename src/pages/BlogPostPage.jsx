@@ -95,16 +95,6 @@ export default function BlogPostPage({ t, lang, theme }) {
   const isLight = theme === "light";
 
   useEffect(() => {
-  if (!post?.slug) return;
-
-  console.log("Blog Post View tracked:", post.slug);
-
-  window.plausible?.("Blog Post View", {
-    props: { slug: post.slug },
-  });
-}, [post]);
-
-  useEffect(() => {
     let cancelled = false;
 
     async function loadPost() {
