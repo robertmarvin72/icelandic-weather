@@ -184,6 +184,7 @@ export default function BlogPostPage({ t, lang, theme }) {
     };
   }, [slug, lang]);
 
+  const postLang = post?.language || lang;
   const title = `${post?.title || "Eltum Veðrið"} | Eltum Veðrið`;
   const description = post?.excerpt || "Weather tips and campsite planning for Iceland.";
   const url = `${typeof window !== "undefined" ? window.location.origin : "https://campcast.is"}/blog/${post?.slug || slug || ""}`;
@@ -356,7 +357,7 @@ export default function BlogPostPage({ t, lang, theme }) {
                       isLight ? "text-slate-900" : "text-slate-100"
                     }`}
                   >
-                    {lang === "is" ? "Veðurleg samhengi" : "Weather context"}
+                    {postLang === "is" ? "Veðurleg samhengi" : "Weather context"}
                   </h2>
                   <p
                     className={`mt-3 text-base leading-7 ${
@@ -375,7 +376,7 @@ export default function BlogPostPage({ t, lang, theme }) {
                       isLight ? "text-slate-900" : "text-slate-100"
                     }`}
                   >
-                    {lang === "is" ? "Fara eða vera?" : "Stay or move?"}
+                    {postLang === "is" ? "Fara eða vera?" : "Stay or move?"}
                   </h2>
                   <p
                     className={`mt-3 text-base leading-7 ${
@@ -394,7 +395,7 @@ export default function BlogPostPage({ t, lang, theme }) {
                       isLight ? "text-slate-900" : "text-slate-100"
                     }`}
                   >
-                    {lang === "is" ? "Af hverju þetta svæði?" : "Why this area?"}
+                    {postLang === "is" ? "Af hverju þetta svæði?" : "Why this area?"}
                   </h2>
                   <p
                     className={`mt-3 text-base leading-7 ${
@@ -413,7 +414,7 @@ export default function BlogPostPage({ t, lang, theme }) {
                       isLight ? "text-slate-900" : "text-slate-100"
                     }`}
                   >
-                    {lang === "is" ? "Í nágrenninu" : "Nearby"}
+                    {postLang === "is" ? "Í nágrenninu" : "Nearby"}
                   </h2>
                   <ul
                     className={`mt-3 space-y-2 ${isLight ? "text-slate-700" : "text-slate-300"}`}
@@ -441,7 +442,7 @@ export default function BlogPostPage({ t, lang, theme }) {
                       isLight ? "text-slate-900" : "text-slate-100"
                     }`}
                   >
-                    {lang === "is" ? "Vert að skoða" : "Worth seeing"}
+                    {postLang === "is" ? "Vert að skoða" : "Places Worth Visiting"}
                   </h2>
                   <ul
                     className={`mt-3 list-disc pl-5 space-y-1 text-base ${
