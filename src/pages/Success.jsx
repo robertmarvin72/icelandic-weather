@@ -2,6 +2,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { trackEvent } from "../lib/analytics";
+import { readCheckoutSource } from "../lib/checkoutSource";
 export default function Success({ theme = "dark", t }) {
   const [status, setStatus] = useState("checking"); // checking | active | pending
   const [logoOk, setLogoOk] = useState(true);
@@ -20,6 +21,7 @@ export default function Success({ theme = "dark", t }) {
       plan: planRef.current || "unknown",
       billingCycle: planRef.current || "unknown",
       status: "active",
+      source: readCheckoutSource(),
     });
   }, [status]);
 

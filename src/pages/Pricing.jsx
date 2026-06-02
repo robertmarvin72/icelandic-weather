@@ -4,6 +4,7 @@ import { useMe } from "../hooks/useMe";
 import { getDisplayPrices } from "../config/pricing";
 import Footer from "../components/Footer";
 import { getStoredAttribution } from "../lib/attribution";
+import { resolveCheckoutSource, persistCheckoutSource } from "../lib/checkoutSource";
 import { trackEvent } from "../lib/analytics";
 
 export default function Pricing({ onClose, lang = "is", theme = "dark", t, me }) {
@@ -87,18 +88,22 @@ export default function Pricing({ onClose, lang = "is", theme = "dark", t, me })
   }
 
   // If user is not logged in, route to /subscribe (email prefill) first.
-  function goSubscribe(chosenPlan) {
+  function goSubscribe(chosenPlan, source) {
     const to =
       `/subscribe?plan=${encodeURIComponent(chosenPlan)}` +
-      (email ? `&email=${encodeURIComponent(email)}` : "");
+      (email ? `&email=${encodeURIComponent(email)}` : "") +
+      (source ? `&src=${encodeURIComponent(source)}` : "");
     window.location.assign(to);
   }
 
   async function startCheckout(chosenPlan) {
+    const source = resolveCheckoutSource();
+    persistCheckoutSource(source);
+
     trackEvent("subscription_cta_clicked", {
       plan: chosenPlan,
       billingCycle: chosenPlan,
-      source: "pricing",
+      source,
       lang,
     });
 
@@ -107,7 +112,7 @@ export default function Pricing({ onClose, lang = "is", theme = "dark", t, me })
 
     // If we don't have an email (not logged in / no identity), go through Subscribe.
     if (!email) {
-      goSubscribe(chosenPlan);
+      goSubscribe(chosenPlan, source);
       return;
     }
 
@@ -171,7 +176,7 @@ export default function Pricing({ onClose, lang = "is", theme = "dark", t, me })
       if (!res.ok || !json?.ok) {
         if (res.status === 401) {
           // Session mismatch; send user through email-prefill flow.
-          goSubscribe(chosenPlan);
+          goSubscribe(chosenPlan, source);
           return;
         }
 
@@ -205,6 +210,7 @@ export default function Pricing({ onClose, lang = "is", theme = "dark", t, me })
         plan: chosenPlan,
         billingCycle: chosenPlan,
         priceIdType: "paddle",
+        source,
       });
       window.location.assign(json.url);
     } catch (e) {

@@ -2,6 +2,7 @@
 import React, { useMemo, useState } from "react";
 import { useMe } from "../hooks/useMe";
 import { getStoredAttribution } from "../lib/attribution";
+import { resolveCheckoutSource, persistCheckoutSource } from "../lib/checkoutSource";
 import { trackEvent } from "../lib/analytics";
 
 export default function Subscribe({ onClose, theme = "dark", t }) {
@@ -103,10 +104,13 @@ export default function Subscribe({ onClose, theme = "dark", t }) {
       return;
     }
 
+    const source = resolveCheckoutSource();
+    persistCheckoutSource(source);
+
     trackEvent("subscription_cta_clicked", {
       plan,
       billingCycle: plan,
-      source: "subscribe",
+      source,
       lang: typeof localStorage !== "undefined" ? (localStorage.getItem("lang") || "is") : "is",
     });
 
@@ -158,6 +162,7 @@ export default function Subscribe({ onClose, theme = "dark", t }) {
         plan,
         billingCycle: plan,
         priceIdType: "paddle",
+        source,
       });
       // Redirect to Paddle checkout
       window.location.assign(json.url);
