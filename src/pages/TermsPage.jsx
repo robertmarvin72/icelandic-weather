@@ -49,6 +49,13 @@ export default function TermsPage({
           </div>
 
           <div className="space-y-6 text-sm leading-8 text-slate-700 dark:text-slate-300">
+            <p className="text-slate-500 dark:text-slate-400">
+              {T(
+                "termsOperatorStatement",
+                "Eltum Veðrið is operated by CampCast. CampCast is the legal business name for the service for terms, subscriptions, payments and invoices."
+              )}
+            </p>
+
             <p>
               {T(
                 "termsIntro1",

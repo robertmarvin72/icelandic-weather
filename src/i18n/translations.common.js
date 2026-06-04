@@ -227,6 +227,9 @@ export const commonTranslations = {
 
     termsTitle: "Terms and Disclaimer",
 
+    termsOperatorStatement:
+      "Eltum Veðrið is operated by CampCast. CampCast is the legal business name for the service for terms, subscriptions, payments and invoices.",
+
     termsIntro1:
       "Chase the Weather provides weather forecasts and estimates of weather conditions along travel routes based on available meteorological data. This information is provided for informational purposes only and may be inaccurate, incomplete, or outdated.",
 
@@ -642,6 +645,9 @@ export const commonTranslations = {
     unknownLocation: "Óþekkt staðsetning",
 
     termsTitle: "Skilmálar og fyrirvari",
+
+    termsOperatorStatement:
+      "Eltum Veðrið er rekið af CampCast. CampCast er löglegt rekstrarheiti þjónustunnar vegna skilmála, áskrifta, greiðslna og reikninga.",
 
     termsIntro1:
       "Eltum Veðrið sýnir veðurupplýsingar og mat á aðstæðum byggt á tiltækum veðurgögnum. Upplýsingarnar eru eingöngu til viðmiðunar og geta verið ónákvæmar eða breyst hratt.",
