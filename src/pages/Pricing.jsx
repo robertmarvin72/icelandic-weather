@@ -243,7 +243,7 @@ export default function Pricing({ onClose, lang = "is", theme = "dark", t, me })
       <div style={styles.glowBottom} />
 
       <div style={styles.container}>
-        {/* Top bar */}
+        {/* Back button */}
         <div style={styles.topBar}>
           <button
             type="button"
@@ -252,7 +252,10 @@ export default function Pricing({ onClose, lang = "is", theme = "dark", t, me })
           >
             {T("pricingBack", "← Back")}
           </button>
+        </div>
 
+        {/* Brand — centered above pricing card */}
+        <div style={styles.brandCenter}>
           <div style={styles.brandHero} title={T("pricingBrandTitle", "CampCast Pro")}>
             <img
               src={!isLight ? "/eltumvedrid-dark-is.png" : "/eltumvedrid-light-is.png"}
@@ -260,10 +263,6 @@ export default function Pricing({ onClose, lang = "is", theme = "dark", t, me })
               style={styles.brandHeroLogo}
             />
 
-            <div style={styles.brandHeroText}>
-              <div style={styles.brandHeroTitle}>{T("pricingBrandTitle", "CampCast Pro")}</div>
-              <div style={styles.brandHeroSub}>{T("pricingBrandSub", "Follow the weather")}</div>
-            </div>
           </div>
         </div>
 
@@ -490,11 +489,13 @@ function getStyles(isLight) {
     container: { maxWidth: 860, margin: "0 auto", position: "relative" },
 
     topBar: {
-      display: "grid",
-      gridTemplateColumns: "1fr auto",
-      alignItems: "start",
-      gap: 12,
-      marginBottom: 2,
+      marginBottom: 0,
+    },
+
+    brandCenter: {
+      display: "flex",
+      justifyContent: "center",
+      marginBottom: 24,
     },
 
     back: {
@@ -503,44 +504,20 @@ function getStyles(isLight) {
       color: isLight ? "#0B1220" : "rgba(255,255,255,0.9)",
       fontWeight: 700,
       cursor: "pointer",
-      padding: "10px 10px",
+      padding: "4px 10px",
       borderRadius: 12,
     },
 
     brandHero: {
       display: "flex",
-      flexDirection: "column",
       alignItems: "center",
       justifyContent: "center",
-      textAlign: "center",
-      gap: 2,
-      padding: "0",
-      minWidth: 220,
-      marginTop: -6,
     },
 
     brandHeroLogo: {
-      width: 250,
-      height: 250,
+      height: 56,
+      width: "auto",
       objectFit: "contain",
-    },
-
-    brandHeroText: {
-      display: "flex",
-      flexDirection: "column",
-      lineHeight: 1,
-      marginTop: -80,
-    },
-
-    brandHeroTitle: {
-      fontWeight: 900,
-      fontSize: 28,
-      letterSpacing: 0.2,
-    },
-
-    brandHeroSub: {
-      fontSize: 16,
-      opacity: 0.75,
     },
 
     card: {
