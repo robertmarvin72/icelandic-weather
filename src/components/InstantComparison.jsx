@@ -203,11 +203,47 @@ function SiteCard({ label, name, metrics, dist, muted, highlight, deltaText }) {
   );
 }
 
-export default function InstantComparison({ site, currentScore, rows, siteList, scoresById, radiusKm = 50, homepageRecommendation = "stay", onCtaClick }) {
-  const best = useMemo(
+export default function InstantComparison({ site, currentScore, rows, siteList, scoresById, radiusKm = 50, homepageRecommendation = "stay", onCtaClick, routePlannerSummary }) {
+  // Local derivation kept for DEV candidate-mismatch check and as fallback for
+  // pages without a RoutePlannerCard (e.g. brochure page with mock data).
+  const localBest = useMemo(
     () => selectBestCandidate(siteList, scoresById, site, currentScore, radiusKm),
     [siteList, scoresById, site, currentScore, radiusKm]
   );
+
+  // Single source of truth: use RoutePlannerCard's shared candidate when available.
+  const best = useMemo(() => {
+    const verdict = String(routePlannerSummary?.verdict || "").toLowerCase();
+    const candidateId = routePlannerSummary?.candidate?.id;
+
+    if (routePlannerSummary?.ready && verdict === "stay") return null;
+
+    if (routePlannerSummary?.ready && candidateId && verdict !== "stay") {
+      const candidateSite = (siteList || []).find((s) => s.id === candidateId);
+      if (candidateSite) {
+        return {
+          site: candidateSite,
+          score: scoresById?.[candidateId]?.score ?? 0,
+          distFromBase: routePlannerSummary.candidate.distanceKm ?? 0,
+        };
+      }
+    }
+
+    return localBest;
+  }, [routePlannerSummary, siteList, scoresById, localBest]);
+
+  // DEV-only: warn if local selection disagrees with the shared candidate.
+  useEffect(() => {
+    if (!import.meta.env.DEV) return;
+    if (!routePlannerSummary?.ready) return;
+    const localCandidateId = localBest?.site?.id;
+    if (localCandidateId && localCandidateId !== best?.site?.id) {
+      console.warn("[InstantComparison] Candidate mismatch", {
+        localCandidateId,
+        bestCandidateId: best?.site?.id,
+      });
+    }
+  }, [localBest, best, routePlannerSummary?.ready]);
 
   const scoreDiff = best ? best.score - currentScore : 0;
   const showComparison = best != null;

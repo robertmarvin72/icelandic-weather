@@ -351,6 +351,7 @@ function IcelandCampingWeatherApp({ page = "home" }) {
                 scoresById={scoresById}
                 radiusKm={50}
                 homepageRecommendation={homepageRecommendation}
+                routePlannerSummary={routePlannerSummary}
               />
 
               <div className="mb-4">
