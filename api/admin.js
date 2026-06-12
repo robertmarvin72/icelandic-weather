@@ -118,7 +118,8 @@ function normalizeForecastRawInput(raw = "") {
   let minTemp = null;
   let minTempDay = "";
 
-  const roughDays = [];
+  const elevatedWindDays = [];
+  const rainDays = [];
   const coldDays = [];
 
   for (const row of parsed) {
@@ -142,14 +143,16 @@ function normalizeForecastRawInput(raw = "") {
       minTempDay = row.day;
     }
 
-    const isRough =
+    const isElevatedWind =
       (typeof row.wind === "number" && row.wind >= 9) ||
-      (typeof row.gust === "number" && row.gust >= 14) ||
-      (typeof row.rain === "number" && row.rain >= 2);
+      (typeof row.gust === "number" && row.gust >= 14);
+
+    const isRainy = typeof row.rain === "number" && row.rain >= 2;
 
     const isCold = typeof row.minTemp === "number" && row.minTemp <= 0;
 
-    if (isRough) roughDays.push(row.day);
+    if (isElevatedWind) elevatedWindDays.push(row.day);
+    if (isRainy) rainDays.push(row.day);
     if (isCold) coldDays.push(row.day);
   }
 
@@ -171,8 +174,12 @@ function normalizeForecastRawInput(raw = "") {
     summaryLines.push(`Coldest minimum temperature: ${minTemp}°C on ${minTempDay}`);
   }
 
-  if (roughDays.length) {
-    summaryLines.push(`Roughest days: ${roughDays.join(", ")}`);
+  if (elevatedWindDays.length) {
+    summaryLines.push(`Elevated wind days: ${elevatedWindDays.join(", ")}`);
+  }
+
+  if (rainDays.length) {
+    summaryLines.push(`Rain days: ${rainDays.join(", ")}`);
   }
 
   if (coldDays.length) {
@@ -191,7 +198,8 @@ function normalizeForecastRawInput(raw = "") {
       maxRainDay,
       minTemp,
       minTempDay,
-      roughDays,
+      elevatedWindDays,
+      rainDays,
       coldDays,
     },
   };
