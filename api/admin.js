@@ -90,7 +90,13 @@ function normalizeForecastRawInput(raw = "") {
   const STATUS_BADGE = /^(slæmt|gott|ok|sæm|best)\.?$/i;
   const STRIP_CHARS = /[›⚠️🌬]/g;
 
-  const allLines = text
+  // Ensure every day abbreviation+date starts on its own line before grouping
+  const rawText = text.replace(
+    /(?<!\n)\b(mán|þri|mið|fim|fös|lau|sun)\.\s+\d+\.\s+\w+/gi,
+    "\n$&"
+  );
+
+  const allLines = rawText
     .split("\n")
     .map((line) => line.replace(/\s+/g, " ").trim())
     .filter(Boolean);
