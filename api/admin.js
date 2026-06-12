@@ -86,10 +86,52 @@ function normalizeForecastRawInput(raw = "") {
     };
   }
 
-  const lines = text
+  const DAY_BOUNDARY = /\b(mán|þri|mið|fim|fös|lau|sun)\b.+\d+\.\s*\w+/i;
+  const STATUS_BADGE = /^(slæmt|gott|ok|sæm|best)\.?$/i;
+  const STRIP_CHARS = /[›⚠️🌬]/g;
+
+  const allLines = text
     .split("\n")
     .map((line) => line.replace(/\s+/g, " ").trim())
     .filter(Boolean);
+
+  if (!allLines.length) {
+    return {
+      normalizedText: "",
+      summaryText: "",
+      metrics: null,
+    };
+  }
+
+  // Group multi-line day blocks into single joined lines for parseForecastLine
+  const dayGroups = [];
+  let currentGroup = null;
+  for (const line of allLines) {
+    if (DAY_BOUNDARY.test(line)) {
+      if (currentGroup) dayGroups.push(currentGroup);
+      currentGroup = [line];
+    } else if (currentGroup !== null) {
+      currentGroup.push(line);
+    }
+    // Lines before the first day boundary (e.g. leading status badge) are dropped
+  }
+  if (currentGroup) dayGroups.push(currentGroup);
+
+  const lines = dayGroups.length
+    ? dayGroups
+        .map((group) => {
+          const clean = group
+            .filter((l) => !STATUS_BADGE.test(l))
+            .map((l) => l.replace(STRIP_CHARS, "").trim())
+            .filter(Boolean);
+          if (!clean.length) return null;
+          // Strip weather description prefix before day abbreviation so parseForecastLine matches the day name
+          const dayStart = clean[0].match(/\b(mán|þri|mið|fim|fös|lau|sun)\b/i);
+          if (dayStart) clean[0] = clean[0].slice(dayStart.index);
+          return clean.join(" ").replace(/\s+/g, " ").trim();
+        })
+        .filter(Boolean)
+    : allLines; // fallback: treat each line individually (original behaviour)
 
   if (!lines.length) {
     return {
