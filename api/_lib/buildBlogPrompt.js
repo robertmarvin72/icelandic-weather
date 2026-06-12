@@ -54,6 +54,18 @@ Hazardous weather (official severe weather warnings, dangerous gust thresholds, 
 - Allowed: "íhugaðu að fresta ferð", "fylgdu leiðbeiningum yfirvalda"
 - This language is only appropriate when justified by explicit data or warnings in the input
 
+Wind speed reference — use these thresholds when describing wind:
+- Sustained wind < 10 m/s: "light to moderate winds" or equivalent
+- Sustained wind 10–14 m/s: "breezy conditions" or equivalent
+- Sustained wind 15–19 m/s: "strong winds" — use cautiously
+- Sustained wind 20+ m/s: "very strong winds" / "challenging conditions" — only here
+Do NOT use "strong winds", "high winds", "windy conditions", or "challenging" for wind below 15 m/s.
+
+Precipitation reference:
+- Precipitation below 1 mm per day must NOT be described as disruptive, wet, or rainy
+- Phrases such as "rain may affect camping", "wet weather expected", or "damp conditions" require at least 1 mm per day in the forecast data
+- Trace precipitation (< 1 mm) may be omitted entirely or noted as "little to no precipitation"
+
 Hard rules:
 - Moderate drizzle and cool temperatures must NOT produce dramatic safety warnings
 - "hættulegt", "forðast svæðið", "jafnvel hættulegt", "ráðlagt að forðast" must ONLY appear when forecast data or active official warnings explicitly justify them
@@ -74,7 +86,10 @@ function sharedAntiHallucinationRules() {
 - Only use information explicitly provided in the input data
 - Avoid all of the following phrases or anything similar:
   "Iceland offers", "stunning", "breathtaking", "unique experience", "nestled", "picturesque", "perfect for",
-  "hidden gem paradise", "best place in Iceland", "guaranteed perfect weather", "safe to drive", "official warning"`;
+  "hidden gem paradise", "best place in Iceland", "guaranteed perfect weather", "safe to drive", "official warning"
+- The following phrases are only permitted when wind/rain thresholds defined in sharedSeverityToneRules() are explicitly exceeded by the forecast data:
+  "strong winds" (below 15 m/s threshold), "challenging conditions" (below 20 m/s threshold),
+  "rough weather", "not ideal for camping", "difficult conditions"`;
 }
 
 function sharedWeatherDataPriority() {
@@ -85,11 +100,21 @@ function sharedWeatherDataPriority() {
 
 If forecast summary is provided:
 - Use it to identify the roughest period and the most important risks
-- Focus on the worst weather, not average conditions
+- Lead with the dominant weather pattern across the forecast period — if most days are calm and dry, open with that. Only highlight poor days when they represent a significant portion of the forecast period or exceed wind/rain thresholds defined above.
 - Clearly state which days look roughest if applicable
 
 Use raw forecast input as the source of truth for detailed weather values.
 Do not invent weather details beyond the provided forecast summary or raw forecast input.`;
+}
+
+function sharedWeatherDataPriorityStrict() {
+  return `Weather data priority:
+- Focus on the worst weather, not average conditions
+- Clearly state which days look roughest if applicable
+- The worst weather conditions must dominate the assessment
+- Use wind/rain thresholds from severity tone rules to calibrate language
+- Do not downplay poor conditions to reflect a weekly average
+`;
 }
 
 function sharedCtaInstruction() {
@@ -213,7 +238,6 @@ Rules:
 - If one weather factor is clearly dominant (e.g. heavy snow, extreme wind), center the comparison around that instead of listing all factors equally
 - Do not use section headers like "Comparison", "Practical Impact", "Conclusion", or "Takeaway"
 - Write as a continuous, natural comparison
-- The worst weather conditions must dominate the comparison, not averages
 - If one campsite has extreme conditions (e.g. very high wind, heavy snow, heavy rain), this should strongly influence the conclusion
 - Do not treat all factors equally if one risk is clearly more severe
 - The comparison must clearly indicate which campsite is better, worse, or if both are poor choices
@@ -250,7 +274,7 @@ Rules:
 
 - If forecast summary is provided:
   - Use it to identify the roughest period and the most important risks
-  - Focus on the worst weather, not average conditions
+  - Lead with the dominant weather pattern across the forecast period — if most days are calm and dry, open with that. Only highlight poor days when they represent a significant portion of the forecast period or exceed wind/rain thresholds defined above.
   - Clearly state which days look roughest if applicable
   - If cold nights are present, explain their practical impact
 
@@ -366,7 +390,7 @@ Rules:
 
 - If forecast summary is provided:
   - Use it to identify the roughest days and the most important risks
-  - Focus on the worst weather, not average conditions
+  - Lead with the dominant weather pattern across the forecast period — if most days are calm and dry, open with that. Only highlight poor days when they represent a significant portion of the forecast period or exceed wind/rain thresholds defined above.
   - If the week starts rough or ends colder, say that clearly
   - Explain practical impact of those conditions
 
@@ -495,7 +519,7 @@ Rules:
 - Do not invent shelter details or terrain that would reduce wind unless explicitly provided
 - Focus on wind as the primary risk — mention rain and temperature only if they compound the wind risk
 
-${sharedWeatherDataPriority()}
+${sharedWeatherDataPriorityStrict()}
 
 ${sharedMovementGuidance()}
 
@@ -554,7 +578,7 @@ Rules:
 - Only compare to alternatives if they were explicitly provided in the input
 - Do not make this article feel like a "do not travel" warning — frame as decision support
 
-${sharedWeatherDataPriority()}
+${sharedWeatherDataPriorityStrict()}
 
 ${sharedMovementGuidance()}
 
