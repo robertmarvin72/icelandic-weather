@@ -145,7 +145,7 @@ function normalizeForecastRawInput(raw = "") {
 
     const isElevatedWind =
       (typeof row.wind === "number" && row.wind >= 10) ||
-      (typeof row.gust === "number" && row.gust >= 14);
+      (typeof row.gust === "number" && row.gust >= 20);
 
     const isRainy = typeof row.rain === "number" && row.rain >= 10;
 
