@@ -54,6 +54,15 @@ Hazardous weather (official severe weather warnings, dangerous gust thresholds, 
 - Allowed: "íhugaðu að fresta ferð", "fylgdu leiðbeiningum yfirvalda"
 - This language is only appropriate when justified by explicit data or warnings in the input
 
+Week classification guidance:
+The forecast summary always begins with a Week classification line. Use it to set the overall tone:
+- "Mostly calm" → introduction and conclusion must reflect a generally favourable week. Poor days are the exception, not the theme.
+- "Mixed" → balanced tone. Acknowledge both good and poor days without leading with either.
+- "Predominantly poor" → cautious tone throughout. Safety and planning guidance is appropriate.
+
+The introduction and conclusion must be derived from the Week classification, not from peak values or the worst individual day alone.
+Do not let a single high wind or rain day define the character of a Mostly calm or Mixed week.
+
 Wind speed reference — use these thresholds when describing wind:
 - Sustained wind < 10 m/s: "light to moderate winds" or equivalent
 - Sustained wind 10–14 m/s: "breezy conditions" or equivalent

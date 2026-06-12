@@ -144,10 +144,10 @@ function normalizeForecastRawInput(raw = "") {
     }
 
     const isElevatedWind =
-      (typeof row.wind === "number" && row.wind >= 9) ||
+      (typeof row.wind === "number" && row.wind >= 10) ||
       (typeof row.gust === "number" && row.gust >= 14);
 
-    const isRainy = typeof row.rain === "number" && row.rain >= 2;
+    const isRainy = typeof row.rain === "number" && row.rain >= 10;
 
     const isCold = typeof row.minTemp === "number" && row.minTemp <= 0;
 
@@ -156,7 +156,22 @@ function normalizeForecastRawInput(raw = "") {
     if (isCold) coldDays.push(row.day);
   }
 
-  const summaryLines = [];
+  const totalDays = parsed.length;
+  const thresholdDaysUnion = new Set([...elevatedWindDays, ...rainDays]);
+  const thresholdCount = thresholdDaysUnion.size;
+
+  let weekClassification;
+  if (thresholdCount <= 1) {
+    weekClassification = "Mostly calm";
+  } else if (thresholdCount <= 3) {
+    weekClassification = "Mixed";
+  } else {
+    weekClassification = "Predominantly poor";
+  }
+
+  const summaryLines = [
+    `Week classification: ${weekClassification} (${thresholdCount} of ${totalDays} days above wind/rain threshold)`,
+  ];
 
   if (maxWind != null) {
     summaryLines.push(`Highest sustained wind: ${maxWind} m/s on ${maxWindDay}`);
@@ -201,6 +216,9 @@ function normalizeForecastRawInput(raw = "") {
       elevatedWindDays,
       rainDays,
       coldDays,
+      weekClassification,
+      thresholdCount,
+      totalDays,
     },
   };
 }
