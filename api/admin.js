@@ -73,7 +73,7 @@ async function requireAdmin(req, res) {
 }
 
 function normalizeForecastRawInput(raw = "") {
-  const text = String(raw || "")
+  let text = String(raw || "")
     .replace(/\r\n/g, "\n")
     .replace(/\r/g, "\n")
     .trim();
@@ -89,6 +89,8 @@ function normalizeForecastRawInput(raw = "") {
   const DAY_BOUNDARY = /\b(mán|þri|mið|fim|fös|lau|sun)\b.+\d+\.\s*\w+/i;
   const STATUS_BADGE = /^(slæmt|gott|ok|sæm|best)\.?$/i;
   const STRIP_CHARS = /[›⚠️🌬]/g;
+
+  text = text.replace(/\t/g, " ");
 
   // Ensure every day abbreviation+date starts on its own line before grouping
   const rawText = text
