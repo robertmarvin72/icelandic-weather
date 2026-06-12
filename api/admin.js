@@ -86,7 +86,7 @@ function normalizeForecastRawInput(raw = "") {
     };
   }
 
-  const DAY_BOUNDARY = /\b(mán|þri|mið|fim|fös|lau|sun)\b.+\d+\.\s*\w+/i;
+  const DAY_BOUNDARY = /^(mán|þri|mið|fim|fös|lau|sun)\./i;
   const STATUS_BADGE = /^(slæmt|gott|ok|sæm|best)\.?$/i;
   const STRIP_CHARS = /[›⚠️🌬]/g;
 
