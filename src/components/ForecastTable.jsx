@@ -202,7 +202,7 @@ export default function ForecastTable({
             <table className="w-full text-left text-sm table-sticky">
               <thead className="bg-slate-50 dark:bg-slate-900/80">
                 <tr className="border-b border-slate-200 text-slate-600 dark:border-slate-700 dark:text-slate-200">
-                  <th className="py-3 pl-4 pr-3 font-semibold">{t?.("score")}</th>
+                  <th className="py-3 pl-4 pr-3 font-semibold"></th>
                   <th className="py-3 pr-3 font-semibold">{t?.("weather")}</th>
                   <th className="py-3 pr-3 font-semibold">{t?.("day")}</th>
                   <th className="py-3 pr-3 font-semibold">
