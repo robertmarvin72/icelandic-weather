@@ -98,10 +98,6 @@ function normalizeForecastRawInput(raw = "") {
     .replace(/\n{2,}/g, "\n")
     .trim();
 
-  console.log("=== RAW TEXT AFTER REGEX ===");
-  console.log(JSON.stringify(rawText));
-  console.log("=== END ===");
-
   const allLines = rawText
     .split("\n")
     .map((line) => line.replace(/\s+/g, " ").trim())
@@ -258,7 +254,6 @@ function normalizeForecastRawInput(raw = "") {
   return {
     normalizedText: lines.join("\n"),
     summaryText: summaryLines.join("\n"),
-    rawText,
     metrics: {
       maxWind,
       maxWindDay,
@@ -882,9 +877,6 @@ async function handleGenerateDraft(req, res) {
 
     return res.status(200).json({
       ok: true,
-      debug_forecastSummary: enrichedContext.forecastSummary, // TEMP DEBUG
-      debug_forecastRawInput: enrichedContext.forecastRawInput, // TEMP DEBUG
-      debug_rawText: forecastData.rawText, // TEMP DEBUG
       draft: {
         ...normalizeBlogPost(isRows[0]),
         weatherNarrative: isDraft.weatherNarrative,
