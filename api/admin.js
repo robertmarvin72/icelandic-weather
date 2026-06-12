@@ -454,9 +454,25 @@ async function handleUpdateBlogPost(req, res) {
     const me = await requireAdmin(req, res);
     if (!me) return;
 
-    const { id, title, excerpt, content, metaTitle, metaDescription, coverImage, ctaHint, slug,
-      sourceType, topic, ctaTitle, ctaText, ctaButton, ctaTarget, nearbyHighlights, nearbyAttractions } =
-      req.body || {};
+    const {
+      id,
+      title,
+      excerpt,
+      content,
+      metaTitle,
+      metaDescription,
+      coverImage,
+      ctaHint,
+      slug,
+      sourceType,
+      topic,
+      ctaTitle,
+      ctaText,
+      ctaButton,
+      ctaTarget,
+      nearbyHighlights,
+      nearbyAttractions,
+    } = req.body || {};
 
     if (!id) {
       return res.status(400).json({ ok: false, error: "Missing post id" });
@@ -511,7 +527,10 @@ async function handleUpdateBlogPost(req, res) {
     const nextCtaText = ctaText ?? existing.cta_text ?? null;
     const nextCtaButton = ctaButton ?? existing.cta_button ?? null;
     const nextCtaTarget = ctaTarget ?? existing.cta_target ?? null;
-    const nextNearbyHighlights = nearbyHighlights !== undefined ? (nearbyHighlights || null) : (existing.nearby_highlights ?? null);
+    const nextNearbyHighlights =
+      nearbyHighlights !== undefined
+        ? nearbyHighlights || null
+        : (existing.nearby_highlights ?? null);
     const nextNearbyAttractions = nearbyAttractions ?? existing.nearby_attractions ?? null;
     const nextSlug = slugify(slug ?? nextTitle ?? existing.slug ?? existing.title ?? "post");
 
@@ -708,6 +727,10 @@ async function handleGenerateDraft(req, res) {
       forecastSummary: forecastData.summaryText,
     };
 
+    console.log("=== FORECAST SUMMARY ===");
+    console.log(enrichedContext.forecastSummary);
+    console.log("=== END ===");
+
     // Generate IS version
     const isPrompt = buildBlogPrompt(type, { lang: "is", context: enrichedContext });
     const isAiResponse = await callAI(isPrompt);
@@ -736,7 +759,9 @@ async function handleGenerateDraft(req, res) {
     `;
 
     // Insert IS row
-    const isSlug = await deduplicateSlug(slugify(isDraft.slug || isDraft.title || "post") || "post");
+    const isSlug = await deduplicateSlug(
+      slugify(isDraft.slug || isDraft.title || "post") || "post"
+    );
     const isRows = await sql`
       insert into blog_post (
         slug, title, excerpt, content,
@@ -767,7 +792,9 @@ async function handleGenerateDraft(req, res) {
     let enRows = null;
     if (enDraft) {
       try {
-        const enSlug = await deduplicateSlug(slugify(enDraft.slug || enDraft.title || "post") || "post");
+        const enSlug = await deduplicateSlug(
+          slugify(enDraft.slug || enDraft.title || "post") || "post"
+        );
         enRows = await sql`
           insert into blog_post (
             slug, title, excerpt, content,
@@ -808,16 +835,18 @@ async function handleGenerateDraft(req, res) {
         nearbyAttractions: isDraft.nearbyAttractions,
         whyThisArea: isDraft.whyThisArea,
       },
-      ...(enRows?.[0] ? {
-        draftEn: {
-          ...normalizeBlogPost(enRows[0]),
-          weatherNarrative: enDraft?.weatherNarrative,
-          movementNarrative: enDraft?.movementNarrative,
-          nearbyHighlights: enDraft?.nearbyHighlights,
-          nearbyAttractions: enDraft?.nearbyAttractions,
-          whyThisArea: enDraft?.whyThisArea,
-        },
-      } : {}),
+      ...(enRows?.[0]
+        ? {
+            draftEn: {
+              ...normalizeBlogPost(enRows[0]),
+              weatherNarrative: enDraft?.weatherNarrative,
+              movementNarrative: enDraft?.movementNarrative,
+              nearbyHighlights: enDraft?.nearbyHighlights,
+              nearbyAttractions: enDraft?.nearbyAttractions,
+              whyThisArea: enDraft?.whyThisArea,
+            },
+          }
+        : {}),
     });
   } catch (err) {
     console.error("generate-blog-draft error:", err);
@@ -870,10 +899,13 @@ function normalizeDraft(text) {
       content: parsed.content || "",
       metaTitle: parsed.metaTitle || parsed.title || "",
       metaDescription: parsed.metaDescription || "",
-      weatherNarrative: typeof parsed.weatherNarrative === "string" ? parsed.weatherNarrative : null,
-      movementNarrative: typeof parsed.movementNarrative === "string" ? parsed.movementNarrative : null,
+      weatherNarrative:
+        typeof parsed.weatherNarrative === "string" ? parsed.weatherNarrative : null,
+      movementNarrative:
+        typeof parsed.movementNarrative === "string" ? parsed.movementNarrative : null,
       nearbyHighlights: Array.isArray(parsed.nearbyHighlights) ? parsed.nearbyHighlights : null,
-      nearbyAttractions: typeof parsed.nearbyAttractions === "string" ? parsed.nearbyAttractions : null,
+      nearbyAttractions:
+        typeof parsed.nearbyAttractions === "string" ? parsed.nearbyAttractions : null,
       whyThisArea: typeof parsed.whyThisArea === "string" ? parsed.whyThisArea : null,
     };
   } catch (e) {
