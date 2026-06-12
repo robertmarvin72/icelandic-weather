@@ -828,6 +828,7 @@ async function handleGenerateDraft(req, res) {
     return res.status(200).json({
       ok: true,
       debug_forecastSummary: enrichedContext.forecastSummary, // TEMP DEBUG
+      debug_forecastRawInput: enrichedContext.forecastRawInput, // TEMP DEBUG
       draft: {
         ...normalizeBlogPost(isRows[0]),
         weatherNarrative: isDraft.weatherNarrative,
