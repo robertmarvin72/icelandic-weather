@@ -94,7 +94,7 @@ function normalizeForecastRawInput(raw = "") {
 
   // Ensure every day abbreviation+date starts on its own line before grouping
   const rawText = text
-    .replace(/\b(mán|þri|mið|fim|fös|lau|sun)\.\s+\d+\.\s+\w+/gi, "\n$&")
+    .replace(/ (mán|þri|mið|fim|fös|lau|sun)\. /gi, "\n$1. ")
     .replace(/\n{2,}/g, "\n")
     .trim();
 
