@@ -1,7 +1,6 @@
 import React, { useMemo, useRef, useEffect } from "react";
 import { trackEvent } from "../lib/analytics";
 import { haversine } from "../lib/geo";
-import { useLanguage } from "../hooks/useLanguage";
 import { useT } from "../hooks/useT";
 
 function interpolate(template, vars) {
@@ -217,10 +216,9 @@ function SiteCard({ label, name, metrics, distanceText, muted, highlight, deltaT
   );
 }
 
-export default function InstantComparison({ site, currentScore, rows, siteList, scoresById, radiusKm = 50, homepageRecommendation = "stay", onCtaClick, routePlannerSummary, t: tProp }) {
-  const { lang } = useLanguage();
-  const tFromHook = useT(lang);
-  const t = tProp || tFromHook;
+export default function InstantComparison({ site, currentScore, rows, siteList, scoresById, radiusKm = 50, homepageRecommendation = "stay", onCtaClick, routePlannerSummary, t: tProp, lang = "is" }) {
+  const tFallback = useT(lang);
+  const t = tProp || tFallback;
 
   // Local derivation kept for DEV candidate-mismatch check and as fallback for
   // pages without a RoutePlannerCard (e.g. brochure page with mock data).

@@ -109,6 +109,7 @@ export default function Brochure() {
             radiusKm={50}
             homepageRecommendation="move"
             onCtaClick={handleComparisonCta}
+            lang={lang}
           />
         </div>
 
