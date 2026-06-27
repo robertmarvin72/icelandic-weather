@@ -1,6 +1,17 @@
 import React, { useMemo, useRef, useEffect } from "react";
 import { trackEvent } from "../lib/analytics";
 import { haversine } from "../lib/geo";
+import { useLanguage } from "../hooks/useLanguage";
+import { useT } from "../hooks/useT";
+
+function interpolate(template, vars) {
+  if (typeof template !== "string") return "";
+  let out = template;
+  for (const [k, v] of Object.entries(vars || {})) {
+    out = out.replaceAll(`{${k}}`, String(v));
+  }
+  return out;
+}
 
 function calcMetrics(rows) {
   const slice = (rows || []).slice(0, 3);
@@ -17,9 +28,9 @@ function calcMetrics(rows) {
   };
 }
 
-// Returns { strength: "strong"|"decent"|"weak"|"mixed", primaryReason: string|null }
+// Returns { strength: "strong"|"decent"|"weak"|"mixed", primaryKey: string|null }
 function classifyMetrics(current, nearby) {
-  if (!current || !nearby) return { strength: "weak", primaryReason: null };
+  if (!current || !nearby) return { strength: "weak", primaryKey: null };
 
   const improvements = [];
   const worsenings = [];
@@ -48,23 +59,21 @@ function classifyMetrics(current, nearby) {
   else if (improvements.length >= 1) strength = "weak";
   else strength = "mixed";
 
-  const reasonLabels = { wind: "Rólegra", rain: "Þurrara", temp: "Hlýrra" };
   const primaryKey = improvements.length > 0 ? improvements[0] : null;
-  const primaryReason = primaryKey ? reasonLabels[primaryKey] : null;
 
-  return { strength, primaryReason, primaryKey };
+  return { strength, primaryKey };
 }
 
 // Distance-aware label for the right-hand card
-function distanceCategoryLabel(dist) {
-  if (dist == null || !isFinite(dist)) return "Nálægur kostur";
-  if (dist < 80) return "Nálægur kostur";
-  if (dist < 200) return "Annar kostur";
-  return "Lengra í burtu";
+function distanceCategoryLabel(dist, t) {
+  if (dist == null || !isFinite(dist)) return t("icDistanceNearby");
+  if (dist < 80) return t("icDistanceNearby");
+  if (dist < 200) return t("icDistanceOther");
+  return t("icDistanceFarther");
 }
 
 // Builds a short human-readable delta string for the strongest improvement.
-function buildDeltaText(primaryKey, current, nearby) {
+function buildDeltaText(primaryKey, current, nearby, t) {
   if (!primaryKey || !current || !nearby) return null;
   if (primaryKey === "wind") {
     const curr = current.avgWind;
@@ -72,19 +81,19 @@ function buildDeltaText(primaryKey, current, nearby) {
     if (curr == null || near == null || !isFinite(curr) || !isFinite(near) || curr <= 0) return null;
     const pct = Math.round(((curr - near) / curr) * 100);
     if (pct < 5) return null;
-    return `${pct}% minni vindur`;
+    return interpolate(t("icWindDelta"), { pct });
   }
   if (primaryKey === "rain") {
     if (current.totalRain == null || nearby.totalRain == null) return null;
     const diff = current.totalRain - nearby.totalRain;
     if (!isFinite(diff) || diff < 1) return null;
-    return `${Math.round(diff)} mm minna regn`;
+    return interpolate(t("icRainDelta"), { diff: Math.round(diff) });
   }
   if (primaryKey === "temp") {
     if (current.avgHighTemp == null || nearby.avgHighTemp == null) return null;
     const diff = nearby.avgHighTemp - current.avgHighTemp;
     if (!isFinite(diff) || diff < 0.5) return null;
-    return `${Math.round(diff)}°C hlýrra`;
+    return interpolate(t("icTempDelta"), { diff: Math.round(diff) });
   }
   return null;
 }
@@ -125,8 +134,13 @@ function selectBestCandidate(siteList, scoresById, site, currentScore, radiusKm)
   return best;
 }
 
-// Badge tier index: 0=Svipað, 1=Örlítið betra, 2=Betra, 3=Miklu betra
-const BADGE_LABELS = ["Svipað", "Örlítið betra", "Betra", "Miklu betra"];
+// Stable English values for analytics — never translate these
+const BADGE_ANALYTICS = ["similar", "slightly-better", "better", "much-better"];
+
+function getBadgeLabel(tier, t) {
+  const keys = ["routeDaySame", "routeImproveSlight", "routeImproveBetter", "routeImproveMuchBetter"];
+  return t(keys[tier] ?? keys[0]);
+}
 
 function scoreTier(diff) {
   if (diff >= 15) return 3;
@@ -159,7 +173,7 @@ function MetricRow({ icon, value, unit }) {
   );
 }
 
-function SiteCard({ label, name, metrics, dist, muted, highlight, deltaText }) {
+function SiteCard({ label, name, metrics, distanceText, muted, highlight, deltaText }) {
   const windFmt = fmt(metrics?.avgWind);
   const rainFmt = fmt(metrics?.totalRain);
   const tempFmt = fmt(metrics?.avgHighTemp);
@@ -194,16 +208,20 @@ function SiteCard({ label, name, metrics, dist, muted, highlight, deltaText }) {
           {deltaText}
         </div>
       )}
-      {dist != null && isFinite(dist) && (
+      {distanceText && (
         <div className="mt-2 text-xs font-medium text-slate-500 dark:text-slate-400">
-          ~{Math.round(dist)} km í beinni línu
+          {distanceText}
         </div>
       )}
     </div>
   );
 }
 
-export default function InstantComparison({ site, currentScore, rows, siteList, scoresById, radiusKm = 50, homepageRecommendation = "stay", onCtaClick, routePlannerSummary }) {
+export default function InstantComparison({ site, currentScore, rows, siteList, scoresById, radiusKm = 50, homepageRecommendation = "stay", onCtaClick, routePlannerSummary, t: tProp }) {
+  const { lang } = useLanguage();
+  const tFromHook = useT(lang);
+  const t = tProp || tFromHook;
+
   // Local derivation kept for DEV candidate-mismatch check and as fallback for
   // pages without a RoutePlannerCard (e.g. brochure page with mock data).
   const localBest = useMemo(
@@ -255,17 +273,24 @@ export default function InstantComparison({ site, currentScore, rows, siteList, 
     return calcMetrics(nearbyRows);
   }, [best, scoresById]);
 
-  const { strength, primaryReason, primaryKey } = useMemo(
+  const { strength, primaryKey } = useMemo(
     () => classifyMetrics(currentMetrics, nearbyMetrics),
     [currentMetrics, nearbyMetrics]
   );
+
+  const reasonLabels = {
+    wind: t("icReasonCalmer"),
+    rain: t("icReasonDrier"),
+    temp: t("icReasonWarmer"),
+  };
+  const primaryReason = primaryKey ? reasonLabels[primaryKey] : null;
 
   const tier = showComparison ? Math.min(scoreTier(scoreDiff), metricCap(strength)) : -1;
   const isStrongOrDecent = strength === "strong" || strength === "decent";
 
   const deltaText = useMemo(
-    () => (isStrongOrDecent ? buildDeltaText(primaryKey, currentMetrics, nearbyMetrics) : null),
-    [isStrongOrDecent, primaryKey, currentMetrics, nearbyMetrics]
+    () => (isStrongOrDecent ? buildDeltaText(primaryKey, currentMetrics, nearbyMetrics, t) : null),
+    [isStrongOrDecent, primaryKey, currentMetrics, nearbyMetrics, t]
   );
 
   const comparisonFiredRef = useRef(null);
@@ -279,7 +304,7 @@ export default function InstantComparison({ site, currentScore, rows, siteList, 
     const distanceBucket = dist < 50 ? "< 50km" : dist < 150 ? "50-150km" : "> 150km";
 
     trackEvent("comparison_viewed", {
-      comparisonTier: BADGE_LABELS[tier] ?? "unknown",
+      comparisonTier: BADGE_ANALYTICS[tier] ?? "unknown",
       distanceBucket,
       recommendation: strength,
     });
@@ -287,7 +312,7 @@ export default function InstantComparison({ site, currentScore, rows, siteList, 
     if (isStrongOrDecent) {
       trackEvent("better_nearby_found", {
         recommendation: "move",
-        comparisonTier: BADGE_LABELS[tier] ?? "unknown",
+        comparisonTier: BADGE_ANALYTICS[tier] ?? "unknown",
         radiusKm,
       });
     }
@@ -310,7 +335,7 @@ export default function InstantComparison({ site, currentScore, rows, siteList, 
       return (
         <div className="mb-3 rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 shadow-sm dark:border-slate-700/60 dark:bg-slate-900/40">
           <div className="mt-1 text-xs text-slate-500 dark:text-slate-400">
-            Veðrið er ekki hættulegt, en það gæti verið þess virði að skoða valkosti í nágrenninu.
+            {t("icConsiderFallback")}
           </div>
         </div>
       );
@@ -320,16 +345,16 @@ export default function InstantComparison({ site, currentScore, rows, siteList, 
     return (
       <div className="mb-3 rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 shadow-sm dark:border-slate-700/60 dark:bg-slate-900/40">
         <div className="text-sm font-semibold text-slate-700 dark:text-slate-200">
-          Þú ert líklega á góðum stað.
+          {t("icStayVerdict")}
         </div>
         <div className="mt-1 text-xs text-slate-500 dark:text-slate-400">
-          Enginn nálægur staður lítur greinilega betur út næstu daga.
+          {t("icStayNoAlternative")}
         </div>
       </div>
     );
   }
 
-  const badge = BADGE_LABELS[tier];
+  const badge = getBadgeLabel(tier, t);
 
   const badgeClass =
     tier >= 3
@@ -340,22 +365,27 @@ export default function InstantComparison({ site, currentScore, rows, siteList, 
 
   // Label always reflects actual distance; metric reasons override only when clear improvement exists
   const nearbyLabel =
-    isStrongOrDecent && primaryReason ? primaryReason : distanceCategoryLabel(best.distFromBase);
+    isStrongOrDecent && primaryReason ? primaryReason : distanceCategoryLabel(best.distFromBase, t);
 
   const explanatoryText =
     isStrongOrDecent
-      ? "Veðrið lítur mun betur út næstu daga."
+      ? t("icImprovementStrong")
       : strength === "weak"
-        ? "Þetta tjaldsvæði gæti verið aðeins betra, en munurinn er ekki mikill."
-        : "Veðrið á þessum stað virðist svipað miðað við næstu 3 daga.";
+        ? t("icImprovementWeak")
+        : t("icImprovementMixed");
 
-  const ctaLabel = tier >= 2 ? "Skoða þennan kost" : "Skoða samanburð";
+  const ctaLabel = tier >= 2 ? t("icCtaView") : t("icCtaCompare");
+
+  const nearbyDistanceText =
+    best.distFromBase != null && isFinite(best.distFromBase)
+      ? interpolate(t("icDistanceLabel"), { km: Math.round(best.distFromBase) })
+      : null;
 
   return (
     <div className="mb-3 rounded-2xl border border-slate-200/80 bg-white/80 px-4 py-3 shadow-sm dark:border-slate-700/60 dark:bg-slate-900/60">
       <div className="flex flex-col gap-3 sm:flex-row sm:items-stretch">
         <SiteCard
-          label="Núverandi staður"
+          label={t("routeCompareBase")}
           name={site?.name}
           metrics={currentMetrics}
           muted
@@ -372,7 +402,7 @@ export default function InstantComparison({ site, currentScore, rows, siteList, 
           label={nearbyLabel}
           name={best.site?.name}
           metrics={nearbyMetrics}
-          dist={best.distFromBase}
+          distanceText={nearbyDistanceText}
           highlight={isStrongOrDecent}
           deltaText={deltaText}
         />

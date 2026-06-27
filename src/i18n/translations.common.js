@@ -414,6 +414,36 @@ export const commonTranslations = {
     weatherFinderShowFull: "Show full ranking",
     weatherFinderShowTop10: "Show top 10 only",
 
+    // InstantComparison
+    icReasonCalmer: "Calmer",
+    icReasonDrier: "Drier",
+    icReasonWarmer: "Warmer",
+    icDistanceNearby: "Nearby option",
+    icDistanceOther: "Another option",
+    icDistanceFarther: "Further away",
+    icWindDelta: "{pct}% less wind",
+    icRainDelta: "{diff} mm less rain",
+    icTempDelta: "{diff}°C warmer",
+    icDistanceLabel: "~{km} km as the crow flies",
+    icConsiderFallback: "The weather isn't dangerous, but it may be worth checking nearby options.",
+    icStayVerdict: "You are probably in a good spot.",
+    icStayNoAlternative: "No nearby campsite clearly looks better over the next few days.",
+    icImprovementStrong: "The weather looks much better over the next few days.",
+    icImprovementWeak: "This campsite might be slightly better, but the difference is not large.",
+    icImprovementMixed: "The weather at this location seems similar over the next 3 days.",
+    icCtaView: "View this option",
+    icCtaCompare: "View comparison",
+
+    // RoutePlannerCard
+    settingsChangeDistanceWindow: "Change distance and time window",
+
+    // Toolbar
+    settingsLabel: "Settings",
+
+    // CampsitePicker
+    campsitePickerNoMatches: "No matches.",
+    campsitePickerAriaLabel: "Campsite picker",
+
     locale: "en-GB",
   },
   is: {
@@ -826,6 +856,36 @@ export const commonTranslations = {
     weatherFinderResultTitleDriest: "Þurrstu tjaldsvæði í nágrenninu",
     weatherFinderShowFull: "Sýna alla röðun",
     weatherFinderShowTop10: "Sýna aðeins topp 10",
+
+    // InstantComparison
+    icReasonCalmer: "Rólegra",
+    icReasonDrier: "Þurrara",
+    icReasonWarmer: "Hlýrra",
+    icDistanceNearby: "Nálægur kostur",
+    icDistanceOther: "Annar kostur",
+    icDistanceFarther: "Lengra í burtu",
+    icWindDelta: "{pct}% minni vindur",
+    icRainDelta: "{diff} mm minna regn",
+    icTempDelta: "{diff}°C hlýrra",
+    icDistanceLabel: "~{km} km í beinni línu",
+    icConsiderFallback: "Veðrið er ekki hættulegt, en það gæti verið þess virði að skoða valkosti í nágrenninu.",
+    icStayVerdict: "Þú ert líklega á góðum stað.",
+    icStayNoAlternative: "Enginn nálægur staður lítur greinilega betur út næstu daga.",
+    icImprovementStrong: "Veðrið lítur mun betur út næstu daga.",
+    icImprovementWeak: "Þetta tjaldsvæði gæti verið aðeins betra, en munurinn er ekki mikill.",
+    icImprovementMixed: "Veðrið á þessum stað virðist svipað miðað við næstu 3 daga.",
+    icCtaView: "Skoða þennan kost",
+    icCtaCompare: "Skoða samanburð",
+
+    // RoutePlannerCard
+    settingsChangeDistanceWindow: "Breyta fjarlægð og tímaglugga",
+
+    // Toolbar
+    settingsLabel: "Stillingar",
+
+    // CampsitePicker
+    campsitePickerNoMatches: "Engar niðurstöður.",
+    campsitePickerAriaLabel: "Tjaldsvæðisval",
 
     locale: "is-IS",
   },

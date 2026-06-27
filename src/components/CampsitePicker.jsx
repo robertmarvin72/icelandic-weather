@@ -89,7 +89,7 @@ export default function CampsitePicker({
               🔒
             </span>
           ) : null}
-          <span>{selected?.name || "Select campsite"}</span>
+          <span>{selected?.name || t?.("selectCampsite")}</span>
         </span>
         <span className="opacity-70">▾</span>
       </button>
@@ -97,7 +97,7 @@ export default function CampsitePicker({
       {open && (
         <div
           role="dialog"
-          aria-label="Campsite picker"
+          aria-label={t?.("campsitePickerAriaLabel") || "Campsite picker"}
           className="absolute z-[9999] mt-2 w-[360px] max-w-[90vw]
                      rounded-2xl border border-slate-200 bg-white shadow-lg p-3
                      dark:bg-slate-900 dark:border-slate-700"
@@ -113,7 +113,7 @@ export default function CampsitePicker({
 
           <div className="mt-2 max-h-72 overflow-auto rounded-xl border border-slate-200 dark:border-slate-700">
             {filtered.length === 0 ? (
-              <div className="p-3 text-sm text-slate-600 dark:text-slate-300">No matches.</div>
+              <div className="p-3 text-sm text-slate-600 dark:text-slate-300">{t?.("campsitePickerNoMatches") || "No matches."}</div>
             ) : (
               <ul className="divide-y divide-slate-100 dark:divide-slate-800">
                 {filtered.map((s) => {
@@ -158,7 +158,7 @@ export default function CampsitePicker({
               className="px-3 py-2 rounded-xl text-sm border border-slate-300
                          dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800/60"
             >
-              Close
+              {t?.("close")}
             </button>
           </div>
         </div>

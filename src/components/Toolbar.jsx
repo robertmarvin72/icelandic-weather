@@ -102,7 +102,7 @@ export default function Toolbar({
             className="inline-flex items-center gap-1 px-2 py-1 rounded-lg border border-slate-200 bg-slate-50 text-xs text-slate-500 hover:text-slate-700 hover:bg-slate-100 dark:border-slate-700 dark:bg-slate-800/50 dark:text-slate-400 dark:hover:text-slate-200 dark:hover:bg-slate-800 transition-colors"
           >
             <span aria-hidden>⚙</span>
-            <span>Stillingar</span>
+            <span>{t?.("settingsLabel")}</span>
             <span aria-hidden className="opacity-50 text-[10px]">{settingsOpen ? "▲" : "▼"}</span>
           </button>
 

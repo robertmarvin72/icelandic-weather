@@ -709,9 +709,11 @@ export default function RoutePlannerCard({
         )
       );
     } else if (best?.siteName && Number.isFinite(best?.distanceKm) && decisionLower !== "stay") {
-      parts.push(
-        `Betri aðstæður gætu verið í ${best.siteName}, um ${Math.round(best.distanceKm)} km í burtu.`
-      );
+      const destination = interpolate(t("routeEscapeStormDestination"), {
+        km: Math.round(best.distanceKm),
+        site: best.siteName,
+      });
+      parts.push(interpolate(t("routeNarrativeBetterNearby"), { destination }));
     }
 
     if (routeRiskData?.routeRisk === "HIGH") {
@@ -815,7 +817,7 @@ export default function RoutePlannerCard({
             </span>
             <span className="inline-flex items-center gap-2 text-slate-400 dark:text-slate-500">
               {!advancedOpen && (
-                <span className="text-[11px]">{radiusKm} km · {windowDays} dagar</span>
+                <span className="text-[11px]">{radiusKm} km · {windowDays} {windowDays === 1 ? t("day") : t("days")}</span>
               )}
               <span
                 aria-hidden
@@ -828,7 +830,7 @@ export default function RoutePlannerCard({
 
           {!advancedOpen && (
             <p className="mt-1 px-1 text-[11px] text-slate-400 dark:text-slate-500">
-              Breyta fjarlægð og tímaglugga
+              {t("settingsChangeDistanceWindow")}
             </p>
           )}
 
