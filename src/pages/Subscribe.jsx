@@ -129,7 +129,8 @@ export default function Subscribe({ onClose, theme = "dark", t }) {
       // 2) Create checkout
       // ✅ NEW: send plan to API
       const attribution = getStoredAttribution();
-      const checkoutBody = { email: trimmed, plan, ...(attribution ? { attribution } : {}) };
+      const qrSource = sessionStorage.getItem("qr_source") || null;
+      const checkoutBody = { email: trimmed, plan, ...(attribution ? { attribution } : {}), ...(qrSource ? { qr_source: qrSource } : {}) };
       let { res, json, text } = await postJson("/api/checkout", checkoutBody);
 
       // 2b) If we still get 401, retry login ONCE and retry checkout.

@@ -191,6 +191,9 @@ export default async function handler(req, res) {
       body?.attribution && typeof body.attribution === "object" && !Array.isArray(body.attribution)
         ? body.attribution
         : null;
+    const qrSource = typeof body?.qr_source === "string" && body.qr_source.length > 0
+      ? body.qr_source
+      : null;
 
     const priceMonthly = process.env.PADDLE_PRICE_ID_MONTHLY;
     const priceYearly = process.env.PADDLE_PRICE_ID_YEARLY;
@@ -286,6 +289,25 @@ export default async function handler(req, res) {
       }
     }
 
+    // Pre-populate qr_source before Paddle redirect.
+    // Paddle does not propagate transaction custom_data to subscription webhook
+    // events, so the webhook path always reads qr_source as null. Writing here
+    // ensures the value is already in the row when persistSubscription() runs.
+    // coalesce preserves the original acquisition source on repeated checkouts.
+    if (qrSource) {
+      try {
+        await sql`
+          insert into user_subscription (user_id, qr_source, status)
+          values (${user.id}, ${qrSource}, 'inactive')
+          on conflict (user_id)
+          do update set
+            qr_source = coalesce(user_subscription.qr_source, excluded.qr_source)
+        `;
+      } catch (qrErr) {
+        console.error("[checkout] Failed to write qr_source:", qrErr?.message || qrErr);
+      }
+    }
+
     const customerId = await ensurePaddleCustomer(user);
 
     const appBase = appBaseUrl(req);
@@ -303,6 +325,7 @@ export default async function handler(req, res) {
             email: user.email,
             plan,
             ...(attribution ?? {}),
+            ...(qrSource ? { qr_source: qrSource } : {}),
           },
         checkout: {
           success_url: successUrl,

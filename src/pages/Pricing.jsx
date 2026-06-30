@@ -36,6 +36,11 @@ export default function Pricing({ onClose, lang = "is", theme = "dark", t, me })
   const [error, setError] = useState("");
   const [acceptedTerms, setAcceptedTerms] = useState(false);
 
+  useEffect(() => {
+    const qr = params.get("qr");
+    if (qr) sessionStorage.setItem("qr_source", qr);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
   const viewFiredRef = useRef(false);
   useEffect(() => {
     if (viewFiredRef.current) return;
@@ -132,9 +137,11 @@ export default function Pricing({ onClose, lang = "is", theme = "dark", t, me })
       // Pricing is plan selector; if logged in, /api/checkout uses session.
       // We send only { plan } (backend ignores email anyway).
       const attribution = getStoredAttribution();
+      const qrSource = sessionStorage.getItem("qr_source") || null;
       const { res, json, text } = await postJson("/api/checkout", {
         plan: chosenPlan,
         ...(attribution ? { attribution } : {}),
+        ...(qrSource ? { qr_source: qrSource } : {}),
       });
 
       // Subscription already active / upgrade rules

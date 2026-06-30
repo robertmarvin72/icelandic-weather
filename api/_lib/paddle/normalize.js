@@ -97,6 +97,7 @@ export function normalizeEvent(evt) {
   const status = normalizeStatus(data?.status);
   const customerId = data?.customer_id || data?.customer?.id || null;
   const userId = data?.custom_data?.user_id || evt?.data?.custom_data?.user_id || null;
+  const qrSource = data?.custom_data?.qr_source || null;
   const firstItem = Array.isArray(data?.items) ? data.items[0] : null;
   const priceId = firstItem?.price?.id || null;
   const currentPeriodEnd = data?.current_billing_period?.ends_at || data?.next_billed_at || null;
@@ -110,6 +111,7 @@ export function normalizeEvent(evt) {
     status,
     priceId,
     currentPeriodEnd: toIsoDateOrNull(currentPeriodEnd),
+    qrSource,
   };
 }
 

@@ -19,6 +19,7 @@ import BlogIndex from "./pages/BlogIndex";
 import BlogPostPage from "./pages/BlogPostPage";
 import Brochure from "./pages/Brochure";
 import CampaignLandingPage from "./pages/CampaignLandingPage";
+import Welcome from "./pages/Welcome";
 
 function PricingRoute() {
   const pageProps = usePageRouteProps();
@@ -134,6 +135,11 @@ function CampaignRoute({ configKey }) {
   return <CampaignLandingPage t={t} lang={lang} theme={theme} {...config} />;
 }
 
+function WelcomeRoute() {
+  const pageProps = usePageRouteProps();
+  return <Welcome {...pageProps} />;
+}
+
 function BlogRoute({ langOverride }) {
   const pageProps = usePageRouteProps();
   return <BlogIndex {...pageProps} lang={langOverride || pageProps.lang} />;
@@ -167,6 +173,7 @@ export default function AppRoutes({ HomeComponent }) {
       <Route path="/en/blog" element={<BlogRoute langOverride="en" />} />
       <Route path="/en/blog/:slug" element={<BlogPostRoute langOverride="en" />} />
       <Route path="/brochure" element={<Brochure />} />
+      <Route path="/welcome" element={<WelcomeRoute />} />
       <Route path="*" element={<NotFound />} />
     </Routes>
   );

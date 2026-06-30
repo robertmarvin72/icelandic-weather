@@ -53,7 +53,7 @@ export async function mapCustomerToUser({ sql, customerId, userId }) {
 }
 
 export async function persistSubscription({ sql, normalized }) {
-  const { subscriptionId, customerId, userId, status, priceId, currentPeriodEnd } = normalized;
+  const { subscriptionId, customerId, userId, status, priceId, currentPeriodEnd, qrSource } = normalized;
 
   const user = await mapUser({ sql, customerId, userId });
 
@@ -72,14 +72,16 @@ export async function persistSubscription({ sql, normalized }) {
       paddle_subscription_id,
       paddle_price_id,
       status,
-      current_period_end
+      current_period_end,
+      qr_source
     )
     values (
       ${user.id},
       ${subscriptionId},
       ${priceId},
       ${status || "inactive"},
-      ${currentPeriodEnd}
+      ${currentPeriodEnd},
+      ${qrSource}
     )
     on conflict (user_id)
     do update set
