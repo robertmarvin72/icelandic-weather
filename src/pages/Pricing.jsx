@@ -232,15 +232,15 @@ export default function Pricing({ onClose, lang = "is", theme = "dark", t, me })
   const monthlyPrice = prices.monthly; // "€4.99"  or "790 kr"
 
   const featuresYearly = [
+    T("pricingFeatureComparisons", "Compare all 242 campsites across Iceland"),
     T("pricingFeatureAllPro", "All Pro features unlocked"),
     T("pricingFeatureWindShelter", "Wind direction + shelter score"),
-    T("pricingFeatureComparisons", "Detailed campsite comparisons"),
     T("pricingFeatureCancelAnytime", "Cancel anytime"),
   ];
 
   const featuresMonthly = [
+    T("pricingFeatureComparisons", "Compare all 242 campsites across Iceland"),
     T("pricingFeatureAllPro", "All Pro features unlocked"),
-    T("pricingFeatureComparisons", "Detailed campsite comparisons"),
     T("pricingFeatureCancelAnytime", "Cancel anytime"),
   ];
 

@@ -73,7 +73,7 @@ export const pricingTranslations = {
 
     pricingFeatureAllPro: "Full access to the Route Planner",
     pricingFeatureWindShelter: "Wind direction + shelter score",
-    pricingFeatureComparisons: "Detailed campsite comparisons",
+    pricingFeatureComparisons: "Compare all 242 campsites across Iceland",
     pricingFeatureCancelAnytime: "Cancel anytime",
 
     pricingCtaYearly: "Unlock Chase the Weather Pro Yearly",
@@ -203,7 +203,7 @@ export const pricingTranslations = {
 
     pricingFeatureAllPro: "Fullur aðgangur að Ferðaráðgjafa",
     pricingFeatureWindShelter: "Vindátt + skjólstuðull",
-    pricingFeatureComparisons: "Nánari samanburður á tjaldsvæðum",
+    pricingFeatureComparisons: "Samanburður á öllum 242 tjaldsvæðum landsins",
     pricingFeatureCancelAnytime: "Hægt að segja upp hvenær sem er",
 
     pricingCtaYearly: "Opna Eltum Veðrið Pro",
