@@ -93,10 +93,10 @@ export default function PricingInfo({ theme = "light", t, onUpgrade }) {
             <div className="text-base font-semibold">{t("pricingInfoIncludesTitle")}</div>
 
             <ul className="mt-3 grid gap-2 text-sm text-slate-700 dark:text-slate-300">
+              <li>✓ {t("pricingInfoIncludes4")}</li>
               <li>✓ {t("pricingInfoIncludes1")}</li>
               <li>✓ {t("pricingInfoIncludes2")}</li>
               <li>✓ {t("pricingInfoIncludes3")}</li>
-              <li>✓ {t("pricingInfoIncludes4")}</li>
             </ul>
           </div>
 

@@ -99,9 +99,9 @@ export const pricingTranslations = {
 
     pricingInfoBack: "← Back to forecast",
     pricingInfoEyebrow: "Chase the Weather Pro",
-    pricingInfoTitle: "Know where the weather is actually better",
+    pricingInfoTitle: "Find the best weather across 242 campsites in Iceland",
     pricingInfoLead:
-      "Chase the Weather Pro helps you avoid the worst conditions, compare nearby campsites, and make better travel decisions before you go.",
+      "See where wind, rain and overall conditions are better across 242 campsites in Iceland.",
 
     pricingInfoFeature1Title: "7-day forecast",
     pricingInfoFeature1Body: "See more than the short view and plan further ahead.",
@@ -121,7 +121,7 @@ export const pricingTranslations = {
     pricingInfoIncludes1: "Full access to Route Planner",
     pricingInfoIncludes2: "7-day campsite forecast",
     pricingInfoIncludes3: "Wind direction and shelter insights",
-    pricingInfoIncludes4: "Detailed campsite comparisons",
+    pricingInfoIncludes4: "Compare all 242 campsites across Iceland",
 
     pricingInfoTrustTitle: "Good to know",
     pricingInfoTrustBody:
@@ -230,9 +230,9 @@ export const pricingTranslations = {
 
     pricingInfoBack: "← Til baka í spá",
     pricingInfoEyebrow: "Eltum Veðrið Pro",
-    pricingInfoTitle: "Sjáðu hvar veðrið er í raun betra",
+    pricingInfoTitle: "Finndu besta veðrið meðal 242 tjaldsvæða um allt land",
     pricingInfoLead:
-      "Eltum Veðrið Pro hjálpar þér að forðast verstu aðstæðurnar, bera saman staði í nágrenninu og taka betri ákvörðun áður en þú leggur af stað.",
+      "Sjáðu hvar vindur, úrkoma og aðstæður eru betri meðal 242 tjaldsvæða um allt Ísland.",
 
     pricingInfoFeature1Title: "7 daga spá",
     pricingInfoFeature1Body: "Sjáðu lengra fram í tímann en með styttri yfirsýn.",
@@ -252,7 +252,7 @@ export const pricingTranslations = {
     pricingInfoIncludes1: "Fullur aðgangur að Ferðaráðgjafa",
     pricingInfoIncludes2: "7 daga yfirsýn yfir aðstæður",
     pricingInfoIncludes3: "Vindátt og skjól-innsýn",
-    pricingInfoIncludes4: "Ítarlegri samanburður milli staða",
+    pricingInfoIncludes4: "Berðu saman öll 242 tjaldsvæði landsins",
 
     pricingInfoTrustTitle: "Gott að vita",
     pricingInfoTrustBody:
