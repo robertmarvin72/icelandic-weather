@@ -5,6 +5,7 @@
 ## 2026-04-09 — Retro: Issue #221 (Draft Preview + Preview Button)
 
 ### What was built
+
 - **Issue #221**: Draft blog posts accessible via `/blog/:slug?preview=draft`, admin-only (server-side guard via `requireAdmin`). Non-admins see generic not-found UI — draft existence not leaked.
 - **Preview button**: Added to `BlogEditorCard` in `AdminDashboard.jsx`, opens draft URL in new tab, i18n-aware (EN/IS), only shown when `post.status === "draft"`.
 - **Tests**: 3 new tests in `src/pages/BlogPostPage.test.jsx` covering published, draft-admin, and draft-non-admin cases. `vitest.config.js` updated to support `.jsx` test files.
@@ -13,27 +14,34 @@
 ### What went well
 
 **Subagent pattern (Plan → Code → Test)**
+
 - Clean separation of concerns. The plan agent explored the codebase independently and produced an accurate, detailed spec (correct file paths, correct helper names, correct SQL pattern). The code agent followed it without drift. The test agent caught the missing `vitest.config.js` JSX support and fixed it autonomously.
 - Security analysis happened at the planning stage, not retrofitted — the "don't leak draft existence on 403" requirement was identified before a line of code was written.
 
 **CLAUDE.md constraints**
+
 - The `No git operations` constraint (original) correctly blocked an inappropriate push attempt. When the constraint was updated to allow staging/committing (but not pushing), the agent respected the new scope immediately.
 
 **Test coverage**
+
 - The test agent wrote meaningful integration-style tests (mocked fetch, real component render) rather than trivial unit tests. All 65 tests passed on first run.
 
 **Security approach**
+
 - Admin gate is entirely server-side. The two-step fetch pattern (published first, draft fallback only on 404) avoids leaking draft existence to unauthenticated clients.
 
 ### What could be improved
 
 **`gh` CLI not installed**
+
 - Issue details had to be fetched via `WebFetch` (unauthenticated GitHub HTML), which is fragile and loses comments/labels. Installing `gh` CLI in the dev environment would make issue lookup reliable and allow closing issues on merge.
 
 **Preview button was out of initial scope**
+
 - The plan agent and code agent implemented the API + BlogPostPage correctly, but neither flagged that the admin UI had no way to reach the new URL. The preview button was a follow-up request. A future planning step should ask: "Is there a UI entrypoint for this feature?"
 
 **Terminal paste visibility**
+
 - The `claude --model haiku` git command was typed into the prompt, meaning commit messages and commands were visible in conversation history. For repos with sensitive branch names or commit conventions, this is fine — but worth noting that `!` prefix in the Claude Code prompt runs commands in-session and keeps output in context.
 
 ### Suggestions for rules / conventions
@@ -55,23 +63,29 @@
 ### What went well
 
 **Tight, targeted fixes**
+
 - Both #232 and #233 were minimal diffs (< 25 lines each) that solved real user-visible inconsistencies. No scope creep, no refactoring of unrelated code.
 
 **UX improvement surfaced during a bug fix**
+
 - The gray-pin change (#233) was not in the original issue but was the correct thing to do once the scoring alignment was understood. The fix revealed a UX gap (misleading red pins) and closed it in the same commit. Good pattern: bug fixes sometimes expose adjacent UX issues worth addressing immediately.
 
 **Playwright setup was clean on first run**
+
 - 2/2 tests passed without any config iteration. The `stubAppBootstrapApis` + per-test `page.route()` pattern worked correctly first time.
 
 **`ui-test-agent.md` created proactively**
+
 - The skill file was authored alongside the tests, capturing route-order gotchas while they were fresh. This avoids a future agent rediscovering the LIFO route evaluation behaviour from scratch.
 
 ### What could be improved
 
 **#232 and #233 are conceptually one fix**
+
 - Both address UI/engine scoring alignment and could have been a single commit. Two separate commits is fine for blame purposes, but the PR descriptions should cross-reference each other to make the connection clear.
 
 **Scoring regression not caught by existing tests**
+
 - The rounding issue (#232) was caught by manual comparison, not an existing test. The new tests now guard against this, but the gap existed for a while. Adding boundary-condition tests (e.g. value at exactly the penalty threshold) earlier would have caught this sooner.
 
 ### Suggestions for rules / conventions
@@ -94,24 +108,72 @@
 ### What went well
 
 **Footer change was clean and minimal**
+
 - Three-file change (Footer, translations ×2 language blocks) with no ambiguity. Translation key placed adjacent to other footer keys in both blocks.
 
 **Retro conventions from the previous session were applied immediately**
+
 - The CLAUDE.md convention additions (`< 25 lines UX gap fix`, `cross-reference issue numbers`) came directly from the prior retro suggestions — closing the loop in the same session.
 
 **e2e test diagnosed Splash blocking correctly**
+
 - The overlay intercept error was informative. The Splash-clearing root cause (needs `!loading && rowsLength > 0`) was traced correctly through `useBooting` → `useForecast` → `useCampsites`.
 
 ### What caused friction
 
 **Campsites stub shape was wrong on first attempt**
+
 - The stub returned a bare array; the hook expects `{ ok: true, campsites: [...], tier: "free" }`. Required reading `useCampsites.js` to find the contract. Cost two extra test runs (total 3 runs to green).
 - This is a common trap: API stubs must match the hook's response parsing contract, not the raw endpoint output shape.
 
 **`claude --model haiku` subagent can't commit non-interactively**
+
 - Both times the subagent was invoked for git ops, it either got permissions blocked or asked for interactive confirmation. The user ended up running git commands manually each time. This pattern doesn't work without a TTY.
 
 ### Suggestions for rules / conventions
 
 - Add a note to `skills/ui-test-agent.md` under the bootstrap stub section: stub shapes must match the hook's response parsing contract — check the hook source, not just the endpoint URL.
 - The `claude --model haiku` git commit flow needs a `--yes` / non-interactive flag or an alternative approach. Consider documenting in `retro-agent.md` that git ops via subagent don't work without a TTY.
+
+## 2026-07-09 — Campsite comparison (Pro feature), prompt 1–4 + fixes
+
+Shipped: comparison helpers + 32 tests → Pro UI with three-factor daily breakdown +
+hourly expansion → paygate/pricing/analytics → read-only audit, 7/7 PASS.
+Payment code never touched (verified via git diff in audit).
+
+### Ferlislærdómar
+
+- STEP 1/STEP 2 verification-röðun (fyrst pasta lint/build/test output, svo report)
+  leysti mynstur þar sem CC sleppti verification 4x í röð. Nú regla í CLAUDE.md.
+- Klemmd session: engin tool-köll innan ~2 mín frá starti = strandað, ekki hæg vinna.
+  Drepa og starta fersku; ekkert tapast ef engin tool-köll keyrðu (git status staðfestir).
+- npx vitest run alltaf, aldrei bare vitest/watch-mode — hangir session.
+- Read-only audit í ferskri session virkar vel. Rétt orðalag: git-lestur (log/diff/status)
+  leyfður og hvattur, git-skrif (add/commit/push/reset/checkout) bönnuð.
+- git add -A eftir build committar dist/ — nota markvissa staging. (dist hreinsað með
+  git rm --cached.)
+- Skjáskoðun á raungögnum milli prompta fann tvö hönnunarvandamál sem ekkert
+  audit/test hefði fundið (mótsögn, vantandi rökstuðning).
+
+### Feature-lærdómar
+
+- Tímavigtun í normalizeDailyToScoreInput (nótt 0.45 / dagur 1.0) olli daily/hourly
+  mótsögn í samanburðinum. Lausn: comparison byggir daily rows beint úr raw daily
+  API gildum svo sýndar tölur = niðurstaða. Vigtunin lifir í aðal-recommendation.
+  "Do not unify" varúð komin í CLAUDE.md.
+- "Rökstuðningur vinnara" var rangt UI-form — trade-off tafla (vindur/úrkoma/hiti
+  fyrir BÆÐI svæði, alltaf) er það sem ákvörðun þarf. Why-línu millilausnin var
+  hent; kostaði eitt auka prompt en rétt form fannst bara með raungögnum á skjá.
+
+### Opið / follow-ups
+
+- Hourly drizzle < 1 mm/slot ósýnilegt í klukkutímaröðum (RAIN_DIFF_THRESHOLD
+  per slot); daily sýnir það rétt. Meta hvort þarf sér birtingarþröskuld.
+- Picker B sýnir fyrsta svæði í lista sem visual fallback þótt ekkert sé valið —
+  gæti ruglað.
+- Hviður-röðin sýnir stærri diffinn (vind eða gust) en scoring vegur bæði — getur
+  í jaðartilfellum útskýrt vinnara ófullkomlega.
+- Raw daily mapping í CampsiteComparisonSection án unit testa.
+- Duplicate i18n lyklar: top5BestOverallThisWeek, decisionMoveBodyWindowAware
+  (báðar language sections) — sér diagnostic + fix.
+- 27 pre-existing lint villur — hreinsunarverkefni.
