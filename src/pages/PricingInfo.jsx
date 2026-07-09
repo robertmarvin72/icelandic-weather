@@ -44,7 +44,7 @@ export default function PricingInfo({ theme = "light", t, onUpgrade }) {
             </p>
           </div>
 
-          <div className="grid gap-4 md:grid-cols-3">
+          <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-4">
             <div className="rounded-2xl border border-slate-200/70 bg-slate-50/80 p-4 dark:border-slate-700/70 dark:bg-slate-800/60">
               <div className="text-sm font-semibold">{t("pricingInfoFeature1Title")}</div>
               <div className="mt-1 text-sm text-slate-600 dark:text-slate-300">
@@ -63,6 +63,13 @@ export default function PricingInfo({ theme = "light", t, onUpgrade }) {
               <div className="text-sm font-semibold">{t("pricingInfoFeature3Title")}</div>
               <div className="mt-1 text-sm text-slate-600 dark:text-slate-300">
                 {t("pricingInfoFeature3Body")}
+              </div>
+            </div>
+
+            <div className="rounded-2xl border border-slate-200/70 bg-slate-50/80 p-4 dark:border-slate-700/70 dark:bg-slate-800/60">
+              <div className="text-sm font-semibold">{t("pricingInfoFeature4Title")}</div>
+              <div className="mt-1 text-sm text-slate-600 dark:text-slate-300">
+                {t("pricingInfoFeature4Body")}
               </div>
             </div>
           </div>

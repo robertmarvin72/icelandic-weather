@@ -470,6 +470,10 @@ export const commonTranslations = {
     comparisonFactorGusts: "Gusts",
     comparisonFactorRain: "Rain",
     comparisonFactorTemp: "Temp",
+    comparisonLockedHeadline: "Two-campsite comparison is a Pro feature.",
+    comparisonLockedBody:
+      "With Pro, you can choose two campsites, compare them day by day and open an hourly breakdown for each day.",
+    comparisonLockedCta: "Unlock Pro comparison",
 
     locale: "en-GB",
   },
@@ -940,6 +944,10 @@ export const commonTranslations = {
     comparisonFactorGusts: "Hviður",
     comparisonFactorRain: "Úrkoma",
     comparisonFactorTemp: "Hiti",
+    comparisonLockedHeadline: "Samanburður tveggja tjaldsvæða er Pro eiginleiki.",
+    comparisonLockedBody:
+      "Með Pro geturðu valið tvö tjaldsvæði, borið þau saman dag frá degi og opnað klukkutímasamanburð fyrir hvern dag.",
+    comparisonLockedCta: "Opna Pro samanburð",
 
     locale: "is-IS",
   },

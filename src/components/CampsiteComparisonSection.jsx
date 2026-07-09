@@ -1,6 +1,8 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import CampsitePicker from "./CampsitePicker";
 import { getForecast } from "../lib/forecastCache";
+import { isFeatureAvailable } from "../config/features";
+import { trackEvent } from "../lib/analytics";
 import {
   compareCampsiteForecasts,
   getHourlyComparisonWinner,
@@ -92,6 +94,40 @@ function buildFactorRows(result, dailyA, dailyB) {
       better: higherIsBetter(tmaxA, tmaxB, TEMP_DIFF_THRESHOLD),
     },
   ];
+}
+
+function LockedComparisonCard({ t, onUpgrade, lang }) {
+  return (
+    <div className="relative z-30 mb-4 rounded-2xl border border-slate-200/70 bg-white/80 p-5 shadow-sm backdrop-blur-sm dark:border-slate-700/70 dark:bg-slate-900/70">
+      <h2 className="text-base font-semibold text-slate-900 dark:text-slate-100">
+        {t("comparisonTitle")}
+      </h2>
+      <div className="mt-3">
+        <p className="text-sm font-semibold text-slate-700 dark:text-slate-200">
+          {t("comparisonLockedHeadline")}
+        </p>
+        <p className="mt-1.5 text-sm text-slate-500 dark:text-slate-400">
+          {t("comparisonLockedBody")}
+        </p>
+        <button
+          type="button"
+          onClick={() => {
+            trackEvent("comparison_upgrade_clicked", { lang, source: "comparison" });
+            if (typeof onUpgrade === "function") onUpgrade();
+          }}
+          className="
+            mt-4 w-full rounded-xl px-3 py-2 text-sm font-semibold
+            bg-emerald-600 text-white
+            hover:bg-emerald-500
+            focus:outline-none focus:ring-2 focus:ring-emerald-400/60
+            dark:bg-emerald-500 dark:hover:bg-emerald-400
+          "
+        >
+          {t("comparisonLockedCta")}
+        </button>
+      </div>
+    </div>
+  );
 }
 
 function HourlyComparisonBreakdown({ rawDataA, rawDataB, date, siteA, siteB, t }) {
@@ -190,7 +226,7 @@ function HourlyComparisonBreakdown({ rawDataA, rawDataB, date, siteA, siteB, t }
   );
 }
 
-function DailyComparisonRow({ result, rawDataA, rawDataB, siteA, siteB, t, lang }) {
+function DailyComparisonRow({ result, rawDataA, rawDataB, siteA, siteB, t, lang, onExpand }) {
   const [expanded, setExpanded] = useState(false);
 
   const dateLabel = formatDay(result.date, lang);
@@ -259,7 +295,11 @@ function DailyComparisonRow({ result, rawDataA, rawDataB, siteA, siteB, t, lang 
         </div>
         <button
           type="button"
-          onClick={() => setExpanded((v) => !v)}
+          onClick={() => {
+            const next = !expanded;
+            setExpanded(next);
+            if (next && typeof onExpand === "function") onExpand(result.date, result.winner);
+          }}
           aria-expanded={expanded}
           className="shrink-0 rounded px-2 py-0.5 text-xs text-sky-600 hover:bg-sky-50 dark:text-sky-400 dark:hover:bg-sky-900/30"
         >
@@ -283,7 +323,10 @@ function DailyComparisonRow({ result, rawDataA, rawDataB, siteA, siteB, t, lang 
   );
 }
 
-export default function CampsiteComparisonSection({ siteList, t, lang, currentSiteId }) {
+export default function CampsiteComparisonSection({ siteList, t, lang, currentSiteId, entitlements, onUpgrade }) {
+  const gate = isFeatureAvailable("campsiteComparison", entitlements);
+  const isPro = gate.available;
+
   const [siteIdA, setSiteIdA] = useState(currentSiteId ?? null);
   const [siteIdB, setSiteIdB] = useState(null);
 
@@ -308,7 +351,27 @@ export default function CampsiteComparisonSection({ siteList, t, lang, currentSi
     Number.isFinite(latB) && Number.isFinite(lonB)
   );
 
+  // Fire once on mount for all users (tracks locked vs full exposure).
+  const viewedRef = useRef(false);
   useEffect(() => {
+    if (viewedRef.current) return;
+    viewedRef.current = true;
+    trackEvent("comparison_feature_viewed", { lang, isPro, source: "homepage" });
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Fire once per unique (siteA, siteB) pair when both are selected (Pro only).
+  const selectionFiredRef = useRef(null);
+  useEffect(() => {
+    if (!isPro || !bothSelected) return;
+    const key = `${siteIdA}:${siteIdB}`;
+    if (selectionFiredRef.current === key) return;
+    selectionFiredRef.current = key;
+    trackEvent("comparison_campsites_selected", { lang, siteA: siteIdA, siteB: siteIdB });
+  }, [isPro, bothSelected, siteIdA, siteIdB, lang]);
+
+  // Forecast fetch — gated on isPro so free users trigger zero network requests.
+  useEffect(() => {
+    if (!isPro) return;
     if (!siteIdA || !siteIdB || siteIdA === siteIdB || !latA || !lonA || !latB || !lonB) {
       setResults(null);
       setRawDataA(null);
@@ -366,7 +429,12 @@ export default function CampsiteComparisonSection({ siteList, t, lang, currentSi
     return () => {
       cancelled = true;
     };
-  }, [siteIdA, siteIdB, latA, lonA, latB, lonB]);
+  }, [isPro, siteIdA, siteIdB, latA, lonA, latB, lonB]);
+
+  // All hooks must run before conditional returns.
+  if (!isPro) {
+    return <LockedComparisonCard t={t} onUpgrade={onUpgrade} lang={lang} />;
+  }
 
   return (
     <div className="relative z-30 mb-4 rounded-2xl border border-slate-200/70 bg-white/80 p-5 shadow-sm backdrop-blur-sm dark:border-slate-700/70 dark:bg-slate-900/70">
@@ -447,6 +515,15 @@ export default function CampsiteComparisonSection({ siteList, t, lang, currentSi
                 siteB={siteB}
                 t={t}
                 lang={lang}
+                onExpand={(date, winner) =>
+                  trackEvent("comparison_day_expanded", {
+                    lang,
+                    siteA: siteIdA,
+                    siteB: siteIdB,
+                    date,
+                    winner,
+                  })
+                }
               />
             ))}
           </div>

@@ -378,6 +378,8 @@ function IcelandCampingWeatherApp({ page = "home" }) {
                 t={t}
                 lang={lang}
                 currentSiteId={siteId}
+                entitlements={entitlements}
+                onUpgrade={startCheckout}
               />
 
               <div className="grid gap-4 md:grid-cols-2">

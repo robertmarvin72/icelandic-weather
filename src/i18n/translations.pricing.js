@@ -109,6 +109,9 @@ export const pricingTranslations = {
     pricingInfoFeature2Body: "Find nearby campsites where the weather may be better.",
     pricingInfoFeature3Title: "Better decision support",
     pricingInfoFeature3Body: "Get more insight into wind, gusts, rain, and overall conditions.",
+    pricingInfoFeature4Title: "Compare two campsites",
+    pricingInfoFeature4Body:
+      "See day by day which campsite is calmer, drier or warmer, and open an hourly breakdown when the decision matters.",
 
     pricingInfoMonthlyLabel: "Monthly",
     pricingInfoMonthlyPrice: "€4.99 / month",
@@ -240,6 +243,9 @@ export const pricingTranslations = {
     pricingInfoFeature2Body: "Finndu staði í nágrenninu þar sem veðrið gæti verið betra.",
     pricingInfoFeature3Title: "Betri ákvörðun",
     pricingInfoFeature3Body: "Fáðu meiri innsýn í vind, hviður, úrkomu og heildaraðstæður.",
+    pricingInfoFeature4Title: "Berðu saman tvö tjaldsvæði",
+    pricingInfoFeature4Body:
+      "Sjáðu dag frá degi hvort tjaldsvæðið er rólegra, þurrara eða hlýrra og opnaðu klukkutímasamanburð þegar ákvörðunin skiptir máli.",
 
     pricingInfoMonthlyLabel: "Mánaðaráskrift",
     pricingInfoMonthlyPrice: "€4.99 / mánuður",
