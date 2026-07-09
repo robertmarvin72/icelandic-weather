@@ -111,6 +111,7 @@ The primary UX goal is:
 Help campers quickly decide whether they should stay or move.
 
 Homepage hierarchy should prioritize:
+
 1. Decision clarity
 2. Nearby comparison
 3. Recommendation confidence
@@ -131,12 +132,14 @@ Homepage hierarchy should prioritize:
 ### Homepage Rules
 
 The homepage should prioritize:
+
 - Hero message
 - Primary CTA
 - Stay/move recommendation
 - Instant nearby comparison
 
 The homepage should de-emphasize:
+
 - Utility controls
 - Advanced sliders
 - Debug/scoring-style controls
@@ -145,6 +148,7 @@ The homepage should de-emphasize:
 ### Brochure / Landing Pages
 
 Brochure and landing pages should:
+
 - explain the product within 3–5 seconds
 - prioritize emotional clarity over feature density
 - use nearby comparison as the primary storytelling mechanism
@@ -156,6 +160,7 @@ Brochure and landing pages should:
 InstantComparison exists to create an immediate "aha moment".
 
 Goals:
+
 - Compare current campsite vs nearby option visually
 - Explain why a nearby option is better
 - Use understandable metrics such as wind, rain and temperature
@@ -163,6 +168,7 @@ Goals:
 - Use softer language for weak improvements
 
 #### Radius Rule
+
 InstantComparison must ONLY compare campsites within the active Route Planner radius.
 Never fall back to distant "best overall" campsites when no nearby option exists.
 If no candidate exists within radius → show stay-positive state.
@@ -180,11 +186,13 @@ Do not present haversine distance as exact driving distance.
 ### Progressive Disclosure
 
 Advanced controls should:
+
 - Default collapsed
 - Be discoverable but not dominant
 - Never compete visually with the main recommendation
 
 Examples:
+
 - Route planner sliders
 - Utility/settings controls
 - Experimental/debug controls
@@ -192,6 +200,7 @@ Examples:
 ### Analytics Priorities
 
 Homepage optimization should prioritize:
+
 - engagement time
 - CTA interaction
 - scroll depth
@@ -199,18 +208,21 @@ Homepage optimization should prioritize:
 - return visits
 
 Key events:
+
 - `homepage_hero_cta_click`
 - `homepage_instant_comparison_cta_click`
 
 #### Analytics Conventions
 
 Analytics events should:
+
 - use snake_case
 - avoid personally identifiable information
 - include lightweight metadata only
 - avoid duplicate firing caused by rerenders/effects
 
 Primary homepage funnel:
+
 - `homepage_loaded`
 - `homepage_hero_cta_click`
 - `comparison_viewed`
@@ -219,6 +231,7 @@ Primary homepage funnel:
 - `move_recommended`
 
 Primary monetization funnel:
+
 - `pricing_page_viewed`
 - `subscription_cta_clicked`
 - `checkout_started`
@@ -227,6 +240,7 @@ Primary monetization funnel:
 ### Tone
 
 User-facing copy should:
+
 - sound human
 - avoid generic weather-app language
 - focus on practical camping decisions
@@ -237,11 +251,13 @@ User-facing copy should:
 Prefer emotional and comfort-oriented wording over technical terminology.
 
 Prefer:
+
 - "Rólegra"
 - "Þurrara"
 - "Hlýrra"
 
 Avoid overly technical labels such as:
+
 - "Minni vindur"
 
 Users care about comfort and practical camping experience, not raw metrics alone.
@@ -392,38 +408,45 @@ Subagent git ops:
 Rebranding is in progress. Both domains are live simultaneously.
 
 ### Active domains
+
 - campcast.is — still live, do not redirect
 - eltumvedrid.is — new domain, fully supported
 
 ### Logo assets
+
 Language and dark mode aware. Pattern:
+
 - IS + light → /eltumvedrid-light-is.png
-- IS + dark  → /eltumvedrid-dark-is.png
+- IS + dark → /eltumvedrid-dark-is.png
 - EN + light → /chasetheweather-light-en.png
-- EN + dark  → /chasetheweather-dark-en.png
+- EN + dark → /chasetheweather-dark-en.png
 
 Default language is "is". Stored in localStorage key "lang".
 
 ### Brand name in UI
+
 - lang === "is" → "Eltum Veðrið"
 - lang === "en" → "Chase the Weather"
 - Never use "CampCast" in new user-facing IS/EN strings
 
 ### Translation files
+
 - src/i18n/translations.common.js — main app
 - src/i18n/translations.landing.js — landing page only
 
 ### Do not change
+
 - campcast-light.png / campcast-dark.png — legacy, still referenced in some places
 - logo.png — legacy
 - Any string containing "formerly CampCast"
 
 ## Campsite comparison (Pro feature)
-- Helpers: src/utils/compareCampsiteForecasts.js
-- getDailyComparisonWinner(dayA, dayB) expects NORMALIZED daily rows: windMax (m/s), windGust (m/s, nullable), rain (mm/day), tmax (°C)
+
+- Helpers: src/utils/compareCampsiteForecasts.js — do not modify without updating all consumers and the 32 unit tests
+- getDailyComparisonWinner(dayA, dayB) expects daily rows with: windMax (m/s), windGust (m/s, nullable), rain (mm/day), tmax (°C)
+- In the comparison UI (CampsiteComparisonSection.jsx), daily rows are built DIRECTLY from raw Open-Meteo daily API fields, mapped per date index: windMax = windspeed_10m_max, windGust = windgusts_10m_max, rain = precipitation_sum, tmax = temperature_2m_max. Do NOT switch this to normalizeDailyToScoreInput — the comparison deliberately uses raw values so the displayed factor rows always match the verdict.
 - getHourlyComparisonWinner(hourA, hourB) expects RAW Open-Meteo hourly fields: windspeed_10m, windgusts_10m, precipitation, temperature_2m
-- Do NOT mix these shapes — daily takes useForecast normalized rows, hourly takes raw cache rows
-- compareCampsiteForecasts(forecastA, forecastB) takes two normalized daily arrays, returns Array<{ date, winner, reasons }>
+- compareCampsiteForecasts(forecastA, forecastB) takes two daily-row arrays, returns Array<{ date, winner, reasons }>
 - winner: 'A_BETTER' | 'B_BETTER' | 'SIMILAR'; reasons: ('calmer'|'drier'|'warmer'|'similar')[]
-- Thresholds are exported constants in the same file: WIND_DIFF_THRESHOLD (2 m/s), RAIN_DIFF_THRESHOLD (1 mm), TEMP_DIFF_THRESHOLD (2 °C)
-- Do not change return shapes or field expectations without updating all consumers and tests
+- Thresholds are exported constants in the helper file: WIND_DIFF_THRESHOLD (2 m/s), RAIN_DIFF_THRESHOLD (1 mm), TEMP_DIFF_THRESHOLD (2 °C). The factor rows in the UI import these same constants — do not redefine them elsewhere.
+- normalizeDailyToScoreInput (src/lib/forecastNormalize.js) applies time-of-day weighting (night ~0.45, day 1.0). It is used by the MAIN recommendation logic — intentional design, do not "fix" or remove the weighting. The comparison feature intentionally does NOT use it (see above); do not "unify" the two paths.

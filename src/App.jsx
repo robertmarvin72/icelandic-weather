@@ -15,6 +15,7 @@ import AppRoutes from "./AppRoutes";
 import BackToTop from "./components/BackToTop";
 import DecisionBanner from "./components/DecisionBanner";
 import Footer from "./components/Footer";
+import CampsiteComparisonSection from "./components/CampsiteComparisonSection";
 import ForecastTable from "./components/ForecastTable";
 import LazyMap from "./components/LazyMap";
 import LoginModal from "./components/LoginModal";
@@ -371,6 +372,13 @@ function IcelandCampingWeatherApp({ page = "home" }) {
                   onSelectSite={handleSelectSite}
                 />
               </div>
+
+              <CampsiteComparisonSection
+                siteList={siteList}
+                t={t}
+                lang={lang}
+                currentSiteId={siteId}
+              />
 
               <div className="grid gap-4 md:grid-cols-2">
                 <ForecastTable
