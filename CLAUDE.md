@@ -417,3 +417,13 @@ Default language is "is". Stored in localStorage key "lang".
 - campcast-light.png / campcast-dark.png — legacy, still referenced in some places
 - logo.png — legacy
 - Any string containing "formerly CampCast"
+
+## Campsite comparison (Pro feature)
+- Helpers: src/utils/compareCampsiteForecasts.js
+- getDailyComparisonWinner(dayA, dayB) expects NORMALIZED daily rows: windMax (m/s), windGust (m/s, nullable), rain (mm/day), tmax (°C)
+- getHourlyComparisonWinner(hourA, hourB) expects RAW Open-Meteo hourly fields: windspeed_10m, windgusts_10m, precipitation, temperature_2m
+- Do NOT mix these shapes — daily takes useForecast normalized rows, hourly takes raw cache rows
+- compareCampsiteForecasts(forecastA, forecastB) takes two normalized daily arrays, returns Array<{ date, winner, reasons }>
+- winner: 'A_BETTER' | 'B_BETTER' | 'SIMILAR'; reasons: ('calmer'|'drier'|'warmer'|'similar')[]
+- Thresholds are exported constants in the same file: WIND_DIFF_THRESHOLD (2 m/s), RAIN_DIFF_THRESHOLD (1 mm), TEMP_DIFF_THRESHOLD (2 °C)
+- Do not change return shapes or field expectations without updating all consumers and tests
