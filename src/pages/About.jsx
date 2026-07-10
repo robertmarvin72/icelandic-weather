@@ -24,6 +24,18 @@ export default function About({ t }) {
 
       <p className="mb-6">{t("aboutOutro")}</p>
 
+      <h2 className="font-semibold mb-2">{t("aboutSupportTitle")}</h2>
+      <div className="mb-6">
+        <p className="mb-3">{t("aboutSupportBody")}</p>
+        <div className="inline-block rounded-lg bg-white p-2 shadow-sm dark:shadow-md">
+          <img
+            src="/Tthrsj_logo-netto.jpg"
+            alt={t("aboutSupportLogoAlt")}
+            className="block w-24 sm:w-40 md:w-52 h-auto"
+          />
+        </div>
+      </div>
+
       <p className="text-sm">
         {t("aboutContact")}
         <br />

@@ -83,6 +83,11 @@ export default function Footer({ t }) {
             Open-Meteo
           </a>
         </div>
+
+        {/* Row 3: funding acknowledgement */}
+        <div className="mt-1 text-xs text-slate-500 dark:text-slate-400">
+          {t("footerSupport")}
+        </div>
       </div>
     </footer>
   );

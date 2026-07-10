@@ -168,10 +168,16 @@ export const commonTranslations = {
 
     aboutEmailLabel: "Reach us at",
 
+    aboutSupportTitle: "Support",
+    aboutSupportBody:
+      "Eltum Veðrið has received support from the Icelandic Technology Development Fund for continued development of the project.",
+    aboutSupportLogoAlt: "Logo of the Icelandic Technology Development Fund",
+
     footerDataBy: "Data by Open-Meteo. Forecast includes temperature, rain, wind, & weather codes.",
     footerAbout: "About",
     blogNav: "Blog",
     footerContact: "Contact",
+    footerSupport: "With support from the Icelandic Technology Development Fund",
     backToForecast: "Back to forecast",
 
     brandTagline: "Find better weather",
@@ -643,10 +649,16 @@ export const commonTranslations = {
 
     aboutEmailLabel: "Sendu okkur póst á",
 
+    aboutSupportTitle: "Stuðningur",
+    aboutSupportBody:
+      "Eltum Veðrið hefur hlotið styrk frá Tækniþróunarsjóði til áframhaldandi þróunar verkefnisins.",
+    aboutSupportLogoAlt: "Merki Tækniþróunarsjóðs",
+
     footerDataBy: "Gögn frá Open-Meteo. Spáin inniheldur hitastig, úrkomu, vind og veðurkóða.",
     footerAbout: "Um",
     blogNav: "Blog",
     footerContact: "Hafa samband",
+    footerSupport: "Með stuðningi frá Tækniþróunarsjóði",
 
     backToForecast: "Til baka",
 
