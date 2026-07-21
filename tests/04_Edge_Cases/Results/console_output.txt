@@ -1,0 +1,252 @@
+﻿
+ RUN  v4.0.16 C:/Users/Notandi/forritun/icelandic-weather
+
+stdout | tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 malformed inputs [Review] > EC-190 String temperature
+  [Review] EC-190 String temperature: actual = 8
+
+stdout | tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 malformed inputs [Review] > EC-191 NaN wind
+  [Review] EC-191 NaN wind: actual = 10
+
+stdout | tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 malformed inputs [Review] > EC-192 Infinity rain
+  [Review] EC-192 Infinity rain: actual = 5
+
+stdout | tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 malformed inputs [Review] > EC-193 Object weather code
+  [Review] EC-193 Object weather code: actual = 0
+
+stdout | tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js
+
+✓ Results written → C:\Users\Notandi\forritun\icelandic-weather\tests\04_Edge_Cases\Results\edge_case_results.json
+  Total: 193 | Pass: 187 | Fail: 2 | Review: 4
+
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-001 Summer temperature below 0°C 1ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-002 Summer temperature at 0°C 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-003 Summer temperature above 0°C 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-004 Summer temperature below 3°C 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-005 Summer temperature at 3°C 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-006 Summer temperature above 3°C 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-007 Summer temperature below 5°C 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-008 Summer temperature at 5°C 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-009 Summer temperature above 5°C 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-010 Summer temperature below 7°C 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-011 Summer temperature at 7°C 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-012 Summer temperature above 7°C 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-013 Summer temperature below 9°C 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-014 Summer temperature at 9°C 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-015 Summer temperature above 9°C 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-016 Summer temperature below 12°C 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-017 Summer temperature at 12°C 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-018 Summer temperature above 12°C 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-019 Summer temperature below 15°C 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-020 Summer temperature at 15°C 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-021 Summer temperature above 15°C 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-022 Summer null temperature 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-023 Summer extreme low temperature 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-024 Summer extreme high temperature 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-025 Winter effective base points at tmax=None 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-026 Winter effective base points at tmax=-50 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-027 Winter effective base points at tmax=5 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-028 Winter effective base points at tmax=5.1 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-029 Winter effective base points at tmax=7 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-030 Winter effective base points at tmax=7.1 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-031 Winter effective base points at tmax=11 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-032 Winter effective base points at tmax=11.1 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-033 Winter effective base points at tmax=14 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-034 Winter effective base points at tmax=14.1 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-035 Winter effective base points at tmax=60 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-036 Summer wind below 7 m/s 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-037 Summer wind at 7 m/s 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-038 Summer wind above 7 m/s 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-039 Summer wind below 10 m/s 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-040 Summer wind at 10 m/s 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-041 Summer wind above 10 m/s 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-042 Summer wind below 13 m/s 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-043 Summer wind at 13 m/s 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-044 Summer wind above 13 m/s 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-045 Summer wind below 16 m/s 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-046 Summer wind at 16 m/s 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-047 Summer wind above 16 m/s 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-048 Summer null wind 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-049 Summer negative wind 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-050 Summer extreme high wind 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-051 Winter wind below 5 m/s 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-052 Winter wind at 5 m/s 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-053 Winter wind above 5 m/s 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-054 Winter wind below 10 m/s 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-055 Winter wind at 10 m/s 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-056 Winter wind above 10 m/s 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-057 Winter wind below 15 m/s 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-058 Winter wind at 15 m/s 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-059 Winter wind above 15 m/s 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-060 Winter null wind 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-061 Winter negative wind 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-062 Winter extreme high wind 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-063 Rain below 1 mm 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-064 Rain at 1 mm 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-065 Rain above 1 mm 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-066 Rain below 4 mm 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-067 Rain at 4 mm 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-068 Rain above 4 mm 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-069 Null precipitation 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-070 Negative precipitation 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-071 Extreme High precipitation 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-072 Summer gust difference below 2.9 m/s 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-073 Summer gust difference at 2.9 m/s 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-074 Summer gust difference above 2.9 m/s 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-075 Summer gust difference below 6 m/s 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-076 Summer gust difference at 6 m/s 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-077 Summer gust difference above 6 m/s 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-078 Summer gust difference below 10 m/s 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-079 Summer gust difference at 10 m/s 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-080 Summer gust difference above 10 m/s 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-081 Summer null gust 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-082 Summer null wind 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-083 Summer gust below wind 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-084 Summer extreme difference 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-085 Winter gust difference below 2.9 m/s 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-086 Winter gust difference at 2.9 m/s 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-087 Winter gust difference above 2.9 m/s 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-088 Winter gust difference below 6 m/s 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-089 Winter gust difference at 6 m/s 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-090 Winter gust difference above 6 m/s 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-091 Winter gust difference below 10 m/s 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-092 Winter gust difference at 10 m/s 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-093 Winter gust difference above 10 m/s 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-094 Winter null gust 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-095 Winter null wind 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-096 Winter gust below wind 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-097 Winter extreme difference 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-098 Points below 0 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-099 Points at 0 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-100 Points above 0 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-101 Points below 1 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-102 Points at 1 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-103 Points above 1 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-104 Points below 4 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-105 Points at 4 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-106 Points above 4 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-107 Points below 7 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-108 Points at 7 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-109 Points above 7 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-110 Points below 9 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-111 Points at 9 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-112 Points above 9 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-113 Points below 10 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-114 Points at 10 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-115 Points above 10 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-116 Extreme points -100 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-117 Extreme points 100 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-118 Weather code 0 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-119 Weather code 1 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-120 Weather code 2 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-121 Weather code 3 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-122 Weather code 45 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-123 Weather code 48 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-124 Weather code 61 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-125 Weather code None 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-126 Weather code 999 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-127 Cold-wind tmax=0, wind=4.9 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-128 Cold-wind tmax=0, wind=5 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-129 Cold-wind tmax=0, wind=6.9 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-130 Cold-wind tmax=0, wind=7 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-131 Cold-wind tmax=0, wind=9.9 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-132 Cold-wind tmax=0, wind=10 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-133 Cold-wind tmax=4, wind=7.9 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-134 Cold-wind tmax=4, wind=8 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-135 Cold-wind tmax=4, wind=9.9 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-136 Cold-wind tmax=4, wind=10 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-137 Cold-wind tmax=5, wind=11.9 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-138 Cold-wind tmax=5, wind=12 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-139 Cold-wind tmax=8, wind=12 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-140 Cold-wind tmax=8.1, wind=20 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-141 Cold-wind tmax=None, wind=20 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-142 Cold-wind tmax=0, wind=None 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-143 Wintry precip code=71, tmax=2 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-144 Wintry precip code=71, tmax=2.1 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-145 Wintry precip code=71, tmax=None 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-146 Wintry precip code=73, tmax=2 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-147 Wintry precip code=73, tmax=2.1 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-148 Wintry precip code=73, tmax=None 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-149 Wintry precip code=75, tmax=2 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-150 Wintry precip code=75, tmax=2.1 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-151 Wintry precip code=75, tmax=None 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-152 Wintry precip code=77, tmax=2 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-153 Wintry precip code=77, tmax=2.1 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-154 Wintry precip code=77, tmax=None 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-155 Wintry precip code=85, tmax=2 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-156 Wintry precip code=85, tmax=2.1 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-157 Wintry precip code=85, tmax=None 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-158 Wintry precip code=86, tmax=2 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-159 Wintry precip code=86, tmax=2.1 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-160 Wintry precip code=86, tmax=None 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-161 Wintry precip code=66, tmax=0 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-162 Wintry precip code=67, tmax=0 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-163 Wintry precip code=61, tmax=0 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-164 Wintry precip code=None, tmax=0 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-165 Perfect summer 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-166 Clamp low 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-167 Clear-sky bonus clamps high 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-168 Overcast lowers score 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-169 Null weather inputs 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-170 Winter base floor 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-171 Winter severe wind 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-172 Rain threshold integration 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-173 Gust threshold integration 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-174 Round input 7.04 to one decimal 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-175 Round input 7.05 to one decimal 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-176 Round input 7.06 to one decimal 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-177 Round input 9.94 to one decimal 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-178 Round input 9.95 to one decimal 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-179 Round input 9.96 to one decimal 0ms
+ × tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-180 Round input -0.04 to one decimal 3ms
+   → expected -0 to deeply equal +0
+ × tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-181 Round input -0.05 to one decimal 0ms
+   → expected -0 to deeply equal +0
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-182 Round input -0.06 to one decimal 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-183 Rain streak length 0 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-184 Rain streak length 1 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-185 Rain streak length 2 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-186 Rain streak length 3 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-187 Rain streak length 4 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-188 Rain streak length 5 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-189 Rain streak length 10 0ms
+node.exe : 
+At line:1 char:1
++ & "C:\Program Files\nodejs/node.exe" "C:\Program Files\nodejs/node_mo ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-180 Round input -0
+.04 to one decimal
+ FAIL  tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 edge cases > EC-181 Round input -0
+.05 to one decimal
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 malformed inputs [Review] > EC-190 String temperature 1ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 malformed inputs [Review] > EC-191 NaN wind 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 malformed inputs [Review] > EC-192 Infinity rain 0ms
+ ✓ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js > Model v1.0 malformed inputs [Review] > EC-193 Object weather code 0ms
+AssertionError: expected -0 to deeply equal +0
+
+- Expected
++ Received
+
+- 0
++ -0
+
+ ❯ tests/04_Edge_Cases/Runner_Templates/model-v1-edge-cases.test.js:113:26
+    111|           }
+    112|         } else {
+    113|           expect(actual).toEqual(t.expected);
+       |                          ^
+    114|         }
+    115|       } catch (err) {
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 191 passed (193)
+   Start at  17:46:39
+   Duration  893ms (transform 32ms, setup 93ms, import 33ms, tests 12ms, environment 640ms)
+

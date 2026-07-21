@@ -1,0 +1,194 @@
+﻿test_id,group,function,description,season,tmax,windMax,gust,rain,weatherCode,points,expected,expected_type,notes,tags
+EC-001,Temperature,basePointsFromTemp,Summer temperature below 0°C,summer,-0.1,,,,,,0,number,,"boundary,summer"
+EC-002,Temperature,basePointsFromTemp,Summer temperature at 0°C,summer,0,,,,,,1,number,,"boundary,summer"
+EC-003,Temperature,basePointsFromTemp,Summer temperature above 0°C,summer,0.1,,,,,,1,number,,"boundary,summer"
+EC-004,Temperature,basePointsFromTemp,Summer temperature below 3°C,summer,2.9,,,,,,1,number,,"boundary,summer"
+EC-005,Temperature,basePointsFromTemp,Summer temperature at 3°C,summer,3,,,,,,2,number,,"boundary,summer"
+EC-006,Temperature,basePointsFromTemp,Summer temperature above 3°C,summer,3.1,,,,,,2,number,,"boundary,summer"
+EC-007,Temperature,basePointsFromTemp,Summer temperature below 5°C,summer,4.9,,,,,,2,number,,"boundary,summer"
+EC-008,Temperature,basePointsFromTemp,Summer temperature at 5°C,summer,5,,,,,,3,number,,"boundary,summer"
+EC-009,Temperature,basePointsFromTemp,Summer temperature above 5°C,summer,5.1,,,,,,3,number,,"boundary,summer"
+EC-010,Temperature,basePointsFromTemp,Summer temperature below 7°C,summer,6.9,,,,,,3,number,,"boundary,summer"
+EC-011,Temperature,basePointsFromTemp,Summer temperature at 7°C,summer,7,,,,,,4,number,,"boundary,summer"
+EC-012,Temperature,basePointsFromTemp,Summer temperature above 7°C,summer,7.1,,,,,,4,number,,"boundary,summer"
+EC-013,Temperature,basePointsFromTemp,Summer temperature below 9°C,summer,8.9,,,,,,4,number,,"boundary,summer"
+EC-014,Temperature,basePointsFromTemp,Summer temperature at 9°C,summer,9,,,,,,6,number,,"boundary,summer"
+EC-015,Temperature,basePointsFromTemp,Summer temperature above 9°C,summer,9.1,,,,,,6,number,,"boundary,summer"
+EC-016,Temperature,basePointsFromTemp,Summer temperature below 12°C,summer,11.9,,,,,,6,number,,"boundary,summer"
+EC-017,Temperature,basePointsFromTemp,Summer temperature at 12°C,summer,12,,,,,,8,number,,"boundary,summer"
+EC-018,Temperature,basePointsFromTemp,Summer temperature above 12°C,summer,12.1,,,,,,8,number,,"boundary,summer"
+EC-019,Temperature,basePointsFromTemp,Summer temperature below 15°C,summer,14.9,,,,,,8,number,,"boundary,summer"
+EC-020,Temperature,basePointsFromTemp,Summer temperature at 15°C,summer,15,,,,,,10,number,,"boundary,summer"
+EC-021,Temperature,basePointsFromTemp,Summer temperature above 15°C,summer,15.1,,,,,,10,number,,"boundary,summer"
+EC-022,Temperature,basePointsFromTemp,Summer null temperature,summer,,,,,,,0,number,,"null,summer"
+EC-023,Temperature,basePointsFromTemp,Summer extreme low temperature,summer,-50,,,,,,0,number,,"extreme,summer"
+EC-024,Temperature,basePointsFromTemp,Summer extreme high temperature,summer,60,,,,,,10,number,,"extreme,summer"
+EC-025,Temperature,scoreSiteDay.basePts,Winter effective base points at tmax=None,winter,,,,,,,4,number,Expected effective basePts is always 4 under current configuration.,"winter,architecture"
+EC-026,Temperature,scoreSiteDay.basePts,Winter effective base points at tmax=-50,winter,-50,,,,,,4,number,Expected effective basePts is always 4 under current configuration.,"winter,architecture"
+EC-027,Temperature,scoreSiteDay.basePts,Winter effective base points at tmax=5,winter,5,,,,,,4,number,Expected effective basePts is always 4 under current configuration.,"winter,architecture"
+EC-028,Temperature,scoreSiteDay.basePts,Winter effective base points at tmax=5.1,winter,5.1,,,,,,4,number,Expected effective basePts is always 4 under current configuration.,"winter,architecture"
+EC-029,Temperature,scoreSiteDay.basePts,Winter effective base points at tmax=7,winter,7,,,,,,4,number,Expected effective basePts is always 4 under current configuration.,"winter,architecture"
+EC-030,Temperature,scoreSiteDay.basePts,Winter effective base points at tmax=7.1,winter,7.1,,,,,,4,number,Expected effective basePts is always 4 under current configuration.,"winter,architecture"
+EC-031,Temperature,scoreSiteDay.basePts,Winter effective base points at tmax=11,winter,11,,,,,,4,number,Expected effective basePts is always 4 under current configuration.,"winter,architecture"
+EC-032,Temperature,scoreSiteDay.basePts,Winter effective base points at tmax=11.1,winter,11.1,,,,,,4,number,Expected effective basePts is always 4 under current configuration.,"winter,architecture"
+EC-033,Temperature,scoreSiteDay.basePts,Winter effective base points at tmax=14,winter,14,,,,,,4,number,Expected effective basePts is always 4 under current configuration.,"winter,architecture"
+EC-034,Temperature,scoreSiteDay.basePts,Winter effective base points at tmax=14.1,winter,14.1,,,,,,4,number,Expected effective basePts is always 4 under current configuration.,"winter,architecture"
+EC-035,Temperature,scoreSiteDay.basePts,Winter effective base points at tmax=60,winter,60,,,,,,4,number,Expected effective basePts is always 4 under current configuration.,"winter,architecture"
+EC-036,Wind,windPenaltyPoints,Summer wind below 7 m/s,summer,,6.9,,,,,0,number,,"boundary,summer"
+EC-037,Wind,windPenaltyPoints,Summer wind at 7 m/s,summer,,7,,,,,0,number,,"boundary,summer"
+EC-038,Wind,windPenaltyPoints,Summer wind above 7 m/s,summer,,7.1,,,,,1,number,,"boundary,summer"
+EC-039,Wind,windPenaltyPoints,Summer wind below 10 m/s,summer,,9.9,,,,,1,number,,"boundary,summer"
+EC-040,Wind,windPenaltyPoints,Summer wind at 10 m/s,summer,,10,,,,,1,number,,"boundary,summer"
+EC-041,Wind,windPenaltyPoints,Summer wind above 10 m/s,summer,,10.1,,,,,3,number,,"boundary,summer"
+EC-042,Wind,windPenaltyPoints,Summer wind below 13 m/s,summer,,12.9,,,,,3,number,,"boundary,summer"
+EC-043,Wind,windPenaltyPoints,Summer wind at 13 m/s,summer,,13,,,,,3,number,,"boundary,summer"
+EC-044,Wind,windPenaltyPoints,Summer wind above 13 m/s,summer,,13.1,,,,,6,number,,"boundary,summer"
+EC-045,Wind,windPenaltyPoints,Summer wind below 16 m/s,summer,,15.9,,,,,6,number,,"boundary,summer"
+EC-046,Wind,windPenaltyPoints,Summer wind at 16 m/s,summer,,16,,,,,6,number,,"boundary,summer"
+EC-047,Wind,windPenaltyPoints,Summer wind above 16 m/s,summer,,16.1,,,,,10,number,,"boundary,summer"
+EC-048,Wind,windPenaltyPoints,Summer null wind,summer,,,,,,,0,number,,"null,summer"
+EC-049,Wind,windPenaltyPoints,Summer negative wind,summer,,-5,,,,,0,number,,"negative,summer"
+EC-050,Wind,windPenaltyPoints,Summer extreme high wind,summer,,50,,,,,10,number,,"extreme high,summer"
+EC-051,Wind,windPenaltyPoints,Winter wind below 5 m/s,winter,,4.9,,,,,0,number,,"boundary,winter"
+EC-052,Wind,windPenaltyPoints,Winter wind at 5 m/s,winter,,5,,,,,0,number,,"boundary,winter"
+EC-053,Wind,windPenaltyPoints,Winter wind above 5 m/s,winter,,5.1,,,,,2,number,,"boundary,winter"
+EC-054,Wind,windPenaltyPoints,Winter wind below 10 m/s,winter,,9.9,,,,,2,number,,"boundary,winter"
+EC-055,Wind,windPenaltyPoints,Winter wind at 10 m/s,winter,,10,,,,,2,number,,"boundary,winter"
+EC-056,Wind,windPenaltyPoints,Winter wind above 10 m/s,winter,,10.1,,,,,5,number,,"boundary,winter"
+EC-057,Wind,windPenaltyPoints,Winter wind below 15 m/s,winter,,14.9,,,,,5,number,,"boundary,winter"
+EC-058,Wind,windPenaltyPoints,Winter wind at 15 m/s,winter,,15,,,,,5,number,,"boundary,winter"
+EC-059,Wind,windPenaltyPoints,Winter wind above 15 m/s,winter,,15.1,,,,,10,number,,"boundary,winter"
+EC-060,Wind,windPenaltyPoints,Winter null wind,winter,,,,,,,0,number,,"null,winter"
+EC-061,Wind,windPenaltyPoints,Winter negative wind,winter,,-5,,,,,0,number,,"negative,winter"
+EC-062,Wind,windPenaltyPoints,Winter extreme high wind,winter,,50,,,,,10,number,,"extreme high,winter"
+EC-063,Rain,rainPenaltyPoints,Rain below 1 mm,,,,,0.9,,,0,number,,boundary
+EC-064,Rain,rainPenaltyPoints,Rain at 1 mm,,,,,1,,,2,number,,boundary
+EC-065,Rain,rainPenaltyPoints,Rain above 1 mm,,,,,1.1,,,2,number,,boundary
+EC-066,Rain,rainPenaltyPoints,Rain below 4 mm,,,,,3.9,,,2,number,,boundary
+EC-067,Rain,rainPenaltyPoints,Rain at 4 mm,,,,,4,,,5,number,,boundary
+EC-068,Rain,rainPenaltyPoints,Rain above 4 mm,,,,,4.1,,,5,number,,boundary
+EC-069,Rain,rainPenaltyPoints,Null precipitation,,,,,,,,0,number,,null
+EC-070,Rain,rainPenaltyPoints,Negative precipitation,,,,,-1,,,0,number,,negative
+EC-071,Rain,rainPenaltyPoints,Extreme High precipitation,,,,,100,,,5,number,,extreme high
+EC-072,Gust,gustPenaltyPoints,Summer gust difference below 2.9 m/s,summer,,8,10.8,,,,0,number,,"boundary,summer"
+EC-073,Gust,gustPenaltyPoints,Summer gust difference at 2.9 m/s,summer,,8,10.9,,,,1,number,,"boundary,summer"
+EC-074,Gust,gustPenaltyPoints,Summer gust difference above 2.9 m/s,summer,,8,11.0,,,,1,number,,"boundary,summer"
+EC-075,Gust,gustPenaltyPoints,Summer gust difference below 6 m/s,summer,,8,13.9,,,,1,number,,"boundary,summer"
+EC-076,Gust,gustPenaltyPoints,Summer gust difference at 6 m/s,summer,,8,14,,,,2,number,,"boundary,summer"
+EC-077,Gust,gustPenaltyPoints,Summer gust difference above 6 m/s,summer,,8,14.1,,,,2,number,,"boundary,summer"
+EC-078,Gust,gustPenaltyPoints,Summer gust difference below 10 m/s,summer,,8,17.9,,,,2,number,,"boundary,summer"
+EC-079,Gust,gustPenaltyPoints,Summer gust difference at 10 m/s,summer,,8,18,,,,3,number,,"boundary,summer"
+EC-080,Gust,gustPenaltyPoints,Summer gust difference above 10 m/s,summer,,8,18.1,,,,3,number,,"boundary,summer"
+EC-081,Gust,gustPenaltyPoints,Summer null gust,summer,,8,,,,,0,number,,"summer,null"
+EC-082,Gust,gustPenaltyPoints,Summer null wind,summer,,,12,,,,0,number,,"summer,null"
+EC-083,Gust,gustPenaltyPoints,Summer gust below wind,summer,,8,5,,,,0,number,,summer
+EC-084,Gust,gustPenaltyPoints,Summer extreme difference,summer,,8,30,,,,3,number,,summer
+EC-085,Gust,gustPenaltyPoints,Winter gust difference below 2.9 m/s,winter,,8,10.8,,,,0,number,,"boundary,winter"
+EC-086,Gust,gustPenaltyPoints,Winter gust difference at 2.9 m/s,winter,,8,10.9,,,,2,number,,"boundary,winter"
+EC-087,Gust,gustPenaltyPoints,Winter gust difference above 2.9 m/s,winter,,8,11.0,,,,2,number,,"boundary,winter"
+EC-088,Gust,gustPenaltyPoints,Winter gust difference below 6 m/s,winter,,8,13.9,,,,2,number,,"boundary,winter"
+EC-089,Gust,gustPenaltyPoints,Winter gust difference at 6 m/s,winter,,8,14,,,,3,number,,"boundary,winter"
+EC-090,Gust,gustPenaltyPoints,Winter gust difference above 6 m/s,winter,,8,14.1,,,,3,number,,"boundary,winter"
+EC-091,Gust,gustPenaltyPoints,Winter gust difference below 10 m/s,winter,,8,17.9,,,,3,number,,"boundary,winter"
+EC-092,Gust,gustPenaltyPoints,Winter gust difference at 10 m/s,winter,,8,18,,,,5,number,,"boundary,winter"
+EC-093,Gust,gustPenaltyPoints,Winter gust difference above 10 m/s,winter,,8,18.1,,,,5,number,,"boundary,winter"
+EC-094,Gust,gustPenaltyPoints,Winter null gust,winter,,8,,,,,0,number,,"winter,null"
+EC-095,Gust,gustPenaltyPoints,Winter null wind,winter,,,12,,,,0,number,,"winter,null"
+EC-096,Gust,gustPenaltyPoints,Winter gust below wind,winter,,8,5,,,,0,number,,winter
+EC-097,Gust,gustPenaltyPoints,Winter extreme difference,winter,,8,30,,,,5,number,,winter
+EC-098,Classification,pointsToClass,Points below 0,,,,,,,-0.1,Bad,string,,boundary
+EC-099,Classification,pointsToClass,Points at 0,,,,,,,0,Bad,string,,boundary
+EC-100,Classification,pointsToClass,Points above 0,,,,,,,0.1,Bad,string,,boundary
+EC-101,Classification,pointsToClass,Points below 1,,,,,,,0.9,Bad,string,,boundary
+EC-102,Classification,pointsToClass,Points at 1,,,,,,,1,Fair,string,,boundary
+EC-103,Classification,pointsToClass,Points above 1,,,,,,,1.1,Fair,string,,boundary
+EC-104,Classification,pointsToClass,Points below 4,,,,,,,3.9,Fair,string,,boundary
+EC-105,Classification,pointsToClass,Points at 4,,,,,,,4,Ok,string,,boundary
+EC-106,Classification,pointsToClass,Points above 4,,,,,,,4.1,Ok,string,,boundary
+EC-107,Classification,pointsToClass,Points below 7,,,,,,,6.9,Ok,string,,boundary
+EC-108,Classification,pointsToClass,Points at 7,,,,,,,7,Good,string,,boundary
+EC-109,Classification,pointsToClass,Points above 7,,,,,,,7.1,Good,string,,boundary
+EC-110,Classification,pointsToClass,Points below 9,,,,,,,8.9,Good,string,,boundary
+EC-111,Classification,pointsToClass,Points at 9,,,,,,,9,Best,string,,boundary
+EC-112,Classification,pointsToClass,Points above 9,,,,,,,9.1,Best,string,,boundary
+EC-113,Classification,pointsToClass,Points below 10,,,,,,,9.9,Best,string,,boundary
+EC-114,Classification,pointsToClass,Points at 10,,,,,,,10,Best,string,,boundary
+EC-115,Classification,pointsToClass,Points above 10,,,,,,,10.1,Best,string,,boundary
+EC-116,Classification,pointsToClass,Extreme points -100,,,,,,,-100,Bad,string,,extreme
+EC-117,Classification,pointsToClass,Extreme points 100,,,,,,,100,Best,string,,extreme
+EC-118,Pleasantness,getSkyComfortModifier,Weather code 0,,,,,,0,,1,number,,weather-code
+EC-119,Pleasantness,getSkyComfortModifier,Weather code 1,,,,,,1,,1,number,,weather-code
+EC-120,Pleasantness,getSkyComfortModifier,Weather code 2,,,,,,2,,0,number,,weather-code
+EC-121,Pleasantness,getSkyComfortModifier,Weather code 3,,,,,,3,,-1,number,,weather-code
+EC-122,Pleasantness,getSkyComfortModifier,Weather code 45,,,,,,45,,-1,number,,weather-code
+EC-123,Pleasantness,getSkyComfortModifier,Weather code 48,,,,,,48,,-1,number,,weather-code
+EC-124,Pleasantness,getSkyComfortModifier,Weather code 61,,,,,,61,,0,number,,weather-code
+EC-125,Pleasantness,getSkyComfortModifier,Weather code None,,,,,,,,0,number,,weather-code
+EC-126,Pleasantness,getSkyComfortModifier,Weather code 999,,,,,,999,,0,number,,weather-code
+EC-127,Pleasantness,getColdWindPenalty,"Cold-wind tmax=0, wind=4.9",,0,4.9,,,,,0,number,,"boundary,cold-wind"
+EC-128,Pleasantness,getColdWindPenalty,"Cold-wind tmax=0, wind=5",,0,5,,,,,1,number,,"boundary,cold-wind"
+EC-129,Pleasantness,getColdWindPenalty,"Cold-wind tmax=0, wind=6.9",,0,6.9,,,,,1,number,,"boundary,cold-wind"
+EC-130,Pleasantness,getColdWindPenalty,"Cold-wind tmax=0, wind=7",,0,7,,,,,2,number,,"boundary,cold-wind"
+EC-131,Pleasantness,getColdWindPenalty,"Cold-wind tmax=0, wind=9.9",,0,9.9,,,,,2,number,,"boundary,cold-wind"
+EC-132,Pleasantness,getColdWindPenalty,"Cold-wind tmax=0, wind=10",,0,10,,,,,3,number,,"boundary,cold-wind"
+EC-133,Pleasantness,getColdWindPenalty,"Cold-wind tmax=4, wind=7.9",,4,7.9,,,,,0,number,,"boundary,cold-wind"
+EC-134,Pleasantness,getColdWindPenalty,"Cold-wind tmax=4, wind=8",,4,8,,,,,1,number,,"boundary,cold-wind"
+EC-135,Pleasantness,getColdWindPenalty,"Cold-wind tmax=4, wind=9.9",,4,9.9,,,,,1,number,,"boundary,cold-wind"
+EC-136,Pleasantness,getColdWindPenalty,"Cold-wind tmax=4, wind=10",,4,10,,,,,2,number,,"boundary,cold-wind"
+EC-137,Pleasantness,getColdWindPenalty,"Cold-wind tmax=5, wind=11.9",,5,11.9,,,,,0,number,,"boundary,cold-wind"
+EC-138,Pleasantness,getColdWindPenalty,"Cold-wind tmax=5, wind=12",,5,12,,,,,1,number,,"boundary,cold-wind"
+EC-139,Pleasantness,getColdWindPenalty,"Cold-wind tmax=8, wind=12",,8,12,,,,,1,number,,"boundary,cold-wind"
+EC-140,Pleasantness,getColdWindPenalty,"Cold-wind tmax=8.1, wind=20",,8.1,20,,,,,0,number,,"boundary,cold-wind"
+EC-141,Pleasantness,getColdWindPenalty,"Cold-wind tmax=None, wind=20",,,20,,,,,0,number,,"boundary,cold-wind"
+EC-142,Pleasantness,getColdWindPenalty,"Cold-wind tmax=0, wind=None",,0,,,,,,0,number,,"boundary,cold-wind"
+EC-143,Pleasantness,getWintryPrecipPenalty,"Wintry precip code=71, tmax=2",,2,,,,71,,3,number,,"weather-code,wintry"
+EC-144,Pleasantness,getWintryPrecipPenalty,"Wintry precip code=71, tmax=2.1",,2.1,,,,71,,2,number,,"weather-code,wintry"
+EC-145,Pleasantness,getWintryPrecipPenalty,"Wintry precip code=71, tmax=None",,,,,,71,,2,number,,"weather-code,wintry"
+EC-146,Pleasantness,getWintryPrecipPenalty,"Wintry precip code=73, tmax=2",,2,,,,73,,3,number,,"weather-code,wintry"
+EC-147,Pleasantness,getWintryPrecipPenalty,"Wintry precip code=73, tmax=2.1",,2.1,,,,73,,2,number,,"weather-code,wintry"
+EC-148,Pleasantness,getWintryPrecipPenalty,"Wintry precip code=73, tmax=None",,,,,,73,,2,number,,"weather-code,wintry"
+EC-149,Pleasantness,getWintryPrecipPenalty,"Wintry precip code=75, tmax=2",,2,,,,75,,3,number,,"weather-code,wintry"
+EC-150,Pleasantness,getWintryPrecipPenalty,"Wintry precip code=75, tmax=2.1",,2.1,,,,75,,2,number,,"weather-code,wintry"
+EC-151,Pleasantness,getWintryPrecipPenalty,"Wintry precip code=75, tmax=None",,,,,,75,,2,number,,"weather-code,wintry"
+EC-152,Pleasantness,getWintryPrecipPenalty,"Wintry precip code=77, tmax=2",,2,,,,77,,3,number,,"weather-code,wintry"
+EC-153,Pleasantness,getWintryPrecipPenalty,"Wintry precip code=77, tmax=2.1",,2.1,,,,77,,2,number,,"weather-code,wintry"
+EC-154,Pleasantness,getWintryPrecipPenalty,"Wintry precip code=77, tmax=None",,,,,,77,,2,number,,"weather-code,wintry"
+EC-155,Pleasantness,getWintryPrecipPenalty,"Wintry precip code=85, tmax=2",,2,,,,85,,3,number,,"weather-code,wintry"
+EC-156,Pleasantness,getWintryPrecipPenalty,"Wintry precip code=85, tmax=2.1",,2.1,,,,85,,2,number,,"weather-code,wintry"
+EC-157,Pleasantness,getWintryPrecipPenalty,"Wintry precip code=85, tmax=None",,,,,,85,,2,number,,"weather-code,wintry"
+EC-158,Pleasantness,getWintryPrecipPenalty,"Wintry precip code=86, tmax=2",,2,,,,86,,3,number,,"weather-code,wintry"
+EC-159,Pleasantness,getWintryPrecipPenalty,"Wintry precip code=86, tmax=2.1",,2.1,,,,86,,2,number,,"weather-code,wintry"
+EC-160,Pleasantness,getWintryPrecipPenalty,"Wintry precip code=86, tmax=None",,,,,,86,,2,number,,"weather-code,wintry"
+EC-161,Pleasantness,getWintryPrecipPenalty,"Wintry precip code=66, tmax=0",,0,,,,66,,2,number,,"weather-code,wintry"
+EC-162,Pleasantness,getWintryPrecipPenalty,"Wintry precip code=67, tmax=0",,0,,,,67,,2,number,,"weather-code,wintry"
+EC-163,Pleasantness,getWintryPrecipPenalty,"Wintry precip code=61, tmax=0",,0,,,,61,,0,number,,"weather-code,wintry"
+EC-164,Pleasantness,getWintryPrecipPenalty,"Wintry precip code=None, tmax=0",,0,,,,,,0,number,,"weather-code,wintry"
+EC-165,Integrated,scoreSiteDay,Perfect summer,summer,20,3,3,0,2,,"{""points"": 10, ""class"": ""Best"", ""pointsRaw"": 10}",object,"Calculated expected points=10, class=Best.",integration
+EC-166,Integrated,scoreSiteDay,Clamp low,summer,-10,30,50,100,3,,"{""points"": 0, ""class"": ""Bad"", ""pointsRaw"": -22}",object,"Calculated expected points=0, class=Bad.",integration
+EC-167,Integrated,scoreSiteDay,Clear-sky bonus clamps high,summer,20,3,3,0,0,,"{""points"": 10, ""class"": ""Best"", ""pointsRaw"": 11}",object,"Calculated expected points=10, class=Best.",integration
+EC-168,Integrated,scoreSiteDay,Overcast lowers score,summer,15,7,7,0,3,,"{""points"": 9, ""class"": ""Best"", ""pointsRaw"": 9}",object,"Calculated expected points=9, class=Best.",integration
+EC-169,Integrated,scoreSiteDay,Null weather inputs,summer,,,,,,,"{""points"": 0, ""class"": ""Bad"", ""pointsRaw"": 0}",object,"Calculated expected points=0, class=Bad.",integration
+EC-170,Integrated,scoreSiteDay,Winter base floor,winter,-20,0,0,0,2,,"{""points"": 4, ""class"": ""Ok"", ""pointsRaw"": 4}",object,"Calculated expected points=4, class=Ok.",integration
+EC-171,Integrated,scoreSiteDay,Winter severe wind,winter,20,20,35,0,2,,"{""points"": 0, ""class"": ""Bad"", ""pointsRaw"": -11}",object,"Calculated expected points=0, class=Bad.",integration
+EC-172,Integrated,scoreSiteDay,Rain threshold integration,summer,15,7,7,1,2,,"{""points"": 8, ""class"": ""Good"", ""pointsRaw"": 8}",object,"Calculated expected points=8, class=Good.",integration
+EC-173,Integrated,scoreSiteDay,Gust threshold integration,summer,15,7,13,0,2,,"{""points"": 8, ""class"": ""Good"", ""pointsRaw"": 8}",object,"Calculated expected points=8, class=Good.",integration
+EC-174,Rounding,round1,Round input 7.04 to one decimal,,,,,,,,7.0,number,input=7.04,rounding
+EC-175,Rounding,round1,Round input 7.05 to one decimal,,,,,,,,7.1,number,input=7.05,rounding
+EC-176,Rounding,round1,Round input 7.06 to one decimal,,,,,,,,7.1,number,input=7.06,rounding
+EC-177,Rounding,round1,Round input 9.94 to one decimal,,,,,,,,9.9,number,input=9.94,rounding
+EC-178,Rounding,round1,Round input 9.95 to one decimal,,,,,,,,10.0,number,input=9.95,rounding
+EC-179,Rounding,round1,Round input 9.96 to one decimal,,,,,,,,10.0,number,input=9.96,rounding
+EC-180,Rounding,round1,Round input -0.04 to one decimal,,,,,,,,0.0,number,input=-0.04,rounding
+EC-181,Rounding,round1,Round input -0.05 to one decimal,,,,,,,,0.0,number,input=-0.05,rounding
+EC-182,Rounding,round1,Round input -0.06 to one decimal,,,,,,,,-0.1,number,input=-0.06,rounding
+EC-183,Rain Streak,rainStreakPenaltyPoints,Rain streak length 0,,,,,,,0,0,number,,route-only
+EC-184,Rain Streak,rainStreakPenaltyPoints,Rain streak length 1,,,,,,,1,0,number,,route-only
+EC-185,Rain Streak,rainStreakPenaltyPoints,Rain streak length 2,,,,,,,2,1,number,,route-only
+EC-186,Rain Streak,rainStreakPenaltyPoints,Rain streak length 3,,,,,,,3,2,number,,route-only
+EC-187,Rain Streak,rainStreakPenaltyPoints,Rain streak length 4,,,,,,,4,3,number,,route-only
+EC-188,Rain Streak,rainStreakPenaltyPoints,Rain streak length 5,,,,,,,5,4,number,,route-only
+EC-189,Rain Streak,rainStreakPenaltyPoints,Rain streak length 10,,,,,,,10,4,number,,route-only
+EC-190,Malformed Inputs,basePointsFromTemp,String temperature,,,,,,,,Confirm actual behavior,review,Input literal: 12. Current JS coercion/handling must be confirmed.,"malformed,review"
+EC-191,Malformed Inputs,windPenaltyPoints,NaN wind,,,,,,,,Confirm actual behavior,review,Input literal: NaN. NaN handling must be confirmed.,"malformed,review"
+EC-192,Malformed Inputs,rainPenaltyPoints,Infinity rain,,,,,,,,Confirm actual behavior,review,Input literal: Infinity. Should enter highest penalty or be rejected; confirm code.,"malformed,review"
+EC-193,Malformed Inputs,getSkyComfortModifier,Object weather code,,,,,,,,Confirm actual behavior,review,Input literal: {}. Should default to 0 or reject; confirm code.,"malformed,review"
