@@ -373,7 +373,10 @@ export default function Pricing({ onClose, lang = "is", theme = "dark", t, me })
                     </div>
                   </div>
                   <div style={styles.planMicro}>
-                    {T("pricingYearlyMicro", "One payment. Cancel anytime.")}
+                    {T("pricingYearlyMicro", "Billed once a year · Cancel anytime")}
+                  </div>
+                  <div style={styles.renewalText}>
+                    {T("pricingYearlyRenewalText", "Renews automatically every year until cancelled. You can cancel at any time and keep access until the end of the paid period.")}
                   </div>
                 </div>
 
@@ -403,8 +406,11 @@ export default function Pricing({ onClose, lang = "is", theme = "dark", t, me })
                   ? T("subscribeCtaBusy", "Opening checkout…")
                   : isMonthly
                     ? T("pricingCtaUpgradeToYearly", "Upgrade to Yearly")
-                    : T("pricingCtaYearly", "Get Yearly")}
+                    : T("pricingCtaYearly", "Start annual subscription")}
               </button>
+              <div style={styles.ctaConfirm}>
+                {T("pricingCtaConfirm", "By continuing, you agree that your subscription will renew automatically according to the selected billing period until cancelled.")}
+              </div>
             </div>
 
             {/* Monthly */}
@@ -414,6 +420,10 @@ export default function Pricing({ onClose, lang = "is", theme = "dark", t, me })
               <div style={styles.planPriceRow}>
                 <div style={styles.planPrice}>{monthlyPrice}</div>
                 <div style={styles.planPer}>{T("pricingPerMonth", "per month")}</div>
+              </div>
+
+              <div style={styles.renewalText}>
+                {T("pricingMonthlyRenewalText", "Renews automatically every month until cancelled. You can cancel at any time and keep access until the end of the paid period.")}
               </div>
 
               <ul style={styles.featureList}>
@@ -441,8 +451,11 @@ export default function Pricing({ onClose, lang = "is", theme = "dark", t, me })
                     ? T("pricingMonthlyAlreadyActive", "Monthly is active")
                     : isYearly
                       ? T("pricingMonthlyNotAvailable", "Not available")
-                      : T("pricingCtaMonthly", "Get Monthly")}
+                      : T("pricingCtaMonthly", "Start monthly subscription")}
               </button>
+              <div style={styles.ctaConfirm}>
+                {T("pricingCtaConfirm", "By continuing, you agree that your subscription will renew automatically according to the selected billing period until cancelled.")}
+              </div>
             </div>
           </div>
 
@@ -632,6 +645,10 @@ function getStyles(isLight) {
     planPer: { fontSize: 13, fontWeight: 800, opacity: 0.75 },
 
     planMicro: { marginTop: 6, fontSize: 12, fontWeight: 700, opacity: 0.78 },
+
+    renewalText: { marginTop: 6, fontSize: 11, fontWeight: 600, opacity: 0.70, lineHeight: 1.5 },
+
+    ctaConfirm: { marginTop: 8, fontSize: 11, opacity: 0.68, lineHeight: 1.45, textAlign: "center" },
 
     badgeBestValue: {
       fontSize: 12,

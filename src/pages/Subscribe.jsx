@@ -279,12 +279,22 @@ export default function Subscribe({ onClose, theme = "dark", t }) {
               </div>
             ) : null}
 
+            <div style={styles.renewalText}>
+              {plan === "yearly"
+                ? T("pricingYearlyRenewalText", "Renews automatically every year until cancelled. You can cancel at any time and keep access until the end of the paid period.")
+                : T("pricingMonthlyRenewalText", "Renews automatically every month until cancelled. You can cancel at any time and keep access until the end of the paid period.")}
+            </div>
+
             <button type="button" style={styles.cta(busy)} onClick={startCheckout} disabled={busy}>
               {busy
                 ? T("subscribeCtaBusy", "Opening checkout…")
                 : T("subscribeCtaMain", "Continue to checkout")}
               <span style={styles.ctaSub}>{T("subscribeCtaSub", "You can cancel later.")}</span>
             </button>
+
+            <div style={styles.ctaConfirm}>
+              {T("pricingCtaConfirm", "By continuing, you agree that your subscription will renew automatically according to the selected billing period until cancelled.")}
+            </div>
 
             <div style={styles.finePrint}>
               {T("subscribeFinePrint", "Payment is handled via Paddle.")}
@@ -486,6 +496,8 @@ function getStyles(isLight) {
       textAlign: "center",
     }),
     ctaSub: { fontSize: 12, fontWeight: 700, opacity: 0.9 },
+    renewalText: { marginTop: 10, fontSize: 12, fontWeight: 600, opacity: 0.70, lineHeight: 1.5 },
+    ctaConfirm: { marginTop: 8, fontSize: 12, opacity: 0.68, lineHeight: 1.45, textAlign: "center" },
     finePrint: { marginTop: 10, fontSize: 12, opacity: 0.75, textAlign: "center" },
     termsNote: {
       marginTop: 8,

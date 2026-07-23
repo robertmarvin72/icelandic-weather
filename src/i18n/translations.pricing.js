@@ -66,7 +66,7 @@ export const pricingTranslations = {
     pricingYearlyTitle: "Yearly",
     pricingBestValue: "Best value",
     pricingPerYear: "per year",
-    pricingYearlyMicro: "One payment. Cancel anytime.",
+    pricingYearlyMicro: "Billed once a year · Cancel anytime",
 
     pricingMonthlyTitle: "Monthly",
     pricingPerMonth: "per month",
@@ -76,12 +76,16 @@ export const pricingTranslations = {
     pricingFeatureComparisons: "Compare all 242 campsites across Iceland",
     pricingFeatureCancelAnytime: "Cancel anytime",
 
-    pricingCtaYearly: "Unlock Chase the Weather Pro Yearly",
-    pricingCtaMonthly: "Unlock Chase the Weather Pro Monthly",
+    pricingCtaYearly: "Start annual subscription",
+    pricingCtaMonthly: "Start monthly subscription",
     pricingYearlyEquivalentMonthly: "≈ €2 per month",
     pricingYearlySavings: "Save about €40 per year",
 
     pricingFinePrint: "You can manage or cancel anytime in the billing portal.",
+
+    pricingYearlyRenewalText: "Renews automatically every year until cancelled. You can cancel at any time and keep access until the end of the paid period.",
+    pricingMonthlyRenewalText: "Renews automatically every month until cancelled. You can cancel at any time and keep access until the end of the paid period.",
+    pricingCtaConfirm: "By continuing, you agree that your subscription will renew automatically according to the selected billing period until cancelled.",
 
     pricingAlreadyYearly: "Your yearly subscription is already active.",
     pricingActiveUntil: "Active until",
@@ -199,7 +203,7 @@ export const pricingTranslations = {
 
     pricingYearlyTitle: "Ársáskrift",
     pricingPerYear: "á ári",
-    pricingYearlyMicro: "Greitt einu sinni á ári. Hægt að segja upp hvenær sem er.",
+    pricingYearlyMicro: "Rukkað einu sinni á ári · Hægt að segja upp hvenær sem er",
 
     pricingMonthlyTitle: "Mánaðaráskrift",
     pricingPerMonth: "á mánuði",
@@ -209,12 +213,16 @@ export const pricingTranslations = {
     pricingFeatureComparisons: "Samanburður á öllum 242 tjaldsvæðum landsins",
     pricingFeatureCancelAnytime: "Hægt að segja upp hvenær sem er",
 
-    pricingCtaYearly: "Opna Eltum Veðrið Pro",
-    pricingCtaMonthly: "Fá mánaðaráskrift",
+    pricingCtaYearly: "Hefja ársáskrift",
+    pricingCtaMonthly: "Hefja mánaðaráskrift",
     pricingYearlyEquivalentMonthly: "≈ 290 kr á mánuði",
     pricingYearlySavings: "Sparar um 5.890 kr á ári miðað við mánaðarverð",
 
     pricingFinePrint: "Þú getur stjórnað eða sagt upp hvenær sem er í greiðslugáttinni.",
+
+    pricingYearlyRenewalText: "Endurnýjast sjálfkrafa árlega þar til áskriftinni er sagt upp. Þú getur sagt henni upp hvenær sem er og heldur aðgangi út greitt áskriftartímabil.",
+    pricingMonthlyRenewalText: "Endurnýjast sjálfkrafa mánaðarlega þar til áskriftinni er sagt upp. Þú getur sagt henni upp hvenær sem er og heldur aðgangi út greitt áskriftartímabil.",
+    pricingCtaConfirm: "Með því að halda áfram samþykkir þú að áskriftin endurnýist sjálfkrafa samkvæmt valinni greiðslutíðni þar til henni er sagt upp.",
 
     pricingAlreadyYearly: "Ársáskriftin þín er nú þegar virk.",
     pricingActiveUntil: "Virkt til",
