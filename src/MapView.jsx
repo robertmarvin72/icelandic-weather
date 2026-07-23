@@ -56,12 +56,88 @@ function FlyTo({ position }) {
 }
 
 // ───────────────────────────────────────────────
-// Custom pin icon with colored dot
-function scorePinIcon(color, isSelected = false) {
+// Escape campsite names inserted into icon HTML strings.
+function escapeHtml(str) {
+  return String(str ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+}
+
+// ───────────────────────────────────────────────
+// Custom pin icon with colored dot.
+// Selected pins receive: a name label chip above the pin, a double ring
+// (3 px white inner + 3 px slate-950 outer) via box-shadow on the rotated
+// shape, and a stronger drop-shadow. The ring colour (#0f172a) is the
+// app's foreground token — distinct from all four score/data colours.
+function scorePinIcon(color, isSelected = false, name = "") {
   const width = isSelected ? 30 : 24;
   const height = isSelected ? 42 : 34;
-  const outline = isSelected ? 4 : 3;
 
+  if (isSelected) {
+    return L.divIcon({
+      className: "",
+      iconSize: [width + 10, height + 10],
+      iconAnchor: [(width + 10) / 2, height + 8],
+      popupAnchor: [0, -height],
+      html: `
+        <div style="
+          position: relative;
+          width: ${width + 10}px;
+          height: ${height + 10}px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        ">
+          <div style="
+            position: absolute;
+            bottom: calc(100% + 4px);
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(15,23,42,0.92);
+            color: #f8fafc;
+            font-size: 10px;
+            font-weight: 700;
+            font-family: system-ui, -apple-system, sans-serif;
+            padding: 2px 8px;
+            border-radius: 999px;
+            white-space: nowrap;
+            max-width: 120px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            box-shadow: 0 1px 5px rgba(0,0,0,0.4);
+            line-height: 1.6;
+            pointer-events: none;
+            letter-spacing: 0.01em;
+          ">${escapeHtml(name)}</div>
+          <div style="
+            position: relative;
+            width: ${width}px;
+            height: ${height}px;
+            background: ${color};
+            border: 3px solid rgba(255,255,255,0.95);
+            border-radius: ${width}px ${width}px ${width}px 0;
+            transform: rotate(-45deg);
+            box-shadow: 0 0 0 3px rgba(255,255,255,0.95), 0 0 0 6px #0f172a, 0 4px 14px rgba(0,0,0,0.35);
+          ">
+            <div style="
+              position: absolute;
+              top: 50%;
+              left: 50%;
+              width: 10px;
+              height: 10px;
+              background: rgba(255,255,255,0.95);
+              border-radius: 999px;
+              transform: translate(-50%, -50%) rotate(45deg);
+            "></div>
+          </div>
+        </div>
+      `,
+    });
+  }
+
+  // Unselected: exactly as before.
   return L.divIcon({
     className: "",
     iconSize: [width + 10, height + 10],
@@ -81,7 +157,7 @@ function scorePinIcon(color, isSelected = false) {
           width: ${width}px;
           height: ${height}px;
           background: ${color};
-          border: ${outline}px solid rgba(255,255,255,0.95);
+          border: 3px solid rgba(255,255,255,0.95);
           border-radius: ${width}px ${width}px ${width}px 0;
           transform: rotate(-45deg);
           box-shadow: 0 4px 10px rgba(0,0,0,0.28);
@@ -90,8 +166,8 @@ function scorePinIcon(color, isSelected = false) {
             position: absolute;
             top: 50%;
             left: 50%;
-            width: ${isSelected ? 10 : 8}px;
-            height: ${isSelected ? 10 : 8}px;
+            width: 8px;
+            height: 8px;
             background: rgba(255,255,255,0.95);
             border-radius: 999px;
             transform: translate(-50%, -50%) rotate(45deg);
@@ -264,7 +340,7 @@ export default function MapView({
             const scoreLabel = hasScore ? labelForScore(score, t) : "…";
 
             const isSelected = site.id === selectedId;
-            const icon = scorePinIcon(color, isSelected);
+            const icon = scorePinIcon(color, isSelected, isSelected ? site.name : "");
 
             const loading = loadingById[site.id];
             const err = errorById[site.id];
@@ -276,6 +352,7 @@ export default function MapView({
                 position={[site.lat, site.lon]}
                 icon={icon}
                 siteId={site.id}
+                zIndexOffset={isSelected ? 1000 : 0}
                 eventHandlers={{
                   click: async () => {
                     onSelect?.(site.id);
