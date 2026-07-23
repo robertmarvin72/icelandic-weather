@@ -237,6 +237,13 @@ export const routePlannerTranslations = {
     decisionConsiderBodyWindowAware:
       "Slightly better conditions may be available at {site} over the next few days.",
 
+    decisionSimilarTitle: "No clear reason to move",
+    decisionSimilarBody:
+      "Weather conditions at nearby campsites look similar over the next few days. Staying where you are is likely the better choice.",
+    decisionCurrentBetterTitle: "Stay where you are",
+    decisionCurrentBetterBody:
+      "Conditions at your current campsite look better than at the nearby alternatives over the next few days.",
+
     decisionMoveBodyWindowAware:
       "Better weather is likely at {site} over the next few days, even if your current campsite scores best overall this week.",
 
@@ -520,6 +527,13 @@ export const routePlannerTranslations = {
     decisionConsiderTitle: "Íhugaðu að færa þig",
     decisionConsiderBody: "Betra veður er líklegt hjá {site}.",
     decisionConsiderBodyWindowAware: "Aðeins betri aðstæður gætu verið hjá {site} næstu daga.",
+
+    decisionSimilarTitle: "Engin skýr ástæða til að færa sig",
+    decisionSimilarBody:
+      "Veðrið á nálægum tjaldsvæðum virðist svipað næstu daga. Líklega er best að halda sig þar sem þú ert.",
+    decisionCurrentBetterTitle: "Haltu þig þar sem þú ert",
+    decisionCurrentBetterBody:
+      "Aðstæður á núverandi tjaldsvæði virðast betri en á nálægum valkostum næstu daga.",
 
     decisionMoveBodyWindowAware:
       "Betra veður er líklegt hjá {site} næstu daga, jafnvel þótt núverandi tjaldsvæði skori hæst þessa vikuna.",

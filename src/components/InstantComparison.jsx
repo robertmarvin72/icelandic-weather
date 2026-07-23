@@ -1,7 +1,13 @@
 import React, { useMemo, useRef, useEffect } from "react";
 import { trackEvent } from "../lib/analytics";
-import { haversine } from "../lib/geo";
 import { useT } from "../hooks/useT";
+import {
+  calcMetrics,
+  classifyMetrics,
+  selectBestCandidate,
+  scoreTier,
+  metricCap,
+} from "../lib/comparisonUtils";
 
 function interpolate(template, vars) {
   if (typeof template !== "string") return "";
@@ -10,57 +16,6 @@ function interpolate(template, vars) {
     out = out.replaceAll(`{${k}}`, String(v));
   }
   return out;
-}
-
-function calcMetrics(rows) {
-  const slice = (rows || []).slice(0, 3);
-  if (!slice.length) return null;
-
-  const winds = slice.map((r) => r?.windMax).filter((v) => typeof v === "number" && isFinite(v));
-  const rains = slice.map((r) => r?.rain).filter((v) => typeof v === "number" && isFinite(v));
-  const temps = slice.map((r) => r?.tmax).filter((v) => typeof v === "number" && isFinite(v));
-
-  return {
-    avgWind: winds.length ? winds.reduce((a, b) => a + b, 0) / winds.length : null,
-    totalRain: rains.length ? rains.reduce((a, b) => a + b, 0) : null,
-    avgHighTemp: temps.length ? temps.reduce((a, b) => a + b, 0) / temps.length : null,
-  };
-}
-
-// Returns { strength: "strong"|"decent"|"weak"|"mixed", primaryKey: string|null }
-function classifyMetrics(current, nearby) {
-  if (!current || !nearby) return { strength: "weak", primaryKey: null };
-
-  const improvements = [];
-  const worsenings = [];
-
-  if (current.avgWind != null && nearby.avgWind != null) {
-    const diff = current.avgWind - nearby.avgWind;
-    if (diff >= 1.5) improvements.push("wind");
-    else if (diff <= -1.5) worsenings.push("wind");
-  }
-
-  if (current.totalRain != null && nearby.totalRain != null) {
-    const diff = current.totalRain - nearby.totalRain;
-    if (diff >= 2) improvements.push("rain");
-    else if (diff <= -2) worsenings.push("rain");
-  }
-
-  if (current.avgHighTemp != null && nearby.avgHighTemp != null) {
-    const diff = nearby.avgHighTemp - current.avgHighTemp;
-    if (diff >= 1.5) improvements.push("temp");
-    else if (diff <= -1.5) worsenings.push("temp");
-  }
-
-  let strength;
-  if (improvements.length >= 2 && worsenings.length === 0) strength = "strong";
-  else if (improvements.length >= 1 && worsenings.length === 0) strength = "decent";
-  else if (improvements.length >= 1) strength = "weak";
-  else strength = "mixed";
-
-  const primaryKey = improvements.length > 0 ? improvements[0] : null;
-
-  return { strength, primaryKey };
 }
 
 // Distance-aware label for the right-hand card
@@ -97,62 +52,12 @@ function buildDeltaText(primaryKey, current, nearby, t) {
   return null;
 }
 
-// Searches ALL scored campsites within radiusKm of the base site.
-// Using top5 (global best) caused all candidates to fail the radius filter when
-// the globally best sites were far away. This searches the full scored set instead,
-// matching the same candidate pool that RoutePlannerCard's relocationEngine uses.
-function selectBestCandidate(siteList, scoresById, site, currentScore, radiusKm) {
-  if (!siteList?.length || !site) return null;
-
-  const baseLat = Number(site.lat);
-  const baseLon = Number(site.lon);
-  if (!isFinite(baseLat) || !isFinite(baseLon)) return null;
-
-  const MIN_SCORE_DIFF = 5;
-  let best = null;
-
-  for (const s of siteList) {
-    if (s.id === site.id) continue;
-
-    const scored = scoresById?.[s.id];
-    if (!scored || scored.score == null) continue;
-    if (scored.score - currentScore < MIN_SCORE_DIFF) continue;
-
-    const sLat = Number(s.lat);
-    const sLon = Number(s.lon);
-    if (!isFinite(sLat) || !isFinite(sLon)) continue;
-
-    const distFromBase = haversine(baseLat, baseLon, sLat, sLon);
-    if (distFromBase > radiusKm) continue;
-
-    if (!best || scored.score > best.score) {
-      best = { site: s, score: scored.score, distFromBase };
-    }
-  }
-
-  return best;
-}
-
 // Stable English values for analytics — never translate these
 const BADGE_ANALYTICS = ["similar", "slightly-better", "better", "much-better"];
 
 function getBadgeLabel(tier, t) {
   const keys = ["routeDaySame", "routeImproveSlight", "routeImproveBetter", "routeImproveMuchBetter"];
   return t(keys[tier] ?? keys[0]);
-}
-
-function scoreTier(diff) {
-  if (diff >= 15) return 3;
-  if (diff >= 8) return 2;
-  if (diff >= 5) return 1;
-  return 0;
-}
-
-function metricCap(strength) {
-  if (strength === "strong") return 3;
-  if (strength === "decent") return 2;
-  if (strength === "weak") return 1;
-  return 0;
 }
 
 function fmt(val) {
@@ -216,19 +121,38 @@ function SiteCard({ label, name, metrics, distanceText, muted, highlight, deltaT
   );
 }
 
-export default function InstantComparison({ site, currentScore, rows, siteList, scoresById, radiusKm = 50, homepageRecommendation = "stay", onCtaClick, routePlannerSummary, t: tProp, lang = "is" }) {
+// comparisonState is the shared result from useComparisonState in App.jsx.
+// When provided, it is used directly so InstantComparison and DecisionBanner
+// always reflect the same candidate and classification.
+// When absent (e.g. Brochure mock page), all values are computed locally.
+export default function InstantComparison({
+  site,
+  currentScore,
+  rows,
+  siteList,
+  scoresById,
+  radiusKm = 50,
+  homepageRecommendation = "stay",
+  onCtaClick,
+  routePlannerSummary,
+  comparisonState: externalState,
+  t: tProp,
+  lang = "is",
+}) {
   const tFallback = useT(lang);
   const t = tProp || tFallback;
 
-  // Local derivation kept for DEV candidate-mismatch check and as fallback for
-  // pages without a RoutePlannerCard (e.g. brochure page with mock data).
+  // Local derivation — used when no external comparisonState is provided (e.g. Brochure).
   const localBest = useMemo(
-    () => selectBestCandidate(siteList, scoresById, site, currentScore, radiusKm),
-    [siteList, scoresById, site, currentScore, radiusKm]
+    () =>
+      externalState
+        ? null
+        : selectBestCandidate(siteList, scoresById, site, currentScore, radiusKm),
+    [externalState, siteList, scoresById, site, currentScore, radiusKm]
   );
 
-  // Single source of truth: use RoutePlannerCard's shared candidate when available.
-  const best = useMemo(() => {
+  const localSharedBest = useMemo(() => {
+    if (externalState) return null;
     const verdict = String(routePlannerSummary?.verdict || "").toLowerCase();
     const candidateId = routePlannerSummary?.candidate?.id;
 
@@ -246,35 +170,53 @@ export default function InstantComparison({ site, currentScore, rows, siteList, 
     }
 
     return localBest;
-  }, [routePlannerSummary, siteList, scoresById, localBest]);
+  }, [externalState, routePlannerSummary, siteList, scoresById, localBest]);
 
-  // DEV-only: warn if local selection disagrees with the shared candidate.
+  // DEV-only: warn if local selection disagrees with the external comparisonState.
   useEffect(() => {
     if (!import.meta.env.DEV) return;
+    if (!externalState) return;
     if (!routePlannerSummary?.ready) return;
     const localCandidateId = localBest?.site?.id;
-    if (localCandidateId && localCandidateId !== best?.site?.id) {
+    if (localCandidateId && localCandidateId !== externalState.best?.site?.id) {
       console.warn("[InstantComparison] Candidate mismatch", {
         localCandidateId,
-        bestCandidateId: best?.site?.id,
+        externalCandidateId: externalState.best?.site?.id,
       });
     }
-  }, [localBest, best, routePlannerSummary?.ready]);
+  }, [localBest, externalState, routePlannerSummary?.ready]);
 
-  const scoreDiff = best ? best.score - currentScore : 0;
+  // Use external state when available; otherwise compute locally.
+  const best = externalState ? externalState.best : localSharedBest;
   const showComparison = best != null;
 
-  const currentMetrics = useMemo(() => calcMetrics(rows), [rows]);
-  const nearbyMetrics = useMemo(() => {
-    if (!best) return null;
-    const nearbyRows = scoresById?.[best.site?.id]?.rows;
-    return calcMetrics(nearbyRows);
-  }, [best, scoresById]);
-
-  const { strength, primaryKey } = useMemo(
-    () => classifyMetrics(currentMetrics, nearbyMetrics),
-    [currentMetrics, nearbyMetrics]
+  const localCurrentMetrics = useMemo(
+    () => (externalState ? null : calcMetrics(rows)),
+    [externalState, rows]
   );
+  const localNearbyMetrics = useMemo(() => {
+    if (externalState || !best) return null;
+    return calcMetrics(scoresById?.[best.site?.id]?.rows);
+  }, [externalState, best, scoresById]);
+
+  const currentMetrics = externalState ? externalState.currentMetrics : localCurrentMetrics;
+  const nearbyMetrics = externalState ? externalState.nearbyMetrics : localNearbyMetrics;
+
+  const localClassification = useMemo(
+    () => (externalState ? null : classifyMetrics(currentMetrics, nearbyMetrics)),
+    [externalState, currentMetrics, nearbyMetrics]
+  );
+
+  const strength = externalState ? externalState.strength : (localClassification?.strength ?? "mixed");
+  const primaryKey = externalState ? externalState.primaryKey : (localClassification?.primaryKey ?? null);
+  const isStrongOrDecent = externalState
+    ? externalState.isStrongOrDecent
+    : strength === "strong" || strength === "decent";
+
+  const scoreDiff = best ? best.score - currentScore : 0;
+  const tier = showComparison
+    ? (externalState ? externalState.tier : Math.min(scoreTier(scoreDiff), metricCap(strength)))
+    : -1;
 
   const reasonLabels = {
     wind: t("icReasonCalmer"),
@@ -282,9 +224,6 @@ export default function InstantComparison({ site, currentScore, rows, siteList, 
     temp: t("icReasonWarmer"),
   };
   const primaryReason = primaryKey ? reasonLabels[primaryKey] : null;
-
-  const tier = showComparison ? Math.min(scoreTier(scoreDiff), metricCap(strength)) : -1;
-  const isStrongOrDecent = strength === "strong" || strength === "decent";
 
   const deltaText = useMemo(
     () => (isStrongOrDecent ? buildDeltaText(primaryKey, currentMetrics, nearbyMetrics, t) : null),

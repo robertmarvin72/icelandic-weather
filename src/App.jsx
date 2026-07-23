@@ -42,6 +42,7 @@ import { useT } from "./hooks/useT";
 import { useThemeClass } from "./hooks/useThemeClass";
 import { useToast } from "./hooks/useToast";
 import { useTop5Campsites } from "./hooks/useTop5Campsites";
+import { useComparisonState } from "./hooks/useComparisonState";
 import About from "./pages/About";
 import { formatDay } from "./utils/date";
 import { WEATHER_MAP } from "./utils/weatherMap";
@@ -279,6 +280,18 @@ function IcelandCampingWeatherApp({ page = "home" }) {
     return "stay";
   }, [routePlannerSummary]);
 
+  // Single source of truth for the metric-based comparison direction.
+  // Passed to both DecisionBanner and InstantComparison so they always agree.
+  const comparisonState = useComparisonState({
+    site,
+    currentScore,
+    rows,
+    siteList: showCampsitesGate ? [] : siteList,
+    scoresById,
+    radiusKm: 50,
+    routePlannerSummary,
+  });
+
   const booting = useBooting(loading, rows.length);
 
   return (
@@ -349,6 +362,7 @@ function IcelandCampingWeatherApp({ page = "home" }) {
                 currentScore={currentScore}
                 routePlannerSummary={routePlannerSummary}
                 entitlements={entitlements}
+                comparisonState={comparisonState}
               />
 
               <InstantComparison
@@ -360,6 +374,7 @@ function IcelandCampingWeatherApp({ page = "home" }) {
                 radiusKm={50}
                 homepageRecommendation={homepageRecommendation}
                 routePlannerSummary={routePlannerSummary}
+                comparisonState={comparisonState}
                 lang={lang}
               />
 

@@ -16,11 +16,54 @@ function hasRoughWeather(rows = []) {
   });
 }
 
-export default function DecisionBanner({ t, rows = [], routePlannerSummary = null }) {
+// comparisonState is produced by useComparisonState in App.jsx and shared with
+// InstantComparison so both components always reflect the same direction.
+//
+// direction "nearby_better"  → allow existing move/consider verdict from route planner
+// direction "similar"        → show no-clear-reason-to-move copy
+// direction "current_better" → show current-campsite-is-better copy
+// direction "no_candidate" or comparisonState absent → fall through to verdict-based logic
+export default function DecisionBanner({
+  t,
+  rows = [],
+  routePlannerSummary = null,
+  comparisonState = null,
+}) {
   const model = useMemo(() => {
     const rough = hasRoughWeather(rows);
     const verdict = String(routePlannerSummary?.verdict || "").toLowerCase();
     const candidateName = routePlannerSummary?.candidate?.name || t("nearbyCampsite");
+
+    // When a comparison exists, gate move/consider on the metric-based direction.
+    // This prevents "Íhugaðu að færa þig" from appearing when the comparison
+    // shows "Svipað" or when the current campsite is actually better.
+    if (comparisonState?.showComparison) {
+      const { direction } = comparisonState;
+
+      if (direction === "similar") {
+        return {
+          tone: "stay",
+          title: t("decisionSimilarTitle") || "No clear reason to move",
+          body:
+            t("decisionSimilarBody") ||
+            "Weather conditions at nearby campsites look similar over the next few days. Staying where you are is likely the better choice.",
+          painLine: null,
+        };
+      }
+
+      if (direction === "current_better") {
+        return {
+          tone: "stay",
+          title: t("decisionCurrentBetterTitle") || "Stay where you are",
+          body:
+            t("decisionCurrentBetterBody") ||
+            "Conditions at your current campsite look better than at the nearby alternatives over the next few days.",
+          painLine: null,
+        };
+      }
+
+      // direction === "nearby_better" falls through to verdict-based logic below.
+    }
 
     if (verdict === "move") {
       const meta = getRouteVerdictMeta(verdict);
@@ -67,7 +110,7 @@ export default function DecisionBanner({ t, rows = [], routePlannerSummary = nul
       body: rough ? t("decisionStayBodyRough") : t("decisionStayBodyGood"),
       painLine: null,
     };
-  }, [rows, routePlannerSummary, t]);
+  }, [rows, routePlannerSummary, comparisonState, t]);
 
   const classes =
     model.tone === "move"

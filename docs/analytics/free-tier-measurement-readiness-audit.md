@@ -19,20 +19,22 @@ Tickets #343–#346 **should not be deployed** until analytics-only tracking cha
 
 **C. Partial baseline only.**
 
-| Ticket | Feature | Baseline status |
-|---|---|---|
-| #343 | Move hourly forecasts to Pro | ❌ No baseline event exists |
-| #344 | Limit Free forecast to 3 days | ❌ No baseline event exists |
-| #345 | Restrict "Best places this week" | ⚠️ Partial — `campsite_selected` fires but source is not identifiable |
-| #346 | Restrict "Calmest places nearby" | ❌ No baseline event exists |
+| Ticket | Feature                          | Baseline status                                                       |
+| ------ | -------------------------------- | --------------------------------------------------------------------- |
+| #343   | Move hourly forecasts to Pro     | ❌ No baseline event exists                                           |
+| #344   | Limit Free forecast to 3 days    | ❌ No baseline event exists                                           |
+| #345   | Restrict "Best places this week" | ⚠️ Partial — `campsite_selected` fires but source is not identifiable |
+| #346   | Restrict "Calmest places nearby" | ❌ No baseline event exists                                           |
 
 **What can be compared historically (without new tracking):**
+
 - `pricing_page_viewed` — already fires with `source` (but `source` will be `"direct"` for Free-restriction upgrade flows since no `?src=` is set from these components)
 - `subscription_cta_clicked` — already fires on the pricing page
 - `checkout_started` — already fires
 - `campsite_selected` — fires on all site changes but cannot isolate Top5Leaderboard as source
 
 **What cannot be compared without new tracking:**
+
 - Whether users currently open hourly forecasts (#343)
 - Which forecast day index users interact with, and whether days 4–7 are used (#344)
 - Whether site selections originate from the Top5Leaderboard vs other surfaces (#345)
@@ -44,7 +46,7 @@ Tickets #343–#346 **should not be deployed** until analytics-only tracking cha
 
 ## Section 3 — Current Analytics Architecture (Reused + Spot-Verified)
 
-*Reused from Section 1 of `free-to-pro-ga4-audit.md`. Spot-verified below.*
+_Reused from Section 1 of `free-to-pro-ga4-audit.md`. Spot-verified below._
 
 **Primary helper:** `src/lib/analytics.js` — `trackEvent(name, data = {})`. All application events route through this function. Guard: `if (gaId)` only. No consent check.
 
@@ -80,6 +82,7 @@ Clicking any row in `ForecastTable` opens `HourlyForecastModal` with 3-hourly da
    Also: keyboard Enter/Space at line 245–248.
 
 2. The `onSelectDay` prop maps to `handleOpenHourlyForecast` in [App.jsx:150](src/App.jsx#L150):
+
    ```js
    const handleOpenHourlyForecast = useCallback((dayRow) => {
      setSelectedHourlyDay(dayRow);
@@ -94,6 +97,7 @@ Clicking any row in `ForecastTable` opens `HourlyForecastModal` with 3-hourly da
 ### Current tracking
 
 **None.** Neither `handleOpenHourlyForecast` nor `onSelectDay` nor `HourlyForecastModal` call `trackEvent` at any point. There is no GA4 event for:
+
 - opening the hourly forecast modal
 - selecting a specific day for hourly detail
 - closing the modal
@@ -140,6 +144,7 @@ The row data object (`r`) contains `r.date`, `r.dayLabel`, and all forecast fiel
 **None.** No `trackEvent` exists in `ForecastTable`, in `handleOpenHourlyForecast`, or in any row-click path.
 
 There is no existing event for:
+
 - selecting any forecast day
 - viewing forecast content for days 4–7
 - hovering or scrolling to days 4–7
@@ -178,17 +183,24 @@ Ticket #344 done.
    `onClick={() => onSelectSite(item.site.id)}`
 
 2. `onSelectSite` maps to `handleSelectSite` in [App.jsx:142](src/App.jsx#L142):
+
    ```js
-   const handleSelectSite = useCallback((id) => {
-     setSiteId(id);
-     mapAnchorRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
-   }, [setSiteId]);
+   const handleSelectSite = useCallback(
+     (id) => {
+       setSiteId(id);
+       mapAnchorRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+     },
+     [setSiteId]
+   );
    ```
 
 3. This changes `siteId` state, which triggers the `useEffect` at [App.jsx:257–264](src/App.jsx#L257):
    ```js
    useEffect(() => {
-     if (initialSiteRef.current) { initialSiteRef.current = false; return; }
+     if (initialSiteRef.current) {
+       initialSiteRef.current = false;
+       return;
+     }
      if (!siteId || !site) return;
      trackEvent("campsite_selected", { siteId, siteName: site.name });
    }, [siteId, site]);
@@ -200,22 +212,24 @@ Ticket #344 done.
 
 `handleSelectSite` is called from **multiple independent surfaces**:
 
-| Surface | File | Trigger |
-|---|---|---|
-| `Top5Leaderboard` | Top5Leaderboard.jsx:203 | Click on ranked site row |
-| `PageHeader > CampsitePicker` | CampsitePicker.jsx:69 | Dropdown selection |
-| `RoutePlannerCard` | RoutePlannerCard.jsx:1189 | Click on route result |
-| `LazyMap` | App.jsx:453 | Map marker click (`setSiteId(id)` directly) |
-| `useMyLocationNearestSite` | useMyLocationNearestSite.js:48 | GPS nearest site |
+| Surface                       | File                           | Trigger                                     |
+| ----------------------------- | ------------------------------ | ------------------------------------------- |
+| `Top5Leaderboard`             | Top5Leaderboard.jsx:203        | Click on ranked site row                    |
+| `PageHeader > CampsitePicker` | CampsitePicker.jsx:69          | Dropdown selection                          |
+| `RoutePlannerCard`            | RoutePlannerCard.jsx:1189      | Click on route result                       |
+| `LazyMap`                     | App.jsx:453                    | Map marker click (`setSiteId(id)` directly) |
+| `useMyLocationNearestSite`    | useMyLocationNearestSite.js:48 | GPS nearest site                            |
 
 All paths share the same `handleSelectSite` → `setSiteId` → `campsite_selected` chain. The event cannot be attributed to any particular surface.
 
 ### Interaction path — upgrade CTA
 
 Free users see an upgrade button at the bottom of Top5Leaderboard (when not Pro):
+
 ```jsx
 <button onClick={handleCtaClick} ...>
 ```
+
 `handleCtaClick` ([Top5Leaderboard.jsx:129–146](src/components/Top5Leaderboard.jsx#L129)) calls `onUpgrade()` → `startCheckout()` in [useCheckoutFlow.js:5–26](src/hooks/useCheckoutFlow.js#L5).
 
 `startCheckout()` navigates to `/pricing?email=...` but does **not** call `trackEvent` at any point. No `?src=` parameter is set in the URL. On the pricing page, `pricing_page_viewed` fires with `source: params.get("src") || "direct"` — so upgrading from Top5Leaderboard appears as `source: "direct"` in GA4.
@@ -250,6 +264,7 @@ Ticket #345 done.
 `WeatherFinder` renders a ranked list of campsites filtered by mode (calmest / warmest / driest) and radius. The "calmest" mode title is `weatherFinderResultTitleCalmest: "Calmest nearby campsites"` (EN) / `"Rólegustu staðirnir í nágrenninu"` (IS). This is the "Calmest places nearby" feature referenced in ticket #346.
 
 Free users currently see:
+
 - Top 3 results only (`resultsLimit = getFeatureLimit("weatherFinderResultsCount", entitlements) ?? 3`)
 - No radius or days controls (controls are shown only for Pro: lines 99–132 in WeatherFinder.jsx)
 - An upgrade CTA button at the bottom
@@ -275,6 +290,7 @@ Three buttons at [WeatherFinder.jsx:87–95](src/components/WeatherFinder.jsx#L8
 ### Current tracking
 
 **None.** No `trackEvent` exists anywhere in `WeatherFinder.jsx` or `WeatherFinderCard.jsx`. There is no GA4 event for:
+
 - Viewing the WeatherFinder component
 - Switching between calmest/warmest/driest modes
 - Expanding to full ranking
@@ -303,15 +319,15 @@ Ticket #346 done.
 
 ## Section 8 — Free Interaction Coverage Matrix
 
-| Ticket | Current Free interaction | Route/component | Current event | Current properties | Baseline usable? | Classification | Confirmed issue | Minimum analytics change |
-|---|---|---|---|---|---|---|---|---|
-| #343 | Click forecast row → opens HourlyForecastModal | `/` / `ForecastTable.jsx:243` + `App.jsx:150` | None | — | ❌ No | C — Not tracked | No event exists for opening hourly forecast | Add `forecast_day_opened` in `handleOpenHourlyForecast` (App.jsx:150) with `{ dayIndex, date, siteId }` |
-| #344 | Click forecast row days 1–7 | `/` / `ForecastTable.jsx:243` | None | — | ❌ No | C — Not tracked | No event for any day click; days 4–7 not isolable | Same as #343 event (add `dayIndex` so days 4–7 can be filtered); add separate `extended_forecast_day_clicked` if hourly-open and day-select semantics differ |
-| #345 | Click site in Top5Leaderboard | `/` / `Top5Leaderboard.jsx:203` | `campsite_selected` (via App.jsx useEffect) | `siteId`, `siteName` | ⚠️ Partial | B — Partially tracked | `source` property absent; not isolable from other site-selection surfaces | Add `source: "weekly_ranking"` to `campsite_selected` at the Top5Leaderboard click callsite, OR add `weekly_ranking_site_clicked` with `{ siteId, siteName, rank }` in Top5Leaderboard |
-| #346 | View/interact with WeatherFinder | `/` / `WeatherFinder.jsx` | None | — | ❌ No | C — Not tracked | No event for any WeatherFinder interaction; result items have no onClick | Add `weather_finder_viewed` on mount (with StrictMode guard), `weather_finder_mode_changed` on mode switch |
-| — | Pricing page viewed | `/pricing` / `Pricing.jsx:48` | `pricing_page_viewed` | `source`, `lang`, `isPro` | ✅ Yes | A — Fully tracked | `source` = `"direct"` for all Free-restriction upgrade paths (no `?src=` passed) | Add `?src=weekly_ranking`, `?src=weather_finder`, etc. to upgrade navigations from restricted components |
-| — | Monthly subscription CTA | `/pricing` / `Pricing.jsx:108` | `subscription_cta_clicked` | `plan:"monthly"`, `billingCycle`, `source`, `lang` | ✅ Yes | A — Fully tracked | Fires before terms gate (prior audit GAP-3) | — |
-| — | Annual subscription CTA | `/pricing` / `Pricing.jsx:108` | `subscription_cta_clicked` | `plan:"yearly"`, `billingCycle`, `source`, `lang` | ✅ Yes | A — Fully tracked | Fires before terms gate (prior audit GAP-3) | — |
+| Ticket | Current Free interaction                       | Route/component                               | Current event                               | Current properties                                 | Baseline usable? | Classification        | Confirmed issue                                                                  | Minimum analytics change                                                                                                                                                               |
+| ------ | ---------------------------------------------- | --------------------------------------------- | ------------------------------------------- | -------------------------------------------------- | ---------------- | --------------------- | -------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| #343   | Click forecast row → opens HourlyForecastModal | `/` / `ForecastTable.jsx:243` + `App.jsx:150` | None                                        | —                                                  | ❌ No            | C — Not tracked       | No event exists for opening hourly forecast                                      | Add `forecast_day_opened` in `handleOpenHourlyForecast` (App.jsx:150) with `{ dayIndex, date, siteId }`                                                                                |
+| #344   | Click forecast row days 1–7                    | `/` / `ForecastTable.jsx:243`                 | None                                        | —                                                  | ❌ No            | C — Not tracked       | No event for any day click; days 4–7 not isolable                                | Same as #343 event (add `dayIndex` so days 4–7 can be filtered); add separate `extended_forecast_day_clicked` if hourly-open and day-select semantics differ                           |
+| #345   | Click site in Top5Leaderboard                  | `/` / `Top5Leaderboard.jsx:203`               | `campsite_selected` (via App.jsx useEffect) | `siteId`, `siteName`                               | ⚠️ Partial       | B — Partially tracked | `source` property absent; not isolable from other site-selection surfaces        | Add `source: "weekly_ranking"` to `campsite_selected` at the Top5Leaderboard click callsite, OR add `weekly_ranking_site_clicked` with `{ siteId, siteName, rank }` in Top5Leaderboard |
+| #346   | View/interact with WeatherFinder               | `/` / `WeatherFinder.jsx`                     | None                                        | —                                                  | ❌ No            | C — Not tracked       | No event for any WeatherFinder interaction; result items have no onClick         | Add `weather_finder_viewed` on mount (with StrictMode guard), `weather_finder_mode_changed` on mode switch                                                                             |
+| —      | Pricing page viewed                            | `/pricing` / `Pricing.jsx:48`                 | `pricing_page_viewed`                       | `source`, `lang`, `isPro`                          | ✅ Yes           | A — Fully tracked     | `source` = `"direct"` for all Free-restriction upgrade paths (no `?src=` passed) | Add `?src=weekly_ranking`, `?src=weather_finder`, etc. to upgrade navigations from restricted components                                                                               |
+| —      | Monthly subscription CTA                       | `/pricing` / `Pricing.jsx:108`                | `subscription_cta_clicked`                  | `plan:"monthly"`, `billingCycle`, `source`, `lang` | ✅ Yes           | A — Fully tracked     | Fires before terms gate (prior audit GAP-3)                                      | —                                                                                                                                                                                      |
+| —      | Annual subscription CTA                        | `/pricing` / `Pricing.jsx:108`                | `subscription_cta_clicked`                  | `plan:"yearly"`, `billingCycle`, `source`, `lang`  | ✅ Yes           | A — Fully tracked     | Fires before terms gate (prior audit GAP-3)                                      | —                                                                                                                                                                                      |
 
 ---
 
@@ -321,7 +337,7 @@ Coverage matrix done.
 
 ## Section 9 — Pricing-Page Coverage
 
-*Reused from the prior audit (Sections 3 and 9). Spot-verified.*
+_Reused from the prior audit (Sections 3 and 9). Spot-verified._
 
 **`pricing_page_viewed`** fires at [Pricing.jsx:48](src/pages/Pricing.jsx#L48) via `useEffect(fn, [])` guarded by `viewFiredRef.current`. Fires exactly once per Pricing page mount.
 
@@ -343,30 +359,31 @@ Currently not distinguishable (see source finding above). Adding `?src=` to upgr
 
 All events confirmed to exist in `src/` as of audit date:
 
-| Event name | File | Trigger | Properties |
-|---|---|---|---|
-| `homepage_loaded` | App.jsx:249 | `useEffect(fn,[])` on mount | `lang`, `isPro`, `mobile` |
-| `homepage_hero_cta_click` | Toolbar.jsx:40 | Click "Find better place" button | _(none)_ |
-| `comparison_viewed` | InstantComparison.jsx:304 | Effect when nearby comparison shown | `comparisonTier`, `distanceBucket`, `recommendation` |
-| `better_nearby_found` | InstantComparison.jsx:311 | Same effect, when improvement ≥ "decent" | `recommendation`, `comparisonTier`, `radiusKm` |
-| `homepage_instant_comparison_cta_click` | InstantComparison.jsx:323 | Scroll CTA click | _(none)_ |
-| `stay_recommended` | RoutePlannerCard.jsx:257 | Effect when verdict = "stay" | `recommendation`, `radiusKm`, `windowDays` |
-| `move_recommended` | RoutePlannerCard.jsx:263 | Effect when verdict = "move" | `recommendation`, `radiusKm`, `windowDays` |
-| `campsite_selected` | App.jsx:263 | Effect on `siteId` change | `siteId`, `siteName` |
-| `comparison_feature_viewed` | CampsiteComparisonSection.jsx:359 | Effect on mount | `lang`, `isPro`, `source:"homepage"` |
-| `comparison_campsites_selected` | CampsiteComparisonSection.jsx:369 | Effect when both sites chosen | `lang`, `siteA`, `siteB` |
-| `comparison_day_expanded` | CampsiteComparisonSection.jsx:519 | Click to expand day row | (not fully read) |
-| `comparison_upgrade_clicked` | CampsiteComparisonSection.jsx:115 | Click paywall CTA in comparison | `lang`, `source:"comparison"` |
-| `brochure_comparison_cta_click` | Brochure.jsx:79 | Click brochure CTA | `lang`, `source:"brochure_comparison"` |
-| `pricing_page_viewed` | Pricing.jsx:48 | Effect on Pricing mount | `source`, `lang`, `isPro` |
-| `subscription_cta_clicked` | Pricing.jsx:108, Subscribe.jsx:110 | Button click | `plan`, `billingCycle`, `source`, `lang` |
-| `upgrade_started` | Pricing.jsx:126 | Inside startCheckout (monthly→yearly) | `fromTier`, `toTier`, `billingCycle` |
-| `checkout_started` | Pricing.jsx:216, Subscribe.jsx:162 | After /api/checkout success | `plan`, `billingCycle`, `priceIdType`, `source` |
-| `upgrade_completed` | Pricing.jsx:202 | Monthly→yearly upgrade confirmed | `fromTier`, `toTier`, `billingCycle` |
-| `checkout_completed` | Success.jsx:20 | Effect when status="active" | `plan`, `billingCycle`, `status`, `source` |
-| `cancellation_started` | useCheckoutFlow.js:34, Success.jsx:106 | Billing portal click | `source`, `currentTier` |
+| Event name                              | File                                   | Trigger                                  | Properties                                           |
+| --------------------------------------- | -------------------------------------- | ---------------------------------------- | ---------------------------------------------------- |
+| `homepage_loaded`                       | App.jsx:249                            | `useEffect(fn,[])` on mount              | `lang`, `isPro`, `mobile`                            |
+| `homepage_hero_cta_click`               | Toolbar.jsx:40                         | Click "Find better place" button         | _(none)_                                             |
+| `comparison_viewed`                     | InstantComparison.jsx:304              | Effect when nearby comparison shown      | `comparisonTier`, `distanceBucket`, `recommendation` |
+| `better_nearby_found`                   | InstantComparison.jsx:311              | Same effect, when improvement ≥ "decent" | `recommendation`, `comparisonTier`, `radiusKm`       |
+| `homepage_instant_comparison_cta_click` | InstantComparison.jsx:323              | Scroll CTA click                         | _(none)_                                             |
+| `stay_recommended`                      | RoutePlannerCard.jsx:257               | Effect when verdict = "stay"             | `recommendation`, `radiusKm`, `windowDays`           |
+| `move_recommended`                      | RoutePlannerCard.jsx:263               | Effect when verdict = "move"             | `recommendation`, `radiusKm`, `windowDays`           |
+| `campsite_selected`                     | App.jsx:263                            | Effect on `siteId` change                | `siteId`, `siteName`                                 |
+| `comparison_feature_viewed`             | CampsiteComparisonSection.jsx:359      | Effect on mount                          | `lang`, `isPro`, `source:"homepage"`                 |
+| `comparison_campsites_selected`         | CampsiteComparisonSection.jsx:369      | Effect when both sites chosen            | `lang`, `siteA`, `siteB`                             |
+| `comparison_day_expanded`               | CampsiteComparisonSection.jsx:519      | Click to expand day row                  | (not fully read)                                     |
+| `comparison_upgrade_clicked`            | CampsiteComparisonSection.jsx:115      | Click paywall CTA in comparison          | `lang`, `source:"comparison"`                        |
+| `brochure_comparison_cta_click`         | Brochure.jsx:79                        | Click brochure CTA                       | `lang`, `source:"brochure_comparison"`               |
+| `pricing_page_viewed`                   | Pricing.jsx:48                         | Effect on Pricing mount                  | `source`, `lang`, `isPro`                            |
+| `subscription_cta_clicked`              | Pricing.jsx:108, Subscribe.jsx:110     | Button click                             | `plan`, `billingCycle`, `source`, `lang`             |
+| `upgrade_started`                       | Pricing.jsx:126                        | Inside startCheckout (monthly→yearly)    | `fromTier`, `toTier`, `billingCycle`                 |
+| `checkout_started`                      | Pricing.jsx:216, Subscribe.jsx:162     | After /api/checkout success              | `plan`, `billingCycle`, `priceIdType`, `source`      |
+| `upgrade_completed`                     | Pricing.jsx:202                        | Monthly→yearly upgrade confirmed         | `fromTier`, `toTier`, `billingCycle`                 |
+| `checkout_completed`                    | Success.jsx:20                         | Effect when status="active"              | `plan`, `billingCycle`, `status`, `source`           |
+| `cancellation_started`                  | useCheckoutFlow.js:34, Success.jsx:106 | Billing portal click                     | `source`, `currentTier`                              |
 
 **Events checked that do NOT exist:**
+
 - `hourly_forecast_locked_clicked` — does not exist
 - `extended_forecast_upgrade_clicked` — does not exist
 - `weekly_ranking_upgrade_clicked` — does not exist
@@ -381,7 +398,7 @@ All events confirmed to exist in `src/` as of audit date:
 
 ## Section 11 — Existing Attribution
 
-*Reused from prior audit Section 4. New findings below.*
+_Reused from prior audit Section 4. New findings below._
 
 **UTM attribution** captured at landing via `saveAttributionIfPresent()` → `localStorage["campcast_attribution"]`. First-touch only. Passed to Paddle checkout body.
 
@@ -403,7 +420,7 @@ Adding new `trackEvent()` calls inside existing component click handlers would n
 
 ## Section 12 — Duplicate or Trigger-Quality Risks
 
-*Events not previously assessed in the prior audit:*
+_Events not previously assessed in the prior audit:_
 
 **`stay_recommended` and `move_recommended` (RoutePlannerCard.jsx:253–269):**  
 Both are guarded by `lastDecisionRef.current` (a ref that stores the last verdict). They fire only when `decisionLower` changes and differs from the last-recorded value. This prevents re-firing on re-renders. Trigger is correct — fires on deliberate route-planner result change, not on render. **Quality: Good.**
@@ -415,7 +432,8 @@ Guarded by `initialSiteRef.current` to skip the first render. Fires once per `si
 Noted in prior audit as potentially at risk for StrictMode double-fire. Not re-audited here — not relevant to tickets #343–#346.
 
 **New events that will need StrictMode guards:**  
-Any new event fired from a `useEffect` in a newly tracked component should use a `useRef` guard pattern (as used by `viewFiredRef` in Pricing.jsx, `comparisonFiredRef` in InstantComparison.jsx, `checkoutFiredRef` in Success.jsx). Specifically:  
+Any new event fired from a `useEffect` in a newly tracked component should use a `useRef` guard pattern (as used by `viewFiredRef` in Pricing.jsx, `comparisonFiredRef` in InstantComparison.jsx, `checkoutFiredRef` in Success.jsx). Specifically:
+
 - If `weather_finder_viewed` is implemented in a `useEffect`, it needs a ref guard.
 - Events fired from click handlers do not need StrictMode guards.
 
@@ -423,7 +441,7 @@ Any new event fired from a `useEffect` in a newly tracked component should use a
 
 ## Section 13 — Consent Observations
 
-*Reused from prior audit Section 5.*
+_Reused from prior audit Section 5._
 
 No consent gate exists. `trackEvent()` fires whenever `gaId` is set, unconditionally. **Confirmed still true** — no new consent code found in any component audited.
 
@@ -440,6 +458,7 @@ No analytics code bypasses the `trackEvent()` helper in any component audited he
 **Event emission in components:** No tests assert that `trackEvent` is called in any component. There are no mock implementations of `trackEvent` in the test suite.
 
 **Free-feature component tests:**
+
 - `ForecastTable.jsx`: No test file.
 - `HourlyForecastModal.jsx`: No test file.
 - `Top5Leaderboard.jsx`: No test file.
@@ -447,6 +466,7 @@ No analytics code bypasses the `trackEvent()` helper in any component audited he
 - `WeatherFinderCard.jsx`: No test file.
 
 **Existing test files (from glob):**
+
 - `src/utils/distance.test.js` — geometry utility, not analytics
 - `src/lib/scoring.*.test.js` — scoring engine, not analytics
 - `src/lib/relocationEngine.*.test.js` — route planner engine, not analytics
@@ -462,13 +482,13 @@ No analytics code bypasses the `trackEvent()` helper in any component audited he
 
 The following events do not exist in the current codebase and are required to establish pre-restriction baselines:
 
-| Missing event | Ticket | What it would measure | Required before restriction? |
-|---|---|---|---|
-| `forecast_day_opened` | #343 + #344 | User opening hourly modal for any day | ✅ Yes |
-| `forecast_day_index` property on `forecast_day_opened` | #344 | Whether user selected day 0–2 vs 3–6 | ✅ Yes |
-| `source: "weekly_ranking"` on `campsite_selected` OR a distinct `weekly_ranking_site_clicked` event | #345 | Site clicks originating from Top5Leaderboard | ✅ Yes |
-| `weather_finder_viewed` | #346 | Whether Free users reach the WeatherFinder section | ✅ Yes |
-| `weather_finder_mode_changed` | #346 | Whether Free users switch to calmest/warmest/driest | ✅ Yes (demand signal) |
+| Missing event                                                                                       | Ticket      | What it would measure                               | Required before restriction? |
+| --------------------------------------------------------------------------------------------------- | ----------- | --------------------------------------------------- | ---------------------------- |
+| `forecast_day_opened`                                                                               | #343 + #344 | User opening hourly modal for any day               | ✅ Yes                       |
+| `forecast_day_index` property on `forecast_day_opened`                                              | #344        | Whether user selected day 0–2 vs 3–6                | ✅ Yes                       |
+| `source: "weekly_ranking"` on `campsite_selected` OR a distinct `weekly_ranking_site_clicked` event | #345        | Site clicks originating from Top5Leaderboard        | ✅ Yes                       |
+| `weather_finder_viewed`                                                                             | #346        | Whether Free users reach the WeatherFinder section  | ✅ Yes                       |
+| `weather_finder_mode_changed`                                                                       | #346        | Whether Free users switch to calmest/warmest/driest | ✅ Yes (demand signal)       |
 
 ---
 
@@ -476,12 +496,12 @@ The following events do not exist in the current codebase and are required to es
 
 These events do not exist and will be needed after the restrictions are deployed to measure the locked-feature experience:
 
-| Missing event | Ticket | What it would measure | Add before or after restriction? |
-|---|---|---|---|
-| `hourly_forecast_locked_clicked` | #343 | Locked hourly CTA clicks from Free users | After restriction (not needed for baseline) |
-| `extended_forecast_upgrade_clicked` | #344 | Clicks on the "Upgrade for days 4–7" CTA | After restriction |
-| `weekly_ranking_upgrade_clicked` | #345 | Clicks on the Top5Leaderboard upgrade button | After restriction (but `source` fix to pricing needed now) |
-| `weather_finder_upgrade_clicked` | #346 | Clicks on the WeatherFinder upgrade button | After restriction (but `source` fix to pricing needed now) |
+| Missing event                       | Ticket | What it would measure                        | Add before or after restriction?                           |
+| ----------------------------------- | ------ | -------------------------------------------- | ---------------------------------------------------------- |
+| `hourly_forecast_locked_clicked`    | #343   | Locked hourly CTA clicks from Free users     | After restriction (not needed for baseline)                |
+| `extended_forecast_upgrade_clicked` | #344   | Clicks on the "Upgrade for days 4–7" CTA     | After restriction                                          |
+| `weekly_ranking_upgrade_clicked`    | #345   | Clicks on the Top5Leaderboard upgrade button | After restriction (but `source` fix to pricing needed now) |
+| `weather_finder_upgrade_clicked`    | #346   | Clicks on the WeatherFinder upgrade button   | After restriction (but `source` fix to pricing needed now) |
 
 **Note on upgrade CTAs:** The Top5Leaderboard and WeatherFinder upgrade buttons currently produce no event and navigate to `/pricing` with `source:"direct"`. Even without a dedicated `*_upgrade_clicked` event, adding `?src=weekly_ranking` or `?src=weather_finder` to the navigation URL would make `pricing_page_viewed` (`source:"weekly_ranking"`) a usable proxy for upgrade intent from those surfaces — both before and after the restriction. This is the highest-value, lowest-effort fix.
 
@@ -501,15 +521,18 @@ Listed in implementation priority order:
 
 ```js
 // Approximate location — do not implement during this audit
-const handleOpenHourlyForecast = useCallback((dayRow, dayIndex) => {
-  trackEvent("forecast_day_opened", {
-    dayIndex,      // 0–6; allows filtering days 4–7
-    date: dayRow?.date,
-    siteId,
-  });
-  setSelectedHourlyDay(dayRow);
-  setHourlyModalOpen(true);
-}, [siteId]);
+const handleOpenHourlyForecast = useCallback(
+  (dayRow, dayIndex) => {
+    trackEvent("forecast_day_opened", {
+      dayIndex, // 0–6; allows filtering days 4–7
+      date: dayRow?.date,
+      siteId,
+    });
+    setSelectedHourlyDay(dayRow);
+    setHourlyModalOpen(true);
+  },
+  [siteId]
+);
 ```
 
 `ForecastTable.jsx` would need to pass the row index to `onSelectDay`. This is an analytics-only change — no UI change, no gating change.
@@ -566,13 +589,13 @@ This makes `pricing_page_viewed { source: "weekly_ranking" }` a usable upgrade-i
 
 ## Section 18 — Files Likely to Require Changes
 
-| File | Change required | Ticket(s) |
-|---|---|---|
-| `src/App.jsx` | Add `trackEvent("forecast_day_opened", ...)` in `handleOpenHourlyForecast` | #343, #344 |
-| `src/components/ForecastTable.jsx` | Pass row index to `onSelectDay` callback | #343, #344 |
-| `src/components/Top5Leaderboard.jsx` | Add `weekly_ranking_site_clicked` event on row click | #345 |
-| `src/hooks/useCheckoutFlow.js` | Accept optional `src` param and pass to navigation URL | #345, #346 |
-| `src/components/WeatherFinder.jsx` | Add `weather_finder_viewed` (and optionally `weather_finder_mode_changed`) | #346 |
+| File                                 | Change required                                                            | Ticket(s)  |
+| ------------------------------------ | -------------------------------------------------------------------------- | ---------- |
+| `src/App.jsx`                        | Add `trackEvent("forecast_day_opened", ...)` in `handleOpenHourlyForecast` | #343, #344 |
+| `src/components/ForecastTable.jsx`   | Pass row index to `onSelectDay` callback                                   | #343, #344 |
+| `src/components/Top5Leaderboard.jsx` | Add `weekly_ranking_site_clicked` event on row click                       | #345       |
+| `src/hooks/useCheckoutFlow.js`       | Accept optional `src` param and pass to navigation URL                     | #345, #346 |
+| `src/components/WeatherFinder.jsx`   | Add `weather_finder_viewed` (and optionally `weather_finder_mode_changed`) | #346       |
 
 All changes are confined to adding `trackEvent()` calls and wiring a `src` parameter. No logic changes, no gating changes, no checkout changes.
 
@@ -659,6 +682,7 @@ These are **not** blocking the baseline collection window.
 ### Whether tickets #343–#346 should remain blocked pending tracking deployment
 
 **Yes. All four tickets should remain blocked** until:
+
 1. The analytics changes (PR-ANALYTICS-1 through PR-ANALYTICS-4) are deployed
 2. A minimum 14-day collection window has elapsed
 3. The baseline event counts are manually verified in GA4 (see Section 2)
@@ -673,12 +697,12 @@ The 14-day window should begin on the day the analytics-only deployment goes liv
 
 The following baseline events have been added in a single analytics-only PR (no gating changes, no UI changes, no checkout changes):
 
-| Event | File | Callsite | Properties |
-|---|---|---|---|
-| `forecast_day_opened` | `src/App.jsx` | `handleOpenHourlyForecast` | `dayIndex` (0-based), `date`, `siteId` |
-| `weekly_ranking_site_clicked` | `src/components/Top5Leaderboard.jsx` | row `onClick`, before `onSelectSite` | `siteId`, `siteName`, `rank` (1-based) |
-| `weather_finder_mode_changed` | `src/components/WeatherFinder.jsx` | mode button `onClick`, guard: `m !== mode` | `mode`, `previousMode`, `isPro` |
-| `weather_finder_expanded` | `src/components/WeatherFinder.jsx` | expand button `onClick`, guard: `!showAll` | `mode`, `isPro`, `resultsLimit` |
+| Event                         | File                                 | Callsite                                   | Properties                             |
+| ----------------------------- | ------------------------------------ | ------------------------------------------ | -------------------------------------- |
+| `forecast_day_opened`         | `src/App.jsx`                        | `handleOpenHourlyForecast`                 | `dayIndex` (0-based), `date`, `siteId` |
+| `weekly_ranking_site_clicked` | `src/components/Top5Leaderboard.jsx` | row `onClick`, before `onSelectSite`       | `siteId`, `siteName`, `rank` (1-based) |
+| `weather_finder_mode_changed` | `src/components/WeatherFinder.jsx`   | mode button `onClick`, guard: `m !== mode` | `mode`, `previousMode`, `isPro`        |
+| `weather_finder_expanded`     | `src/components/WeatherFinder.jsx`   | expand button `onClick`, guard: `!showAll` | `mode`, `isPro`, `resultsLimit`        |
 
 **src attribution wired:** `startCheckout(src)` in `src/hooks/useCheckoutFlow.js` now accepts an optional `src` string and appends it to the `/pricing` URL via `URLSearchParams`. `Top5Leaderboard` passes `"weekly_ranking"` and `WeatherFinder` passes `"weather_finder"` — making `pricing_page_viewed { source }` distinguishable for upgrade flows from those two surfaces.
 
@@ -693,3 +717,24 @@ The following baseline events have been added in a single analytics-only PR (no 
 **Test coverage:** 32 new test cases across 4 new test files. All 200 tests pass. Lint clean, build clean.
 
 This change preserves the application's existing analytics and consent behavior. It does not introduce a new consent mechanism and does not resolve the known consent limitation. All new events use the existing analytics helper and must not include personally identifiable information.
+
+**Banner/comparison alignment — deployed 2026-07-23**
+
+DecisionBanner now reads a shared comparison state
+(`src/lib/comparisonUtils.js` + `useComparisonState`) instead of the
+route-planner verdict, so the banner and InstantComparison always
+communicate the same directional result. Move recommendations are
+shown only for Miklu betra / Betra classifications; Örlítið betra
+and Svipað resolve to no-move.
+
+`move_recommended` and `stay_recommended` were intentionally left
+unchanged: they still fire from the route-planner verdict in
+RoutePlannerCard and may therefore differ from the user-facing
+banner (e.g. verdict "consider" + banner "Engin skýr ástæða til að
+færa sig" fires `move_recommended`). They remain guardrail events
+with their pre-existing meaning, per the mid-baseline-window rule
+in this audit. Expect `move_recommended` volume to be unchanged by
+the banner fix. Re-gating these events on the shared comparison
+state is deferred to the free-v2 implementation.
+
+---
