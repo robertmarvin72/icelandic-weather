@@ -1,5 +1,6 @@
 // src/components/WeatherFinder.jsx
 import { useEffect, useMemo, useState } from "react";
+import { trackEvent } from "../lib/analytics";
 import { getFeatureLimit } from "../config/features";
 import { rankCalmest, rankDriest, rankWarmest } from "../lib/weatherFinderRanking";
 import { distanceKm } from "../utils/distance";
@@ -87,7 +88,12 @@ export default function WeatherFinder({ siteList, scoresById, userLoc, entitleme
           <button
             key={m}
             type="button"
-            onClick={() => setMode(m)}
+            onClick={() => {
+              if (m !== mode) {
+                trackEvent("weather_finder_mode_changed", { mode: m, previousMode: mode, isPro });
+              }
+              setMode(m);
+            }}
             className={`rounded-lg px-3 py-1.5 text-sm font-medium transition-colors ${mode === m ? activeBtn : inactiveBtn}`}
           >
             <span aria-hidden="true">{MODE_ICON[m]}</span>{" "}{t(MODE_KEY[m])}
@@ -155,7 +161,12 @@ export default function WeatherFinder({ siteList, scoresById, userLoc, entitleme
           {hasMore && (
             <button
               type="button"
-              onClick={() => setShowAll((v) => !v)}
+              onClick={() => {
+                if (!showAll) {
+                  trackEvent("weather_finder_expanded", { mode, isPro, resultsLimit });
+                }
+                setShowAll((v) => !v);
+              }}
               className={`mt-3 w-full rounded-xl px-4 py-2 text-sm font-medium transition-colors ${inactiveBtn}`}
             >
               {showAll ? t("weatherFinderShowTop10") : t("weatherFinderShowFull")}
@@ -169,7 +180,7 @@ export default function WeatherFinder({ siteList, scoresById, userLoc, entitleme
         <div className="mt-3">
           <button
             type="button"
-            onClick={() => typeof onUpgrade === "function" && onUpgrade()}
+            onClick={() => typeof onUpgrade === "function" && onUpgrade("weather_finder")}
             className="w-full rounded-xl px-3 py-2 text-sm font-semibold bg-emerald-600 text-white hover:bg-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-400/60 dark:bg-emerald-500 dark:hover:bg-emerald-400"
           >
             {t("weatherFinderUpgradeForMore")}

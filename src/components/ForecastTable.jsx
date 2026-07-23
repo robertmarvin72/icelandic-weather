@@ -229,7 +229,7 @@ export default function ForecastTable({
               </thead>
 
               <tbody className="[&>tr:nth-child(even)]:bg-slate-50 dark:[&>tr:nth-child(even)]:bg-slate-800/40">
-                {rows.map((r) => {
+                {rows.map((r, idx) => {
                   const code = Number(r.code ?? 0);
                   const weatherKey = weatherMap?.[code]?.textKey ?? "unknown";
 
@@ -240,11 +240,11 @@ export default function ForecastTable({
                   return (
                     <tr
                       key={r.date}
-                      onClick={() => onSelectDay?.(r)}
+                      onClick={() => onSelectDay?.(r, idx)}
                       onKeyDown={(e) => {
                         if (e.key === "Enter" || e.key === " ") {
                           e.preventDefault();
-                          onSelectDay?.(r);
+                          onSelectDay?.(r, idx);
                         }
                       }}
                       tabIndex={0}

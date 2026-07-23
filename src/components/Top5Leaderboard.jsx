@@ -1,5 +1,6 @@
 // src/components/Top5Leaderboard.jsx
 import React, { useMemo } from "react";
+import { trackEvent } from "../lib/analytics";
 import LoadingShimmer from "./LoadingShimmer";
 import ScoreLegend from "./ScoreLegend";
 import { scorePillClass } from "../ui/scoreStyles";
@@ -128,7 +129,7 @@ export default function Top5Leaderboard({
 
   const handleCtaClick = () => {
     if (!me?.user) {
-      if (typeof onUpgrade === "function") onUpgrade();
+      if (typeof onUpgrade === "function") onUpgrade("weekly_ranking");
       return;
     }
 
@@ -142,7 +143,7 @@ export default function Top5Leaderboard({
       return;
     }
 
-    if (typeof onUpgrade === "function") onUpgrade();
+    if (typeof onUpgrade === "function") onUpgrade("weekly_ranking");
   };
 
   return (
@@ -200,7 +201,14 @@ export default function Top5Leaderboard({
                   className={`cursor-pointer transition dark:hover:bg-slate-800/60 hover:bg-sky-50/60 ${
                     idx === 0 ? "bg-emerald-50/70 dark:bg-emerald-950/20" : ""
                   }`}
-                  onClick={() => onSelectSite(item.site.id)}
+                  onClick={() => {
+                    trackEvent("weekly_ranking_site_clicked", {
+                      siteId: item.site.id,
+                      siteName: item.site.name,
+                      rank: idx + 1,
+                    });
+                    onSelectSite(item.site.id);
+                  }}
                   title={t?.("selectOnMap")}
                 >
                   <td className="px-3 py-2 text-center font-semibold text-slate-700 dark:text-slate-200">

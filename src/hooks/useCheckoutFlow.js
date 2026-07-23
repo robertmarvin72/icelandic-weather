@@ -2,7 +2,7 @@ import { useCallback, useEffect } from "react";
 import { trackEvent } from "../lib/analytics";
 
 export function useCheckoutFlow({ me, navigate, openLoginModal, pushToast, t, refetchMe }) {
-  const startCheckout = useCallback(async () => {
+  const startCheckout = useCallback(async (src) => {
     if (!me?.user) {
       pushToast({
         type: "info",
@@ -22,7 +22,10 @@ export function useCheckoutFlow({ me, navigate, openLoginModal, pushToast, t, re
       return;
     }
 
-    navigate(`/pricing?email=${encodeURIComponent(me?.user?.email || "")}`);
+    const params = new URLSearchParams();
+    params.set("email", me?.user?.email || "");
+    if (src) params.set("src", src);
+    navigate(`/pricing?${params.toString()}`);
   }, [me, navigate, openLoginModal, pushToast, t]);
 
   const openBillingPortal = useCallback(async () => {

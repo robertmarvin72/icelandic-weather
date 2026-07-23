@@ -147,10 +147,17 @@ function IcelandCampingWeatherApp({ page = "home" }) {
     [setSiteId]
   );
 
-  const handleOpenHourlyForecast = useCallback((dayRow) => {
-    setSelectedHourlyDay(dayRow);
-    setHourlyModalOpen(true);
-  }, []);
+  const handleOpenHourlyForecast = useCallback(
+    (dayRow, dayIndex) => {
+      const props = { dayIndex };
+      if (dayRow?.date) props.date = dayRow.date;
+      if (siteId) props.siteId = siteId;
+      trackEvent("forecast_day_opened", props);
+      setSelectedHourlyDay(dayRow);
+      setHourlyModalOpen(true);
+    },
+    [siteId]
+  );
 
   const handleCloseHourlyForecast = useCallback(() => {
     setHourlyModalOpen(false);
