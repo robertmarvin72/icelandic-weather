@@ -481,6 +481,23 @@ export const commonTranslations = {
       "With Pro, you can choose two campsites, compare them day by day and open an hourly breakdown for each day.",
     comparisonLockedCta: "Unlock Pro comparison",
 
+    // One-time travel passes
+    pricingPass30Title: "30-Day Travel Pass",
+    pricingPassYearTitle: "Annual Pass",
+    pricingPerOneTime: "one-time",
+    pricingPassMicro: "One-time purchase · No auto-renewal",
+    pricingPass30Duration: "30 days from purchase date",
+    pricingPassYearDuration: "1 year (365 days) from purchase date",
+    pricingPass30RenewalText:
+      "One-time purchase. Pro access for 30 days from the date of purchase. No automatic renewal.",
+    pricingPassYearRenewalText:
+      "One-time purchase. Pro access for 1 year (365 days) from the date of purchase. No automatic renewal.",
+    pricingPass30CTA: "Buy 30-day pass",
+    pricingPassYearCTA: "Buy annual pass",
+    pricingPassCtaConfirm: "One-time purchase. No automatic renewal.",
+    pricingPassPopularBadge: "Most popular for travellers",
+    pricingFeatureNoRenewal: "No automatic renewal",
+
     locale: "en-GB",
   },
   is: {
@@ -960,6 +977,23 @@ export const commonTranslations = {
     comparisonLockedBody:
       "Með Pro geturðu valið tvö tjaldsvæði, borið þau saman dag frá degi og opnað klukkutímasamanburð fyrir hvern dag.",
     comparisonLockedCta: "Opna Pro samanburð",
+
+    // Eingreiðslu ferðapassar
+    pricingPass30Title: "30 daga ferðapassi",
+    pricingPassYearTitle: "Árspassi",
+    pricingPerOneTime: "eingreiðsla",
+    pricingPassMicro: "Eingreiðsla · Engin sjálfvirk endurnýjun",
+    pricingPass30Duration: "30 dagar frá kaupdegi",
+    pricingPassYearDuration: "1 ár (365 dagar) frá kaupdegi",
+    pricingPass30RenewalText:
+      "Eingreiðsla. Pro aðgangur í 30 daga frá kaupdegi. Engin sjálfvirk endurnýjun.",
+    pricingPassYearRenewalText:
+      "Eingreiðsla. Pro aðgangur í 1 ár (365 dagar) frá kaupdegi. Engin sjálfvirk endurnýjun.",
+    pricingPass30CTA: "Kaupa 30 daga passa",
+    pricingPassYearCTA: "Kaupa árspassa",
+    pricingPassCtaConfirm: "Eingreiðsla. Engin sjálfvirk endurnýjun.",
+    pricingPassPopularBadge: "Vinsælast fyrir ferðamenn",
+    pricingFeatureNoRenewal: "Engin sjálfvirk endurnýjun",
 
     locale: "is-IS",
   },

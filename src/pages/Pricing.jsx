@@ -230,6 +230,8 @@ export default function Pricing({ onClose, lang = "is", theme = "dark", t, me })
   // Display-only prices (billing is still EUR in Paddle)
   const yearlyPrice = prices.yearly; // "€24.99" or "3.590 kr"
   const monthlyPrice = prices.monthly; // "€4.99"  or "790 kr"
+  const pass30Price = prices.pass30; // "€6.99"  or "995 kr"
+  const passYearPrice = prices.passyear; // "€29.99" or "4.268 kr"
 
   const featuresYearly = [
     T("pricingFeatureComparisons", "Compare all 242 campsites across Iceland"),
@@ -241,11 +243,38 @@ export default function Pricing({ onClose, lang = "is", theme = "dark", t, me })
   const featuresMonthly = [
     T("pricingFeatureComparisons", "Compare all 242 campsites across Iceland"),
     T("pricingFeatureAllPro", "All Pro features unlocked"),
+    T("pricingFeatureWindShelter", "Wind direction + shelter score"),
     T("pricingFeatureCancelAnytime", "Cancel anytime"),
+  ];
+
+  const featuresPass30 = [
+    T("pricingFeatureComparisons", "Compare all 242 campsites across Iceland"),
+    T("pricingFeatureAllPro", "All Pro features unlocked"),
+    T("pricingFeatureWindShelter", "Wind direction + shelter score"),
+  ];
+
+  const featuresPassYear = [
+    T("pricingFeatureComparisons", "Compare all 242 campsites across Iceland"),
+    T("pricingFeatureAllPro", "All Pro features unlocked"),
+    T("pricingFeatureWindShelter", "Wind direction + shelter score"),
   ];
 
   return (
     <div style={styles.page}>
+      <style>{`
+        .pricing-plans-grid {
+          display: grid;
+          gap: 12px;
+          grid-template-columns: 1fr;
+          margin-top: 16px;
+        }
+        @media (min-width: 500px) {
+          .pricing-plans-grid { grid-template-columns: 1fr 1fr; }
+        }
+        @media (min-width: 1100px) {
+          .pricing-plans-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+        }
+      `}</style>
       <div style={styles.glowTop} />
       <div style={styles.glowBottom} />
 
@@ -353,38 +382,29 @@ export default function Pricing({ onClose, lang = "is", theme = "dark", t, me })
             </span>
           </label>
 
-          <div style={styles.plans}>
-            {/* Yearly (featured) */}
+          <div className="pricing-plans-grid" style={styles.plansBase}>
+            {/* 30-day travel pass (featured, popular badge) */}
             <div style={styles.planFeatured}>
-              <div style={styles.planHeader}>
-                <div>
-                  <div style={styles.planTitle}>{T("pricingYearlyTitle", "Yearly")}</div>
-                  <div style={styles.planPriceRow}>
-                    <div style={styles.planPrice}>{yearlyPrice}</div>
-                    <div style={styles.planPer}>{T("pricingPerYear", "per year")}</div>
-                    <div style={{ fontSize: 12, color: "#6b7280", marginTop: 4 }}>
-                      {T("pricingYearlyEquivalentMonthly", "≈ €2 per month")}
-                    </div>
-                    <div style={{ fontSize: 12, color: "#059669", marginTop: 2 }}>
-                      {T(
-                        "pricingYearlySavings",
-                        "Sparar um 5.890 kr á ári miðað við mánaðaráskrift"
-                      )}
-                    </div>
-                  </div>
-                  <div style={styles.planMicro}>
-                    {T("pricingYearlyMicro", "Billed once a year · Cancel anytime")}
-                  </div>
-                  <div style={styles.renewalText}>
-                    {T("pricingYearlyRenewalText", "Renews automatically every year until cancelled. You can cancel at any time and keep access until the end of the paid period.")}
-                  </div>
-                </div>
-
-                <div style={styles.badgeBestValue}>{T("pricingBestValue", "Best value")}</div>
+              <div style={{ marginBottom: 10 }}>
+                <span style={styles.badgePopular}>{T("pricingPassPopularBadge", "Most popular for travellers")}</span>
+              </div>
+              <div style={styles.planTitle}>{T("pricingPass30Title", "30-Day Travel Pass")}</div>
+              <div style={styles.planPriceRow}>
+                <div style={styles.planPrice}>{pass30Price}</div>
+                <div style={styles.planPer}>{T("pricingPerOneTime", "one-time")}</div>
+              </div>
+              <div style={styles.planMicro}>
+                {T("pricingPassMicro", "One-time purchase · No auto-renewal")}
+              </div>
+              <div style={{ fontSize: 12, opacity: 0.8, marginTop: 4, fontWeight: 700 }}>
+                {T("pricingPass30Duration", "30 days from purchase date")}
+              </div>
+              <div style={styles.renewalText}>
+                {T("pricingPass30RenewalText", "One-time purchase. Pro access for 30 days from the date of purchase. No automatic renewal.")}
               </div>
 
               <ul style={styles.featureList}>
-                {featuresYearly.map((x) => (
+                {featuresPass30.map((x) => (
                   <li key={x} style={styles.featureItem}>
                     <span aria-hidden>✅</span>
                     <span>{x}</span>
@@ -392,28 +412,25 @@ export default function Pricing({ onClose, lang = "is", theme = "dark", t, me })
                 ))}
               </ul>
 
-              <button
-                type="button"
-                style={styles.cta(
-                  true,
-                  busyPlan === "yearly",
-                  !acceptedTerms || !!busyPlan || isYearly
-                )}
-                onClick={() => startCheckout("yearly")}
-                disabled={!acceptedTerms || !!busyPlan || isYearly}
-              >
-                {busyPlan === "yearly"
-                  ? T("subscribeCtaBusy", "Opening checkout…")
-                  : isMonthly
-                    ? T("pricingCtaUpgradeToYearly", "Upgrade to Yearly")
-                    : T("pricingCtaYearly", "Start annual subscription")}
-              </button>
-              <div style={styles.ctaConfirm}>
-                {T("pricingCtaConfirm", "By continuing, you agree that your subscription will renew automatically according to the selected billing period until cancelled.")}
+              <div style={{ marginTop: "auto" }}>
+                <button
+                  type="button"
+                  data-plan="pass30"
+                  style={styles.cta(true, busyPlan === "pass30", !acceptedTerms || !!busyPlan)}
+                  onClick={() => startCheckout("pass30")}
+                  disabled={!acceptedTerms || !!busyPlan}
+                >
+                  {busyPlan === "pass30"
+                    ? T("subscribeCtaBusy", "Opening checkout…")
+                    : T("pricingPass30CTA", "Buy 30-day pass")}
+                </button>
+                <div style={styles.ctaConfirm}>
+                  {T("pricingPassCtaConfirm", "One-time purchase. No automatic renewal.")}
+                </div>
               </div>
             </div>
 
-            {/* Monthly */}
+            {/* Monthly subscription */}
             <div style={styles.plan}>
               <div style={styles.planTitle}>{T("pricingMonthlyTitle", "Monthly")}</div>
 
@@ -435,26 +452,131 @@ export default function Pricing({ onClose, lang = "is", theme = "dark", t, me })
                 ))}
               </ul>
 
-              <button
-                type="button"
-                style={styles.cta(
-                  false,
-                  busyPlan === "monthly",
-                  !acceptedTerms || !!busyPlan || isMonthly || isYearly
-                )}
-                onClick={() => startCheckout("monthly")}
-                disabled={!acceptedTerms || !!busyPlan || isMonthly || isYearly}
-              >
-                {busyPlan === "monthly"
-                  ? T("subscribeCtaBusy", "Opening checkout…")
-                  : isMonthly
-                    ? T("pricingMonthlyAlreadyActive", "Monthly is active")
-                    : isYearly
-                      ? T("pricingMonthlyNotAvailable", "Not available")
-                      : T("pricingCtaMonthly", "Start monthly subscription")}
-              </button>
-              <div style={styles.ctaConfirm}>
-                {T("pricingCtaConfirm", "By continuing, you agree that your subscription will renew automatically according to the selected billing period until cancelled.")}
+              <div style={{ marginTop: "auto" }}>
+                <button
+                  type="button"
+                  data-plan="monthly"
+                  style={styles.cta(
+                    false,
+                    busyPlan === "monthly",
+                    !acceptedTerms || !!busyPlan || isMonthly || isYearly
+                  )}
+                  onClick={() => startCheckout("monthly")}
+                  disabled={!acceptedTerms || !!busyPlan || isMonthly || isYearly}
+                >
+                  {busyPlan === "monthly"
+                    ? T("subscribeCtaBusy", "Opening checkout…")
+                    : isMonthly
+                      ? T("pricingMonthlyAlreadyActive", "Monthly is active")
+                      : isYearly
+                        ? T("pricingMonthlyNotAvailable", "Not available")
+                        : T("pricingCtaMonthly", "Start monthly subscription")}
+                </button>
+                <div style={styles.ctaConfirm}>
+                  {T("pricingCtaConfirm", "By continuing, you agree that your subscription will renew automatically according to the selected billing period until cancelled.")}
+                </div>
+              </div>
+            </div>
+
+            {/* Annual pass (one-time) */}
+            <div style={styles.plan}>
+              <div style={styles.planTitle}>{T("pricingPassYearTitle", "Annual Pass")}</div>
+
+              <div style={styles.planPriceRow}>
+                <div style={styles.planPrice}>{passYearPrice}</div>
+                <div style={styles.planPer}>{T("pricingPerOneTime", "one-time")}</div>
+              </div>
+
+              <div style={styles.planMicro}>
+                {T("pricingPassMicro", "One-time purchase · No auto-renewal")}
+              </div>
+              <div style={{ fontSize: 12, opacity: 0.8, marginTop: 4, fontWeight: 700 }}>
+                {T("pricingPassYearDuration", "1 year (365 days) from purchase date")}
+              </div>
+              <div style={styles.renewalText}>
+                {T("pricingPassYearRenewalText", "One-time purchase. Pro access for 1 year (365 days) from the date of purchase. No automatic renewal.")}
+              </div>
+
+              <ul style={styles.featureList}>
+                {featuresPassYear.map((x) => (
+                  <li key={x} style={styles.featureItem}>
+                    <span aria-hidden>✅</span>
+                    <span>{x}</span>
+                  </li>
+                ))}
+              </ul>
+
+              <div style={{ marginTop: "auto" }}>
+                <button
+                  type="button"
+                  data-plan="passyear"
+                  style={styles.cta(false, busyPlan === "passyear", !acceptedTerms || !!busyPlan)}
+                  onClick={() => startCheckout("passyear")}
+                  disabled={!acceptedTerms || !!busyPlan}
+                >
+                  {busyPlan === "passyear"
+                    ? T("subscribeCtaBusy", "Opening checkout…")
+                    : T("pricingPassYearCTA", "Buy annual pass")}
+                </button>
+                <div style={styles.ctaConfirm}>
+                  {T("pricingPassCtaConfirm", "One-time purchase. No automatic renewal.")}
+                </div>
+              </div>
+            </div>
+
+            {/* Yearly subscription (featured, best value) */}
+            <div style={styles.planFeatured}>
+              <div style={{ marginBottom: 10 }}>
+                <span style={styles.badgeBestValue}>{T("pricingBestValue", "Best value")}</span>
+              </div>
+              <div style={styles.planTitle}>{T("pricingYearlyTitle", "Yearly")}</div>
+              <div style={styles.planPriceRow}>
+                <div style={styles.planPrice}>{yearlyPrice}</div>
+                <div style={styles.planPer}>{T("pricingPerYear", "per year")}</div>
+              </div>
+              <div style={{ fontSize: 12, color: "#6b7280", marginTop: 4 }}>
+                {T("pricingYearlyEquivalentMonthly", "≈ €2 per month")}
+              </div>
+              <div style={{ fontSize: 12, color: "#059669", marginTop: 2 }}>
+                {T("pricingYearlySavings", "Sparar um 5.890 kr á ári miðað við mánaðaráskrift")}
+              </div>
+              <div style={styles.planMicro}>
+                {T("pricingYearlyMicro", "Billed once a year · Cancel anytime")}
+              </div>
+              <div style={styles.renewalText}>
+                {T("pricingYearlyRenewalText", "Renews automatically every year until cancelled. You can cancel at any time and keep access until the end of the paid period.")}
+              </div>
+
+              <ul style={styles.featureList}>
+                {featuresYearly.map((x) => (
+                  <li key={x} style={styles.featureItem}>
+                    <span aria-hidden>✅</span>
+                    <span>{x}</span>
+                  </li>
+                ))}
+              </ul>
+
+              <div style={{ marginTop: "auto" }}>
+                <button
+                  type="button"
+                  data-plan="yearly"
+                  style={styles.cta(
+                    true,
+                    busyPlan === "yearly",
+                    !acceptedTerms || !!busyPlan || isYearly
+                  )}
+                  onClick={() => startCheckout("yearly")}
+                  disabled={!acceptedTerms || !!busyPlan || isYearly}
+                >
+                  {busyPlan === "yearly"
+                    ? T("subscribeCtaBusy", "Opening checkout…")
+                    : isMonthly
+                      ? T("pricingCtaUpgradeToYearly", "Upgrade to Yearly")
+                      : T("pricingCtaYearly", "Start annual subscription")}
+                </button>
+                <div style={styles.ctaConfirm}>
+                  {T("pricingCtaConfirm", "By continuing, you agree that your subscription will renew automatically according to the selected billing period until cancelled.")}
+                </div>
               </div>
             </div>
           </div>
@@ -506,7 +628,7 @@ function getStyles(isLight) {
       opacity: isLight ? 0.4 : 1,
     },
 
-    container: { maxWidth: 860, margin: "0 auto", position: "relative" },
+    container: { maxWidth: 1200, margin: "0 auto", position: "relative" },
 
     topBar: {
       marginBottom: 0,
@@ -609,12 +731,7 @@ function getStyles(isLight) {
       fontWeight: 800,
     },
 
-    plans: {
-      marginTop: 16,
-      display: "grid",
-      gap: 12,
-      gridTemplateColumns: "1fr",
-    },
+    plansBase: {},
 
     planFeatured: {
       borderRadius: 20,
@@ -622,6 +739,9 @@ function getStyles(isLight) {
       border: "1px solid rgba(16,185,129,0.35)",
       background: isLight ? "rgba(16,185,129,0.06)" : "rgba(16,185,129,0.10)",
       boxShadow: isLight ? "0 18px 50px rgba(16,185,129,0.10)" : "0 18px 60px rgba(0,0,0,0.30)",
+      display: "flex",
+      flexDirection: "column",
+      minWidth: 0,
     },
 
     plan: {
@@ -629,18 +749,14 @@ function getStyles(isLight) {
       padding: 14,
       border: softBorder,
       background: isLight ? "rgba(2,6,23,0.03)" : "rgba(255,255,255,0.03)",
-    },
-
-    planHeader: {
       display: "flex",
-      alignItems: "flex-start",
-      justifyContent: "space-between",
-      gap: 12,
+      flexDirection: "column",
+      minWidth: 0,
     },
 
     planTitle: { fontWeight: 950, fontSize: 14, marginBottom: 6 },
 
-    planPriceRow: { display: "flex", alignItems: "baseline", gap: 10 },
+    planPriceRow: { display: "flex", alignItems: "baseline", gap: 10, flexWrap: "wrap" },
     planPrice: { fontSize: 34, fontWeight: 950, letterSpacing: -0.6 },
     planPer: { fontSize: 13, fontWeight: 800, opacity: 0.75 },
 
@@ -657,6 +773,18 @@ function getStyles(isLight) {
       borderRadius: 999,
       background: isLight ? "rgba(16,185,129,0.18)" : "rgba(16,185,129,0.20)",
       border: "1px solid rgba(16,185,129,0.32)",
+      whiteSpace: "nowrap",
+      alignSelf: "flex-start",
+    },
+
+    badgePopular: {
+      fontSize: 12,
+      fontWeight: 950,
+      padding: "8px 10px",
+      borderRadius: 999,
+      background: isLight ? "rgba(245,158,11,0.18)" : "rgba(245,158,11,0.22)",
+      border: "1px solid rgba(245,158,11,0.38)",
+      color: isLight ? "#92400e" : "rgba(253,230,138,0.95)",
       whiteSpace: "nowrap",
       alignSelf: "flex-start",
     },

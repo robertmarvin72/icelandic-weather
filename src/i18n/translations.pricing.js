@@ -118,11 +118,17 @@ export const pricingTranslations = {
       "See day by day which campsite is calmer, drier or warmer, and open an hourly breakdown when the decision matters.",
 
     pricingInfoMonthlyLabel: "Monthly",
-    pricingInfoMonthlyPrice: "€4.99 / month",
+    pricingInfoMonthlyPrice: "/ month",
     pricingInfoMonthlyBody: "Flexible access to Chase the Weather Pro features.",
     pricingInfoYearlyLabel: "Yearly",
-    pricingInfoYearlyPrice: "€24.99 / year",
+    pricingInfoYearlyPrice: "/ year",
     pricingInfoYearlyBody: "Best value if you use Chase the Weather regularly.",
+
+    pricingInfoPass30Label: "30-Day Travel Pass",
+    pricingInfoPass30Body: "One-time purchase. Pro access for 30 days from purchase date. No auto-renewal.",
+    pricingInfoPassYearLabel: "Annual Pass",
+    pricingInfoPassYearBody: "One-time purchase. Pro access for 1 year (365 days) from purchase date. No auto-renewal.",
+    pricingInfoOneTime: "one-time",
 
     pricingInfoIncludesTitle: "What's included",
     pricingInfoIncludes1: "Full access to Route Planner",
@@ -132,7 +138,7 @@ export const pricingTranslations = {
 
     pricingInfoTrustTitle: "Good to know",
     pricingInfoTrustBody:
-      "Chase the Weather offers a 14-day refund period from the initial purchase of a new subscription. You can also manage your subscription through the billing portal.",
+      "Chase the Weather offers a 14-day refund period from the initial purchase of a new subscription or pass. Subscriptions can be managed through the billing portal. Passes expire automatically after their access period — no cancellation needed.",
     pricingInfoRefundLink: "Refund policy",
     pricingInfoUpgradeLink: "Get Chase the Weather Pro",
   },
@@ -256,11 +262,17 @@ export const pricingTranslations = {
       "Sjáðu dag frá degi hvort tjaldsvæðið er rólegra, þurrara eða hlýrra og opnaðu klukkutímasamanburð þegar ákvörðunin skiptir máli.",
 
     pricingInfoMonthlyLabel: "Mánaðaráskrift",
-    pricingInfoMonthlyPrice: "€4.99 / mánuður",
+    pricingInfoMonthlyPrice: "/ mánuður",
     pricingInfoMonthlyBody: "Sveigjanlegur aðgangur að Eltum Veðrið Pro eiginleikum.",
     pricingInfoYearlyLabel: "Ársáskrift",
-    pricingInfoYearlyPrice: "€24.99 / ár",
+    pricingInfoYearlyPrice: "/ ár",
     pricingInfoYearlyBody: "Besti kosturinn ef þú notar Eltum Veðrið reglulega.",
+
+    pricingInfoPass30Label: "30 daga ferðapassi",
+    pricingInfoPass30Body: "Eingreiðsla. Pro aðgangur í 30 daga frá kaupdegi. Engin sjálfvirk endurnýjun.",
+    pricingInfoPassYearLabel: "Árspassi",
+    pricingInfoPassYearBody: "Eingreiðsla. Pro aðgangur í 1 ár (365 dagar) frá kaupdegi. Engin sjálfvirk endurnýjun.",
+    pricingInfoOneTime: "eingreiðsla",
 
     pricingInfoIncludesTitle: "Hvað fylgir",
     pricingInfoIncludes1: "Fullur aðgangur að Ferðaráðgjafa",
@@ -270,7 +282,7 @@ export const pricingTranslations = {
 
     pricingInfoTrustTitle: "Gott að vita",
     pricingInfoTrustBody:
-      "Eltum Veðrið býður upp á 14 daga endurgreiðslufrest frá fyrstu greiðslu nýrrar áskriftar. Þú getur einnig séð um áskriftina í gegnum greiðslugáttina.",
+      "Eltum Veðrið býður upp á 14 daga endurgreiðslufrest frá fyrstu greiðslu nýrrar áskriftar eða passa. Áskriftum er stjórnað í gegnum greiðslugáttina. Passar renna sjálfkrafa út að loknum aðgangstíma — engin uppsögn þarf.",
     pricingInfoRefundLink: "Sjá endurgreiðslustefnu",
     pricingInfoUpgradeLink: "Fá Eltum Veðrið Pro",
   },

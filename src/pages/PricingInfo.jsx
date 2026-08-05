@@ -1,7 +1,9 @@
 import React from "react";
 import Footer from "../components/Footer";
+import { getDisplayPrices } from "../config/pricing";
 
-export default function PricingInfo({ theme = "light", t, onUpgrade }) {
+export default function PricingInfo({ lang = "is", theme = "light", t, onUpgrade }) {
+  const prices = getDisplayPrices(lang);
   const isLight = theme === "light";
   const isDark = !isLight;
 
@@ -74,14 +76,44 @@ export default function PricingInfo({ theme = "light", t, onUpgrade }) {
             </div>
           </div>
 
-          <div className="mt-8 grid gap-4 md:grid-cols-2">
+          <p className="mt-6 text-xs text-slate-500 dark:text-slate-400">
+            {t("pricingChargedInEur")}
+          </p>
+
+          <div className="mt-4 grid gap-4 md:grid-cols-2">
+            <div className="rounded-2xl border border-slate-200/70 bg-white p-5 dark:border-slate-700/70 dark:bg-slate-900/80">
+              <div className="text-sm font-semibold text-slate-500 dark:text-slate-400">
+                {t("pricingInfoPass30Label")}
+              </div>
+              <div className="mt-2 text-3xl font-bold">
+                {prices.pass30} / {t("pricingInfoOneTime")}
+              </div>
+              <div className="mt-1 text-sm text-slate-600 dark:text-slate-300">
+                {t("pricingInfoPass30Body")}
+              </div>
+            </div>
+
             <div className="rounded-2xl border border-slate-200/70 bg-white p-5 dark:border-slate-700/70 dark:bg-slate-900/80">
               <div className="text-sm font-semibold text-slate-500 dark:text-slate-400">
                 {t("pricingInfoMonthlyLabel")}
               </div>
-              <div className="mt-2 text-3xl font-bold">{t("pricingInfoMonthlyPrice")}</div>
+              <div className="mt-2 text-3xl font-bold">
+                {prices.monthly} {t("pricingInfoMonthlyPrice")}
+              </div>
               <div className="mt-1 text-sm text-slate-600 dark:text-slate-300">
                 {t("pricingInfoMonthlyBody")}
+              </div>
+            </div>
+
+            <div className="rounded-2xl border border-slate-200/70 bg-white p-5 dark:border-slate-700/70 dark:bg-slate-900/80">
+              <div className="text-sm font-semibold text-slate-500 dark:text-slate-400">
+                {t("pricingInfoPassYearLabel")}
+              </div>
+              <div className="mt-2 text-3xl font-bold">
+                {prices.passyear} / {t("pricingInfoOneTime")}
+              </div>
+              <div className="mt-1 text-sm text-slate-600 dark:text-slate-300">
+                {t("pricingInfoPassYearBody")}
               </div>
             </div>
 
@@ -89,7 +121,9 @@ export default function PricingInfo({ theme = "light", t, onUpgrade }) {
               <div className="text-sm font-semibold text-emerald-700 dark:text-emerald-300">
                 {t("pricingInfoYearlyLabel")}
               </div>
-              <div className="mt-2 text-3xl font-bold">{t("pricingInfoYearlyPrice")}</div>
+              <div className="mt-2 text-3xl font-bold">
+                {prices.yearly} {t("pricingInfoYearlyPrice")}
+              </div>
               <div className="mt-1 text-sm text-slate-700 dark:text-slate-300">
                 {t("pricingInfoYearlyBody")}
               </div>
