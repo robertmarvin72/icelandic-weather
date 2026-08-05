@@ -66,6 +66,8 @@ export function normalizeEvent(evt) {
     const currency = data?.currency_code || null;
     const amount = extractTransactionAmount(data);
     const occurredAt = toIsoDateOrNull(evt?.occurred_at || data?.billed_at || data?.updated_at);
+    const priceId = Array.isArray(data?.items) ? (data.items[0]?.price?.id ?? null) : null;
+    const billedAt = toIsoDateOrNull(data?.billed_at);
 
     return {
       kind: "transaction",
@@ -77,7 +79,23 @@ export function normalizeEvent(evt) {
       currency,
       amount,
       occurredAt,
+      priceId,
+      billedAt,
       raw: evt,
+    };
+  }
+
+  if (eventType.startsWith("adjustment.")) {
+    const transactionId = data?.transaction_id || null;
+    const action = data?.action || null;
+    const customerId = data?.customer_id || null;
+
+    return {
+      kind: "adjustment",
+      eventType,
+      transactionId,
+      action,
+      customerId,
     };
   }
 
@@ -124,5 +142,6 @@ export function getAllowedPaddleEvents() {
     "subscription.canceled",
     "subscription.cancelled",
     "transaction.completed",
+    "adjustment.created",
   ]);
 }

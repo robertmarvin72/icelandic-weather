@@ -9,7 +9,11 @@ export default defineConfig({
     setupFiles: ["./src/test/setupTests.js"],
 
     // ✅ Make sure our utility tests are picked up
-    include: ["src/**/*.test.js", "src/**/*.spec.js", "src/**/*.test.jsx", "src/**/*.spec.jsx"],
+    include: [
+      "src/**/*.test.js", "src/**/*.spec.js",
+      "src/**/*.test.jsx", "src/**/*.spec.jsx",
+      "api/**/*.test.js",
+    ],
 
     coverage: {
       provider: "v8",

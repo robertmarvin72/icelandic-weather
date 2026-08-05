@@ -104,17 +104,41 @@ export async function getMeFromRequest(req) {
 
   const status = (sub?.status || "").toLowerCase();
 
-  // Keep your “soft statuses allowed” behavior
-  const proActive =
+  // Keep your "soft statuses allowed" behavior
+  const subProActive =
     endsInFuture &&
     ["active", "trialing", "past_due", "canceled", "cancelled"].includes(status);
+
+  // Pass-based Pro: active pass with access_end in the future
+  const passRows = await sql`
+    select access_end
+    from user_pass
+    where user_id = ${user.id}
+      and status = 'active'
+      and access_end > now()
+    order by access_end desc
+    limit 1
+  `;
+  const passUntil = passRows[0]?.access_end || null;
+  const passProActive = !!passUntil;
+
+  const proActive = subProActive || passProActive;
+
+  // proUntil reflects the latest access end across subscription and pass
+  const subUntil = sub?.current_period_end || null;
+  let proUntil;
+  if (subUntil && passUntil) {
+    proUntil = new Date(passUntil) > new Date(subUntil) ? passUntil : subUntil;
+  } else {
+    proUntil = subUntil || passUntil;
+  }
 
   return {
     user,
     subscription: sub ? { ...sub, plan } : null,
     entitlements: {
       pro: !!proActive,
-      proUntil: sub?.current_period_end || null,
+      proUntil,
     },
   };
 }

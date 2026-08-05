@@ -343,9 +343,12 @@ async function getUsersSummary() {
   };
 }
 
-async function getProSummary() {
-  const rows = await sql`
-    with sub_flags as (
+// Exported for testing. Accepts an optional testSql to allow injection in unit tests.
+export async function getProSummary(testSql) {
+  const db = testSql ?? sql;
+  const rows = await db`
+    with all_pro_flags as (
+      -- subscription-based Pro
       select
         user_id,
         case
@@ -355,6 +358,22 @@ async function getProSummary() {
           else false
         end as is_active
       from user_subscription
+
+      union all
+
+      -- pass-based Pro (each purchase is a separate row)
+      select
+        user_id,
+        true as is_active
+      from user_pass
+      where status = 'active'
+        and access_end > now()
+    ),
+    sub_flags as (
+      -- de-duplicate: one row per user, true if any source grants Pro
+      select user_id, bool_or(is_active) as is_active
+      from all_pro_flags
+      group by user_id
     ),
     totals as (
       select count(*)::int as total_users

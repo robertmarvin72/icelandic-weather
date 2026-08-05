@@ -2,7 +2,7 @@ import postgres from "postgres";
 import { readRawBody, verifyPaddleSignature, isProdLike } from "./_lib/paddle/verify.js";
 import { normalizeEvent, getAllowedPaddleEvents } from "./_lib/paddle/normalize.js";
 import { mapCustomerToUser, persistSubscription } from "./_lib/paddle/subscriptions.js";
-import { persistTransaction } from "./_lib/paddle/transactions.js";
+import { persistTransaction, revokePassForTransaction } from "./_lib/paddle/transactions.js";
 
 const sql = postgres(process.env.POSTGRES_URL, { ssl: "require" });
 
@@ -56,6 +56,17 @@ export default async function handler(req, res) {
   try {
     if (normalized.kind === "transaction") {
       const result = await persistTransaction({ sql, normalized });
+      return res.status(200).json({
+        ...result,
+        event_type: eventType,
+      });
+    }
+
+    if (normalized.kind === "adjustment") {
+      // Paddle Billing fires adjustment.created with action="refund" when a
+      // transaction is refunded. revokePassForTransaction is a no-op when the
+      // transaction_id has no user_pass row (e.g. subscription refunds).
+      const result = await revokePassForTransaction({ sql, normalized });
       return res.status(200).json({
         ...result,
         event_type: eventType,

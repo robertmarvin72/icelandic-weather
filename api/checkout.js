@@ -197,114 +197,132 @@ export default async function handler(req, res) {
 
     const priceMonthly = process.env.PADDLE_PRICE_ID_MONTHLY;
     const priceYearly = process.env.PADDLE_PRICE_ID_YEARLY;
+    const pricePass30 = process.env.PADDLE_PRICE_ID_30_DAY_PASS;
+    const pricePassYear = process.env.PADDLE_PRICE_ID_YEAR_PASS;
 
     if (!priceMonthly) throw new Error("Missing PADDLE_PRICE_ID_MONTHLY");
     if (!priceYearly) throw new Error("Missing PADDLE_PRICE_ID_YEARLY");
 
-    const priceId = plan === "yearly" ? priceYearly : priceMonthly;
+    const isPass = plan === "pass30" || plan === "passyear";
 
-    // ---------------------------------------------------------------------
-    // ✅ Enforce: only ONE subscription per user/email
-    // - If YEARLY active: block everything (no downgrade, no re-subscribe)
-    // - If MONTHLY active:
-    //    - monthly again -> block
-    //    - yearly -> upgrade existing subscription (PATCH)
-    // ---------------------------------------------------------------------
-
-    const subs = await sql`
-      select
-        id,
-        status,
-        current_period_end,
-        paddle_subscription_id,
-        paddle_price_id
-      from user_subscription
-      where user_id = ${user.id}
-      limit 1
-    `;
-
-    const sub = subs[0] || null;
-
-    const endsInFuture = !!(
-      sub?.current_period_end && new Date(sub.current_period_end) > new Date()
-    );
-
-    const isActiveLike =
-      endsInFuture &&
-      ["active", "trialing", "past_due", "canceled", "cancelled"].includes(sub?.status);
-
-    const existingPlan =
-      sub?.paddle_price_id === priceYearly
-        ? "yearly"
-        : sub?.paddle_price_id === priceMonthly
-        ? "monthly"
-        : null;
-
-    if (isActiveLike && existingPlan === "yearly") {
-      return res.status(409).json({
-        ok: false,
-        code: "SUB_ACTIVE_YEARLY",
-        proUntil: sub?.current_period_end || null,
-        error: "Subscription already active",
-      });
+    let priceId;
+    if (plan === "yearly") {
+      priceId = priceYearly;
+    } else if (plan === "pass30") {
+      if (!pricePass30) throw new Error("Missing PADDLE_PRICE_ID_30_DAY_PASS");
+      priceId = pricePass30;
+    } else if (plan === "passyear") {
+      if (!pricePassYear) throw new Error("Missing PADDLE_PRICE_ID_YEAR_PASS");
+      priceId = pricePassYear;
+    } else {
+      // "monthly" and any unrecognised plan fall through to monthly (unchanged behaviour)
+      priceId = priceMonthly;
     }
 
-    if (isActiveLike && existingPlan === "monthly") {
-      if (plan === "monthly") {
+    if (!isPass) {
+      // -----------------------------------------------------------------
+      // ✅ Enforce: only ONE subscription per user/email
+      // - If YEARLY active: block everything (no downgrade, no re-subscribe)
+      // - If MONTHLY active:
+      //    - monthly again -> block
+      //    - yearly -> upgrade existing subscription (PATCH)
+      // -----------------------------------------------------------------
+
+      const subs = await sql`
+        select
+          id,
+          status,
+          current_period_end,
+          paddle_subscription_id,
+          paddle_price_id
+        from user_subscription
+        where user_id = ${user.id}
+        limit 1
+      `;
+
+      const sub = subs[0] || null;
+
+      const endsInFuture = !!(
+        sub?.current_period_end && new Date(sub.current_period_end) > new Date()
+      );
+
+      const isActiveLike =
+        endsInFuture &&
+        ["active", "trialing", "past_due", "canceled", "cancelled"].includes(sub?.status);
+
+      const existingPlan =
+        sub?.paddle_price_id === priceYearly
+          ? "yearly"
+          : sub?.paddle_price_id === priceMonthly
+          ? "monthly"
+          : null;
+
+      if (isActiveLike && existingPlan === "yearly") {
         return res.status(409).json({
           ok: false,
-          code: "SUB_ACTIVE_MONTHLY",
+          code: "SUB_ACTIVE_YEARLY",
           proUntil: sub?.current_period_end || null,
           error: "Subscription already active",
         });
       }
 
-      // Monthly -> Yearly upgrade
-      if (plan === "yearly") {
-        if (!sub?.paddle_subscription_id) {
+      if (isActiveLike && existingPlan === "monthly") {
+        if (plan === "monthly") {
           return res.status(409).json({
             ok: false,
-            code: "SUB_MISSING_PADDLE_SUBSCRIPTION",
-            error: "Cannot upgrade (missing paddle_subscription_id)",
+            code: "SUB_ACTIVE_MONTHLY",
+            proUntil: sub?.current_period_end || null,
+            error: "Subscription already active",
           });
         }
 
-        await paddleFetch(`/subscriptions/${sub.paddle_subscription_id}`, {
-          method: "PATCH",
-          body: {
-            items: [{ price_id: priceYearly, quantity: 1 }],
-            proration_billing_mode:
-              sub.status === "trialing" ? "do_not_bill" : "prorated_immediately",
-          },
-        });
+        // Monthly -> Yearly upgrade
+        if (plan === "yearly") {
+          if (!sub?.paddle_subscription_id) {
+            return res.status(409).json({
+              ok: false,
+              code: "SUB_MISSING_PADDLE_SUBSCRIPTION",
+              error: "Cannot upgrade (missing paddle_subscription_id)",
+            });
+          }
 
-        await sql`
-          update user_subscription
-          set paddle_price_id = ${priceYearly}, updated_at = now()
-          where id = ${sub.id}
-        `;
+          await paddleFetch(`/subscriptions/${sub.paddle_subscription_id}`, {
+            method: "PATCH",
+            body: {
+              items: [{ price_id: priceYearly, quantity: 1 }],
+              proration_billing_mode:
+                sub.status === "trialing" ? "do_not_bill" : "prorated_immediately",
+            },
+          });
 
-        res.setHeader("Cache-Control", "no-store");
-        return res.status(200).json({ ok: true, upgraded: true });
+          await sql`
+            update user_subscription
+            set paddle_price_id = ${priceYearly}, updated_at = now()
+            where id = ${sub.id}
+          `;
+
+          res.setHeader("Cache-Control", "no-store");
+          return res.status(200).json({ ok: true, upgraded: true });
+        }
       }
-    }
 
-    // Pre-populate qr_source before Paddle redirect.
-    // Paddle does not propagate transaction custom_data to subscription webhook
-    // events, so the webhook path always reads qr_source as null. Writing here
-    // ensures the value is already in the row when persistSubscription() runs.
-    // coalesce preserves the original acquisition source on repeated checkouts.
-    if (qrSource) {
-      try {
-        await sql`
-          insert into user_subscription (user_id, qr_source, status)
-          values (${user.id}, ${qrSource}, 'inactive')
-          on conflict (user_id)
-          do update set
-            qr_source = coalesce(user_subscription.qr_source, excluded.qr_source)
-        `;
-      } catch (qrErr) {
-        console.error("[checkout] Failed to write qr_source:", qrErr?.message || qrErr);
+      // Pre-populate qr_source before Paddle redirect.
+      // Paddle does not propagate transaction custom_data to subscription webhook
+      // events, so the webhook path always reads qr_source as null. Writing here
+      // ensures the value is already in the row when persistSubscription() runs.
+      // coalesce preserves the original acquisition source on repeated checkouts.
+      if (qrSource) {
+        try {
+          await sql`
+            insert into user_subscription (user_id, qr_source, status)
+            values (${user.id}, ${qrSource}, 'inactive')
+            on conflict (user_id)
+            do update set
+              qr_source = coalesce(user_subscription.qr_source, excluded.qr_source)
+          `;
+        } catch (qrErr) {
+          console.error("[checkout] Failed to write qr_source:", qrErr?.message || qrErr);
+        }
       }
     }
 
