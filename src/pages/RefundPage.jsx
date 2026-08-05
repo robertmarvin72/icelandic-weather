@@ -44,7 +44,7 @@ export default function RefundPage({ t = (k, fallback) => fallback || k, theme =
             <p>
               {T(
                 "refundIntro",
-                "CampCast er áskriftarþjónusta sem innheimtir gjöld mánaðarlega eða árlega fyrir aðgang að Pro eiginleikum."
+                "Eltum Veðrið býður áskriftir (mánaðar- og ársáskrift) og einskiptispassa (30 daga ferðapassa og árspassa) fyrir aðgang að Pro eiginleikum."
               )}
             </p>
 
@@ -57,8 +57,15 @@ export default function RefundPage({ t = (k, fallback) => fallback || k, theme =
 
             <p>
               {T(
+                "refundPasses",
+                "Passar eru einskiptiskaup án sjálfvirkrar endurnýjunar og renna sjálfkrafa út í lok gildistímans. Engin uppsögn er nauðsynleg."
+              )}
+            </p>
+
+            <p>
+              {T(
                 "refundWindow",
-                "CampCast veitir 14 daga endurgreiðslufrest frá fyrstu greiðslu nýrrar áskriftar."
+                "Eltum Veðrið veitir 14 daga endurgreiðslufrest frá fyrstu greiðslu nýrrar áskriftar og frá kaupum á passa."
               )}
             </p>
 
@@ -78,8 +85,15 @@ export default function RefundPage({ t = (k, fallback) => fallback || k, theme =
 
             <p>
               {T(
+                "refundAccessRevoked",
+                "Við endurgreiðslu lokast Pro-aðgangur viðkomandi kaupa samstundis."
+              )}
+            </p>
+
+            <p>
+              {T(
                 "refundContact",
-                "Ef þú hefur spurningar um áskriftir eða endurgreiðslur geturðu haft samband við support@campcast.is."
+                "Ef þú hefur spurningar um áskriftir, passa eða endurgreiðslur geturðu haft samband við hello@eltumvedrid.is."
               )}
             </p>
           </div>

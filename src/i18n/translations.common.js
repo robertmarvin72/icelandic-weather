@@ -311,15 +311,19 @@ export const commonTranslations = {
 
     refundTitle: "Refund Policy",
     refundIntro:
-      "Chase the Weather is a subscription service that charges monthly or yearly for access to Pro features.",
+      "Eltum Veðrið offers subscriptions (monthly and yearly) and one-time passes (a 30-day travel pass and an annual pass) for access to Pro features.",
     refundCancel:
-      "Users may cancel their subscription at any time through the billing portal. Access remains active until the end of the paid billing period.",
+      "Subscribers can cancel their subscription at any time through the billing portal. Access remains active until the end of the paid period.",
+    refundPasses:
+      "Passes are one-time purchases with no automatic renewal and expire automatically at the end of their validity period. No cancellation is needed.",
     refundWindow:
-      "Chase the Weather offers a 14-day refund window from the first payment of a new subscription.",
-    refundAfterWindow: "After the 14-day refund window has passed, payments are non-refundable.",
+      "Eltum Veðrið offers a 14-day refund period from the first payment of a new subscription and from the purchase of a pass.",
+    refundAfterWindow: "After the 14-day refund period ends, payments are not refunded.",
     refundRenewals: "Refunds do not apply to subscription renewals unless required by law.",
+    refundAccessRevoked:
+      "When a purchase is refunded, Pro access from that purchase ends immediately.",
     refundContact:
-      "If you have any questions about subscriptions or refunds, you can contact support@campcast.is.",
+      "If you have questions about subscriptions, passes, or refunds, you can contact us at hello@eltumvedrid.is.",
     refundClose: "Close",
     footerRefund: "Refunds",
 
@@ -812,17 +816,21 @@ export const commonTranslations = {
 
     refundTitle: "Endurgreiðslustefna",
     refundIntro:
-      "Eltum Veðrið er áskriftarþjónusta sem innheimtir gjöld mánaðarlega eða árlega fyrir aðgang að Pro eiginleikum.",
+      "Eltum Veðrið býður áskriftir (mánaðar- og ársáskrift) og einskiptispassa (30 daga ferðapassa og árspassa) fyrir aðgang að Pro eiginleikum.",
     refundCancel:
       "Notendur geta sagt upp áskrift hvenær sem er í gegnum greiðslugáttina. Aðgangur helst virkur út greitt tímabil.",
+    refundPasses:
+      "Passar eru einskiptiskaup án sjálfvirkrar endurnýjunar og renna sjálfkrafa út í lok gildistímans. Engin uppsögn er nauðsynleg.",
     refundWindow:
-      "Eltum Veðrið veitir 14 daga endurgreiðslufrest frá fyrstu greiðslu nýrrar áskriftar.",
+      "Eltum Veðrið veitir 14 daga endurgreiðslufrest frá fyrstu greiðslu nýrrar áskriftar og frá kaupum á passa.",
     refundAfterWindow:
       "Eftir að 14 daga endurgreiðslufresti lýkur eru greiðslur ekki endurgreiddar.",
     refundRenewals:
       "Endurgreiðslur eiga ekki við um endurnýjanir áskrifta nema lög kveði á um annað.",
+    refundAccessRevoked:
+      "Við endurgreiðslu lokast Pro-aðgangur viðkomandi kaupa samstundis.",
     refundContact:
-      "Ef þú hefur spurningar um áskriftir eða endurgreiðslur geturðu haft samband við support@campcast.is.",
+      "Ef þú hefur spurningar um áskriftir, passa eða endurgreiðslur geturðu haft samband við hello@eltumvedrid.is.",
     refundClose: "Loka",
     footerRefund: "Endurgreiðslur",
 
