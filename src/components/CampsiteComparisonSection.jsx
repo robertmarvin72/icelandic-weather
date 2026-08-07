@@ -3,6 +3,7 @@ import CampsitePicker from "./CampsitePicker";
 import { getForecast } from "../lib/forecastCache";
 import { isFeatureAvailable } from "../config/features";
 import { trackEvent } from "../lib/analytics";
+import { useComparisonPreview } from "../hooks/useComparisonPreview";
 import {
   compareCampsiteForecasts,
   getHourlyComparisonWinner,
@@ -327,6 +328,10 @@ export default function CampsiteComparisonSection({ siteList, t, lang, currentSi
   const gate = isFeatureAvailable("campsiteComparison", entitlements);
   const isPro = gate.available;
 
+  // Free gets one full, unclipped comparison per browser-tab session, then a Pro CTA.
+  const { hasUsedPreview, markPreviewUsed } = useComparisonPreview();
+  const canRun = isPro || !hasUsedPreview;
+
   const [siteIdA, setSiteIdA] = useState(currentSiteId ?? null);
   const [siteIdB, setSiteIdB] = useState(null);
 
@@ -335,6 +340,11 @@ export default function CampsiteComparisonSection({ siteList, t, lang, currentSi
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [results, setResults] = useState(null);
+  // Tracks which (siteIdA, siteIdB) pair `results` belongs to, so a Free user who
+  // already used their preview keeps seeing THEIR result instead of it being
+  // yanked the instant hasUsedPreview flips true, while a genuinely new pair
+  // (picked after the preview was used) correctly falls back to the locked card.
+  const [resultsPairKey, setResultsPairKey] = useState(null);
 
   const siteA = siteList.find((s) => s.id === siteIdA) ?? null;
   const siteB = siteList.find((s) => s.id === siteIdB) ?? null;
@@ -359,21 +369,26 @@ export default function CampsiteComparisonSection({ siteList, t, lang, currentSi
     trackEvent("comparison_feature_viewed", { lang, isPro, source: "homepage" });
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  // Fire once per unique (siteA, siteB) pair when both are selected (Pro only).
+  // Fire once per unique (siteA, siteB) pair when both are selected, for
+  // Pro users and for a Free user's one allowed (canRun) attempt.
   const selectionFiredRef = useRef(null);
   useEffect(() => {
-    if (!isPro || !bothSelected) return;
+    if (!canRun || !bothSelected) return;
     const key = `${siteIdA}:${siteIdB}`;
     if (selectionFiredRef.current === key) return;
     selectionFiredRef.current = key;
     trackEvent("comparison_campsites_selected", { lang, siteA: siteIdA, siteB: siteIdB });
-  }, [isPro, bothSelected, siteIdA, siteIdB, lang]);
+  }, [canRun, bothSelected, siteIdA, siteIdB, lang]);
 
-  // Forecast fetch — gated on isPro so free users trigger zero network requests.
+  // Forecast fetch — gated on canRun. Pro: always. Free: only until their one
+  // preview is used, so a second attempt in the same tab-session triggers zero
+  // network requests. The data itself is never clipped — same fetch, same
+  // compareCampsiteForecasts pipeline, for both tiers.
   useEffect(() => {
-    if (!isPro) return;
+    if (!canRun) return;
     if (!siteIdA || !siteIdB || siteIdA === siteIdB || !latA || !lonA || !latB || !lonB) {
       setResults(null);
+      setResultsPairKey(null);
       setRawDataA(null);
       setRawDataB(null);
       setError(null);
@@ -416,6 +431,7 @@ export default function CampsiteComparisonSection({ siteList, t, lang, currentSi
         setRawDataA(dataA);
         setRawDataB(dataB);
         setResults(dayResults);
+        setResultsPairKey(`${siteIdA}:${siteIdB}`);
       } catch (err) {
         if (cancelled) return;
         setError(String(err?.message || err));
@@ -429,10 +445,50 @@ export default function CampsiteComparisonSection({ siteList, t, lang, currentSi
     return () => {
       cancelled = true;
     };
-  }, [isPro, siteIdA, siteIdB, latA, lonA, latB, lonB]);
+  }, [canRun, siteIdA, siteIdB, latA, lonA, latB, lonB]);
+
+  // Mark the Free preview as used only once a real result has actually
+  // appeared — never on selection, fetch start, or a failed fetch (so a
+  // network error leaves hasUsedPreview false and the user can retry).
+  const previewUsedRef = useRef(false);
+  useEffect(() => {
+    if (isPro) return;
+    if (hasUsedPreview) return;
+    if (!results || results.length === 0) return;
+    if (previewUsedRef.current) return;
+    previewUsedRef.current = true;
+    markPreviewUsed();
+    trackEvent("comparison_preview_used", {
+      lang,
+      siteA: siteIdA,
+      siteB: siteIdB,
+      userTier: "free",
+    });
+  }, [isPro, hasUsedPreview, results, lang, siteIdA, siteIdB, markPreviewUsed]);
+
+  // A Free user who already used their preview still gets to see the result
+  // they already have (resultsPairKey matches the current selection) — the
+  // locked card only replaces the UI once there's nothing live to show, e.g.
+  // on a fresh mount later in the same session, or after picking a new pair.
+  const currentPairKey = bothSelected ? `${siteIdA}:${siteIdB}` : null;
+  const hasLiveResults = !!(
+    results &&
+    results.length > 0 &&
+    currentPairKey &&
+    resultsPairKey === currentPairKey
+  );
+  const showLocked = !isPro && hasUsedPreview && !hasLiveResults;
+
+  const lockedViewedRef = useRef(false);
+  useEffect(() => {
+    if (!showLocked) return;
+    if (lockedViewedRef.current) return;
+    lockedViewedRef.current = true;
+    trackEvent("comparison_preview_locked_viewed", { lang, userTier: "free" });
+  }, [showLocked, lang]);
 
   // All hooks must run before conditional returns.
-  if (!isPro) {
+  if (showLocked) {
     return <LockedComparisonCard t={t} onUpgrade={onUpgrade} lang={lang} />;
   }
 

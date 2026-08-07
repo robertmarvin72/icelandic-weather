@@ -480,10 +480,10 @@ export const commonTranslations = {
     comparisonFactorGusts: "Gusts",
     comparisonFactorRain: "Rain",
     comparisonFactorTemp: "Temp",
-    comparisonLockedHeadline: "Two-campsite comparison is a Pro feature.",
+    comparisonLockedHeadline: "You've used your free comparison",
     comparisonLockedBody:
-      "With Pro, you can choose two campsites, compare them day by day and open an hourly breakdown for each day.",
-    comparisonLockedCta: "Unlock Pro comparison",
+      "With Pro, you can compare campsites as often as you like and see day-by-day and hourly differences.",
+    comparisonLockedCta: "Unlock unlimited comparison with Pro",
 
     // One-time travel passes
     pricingPass30Title: "30-Day Travel Pass",
@@ -981,10 +981,10 @@ export const commonTranslations = {
     comparisonFactorGusts: "Hviður",
     comparisonFactorRain: "Úrkoma",
     comparisonFactorTemp: "Hiti",
-    comparisonLockedHeadline: "Samanburður tveggja tjaldsvæða er Pro eiginleiki.",
+    comparisonLockedHeadline: "Þú hefur notað ókeypis samanburðinn",
     comparisonLockedBody:
-      "Með Pro geturðu valið tvö tjaldsvæði, borið þau saman dag frá degi og opnað klukkutímasamanburð fyrir hvern dag.",
-    comparisonLockedCta: "Opna Pro samanburð",
+      "Með Pro geturðu borið saman tjaldsvæði eins oft og þú vilt og séð dag- og klukkutímamun.",
+    comparisonLockedCta: "Opna ótakmarkaðan samanburð með Pro",
 
     // Eingreiðslu ferðapassar
     pricingPass30Title: "30 daga ferðapassi",
