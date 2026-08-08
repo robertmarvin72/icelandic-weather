@@ -363,6 +363,9 @@ function IcelandCampingWeatherApp({ page = "home" }) {
                 routePlannerSummary={routePlannerSummary}
                 entitlements={entitlements}
                 comparisonState={comparisonState}
+                onUpgrade={startCheckout}
+                currentSiteId={siteId}
+                lang={lang}
               />
 
               <InstantComparison
@@ -375,6 +378,7 @@ function IcelandCampingWeatherApp({ page = "home" }) {
                 homepageRecommendation={homepageRecommendation}
                 routePlannerSummary={routePlannerSummary}
                 comparisonState={comparisonState}
+                entitlements={entitlements}
                 lang={lang}
               />
 

@@ -266,6 +266,13 @@ export default function RoutePlannerCard({
     return decisionLower;
   }, [comparisonState, decisionLower]);
 
+  // Free/Pro presentation gate (Miði 5b): Pro always sees the destination
+  // (name/distance/why). Free sees the tone only when the canonical tone is
+  // move/consider — STAY stays fully visible for everyone (product rule).
+  // This does not change the candidate, the verdict, or any computed field —
+  // it only decides whether identity-revealing fields are rendered below.
+  const hideDestinationForFree = !isPro && ["move", "consider"].includes(displayDecisionLower);
+
   const lastDecisionRef = React.useRef(null);
   useEffect(() => {
     if (!decisionLower || decisionLower === lastDecisionRef.current) return;
@@ -729,7 +736,12 @@ export default function RoutePlannerCard({
           }
         )
       );
-    } else if (best?.siteName && Number.isFinite(best?.distanceKm) && decisionLower !== "stay") {
+    } else if (
+      !hideDestinationForFree &&
+      best?.siteName &&
+      Number.isFinite(best?.distanceKm) &&
+      decisionLower !== "stay"
+    ) {
       const destination = interpolate(t("routeEscapeStormDestination"), {
         km: Math.round(best.distanceKm),
         site: best.siteName,
@@ -752,7 +764,9 @@ export default function RoutePlannerCard({
 
   const bestHazardBlockText = getHazardBlockText(best, t);
   const bestStayReasonText = getStayReasonText(best, displayDecisionLower, t);
-  const bestEscapeSuggestion = getEscapeSuggestion(best, displayDecisionLower);
+  const bestEscapeSuggestion = hideDestinationForFree
+    ? null
+    : getEscapeSuggestion(best, displayDecisionLower);
   const bestRoughWeatherWindowText = getRoughWeatherWindowText(
     best,
     t,
@@ -1090,7 +1104,9 @@ export default function RoutePlannerCard({
                       <li key={x.siteId}>
                         <div className="font-semibold flex items-center gap-2 flex-wrap">
                           <span className="flex items-center gap-1.5">
-                            <span>{x.siteName ?? x.siteId}</span>
+                            <span>
+                              {hideDestinationForFree ? t("nearbyCampsite") : (x.siteName ?? x.siteId)}
+                            </span>
 
                             {x === best && routeRiskData?.routeRisk === "HIGH" && (
                               <span
@@ -1127,7 +1143,7 @@ export default function RoutePlannerCard({
                             )}
                           </span>
 
-                          {Number.isFinite(x?.distanceKm) && (
+                          {!hideDestinationForFree && Number.isFinite(x?.distanceKm) && (
                             <span className="text-[11px] font-normal text-slate-500 dark:text-slate-400">
                               • {Math.round(x.distanceKm)} km
                             </span>

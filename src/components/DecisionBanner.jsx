@@ -1,6 +1,7 @@
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo, useRef } from "react";
 import { HAZARDS_V1 } from "../config/hazards";
 import { getRouteVerdictMeta } from "../lib/routeVerdictMeta";
+import { trackEvent } from "../lib/analytics";
 
 function hasRoughWeather(rows = []) {
   return rows.some((r) => {
@@ -28,7 +29,13 @@ export default function DecisionBanner({
   rows = [],
   routePlannerSummary = null,
   comparisonState = null,
+  entitlements = null,
+  onUpgrade,
+  currentSiteId = null,
+  lang,
 }) {
+  const isPro = !!entitlements?.isPro;
+
   const model = useMemo(() => {
     const rough = hasRoughWeather(rows);
     const verdict = String(routePlannerSummary?.verdict || "").toLowerCase();
@@ -71,11 +78,15 @@ export default function DecisionBanner({
       return {
         tone: "move",
         title: t(meta.titleKey),
-        body: (
-          t("decisionMoveBodyWindowAware") ||
-          "Better weather is likely at {site} over the next few days, even if your current campsite scores best overall this week."
-        ).replace("{site}", candidateName),
+        body: isPro
+          ? (
+              t("decisionMoveBodyWindowAware") ||
+              "Better weather is likely at {site} over the next few days, even if your current campsite scores best overall this week."
+            ).replace("{site}", candidateName)
+          : t("decisionMoveLockedBody") ||
+            "A better option may be nearby over the next few days.",
         painLine: t("routePainMoveBody"),
+        locked: !isPro,
       };
     }
 
@@ -85,11 +96,15 @@ export default function DecisionBanner({
       return {
         tone: "consider",
         title: t(meta.titleKey),
-        body: (
-          t("decisionConsiderBodyWindowAware") ||
-          "Slightly better conditions may be available at {site} over the next few days."
-        ).replace("{site}", candidateName),
+        body: isPro
+          ? (
+              t("decisionConsiderBodyWindowAware") ||
+              "Slightly better conditions may be available at {site} over the next few days."
+            ).replace("{site}", candidateName)
+          : t("decisionConsiderLockedBody") ||
+            "A slightly better option may be nearby over the next few days.",
         painLine: t("routePainConsiderBody"),
+        locked: !isPro,
       };
     }
 
@@ -110,7 +125,52 @@ export default function DecisionBanner({
       body: rough ? t("decisionStayBodyRough") : t("decisionStayBodyGood"),
       painLine: null,
     };
-  }, [rows, routePlannerSummary, comparisonState, t]);
+  }, [rows, routePlannerSummary, comparisonState, isPro, t]);
+
+  // recommendation_viewed fires whenever the RAW engine verdict settles on a
+  // new value (mirrors stay_recommended/move_recommended in RoutePlannerCard,
+  // which are also raw-verdict-driven) — not on model.tone, which can be
+  // overridden by comparisonState for display purposes only.
+  const rawVerdict = String(routePlannerSummary?.verdict || "").toLowerCase();
+  const viewedVerdictRef = useRef(null);
+  useEffect(() => {
+    if (!routePlannerSummary?.ready) return;
+    if (viewedVerdictRef.current === rawVerdict) return;
+    viewedVerdictRef.current = rawVerdict;
+
+    trackEvent("recommendation_viewed", {
+      recommendation_type: rawVerdict,
+      better_location_found: rawVerdict !== "stay",
+      current_campsite_id: currentSiteId ?? null,
+      source: "decision_recommendation",
+      userTier: isPro ? "pro" : "free",
+    });
+  }, [routePlannerSummary?.ready, rawVerdict, currentSiteId, isPro]);
+
+  // better_location_locked_viewed: Free actually sees the tone-only state
+  // (model.locked), guarded per distinct raw verdict so it doesn't refire on
+  // unrelated rerenders.
+  const lockedViewedVerdictRef = useRef(null);
+  useEffect(() => {
+    if (isPro) return;
+    if (!model.locked) return;
+    if (lockedViewedVerdictRef.current === rawVerdict) return;
+    lockedViewedVerdictRef.current = rawVerdict;
+
+    trackEvent("better_location_locked_viewed", {
+      recommendation_type: rawVerdict,
+      userTier: "free",
+    });
+  }, [isPro, model.locked, rawVerdict]);
+
+  function handleUpgradeClick() {
+    trackEvent("better_location_upgrade_clicked", {
+      recommendation_type: rawVerdict,
+      userTier: "free",
+      lang,
+    });
+    if (typeof onUpgrade === "function") onUpgrade("decision_recommendation");
+  }
 
   const classes =
     model.tone === "move"
@@ -139,6 +199,15 @@ export default function DecisionBanner({
           <div className="mt-1.5 text-sm opacity-90">{model.body}</div>
           {model.painLine && (
             <div className="mt-1 text-xs opacity-75">{model.painLine}</div>
+          )}
+          {model.locked && (
+            <button
+              type="button"
+              onClick={handleUpgradeClick}
+              className="mt-2 inline-flex items-center gap-1.5 rounded-full bg-emerald-600 px-4 py-1.5 text-xs font-semibold text-white shadow-sm transition-colors hover:bg-emerald-700 active:bg-emerald-800"
+            >
+              {t("decisionLockedCta") || "See the campsite with Pro"} →
+            </button>
           )}
         </div>
       </div>

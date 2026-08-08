@@ -246,6 +246,9 @@ export const routePlannerTranslations = {
 
     decisionMoveBodyWindowAware:
       "Better weather is likely at {site} over the next few days, even if your current campsite scores best overall this week.",
+    decisionMoveLockedBody: "A better option may be nearby over the next few days.",
+    decisionConsiderLockedBody: "A slightly better option may be nearby over the next few days.",
+    decisionLockedCta: "See the campsite with Pro",
 
     decisionStayTitle: "Stay put for now",
     decisionStayBodyGood: "Conditions aren’t great, but no nearby option clearly looks better.",
@@ -537,6 +540,9 @@ export const routePlannerTranslations = {
 
     decisionMoveBodyWindowAware:
       "Betra veður er líklegt hjá {site} næstu daga, jafnvel þótt núverandi tjaldsvæði skori hæst þessa vikuna.",
+    decisionMoveLockedBody: "Betri kostur gæti verið í nágrenninu næstu daga.",
+    decisionConsiderLockedBody: "Örlítið betri kostur gæti verið í nágrenninu næstu daga.",
+    decisionLockedCta: "Sjá tjaldsvæðið með Pro",
 
     decisionStayTitle: "Best að vera kyrr í bili",
     decisionStayBodyGood:

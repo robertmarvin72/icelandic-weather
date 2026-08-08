@@ -136,11 +136,13 @@ export default function InstantComparison({
   onCtaClick,
   routePlannerSummary,
   comparisonState: externalState,
+  entitlements = null,
   t: tProp,
   lang = "is",
 }) {
   const tFallback = useT(lang);
   const t = tProp || tFallback;
+  const isPro = !!entitlements?.isPro;
 
   // Local derivation — used when no external comparisonState is provided (e.g. Brochure).
   const localBest = useMemo(
@@ -286,6 +288,38 @@ export default function InstantComparison({
         </div>
         <div className="mt-1 text-xs text-slate-500 dark:text-slate-400">
           {t("icStayNoAlternative")}
+        </div>
+      </div>
+    );
+  }
+
+  // Free/Pro presentation gate (Miði 5b): same canonical tone rule
+  // DecisionBanner uses (comparisonState direction overrides the raw
+  // routePlannerSummary verdict), evaluated here from the same shared props
+  // so all three cards agree on move/consider vs stay. In local-fallback mode
+  // (no externalState, e.g. the Brochure marketing demo) there is no live
+  // tier/verdict signal, so gating does not apply there.
+  const canonicalTone = (() => {
+    if (!externalState) return null;
+    if (externalState.showComparison) {
+      const { direction } = externalState;
+      if (direction === "similar" || direction === "current_better") return "stay";
+    }
+    const verdict = String(routePlannerSummary?.verdict || "stay").toLowerCase();
+    return verdict === "move" ? "move" : verdict === "consider" ? "consider" : "stay";
+  })();
+
+  const hideIdentityForFree =
+    !isPro && (canonicalTone === "move" || canonicalTone === "consider");
+
+  if (hideIdentityForFree) {
+    return (
+      <div className="mb-3 rounded-2xl border border-slate-200/80 bg-white/80 px-4 py-3 shadow-sm dark:border-slate-700/60 dark:bg-slate-900/60">
+        <div className="text-sm font-semibold text-slate-700 dark:text-slate-200">
+          {t("icLockedHeadline")}
+        </div>
+        <div className="mt-1 text-xs text-slate-500 dark:text-slate-400">
+          {t("icLockedBody")}
         </div>
       </div>
     );
