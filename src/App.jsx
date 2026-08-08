@@ -392,6 +392,7 @@ function IcelandCampingWeatherApp({ page = "home" }) {
                   wetThresholdMmDefault={3}
                   onSummaryChange={setRoutePlannerSummary}
                   onSelectSite={handleSelectSite}
+                  comparisonState={comparisonState}
                 />
               </div>
 

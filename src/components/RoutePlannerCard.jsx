@@ -130,6 +130,7 @@ export default function RoutePlannerCard({
   limitDefault = 30,
   onSummaryChange,
   onSelectSite,
+  comparisonState = null,
 }) {
   const routeFeature = isFeatureAvailable("bestRoutePlanner", entitlements);
   const isPro = !!routeFeature?.available;
@@ -248,6 +249,22 @@ export default function RoutePlannerCard({
       isPro,
     });
   }, [result, sites, effectiveRadiusKm, effectiveWindowDays, routeRiskData, isPreview, isPro]);
+
+  // Reconciles the TONE shown on this card with the same metric-comparison
+  // override DecisionBanner already applies via useComparisonState, so the
+  // two cards can never disagree (move here / stay there) for the same
+  // candidate. The underlying engine verdict (decisionLower), the candidate
+  // itself, and relocationEngine's ranking are untouched — this only changes
+  // which of the already-computed tones is rendered. Analytics below
+  // intentionally keeps using the raw decisionLower (the true engine
+  // verdict), not this display-adjusted value.
+  const displayDecisionLower = useMemo(() => {
+    if (comparisonState?.showComparison) {
+      const { direction } = comparisonState;
+      if (direction === "similar" || direction === "current_better") return "stay";
+    }
+    return decisionLower;
+  }, [comparisonState, decisionLower]);
 
   const lastDecisionRef = React.useRef(null);
   useEffect(() => {
@@ -428,10 +445,10 @@ export default function RoutePlannerCard({
       }
     : null;
 
-  const meta = result && getRouteVerdictMeta(decisionLower);
+  const meta = result && getRouteVerdictMeta(displayDecisionLower);
 
   const trendText = (() => {
-    const v = decisionLower || "stay";
+    const v = displayDecisionLower || "stay";
     if (v === "move") return interpolate(t("routePlannerTrendMove"), { days: effectiveWindowDays });
     if (v === "consider")
       return interpolate(t("routePlannerTrendConsider"), { days: effectiveWindowDays });
@@ -471,7 +488,7 @@ export default function RoutePlannerCard({
     if (!adaptiveEnabled || typeof adaptiveUsedKm !== "number") return "";
 
     if (
-      (decisionLower === "move" || decisionLower === "consider") &&
+      (displayDecisionLower === "move" || displayDecisionLower === "consider") &&
       typeof adaptivePrevKm === "number" &&
       adaptiveUsedKm > adaptivePrevKm
     ) {
@@ -481,7 +498,7 @@ export default function RoutePlannerCard({
       });
     }
 
-    if (decisionLower === "stay" && typeof adaptiveMaxKm === "number") {
+    if (displayDecisionLower === "stay" && typeof adaptiveMaxKm === "number") {
       return interpolate(t("routeAdaptiveNoBetterWithin"), {
         used: adaptiveUsedKm,
         max: adaptiveMaxKm,
@@ -607,7 +624,7 @@ export default function RoutePlannerCard({
 
   const showDecisionReasons =
     !isPreview &&
-    ["move", "consider"].includes(String(decisionLower)) &&
+    ["move", "consider"].includes(String(displayDecisionLower)) &&
     Array.isArray(best?.reasons) &&
     best.reasons.length > 0;
 
@@ -642,9 +659,13 @@ export default function RoutePlannerCard({
     }
   }
 
-  function getEscapeSuggestion(candidateRow) {
+  // toneLower defaults to the raw engine verdict (used by the details modal,
+  // which is Pro-only and shows a specific candidate's own detail regardless
+  // of the card-level tone). The main verdict block passes displayDecisionLower
+  // explicitly so the escape suggestion never contradicts the headline tone.
+  function getEscapeSuggestion(candidateRow, toneLower = decisionLower) {
     if (!candidateRow) return null;
-    if (!["move", "consider"].includes(decisionLower)) return null;
+    if (!["move", "consider"].includes(toneLower)) return null;
 
     const baseRank = warningRankFromDays(baseSliceDays);
     const candidateRank = candidateRow?.hasHighWarning ? 2 : candidateRow?.hasWarning ? 1 : 0;
@@ -730,8 +751,8 @@ export default function RoutePlannerCard({
   }
 
   const bestHazardBlockText = getHazardBlockText(best, t);
-  const bestStayReasonText = getStayReasonText(best, decisionLower, t);
-  const bestEscapeSuggestion = getEscapeSuggestion(best);
+  const bestStayReasonText = getStayReasonText(best, displayDecisionLower, t);
+  const bestEscapeSuggestion = getEscapeSuggestion(best, displayDecisionLower);
   const bestRoughWeatherWindowText = getRoughWeatherWindowText(
     best,
     t,
@@ -753,7 +774,7 @@ export default function RoutePlannerCard({
     shownHazardWindowNarrative,
     bestEscapeSuggestion,
     routeRiskData,
-    decisionLower,
+    decisionLower: displayDecisionLower,
     t,
   });
 
@@ -886,36 +907,36 @@ export default function RoutePlannerCard({
       {!loading && !error && result && meta && (
         <div className="grid gap-3">
           {/* Verdict (Decision Tool) */}
-          <div className={`rounded-xl border p-4 ${verdictAccentClasses(decisionLower)}`}>
+          <div className={`rounded-xl border p-4 ${verdictAccentClasses(displayDecisionLower)}`}>
             <div className="text-xl font-black tracking-tight">
-              {decisionLower === "move"
+              {displayDecisionLower === "move"
                 ? t("routeStateMove")
-                : decisionLower === "consider"
+                : displayDecisionLower === "consider"
                   ? t("routeStateConsider")
                   : t("routeStateStay")}
             </div>
             <div className="text-sm text-slate-600 dark:text-slate-300 mt-1">
-              {decisionLower === "move"
+              {displayDecisionLower === "move"
                 ? t("routeStateMoveDescription")
-                : decisionLower === "consider"
+                : displayDecisionLower === "consider"
                   ? t("routeStateConsiderDescription")
                   : t("routeStateStayDescription")}
             </div>
 
-            {decisionLower === "move" && (
+            {displayDecisionLower === "move" && (
               <ul className="mt-2 pl-4 text-xs grid gap-0.5 list-disc text-slate-700 dark:text-slate-300">
                 <li>{t("routePainMoveBulletAvoidWorst")}</li>
                 <li>{t("routePainMoveBulletStuckInside")}</li>
                 <li>{t("routePainMoveBulletTentCaravan")}</li>
               </ul>
             )}
-            {decisionLower === "consider" && (
+            {displayDecisionLower === "consider" && (
               <ul className="mt-2 pl-4 text-xs grid gap-0.5 list-disc text-slate-700 dark:text-slate-300">
                 <li>{t("routePainConsiderBulletCheckNearby")}</li>
                 <li>{t("routePainConsiderBulletLessPleasant")}</li>
               </ul>
             )}
-            {decisionLower === "stay" && (
+            {displayDecisionLower === "stay" && (
               <ul className="mt-2 pl-4 text-xs grid gap-0.5 list-disc text-slate-700 dark:text-slate-300">
                 <li>{t("routePainStayBulletNotEnoughGain")}</li>
                 <li>{t("routePainStayBulletNotMissingMuch")}</li>
@@ -993,7 +1014,7 @@ export default function RoutePlannerCard({
               </div>
             ) : null}
 
-            {decisionLower === "stay" && (
+            {displayDecisionLower === "stay" && (
               <div className="mt-2 text-xs font-medium text-emerald-700 dark:text-emerald-300">
                 {t("routeStayGoodSpot")}
               </div>
@@ -1036,13 +1057,13 @@ export default function RoutePlannerCard({
             <div className="text-sm font-semibold mb-2">
               {isPreview
                 ? t("routePlannerBestTomorrow")
-                : decisionLower === "stay"
+                : displayDecisionLower === "stay"
                   ? interpolate(t("routePlannerTopAlternativesNoBetter"), { days: windowDays })
                   : t("routePlannerTopAlternatives")}
             </div>
 
             {isPreview ? (
-              decisionLower !== "stay" && top3.length > 0 ? (
+              displayDecisionLower !== "stay" && top3.length > 0 ? (
                 <ol className="grid gap-2 pl-4 text-xs">
                   {top3.slice(0, 1).map((x) => {
                     const rawV = getVerdictFromDays(x?.windowDays, effectiveWindowDays);
