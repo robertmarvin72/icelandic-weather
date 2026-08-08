@@ -77,6 +77,24 @@ Each campsite gets a numeric score from: temperature, wind penalty, rain penalty
 
 Centralized free/pro feature definitions. `RequireFeature` component wraps gated UI. Pro features: wind direction, shelter index, advanced route planning, full campsite list.
 
+### Free/Pro Gating — Forecast Data Rule (design rule, not current behavior)
+
+**Rule:** Do not tier-clip or shorten raw daily or hourly forecast data without a dedicated architecture review.
+
+Raw daily/hourly forecast data is shared input into scoring, normalization, map/recommendation, and every other forecast-derived flow. A tier-dependent forecast input can make Free and Pro land on different scoring/decisions for the same site at the same time.
+
+Preferred Free/Pro gating patterns, in order of preference:
+
+- limit how many results are shown
+- limit how often a feature can be run
+- lock an entire feature behind Pro
+
+— while keeping the underlying forecast/scoring input itself unclipped for whoever is allowed to run it.
+
+Core principle: *change how much / how often Free can access a feature, not how the forecast result is calculated.*
+
+Context: this rule exists because two ideas were rejected at the investigation stage — (a) truncating the 7-day forecast for Free, (b) removing hourly forecast for Free — both would have altered the scoring/data pipeline itself and produced tier-dependent results for the same site.
+
 ### Authentication
 
 - Email-only login → `/api/login` creates user + session
@@ -450,3 +468,12 @@ Default language is "is". Stored in localStorage key "lang".
 - winner: 'A_BETTER' | 'B_BETTER' | 'SIMILAR'; reasons: ('calmer'|'drier'|'warmer'|'similar')[]
 - Thresholds are exported constants in the helper file: WIND_DIFF_THRESHOLD (2 m/s), RAIN_DIFF_THRESHOLD (1 mm), TEMP_DIFF_THRESHOLD (2 °C). The factor rows in the UI import these same constants — do not redefine them elsewhere.
 - normalizeDailyToScoreInput (src/lib/forecastNormalize.js) applies time-of-day weighting (night ~0.45, day 1.0). It is used by the MAIN recommendation logic — intentional design, do not "fix" or remove the weighting. The comparison feature intentionally does NOT use it (see above); do not "unify" the two paths.
+
+### Free preview — current behavior (update this section if it changes)
+
+- Pro: unlimited campsite comparison.
+- Free: one full, unclipped comparison per browser-tab session — same 7-day + hourly data as Pro, no data clipping (this is the gating pattern described in "Free/Pro Gating — Forecast Data Rule" above: limit how often, not the data itself).
+- After a Free user's first real comparison result actually renders, any new pair is locked behind a Pro CTA.
+- The "used" state lives in sessionStorage; per-tab semantics is an intentional product decision — this is a soft preview, not a security boundary.
+- The preview only counts as used once a comparison result has actually succeeded and rendered — never on site selection, fetch start, or fetch error.
+- Do not add a server-side counter unless a future product decision explicitly requires a harder limit.
