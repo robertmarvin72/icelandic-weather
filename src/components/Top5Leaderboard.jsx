@@ -1,5 +1,5 @@
 // src/components/Top5Leaderboard.jsx
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo, useRef } from "react";
 import { trackEvent } from "../lib/analytics";
 import LoadingShimmer from "./LoadingShimmer";
 import ScoreLegend from "./ScoreLegend";
@@ -50,6 +50,21 @@ export default function Top5Leaderboard({
   );
 
   const isPro = !!entitlements?.isPro;
+
+  // Fire once per mount when a Free user actually sees the locked rows
+  // (ref-guard mirrors the pattern used in CampsiteComparisonSection).
+  const lockedViewedRef = useRef(false);
+  useEffect(() => {
+    if (isPro) return;
+    if (lockedTop.length === 0) return;
+    if (lockedViewedRef.current) return;
+    lockedViewedRef.current = true;
+    trackEvent("weekly_ranking_locked_viewed", {
+      lang,
+      userTier: "free",
+      lockedCount: lockedTop.length,
+    });
+  }, [isPro, lockedTop.length, lang]);
 
   // Subscription status
   const subStatus = (subscription?.status || "").toLowerCase();
@@ -128,6 +143,14 @@ export default function Top5Leaderboard({
   };
 
   const handleCtaClick = () => {
+    // This handler only runs from the Free-tier CTA button (isPro renders a
+    // different branch entirely), so every click here is a Free upgrade intent.
+    trackEvent("weekly_ranking_upgrade_clicked", {
+      lang,
+      userTier: "free",
+      upgradeSource: "weekly_ranking",
+    });
+
     if (!me?.user) {
       if (typeof onUpgrade === "function") onUpgrade("weekly_ranking");
       return;
