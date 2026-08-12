@@ -32,6 +32,12 @@ export const routePlannerTranslations = {
       "Chase the Weather compares nearby conditions and highlights where weather may be better tomorrow. \n\nWith Pro you can search a larger area, explore more days and see detailed comparisons.",
     routePlannerPreviewNoBetter:
       "No clearly better option was found within 30 km tomorrow. Pro searches a larger area and more days.",
+    travelAdvisorMoveCtaBody:
+      "A better option was found nearby. Pro shows you exactly where and why.",
+    travelAdvisorMoveCta: "See the better spot with Pro",
+    travelAdvisorConsiderCtaBody:
+      "There may be a slightly better option nearby. Pro helps you explore it.",
+    travelAdvisorConsiderCta: "Explore more options with Pro",
     routePlannerCandidatesPreselected: "Nearby campsites checked",
     routePlannerCandidatesScored: "Scored",
     routePlannerTopAlternatives: "Nearby alternatives",
@@ -326,6 +332,12 @@ export const routePlannerTranslations = {
       "Eltum Veðrið ber saman aðstæður í nágrenninu og bendir á hvar veðrið gæti verið betra.\n\nMeð Pro geturðu skoðað stærra svæði, fleiri daga og séð nánari samanburð.",
     routePlannerPreviewNoBetter:
       "Enginn greinilega betri kostur fannst innan 30 km á morgun. Pro leitar á stærra svæði og yfir fleiri daga.",
+    travelAdvisorMoveCtaBody:
+      "Betri kostur fannst í nágrenninu. Pro sýnir þér nákvæmlega hvar og hvers vegna.",
+    travelAdvisorMoveCta: "Sjá betri staðinn með Pro",
+    travelAdvisorConsiderCtaBody:
+      "Það gæti verið örlítið betri kostur í nágrenninu. Pro hjálpar þér að skoða hann.",
+    travelAdvisorConsiderCta: "Skoða fleiri möguleika með Pro",
     routePlannerCandidatesPreselected: "Skoðuð svæði í kringum þig",
     routePlannerCandidatesScored: "Metið",
     routePlannerTopAlternatives: "Valkostir í nágrenninu",

@@ -64,7 +64,10 @@ function ProLock({ t, me, onUpgrade }) {
 
       <button
         type="button"
-        onClick={() => typeof onUpgrade === "function" && onUpgrade()}
+        onClick={() => {
+          trackEvent("travel_advisor_upgrade_clicked", { source: "pro_lock", userTier: "free" });
+          if (typeof onUpgrade === "function") onUpgrade();
+        }}
         className="
           w-full rounded-xl px-3 py-2 text-sm font-semibold
           bg-emerald-600 text-white
@@ -92,7 +95,13 @@ function FreeUsedLock({ t, me, onUpgrade }) {
 
       <button
         type="button"
-        onClick={() => typeof onUpgrade === "function" && onUpgrade()}
+        onClick={() => {
+          trackEvent("travel_advisor_upgrade_clicked", {
+            source: "free_used_lock",
+            userTier: "free",
+          });
+          if (typeof onUpgrade === "function") onUpgrade();
+        }}
         className="
           w-full rounded-xl px-3 py-2 text-sm font-semibold
           bg-emerald-600 text-white
@@ -273,6 +282,19 @@ export default function RoutePlannerCard({
   // it only decides whether identity-revealing fields are rendered below.
   const hideDestinationForFree = !isPro && ["move", "consider"].includes(displayDecisionLower);
 
+  // Miði 6: fires once per distinct locked tone (move/consider) actually
+  // shown to a Free user — not on every rerender.
+  const destinationLockedFiredRef = React.useRef(null);
+  useEffect(() => {
+    if (!hideDestinationForFree) return;
+    if (destinationLockedFiredRef.current === displayDecisionLower) return;
+    destinationLockedFiredRef.current = displayDecisionLower;
+    trackEvent("travel_advisor_destination_locked", {
+      recommendation_type: displayDecisionLower,
+      userTier: "free",
+    });
+  }, [hideDestinationForFree, displayDecisionLower]);
+
   const lastDecisionRef = React.useRef(null);
   useEffect(() => {
     if (!decisionLower || decisionLower === lastDecisionRef.current) return;
@@ -292,11 +314,19 @@ export default function RoutePlannerCard({
     }
   }, [decisionLower, effectiveRadiusKm, effectiveWindowDays]);
 
+  const freeUsedFiredRef = React.useRef(false);
   useEffect(() => {
     if (isPro) return;
     if (!result) return;
     markFreeUsed();
-  }, [isPro, result, markFreeUsed]);
+
+    if (freeUsedFiredRef.current) return;
+    freeUsedFiredRef.current = true;
+    trackEvent("travel_advisor_free_used", {
+      recommendation_type: decisionLower,
+      userTier: "free",
+    });
+  }, [isPro, result, markFreeUsed, decisionLower]);
 
   useEffect(() => {
     if (typeof onSummaryChange !== "function") return;
@@ -1040,7 +1070,7 @@ export default function RoutePlannerCard({
               </div>
             ) : null}
 
-            {bestCounts && (
+            {bestCounts && !hideDestinationForFree && (
               <div className="text-xs text-slate-600 dark:text-slate-300 mt-1">
                 {interpolate(t("routeDecisionCounts"), {
                   better: bestCounts.betterDays,
@@ -1330,14 +1360,29 @@ export default function RoutePlannerCard({
             {isPreview && (
               <div className="mt-3 rounded-xl border border-slate-200 dark:border-slate-700 p-3 bg-slate-50/60 dark:bg-slate-900/20">
                 <div className="text-xs text-slate-700 dark:text-slate-300 mb-2 whitespace-pre-line">
-                  {t("routePlannerPreviewBody")}
+                  {displayDecisionLower === "move"
+                    ? t("travelAdvisorMoveCtaBody")
+                    : displayDecisionLower === "consider"
+                      ? t("travelAdvisorConsiderCtaBody")
+                      : t("routePlannerPreviewBody")}
                 </div>
                 <button
                   type="button"
-                  onClick={onUpgrade}
+                  onClick={() => {
+                    trackEvent("travel_advisor_upgrade_clicked", {
+                      source: "preview_cta",
+                      recommendation_type: displayDecisionLower,
+                      userTier: "free",
+                    });
+                    if (typeof onUpgrade === "function") onUpgrade();
+                  }}
                   className="inline-flex items-center justify-center rounded-lg px-3 py-2 text-xs font-semibold bg-emerald-600 hover:bg-emerald-700 text-white"
                 >
-                  {t("proUpgrade")}
+                  {displayDecisionLower === "move"
+                    ? t("travelAdvisorMoveCta")
+                    : displayDecisionLower === "consider"
+                      ? t("travelAdvisorConsiderCta")
+                      : t("proUpgrade")}
                 </button>
               </div>
             )}
