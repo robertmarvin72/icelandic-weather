@@ -1,4 +1,5 @@
 const SESSION_KEY = "checkout_source";
+const ROUTE_FALLBACK = "homepage";
 
 const BLOG_SLUG_PATTERNS = [
   [/asbyrgi/, "blog_asbyrgi"],
@@ -17,10 +18,16 @@ function routeSource(path) {
     }
     return "blog";
   }
-  return "homepage";
+  return ROUTE_FALLBACK;
 }
 
-// Priority: ?src= URL param → ctaSource arg → sessionStorage → route fallback
+// Priority: ?src= URL param → ctaSource arg → current route (if identifiable)
+// → sessionStorage (fallback only when the route itself can't identify context)
+// → route fallback.
+//
+// A known route (e.g. /pricing) always wins over sessionStorage: sessionStorage
+// can hold a source persisted by an earlier, possibly-abandoned checkout attempt
+// on a different page, and that must not leak into an unrelated later visit.
 export function resolveCheckoutSource(ctaSource) {
   if (typeof window === "undefined") return "unknown";
 
@@ -29,12 +36,15 @@ export function resolveCheckoutSource(ctaSource) {
 
   if (ctaSource) return ctaSource;
 
+  const routeSrc = routeSource(window.location.pathname);
+  if (routeSrc !== ROUTE_FALLBACK) return routeSrc;
+
   try {
     const stored = sessionStorage.getItem(SESSION_KEY);
     if (stored) return stored;
   } catch { /* unavailable */ }
 
-  return routeSource(window.location.pathname);
+  return routeSrc;
 }
 
 export function persistCheckoutSource(source) {
