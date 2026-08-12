@@ -93,7 +93,13 @@ Preferred Free/Pro gating patterns, in order of preference:
 
 Core principle: *change how much / how often Free can access a feature, not how the forecast result is calculated.*
 
+**Exception:** This rule governs shared forecast/scoring *inputs* (raw daily/hourly data, normalization, candidate scoring) — not deliberately-scoped feature parameters that already have their own product decision (e.g. Route Planner's Free-preview search radius/window vs. Pro's wider settings). If it's unclear whether a parameter is "shared scoring input" or "approved feature parameter," stop and confirm before implementing.
+
 Context: this rule exists because two ideas were rejected at the investigation stage — (a) truncating the 7-day forecast for Free, (b) removing hourly forecast for Free — both would have altered the scoring/data pipeline itself and produced tier-dependent results for the same site.
+
+### Canonical Decision Tone
+
+Surfaces that show a stay/move/consider recommendation must read the canonical *display* tone (raw engine verdict overridden by `comparisonState.direction` — e.g. `displayDecisionLower` in `RoutePlannerCard.jsx`, `model.tone` in `DecisionBanner.jsx`), never the raw engine verdict directly. This applies to CTA copy as well as body/title/color — a canonical override must not leave the CTA reading the raw verdict. `stay` must never imply a move was found; `consider` must never claim a better site was found outright.
 
 ### Authentication
 
@@ -106,6 +112,10 @@ Context: this rule exists because two ideas were rejected at the investigation s
 - `/api/checkout` creates Paddle transaction, returns checkout URL
 - `/api/paddle-webhook` handles `transaction.completed`, `subscription.updated`, `customer.created`
 - Webhook verified via HMAC-SHA256 (`api/_lib/paddle/verify.js`)
+
+### Analytics Source vs. Checkout Attribution
+
+`trackEvent()` "source" properties (which UI surface/action fired the event) and `/api/checkout`'s `upgrade_source` (which feature/context led to checkout) are two independent semantic layers — the same or a different string per case is fine, not a bug. `upgrade_source` is attribution-only: it must never affect entitlement, price, plan selection, pass vs. subscription, or refund/revocation.
 
 ### Internationalization
 
@@ -408,9 +418,13 @@ Deployment is via Vercel Git integration — push to `main` deploys automaticall
 
 ## Constraints
 
+Execution discipline:
+
+- For changes touching Free/Pro gating, scoring/recommendation, shared forecast data, entitlement, or checkout/payment plumbing: confirm current implementation/data-flow first (read-only) before writing code. Stop and get explicit approval if the audit shows the change would reach beyond the stated scope.
+- A green existing test suite is not by itself proof of new behavior — add targeted tests for new branches/events/copy semantics.
+
 Git workflow:
 
-- Always stage and commit changes after implementation
 - Use descriptive commit messages referencing issue number
 - Never run git push — the user always pushes manually
 - Show changes as diffs only, I manage git myself

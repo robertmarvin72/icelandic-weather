@@ -101,6 +101,14 @@ Centralized free/pro feature definitions. `RequireFeature` component wraps gated
 - Core logic in `src/lib/relocationEngine.js` and `relocationService.js`
 - Narrative generation in `routePlannerNarrative.js`
 
+### Free/Pro Gating — Forecast Data Rule
+
+Never tier-clip shared forecast/scoring inputs (raw daily/hourly data, normalization, candidate selection) to differentiate Free/Pro — only gate how much/how often a feature is used, or lock the whole feature. Deliberately-scoped feature parameters (e.g. Route Planner's Free-preview radius/window) are an approved exception. Full rule: see CLAUDE.md → "Free/Pro Gating — Forecast Data Rule".
+
+### Canonical Decision Tone
+
+UI surfaces that present `stay` / `move` / `consider` must follow the canonical display tone, not the raw recommendation verdict. CTA copy must follow the same tone: `consider` must not claim a better site was definitively found. See CLAUDE.md → "Canonical Decision Tone" for the full rule.
+
 ### InstantComparison
 
 Homepage component that compares current campsite against best nearby alternative.
@@ -116,7 +124,7 @@ Homepage component that compares current campsite against best nearby alternativ
 - Plausible has been fully removed — do not reintroduce
 - Checkout source attribution: `src/lib/checkoutSource.js`
 - Source persists via sessionStorage key: `"checkout_source"`
-- TODO exists in checkoutSource.js for Paddle success_url source propagation
+- `upgrade_source` (checkout attribution) is a separate semantic layer from analytics `source` props — attribution-only, must never affect entitlement/price/plan.
 - Core homepage funnel: `homepage_loaded`, `homepage_hero_cta_click`, `comparison_viewed`, `better_nearby_found`, `stay_recommended`, `move_recommended`
 - Core monetization funnel: `pricing_page_viewed`, `subscription_cta_clicked`, `checkout_started`, `checkout_completed`
 
@@ -305,9 +313,13 @@ Deployment is via Vercel Git integration — push to `main` deploys automaticall
 
 ## Constraints
 
+Execution discipline:
+
+- For changes touching Free/Pro gating, scoring/recommendation, shared forecast data, entitlement, or checkout/payment plumbing: confirm current implementation/data-flow first (read-only) before writing code. Stop and get explicit approval if the audit shows the change would reach beyond the stated scope.
+- A green existing test suite is not by itself proof of new behavior — add targeted tests for new branches/events/copy semantics.
+
 Git workflow:
 
-- Always stage and commit changes after implementation
 - Use descriptive commit messages referencing issue number
 - Never run git push — the user always pushes manually
 - Show changes as diffs only, I manage git myself
