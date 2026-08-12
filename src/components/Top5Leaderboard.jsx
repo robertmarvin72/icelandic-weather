@@ -131,7 +131,7 @@ export default function Top5Leaderboard({
   );
 
   const getProLabel = () => {
-    if (!me?.user) return t?.("proCtaTitle") ?? "Fá Pro aðgang";
+    if (!me?.user) return t?.("weeklyRankingUpgradeCta") ?? "Sjá fleiri bestu staði með Pro";
 
     if (me?.entitlements?.pro || isPro) {
       if (isMonthly) return t?.("manageSubscription") ?? "Manage";
@@ -139,7 +139,7 @@ export default function Top5Leaderboard({
       return t?.("proActive") ?? "Pro virkt ✓";
     }
 
-    return t?.("proUpgrade") ?? "Uppfæra í Pro";
+    return t?.("weeklyRankingUpgradeCta") ?? "Sjá fleiri bestu staði með Pro";
   };
 
   const handleCtaClick = () => {
@@ -364,12 +364,12 @@ export default function Top5Leaderboard({
           title={
             isMonthly
               ? (t?.("pricingMonthlyUpgradeHint") ?? "Upgrade to yearly")
-              : (t?.("proCtaTooltip") ?? "Skráðu þig inn og opnaðu Pro")
+              : (t?.("weeklyRankingUpgradeCta") ?? "Sjá fleiri bestu staði með Pro")
           }
           aria-label={
             isMonthly
               ? (t?.("pricingCtaUpgradeToYearly") ?? "Upgrade to Yearly")
-              : (t?.("proCtaLabel") ?? "Opna Pro")
+              : (t?.("weeklyRankingUpgradeCta") ?? "Sjá fleiri bestu staði með Pro")
           }
         >
           <span className="inline-flex items-center gap-2">
@@ -383,7 +383,8 @@ export default function Top5Leaderboard({
           <span className="text-xs font-normal opacity-95">
             {isMonthly
               ? (t?.("pricingMonthlyUpgradeHint") ?? "You can upgrade to yearly any time.")
-              : (t?.("proCtaSubtitle") ?? "Skráðu þig inn til að kaupa aðgang og opna Pro-fídusa.")}
+              : (t?.("weeklyRankingUpgradeBody") ??
+                "Sjá fleiri af bestu tjaldsvæðunum og fá vindátt og skjólstuðul til að velja rólegri stað.")}
           </span>
         </button>
       )}

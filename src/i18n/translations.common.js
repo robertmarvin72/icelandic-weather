@@ -207,6 +207,13 @@ export const commonTranslations = {
     loggedIn: "Logged in",
     proUpgrade: "Upgrade to Pro – unlock Route Planner",
 
+    // Weekly ranking (Top5Leaderboard) — Pro CTA is context-specific here,
+    // not the shared proUpgrade/proCtaSubtitle text (which references Route
+    // Planner, unrelated to this card).
+    weeklyRankingUpgradeCta: "See more top campsites with Pro",
+    weeklyRankingUpgradeBody:
+      "See more of the best campsites, plus wind direction and shelter insight to help choose a calmer spot.",
+
     // Billing portal
     manageSubscription: "Manage",
     billingPortal: "Billing portal",
@@ -711,6 +718,12 @@ export const commonTranslations = {
     proActive: "Pro virkt ✓",
     loggedIn: "Innskráður",
     proUpgrade: "Uppfæra í Pro – opna Ferðaráðgjafa",
+
+    // Vikuröðun (Top5Leaderboard) — sértækt CTA, ekki sameiginlega
+    // proUpgrade/proCtaSubtitle-textinn (sem vísar í Ferðaráðgjafa, ótengt þessu korti).
+    weeklyRankingUpgradeCta: "Sjá fleiri bestu staði með Pro",
+    weeklyRankingUpgradeBody:
+      "Sjá fleiri af bestu tjaldsvæðunum og fá vindátt og skjólstuðul til að velja rólegri stað.",
 
     // Billing portal
     proUntil: "Pro gilt til",

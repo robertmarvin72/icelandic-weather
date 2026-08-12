@@ -206,7 +206,13 @@ export default function DecisionBanner({
               onClick={handleUpgradeClick}
               className="mt-2 inline-flex items-center gap-1.5 rounded-full bg-emerald-600 px-4 py-1.5 text-xs font-semibold text-white shadow-sm transition-colors hover:bg-emerald-700 active:bg-emerald-800"
             >
-              {t("decisionLockedCta") || "See the campsite with Pro"} →
+              {/* CTA follows the canonical tone (model.tone), not the raw
+                  verdict — move may assert a better spot; consider must stay
+                  hedged and never claim one was found. */}
+              {model.tone === "move"
+                ? t("decisionLockedCta") || "See the better spot with Pro"
+                : t("decisionConsiderLockedCta") || "Explore more options with Pro"}{" "}
+              →
             </button>
           )}
         </div>

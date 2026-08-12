@@ -111,3 +111,43 @@ describe("weekly_ranking_site_clicked analytics", () => {
     }
   });
 });
+
+describe("Top5Leaderboard — Miði 7a: weekly ranking Pro CTA copy", () => {
+  beforeEach(() => vi.clearAllMocks());
+
+  it("Free, not logged in: CTA uses the context-specific key, not the generic proCtaTitle/proUpgrade", () => {
+    renderLeaderboard({ me: null });
+    expect(screen.getByText("weeklyRankingUpgradeCta")).toBeDefined();
+    expect(screen.queryByText("proCtaTitle")).toBeNull();
+    expect(screen.queryByText("proUpgrade")).toBeNull();
+  });
+
+  it("Free, logged in (non-pro): CTA still uses the context-specific key", () => {
+    renderLeaderboard({ me: { user: { email: "x@example.com" } } });
+    expect(screen.getByText("weeklyRankingUpgradeCta")).toBeDefined();
+  });
+
+  it("value/body text uses weeklyRankingUpgradeBody, not the generic proCtaSubtitle", () => {
+    renderLeaderboard();
+    expect(screen.getByText("weeklyRankingUpgradeBody")).toBeDefined();
+    expect(screen.queryByText("proCtaSubtitle")).toBeNull();
+  });
+
+  it("Pro: no free-CTA copy is rendered at all — Pro status block shown instead, unaffected by the copy change", () => {
+    renderLeaderboard({ entitlements: { isPro: true } });
+    expect(screen.queryByText("weeklyRankingUpgradeCta")).toBeNull();
+    expect(screen.queryByText("weeklyRankingUpgradeBody")).toBeNull();
+    expect(screen.getByText("proActive")).toBeDefined();
+  });
+
+  it("weekly_ranking source/onUpgrade wiring is unchanged by the copy update", () => {
+    const { onUpgrade } = renderLeaderboard({ me: null });
+    fireEvent.click(screen.getByText("weeklyRankingUpgradeCta"));
+    expect(trackEvent).toHaveBeenCalledWith("weekly_ranking_upgrade_clicked", {
+      lang: "is",
+      userTier: "free",
+      upgradeSource: "weekly_ranking",
+    });
+    expect(onUpgrade).toHaveBeenCalledWith("weekly_ranking");
+  });
+});

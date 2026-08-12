@@ -254,7 +254,10 @@ export const routePlannerTranslations = {
       "Better weather is likely at {site} over the next few days, even if your current campsite scores best overall this week.",
     decisionMoveLockedBody: "A better option may be nearby over the next few days.",
     decisionConsiderLockedBody: "A slightly better option may be nearby over the next few days.",
-    decisionLockedCta: "See the campsite with Pro",
+    // move: canonical tone supports asserting a better spot exists.
+    decisionLockedCta: "See the better spot with Pro",
+    // consider: must stay hedged — never "found"/"better spot" as fact.
+    decisionConsiderLockedCta: "Explore more options with Pro",
 
     decisionStayTitle: "Stay put for now",
     decisionStayBodyGood: "Conditions aren’t great, but no nearby option clearly looks better.",
@@ -554,7 +557,10 @@ export const routePlannerTranslations = {
       "Betra veður er líklegt hjá {site} næstu daga, jafnvel þótt núverandi tjaldsvæði skori hæst þessa vikuna.",
     decisionMoveLockedBody: "Betri kostur gæti verið í nágrenninu næstu daga.",
     decisionConsiderLockedBody: "Örlítið betri kostur gæti verið í nágrenninu næstu daga.",
-    decisionLockedCta: "Sjá tjaldsvæðið með Pro",
+    // move: canonical tónn leyfir að fullyrða að betri staður sé til.
+    decisionLockedCta: "Sjá betri staðinn með Pro",
+    // consider: verður að vera hedged — aldrei "fannst"/staðreynd um betri stað.
+    decisionConsiderLockedCta: "Skoða fleiri möguleika með Pro",
 
     decisionStayTitle: "Best að vera kyrr í bili",
     decisionStayBodyGood:

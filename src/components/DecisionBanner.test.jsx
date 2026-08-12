@@ -1,6 +1,6 @@
 import React from "react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { render, screen } from "@testing-library/react";
+import { render, screen, fireEvent } from "@testing-library/react";
 import DecisionBanner from "./DecisionBanner";
 
 vi.mock("../config/hazards", () => ({
@@ -157,5 +157,81 @@ describe("DecisionBanner — shared comparison state gates verdict", () => {
     );
     expect(screen.queryByText("routeVerdictMoveTitle")).toBeNull();
     expect(screen.getByText("decisionSimilarTitle")).toBeDefined();
+  });
+});
+
+describe("DecisionBanner — Miði 7a: canonical-tone CTA (move vs consider)", () => {
+  beforeEach(() => vi.clearAllMocks());
+
+  it("Free MOVE: CTA uses decisionLockedCta ('better spot' wording allowed for move)", () => {
+    render(
+      <DecisionBanner
+        t={t}
+        rows={[]}
+        routePlannerSummary={makeRoutePlanner("move")}
+        entitlements={{ isPro: false }}
+        onUpgrade={vi.fn()}
+      />
+    );
+    expect(screen.getByText(/decisionLockedCta/)).toBeDefined();
+    expect(screen.queryByText(/decisionConsiderLockedCta/)).toBeNull();
+  });
+
+  it("Free CONSIDER: CTA uses decisionConsiderLockedCta, never the move ('better spot') CTA", () => {
+    render(
+      <DecisionBanner
+        t={t}
+        rows={[]}
+        routePlannerSummary={makeRoutePlanner("consider")}
+        entitlements={{ isPro: false }}
+        onUpgrade={vi.fn()}
+      />
+    );
+    expect(screen.getByText(/decisionConsiderLockedCta/)).toBeDefined();
+    expect(screen.queryByText(/decisionLockedCta/)).toBeNull();
+  });
+
+  it("canonical override: raw verdict=move but comparisonState.direction=similar downgrades to stay — no locked CTA at all (CTA follows canonical tone, not raw verdict)", () => {
+    render(
+      <DecisionBanner
+        t={t}
+        rows={[]}
+        routePlannerSummary={makeRoutePlanner("move")}
+        comparisonState={makeComparison("similar")}
+        entitlements={{ isPro: false }}
+        onUpgrade={vi.fn()}
+      />
+    );
+    expect(screen.queryByText(/decisionLockedCta/)).toBeNull();
+    expect(screen.queryByText(/decisionConsiderLockedCta/)).toBeNull();
+  });
+
+  it("Pro: no locked CTA is rendered regardless of tone", () => {
+    render(
+      <DecisionBanner
+        t={t}
+        rows={[]}
+        routePlannerSummary={makeRoutePlanner("move")}
+        entitlements={{ isPro: true }}
+        onUpgrade={vi.fn()}
+      />
+    );
+    expect(screen.queryByText(/decisionLockedCta/)).toBeNull();
+    expect(screen.queryByText(/decisionConsiderLockedCta/)).toBeNull();
+  });
+
+  it("clicking the move CTA fires better_location_upgrade_clicked and calls onUpgrade('decision_recommendation') — unchanged wiring", () => {
+    const onUpgrade = vi.fn();
+    render(
+      <DecisionBanner
+        t={t}
+        rows={[]}
+        routePlannerSummary={makeRoutePlanner("move")}
+        entitlements={{ isPro: false }}
+        onUpgrade={onUpgrade}
+      />
+    );
+    fireEvent.click(screen.getByText(/decisionLockedCta/));
+    expect(onUpgrade).toHaveBeenCalledWith("decision_recommendation");
   });
 });
