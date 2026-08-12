@@ -112,6 +112,16 @@ describe("RoutePlannerCard — Free preview tone-dependent CTA (Miði 6)", () =>
     window.localStorage.setItem("campcast_route_disclaimer_seen", "true");
   });
 
+  it("Free preview shows the freeRecommendationBadge key (copy clarified: 1 free RECOMMENDATION per day, not '1 free today')", () => {
+    renderCard({ isPro: false, decisionLower: "stay" });
+    expect(screen.getByText("freeRecommendationBadge")).toBeDefined();
+  });
+
+  it("Pro does not see the free badge", () => {
+    renderCard({ isPro: true, decisionLower: "stay" });
+    expect(screen.queryByText("freeRecommendationBadge")).toBeNull();
+  });
+
   it("Free STAY: unchanged generic CTA copy", () => {
     renderCard({ isPro: false, decisionLower: "stay" });
     expect(screen.getByText("routePlannerPreviewBody")).toBeDefined();
