@@ -107,8 +107,8 @@ export const pricingTranslations = {
     pricingInfoLead:
       "See where wind, rain and overall conditions are better across 242 campsites in Iceland.",
 
-    pricingInfoFeature1Title: "7-day forecast",
-    pricingInfoFeature1Body: "See more than the short view and plan further ahead.",
+    pricingInfoFeature1Title: "Wind direction & shelter",
+    pricingInfoFeature1Body: "See wind direction and a shelter score to pick calmer, more sheltered campsites.",
     pricingInfoFeature2Title: "Route Planner",
     pricingInfoFeature2Body: "Find nearby campsites where the weather may be better.",
     pricingInfoFeature3Title: "Better decision support",
@@ -132,7 +132,7 @@ export const pricingTranslations = {
 
     pricingInfoIncludesTitle: "What's included",
     pricingInfoIncludes1: "Full access to Route Planner",
-    pricingInfoIncludes2: "7-day campsite forecast",
+    pricingInfoIncludes2: "Full Top 5 best campsites ranking",
     pricingInfoIncludes3: "Wind direction and shelter insights",
     pricingInfoIncludes4: "Compare all 242 campsites across Iceland",
 
@@ -251,8 +251,8 @@ export const pricingTranslations = {
     pricingInfoLead:
       "Sjáðu hvar vindur, úrkoma og aðstæður eru betri meðal 242 tjaldsvæða um allt Ísland.",
 
-    pricingInfoFeature1Title: "7 daga spá",
-    pricingInfoFeature1Body: "Sjáðu lengra fram í tímann en með styttri yfirsýn.",
+    pricingInfoFeature1Title: "Vindátt og skjól",
+    pricingInfoFeature1Body: "Sjáðu vindátt og skjólstuðul til að velja rólegri, skjólsælli tjaldsvæði.",
     pricingInfoFeature2Title: "Ferðaráðgjafi",
     pricingInfoFeature2Body: "Finndu staði í nágrenninu þar sem veðrið gæti verið betra.",
     pricingInfoFeature3Title: "Betri ákvörðun",
@@ -276,7 +276,7 @@ export const pricingTranslations = {
 
     pricingInfoIncludesTitle: "Hvað fylgir",
     pricingInfoIncludes1: "Fullur aðgangur að Ferðaráðgjafa",
-    pricingInfoIncludes2: "7 daga yfirsýn yfir aðstæður",
+    pricingInfoIncludes2: "Fullur Topp 5-listi yfir bestu tjaldsvæðin",
     pricingInfoIncludes3: "Vindátt og skjól-innsýn",
     pricingInfoIncludes4: "Berðu saman öll 242 tjaldsvæði landsins",
 

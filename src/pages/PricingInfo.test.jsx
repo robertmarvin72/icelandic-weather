@@ -2,6 +2,7 @@ import React from "react";
 import { describe, it, expect, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
 import PricingInfo from "./PricingInfo";
+import { pricingTranslations } from "../i18n/translations.pricing";
 
 vi.mock("../components/Footer", () => ({ default: () => null }));
 vi.mock("../config/pricing", () => ({
@@ -112,5 +113,41 @@ describe("PricingInfo — four price boxes", () => {
   it("upgrade link button renders", () => {
     renderInfo();
     expect(screen.getByText("pricingInfoUpgradeLink")).toBeDefined();
+  });
+});
+
+describe("PricingInfo — Miði 7-fix: '7-day forecast' fact-fix no longer claims a Free-and-Pro-equal feature as Pro-exclusive", () => {
+  it("EN: feature tile and includes-list item replaced with genuinely Pro-only value", () => {
+    expect(pricingTranslations.en.pricingInfoFeature1Title).toBe("Wind direction & shelter");
+    expect(pricingTranslations.en.pricingInfoFeature1Body).toBe(
+      "See wind direction and a shelter score to pick calmer, more sheltered campsites."
+    );
+    expect(pricingTranslations.en.pricingInfoIncludes2).toBe("Full Top 5 best campsites ranking");
+    expect(pricingTranslations.en.pricingInfoFeature1Title).not.toMatch(/7-day/i);
+    expect(pricingTranslations.en.pricingInfoIncludes2).not.toMatch(/7-day/i);
+  });
+
+  it("IS: sama leiðrétting", () => {
+    expect(pricingTranslations.is.pricingInfoFeature1Title).toBe("Vindátt og skjól");
+    expect(pricingTranslations.is.pricingInfoFeature1Body).toBe(
+      "Sjáðu vindátt og skjólstuðul til að velja rólegri, skjólsælli tjaldsvæði."
+    );
+    expect(pricingTranslations.is.pricingInfoIncludes2).toBe("Fullur Topp 5-listi yfir bestu tjaldsvæðin");
+    expect(pricingTranslations.is.pricingInfoFeature1Title).not.toMatch(/7 daga/i);
+    expect(pricingTranslations.is.pricingInfoIncludes2).not.toMatch(/7 daga/i);
+  });
+
+  it("neighbouring pricingInfo keys on the same page are unchanged", () => {
+    expect(pricingTranslations.en.pricingInfoFeature2Title).toBe("Route Planner");
+    expect(pricingTranslations.en.pricingInfoFeature3Title).toBe("Better decision support");
+    expect(pricingTranslations.en.pricingInfoFeature4Title).toBe("Compare two campsites");
+    expect(pricingTranslations.en.pricingInfoIncludes1).toBe("Full access to Route Planner");
+    expect(pricingTranslations.en.pricingInfoIncludes3).toBe("Wind direction and shelter insights");
+    expect(pricingTranslations.en.pricingInfoIncludes4).toBe("Compare all 242 campsites across Iceland");
+    expect(pricingTranslations.en.pricingInfoUpgradeLink).toBe("Get Chase the Weather Pro");
+
+    expect(pricingTranslations.is.pricingInfoIncludes1).toBe("Fullur aðgangur að Ferðaráðgjafa");
+    expect(pricingTranslations.is.pricingInfoIncludes3).toBe("Vindátt og skjól-innsýn");
+    expect(pricingTranslations.is.pricingInfoIncludes4).toBe("Berðu saman öll 242 tjaldsvæði landsins");
   });
 });
