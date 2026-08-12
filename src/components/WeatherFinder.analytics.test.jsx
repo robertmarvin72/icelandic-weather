@@ -155,3 +155,13 @@ describe("weather_finder_expanded analytics", () => {
     }
   });
 });
+
+describe("WeatherFinder — Miði 7b regression: weather_finder source unchanged", () => {
+  beforeEach(() => vi.clearAllMocks());
+
+  it("Free: upgrade CTA calls onUpgrade('weather_finder')", () => {
+    const { onUpgrade } = renderFinder({ entitlements: freeEntitlements });
+    fireEvent.click(screen.getByText("weatherFinderUpgradeForMore"));
+    expect(onUpgrade).toHaveBeenCalledWith("weather_finder");
+  });
+});

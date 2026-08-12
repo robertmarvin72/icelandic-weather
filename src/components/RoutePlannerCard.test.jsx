@@ -283,7 +283,8 @@ describe("RoutePlannerCard — Miði 6 analytics", () => {
       recommendation_type: "move",
       userTier: "free",
     });
-    expect(onUpgrade).toHaveBeenCalledOnce();
+    expect(onUpgrade).toHaveBeenCalledTimes(1);
+    expect(onUpgrade).toHaveBeenCalledWith("travel_advisor");
   });
 
   it("fires travel_advisor_upgrade_clicked with source=free_used_lock when Free already used their run", () => {
@@ -294,7 +295,8 @@ describe("RoutePlannerCard — Miði 6 analytics", () => {
       source: "free_used_lock",
       userTier: "free",
     });
-    expect(onUpgrade).toHaveBeenCalledOnce();
+    expect(onUpgrade).toHaveBeenCalledTimes(1);
+    expect(onUpgrade).toHaveBeenCalledWith("travel_advisor");
   });
 
   it("never fires travel_advisor_daily_limit_reached — explicitly out of scope for Miði 6", () => {
@@ -329,6 +331,7 @@ describe("RoutePlannerCard — Miði 6 analytics", () => {
       userTier: "free",
     });
     expect(trackEvent.mock.calls.filter(([name]) => name === "travel_advisor_upgrade_clicked")).toHaveLength(1);
-    expect(onUpgrade).toHaveBeenCalledOnce();
+    expect(onUpgrade).toHaveBeenCalledTimes(1);
+    expect(onUpgrade).toHaveBeenCalledWith("travel_advisor");
   });
 });

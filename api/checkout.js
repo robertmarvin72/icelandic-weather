@@ -128,6 +128,30 @@ function shouldRedirect(req) {
   return wantsHtml || redirectFlag;
 }
 
+// Canonical checkout-attribution sources (Miði 7b). Feature CTAs call
+// onUpgrade(source), which flows through resolveCheckoutSource() into
+// ?src= on /pricing and finally here. Route-based fallbacks are whatever
+// checkoutSource.js's routeSource() can produce when no feature CTA was
+// involved. Anything not on this list is silently dropped — attribution
+// is optional metadata and must never block or alter checkout.
+const ALLOWED_UPGRADE_SOURCES = new Set([
+  // Feature CTAs
+  "weekly_ranking",
+  "weather_finder",
+  "decision_recommendation",
+  "comparison",
+  "travel_advisor",
+  // Route-based fallbacks (checkoutSource.js: routeSource())
+  "homepage",
+  "pricing",
+  "subscribe",
+  "brochure",
+  "blog",
+  "blog_asbyrgi",
+  "blog_egilsstadir",
+  "blog_skipalaekur",
+]);
+
 function normalizeBaseUrl(s) {
   return String(s || "").replace(/\/+$/, "");
 }
@@ -194,6 +218,8 @@ export default async function handler(req, res) {
     const qrSource = typeof body?.qr_source === "string" && body.qr_source.length > 0
       ? body.qr_source
       : null;
+    const rawUpgradeSource = typeof body?.upgrade_source === "string" ? body.upgrade_source : "";
+    const upgradeSource = ALLOWED_UPGRADE_SOURCES.has(rawUpgradeSource) ? rawUpgradeSource : null;
 
     const priceMonthly = process.env.PADDLE_PRICE_ID_MONTHLY;
     const priceYearly = process.env.PADDLE_PRICE_ID_YEARLY;
@@ -344,6 +370,7 @@ export default async function handler(req, res) {
             plan,
             ...(attribution ?? {}),
             ...(qrSource ? { qr_source: qrSource } : {}),
+            ...(upgradeSource ? { upgrade_source: upgradeSource } : {}),
           },
         checkout: {
           success_url: successUrl,

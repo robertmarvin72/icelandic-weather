@@ -142,6 +142,7 @@ export default function Pricing({ onClose, lang = "is", theme = "dark", t, me })
         plan: chosenPlan,
         ...(attribution ? { attribution } : {}),
         ...(qrSource ? { qr_source: qrSource } : {}),
+        ...(source ? { upgrade_source: source } : {}),
       });
 
       // Subscription already active / upgrade rules

@@ -252,3 +252,91 @@ describe("checkout — subscription plans (unchanged behaviour)", () => {
     expect(fetchMock._lastTransactionBody?.items?.[0]?.price_id).toBe("pri_monthly");
   });
 });
+
+describe("checkout — upgrade_source attribution (Miði 7b)", () => {
+  beforeEach(() => {
+    Object.assign(process.env, ENV_BASE);
+    sqlQueue.idx = 0;
+    sqlQueue.responses = [[SESSION_USER]];
+  });
+
+  afterEach(() => {
+    vi.unstubAllGlobals();
+    for (const k of Object.keys(ENV_BASE)) delete process.env[k];
+  });
+
+  it("valid feature source (comparison) is included in custom_data", async () => {
+    const fetchMock = makeFetchMock();
+    vi.stubGlobal("fetch", fetchMock);
+
+    await handler(makeReq("pass30", { upgrade_source: "comparison" }), makeRes());
+
+    expect(fetchMock._lastTransactionBody?.custom_data?.upgrade_source).toBe("comparison");
+  });
+
+  it("valid feature source (travel_advisor) is included in custom_data", async () => {
+    const fetchMock = makeFetchMock();
+    vi.stubGlobal("fetch", fetchMock);
+
+    await handler(makeReq("pass30", { upgrade_source: "travel_advisor" }), makeRes());
+
+    expect(fetchMock._lastTransactionBody?.custom_data?.upgrade_source).toBe("travel_advisor");
+  });
+
+  it("valid route-fallback source (pricing): passes allowlist, reaches custom_data, does not block checkout", async () => {
+    const fetchMock = makeFetchMock();
+    vi.stubGlobal("fetch", fetchMock);
+
+    const res = makeRes();
+    await handler(makeReq("pass30", { upgrade_source: "pricing" }), res);
+
+    expect(res._body?.ok).toBe(true);
+    expect(res.statusCode).toBe(200);
+    expect(fetchMock._lastTransactionBody?.custom_data?.upgrade_source).toBe("pricing");
+  });
+
+  it("second route-fallback source (blog_asbyrgi): passes allowlist, reaches custom_data, does not block checkout", async () => {
+    const fetchMock = makeFetchMock();
+    vi.stubGlobal("fetch", fetchMock);
+
+    const res = makeRes();
+    await handler(makeReq("pass30", { upgrade_source: "blog_asbyrgi" }), res);
+
+    expect(res._body?.ok).toBe(true);
+    expect(res.statusCode).toBe(200);
+    expect(fetchMock._lastTransactionBody?.custom_data?.upgrade_source).toBe("blog_asbyrgi");
+  });
+
+  it("unknown source: checkout still succeeds, upgrade_source is NOT sent to Paddle", async () => {
+    const fetchMock = makeFetchMock();
+    vi.stubGlobal("fetch", fetchMock);
+
+    const res = makeRes();
+    await handler(makeReq("pass30", { upgrade_source: "totally_fake_source" }), res);
+
+    expect(res._body?.ok).toBe(true);
+    expect(fetchMock._lastTransactionBody?.custom_data).not.toHaveProperty("upgrade_source");
+  });
+
+  it("missing source: checkout succeeds unaffected, no upgrade_source key sent", async () => {
+    const fetchMock = makeFetchMock();
+    vi.stubGlobal("fetch", fetchMock);
+
+    const res = makeRes();
+    await handler(makeReq("pass30"), res);
+
+    expect(res._body?.ok).toBe(true);
+    expect(fetchMock._lastTransactionBody?.custom_data).not.toHaveProperty("upgrade_source");
+  });
+
+  it("attribution never affects plan/price selection or entitlement fields", async () => {
+    const fetchMock = makeFetchMock();
+    vi.stubGlobal("fetch", fetchMock);
+
+    await handler(makeReq("passyear", { upgrade_source: "travel_advisor" }), makeRes());
+
+    expect(fetchMock._lastTransactionBody?.items?.[0]?.price_id).toBe("pri_passyear");
+    expect(fetchMock._lastTransactionBody?.custom_data?.plan).toBe("passyear");
+    expect(fetchMock._lastTransactionBody?.custom_data?.user_id).toBe("user-1");
+  });
+});

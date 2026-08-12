@@ -66,7 +66,7 @@ function ProLock({ t, me, onUpgrade }) {
         type="button"
         onClick={() => {
           trackEvent("travel_advisor_upgrade_clicked", { source: "pro_lock", userTier: "free" });
-          if (typeof onUpgrade === "function") onUpgrade();
+          if (typeof onUpgrade === "function") onUpgrade("travel_advisor");
         }}
         className="
           w-full rounded-xl px-3 py-2 text-sm font-semibold
@@ -100,7 +100,7 @@ function FreeUsedLock({ t, me, onUpgrade }) {
             source: "free_used_lock",
             userTier: "free",
           });
-          if (typeof onUpgrade === "function") onUpgrade();
+          if (typeof onUpgrade === "function") onUpgrade("travel_advisor");
         }}
         className="
           w-full rounded-xl px-3 py-2 text-sm font-semibold
@@ -1374,7 +1374,7 @@ export default function RoutePlannerCard({
                       recommendation_type: displayDecisionLower,
                       userTier: "free",
                     });
-                    if (typeof onUpgrade === "function") onUpgrade();
+                    if (typeof onUpgrade === "function") onUpgrade("travel_advisor");
                   }}
                   className="inline-flex items-center justify-center rounded-lg px-3 py-2 text-xs font-semibold bg-emerald-600 hover:bg-emerald-700 text-white"
                 >

@@ -114,7 +114,7 @@ function LockedComparisonCard({ t, onUpgrade, lang }) {
           type="button"
           onClick={() => {
             trackEvent("comparison_upgrade_clicked", { lang, source: "comparison" });
-            if (typeof onUpgrade === "function") onUpgrade();
+            if (typeof onUpgrade === "function") onUpgrade("comparison");
           }}
           className="
             mt-4 w-full rounded-xl px-3 py-2 text-sm font-semibold
