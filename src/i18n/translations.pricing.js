@@ -60,7 +60,7 @@ export const pricingTranslations = {
 
     pricingTitle: "Choose your plan",
     pricingLead:
-      "Unlock Chase the Weather Pro to compare nearby conditions and find better weather nearby.",
+      "Chase the Weather Pro helps you decide where to go, when to move, and why — based on real conditions nearby.",
     pricingNotLoggedIn: "We'll ask for your email before checkout.",
 
     pricingYearlyTitle: "Yearly",
@@ -71,9 +71,9 @@ export const pricingTranslations = {
     pricingMonthlyTitle: "Monthly",
     pricingPerMonth: "per month",
 
-    pricingFeatureAllPro: "Full access to the Route Planner",
-    pricingFeatureWindShelter: "Wind direction + shelter score",
-    pricingFeatureComparisons: "Compare all 242 campsites across Iceland",
+    pricingFeatureAllPro: "Full Route Planner access — know when it's worth moving",
+    pricingFeatureWindShelter: "Wind direction & shelter score — see why one site is calmer",
+    pricingFeatureComparisons: "Unlimited comparisons across all 242 campsites in Iceland",
     pricingFeatureCancelAnytime: "Cancel anytime",
 
     pricingCtaYearly: "Start annual subscription",
@@ -202,9 +202,9 @@ export const pricingTranslations = {
     pricingBrandTitle: "Eltum Veðrið Pro",
     pricingBrandSub: "Fylgstu með veðrinu",
 
-    pricingTitle: "Veldu áskrift",
+    pricingTitle: "Veldu leiðina að Pro",
     pricingLead:
-      "Með Eltum Veðrið Pro færðu betri yfirsýn yfir aðstæður og getur séð hvar veðrið lítur betur út.",
+      "Eltum Veðrið Pro hjálpar þér að ákveða hvert þú átt að fara, hvenær og hvers vegna — út frá raunverulegum aðstæðum í nágrenninu.",
     pricingNotLoggedIn: "Við biðjum um netfang áður en þú ferð í greiðslu.",
 
     pricingYearlyTitle: "Ársáskrift",
@@ -214,9 +214,9 @@ export const pricingTranslations = {
     pricingMonthlyTitle: "Mánaðaráskrift",
     pricingPerMonth: "á mánuði",
 
-    pricingFeatureAllPro: "Fullur aðgangur að Ferðaráðgjafa",
-    pricingFeatureWindShelter: "Vindátt + skjólstuðull",
-    pricingFeatureComparisons: "Samanburður á öllum 242 tjaldsvæðum landsins",
+    pricingFeatureAllPro: "Fullur aðgangur að Ferðaráðgjafa — veistu hvenær borgar sig að færa sig",
+    pricingFeatureWindShelter: "Vindátt og skjólstuðull — sjáðu af hverju einn staður er rólegri",
+    pricingFeatureComparisons: "Ótakmarkaður samanburður á öllum 242 tjaldsvæðum landsins",
     pricingFeatureCancelAnytime: "Hægt að segja upp hvenær sem er",
 
     pricingCtaYearly: "Hefja ársáskrift",
