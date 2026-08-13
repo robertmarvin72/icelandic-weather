@@ -1,4 +1,5 @@
 import React from "react";
+import { useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
 import { landingTranslations } from "../i18n/translations.landing";
 import {
@@ -266,6 +267,12 @@ export default function Landing({ t }) {
   const [lang, setLang] = React.useState("en");
   const tr = (key) => landingTranslations[lang]?.[key] || key;
 
+  // Canonical app is eltumvedrid.is — never send visitors to the legacy
+  // campcast.is domain. Preserve any UTM/query params from this landing
+  // page onto the app link, same pattern as CampaignLandingPage's ctaTo.
+  const { search } = useLocation();
+  const appUrl = React.useMemo(() => `https://eltumvedrid.is/${search}`, [search]);
+
   const steps = [
     {
       icon: MapPin,
@@ -371,7 +378,7 @@ export default function Landing({ t }) {
           </div>
 
           <a
-            href="https://www.campcast.is"
+            href={appUrl}
             className="inline-flex items-center gap-2 rounded-2xl bg-neutral-950 px-4 py-2.5 text-sm font-semibold text-white transition hover:-translate-y-0.5"
           >
             {tr("landingOpenCampcast")}
@@ -407,7 +414,7 @@ export default function Landing({ t }) {
             <div className="mt-8">
               <div className="flex flex-col gap-3 sm:flex-row">
                 <a
-                  href="https://www.campcast.is"
+                  href={appUrl}
                   className="inline-flex items-center justify-center gap-2 rounded-2xl bg-emerald-600 px-6 py-3.5 text-base font-semibold text-white shadow-lg shadow-emerald-600/20 transition hover:-translate-y-0.5"
                 >
                   {tr("landingPrimaryCta")}
@@ -624,7 +631,7 @@ export default function Landing({ t }) {
 
               <div className="flex flex-col gap-3 lg:items-end">
                 <a
-                  href="https://www.campcast.is"
+                  href={appUrl}
                   className="inline-flex items-center justify-center gap-2 rounded-2xl bg-white px-6 py-3.5 text-base font-semibold text-neutral-950 transition hover:-translate-y-0.5"
                 >
                   {tr("landingFinalCta")}
