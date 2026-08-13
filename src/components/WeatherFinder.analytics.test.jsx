@@ -165,3 +165,63 @@ describe("WeatherFinder — Miði 7b regression: weather_finder source unchanged
     expect(onUpgrade).toHaveBeenCalledWith("weather_finder");
   });
 });
+
+describe("WeatherFinder — Miði 8A: weather_finder_upgrade_clicked", () => {
+  beforeEach(() => vi.clearAllMocks());
+
+  it("does not fire on render — only on click", () => {
+    renderFinder({ entitlements: freeEntitlements });
+    expect(trackEvent).not.toHaveBeenCalled();
+  });
+
+  it("Free: fires weather_finder_upgrade_clicked with canonical source/tier/mode on click", () => {
+    renderFinder({ entitlements: freeEntitlements });
+    fireEvent.click(screen.getByText("weatherFinderUpgradeForMore"));
+    expect(trackEvent).toHaveBeenCalledWith("weather_finder_upgrade_clicked", {
+      source: "weather_finder",
+      userTier: "free",
+      mode: "calmest",
+    });
+  });
+
+  it("Free: checkout attribution (onUpgrade) still fires alongside the analytics event, exactly once each", () => {
+    const { onUpgrade } = renderFinder({ entitlements: freeEntitlements });
+    fireEvent.click(screen.getByText("weatherFinderUpgradeForMore"));
+    expect(
+      trackEvent.mock.calls.filter((c) => c[0] === "weather_finder_upgrade_clicked")
+    ).toHaveLength(1);
+    expect(onUpgrade).toHaveBeenCalledTimes(1);
+    expect(onUpgrade).toHaveBeenCalledWith("weather_finder");
+  });
+
+  it("Free: mode property reflects the active mode at click time", () => {
+    renderFinder({ entitlements: freeEntitlements });
+    vi.clearAllMocks();
+    fireEvent.click(screen.getByText("weatherFinderWarmest")); // switch mode first
+    vi.clearAllMocks();
+    fireEvent.click(screen.getByText("weatherFinderUpgradeForMore"));
+    expect(trackEvent).toHaveBeenCalledWith(
+      "weather_finder_upgrade_clicked",
+      expect.objectContaining({ mode: "warmest" })
+    );
+  });
+
+  it("Pro: upgrade CTA is not rendered at all", () => {
+    renderFinder({ entitlements: proEntitlements });
+    expect(screen.queryByText("weatherFinderUpgradeForMore")).toBeNull();
+  });
+
+  it("Pro: weather_finder_upgrade_clicked never fires, even after other Pro interactions", () => {
+    renderFinder({ entitlements: proEntitlements });
+    // Exercise other Pro-only interactions to prove the event genuinely never fires,
+    // not just that this particular button happens to be absent.
+    fireEvent.click(screen.getByText("weatherFinderWarmest"));
+    const expandBtn = screen.queryByText("weatherFinderShowFull");
+    if (expandBtn) fireEvent.click(expandBtn);
+
+    const upgradeCalls = trackEvent.mock.calls.filter(
+      (c) => c[0] === "weather_finder_upgrade_clicked"
+    );
+    expect(upgradeCalls).toHaveLength(0);
+  });
+});

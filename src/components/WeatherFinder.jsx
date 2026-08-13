@@ -180,7 +180,14 @@ export default function WeatherFinder({ siteList, scoresById, userLoc, entitleme
         <div className="mt-3">
           <button
             type="button"
-            onClick={() => typeof onUpgrade === "function" && onUpgrade("weather_finder")}
+            onClick={() => {
+              trackEvent("weather_finder_upgrade_clicked", {
+                source: "weather_finder",
+                userTier: "free",
+                mode,
+              });
+              if (typeof onUpgrade === "function") onUpgrade("weather_finder");
+            }}
             className="w-full rounded-xl px-3 py-2 text-sm font-semibold bg-emerald-600 text-white hover:bg-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-400/60 dark:bg-emerald-500 dark:hover:bg-emerald-400"
           >
             {t("weatherFinderUpgradeForMore")}
