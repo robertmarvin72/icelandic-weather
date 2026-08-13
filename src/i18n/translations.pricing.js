@@ -103,16 +103,16 @@ export const pricingTranslations = {
 
     pricingInfoBack: "← Back to forecast",
     pricingInfoEyebrow: "Chase the Weather Pro",
-    pricingInfoTitle: "Find the best weather across 242 campsites in Iceland",
+    pricingInfoTitle: "How Pro turns weather data into a clear decision",
     pricingInfoLead:
-      "See where wind, rain and overall conditions are better across 242 campsites in Iceland.",
+      "Full rankings, side-by-side comparisons, and guidance on whether it's worth moving — across all 242 campsites, so you're not guessing where, when, or why.",
 
     pricingInfoFeature1Title: "Wind direction & shelter",
     pricingInfoFeature1Body: "See wind direction and a shelter score to pick calmer, more sheltered campsites.",
     pricingInfoFeature2Title: "Route Planner",
     pricingInfoFeature2Body: "Find nearby campsites where the weather may be better.",
-    pricingInfoFeature3Title: "Better decision support",
-    pricingInfoFeature3Body: "Get more insight into wind, gusts, rain, and overall conditions.",
+    pricingInfoFeature3Title: "Full Top 5 ranking",
+    pricingInfoFeature3Body: "See every top-ranked campsite in Iceland right now, not just a preview — so you know where your best options actually are.",
     pricingInfoFeature4Title: "Compare two campsites",
     pricingInfoFeature4Body:
       "See day by day which campsite is calmer, drier or warmer, and open an hourly breakdown when the decision matters.",
@@ -129,12 +129,6 @@ export const pricingTranslations = {
     pricingInfoPassYearLabel: "Annual Pass",
     pricingInfoPassYearBody: "One-time purchase. Pro access for 1 year (365 days) from purchase date. No auto-renewal.",
     pricingInfoOneTime: "one-time",
-
-    pricingInfoIncludesTitle: "What's included",
-    pricingInfoIncludes1: "Full access to Route Planner",
-    pricingInfoIncludes2: "Full Top 5 best campsites ranking",
-    pricingInfoIncludes3: "Wind direction and shelter insights",
-    pricingInfoIncludes4: "Compare all 242 campsites across Iceland",
 
     pricingInfoTrustTitle: "Good to know",
     pricingInfoTrustBody:
@@ -247,16 +241,16 @@ export const pricingTranslations = {
 
     pricingInfoBack: "← Til baka í spá",
     pricingInfoEyebrow: "Eltum Veðrið Pro",
-    pricingInfoTitle: "Finndu besta veðrið meðal 242 tjaldsvæða um allt land",
+    pricingInfoTitle: "Svona hjálpar Pro þér að taka ákvörðun",
     pricingInfoLead:
-      "Sjáðu hvar vindur, úrkoma og aðstæður eru betri meðal 242 tjaldsvæða um allt Ísland.",
+      "Fullur listi, samanburður hlið við hlið og leiðsögn um hvort borgi sig að færa sig — fyrir öll 242 tjaldsvæði landsins — svo þú þarft ekki að giska á hvert, hvenær eða hvers vegna.",
 
     pricingInfoFeature1Title: "Vindátt og skjól",
     pricingInfoFeature1Body: "Sjáðu vindátt og skjólstuðul til að velja rólegri, skjólsælli tjaldsvæði.",
     pricingInfoFeature2Title: "Ferðaráðgjafi",
     pricingInfoFeature2Body: "Finndu staði í nágrenninu þar sem veðrið gæti verið betra.",
-    pricingInfoFeature3Title: "Betri ákvörðun",
-    pricingInfoFeature3Body: "Fáðu meiri innsýn í vind, hviður, úrkomu og heildaraðstæður.",
+    pricingInfoFeature3Title: "Fullur Topp 5-listi",
+    pricingInfoFeature3Body: "Sjáðu öll efstu tjaldsvæðin á landinu núna, ekki bara sýnishorn — svo þú vitir hvar bestu kostirnir raunverulega eru.",
     pricingInfoFeature4Title: "Berðu saman tvö tjaldsvæði",
     pricingInfoFeature4Body:
       "Sjáðu dag frá degi hvort tjaldsvæðið er rólegra, þurrara eða hlýrra og opnaðu klukkutímasamanburð þegar ákvörðunin skiptir máli.",
@@ -273,12 +267,6 @@ export const pricingTranslations = {
     pricingInfoPassYearLabel: "Árspassi",
     pricingInfoPassYearBody: "Eingreiðsla. Pro aðgangur í 1 ár (365 dagar) frá kaupdegi. Engin sjálfvirk endurnýjun.",
     pricingInfoOneTime: "eingreiðsla",
-
-    pricingInfoIncludesTitle: "Hvað fylgir",
-    pricingInfoIncludes1: "Fullur aðgangur að Ferðaráðgjafa",
-    pricingInfoIncludes2: "Fullur Topp 5-listi yfir bestu tjaldsvæðin",
-    pricingInfoIncludes3: "Vindátt og skjól-innsýn",
-    pricingInfoIncludes4: "Berðu saman öll 242 tjaldsvæði landsins",
 
     pricingInfoTrustTitle: "Gott að vita",
     pricingInfoTrustBody:

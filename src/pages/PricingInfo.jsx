@@ -130,17 +130,6 @@ export default function PricingInfo({ lang = "is", theme = "light", t, onUpgrade
             </div>
           </div>
 
-          <div className="mt-8 rounded-2xl border border-slate-200/70 bg-slate-50/80 p-5 dark:border-slate-700/70 dark:bg-slate-800/60">
-            <div className="text-base font-semibold">{t("pricingInfoIncludesTitle")}</div>
-
-            <ul className="mt-3 grid gap-2 text-sm text-slate-700 dark:text-slate-300">
-              <li>✓ {t("pricingInfoIncludes4")}</li>
-              <li>✓ {t("pricingInfoIncludes1")}</li>
-              <li>✓ {t("pricingInfoIncludes2")}</li>
-              <li>✓ {t("pricingInfoIncludes3")}</li>
-            </ul>
-          </div>
-
           <div className="mt-8 rounded-2xl border border-slate-200/70 bg-white p-5 dark:border-slate-700/70 dark:bg-slate-900/80">
             <div className="text-base font-semibold">{t("pricingInfoTrustTitle")}</div>
             <p className="mt-2 text-sm text-slate-600 dark:text-slate-300">
