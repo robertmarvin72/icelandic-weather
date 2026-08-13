@@ -2,6 +2,7 @@ import React from "react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { render, screen, fireEvent } from "@testing-library/react";
 import Pricing from "./Pricing";
+import { trackEvent } from "../lib/analytics";
 
 vi.mock("../hooks/useMe", () => ({ useMe: () => ({ me: null }) }));
 vi.mock("../config/pricing", () => ({
@@ -24,7 +25,7 @@ vi.mock("../lib/analytics", () => ({ trackEvent: vi.fn() }));
 const t = (k) => k;
 
 function renderPricing(props = {}) {
-  render(<Pricing lang="en" theme="dark" t={t} me={null} {...props} />);
+  return render(<Pricing lang="en" theme="dark" t={t} me={null} {...props} />);
 }
 
 describe("Pricing — four plan cards", () => {
@@ -226,5 +227,33 @@ describe("Pricing — IS translations þolfall", () => {
     const { commonTranslations } = await import("../i18n/translations.common");
     expect(commonTranslations.en.pricingPass30CTA).toBe("Buy 30-day pass");
     expect(commonTranslations.en.pricingPassYearCTA).toBe("Buy annual pass");
+  });
+});
+
+describe("Pricing — pricing_page_viewed baseline (#217 pre-upgrade regression gate)", () => {
+  beforeEach(() => vi.clearAllMocks());
+
+  it("fires exactly once per mount", () => {
+    renderPricing();
+    expect(trackEvent).toHaveBeenCalledTimes(1);
+    expect(trackEvent).toHaveBeenCalledWith(
+      "pricing_page_viewed",
+      expect.objectContaining({ lang: "en" })
+    );
+  });
+
+  it("a rerender within the same mount does not refire", () => {
+    const { rerender } = renderPricing();
+    expect(trackEvent).toHaveBeenCalledTimes(1);
+    rerender(<Pricing lang="en" theme="dark" t={t} me={null} />);
+    expect(trackEvent).toHaveBeenCalledTimes(1);
+  });
+
+  it("an unmount followed by a remount counts as a new visit and fires again", () => {
+    const { unmount } = renderPricing();
+    expect(trackEvent).toHaveBeenCalledTimes(1);
+    unmount();
+    renderPricing();
+    expect(trackEvent).toHaveBeenCalledTimes(2);
   });
 });
