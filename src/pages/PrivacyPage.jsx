@@ -101,10 +101,10 @@ export default function PrivacyPage({ t = (k, fallback) => fallback || k, theme 
                   "Ef þú hefur spurningar um persónuvernd eða vilt óska eftir eyðingu gagna geturðu haft samband við okkur á:"
                 )}{" "}
                 <a
-                  href="mailto:support@campcast.is"
+                  href="mailto:hello@eltumvedrid.is"
                   className="font-medium text-emerald-700 hover:text-emerald-600 dark:text-emerald-400 dark:hover:text-emerald-300"
                 >
-                  support@campcast.is
+                  hello@eltumvedrid.is
                 </a>
               </p>
             </div>

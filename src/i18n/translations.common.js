@@ -240,22 +240,21 @@ export const commonTranslations = {
 
     termsTitle: "Terms and Disclaimer",
 
-    termsOperatorStatement:
-      "Eltum Veðrið is operated by CampCast. CampCast is the legal business name for the service for terms, subscriptions, payments and invoices.",
+    termsOperatorStatement: "CampCast is a brand used for Eltum Veðrið.",
 
     termsIntro1:
-      "Chase the Weather provides weather forecasts and estimates of weather conditions along travel routes based on available meteorological data. This information is provided for informational purposes only and may be inaccurate, incomplete, or outdated.",
+      "Eltum Veðrið provides weather forecasts and estimates of weather conditions along travel routes based on available meteorological data. This information is provided for informational purposes only and may be inaccurate, incomplete, or outdated.",
 
     termsIntro2:
       "Weather conditions in Iceland can change rapidly, and actual conditions may differ from forecasts or estimates shown in the service.",
 
     termsIntro3:
-      "Chase the Weather does not provide driving instructions and does not guarantee travel safety. Users are solely responsible for their own travel decisions and should always check official weather and road information before travelling.",
+      "Eltum Veðrið does not provide driving instructions and does not guarantee travel safety. Users are solely responsible for their own travel decisions and should always check official weather and road information before travelling.",
 
     termsSourcesTitle: "Users are encouraged to consult official sources such as:",
 
     termsLiability:
-      "Chase the Weather and its operators accept no liability for accidents, damages, delays, or losses resulting from the use of the service or reliance on information provided within it.",
+      "Eltum Veðrið and its operators accept no liability for accidents, damages, delays, or losses resulting from the use of the service or reliance on information provided within it.",
     termsDisclaimerAgree: "I agree to the Terms of Service and Disclaimer",
     termsDisclaimerLink: "Terms and Disclaimer",
 
@@ -290,15 +289,15 @@ export const commonTranslations = {
 
     privacyTitle: "Privacy Policy",
     privacyIntro1:
-      "Chase the Weather respects user privacy and aims to handle personal data responsibly and securely.",
+      "Eltum Veðrið respects user privacy and aims to handle personal data responsibly and securely.",
     privacyIntro2:
       "We may collect basic user information such as email address, account details, and general usage data in order to provide the service, maintain subscriptions, and improve the user experience.",
     privacyPayments:
-      "Payment information is processed by Paddle and is not stored on Chase the Weather servers.",
+      "Payment information is processed by Paddle and is not stored on Eltum Veðrið servers.",
     privacyUsage:
       "We may also collect anonymous or aggregated usage data for analytics purposes to improve the functionality, stability, and user experience of the service.",
     privacySharing:
-      "Chase the Weather does not sell personal data and does not share it with third parties except where necessary to process payments, operate the service, or comply with legal obligations.",
+      "Eltum Veðrið does not sell personal data and does not share it with third parties except where necessary to process payments, operate the service, or comply with legal obligations.",
     privacyRetention:
       "Personal data is only retained for as long as necessary for operating the service or as required by law.",
     privacyRights:
@@ -307,7 +306,7 @@ export const commonTranslations = {
     privacyContactText:
       "If you have any questions about privacy or would like to request deletion of your data, you can contact us at:",
     privacyChanges:
-      "Chase the Weather may update this privacy policy from time to time. The latest version will always be published on the website.",
+      "Eltum Veðrið may update this privacy policy from time to time. The latest version will always be published on the website.",
     privacyClose: "Close",
 
     termsPrivacyAgreePrefix: "I agree to the",
@@ -755,8 +754,7 @@ export const commonTranslations = {
 
     termsTitle: "Skilmálar og fyrirvari",
 
-    termsOperatorStatement:
-      "Eltum Veðrið er rekið af CampCast. CampCast er löglegt rekstrarheiti þjónustunnar vegna skilmála, áskrifta, greiðslna og reikninga.",
+    termsOperatorStatement: "CampCast er vörumerki sem notað er fyrir Eltum Veðrið.",
 
     termsIntro1:
       "Eltum Veðrið sýnir veðurupplýsingar og mat á aðstæðum byggt á tiltækum veðurgögnum. Upplýsingarnar eru eingöngu til viðmiðunar og geta verið ónákvæmar eða breyst hratt.",
