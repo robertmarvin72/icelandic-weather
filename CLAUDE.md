@@ -99,7 +99,15 @@ Context: this rule exists because two ideas were rejected at the investigation s
 
 ### Canonical Decision Tone
 
-Surfaces that show a stay/move/consider recommendation must read the canonical *display* tone (raw engine verdict overridden by `comparisonState.direction` — e.g. `displayDecisionLower` in `RoutePlannerCard.jsx`, `model.tone` in `DecisionBanner.jsx`), never the raw engine verdict directly. This applies to CTA copy as well as body/title/color — a canonical override must not leave the CTA reading the raw verdict. `stay` must never imply a move was found; `consider` must never claim a better site was found outright.
+Surfaces that show a stay/move/consider recommendation must read the canonical *display* tone (raw engine verdict overridden by `comparisonState.direction` — e.g. `displayDecisionLower` in `RoutePlannerCard.jsx`, `model.tone` in `HomeDecisionCard.jsx`), never the raw engine verdict directly. This applies to CTA copy as well as body/title/color — a canonical override must not leave the CTA reading the raw verdict. `stay` must never imply a move was found; `consider` must never claim a better site was found outright.
+
+### Homepage Canonical Decision Surface
+
+`HomeDecisionCard.jsx` is the single canonical stay/move/consider recommendation surface on the homepage — the successor to the former separate `DecisionBanner` + `InstantComparison` banners (merged into one card; `DecisionBanner.jsx` no longer exists). Do not reintroduce a second, competing canonical recommendation elsewhere on the homepage.
+
+- Tone/state comes from the existing `useComparisonState` / `comparisonUtils.js` flow — do not add new scoring/tone logic in `HomeDecisionCard.jsx` or anywhere else to serve it.
+- The displayed candidate is always `comparisonState.best` (itself `selectBestCandidate`, radius-filtered). Never fall back to `top5[0]` or any other candidate source for a relocation/candidate recommendation.
+- `InstantComparison.jsx` itself still exists and is still used standalone on `Brochure.jsx` (marketing demo) — it is not rendered on the homepage anymore.
 
 ### Authentication
 
@@ -128,6 +136,7 @@ Surfaces that show a stay/move/consider recommendation must read the canonical *
 - Pro feature — multi-day weather-based site relocation
 - Core logic in `src/lib/relocationEngine.js` and `relocationService.js`
 - Narrative generation in `routePlannerNarrative.js`
+- On the homepage, `RoutePlannerCard` is a supporting-detail surface, not a second primary verdict/conversion surface — it must not show a competing stay/move/consider verdict or Upgrade CTA by default alongside `HomeDecisionCard`. Full verdict/paywall detail is behind a user-opened "Sjá nánar" (see details) disclosure, default collapsed. Internal Route Planner logic (`useRoutePlanner`, `deriveRoutePlannerSummary`, radius/window, entitlement, Free preview, candidate/scoring) is unaffected by this — it's a presentation-only change.
 
 ---
 
@@ -185,7 +194,7 @@ Brochure and landing pages should:
 
 ### Instant Comparison
 
-InstantComparison exists to create an immediate "aha moment".
+InstantComparison exists to create an immediate "aha moment". On the homepage, this role is now fulfilled by `HomeDecisionCard.jsx` (see "Homepage Canonical Decision Surface" above), which inherits the rules below unchanged. `InstantComparison.jsx` itself is still used standalone on `Brochure.jsx`.
 
 Goals:
 
@@ -222,6 +231,7 @@ Advanced controls should:
 Examples:
 
 - Route planner sliders
+- Route planner verdict/CTA detail (behind "Sjá nánar" — see Route Planner homepage role above)
 - Utility/settings controls
 - Experimental/debug controls
 
@@ -257,6 +267,8 @@ Primary homepage funnel:
 - `better_nearby_found`
 - `stay_recommended`
 - `move_recommended`
+
+**Event semantics change — `travel_advisor_destination_locked`:** from production deployment **2026-08-17 19:02 UTC** (the GA4 cutover for before/after analysis), this event fires only when a Free user actually opens RoutePlannerCard's "Sjá nánar" details and the locked destination state is genuinely shown — not on data-load/computation alone as before that time. `stay_recommended`, `move_recommended`, and `travel_advisor_free_used` are unchanged — they keep mount/data-load semantics regardless of "Sjá nánar" state.
 
 Primary monetization funnel:
 
