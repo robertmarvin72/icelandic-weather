@@ -10,7 +10,7 @@ import {
 
 // Single source of truth for the metric-based comparison between the current
 // campsite and the best nearby candidate. Call once in App and pass the result
-// to both DecisionBanner and InstantComparison so they always agree.
+// to HomeDecisionCard and RoutePlannerCard so they always agree.
 export function useComparisonState({
   site,
   currentScore,
@@ -56,7 +56,7 @@ export function useComparisonState({
     return calcMetrics(nearbyRows);
   }, [best, scoresById]);
 
-  const { strength, primaryKey, worseningsCount } = useMemo(
+  const { strength, primaryKey, improvements, worseningsCount } = useMemo(
     () => classifyMetrics(currentMetrics, nearbyMetrics),
     [currentMetrics, nearbyMetrics]
   );
@@ -78,6 +78,7 @@ export function useComparisonState({
     nearbyMetrics,
     strength,
     primaryKey,
+    improvements,
     worseningsCount,
     isStrongOrDecent,
     scoreDiff,

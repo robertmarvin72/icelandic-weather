@@ -160,6 +160,15 @@ export default function RoutePlannerCard({
   const [detailsCandidate, setDetailsCandidate] = useState(null);
   const [advancedOpen, setAdvancedOpen] = useState(false);
 
+  // UX Miði — supporting-detail disclosure. RoutePlannerCard's own verdict
+  // presentation and Upgrade CTAs are downgraded to supporting detail behind
+  // this toggle so they never compete with HomeDecisionCard's single primary
+  // recommendation/CTA above. Default collapsed. Purely a render-time gate —
+  // every hook/computation below (useRoutePlanner, deriveRoutePlannerSummary,
+  // useFreeRecommendation/markFreeUsed, onSummaryChange) still runs
+  // unconditionally, exactly as before this ticket.
+  const [resultsExpanded, setResultsExpanded] = useState(false);
+
   // ✅ One-time route disclaimer
   const [showRouteDisclaimer, setShowRouteDisclaimer] = useState(false);
 
@@ -213,15 +222,18 @@ export default function RoutePlannerCard({
   });
 
   // ✅ One-time route disclaimer
+  // Gated on resultsExpanded: this is an overlay on top of the card body, so
+  // it must not appear while the body is still collapsed behind "Sjá nánar".
   useEffect(() => {
     if (typeof window === "undefined") return;
     if (!isPro && !isPreview) return;
+    if (!resultsExpanded) return;
 
     const seen = window.localStorage.getItem("campcast_route_disclaimer_seen");
     if (seen !== "true") {
       setShowRouteDisclaimer(true);
     }
-  }, [isPro, isPreview]);
+  }, [isPro, isPreview, resultsExpanded]);
 
   // ✅ MUST stay above all early returns (fixes React #310)
   useEffect(() => {
@@ -260,7 +272,7 @@ export default function RoutePlannerCard({
   }, [result, sites, effectiveRadiusKm, effectiveWindowDays, routeRiskData, isPreview, isPro]);
 
   // Reconciles the TONE shown on this card with the same metric-comparison
-  // override DecisionBanner already applies via useComparisonState, so the
+  // override HomeDecisionCard already applies via useComparisonState, so the
   // two cards can never disagree (move here / stay there) for the same
   // candidate. The underlying engine verdict (decisionLower), the candidate
   // itself, and relocationEngine's ranking are untouched — this only changes
@@ -284,8 +296,17 @@ export default function RoutePlannerCard({
 
   // Miði 6: fires once per distinct locked tone (move/consider) actually
   // shown to a Free user — not on every rerender.
+  //
+  // UX Miði — instrumentation semantic change (GA4 cutover = production
+  // deploy date, not this commit date): now additionally gated on
+  // resultsExpanded, since the locked destination is no longer visible until
+  // "Sjá nánar" is opened. Before this change the event fired on data-load
+  // regardless of RoutePlannerCard's own visibility; going forward it fires
+  // only once the locked state is actually shown, matching the event's own
+  // "actually shown to a Free user" definition.
   const destinationLockedFiredRef = React.useRef(null);
   useEffect(() => {
+    if (!resultsExpanded) return;
     if (!hideDestinationForFree) return;
     if (destinationLockedFiredRef.current === displayDecisionLower) return;
     destinationLockedFiredRef.current = displayDecisionLower;
@@ -293,7 +314,7 @@ export default function RoutePlannerCard({
       recommendation_type: displayDecisionLower,
       userTier: "free",
     });
-  }, [hideDestinationForFree, displayDecisionLower]);
+  }, [resultsExpanded, hideDestinationForFree, displayDecisionLower]);
 
   const lastDecisionRef = React.useRef(null);
   useEffect(() => {
@@ -338,6 +359,36 @@ export default function RoutePlannerCard({
 
     onSummaryChange(routePlannerSummary);
   }, [onSummaryChange, result, routePlannerSummary]);
+
+  // UX Miði — supporting-detail disclosure (see resultsExpanded declaration
+  // above). Collapsed by default: no verdict, no CTA, nothing that could
+  // compete with HomeDecisionCard's single primary recommendation/CTA.
+  // Everything below this point — including the Upgrade paywalls — only
+  // renders once the user has explicitly opened "Sjá nánar".
+  if (!resultsExpanded) {
+    return (
+      <div className="rounded-2xl border border-slate-200 dark:border-slate-700 p-5 shadow-sm bg-white dark:bg-slate-900">
+        <div className="flex items-center justify-between gap-3">
+          <div>
+            <div className="flex items-center gap-2 text-base font-bold">
+              <span aria-hidden>🧭</span>
+              <span>{t("travelAdvisorTitle")}</span>
+            </div>
+            <div className="mt-1 text-sm text-slate-500 dark:text-slate-400">
+              {t("travelAdvisorSubtitle")}
+            </div>
+          </div>
+          <button
+            type="button"
+            onClick={() => setResultsExpanded(true)}
+            className="shrink-0 rounded-lg border border-slate-200 bg-slate-50/60 px-3 py-2 text-xs font-semibold text-slate-600 transition-colors hover:bg-slate-100 hover:border-slate-300 dark:border-slate-700/60 dark:bg-slate-800/30 dark:text-slate-300 dark:hover:bg-slate-700/40"
+          >
+            {t("travelAdvisorShowDetails")}
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   if (!isPro && !isPreview) return <ProLock t={t} me={me} onUpgrade={onUpgrade} />;
   if (!isPro && hasFreeUsed) return <FreeUsedLock t={t} me={me} onUpgrade={onUpgrade} />;
@@ -850,6 +901,14 @@ export default function RoutePlannerCard({
             <span className="font-semibold">{baseSite?.name ?? baseSiteId}</span>
           </div>
         </div>
+
+        <button
+          type="button"
+          onClick={() => setResultsExpanded(false)}
+          className="shrink-0 text-[11px] font-semibold text-slate-400 underline decoration-dotted underline-offset-2 transition-colors hover:text-slate-600 dark:text-slate-500 dark:hover:text-slate-300"
+        >
+          {t("travelAdvisorHideDetails")}
+        </button>
 
         {!isPreview && result?.debug?.candidatesScored > 0 && (
           <div className="text-[11px] text-slate-500 dark:text-slate-400 text-right">

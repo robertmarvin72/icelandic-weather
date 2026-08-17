@@ -13,7 +13,7 @@ import AnalyticsTracker from "./components/AnalyticsTracker";
 import { trackEvent } from "./lib/analytics";
 import AppRoutes from "./AppRoutes";
 import BackToTop from "./components/BackToTop";
-import DecisionBanner from "./components/DecisionBanner";
+import HomeDecisionCard from "./components/HomeDecisionCard";
 import Footer from "./components/Footer";
 import CampsiteComparisonSection from "./components/CampsiteComparisonSection";
 import ForecastTable from "./components/ForecastTable";
@@ -47,7 +47,6 @@ import About from "./pages/About";
 import { formatDay } from "./utils/date";
 import { WEATHER_MAP } from "./utils/weatherMap";
 import HourlyForecastModal from "./components/HourlyForecastModal";
-import InstantComparison from "./components/InstantComparison";
 
 function IcelandCampingWeatherApp({ page = "home" }) {
   const [units, setUnits] = useLocalStorageState("units", "metric");
@@ -273,15 +272,8 @@ function IcelandCampingWeatherApp({ page = "home" }) {
 
   const [routePlannerSummary, setRoutePlannerSummary] = useState(null);
 
-  const homepageRecommendation = useMemo(() => {
-    const verdict = String(routePlannerSummary?.verdict || "").toLowerCase();
-    if (verdict === "move") return "move";
-    if (verdict === "consider") return "consider";
-    return "stay";
-  }, [routePlannerSummary]);
-
   // Single source of truth for the metric-based comparison direction.
-  // Passed to both DecisionBanner and InstantComparison so they always agree.
+  // Passed to HomeDecisionCard and RoutePlannerCard so they always agree.
   const comparisonState = useComparisonState({
     site,
     currentScore,
@@ -356,29 +348,14 @@ function IcelandCampingWeatherApp({ page = "home" }) {
             </div>
           ) : (
             <>
-              <DecisionBanner
+              <HomeDecisionCard
                 t={t}
                 rows={rowsWithDay}
-                currentScore={currentScore}
                 routePlannerSummary={routePlannerSummary}
                 entitlements={entitlements}
                 comparisonState={comparisonState}
                 onUpgrade={startCheckout}
                 currentSiteId={siteId}
-                lang={lang}
-              />
-
-              <InstantComparison
-                site={site}
-                currentScore={currentScore}
-                rows={rows}
-                siteList={siteList}
-                scoresById={scoresById}
-                radiusKm={50}
-                homepageRecommendation={homepageRecommendation}
-                routePlannerSummary={routePlannerSummary}
-                comparisonState={comparisonState}
-                entitlements={entitlements}
                 lang={lang}
               />
 

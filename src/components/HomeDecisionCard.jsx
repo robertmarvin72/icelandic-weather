@@ -17,33 +17,45 @@ function hasRoughWeather(rows = []) {
   });
 }
 
-// comparisonState is produced by useComparisonState in App.jsx and shared with
-// InstantComparison so both components always reflect the same direction.
+function interpolate(template, vars) {
+  if (typeof template !== "string") return "";
+  let out = template;
+  for (const [k, v] of Object.entries(vars || {})) {
+    out = out.replaceAll(`{${k}}`, String(v));
+  }
+  return out;
+}
+
+// UX Miði — canonical homepage decision card. Replaces the separate
+// DecisionBanner + InstantComparison banners with one card so the homepage
+// shows exactly one stay/move/consider result before supporting detail.
+// This is a presentation merge only — tone/model derivation is DecisionBanner's
+// unchanged logic, candidate/comfort-reasons derivation is InstantComparison's
+// unchanged logic, both driven by the same shared comparisonState (App.jsx's
+// single useComparisonState call — no new data fetching or scoring here).
 //
-// direction "nearby_better"  → allow existing move/consider verdict from route planner
-// direction "similar"        → show no-clear-reason-to-move copy
-// direction "current_better" → show current-campsite-is-better copy
-// direction "no_candidate" or comparisonState absent → fall through to verdict-based logic
-export default function DecisionBanner({
+// DecisionBanner.jsx and InstantComparison.jsx are no longer rendered on the
+// homepage. InstantComparison.jsx itself is untouched and still used by
+// Brochure.jsx.
+export default function HomeDecisionCard({
   t,
   rows = [],
   routePlannerSummary = null,
   comparisonState = null,
   entitlements = null,
   onUpgrade,
+  onCtaClick,
   currentSiteId = null,
   lang,
 }) {
   const isPro = !!entitlements?.isPro;
 
+  // Tone/title/body/CTA — unchanged from DecisionBanner's model derivation.
   const model = useMemo(() => {
     const rough = hasRoughWeather(rows);
     const verdict = String(routePlannerSummary?.verdict || "").toLowerCase();
     const candidateName = routePlannerSummary?.candidate?.name || t("nearbyCampsite");
 
-    // When a comparison exists, gate move/consider on the metric-based direction.
-    // This prevents "Íhugaðu að færa þig" from appearing when the comparison
-    // shows "Svipað" or when the current campsite is actually better.
     if (comparisonState?.showComparison) {
       const { direction } = comparisonState;
 
@@ -68,13 +80,10 @@ export default function DecisionBanner({
           painLine: null,
         };
       }
-
-      // direction === "nearby_better" falls through to verdict-based logic below.
     }
 
     if (verdict === "move") {
       const meta = getRouteVerdictMeta(verdict);
-
       return {
         tone: "move",
         title: t(meta.titleKey),
@@ -92,7 +101,6 @@ export default function DecisionBanner({
 
     if (verdict === "consider") {
       const meta = getRouteVerdictMeta(verdict);
-
       return {
         tone: "consider",
         title: t(meta.titleKey),
@@ -110,7 +118,6 @@ export default function DecisionBanner({
 
     if (verdict === "stay") {
       const meta = getRouteVerdictMeta(verdict);
-
       return {
         tone: "stay",
         title: t(meta.titleKey),
@@ -127,10 +134,37 @@ export default function DecisionBanner({
     };
   }, [rows, routePlannerSummary, comparisonState, isPro, t]);
 
-  // recommendation_viewed fires whenever the RAW engine verdict settles on a
-  // new value (mirrors stay_recommended/move_recommended in RoutePlannerCard,
-  // which are also raw-verdict-driven) — not on model.tone, which can be
-  // overridden by comparisonState for display purposes only.
+  // Candidate/comfort-reasons — unchanged from InstantComparison's derivation,
+  // driven by the same comparisonState. Never falls back to top5[0] or any
+  // other candidate source — comparisonState.best (selectBestCandidate,
+  // radius-filtered) is the only source, exactly as before.
+  const best = comparisonState?.best ?? null;
+  const showCandidate = best != null && !model.locked;
+
+  const reasonLabels = {
+    wind: t("icReasonCalmer"),
+    rain: t("icReasonDrier"),
+    temp: t("icReasonWarmer"),
+  };
+
+  const comfortReasons = useMemo(() => {
+    if (!showCandidate) return [];
+    if (!comparisonState?.isStrongOrDecent) return [];
+    const improvements = Array.isArray(comparisonState?.improvements)
+      ? comparisonState.improvements
+      : [];
+    return improvements.map((key) => reasonLabels[key]).filter(Boolean);
+  }, [showCandidate, comparisonState, t]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  const distanceText =
+    showCandidate && best.distFromBase != null && isFinite(best.distFromBase)
+      ? interpolate(t("icDistanceLabel"), { km: Math.round(best.distFromBase) })
+      : null;
+
+  // recommendation_viewed — unchanged: fires whenever the RAW engine verdict
+  // settles on a new value (mirrors stay_recommended/move_recommended in
+  // RoutePlannerCard). Not gated on model.tone, which can be overridden by
+  // comparisonState for display purposes only.
   const rawVerdict = String(routePlannerSummary?.verdict || "").toLowerCase();
   const viewedVerdictRef = useRef(null);
   useEffect(() => {
@@ -147,9 +181,6 @@ export default function DecisionBanner({
     });
   }, [routePlannerSummary?.ready, rawVerdict, currentSiteId, isPro]);
 
-  // better_location_locked_viewed: Free actually sees the tone-only state
-  // (model.locked), guarded per distinct raw verdict so it doesn't refire on
-  // unrelated rerenders.
   const lockedViewedVerdictRef = useRef(null);
   useEffect(() => {
     if (isPro) return;
@@ -163,6 +194,36 @@ export default function DecisionBanner({
     });
   }, [isPro, model.locked, rawVerdict]);
 
+  // comparison_viewed / better_nearby_found — unchanged from InstantComparison:
+  // fires whenever a qualifying candidate exists, independent of the Free
+  // locked-identity gate (this mirrors prior InstantComparison behavior,
+  // where the effect ran before the render-time hideIdentityForFree check).
+  const tier = comparisonState?.tier ?? -1;
+  const comparisonFiredRef = useRef(null);
+  useEffect(() => {
+    if (!comparisonState?.showComparison || !best) return;
+    const key = `${best.site?.id}:${tier}`;
+    if (comparisonFiredRef.current === key) return;
+    comparisonFiredRef.current = key;
+
+    const dist = best.distFromBase;
+    const distanceBucket = dist < 50 ? "< 50km" : dist < 150 ? "50-150km" : "> 150km";
+
+    trackEvent("comparison_viewed", {
+      comparisonTier: ["similar", "slightly-better", "better", "much-better"][tier] ?? "unknown",
+      distanceBucket,
+      recommendation: comparisonState?.strength,
+    });
+
+    if (comparisonState?.isStrongOrDecent) {
+      trackEvent("better_nearby_found", {
+        recommendation: "move",
+        comparisonTier: ["similar", "slightly-better", "better", "much-better"][tier] ?? "unknown",
+        radiusKm: 50,
+      });
+    }
+  }, [comparisonState, best, tier]);
+
   function handleUpgradeClick() {
     trackEvent("better_location_upgrade_clicked", {
       recommendation_type: rawVerdict,
@@ -170,6 +231,17 @@ export default function DecisionBanner({
       lang,
     });
     if (typeof onUpgrade === "function") onUpgrade("decision_recommendation");
+  }
+
+  function handleSecondaryClick() {
+    trackEvent("homepage_instant_comparison_cta_click");
+    if (typeof onCtaClick === "function") {
+      onCtaClick();
+      return;
+    }
+    document
+      .getElementById("comparison-section")
+      ?.scrollIntoView({ behavior: "smooth", block: "start" });
   }
 
   const classes =
@@ -194,27 +266,55 @@ export default function DecisionBanner({
           />
         </div>
 
-        <div className="min-w-0">
+        <div className="min-w-0 flex-1">
           <div className="text-sm font-semibold">{model.title}</div>
           <div className="mt-1.5 text-sm opacity-90">{model.body}</div>
           {model.painLine && (
             <div className="mt-1 text-xs opacity-75">{model.painLine}</div>
           )}
-          {model.locked && (
-            <button
-              type="button"
-              onClick={handleUpgradeClick}
-              className="mt-2 inline-flex items-center gap-1.5 rounded-full bg-emerald-600 px-4 py-1.5 text-xs font-semibold text-white shadow-sm transition-colors hover:bg-emerald-700 active:bg-emerald-800"
-            >
-              {/* CTA follows the canonical tone (model.tone), not the raw
-                  verdict — move may assert a better spot; consider must stay
-                  hedged and never claim one was found. */}
-              {model.tone === "move"
-                ? t("decisionLockedCta") || "See the better spot with Pro"
-                : t("decisionConsiderLockedCta") || "Explore more options with Pro"}{" "}
-              →
-            </button>
+
+          {showCandidate && (
+            <div className="mt-2 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs">
+              <span className="font-semibold">{best.site?.name}</span>
+              {distanceText && <span className="opacity-75">{distanceText}</span>}
+              {comfortReasons.map((label) => (
+                <span
+                  key={label}
+                  className="rounded-full bg-white/70 px-2 py-0.5 font-medium opacity-90 dark:bg-white/10"
+                >
+                  {label}
+                </span>
+              ))}
+            </div>
           )}
+
+          <div className="mt-2 flex flex-wrap items-center gap-3">
+            {model.locked && (
+              <button
+                type="button"
+                onClick={handleUpgradeClick}
+                className="inline-flex items-center gap-1.5 rounded-full bg-emerald-600 px-4 py-1.5 text-xs font-semibold text-white shadow-sm transition-colors hover:bg-emerald-700 active:bg-emerald-800"
+              >
+                {/* CTA follows the canonical tone (model.tone), not the raw
+                    verdict — move may assert a better spot; consider must stay
+                    hedged and never claim one was found. */}
+                {model.tone === "move"
+                  ? t("decisionLockedCta") || "See the better spot with Pro"
+                  : t("decisionConsiderLockedCta") || "Explore more options with Pro"}{" "}
+                →
+              </button>
+            )}
+
+            {showCandidate && (
+              <button
+                type="button"
+                onClick={handleSecondaryClick}
+                className="text-xs font-semibold underline decoration-dotted underline-offset-2 opacity-75 transition-opacity hover:opacity-100"
+              >
+                {tier >= 2 ? t("icCtaView") : t("icCtaCompare")}
+              </button>
+            )}
+          </div>
         </div>
       </div>
     </div>

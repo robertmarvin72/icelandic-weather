@@ -265,6 +265,8 @@ export const routePlannerTranslations = {
 
     travelAdvisorTitle: "Better weather nearby",
     travelAdvisorSubtitle: "Check whether conditions at a nearby campsite may be better",
+    travelAdvisorShowDetails: "See details",
+    travelAdvisorHideDetails: "Hide details",
 
     routeStateMove: "Move",
     routeStateStay: "Stay",
@@ -570,6 +572,8 @@ export const routePlannerTranslations = {
 
     travelAdvisorTitle: "Betra veður í nágrenninu",
     travelAdvisorSubtitle: "Sjáðu hvort betra veður sé í nágrenninu.",
+    travelAdvisorShowDetails: "Sjá nánar",
+    travelAdvisorHideDetails: "Fela nánar",
 
     routeStateMove: "Færa sig",
     routeStateStay: "Vera áfram",

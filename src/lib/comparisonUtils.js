@@ -1,4 +1,4 @@
-// Shared comparison utilities used by InstantComparison and DecisionBanner.
+// Shared comparison utilities used by InstantComparison and HomeDecisionCard.
 // These thresholds are specific to the InstantComparison display layer
 // (wind 1.5 m/s, rain 2 mm, temp 1.5°C) and are NOT the frozen Model v1.0
 // baseline from compareCampsiteForecasts.js. Do not merge or conflate them.
@@ -61,6 +61,7 @@ export function classifyMetrics(current, nearby) {
   return {
     strength,
     primaryKey: improvements.length > 0 ? improvements[0] : null,
+    improvements,
     worseningsCount: worsenings.length,
   };
 }

@@ -122,9 +122,11 @@ function SiteCard({ label, name, metrics, distanceText, muted, highlight, deltaT
 }
 
 // comparisonState is the shared result from useComparisonState in App.jsx.
-// When provided, it is used directly so InstantComparison and DecisionBanner
-// always reflect the same candidate and classification.
-// When absent (e.g. Brochure mock page), all values are computed locally.
+// On the homepage this component is no longer rendered directly — its role
+// there is served by HomeDecisionCard, which derives the same candidate and
+// classification from the same comparisonState. InstantComparison itself
+// remains in use standalone on Brochure.jsx, where comparisonState is absent
+// and all values are computed locally instead.
 export default function InstantComparison({
   site,
   currentScore,
@@ -265,7 +267,8 @@ export default function InstantComparison({
   }
 
   if (!showComparison) {
-    // Move state: DecisionBanner already communicates the move recommendation.
+    // Move state: on the homepage, HomeDecisionCard already communicates the
+    // move recommendation — avoid a redundant/contradictory fallback here.
     // Do not show a contradictory stay-positive fallback.
     if (homepageRecommendation === "move") return null;
 
@@ -294,9 +297,9 @@ export default function InstantComparison({
   }
 
   // Free/Pro presentation gate (Miði 5b): same canonical tone rule
-  // DecisionBanner uses (comparisonState direction overrides the raw
+  // HomeDecisionCard uses (comparisonState direction overrides the raw
   // routePlannerSummary verdict), evaluated here from the same shared props
-  // so all three cards agree on move/consider vs stay. In local-fallback mode
+  // so all cards agree on move/consider vs stay. In local-fallback mode
   // (no externalState, e.g. the Brochure marketing demo) there is no live
   // tier/verdict signal, so gating does not apply there.
   const canonicalTone = (() => {

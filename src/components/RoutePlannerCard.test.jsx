@@ -85,6 +85,7 @@ function renderCard({
   comparisonState = null,
   withCandidate = true,
   props = {},
+  expand = true,
 } = {}) {
   mockSummary(decisionLower, { withCandidate });
 
@@ -102,6 +103,14 @@ function renderCard({
   const finalProps = baseProps({ entitlements: { isPro }, comparisonState, ...props });
 
   const result = render(<RoutePlannerCard {...finalProps} />);
+
+  // UX Miði — RoutePlannerCard's own verdict/CTA content is now collapsed by
+  // default behind "Sjá nánar" (travelAdvisorShowDetails). Existing tests in
+  // this file assert on that content, so expand by default here; pass
+  // expand:false to inspect the collapsed teaser itself.
+  if (expand) {
+    fireEvent.click(result.getByText("travelAdvisorShowDetails"));
+  }
 
   return { ...result, onUpgrade: finalProps.onUpgrade, markFreeUsed };
 }
@@ -147,7 +156,7 @@ describe("RoutePlannerCard — Free preview tone-dependent CTA (Miði 6)", () =>
     expect(screen.queryByText("Flúðir")).toBeNull();
   });
 
-  it("canonical tone reconciliation: comparisonState downgrade to stay hides the move CTA (same rule as DecisionBanner)", () => {
+  it("canonical tone reconciliation: comparisonState downgrade to stay hides the move CTA (same rule as HomeDecisionCard)", () => {
     renderCard({
       isPro: false,
       decisionLower: "move",
@@ -265,7 +274,8 @@ describe("RoutePlannerCard — Miði 6 analytics", () => {
     useFreeRecommendation.mockReturnValue({ hasFreeUsed: false, markFreeUsed: vi.fn() });
 
     const props = baseProps({ entitlements: { isPro: false } });
-    const { rerender } = render(<RoutePlannerCard {...props} />);
+    const { rerender, getByText } = render(<RoutePlannerCard {...props} />);
+    fireEvent.click(getByText("travelAdvisorShowDetails"));
     rerender(<RoutePlannerCard {...props} lang="en" />);
 
     const calls = trackEvent.mock.calls.filter(
@@ -308,6 +318,14 @@ describe("RoutePlannerCard — Miði 6 analytics", () => {
   });
 
   it("fires travel_advisor_upgrade_clicked with source=pro_lock when the feature is fully locked (no preview), and onUpgrade still runs", () => {
+    // Two mockReturnValueOnce calls, not a persistent mockReturnValue: the
+    // "Sjá nánar" click below triggers a rerender, and isFeatureAvailable is
+    // called on every render (before the collapse-state early return), so the
+    // initial collapsed render and the post-click expanded render each need
+    // their own queued value. A persistent mockReturnValue would otherwise
+    // leak into later tests, since vi.clearAllMocks() clears call history but
+    // not configured return values.
+    isFeatureAvailable.mockReturnValueOnce({ available: false, preview: false, reason: "requires_pro" });
     isFeatureAvailable.mockReturnValueOnce({ available: false, preview: false, reason: "requires_pro" });
 
     mockSummary("stay");
@@ -323,6 +341,9 @@ describe("RoutePlannerCard — Miði 6 analytics", () => {
     const onUpgrade = vi.fn();
     render(<RoutePlannerCard {...baseProps({ entitlements: { isPro: false }, onUpgrade })} />);
 
+    // ProLock is itself behind the "Sjá nánar" disclosure now — expand first.
+    fireEvent.click(screen.getByText("travelAdvisorShowDetails"));
+
     // ProLock replaces the whole card, so its "proUpgrade" button is the only match.
     fireEvent.click(screen.getByText("proUpgrade"));
 
@@ -333,5 +354,94 @@ describe("RoutePlannerCard — Miði 6 analytics", () => {
     expect(trackEvent.mock.calls.filter(([name]) => name === "travel_advisor_upgrade_clicked")).toHaveLength(1);
     expect(onUpgrade).toHaveBeenCalledTimes(1);
     expect(onUpgrade).toHaveBeenCalledWith("travel_advisor");
+  });
+});
+
+describe("RoutePlannerCard — supporting-detail disclosure (UX Miði)", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    window.localStorage.setItem("campcast_route_disclaimer_seen", "true");
+  });
+
+  it("is collapsed by default: shows only the compact teaser, no verdict/CTA content", () => {
+    renderCard({ isPro: false, decisionLower: "move", expand: false });
+    expect(screen.getByText("travelAdvisorTitle")).toBeDefined();
+    expect(screen.getByText("travelAdvisorSubtitle")).toBeDefined();
+    expect(screen.getByText("travelAdvisorShowDetails")).toBeDefined();
+    expect(screen.queryByText("travelAdvisorMoveCta")).toBeNull();
+    expect(screen.queryByText("travelAdvisorMoveCtaBody")).toBeNull();
+  });
+
+  it("Pro is also collapsed by default — the full verdict block does not compete with HomeDecisionCard unprompted", () => {
+    renderCard({ isPro: true, decisionLower: "move", expand: false });
+    expect(screen.getByText("travelAdvisorShowDetails")).toBeDefined();
+    expect(screen.queryByText("routeStateMove")).toBeNull();
+  });
+
+  it("ProLock is collapsed by default — no Upgrade CTA visible before 'Sjá nánar' is opened", () => {
+    isFeatureAvailable.mockReturnValueOnce({ available: false, preview: false, reason: "requires_pro" });
+    mockSummary("stay");
+    useRoutePlanner.mockReturnValue({
+      loading: false,
+      error: "",
+      result: null,
+      routeRiskData: null,
+      routeRiskLoading: false,
+    });
+    useFreeRecommendation.mockReturnValue({ hasFreeUsed: false, markFreeUsed: vi.fn() });
+
+    render(<RoutePlannerCard {...baseProps({ entitlements: { isPro: false } })} />);
+
+    expect(screen.getByText("travelAdvisorShowDetails")).toBeDefined();
+    expect(screen.queryByText("proUpgrade")).toBeNull();
+  });
+
+  it("clicking 'Sjá nánar' reveals the verdict content", () => {
+    renderCard({ isPro: false, decisionLower: "move", expand: false });
+    fireEvent.click(screen.getByText("travelAdvisorShowDetails"));
+    expect(screen.getByText("travelAdvisorMoveCta")).toBeDefined();
+  });
+
+  it("clicking 'Fela nánar' collapses the card back", () => {
+    renderCard({ isPro: false, decisionLower: "move" });
+    expect(screen.getByText("travelAdvisorMoveCta")).toBeDefined();
+    fireEvent.click(screen.getByText("travelAdvisorHideDetails"));
+    expect(screen.queryByText("travelAdvisorMoveCta")).toBeNull();
+    expect(screen.getByText("travelAdvisorShowDetails")).toBeDefined();
+  });
+
+  it("instrumentation semantic change: travel_advisor_destination_locked does NOT fire while collapsed", () => {
+    renderCard({ isPro: false, decisionLower: "move", expand: false });
+    const calls = trackEvent.mock.calls.filter(
+      ([name]) => name === "travel_advisor_destination_locked"
+    );
+    expect(calls.length).toBe(0);
+  });
+
+  it("instrumentation semantic change: travel_advisor_destination_locked fires once the locked state is actually shown (after expanding)", () => {
+    renderCard({ isPro: false, decisionLower: "move", expand: false });
+    fireEvent.click(screen.getByText("travelAdvisorShowDetails"));
+    expect(trackEvent).toHaveBeenCalledWith("travel_advisor_destination_locked", {
+      recommendation_type: "move",
+      userTier: "free",
+    });
+  });
+
+  it("stay_recommended fires on mount regardless of collapse state — semantics preserved, not gated on disclosure", () => {
+    renderCard({ isPro: false, decisionLower: "stay", expand: false });
+    const calls = trackEvent.mock.calls.filter(([name]) => name === "stay_recommended");
+    expect(calls.length).toBe(1);
+  });
+
+  it("move_recommended fires on mount regardless of collapse state — semantics preserved, not gated on disclosure", () => {
+    renderCard({ isPro: false, decisionLower: "move", expand: false });
+    const calls = trackEvent.mock.calls.filter(([name]) => name === "move_recommended");
+    expect(calls.length).toBe(1);
+  });
+
+  it("travel_advisor_free_used fires on mount regardless of collapse state — entitlement consumption is not gated on disclosure", () => {
+    renderCard({ isPro: false, decisionLower: "move", expand: false });
+    const calls = trackEvent.mock.calls.filter(([name]) => name === "travel_advisor_free_used");
+    expect(calls.length).toBe(1);
   });
 });
