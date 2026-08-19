@@ -117,6 +117,11 @@ export const commonTranslations = {
     days: "days",
     pts: "pts",
 
+    // UX Miði #376 — progressive disclosure entrypoints (forecast/ranking
+    // supporting-detail, collapsed by default below HomeDecisionCard).
+    forecastShowDetailsCta: "See detailed forecast",
+    forecastHideDetailsCta: "Hide forecast",
+
     // Pro (Wind direction & shelter)
     proPreviewCta: "Pro preview",
     windDirectionShelterTitle: "Wind direction & shelter (Pro)",
@@ -213,6 +218,11 @@ export const commonTranslations = {
     weeklyRankingUpgradeCta: "See more top campsites with Pro",
     weeklyRankingUpgradeBody:
       "See more of the best campsites, plus wind direction and shelter insight to help choose a calmer spot.",
+
+    // UX Miði #376 — progressive disclosure entrypoint for the ranking card itself
+    // (distinct from weeklyRankingUpgradeCta, which is the Pro upsell inside it).
+    weeklyRankingShowDetailsCta: "See more campsites",
+    weeklyRankingHideDetailsCta: "Hide list",
 
     // Billing portal
     manageSubscription: "Manage",
@@ -627,6 +637,11 @@ export const commonTranslations = {
     days: "dagar",
     pts: "stig",
 
+    // UX Miði #376 — progressive disclosure entrypoints (forecast/ranking
+    // supporting-detail, collapsed by default fyrir neðan HomeDecisionCard).
+    forecastShowDetailsCta: "Sjá nánari veðurspá",
+    forecastHideDetailsCta: "Fela veðurspá",
+
     // Pro (Vindátt og skjól)
     proPreviewCta: "Forskoðun Pro",
     windDirectionShelterTitle: "Vindátt og skjól",
@@ -723,6 +738,11 @@ export const commonTranslations = {
     weeklyRankingUpgradeCta: "Sjá fleiri bestu staði með Pro",
     weeklyRankingUpgradeBody:
       "Sjá fleiri af bestu tjaldsvæðunum og fá vindátt og skjólstuðul til að velja rólegri stað.",
+
+    // UX Miði #376 — progressive disclosure entrypoint fyrir sjálft topplista-kortið
+    // (aðgreint frá weeklyRankingUpgradeCta, sem er Pro-upsell inni í því).
+    weeklyRankingShowDetailsCta: "Sjá fleiri staði",
+    weeklyRankingHideDetailsCta: "Fela lista",
 
     // Billing portal
     proUntil: "Pro gilt til",

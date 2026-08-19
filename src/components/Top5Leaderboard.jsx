@@ -1,5 +1,5 @@
 // src/components/Top5Leaderboard.jsx
-import React, { useEffect, useMemo, useRef } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { trackEvent } from "../lib/analytics";
 import LoadingShimmer from "./LoadingShimmer";
 import ScoreLegend from "./ScoreLegend";
@@ -50,6 +50,14 @@ export default function Top5Leaderboard({
   );
 
   const isPro = !!entitlements?.isPro;
+
+  // UX Miði #376 — supporting-detail disclosure. Presentation-only: every
+  // hook in this component (including the mount-effect below) runs
+  // unconditionally above the collapsed-teaser early return, so data/fetch
+  // timing and analytics timing are unchanged (top5/scoresById are shared
+  // scoring input from App.jsx's useLeaderboardScores/useTop5Campsites,
+  // computed regardless of this component's UI state).
+  const [resultsOpen, setResultsOpen] = useState(false);
 
   // Fire once per mount when a Free user actually sees the locked rows
   // (ref-guard mirrors the pattern used in CampsiteComparisonSection).
@@ -169,14 +177,54 @@ export default function Top5Leaderboard({
     if (typeof onUpgrade === "function") onUpgrade("weekly_ranking");
   };
 
+  const titleHeading = (
+    <h3 className="text-base font-semibold mb-1">
+      {t("top5Title")}
+      <span className="ml-2 text-xs font-normal text-slate-500 dark:text-slate-400">
+        ({t("from")} {scoredCount} {t("scored")})
+      </span>
+    </h3>
+  );
+
+  if (!resultsOpen) {
+    return (
+      <div className="card rounded-2xl shadow-sm border border-slate-200 bg-white dark:bg-slate-900 dark:border-slate-700 p-4">
+        {titleHeading}
+
+        <button
+          type="button"
+          onClick={() => setResultsOpen(true)}
+          aria-expanded={false}
+          aria-controls="ranking-details-panel"
+          className="mt-2 w-full flex items-center justify-between gap-2 rounded-xl border border-slate-200 dark:border-slate-700 px-3 py-2.5 text-sm font-semibold text-sky-700 dark:text-sky-300 hover:bg-sky-50/60 dark:hover:bg-slate-800/60"
+        >
+          <span className="inline-flex items-center gap-2">
+            <span aria-hidden>🏆</span>
+            {t("weeklyRankingShowDetailsCta")}
+          </span>
+          <span aria-hidden>→</span>
+        </button>
+      </div>
+    );
+  }
+
   return (
     <div className="card rounded-2xl shadow-sm border border-slate-200 bg-white dark:bg-slate-900 dark:border-slate-700 p-4">
-      <h3 className="text-base font-semibold mb-1">
-        {t("top5Title")}
-        <span className="ml-2 text-xs font-normal text-slate-500 dark:text-slate-400">
-          ({t("from")} {scoredCount} {t("scored")})
-        </span>
-      </h3>
+      <div className="flex items-start justify-between gap-3">
+        {titleHeading}
+
+        <button
+          type="button"
+          onClick={() => setResultsOpen(false)}
+          aria-expanded={true}
+          aria-controls="ranking-details-panel"
+          className="shrink-0 text-xs font-semibold underline decoration-dotted underline-offset-2 opacity-75 hover:opacity-100"
+        >
+          {t("weeklyRankingHideDetailsCta")}
+        </button>
+      </div>
+
+      <div id="ranking-details-panel">
 
       {top5.length === 0 && loadingWave1 && <LoadingShimmer rows={5} height={20} />}
 
@@ -434,6 +482,7 @@ export default function Top5Leaderboard({
         </div>
       </div>
 
+      </div>
     </div>
   );
 }

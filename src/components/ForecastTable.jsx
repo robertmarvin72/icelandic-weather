@@ -138,39 +138,83 @@ export default function ForecastTable({
     return () => clearTimeout(tt);
   }, [site?.id]);
 
+  // UX Miði #376 — supporting-detail disclosure. Presentation-only: every hook
+  // above this line runs unconditionally, same as before this change, so
+  // data/fetch timing is untouched (rows are shared scoring input from
+  // App.jsx's useForecast, computed regardless of this component's UI state).
+  const [detailsOpen, setDetailsOpen] = useState(false);
+
+  const header = (
+    <div className="flex items-baseline justify-between mb-3">
+      <h2 className="text-lg font-semibold">
+        <span className="inline-flex items-center gap-2">
+          <span>{site?.name || "—"}</span>
+
+          {availabilityBadge ? (
+            <span
+              title={availabilityBadge.title}
+              className="inline-flex items-center rounded-full px-2.5 py-1 text-xs font-semibold
+                 border border-slate-200 dark:border-slate-700
+                 bg-white/70 dark:bg-slate-900/60 text-slate-700 dark:text-slate-200"
+            >
+              {availabilityBadge.text}
+            </span>
+          ) : null}
+        </span>
+
+        {userLoc && site && distanceToKm != null && (
+          <span className="ml-2 text-sm text-slate-500 dark:text-slate-300">
+            · {formatNumber(convertDistanceKm(distanceToKm, units), 1)} {DIST_UNIT_LABEL[units]}{" "}
+            {t?.("away")}
+          </span>
+        )}
+      </h2>
+
+      <div className="text-sm text-slate-600 dark:text-slate-300">
+        {site?.lat?.toFixed?.(4)}, {site?.lon?.toFixed?.(4)}
+      </div>
+    </div>
+  );
+
+  if (!detailsOpen) {
+    return (
+      <div className="card rounded-2xl shadow-sm border border-slate-200 bg-white dark:bg-slate-900 dark:border-slate-700 p-4">
+        {header}
+
+        <button
+          type="button"
+          onClick={() => setDetailsOpen(true)}
+          aria-expanded={false}
+          aria-controls="forecast-details-panel"
+          className="w-full flex items-center justify-between gap-2 rounded-xl border border-slate-200 dark:border-slate-700 px-3 py-2.5 text-sm font-semibold text-sky-700 dark:text-sky-300 hover:bg-sky-50/60 dark:hover:bg-slate-800/60"
+        >
+          <span className="inline-flex items-center gap-2">
+            <span aria-hidden>🌤️</span>
+            {t?.("forecastShowDetailsCta")}
+          </span>
+          <span aria-hidden>→</span>
+        </button>
+      </div>
+    );
+  }
+
   return (
     <div className="card rounded-2xl shadow-sm border border-slate-200 bg-white dark:bg-slate-900 dark:border-slate-700 p-4">
-      {/* Header */}
-      <div className="flex items-baseline justify-between mb-3">
-        <h2 className="text-lg font-semibold">
-          <span className="inline-flex items-center gap-2">
-            <span>{site?.name || "—"}</span>
+      {header}
 
-            {availabilityBadge ? (
-              <span
-                title={availabilityBadge.title}
-                className="inline-flex items-center rounded-full px-2.5 py-1 text-xs font-semibold
-                   border border-slate-200 dark:border-slate-700
-                   bg-white/70 dark:bg-slate-900/60 text-slate-700 dark:text-slate-200"
-              >
-                {availabilityBadge.text}
-              </span>
-            ) : null}
-          </span>
-
-          {userLoc && site && distanceToKm != null && (
-            <span className="ml-2 text-sm text-slate-500 dark:text-slate-300">
-              · {formatNumber(convertDistanceKm(distanceToKm, units), 1)} {DIST_UNIT_LABEL[units]}{" "}
-              {t?.("away")}
-            </span>
-          )}
-        </h2>
-
-        <div className="text-sm text-slate-600 dark:text-slate-300">
-          {site?.lat?.toFixed?.(4)}, {site?.lon?.toFixed?.(4)}
-        </div>
+      <div className="mb-3 flex justify-end">
+        <button
+          type="button"
+          onClick={() => setDetailsOpen(false)}
+          aria-expanded={true}
+          aria-controls="forecast-details-panel"
+          className="text-xs font-semibold underline decoration-dotted underline-offset-2 opacity-75 hover:opacity-100"
+        >
+          {t?.("forecastHideDetailsCta")}
+        </button>
       </div>
 
+      <div id="forecast-details-panel">
       {/* Total */}
       <div className="mb-3 text-sm">
         <span className="inline-flex items-center rounded-full bg-white/80 dark:bg-slate-900/70 glass px-3 py-1 shadow-sm border border-slate-200 dark:border-slate-600">
@@ -431,6 +475,7 @@ export default function ForecastTable({
 
       {/* Legend */}
       <ScoreExplanation t={t} lang={lang} />
+      </div>
     </div>
   );
 }

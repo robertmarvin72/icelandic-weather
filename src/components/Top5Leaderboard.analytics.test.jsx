@@ -23,6 +23,9 @@ function makeTop5(count = 3) {
 
 const entitlements = { isPro: false };
 
+// UX Miði #376 collapsed the ranking card behind a "Sjá fleiri staði"
+// disclosure by default — expand it here so existing interaction tests keep
+// exercising the table/CTA content unchanged.
 function renderLeaderboard(overrides = {}) {
   const onSelectSite = vi.fn();
   const onUpgrade = vi.fn();
@@ -48,6 +51,7 @@ function renderLeaderboard(overrides = {}) {
       {...overrides}
     />
   );
+  fireEvent.click(screen.getByText("weeklyRankingShowDetailsCta"));
   return { onSelectSite, onUpgrade };
 }
 
@@ -149,5 +153,66 @@ describe("Top5Leaderboard — Miði 7a: weekly ranking Pro CTA copy", () => {
       upgradeSource: "weekly_ranking",
     });
     expect(onUpgrade).toHaveBeenCalledWith("weekly_ranking");
+  });
+});
+
+function renderLeaderboardCollapsed(overrides = {}) {
+  render(
+    <Top5Leaderboard
+      entitlements={entitlements}
+      top5={makeTop5(3)}
+      scoredCount={10}
+      loadingWave1={false}
+      loadingBg={false}
+      units="metric"
+      onSelectSite={vi.fn()}
+      me={null}
+      onUpgrade={vi.fn()}
+      t={t}
+      lang="is"
+      shelter={null}
+      windDir={null}
+      proUntil={null}
+      subscription={null}
+      onManageSubscription={vi.fn()}
+      userLocationLabel={null}
+      {...overrides}
+    />
+  );
+}
+
+describe("Top5Leaderboard — supporting-detail disclosure (UX Miði #376)", () => {
+  beforeEach(() => vi.clearAllMocks());
+
+  it("is collapsed by default — no table rows, entrypoint CTA shown with aria-expanded=false", () => {
+    renderLeaderboardCollapsed();
+    expect(screen.queryByRole("row")).toBeNull();
+    const cta = screen.getByText("weeklyRankingShowDetailsCta");
+    expect(cta.closest("button")).toHaveAttribute("aria-expanded", "false");
+  });
+
+  it("clicking the entrypoint reveals the table and a hide affordance", () => {
+    renderLeaderboard();
+    expect(screen.getAllByRole("row").length).toBeGreaterThan(0);
+    const hideBtn = screen.getByText("weeklyRankingHideDetailsCta");
+    expect(hideBtn.closest("button")).toHaveAttribute("aria-expanded", "true");
+  });
+
+  it("clicking hide collapses the card again", () => {
+    renderLeaderboard();
+    fireEvent.click(screen.getByText("weeklyRankingHideDetailsCta"));
+    expect(screen.queryByRole("row")).toBeNull();
+    expect(screen.getByText("weeklyRankingShowDetailsCta")).toBeDefined();
+  });
+
+  it("weekly_ranking_locked_viewed still fires on mount while the card is collapsed — collapse must not defer this analytics event", () => {
+    renderLeaderboardCollapsed({ top5: makeTop5(5) });
+    // Card is still collapsed (entrypoint never clicked) — the event must
+    // already have fired, proving the mount-effect is not gated on resultsOpen.
+    expect(screen.getByText("weeklyRankingShowDetailsCta")).toBeDefined();
+    expect(trackEvent).toHaveBeenCalledWith(
+      "weekly_ranking_locked_viewed",
+      expect.objectContaining({ userTier: "free" })
+    );
   });
 });
