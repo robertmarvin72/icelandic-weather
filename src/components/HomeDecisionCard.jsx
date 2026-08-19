@@ -181,6 +181,31 @@ export default function HomeDecisionCard({
     });
   }, [routePlannerSummary?.ready, rawVerdict, currentSiteId, isPro]);
 
+  // canonical_recommendation_viewed — analytics-design follow-up after #377
+  // Phase A. Deduped on model.tone itself (not rawVerdict), because model.tone
+  // can change independently of rawVerdict once comparisonState settles after
+  // routePlannerSummary is already ready — recommendation_viewed's rawVerdict
+  // key would miss that case. raw_verdict/tone_overridden let engine-vs-shown
+  // divergence (e.g. raw "move" + comparisonState.direction "similar" →
+  // canonical "stay") be measured without changing recommendation_viewed's own
+  // raw semantics. recommendation_viewed, stay_recommended, move_recommended,
+  // and travel_advisor_free_used remain raw-engine-diagnostic events, unchanged.
+  const canonicalViewedToneRef = useRef(null);
+  useEffect(() => {
+    if (!routePlannerSummary?.ready) return;
+    if (canonicalViewedToneRef.current === model.tone) return;
+    canonicalViewedToneRef.current = model.tone;
+
+    trackEvent("canonical_recommendation_viewed", {
+      recommendation_type: model.tone,
+      raw_verdict: rawVerdict,
+      tone_overridden: rawVerdict !== model.tone,
+      better_location_found: model.tone !== "stay",
+      userTier: isPro ? "pro" : "free",
+      current_campsite_id: currentSiteId ?? null,
+    });
+  }, [routePlannerSummary?.ready, model.tone, rawVerdict, isPro, currentSiteId]);
+
   const lockedViewedVerdictRef = useRef(null);
   useEffect(() => {
     if (isPro) return;

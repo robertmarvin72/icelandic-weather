@@ -304,6 +304,161 @@ describe("HomeDecisionCard — analytics, exactly-once per mount, no duplication
   });
 });
 
+describe("HomeDecisionCard — canonical_recommendation_viewed (analytics-design follow-up)", () => {
+  beforeEach(() => vi.clearAllMocks());
+
+  it("raw move + comparisonState.direction=similar → canonical stay: raw_verdict/tone_overridden expose the divergence without changing recommendation_type semantics", () => {
+    renderCard({
+      routePlannerSummary: makeRoutePlanner("move"),
+      comparisonState: { ...noCandidateState(), showComparison: true, direction: "similar" },
+      entitlements: { isPro: false },
+    });
+    const calls = trackEvent.mock.calls.filter((c) => c[0] === "canonical_recommendation_viewed");
+    expect(calls).toHaveLength(1);
+    expect(calls[0][1]).toEqual(
+      expect.objectContaining({
+        recommendation_type: "stay",
+        raw_verdict: "move",
+        tone_overridden: true,
+      })
+    );
+  });
+
+  it("fires with recommendation_type='stay', raw_verdict='stay', tone_overridden=false for a pure stay scenario", () => {
+    renderCard({
+      routePlannerSummary: makeRoutePlanner("stay"),
+      comparisonState: noCandidateState("no_candidate"),
+      entitlements: { isPro: false },
+    });
+    const calls = trackEvent.mock.calls.filter((c) => c[0] === "canonical_recommendation_viewed");
+    expect(calls).toHaveLength(1);
+    expect(calls[0][1]).toEqual(
+      expect.objectContaining({ recommendation_type: "stay", raw_verdict: "stay", tone_overridden: false })
+    );
+  });
+
+  it("fires with recommendation_type='move' for a pure move scenario (raw and canonical agree)", () => {
+    renderCard({
+      routePlannerSummary: makeRoutePlanner("move"),
+      comparisonState: makeCandidate(),
+      entitlements: { isPro: false },
+    });
+    const calls = trackEvent.mock.calls.filter((c) => c[0] === "canonical_recommendation_viewed");
+    expect(calls).toHaveLength(1);
+    expect(calls[0][1]).toEqual(
+      expect.objectContaining({ recommendation_type: "move", raw_verdict: "move", tone_overridden: false })
+    );
+  });
+
+  it("fires with recommendation_type='consider' — consider is independently measurable, not lumped with move", () => {
+    renderCard({
+      routePlannerSummary: makeRoutePlanner("consider"),
+      comparisonState: makeCandidate(),
+      entitlements: { isPro: false },
+    });
+    const calls = trackEvent.mock.calls.filter((c) => c[0] === "canonical_recommendation_viewed");
+    expect(calls).toHaveLength(1);
+    expect(calls[0][1]).toEqual(
+      expect.objectContaining({ recommendation_type: "consider", raw_verdict: "consider", tone_overridden: false })
+    );
+  });
+
+  it("fires exactly once on mount (StrictMode-safe dedup, same ref-guard pattern as recommendation_viewed)", () => {
+    renderCard({
+      routePlannerSummary: makeRoutePlanner("move"),
+      comparisonState: makeCandidate(),
+      entitlements: { isPro: false },
+    });
+    const calls = trackEvent.mock.calls.filter((c) => c[0] === "canonical_recommendation_viewed");
+    expect(calls).toHaveLength(1);
+  });
+
+  it("does not fire again on a rerender where model.tone is unchanged (e.g. rows content changes but tone stays the same)", () => {
+    const { rerender } = renderCard({
+      routePlannerSummary: makeRoutePlanner("stay"),
+      comparisonState: noCandidateState("no_candidate"),
+      entitlements: { isPro: false },
+    });
+    rerender(
+      <HomeDecisionCard
+        t={t}
+        rows={[{ windMax: 99, windGust: 99, rain: 99 }]}
+        routePlannerSummary={makeRoutePlanner("stay")}
+        comparisonState={noCandidateState("no_candidate")}
+        entitlements={{ isPro: false }}
+      />
+    );
+    const calls = trackEvent.mock.calls.filter((c) => c[0] === "canonical_recommendation_viewed");
+    expect(calls).toHaveLength(1);
+  });
+
+  it("fires a new event when model.tone genuinely changes (stay → move)", () => {
+    const { rerender } = renderCard({
+      routePlannerSummary: makeRoutePlanner("stay"),
+      comparisonState: noCandidateState("no_candidate"),
+      entitlements: { isPro: false },
+    });
+    rerender(
+      <HomeDecisionCard
+        t={t}
+        rows={[]}
+        routePlannerSummary={makeRoutePlanner("move")}
+        comparisonState={makeCandidate()}
+        entitlements={{ isPro: false }}
+      />
+    );
+    const calls = trackEvent.mock.calls.filter((c) => c[0] === "canonical_recommendation_viewed");
+    expect(calls).toHaveLength(2);
+    expect(calls[0][1]).toEqual(expect.objectContaining({ recommendation_type: "stay" }));
+    expect(calls[1][1]).toEqual(expect.objectContaining({ recommendation_type: "move" }));
+  });
+
+  it("does not fire before routePlannerSummary is ready", () => {
+    renderCard({
+      routePlannerSummary: { ready: false, verdict: "move" },
+      comparisonState: noCandidateState("no_candidate"),
+      entitlements: { isPro: false },
+    });
+    expect(
+      trackEvent.mock.calls.some((c) => c[0] === "canonical_recommendation_viewed")
+    ).toBe(false);
+  });
+
+  it("payload contains only the approved parameters — no PII, no extra fields", () => {
+    renderCard({
+      routePlannerSummary: makeRoutePlanner("move"),
+      comparisonState: makeCandidate(),
+      entitlements: { isPro: false },
+      currentSiteId: "site-current",
+    });
+    const call = trackEvent.mock.calls.find((c) => c[0] === "canonical_recommendation_viewed");
+    expect(Object.keys(call[1]).sort()).toEqual(
+      [
+        "recommendation_type",
+        "raw_verdict",
+        "tone_overridden",
+        "better_location_found",
+        "userTier",
+        "current_campsite_id",
+      ].sort()
+    );
+  });
+
+  it("existing raw events (recommendation_viewed, stay_recommended semantics via rawVerdict) and CTA events are unaffected — regression guard", () => {
+    renderCard({
+      routePlannerSummary: makeRoutePlanner("move"),
+      comparisonState: { ...noCandidateState(), showComparison: true, direction: "similar" },
+      entitlements: { isPro: false },
+      onUpgrade: vi.fn(),
+    });
+    // recommendation_viewed keeps its own raw semantics (recommendation_type: "move"),
+    // unaffected by the fact that canonical tone is "stay" for this same scenario.
+    const rawCalls = trackEvent.mock.calls.filter((c) => c[0] === "recommendation_viewed");
+    expect(rawCalls).toHaveLength(1);
+    expect(rawCalls[0][1]).toEqual(expect.objectContaining({ recommendation_type: "move" }));
+  });
+});
+
 describe("HomeDecisionCard — i18n key completeness (IS + EN)", () => {
   it.each(["is", "en"])("%s: decisionSimilarTitle/Body and decisionCurrentBetterTitle/Body resolve to real translated copy", (lang) => {
     const tr = (k) => routePlannerTranslations[lang]?.[k] ?? commonTranslations[lang]?.[k] ?? k;

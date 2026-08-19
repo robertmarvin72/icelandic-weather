@@ -270,6 +270,8 @@ Primary homepage funnel:
 
 **Event semantics change — `travel_advisor_destination_locked`:** from production deployment **2026-08-17 19:02 UTC** (the GA4 cutover for before/after analysis), this event fires only when a Free user actually opens RoutePlannerCard's "Sjá nánar" details and the locked destination state is genuinely shown — not on data-load/computation alone as before that time. `stay_recommended`, `move_recommended`, and `travel_advisor_free_used` are unchanged — they keep mount/data-load semantics regardless of "Sjá nánar" state.
 
+**Raw engine events vs. canonical display exposure:** `recommendation_viewed`, `stay_recommended`, `move_recommended`, and `travel_advisor_free_used` are raw-engine-diagnostic events — their `recommendation_type`/verdict always reflects the *raw* `routePlannerSummary.verdict` (`decisionLower`), not what `HomeDecisionCard` actually renders. `comparisonState.direction` can override the displayed tone (e.g. raw `move` + `direction: "similar"` → canonical `stay` — see "Canonical Decision Tone" above), so these four events must not be used as a proxy for "which recommendation did the user see." `canonical_recommendation_viewed` (`HomeDecisionCard.jsx`, deduped on `model.tone`, not on raw verdict) is the event that represents actual rendered exposure — it carries `recommendation_type` (canonical), `raw_verdict`, and `tone_overridden` so engine/display divergence stays measurable without changing the raw events' own semantics. `better_location_upgrade_clicked` and `homepage_instant_comparison_cta_click` are already canonical-gated (via `model.locked`/`showCandidate`) and need no change.
+
 Primary monetization funnel:
 
 - `pricing_page_viewed`
