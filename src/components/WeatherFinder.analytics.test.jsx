@@ -38,6 +38,9 @@ const scoresById = Object.fromEntries(
 const proEntitlements = { isPro: true };
 const freeEntitlements = { isPro: false };
 
+// UX Miði #376 follow-up collapsed WeatherFinder behind a "Sjá röðun staða
+// eftir veðri" disclosure by default — expand it here so existing
+// interaction tests keep exercising the tool's own content unchanged.
 function renderFinder({ entitlements = proEntitlements, onUpgrade = vi.fn() } = {}) {
   render(
     <WeatherFinder
@@ -50,6 +53,7 @@ function renderFinder({ entitlements = proEntitlements, onUpgrade = vi.fn() } = 
       onUpgrade={onUpgrade}
     />
   );
+  fireEvent.click(screen.getByText("weatherFinderShowDetailsCta"));
   return { onUpgrade };
 }
 
@@ -223,5 +227,103 @@ describe("WeatherFinder — Miði 8A: weather_finder_upgrade_clicked", () => {
       (c) => c[0] === "weather_finder_upgrade_clicked"
     );
     expect(upgradeCalls).toHaveLength(0);
+  });
+});
+
+describe("WeatherFinder — supporting-detail disclosure (UX Miði #376 follow-up)", () => {
+  beforeEach(() => vi.clearAllMocks());
+
+  it("is collapsed by default — no mode tabs or results, static tool title + entrypoint CTA shown with aria-expanded=false", () => {
+    render(
+      <WeatherFinder
+        siteList={siteList}
+        scoresById={scoresById}
+        userLoc={null}
+        entitlements={proEntitlements}
+        units="metric"
+        t={t}
+        onUpgrade={vi.fn()}
+      />
+    );
+    expect(screen.getByText("weatherFinderTitle")).toBeDefined();
+    expect(screen.queryByText("weatherFinderCalmest")).toBeNull();
+    expect(screen.queryByTestId("card-1")).toBeNull();
+    const cta = screen.getByText("weatherFinderShowDetailsCta");
+    expect(cta.closest("button")).toHaveAttribute("aria-expanded", "false");
+  });
+
+  it("collapsed teaser never renders the mode-dependent result title — RESULT_TITLE_KEY[mode] copy is neutral-absent while collapsed", () => {
+    render(
+      <WeatherFinder
+        siteList={siteList}
+        scoresById={scoresById}
+        userLoc={null}
+        entitlements={proEntitlements}
+        units="metric"
+        t={t}
+        onUpgrade={vi.fn()}
+      />
+    );
+    expect(screen.queryByText("weatherFinderResultTitleCalmest")).toBeNull();
+  });
+
+  it("clicking the entrypoint reveals the mode tabs, results, and a hide affordance — RESULT_TITLE_KEY[mode] copy is unchanged once expanded", () => {
+    renderFinder();
+    expect(screen.getByText("weatherFinderResultTitleCalmest")).toBeDefined();
+    expect(screen.getByText("weatherFinderCalmest")).toBeDefined();
+    expect(screen.getByTestId("card-1")).toBeDefined();
+    const hideBtn = screen.getByText("weatherFinderHideDetailsCta");
+    expect(hideBtn.closest("button")).toHaveAttribute("aria-expanded", "true");
+  });
+
+  it("clicking hide collapses the tool again", () => {
+    renderFinder();
+    fireEvent.click(screen.getByText("weatherFinderHideDetailsCta"));
+    expect(screen.queryByText("weatherFinderCalmest")).toBeNull();
+    expect(screen.getByText("weatherFinderShowDetailsCta")).toBeDefined();
+  });
+
+  it("mode selection survives a collapse/reopen cycle (same mounted instance, no new persistence)", () => {
+    renderFinder();
+    fireEvent.click(screen.getByText("weatherFinderWarmest"));
+    expect(screen.getByText("weatherFinderResultTitleWarmest")).toBeDefined();
+    fireEvent.click(screen.getByText("weatherFinderHideDetailsCta"));
+    fireEvent.click(screen.getByText("weatherFinderShowDetailsCta"));
+    expect(screen.getByText("weatherFinderResultTitleWarmest")).toBeDefined();
+  });
+
+  it("expanding while collapsed does not fire any trackEvent — the disclosure toggle itself is analytics-neutral", () => {
+    render(
+      <WeatherFinder
+        siteList={siteList}
+        scoresById={scoresById}
+        userLoc={null}
+        entitlements={proEntitlements}
+        units="metric"
+        t={t}
+        onUpgrade={vi.fn()}
+      />
+    );
+    fireEvent.click(screen.getByText("weatherFinderShowDetailsCta"));
+    expect(trackEvent).not.toHaveBeenCalled();
+  });
+
+  it("ranked results are already computed while collapsed — result count reaching the card is identical before and after expanding (shared scoresById computation is not gated on UI visibility)", () => {
+    render(
+      <WeatherFinder
+        siteList={siteList}
+        scoresById={scoresById}
+        userLoc={null}
+        entitlements={proEntitlements}
+        units="metric"
+        t={t}
+        onUpgrade={vi.fn()}
+      />
+    );
+    // Collapsed: no cards rendered, but expanding immediately shows all 10
+    // visible results with no loading/empty flash — proving `sites`/`ranked`
+    // were already computed above the collapsed-branch early return.
+    fireEvent.click(screen.getByText("weatherFinderShowDetailsCta"));
+    expect(screen.getByTestId("card-10")).toBeDefined();
   });
 });

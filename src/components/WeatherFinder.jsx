@@ -33,6 +33,13 @@ export default function WeatherFinder({ siteList, scoresById, userLoc, entitleme
   const [days, setDays] = useState(3);
   const [showAll, setShowAll] = useState(false);
 
+  // UX Miði #376 follow-up — supporting-detail disclosure. Presentation-only:
+  // every hook below runs unconditionally, same as before this change. sites/
+  // ranked are a pure downstream computation of the shared scoresById prop
+  // (App.jsx's useLeaderboardScores) — they feed nothing back into
+  // comparisonState, so this component's UI state cannot affect it either way.
+  const [finderOpen, setFinderOpen] = useState(false);
+
   useEffect(() => {
     setShowAll(false);
   }, [mode, radiusKm, days]);
@@ -69,11 +76,47 @@ export default function WeatherFinder({ siteList, scoresById, userLoc, entitleme
 
   if (!sites.length) return null;
 
+  if (!finderOpen) {
+    return (
+      <div className="rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 p-5 shadow-sm">
+        <div className="mb-4 text-base font-bold">{t("weatherFinderTitle")}</div>
+
+        <button
+          type="button"
+          onClick={() => setFinderOpen(true)}
+          aria-expanded={false}
+          aria-controls="weather-finder-panel"
+          className="w-full flex items-center justify-between gap-2 rounded-xl border border-slate-200 dark:border-slate-700 px-3 py-2.5 text-sm font-semibold text-sky-700 dark:text-sky-300 hover:bg-sky-50/60 dark:hover:bg-slate-800/60"
+        >
+          <span className="inline-flex items-center gap-2">
+            <span aria-hidden>🔍</span>
+            {t("weatherFinderShowDetailsCta")}
+          </span>
+          <span aria-hidden>→</span>
+        </button>
+      </div>
+    );
+  }
+
   const activeBtn = "bg-slate-900 text-white dark:bg-white dark:text-slate-900";
   const inactiveBtn = "bg-slate-100 text-slate-600 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-400 dark:hover:bg-slate-700";
 
   return (
     <div className="rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 p-5 shadow-sm">
+      <div className="mb-3 flex items-center justify-between gap-3">
+        <div className="text-base font-bold">{t("weatherFinderTitle")}</div>
+        <button
+          type="button"
+          onClick={() => setFinderOpen(false)}
+          aria-expanded={true}
+          aria-controls="weather-finder-panel"
+          className="shrink-0 text-xs font-semibold underline decoration-dotted underline-offset-2 opacity-75 hover:opacity-100"
+        >
+          {t("weatherFinderHideDetailsCta")}
+        </button>
+      </div>
+
+      <div id="weather-finder-panel">
       {/* Dynamic title */}
       <div className="mb-4 text-base font-bold">
         {t(RESULT_TITLE_KEY[mode])}
@@ -194,6 +237,7 @@ export default function WeatherFinder({ siteList, scoresById, userLoc, entitleme
           </button>
         </div>
       )}
+      </div>
     </div>
   );
 }

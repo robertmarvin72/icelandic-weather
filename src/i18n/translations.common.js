@@ -420,7 +420,7 @@ export const commonTranslations = {
     mapWinterMode: "Winter mode",
 
     // Weather Finder
-    weatherFinderTitle: "Weather Finder",
+    weatherFinderTitle: "Explore campsites by conditions",
     weatherFinderCalmest: "Calmest",
     weatherFinderWarmest: "Warmest",
     weatherFinderDriest: "Driest",
@@ -439,6 +439,12 @@ export const commonTranslations = {
     weatherFinderResultTitleDriest: "Driest nearby campsites",
     weatherFinderShowFull: "Show full ranking",
     weatherFinderShowTop10: "Show top 10 only",
+
+    // UX Miði #376 follow-up — progressive disclosure entrypoint. Collapsed
+    // header reuses the existing weatherFinderTitle above (was previously
+    // unused). RESULT_TITLE_KEY[mode] inside the expanded tool is unchanged.
+    weatherFinderShowDetailsCta: "See sites ranked by weather",
+    weatherFinderHideDetailsCta: "Hide ranking",
 
     // InstantComparison
     icReasonCalmer: "Calmer",
@@ -938,7 +944,7 @@ export const commonTranslations = {
     mapWinterMode: "Vetrarhamur",
 
     // Weather Finder
-    weatherFinderTitle: "Veðurleit",
+    weatherFinderTitle: "Skoða staði eftir veðurskilyrðum",
     weatherFinderCalmest: "Rólegast",
     weatherFinderWarmest: "Hlýjast",
     weatherFinderDriest: "Þurrast",
@@ -957,6 +963,12 @@ export const commonTranslations = {
     weatherFinderResultTitleDriest: "Þurrstu tjaldsvæði í nágrenninu",
     weatherFinderShowFull: "Sýna alla röðun",
     weatherFinderShowTop10: "Sýna aðeins topp 10",
+
+    // UX Miði #376 follow-up — progressive disclosure entrypoint. Collapsed
+    // header endurnýtir weatherFinderTitle hér að ofan (var áður ónotað).
+    // RESULT_TITLE_KEY[mode] inni í expanded tólinu er óbreytt.
+    weatherFinderShowDetailsCta: "Sjá röðun staða eftir veðri",
+    weatherFinderHideDetailsCta: "Fela röðun",
 
     // InstantComparison
     icReasonCalmer: "Rólegra",
