@@ -372,10 +372,10 @@ export default function RoutePlannerCard({
           <div>
             <div className="flex items-center gap-2 text-base font-bold">
               <span aria-hidden>🧭</span>
-              <span>{t("travelAdvisorTitle")}</span>
+              <span>{t("travelAdvisorTeaserTitle")}</span>
             </div>
             <div className="mt-1 text-sm text-slate-500 dark:text-slate-400">
-              {t("travelAdvisorSubtitle")}
+              {t("travelAdvisorTeaserSubtitle")}
             </div>
           </div>
           <button

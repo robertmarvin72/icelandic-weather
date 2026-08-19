@@ -363,13 +363,28 @@ describe("RoutePlannerCard — supporting-detail disclosure (UX Miði)", () => {
     window.localStorage.setItem("campcast_route_disclaimer_seen", "true");
   });
 
-  it("is collapsed by default: shows only the compact teaser, no verdict/CTA content", () => {
+  it("is collapsed by default: shows only the neutral teaser copy, no verdict/CTA content", () => {
     renderCard({ isPro: false, decisionLower: "move", expand: false });
-    expect(screen.getByText("travelAdvisorTitle")).toBeDefined();
-    expect(screen.getByText("travelAdvisorSubtitle")).toBeDefined();
+    expect(screen.getByText("travelAdvisorTeaserTitle")).toBeDefined();
+    expect(screen.getByText("travelAdvisorTeaserSubtitle")).toBeDefined();
     expect(screen.getByText("travelAdvisorShowDetails")).toBeDefined();
     expect(screen.queryByText("travelAdvisorMoveCta")).toBeNull();
     expect(screen.queryByText("travelAdvisorMoveCtaBody")).toBeNull();
+  });
+
+  it("collapsed teaser copy is tone-neutral — never renders the weather-claim title/subtitle used elsewhere in the card, regardless of tone", () => {
+    renderCard({ isPro: false, decisionLower: "move", expand: false });
+    expect(screen.queryByText("travelAdvisorTitle")).toBeNull();
+    expect(screen.queryByText("travelAdvisorSubtitle")).toBeNull();
+  });
+
+  it("expanding the teaser reveals the (unchanged) expanded header copy, not the teaser copy", () => {
+    renderCard({ isPro: false, decisionLower: "move", expand: false });
+    fireEvent.click(screen.getByText("travelAdvisorShowDetails"));
+    expect(screen.getByText("travelAdvisorTitle")).toBeDefined();
+    expect(screen.getByText("travelAdvisorSubtitle")).toBeDefined();
+    expect(screen.queryByText("travelAdvisorTeaserTitle")).toBeNull();
+    expect(screen.queryByText("travelAdvisorTeaserSubtitle")).toBeNull();
   });
 
   it("Pro is also collapsed by default — the full verdict block does not compete with HomeDecisionCard unprompted", () => {

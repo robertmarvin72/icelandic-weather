@@ -267,6 +267,12 @@ export const routePlannerTranslations = {
     travelAdvisorSubtitle: "Check whether conditions at a nearby campsite may be better",
     travelAdvisorShowDetails: "See details",
     travelAdvisorHideDetails: "Hide details",
+    // Collapsed-teaser-only copy — deliberately neutral (no weather/verdict
+    // claim) so it never competes with HomeDecisionCard's canonical tone.
+    // Used ONLY in RoutePlannerCard's collapsed (resultsExpanded=false)
+    // branch; every other travelAdvisorTitle/Subtitle usage is unchanged.
+    travelAdvisorTeaserTitle: "Explore nearby conditions",
+    travelAdvisorTeaserSubtitle: "See more details about nearby campsites.",
 
     routeStateMove: "Move",
     routeStateStay: "Stay",
@@ -574,6 +580,8 @@ export const routePlannerTranslations = {
     travelAdvisorSubtitle: "Sjáðu hvort betra veður sé í nágrenninu.",
     travelAdvisorShowDetails: "Sjá nánar",
     travelAdvisorHideDetails: "Fela nánar",
+    travelAdvisorTeaserTitle: "Skoða aðstæður í nágrenninu",
+    travelAdvisorTeaserSubtitle: "Sjáðu fleiri upplýsingar um nálæga staði.",
 
     routeStateMove: "Færa sig",
     routeStateStay: "Vera áfram",
