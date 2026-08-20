@@ -26,13 +26,17 @@ export default function CampsitePicker({
     return m;
   }, [siteList, today]);
 
+  // Must not fall back to siteList[0] — an unselected siteId (null) is a real
+  // "nothing chosen yet" state, and the picker has to show that truthfully
+  // (via the placeholder below) rather than silently displaying an arbitrary
+  // campsite as if the user had picked it.
   const selected = useMemo(
-    () => siteList.find((s) => s.id === siteId) || siteList[0],
+    () => siteList.find((s) => s.id === siteId) ?? null,
     [siteList, siteId]
   );
 
   const selectedAvail = selected?.id ? availabilityById.get(selected.id) : null;
-  const selectedClosed = selectedAvail?.status !== "open";
+  const selectedClosed = !!selected && selectedAvail?.status !== "open";
 
   const filtered = useMemo(() => {
     const query = q.trim().toLowerCase();
