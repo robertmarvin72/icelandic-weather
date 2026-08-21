@@ -13,7 +13,6 @@ import {
   getColdWindPenalty,
   getSkyComfortModifier,
   getWintryPrecipPenalty,
-  getPleasantnessModifier,
   convertTemp,
   convertRain,
   convertWind,

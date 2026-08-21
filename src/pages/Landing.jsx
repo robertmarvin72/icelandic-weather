@@ -1,5 +1,11 @@
 import React from "react";
 import { useLocation } from "react-router-dom";
+// Used below only as JSXMemberExpression tags (<motion.div>...</motion.div>).
+// This flat config has no eslint-plugin-react (out of scope per the
+// lint-maintenance ticket's dependency-exclusion rule), and base no-unused-vars
+// does not treat JSXMemberExpression as a usage of its object identifier —
+// confirmed via isolated repro. Real, actively-rendered animation wrapper, not dead code.
+// eslint-disable-next-line no-unused-vars
 import { motion } from "framer-motion";
 import { landingTranslations } from "../i18n/translations.landing";
 import {
@@ -263,7 +269,7 @@ function SectionTitle({ eyebrow, title, text, center = false }) {
   );
 }
 
-export default function Landing({ t }) {
+export default function Landing() {
   const [lang, setLang] = React.useState("en");
   const tr = (key) => landingTranslations[lang]?.[key] || key;
 

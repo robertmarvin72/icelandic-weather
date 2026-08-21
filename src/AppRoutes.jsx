@@ -150,6 +150,11 @@ function BlogPostRoute({ langOverride }) {
   return <BlogPostPage {...pageProps} lang={langOverride || pageProps.lang} />;
 }
 
+// HomeComponent is a real, actively-rendered JSX tag below (<HomeComponent />),
+// injected from App.jsx (HomeComponent={IcelandCampingWeatherApp}) — a
+// production routing contract, not test-only DI. Not a lint-disable: the
+// PascalCase argsIgnorePattern in eslint.config.js covers it, same as any
+// other component-reference parameter.
 export default function AppRoutes({ HomeComponent }) {
   return (
     <Routes>

@@ -20,6 +20,8 @@ jobs:
 
       - run: npm ci
 
+      - run: npm run lint
+
       # Run Vitest with coverage (prints summary in the Actions logs)
       - run: npm run test:coverage
 

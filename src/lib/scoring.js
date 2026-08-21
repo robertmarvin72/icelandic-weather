@@ -299,7 +299,10 @@ function getPrecipTimingMultiplier({ rain }) {
   return 1;
 }
 
-export function scoreSiteDay({ tmax, rain, windMax, windGust, date, shelter, tmin, weatherCode, code }) {
+// tmin (unused, like shelter/rainStreak — accepted here because callers pass
+// the full day-row shape; not part of the current scoring formula) is kept
+// in the destructuring, renamed, to preserve the accepted input shape.
+export function scoreSiteDay({ tmax, rain, windMax, windGust, date, shelter, tmin: _tmin, weatherCode, code }) {
   // Align engine precision with the 1-decimal UI display (formatNumber).
   // Prevents contradictory scores when two sites render identically in the UI.
   const _tmax = round1(tmax);

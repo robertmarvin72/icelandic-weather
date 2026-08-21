@@ -41,7 +41,7 @@ const SESSION_USER = {
 
 // ── fetch mock factory ───────────────────────────────────────────────────────
 
-function makeFetchMock(priceIdAsserted) {
+function makeFetchMock() {
   const calls = [];
   const fn = vi.fn(async (url, opts) => {
     const urlStr = String(url);

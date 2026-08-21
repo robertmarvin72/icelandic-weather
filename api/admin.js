@@ -72,7 +72,7 @@ async function requireAdmin(req, res) {
   return me;
 }
 
-function normalizeForecastRawInput(raw = "") {
+export function normalizeForecastRawInput(raw = "") {
   let text = String(raw || "")
     .replace(/\r\n/g, "\n")
     .replace(/\r/g, "\n")
@@ -88,7 +88,11 @@ function normalizeForecastRawInput(raw = "") {
 
   const DAY_BOUNDARY = /^(mán|þri|mið|fim|fös|lau|sun)\./i;
   const STATUS_BADGE = /^(slæmt|gott|ok|sæm|best)\.?$/i;
-  const STRIP_CHARS = /[›⚠️🌬]/g;
+  // Not a character class: ⚠️ is a 2-codepoint sequence (U+26A0 + variation
+  // selector U+FE0F) that a character class can only match as two separate,
+  // independently-strippable codepoints, not as the visual glyph it represents.
+  // An alternation lets each symbol match as its real, whole unit.
+  const STRIP_CHARS = /›|⚠️|🌬/gu;
 
   text = text.replace(/\t/g, " ");
 
@@ -273,7 +277,7 @@ function normalizeForecastRawInput(raw = "") {
   };
 }
 
-function parseForecastLine(line = "") {
+export function parseForecastLine(line = "") {
   const text = String(line || "").trim();
   if (!text) return null;
 
@@ -285,15 +289,15 @@ function parseForecastLine(line = "") {
     dayMatch?.[1]?.trim() || text.split(/\s{2,}|\s(?=[A-ZÁÐÉÍÓÚÝÞÆÖ])/)[0] || "Unknown day";
 
   const temps = [...text.matchAll(/-?\d+(?:[.,]\d+)?\s*°C/gi)].map((m) =>
-    Number(m[0].replace(",", ".").replace(/[^0-9.\-]/g, ""))
+    Number(m[0].replace(",", ".").replace(/[^0-9.-]/g, ""))
   );
 
   const msValues = [...text.matchAll(/-?\d+(?:[.,]\d+)?\s*m\/s/gi)].map((m) =>
-    Number(m[0].replace(",", ".").replace(/[^0-9.\-]/g, ""))
+    Number(m[0].replace(",", ".").replace(/[^0-9.-]/g, ""))
   );
 
   const mmValues = [...text.matchAll(/-?\d+(?:[.,]\d+)?\s*mm/gi)].map((m) =>
-    Number(m[0].replace(",", ".").replace(/[^0-9.\-]/g, ""))
+    Number(m[0].replace(",", ".").replace(/[^0-9.-]/g, ""))
   );
 
   let wind = null;
@@ -758,7 +762,7 @@ async function handleGenerateDraft(req, res) {
       });
     }
 
-    const { type, lang = "en", context = {}, coverImage = "" } = req.body || {};
+    const { type, context = {}, coverImage = "" } = req.body || {};
 
     const forecastData = normalizeForecastRawInput(context?.forecastRawInput);
 
@@ -977,7 +981,7 @@ function normalizeDraft(text) {
         typeof parsed.nearbyAttractions === "string" ? parsed.nearbyAttractions : null,
       whyThisArea: typeof parsed.whyThisArea === "string" ? parsed.whyThisArea : null,
     };
-  } catch (e) {
+  } catch {
     return {
       title: "Draft generation failed",
       excerpt: "",

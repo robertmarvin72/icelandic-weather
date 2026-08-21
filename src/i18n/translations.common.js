@@ -345,7 +345,6 @@ export const commonTranslations = {
 
     nearbyCampsite: "a nearby campsite",
     top5BestThisWeek: "Best this week",
-    top5BestOverallThisWeek: "Best overall this week",
 
     footerPricing: "Pricing",
 
@@ -367,7 +366,6 @@ export const commonTranslations = {
 
     decisionMoveTitle: "Move",
     decisionMoveBody: "Better weather is likely at {site}.",
-    decisionMoveBodyWindowAware: "Better conditions are likely at {site} over the next few days.",
 
     blogBadge: "Chase the Weather Blog",
     blogTitle: "Weather tips and campsite planning for Iceland",
@@ -875,7 +873,6 @@ export const commonTranslations = {
 
     nearbyCampsite: "nálægt tjaldsvæði",
     top5BestThisWeek: "Best í vikunni",
-    top5BestOverallThisWeek: "Best yfir allt í vikunni",
 
     footerPricing: "Verðskrá",
 
@@ -892,7 +889,6 @@ export const commonTranslations = {
 
     decisionMoveTitle: "Færðu þig",
     decisionMoveBody: "Betra veður er líklegt hjá {site}.",
-    decisionMoveBodyWindowAware: "Betri aðstæður eru líklegar hjá {site} næstu daga.",
 
     blogBadge: "Eltum Veðrið blogg",
     blogTitle: "Veðurráð og skipulag fyrir tjaldsvæði á Íslandi",

@@ -59,7 +59,7 @@ describe("weekly_ranking_site_clicked analytics", () => {
   beforeEach(() => vi.clearAllMocks());
 
   it("fires weekly_ranking_site_clicked with rank 1 when the top row is clicked", () => {
-    const { onSelectSite } = renderLeaderboard();
+    renderLeaderboard();
     const rows = screen.getAllByRole("row");
     // First data row (index 1 — row 0 is the thead)
     fireEvent.click(rows[1]);

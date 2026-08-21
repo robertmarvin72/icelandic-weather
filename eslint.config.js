@@ -25,13 +25,26 @@ export default defineConfig([
       },
     },
     rules: {
-      "no-unused-vars": ["error", { varsIgnorePattern: "^[A-Z_]" }],
+      "no-unused-vars": [
+        "error",
+        { varsIgnorePattern: "^[A-Z_]", args: "after-used", argsIgnorePattern: "^[A-Z_]" },
+      ],
     },
   },
 
   // Serverless / API routes run in Node
   {
     files: ["api/**/*.js"],
+    languageOptions: {
+      globals: {
+        ...globals.node,
+      },
+    },
+  },
+
+  // Root-level Node config files (executed by their own tooling, not the browser bundle)
+  {
+    files: ["playwright.config.js"],
     languageOptions: {
       globals: {
         ...globals.node,

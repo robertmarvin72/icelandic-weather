@@ -33,7 +33,7 @@ function BlogContent({ content, isLight }) {
         remarkPlugins={[remarkGfm]}
         rehypePlugins={[rehypeSanitize]}
         components={{
-          h2: ({ node, ...props }) => (
+          h2: ({ node: _node, ...props }) => (
             <h2
               {...props}
               className={`mt-10 text-3xl font-semibold tracking-tight ${
@@ -41,39 +41,39 @@ function BlogContent({ content, isLight }) {
               }`}
             />
           ),
-          p: ({ node, ...props }) => (
+          p: ({ node: _node, ...props }) => (
             <p
               {...props}
               className={`mt-4 text-lg leading-8 ${isLight ? "text-slate-700" : "text-slate-300"}`}
             />
           ),
-          a: ({ node, ...props }) => (
+          a: ({ node: _node, ...props }) => (
             <a
               {...props}
               className="text-sky-600 underline underline-offset-4 hover:text-sky-700 dark:text-sky-400 dark:hover:text-sky-300"
             />
           ),
-          img: ({ node, ...props }) => (
+          img: ({ node: _node, ...props }) => (
             <img
               {...props}
               className="my-6 w-full rounded-2xl border border-black/10 dark:border-white/10"
               loading="lazy"
             />
           ),
-          ul: ({ node, ...props }) => (
+          ul: ({ node: _node, ...props }) => (
             <ul
               {...props}
               className={`mt-4 list-disc pl-6 ${isLight ? "text-slate-700" : "text-slate-300"}`}
             />
           ),
-          ol: ({ node, ...props }) => (
+          ol: ({ node: _node, ...props }) => (
             <ol
               {...props}
               className={`mt-4 list-decimal pl-6 ${isLight ? "text-slate-700" : "text-slate-300"}`}
             />
           ),
-          li: ({ node, ...props }) => <li {...props} className="mt-2" />,
-          strong: ({ node, ...props }) => (
+          li: ({ node: _node, ...props }) => <li {...props} className="mt-2" />,
+          strong: ({ node: _node, ...props }) => (
             <strong
               {...props}
               className={isLight ? "font-semibold text-slate-900" : "font-semibold text-slate-100"}
