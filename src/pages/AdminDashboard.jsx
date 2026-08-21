@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { useAdminBlogPosts } from "../hooks/useAdminBlogPosts";
 import { useLanguage } from "../hooks/useLanguage";
 import { useT } from "../hooks/useT";
+import { BlogContent } from "./BlogPostPage";
 
 function formatMoney(value) {
   if (value == null) return "—";
@@ -313,6 +314,178 @@ function GenerateDraftCard({ onGenerated }) {
           className="rounded-xl bg-slate-900 px-4 py-2 text-sm font-medium text-white disabled:cursor-not-allowed disabled:opacity-50 dark:bg-white dark:text-slate-950"
         >
           {loading ? "Generating..." : "Generate draft"}
+        </button>
+      </div>
+    </section>
+  );
+}
+
+function ManualCreateCard({ onCreated }) {
+  const { lang } = useLanguage();
+  const [form, setForm] = useState({
+    language: "is",
+    title: "",
+    excerpt: "",
+    coverImage: "",
+    metaTitle: "",
+    metaDescription: "",
+    content: "",
+  });
+  const [showPreview, setShowPreview] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
+
+  const disabled = saving || !form.title.trim() || !form.content.trim();
+
+  async function handleCreate() {
+    setSaving(true);
+    setError("");
+    setSuccess("");
+
+    const result = await onCreated({
+      language: form.language,
+      title: form.title.trim(),
+      excerpt: form.excerpt.trim(),
+      coverImage: form.coverImage.trim(),
+      metaTitle: form.metaTitle.trim(),
+      metaDescription: form.metaDescription.trim(),
+      content: form.content,
+    });
+
+    if (result?.ok) {
+      setSuccess(lang === "is" ? `Drög búin til: "${result.post.title}"` : `Draft created: "${result.post.title}"`);
+      setForm({
+        language: form.language,
+        title: "",
+        excerpt: "",
+        coverImage: "",
+        metaTitle: "",
+        metaDescription: "",
+        content: "",
+      });
+      setShowPreview(false);
+    } else {
+      setError(result?.error || (lang === "is" ? "Tókst ekki að búa til færslu" : "Failed to create post"));
+    }
+
+    setSaving(false);
+  }
+
+  return (
+    <section className="rounded-3xl border border-slate-200/70 bg-white/80 p-5 shadow-sm dark:border-slate-800/80 dark:bg-slate-900/80">
+      <div className="mb-4">
+        <h2 className="text-xl font-semibold text-slate-900 dark:text-slate-100">
+          {lang === "is" ? "Skrifa bloggfærslu handvirkt" : "Write blog post manually"}
+        </h2>
+        <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
+          {lang === "is"
+            ? "Stofnar drög — birt með sömu Publish-aðgerð og AI-generated færslur."
+            : "Creates a draft — published with the same Publish action as AI-generated posts."}
+        </p>
+      </div>
+
+      {error ? (
+        <div className="mb-4 rounded-2xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-700 dark:border-rose-900/60 dark:bg-rose-950/30 dark:text-rose-300">
+          {error}
+        </div>
+      ) : null}
+
+      {success ? (
+        <div className="mb-4 rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-700 dark:border-emerald-900/60 dark:bg-emerald-950/30 dark:text-emerald-300">
+          {success}
+        </div>
+      ) : null}
+
+      <div className="grid gap-4 md:grid-cols-2">
+        <div>
+          <FieldLabel>{lang === "is" ? "Tungumál" : "Language"}</FieldLabel>
+          <Select
+            value={form.language}
+            onChange={(e) => setForm((prev) => ({ ...prev, language: e.target.value }))}
+          >
+            <option value="is">Icelandic</option>
+            <option value="en">English</option>
+          </Select>
+        </div>
+
+        <div>
+          <FieldLabel>Title</FieldLabel>
+          <TextInput
+            value={form.title}
+            onChange={(e) => setForm((prev) => ({ ...prev, title: e.target.value }))}
+          />
+        </div>
+
+        <div className="md:col-span-2">
+          <FieldLabel>Excerpt</FieldLabel>
+          <TextArea
+            value={form.excerpt}
+            onChange={(e) => setForm((prev) => ({ ...prev, excerpt: e.target.value }))}
+            rows={2}
+          />
+        </div>
+
+        <div>
+          <FieldLabel>{lang === "is" ? "Forsíðumynd (URL)" : "Cover image URL"}</FieldLabel>
+          <TextInput
+            value={form.coverImage}
+            onChange={(e) => setForm((prev) => ({ ...prev, coverImage: e.target.value }))}
+            placeholder="https://..."
+            type="url"
+          />
+        </div>
+
+        <div>
+          <FieldLabel>Meta title</FieldLabel>
+          <TextInput
+            value={form.metaTitle}
+            onChange={(e) => setForm((prev) => ({ ...prev, metaTitle: e.target.value }))}
+            placeholder={lang === "is" ? "SEO titill (sjálfgefið = titill)" : "SEO title (defaults to post title if blank)"}
+          />
+        </div>
+
+        <div className="md:col-span-2">
+          <FieldLabel>Meta description</FieldLabel>
+          <TextArea
+            value={form.metaDescription}
+            onChange={(e) => setForm((prev) => ({ ...prev, metaDescription: e.target.value }))}
+            rows={2}
+          />
+        </div>
+
+        <div className="md:col-span-2">
+          <div className="mb-2 flex items-center justify-between">
+            <FieldLabel>{lang === "is" ? "Efni (Markdown)" : "Content (Markdown)"}</FieldLabel>
+            <button
+              type="button"
+              onClick={() => setShowPreview((v) => !v)}
+              className="mb-2 text-xs font-semibold text-sky-600 underline hover:text-sky-700 dark:text-sky-400"
+            >
+              {showPreview ? (lang === "is" ? "Fela forskoðun" : "Hide preview") : (lang === "is" ? "Forskoða" : "Preview")}
+            </button>
+          </div>
+          <TextArea
+            value={form.content}
+            onChange={(e) => setForm((prev) => ({ ...prev, content: e.target.value }))}
+            rows={14}
+          />
+          {showPreview && (
+            <div className="mt-3 rounded-2xl border border-slate-200/70 bg-slate-50/60 px-4 dark:border-slate-700/70 dark:bg-slate-800/40">
+              <BlogContent content={form.content} isLight={true} />
+            </div>
+          )}
+        </div>
+      </div>
+
+      <div className="mt-5">
+        <button
+          type="button"
+          disabled={disabled}
+          onClick={handleCreate}
+          className="rounded-xl bg-slate-900 px-4 py-2 text-sm font-medium text-white disabled:cursor-not-allowed disabled:opacity-50 dark:bg-white dark:text-slate-950"
+        >
+          {saving ? (lang === "is" ? "Vista..." : "Saving...") : (lang === "is" ? "Búa til drög" : "Create draft")}
         </button>
       </div>
     </section>
@@ -737,10 +910,14 @@ export default function AdminDashboard() {
     publishingId,
     error: blogError,
     reloadPosts,
+    createPost,
     updatePost,
     publishPost,
     deletePost,
   } = useAdminBlogPosts();
+
+  const { lang } = useLanguage();
+  const [createMode, setCreateMode] = useState("generate");
 
   useEffect(() => {
     let cancelled = false;
@@ -887,7 +1064,36 @@ export default function AdminDashboard() {
         </div>
 
         <section className="mt-8">
-          <GenerateDraftCard onGenerated={handleGenerated} />
+          <div className="mb-4 flex gap-2">
+            <button
+              type="button"
+              onClick={() => setCreateMode("generate")}
+              className={`rounded-xl px-4 py-2 text-sm font-medium ${
+                createMode === "generate"
+                  ? "bg-slate-900 text-white dark:bg-white dark:text-slate-950"
+                  : "border border-slate-300 text-slate-700 hover:bg-slate-50 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800"
+              }`}
+            >
+              {lang === "is" ? "Generate-a með AI" : "Generate with AI"}
+            </button>
+            <button
+              type="button"
+              onClick={() => setCreateMode("manual")}
+              className={`rounded-xl px-4 py-2 text-sm font-medium ${
+                createMode === "manual"
+                  ? "bg-slate-900 text-white dark:bg-white dark:text-slate-950"
+                  : "border border-slate-300 text-slate-700 hover:bg-slate-50 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800"
+              }`}
+            >
+              {lang === "is" ? "Skrifa handvirkt" : "Write manually"}
+            </button>
+          </div>
+
+          {createMode === "generate" ? (
+            <GenerateDraftCard onGenerated={handleGenerated} />
+          ) : (
+            <ManualCreateCard onCreated={createPost} />
+          )}
         </section>
 
         <section className="mt-8">

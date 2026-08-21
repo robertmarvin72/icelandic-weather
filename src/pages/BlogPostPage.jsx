@@ -26,7 +26,7 @@ function translateOrFallback(t, key, fallback) {
   return value;
 }
 
-function BlogContent({ content, isLight }) {
+export function BlogContent({ content, isLight }) {
   return (
     <div className="mt-8 max-w-2xl mx-auto">
       <ReactMarkdown

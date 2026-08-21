@@ -522,6 +522,89 @@ async function handleListBlogPosts(req, res) {
   }
 }
 
+const VALID_BLOG_LANGUAGES = ["is", "en"];
+
+// Manual blog creation — a single-language row, independent of the
+// generate-flow's IS+EN pairing (that pairing is generate-specific, not an
+// enforced contract: translation_group_id has no reader outside the admin
+// UI's own display grouping, and slug/routing/listing all already tolerate
+// single-language rows). Gets its own fresh, unpaired translation_group_id.
+async function handleCreateBlogPost(req, res) {
+  try {
+    const me = await requireAdmin(req, res);
+    if (!me) return;
+
+    const {
+      title,
+      content,
+      language,
+      excerpt = "",
+      coverImage = "",
+      metaTitle = "",
+      metaDescription = "",
+    } = req.body || {};
+
+    if (!title || !String(title).trim()) {
+      return res.status(400).json({ ok: false, error: "Missing title" });
+    }
+
+    if (!content || !String(content).trim()) {
+      return res.status(400).json({ ok: false, error: "Missing content" });
+    }
+
+    if (!VALID_BLOG_LANGUAGES.includes(language)) {
+      return res.status(400).json({
+        ok: false,
+        error: "Invalid language",
+        allowedLanguages: VALID_BLOG_LANGUAGES,
+      });
+    }
+
+    const slug = await deduplicateSlug(slugify(title) || "post");
+
+    const rows = await sql`
+      insert into blog_post (
+        slug, title, excerpt, content,
+        meta_title, meta_description, cover_image,
+        source_type, topic,
+        cta_title, cta_text, cta_button, cta_target,
+        nearby_highlights, nearby_attractions,
+        status, language, translation_group_id
+      ) values (
+        ${slug},
+        ${title},
+        ${excerpt},
+        ${content},
+        ${metaTitle || title},
+        ${metaDescription},
+        ${coverImage || null},
+        'manual',
+        ${null},
+        ${null}, ${null}, ${null}, ${null},
+        ${null},
+        ${null},
+        'draft', ${language}, ${randomUUID()}
+      )
+      returning
+        id, slug, title, excerpt, content,
+        meta_title, meta_description, cover_image, cta_hint,
+        source_type, topic,
+        cta_title, cta_text, cta_button, cta_target,
+        nearby_highlights, nearby_attractions,
+        status, published_at, created_at, updated_at,
+        language, translation_group_id
+    `;
+
+    return res.status(200).json({
+      ok: true,
+      post: normalizeBlogPost(rows[0]),
+    });
+  } catch (err) {
+    console.error("[admin/createBlogPost] failed", err);
+    return res.status(500).json({ ok: false, error: "Failed to create blog post" });
+  }
+}
+
 async function handleUpdateBlogPost(req, res) {
   try {
     const me = await requireAdmin(req, res);
@@ -1245,6 +1328,10 @@ export default async function handler(req, res) {
 
     if (action === "generateDraft") {
       return handleGenerateDraft(req, res);
+    }
+
+    if (action === "createBlogPost") {
+      return handleCreateBlogPost(req, res);
     }
 
     if (action === "updateBlogPost") {

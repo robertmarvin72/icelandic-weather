@@ -35,6 +35,37 @@ export function useAdminBlogPosts() {
     loadPosts();
   }, [loadPosts]);
 
+  const createPost = useCallback(async (payload) => {
+    setError("");
+
+    try {
+      const res = await fetch("/api/admin", {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          action: "createBlogPost",
+          ...payload,
+        }),
+      });
+
+      const json = await res.json().catch(() => ({}));
+
+      if (!res.ok || !json?.ok) {
+        throw new Error(json?.error || "Failed to create blog post");
+      }
+
+      setPosts((prev) => [json.post, ...prev]);
+
+      return { ok: true, post: json.post };
+    } catch (err) {
+      setError(err?.message || "Failed to create blog post");
+      return { ok: false, error: err?.message };
+    }
+  }, []);
+
   const updatePost = useCallback(async (id, payload) => {
     setSavingId(id);
     setError("");
@@ -142,6 +173,7 @@ export function useAdminBlogPosts() {
     publishingId,
     error,
     reloadPosts: loadPosts,
+    createPost,
     updatePost,
     publishPost,
     deletePost,
