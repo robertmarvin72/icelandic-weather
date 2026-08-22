@@ -423,7 +423,7 @@ function ManualCreateCard({ onCreated }) {
     try {
       const blob = await upload(pathname, file, {
         access: "public",
-        handleUploadUrl: "/api/blob-upload",
+        handleUploadUrl: "/api/blog-upload",
         contentType: file.type,
       });
 

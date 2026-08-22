@@ -84,7 +84,10 @@ describe("AdminDashboard — image upload pipeline (file picker + paste, shared)
     expect(upload).toHaveBeenCalledOnce();
     const [pathname, , options] = upload.mock.calls[0];
     expect(pathname).toMatch(/^blog-media\//);
-    expect(options.handleUploadUrl).toBe("/api/blob-upload");
+    // Must match the actual server route file (api/blog-upload.js) exactly —
+    // a route-name mismatch here 404s in the real browser without the mock
+    // ever revealing it, since upload() is fully mocked in this test.
+    expect(options.handleUploadUrl).toBe("/api/blog-upload");
     expect(options.access).toBe("public");
   });
 

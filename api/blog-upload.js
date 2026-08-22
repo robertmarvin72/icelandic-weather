@@ -12,6 +12,20 @@ export default async function handler(req, res) {
     return res.status(405).json({ ok: false, error: "Method not allowed" });
   }
 
+  // Diagnostic only — does not change response behavior. handleUpload()'s own
+  // token resolution (getReadWriteBlobTokenFromOptionsOrEnv) runs before
+  // onBeforeGenerateToken and throws its own error either way; this just
+  // makes the actionable cause visible in server logs, since Node does not
+  // hot-reload .env files into an already-running process — a dev server
+  // started before BLOB_READ_WRITE_TOKEN was added/pulled will not see it
+  // until restarted.
+  if (!process.env.BLOB_READ_WRITE_TOKEN) {
+    console.error(
+      "[blog-upload] BLOB_READ_WRITE_TOKEN is not set in this process. " +
+        "If you just added or pulled Blob environment variables, restart the dev server."
+    );
+  }
+
   try {
     const jsonResponse = await handleUpload({
       body: req.body,
