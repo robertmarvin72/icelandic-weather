@@ -2,7 +2,11 @@ import { randomUUID } from "crypto";
 import { isAdminEmail } from "./_lib/admin.js";
 import { getMeFromRequest } from "./_lib/getMe.js";
 import { buildBlogPrompt, BLOG_POST_TYPES } from "./_lib/buildBlogPrompt.js";
+import { head } from "@vercel/blob";
 import postgres from "postgres";
+
+const ALLOWED_MEDIA_MIME_TYPES = ["image/jpeg", "image/png", "image/webp"];
+const BLOG_MEDIA_PATHNAME_PREFIX = "blog-media/";
 
 const sql = postgres(process.env.POSTGRES_URL, { ssl: "require" });
 
@@ -57,6 +61,27 @@ function normalizeBlogPost(row) {
     updatedAt: row.updated_at || null,
     language: row.language || "is",
     translationGroupId: row.translation_group_id || null,
+  };
+}
+
+function normalizeBlogMedia(row) {
+  if (!row) return null;
+
+  return {
+    id: row.id,
+    blogPostId: row.blog_post_id || null,
+    storageKey: row.storage_key,
+    publicUrl: row.public_url,
+    originalFilename: row.original_filename || null,
+    mimeType: row.mime_type || null,
+    fileSizeBytes: row.file_size_bytes ?? null,
+    width: row.width ?? null,
+    height: row.height ?? null,
+    altText: row.alt_text || "",
+    caption: row.caption || null,
+    status: row.status || "active",
+    createdAt: row.created_at || null,
+    updatedAt: row.updated_at || null,
   };
 }
 
@@ -602,6 +627,72 @@ async function handleCreateBlogPost(req, res) {
   } catch (err) {
     console.error("[admin/createBlogPost] failed", err);
     return res.status(500).json({ ok: false, error: "Failed to create blog post" });
+  }
+}
+
+// Browser → metadata persistence trust boundary. The browser is authenticated
+// (requireAdmin), but a client-supplied url/pathname is not inherently
+// trusted just because the caller is an admin — head() is the SDK's own
+// canonical existence/metadata check against our Blob store: it fails for
+// any URL that isn't a real asset in our store (an admin can't forge an
+// external URL into blog_media this way), and its returned size/contentType
+// are used as the authoritative values instead of the client's claims.
+async function handleCreateBlogMedia(req, res) {
+  try {
+    const me = await requireAdmin(req, res);
+    if (!me) return;
+
+    const { url, originalFilename = null, altText = "", blogPostId = null } = req.body || {};
+
+    if (!url || typeof url !== "string") {
+      return res.status(400).json({ ok: false, error: "Missing blob url" });
+    }
+
+    let headResult;
+    try {
+      headResult = await head(url);
+    } catch {
+      return res.status(400).json({ ok: false, error: "Blob asset not found or inaccessible" });
+    }
+
+    if (!headResult.pathname || !headResult.pathname.startsWith(BLOG_MEDIA_PATHNAME_PREFIX)) {
+      return res.status(400).json({
+        ok: false,
+        error: "Blob asset is outside the expected blog-media namespace",
+      });
+    }
+
+    if (!ALLOWED_MEDIA_MIME_TYPES.includes(headResult.contentType)) {
+      return res.status(400).json({ ok: false, error: "Unsupported content type" });
+    }
+
+    const rows = await sql`
+      insert into blog_media (
+        blog_post_id, storage_key, public_url, original_filename,
+        mime_type, file_size_bytes, alt_text, status
+      ) values (
+        ${blogPostId || null},
+        ${headResult.pathname},
+        ${headResult.url},
+        ${originalFilename},
+        ${headResult.contentType},
+        ${headResult.size},
+        ${altText || ""},
+        'active'
+      )
+      returning
+        id, blog_post_id, storage_key, public_url, original_filename,
+        mime_type, file_size_bytes, width, height, alt_text, caption,
+        status, created_at, updated_at
+    `;
+
+    return res.status(200).json({
+      ok: true,
+      media: normalizeBlogMedia(rows[0]),
+    });
+  } catch (err) {
+    console.error("[admin/createBlogMedia] failed", err);
+    return res.status(500).json({ ok: false, error: "Failed to save image metadata" });
   }
 }
 
@@ -1332,6 +1423,10 @@ export default async function handler(req, res) {
 
     if (action === "createBlogPost") {
       return handleCreateBlogPost(req, res);
+    }
+
+    if (action === "createBlogMedia") {
+      return handleCreateBlogMedia(req, res);
     }
 
     if (action === "updateBlogPost") {

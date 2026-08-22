@@ -1,9 +1,35 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
+import { upload } from "@vercel/blob/client";
 import { useAdminBlogPosts } from "../hooks/useAdminBlogPosts";
 import { useLanguage } from "../hooks/useLanguage";
 import { useT } from "../hooks/useT";
 import { BlogContent } from "./BlogPostPage";
+
+const ALLOWED_IMAGE_TYPES = ["image/jpeg", "image/png", "image/webp"];
+const MAX_IMAGE_SIZE_BYTES = 10 * 1024 * 1024;
+
+function extensionForMime(mime) {
+  if (mime === "image/jpeg") return ".jpg";
+  if (mime === "image/png") return ".png";
+  if (mime === "image/webp") return ".webp";
+  return "";
+}
+
+// Collision-safety itself comes from the server's addRandomSuffix (see
+// api/blog-upload.js) — this only produces a readable, safe base name.
+function sanitizeFilenameForPathname(name) {
+  const match = /^(.*?)(\.[^./]+)?$/.exec(name || "");
+  const base = match?.[1] || "";
+  const ext = (match?.[2] || "").toLowerCase();
+  const safeBase =
+    base
+      .toLowerCase()
+      .replace(/[^\w-]+/g, "-")
+      .replace(/-+/g, "-")
+      .replace(/^-+|-+$/g, "") || "image";
+  return `${safeBase}${ext}`;
+}
 
 function formatMoney(value) {
   if (value == null) return "—";
@@ -336,7 +362,117 @@ function ManualCreateCard({ onCreated }) {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
+  // Image upload — shared pipeline for both the file picker and clipboard
+  // paste. textareaRef gives cursor-position access for Markdown insertion;
+  // a plain <textarea> is used for the content field instead of the shared
+  // TextArea wrapper specifically so this ref reaches the real DOM node.
+  const textareaRef = useRef(null);
+  const fileInputRef = useRef(null);
+  const [uploadStatus, setUploadStatus] = useState(null); // { type: "uploading" | "error" } | null
+
   const disabled = saving || !form.title.trim() || !form.content.trim();
+
+  function insertAtCursor(markdown) {
+    const el = textareaRef.current;
+    if (!el) {
+      setForm((prev) => ({ ...prev, content: prev.content + markdown }));
+      return;
+    }
+    const start = el.selectionStart ?? el.value.length;
+    const end = el.selectionEnd ?? el.value.length;
+    setForm((prev) => ({
+      ...prev,
+      content: prev.content.slice(0, start) + markdown + prev.content.slice(end),
+    }));
+    requestAnimationFrame(() => {
+      const node = textareaRef.current;
+      if (!node) return;
+      const pos = start + markdown.length;
+      node.focus();
+      node.setSelectionRange(pos, pos);
+    });
+  }
+
+  async function uploadImage(file) {
+    if (uploadStatus?.type === "uploading") return; // prevent duplicate concurrent uploads
+
+    if (!ALLOWED_IMAGE_TYPES.includes(file.type)) {
+      setUploadStatus({
+        type: "error",
+        message:
+          lang === "is"
+            ? "Óstudd skráargerð — aðeins JPEG, PNG eða WebP."
+            : "Unsupported file type — JPEG, PNG or WebP only.",
+      });
+      return;
+    }
+
+    if (file.size > MAX_IMAGE_SIZE_BYTES) {
+      setUploadStatus({
+        type: "error",
+        message: lang === "is" ? "Skráin er of stór (hámark 10 MB)." : "File is too large (10 MB max).",
+      });
+      return;
+    }
+
+    setUploadStatus({ type: "uploading" });
+
+    const rawName = file.name || `pasted-image${extensionForMime(file.type)}`;
+    const pathname = `blog-media/${sanitizeFilenameForPathname(rawName)}`;
+
+    try {
+      const blob = await upload(pathname, file, {
+        access: "public",
+        handleUploadUrl: "/api/blob-upload",
+        contentType: file.type,
+      });
+
+      const metaRes = await fetch("/api/admin", {
+        method: "POST",
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          action: "createBlogMedia",
+          url: blob.url,
+          originalFilename: file.name || null,
+        }),
+      });
+      const metaJson = await metaRes.json().catch(() => ({}));
+
+      if (!metaRes.ok || !metaJson?.ok) {
+        throw new Error(
+          metaJson?.error || (lang === "is" ? "Tókst ekki að vista mynd-metadata" : "Failed to save image metadata")
+        );
+      }
+
+      // Only insert Markdown once BOTH the Blob upload and the blog_media
+      // persistence have succeeded — never point Markdown at an upload
+      // whose metadata failed to save.
+      insertAtCursor(`![](${blob.url})\n`);
+      setUploadStatus(null);
+    } catch (err) {
+      setUploadStatus({
+        type: "error",
+        message: err?.message || (lang === "is" ? "Tókst ekki að hlaða upp mynd" : "Failed to upload image"),
+      });
+    }
+  }
+
+  function handleFileInputChange(e) {
+    const file = e.target.files?.[0];
+    e.target.value = ""; // allow re-selecting the same file afterward
+    if (file) uploadImage(file);
+  }
+
+  function handlePaste(e) {
+    const items = e.clipboardData?.items;
+    if (!items) return;
+    const imageItem = Array.from(items).find((item) => item.type?.startsWith("image/"));
+    if (!imageItem) return; // no image in clipboard — let normal text paste proceed untouched
+    e.preventDefault();
+    const file = imageItem.getAsFile();
+    if (file) uploadImage(file);
+  }
 
   async function handleCreate() {
     setSaving(true);
@@ -455,21 +591,53 @@ function ManualCreateCard({ onCreated }) {
         </div>
 
         <div className="md:col-span-2">
-          <div className="mb-2 flex items-center justify-between">
+          <div className="mb-2 flex flex-wrap items-center justify-between gap-2">
             <FieldLabel>{lang === "is" ? "Efni (Markdown)" : "Content (Markdown)"}</FieldLabel>
-            <button
-              type="button"
-              onClick={() => setShowPreview((v) => !v)}
-              className="mb-2 text-xs font-semibold text-sky-600 underline hover:text-sky-700 dark:text-sky-400"
-            >
-              {showPreview ? (lang === "is" ? "Fela forskoðun" : "Hide preview") : (lang === "is" ? "Forskoða" : "Preview")}
-            </button>
+            <div className="mb-2 flex items-center gap-3">
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept="image/jpeg,image/png,image/webp"
+                className="hidden"
+                onChange={handleFileInputChange}
+              />
+              <button
+                type="button"
+                disabled={uploadStatus?.type === "uploading"}
+                onClick={() => fileInputRef.current?.click()}
+                className="text-xs font-semibold text-sky-600 underline hover:text-sky-700 disabled:cursor-not-allowed disabled:opacity-50 dark:text-sky-400"
+              >
+                {uploadStatus?.type === "uploading"
+                  ? (lang === "is" ? "Hleð upp..." : "Uploading...")
+                  : (lang === "is" ? "Hlaða upp mynd" : "Upload image")}
+              </button>
+              <button
+                type="button"
+                onClick={() => setShowPreview((v) => !v)}
+                className="text-xs font-semibold text-sky-600 underline hover:text-sky-700 dark:text-sky-400"
+              >
+                {showPreview ? (lang === "is" ? "Fela forskoðun" : "Hide preview") : (lang === "is" ? "Forskoða" : "Preview")}
+              </button>
+            </div>
           </div>
-          <TextArea
+          {uploadStatus?.type === "error" && (
+            <div className="mb-2 rounded-xl border border-rose-200 bg-rose-50 px-3 py-2 text-xs text-rose-700 dark:border-rose-900/60 dark:bg-rose-950/30 dark:text-rose-300">
+              {uploadStatus.message}
+            </div>
+          )}
+          <textarea
+            ref={textareaRef}
             value={form.content}
             onChange={(e) => setForm((prev) => ({ ...prev, content: e.target.value }))}
+            onPaste={handlePaste}
             rows={14}
+            className="w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 outline-none ring-0 focus:border-slate-500 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100"
           />
+          <p className="mt-1 text-xs text-slate-400 dark:text-slate-500">
+            {lang === "is"
+              ? "Þú getur líka límt mynd beint úr klippiborði inn í reitinn."
+              : "You can also paste an image directly from your clipboard into this field."}
+          </p>
           {showPreview && (
             <div className="mt-3 rounded-2xl border border-slate-200/70 bg-slate-50/60 px-4 dark:border-slate-700/70 dark:bg-slate-800/40">
               <BlogContent content={form.content} isLight={true} />
