@@ -59,7 +59,13 @@ export default async function handler(req, res) {
       ].join(",")
     );
 
-    // Hourly fields are used by campsite hourly drill-down modal
+    // Hourly fields are used by campsite hourly drill-down modal.
+    // cloudcover/cloudcover_low/_mid/_high and visibility are additive
+    // groundwork for Northern Lights Ticket 2/3 — not consumed by any
+    // scoring/recommendation logic yet (Ticket 1 scope is data
+    // availability only). Existing consumers are unaffected: this route
+    // is a pure passthrough (no per-field processing), so new response
+    // fields simply appear alongside the existing ones.
     upstream.searchParams.set(
       "hourly",
       [
@@ -69,6 +75,11 @@ export default async function handler(req, res) {
         "precipitation_probability",
         "windspeed_10m",
         "windgusts_10m",
+        "cloudcover",
+        "cloudcover_low",
+        "cloudcover_mid",
+        "cloudcover_high",
+        "visibility",
       ].join(",")
     );
 
