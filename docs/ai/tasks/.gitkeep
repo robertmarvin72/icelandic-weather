@@ -1,0 +1,4 @@
+This file exists only so the (otherwise empty) docs/ai/tasks/ directory is tracked by git.
+
+Each real task gets its own permanent subdirectory here, e.g. docs/ai/tasks/ticket-376/.
+Do not delete this file until tasks/ contains at least one real task directory.
