@@ -311,6 +311,14 @@ Deployment is via Vercel Git integration — push to `main` deploys automaticall
 
 ---
 
+## AI Collaboration Workflow
+
+Before acting on any "Ripley/Jonesy/Prompt approved/CC búinn"-style
+instruction, read docs/ai/README.md and docs/ai/CURRENT.md first.
+Do not infer workflow state from chat history alone.
+
+---
+
 ## Constraints
 
 Execution discipline:
