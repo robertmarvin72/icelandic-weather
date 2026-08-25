@@ -1,8 +1,22 @@
 # Current AI Task
 
-Status: IDLE
+Task: ticket-390
+Stage: CLOSED
 
-There is currently no active AI task.
+Task directory:
+docs/ai/tasks/ticket-390/
+
+Prompt review:
+docs/ai/tasks/ticket-390/prompt-review.md
+
+Approved prompt:
+docs/ai/tasks/ticket-390/approved-prompt-v1.md
+
+CC report:
+docs/ai/tasks/ticket-390/cc-report.md
+
+Result review:
+docs/ai/tasks/ticket-390/result-review.md
 
 ## Rule
 
