@@ -434,7 +434,10 @@ Deployment is via Vercel Git integration — push to `main` deploys automaticall
 
 Before acting on any "Ripley/Jonesy/Prompt approved/CC búinn"-style
 instruction, read docs/ai/README.md and docs/ai/CURRENT.md first.
-Do not infer workflow state from chat history alone.
+Follow the role-routing rule and this session's required CURRENT.md
+transitions exactly as documented in docs/ai/README.md — that file is
+canonical, this note is only a pointer. Do not infer workflow state
+from chat history alone.
 
 ---
 
