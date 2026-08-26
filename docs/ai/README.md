@@ -47,7 +47,7 @@ Role is assigned per workflow/session, not inferred solely from the application 
 
 **Jonesy — Technical peer reviewer.** Two separate responsibilities, never overlapping with implementation:
 - *Prompt review* — checks for architectural gaps, hidden dependencies, repo-specific conflicts, unsafe assumptions, unclear scope, missing acceptance criteria/tests/validation, incomplete STOP rules, contradictions with prior decisions. Verdict: `APPROVED` or `REVISE`.
-- *Result review* — verifies `CURRENT.md` is at `CC_COMPLETE`, checks CC's execution against the approved prompt (scope compliance, completeness, tests, validation, STOP-condition compliance, deviations, unresolved risks), writes `result-review.md`, populates its path in `CURRENT.md`, and sets `CURRENT.md → RESULT_REVIEW`. Verdict: `PASS` / `REVISE` / `BLOCKED`.
+- *Result review* — checks CC's execution against the approved prompt: scope compliance, completeness, tests, validation, STOP-condition compliance, deviations, unresolved risks. Verdict: `PASS` / `REVISE` / `BLOCKED`.
 
 Jonesy must never implement anything during either review.
 
@@ -68,9 +68,7 @@ Ticket / task
     -> CC verifies CURRENT.md is READY_FOR_CC, sets CURRENT.md -> CC_IN_PROGRESS
     -> CC audits/implements/tests/validates, writes cc-report.md
     -> CC populates the CC report path and sets CURRENT.md -> CC_COMPLETE
-    -> Róbert -> Jonesy: "CC búinn"
-    -> Jonesy verifies CC_COMPLETE, writes result-review.md,
-       populates its path and sets CURRENT.md -> RESULT_REVIEW
+    -> Róbert -> Jonesy: "CC búinn" -> Jonesy writes result-review.md
     -> Róbert -> Ripley: "Jonesy búinn að reviewa CC" -> Ripley final assessment
     -> PASS -> CLOSED | REVISE -> new prompt iteration | BLOCKED -> stop, record blocker
 ```
@@ -85,7 +83,7 @@ Jonesy's approval of the final implementation prompt is sufficient to send the p
 | `Jonesy búinn að reviewa prompt` | Ripley | Read CURRENT.md + active prompt-review.md. Read Jonesy's latest review. If REVISE: revise and append a new round. If APPROVED: create approved-prompt-vN.md and set CURRENT.md -> READY_FOR_CC. |
 | `Review uppfært` | Jonesy | Review the newest Ripley revision. Do not implement. Append a new verdict. |
 | `Prompt approved` | Claude Code | Verify CURRENT.md is READY_FOR_CC. Set CURRENT.md -> CC_IN_PROGRESS. Execute only the approved prompt referenced by CURRENT.md. Do not commit. Do not push. Write cc-report.md, populate the CC report path in CURRENT.md, and set CURRENT.md -> CC_COMPLETE. |
-| `CC búinn` | Jonesy | Verify CURRENT.md is CC_COMPLETE. Read the approved prompt + cc-report.md and review CC's execution. Do not implement. Write result-review.md, populate its path in CURRENT.md, and set CURRENT.md -> RESULT_REVIEW. |
+| `CC búinn` | Jonesy | Read approved prompt + cc-report.md. Review CC's execution. Do not implement. Write result-review.md. |
 | `Jonesy búinn að reviewa CC` | Ripley | Read approved prompt + cc-report.md + Jonesy's result review. Perform final assessment. Return PASS/REVISE/BLOCKED. |
 
 ### CC's required `CURRENT.md` transitions
@@ -100,6 +98,16 @@ Jonesy's approval of the final implementation prompt is sufficient to send the p
 6. set `CURRENT.md → CC_COMPLETE` after writing the report.
 
 > Writing `cc-report.md` without updating `CURRENT.md` to `CC_COMPLETE` is an incomplete handoff.
+
+## Locating `result-review.md`
+
+*Added after a session guessed a machine-specific path instead of resolving `result-review.md` from `CURRENT.md`.*
+
+- The `Result review:` field in `docs/ai/CURRENT.md` is the authoritative path for the active task — never guess it, and never ask Róbert for a path already recorded there.
+- The path is always resolved relative to the repository root, never as a machine-specific absolute path.
+- The default pattern is `docs/ai/tasks/<ticket-id>/result-review.md`.
+- On `Jonesy búinn að reviewa CC`, Ripley reads that file, performs the final assessment, appends the assessment to it, and sets `CURRENT.md` accordingly: `CLOSED` on `PASS`, `READY_FOR_CC` on `REVISE` (new prompt iteration), or `BLOCKED`.
+- If a session is not already rooted at the repository, it must locate the repository root first — this is a session-setup problem, not a reason to ask for a path `CURRENT.md` already records.
 
 ## Canonical stages
 

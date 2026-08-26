@@ -437,12 +437,9 @@ instruction, read docs/ai/README.md and docs/ai/CURRENT.md first.
 Follow the role-routing rule and this session's required CURRENT.md
 transitions exactly as documented in docs/ai/README.md — that file is
 canonical, this note is only a pointer. Do not infer workflow state
-from chat history alone.
-
-Put generated non-source artifacts such as PDFs, screenshots, previews,
-and temporary document generators under `.local-artifacts/`, which is
-git-ignored. Do not leave them in repo-root `output/` or `tmp/`. Workflow
-audit files under `docs/ai/` remain tracked project history, not artifacts.
+from chat history alone. Task file paths (e.g. `result-review.md`) are
+always resolved from the `CURRENT.md` fields, relative to the repo
+root — never guessed or asked for again once recorded there.
 
 ---
 
