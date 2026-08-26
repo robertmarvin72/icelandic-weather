@@ -2,6 +2,52 @@
 
 ---
 
+## 2026-08-25 — Repository-based AI collaboration workflow pilot (2 hours)
+
+### What changed
+
+- Introduced the tracked `docs/ai/` workflow for coordinating Róbert, Ripley,
+  Jonesy, and Claude Code through explicit repository-backed handoffs.
+- Added a single active-task pointer in `docs/ai/CURRENT.md`, immutable prompt
+  snapshots, CC execution reports, result reviews, and a permanent per-ticket
+  audit trail.
+- Ran the first complete pilot on issue #390: prompt creation, Jonesy revision,
+  approval snapshot, CC implementation, Jonesy result review, Ripley final
+  validation, `PASS`, commit/push, and GitHub issue closure.
+- Hardened stage ownership after the pilot: CC owns `READY_FOR_CC →
+  CC_IN_PROGRESS → CC_COMPLETE`; Jonesy owns `CC_COMPLETE → RESULT_REVIEW`;
+  Ripley owns the final transition to `CLOSED`, `REVISE`, or `BLOCKED`.
+- Added narrow stale-pointer recovery, explicit role routing, risk-proportionate
+  Ripley test validation, and the human-controlled post-`CLOSED` sequence.
+
+### What the pilot proved
+
+- Repository files can replace most long manual prompt/report copying while
+  preserving an auditable history of exactly what was approved and executed.
+- The Ripley/Jonesy review loop caught real contract ambiguities before CC
+  implementation, including national-reference moon times and diagnostic
+  reason requirements for non-scored results.
+- Independent final validation added useful confidence without requiring every
+  actor to rerun the entire test suite.
+
+### Workflow lessons
+
+- Every artifact-producing role must also own its `CURRENT.md` transition;
+  writing the artifact alone is an incomplete handoff.
+- Session roles must be explicit and must not be inferred from the application
+  name alone.
+- `docs/ai/` is permanent tracked project history. Generated PDFs, screenshots,
+  previews, and temporary document tooling are local artifacts and belong under
+  the git-ignored `.local-artifacts/` directory instead of repo-root `output/`
+  or `tmp/` directories.
+
+### Time recorded
+
+- 2 hours — workflow design, setup, Ticket 390 pilot, review, validation, and
+  post-pilot hardening.
+
+---
+
 ## 2026-04-09 — Retro: Issue #221 (Draft Preview + Preview Button)
 
 ### What was built

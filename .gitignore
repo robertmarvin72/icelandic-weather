@@ -15,6 +15,9 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
+# Local AI-generated artifacts (PDFs, previews, screenshots, temp generators)
+.local-artifacts/
+
 # OS files
 .DS_Store
 Thumbs.db
