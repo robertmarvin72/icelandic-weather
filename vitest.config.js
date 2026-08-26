@@ -13,6 +13,7 @@ export default defineConfig({
       "src/**/*.test.js", "src/**/*.spec.js",
       "src/**/*.test.jsx", "src/**/*.spec.jsx",
       "api/**/*.test.js",
+      "google-apps-script/**/*.test.js",
     ],
 
     coverage: {

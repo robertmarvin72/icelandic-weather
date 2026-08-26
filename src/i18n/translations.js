@@ -3,6 +3,7 @@ import { routePlannerTranslations } from "./translations.routePlanner";
 import { pricingTranslations } from "./translations.pricing";
 import { errorsTranslations } from "./translations.errors";
 import { landingTranslations } from "./translations.landing";
+import { researchQuizTranslations } from "./translations.researchQuiz";
 
 export const translations = {
   en: {
@@ -11,6 +12,7 @@ export const translations = {
     ...landingTranslations.en,
     ...commonTranslations.en,
     ...errorsTranslations.en,
+    ...researchQuizTranslations.en,
   },
 
   // Icelandic (Íslenska) -------------------------------------------------------------------------------------------------------------------
@@ -20,5 +22,6 @@ export const translations = {
     ...pricingTranslations.is,
     ...errorsTranslations.is,
     ...landingTranslations.is,
+    ...researchQuizTranslations.is,
   },
 };

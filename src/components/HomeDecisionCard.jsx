@@ -47,6 +47,12 @@ export default function HomeDecisionCard({
   onCtaClick,
   currentSiteId = null,
   lang,
+  // Narrow, explicit isolation seam for the #395 research quiz route, which
+  // renders this same real component with frozen fixtures and must emit no
+  // production GA4 event (see src/pages/DecisionQuizResearch.jsx). Analytics
+  // stays enabled by default — every existing production call site is
+  // unaffected. Never mutates global GA config or monkey-patches trackEvent.
+  disableAnalytics = false,
 }) {
   const isPro = !!entitlements?.isPro;
 
@@ -168,6 +174,7 @@ export default function HomeDecisionCard({
   const rawVerdict = String(routePlannerSummary?.verdict || "").toLowerCase();
   const viewedVerdictRef = useRef(null);
   useEffect(() => {
+    if (disableAnalytics) return;
     if (!routePlannerSummary?.ready) return;
     if (viewedVerdictRef.current === rawVerdict) return;
     viewedVerdictRef.current = rawVerdict;
@@ -179,7 +186,7 @@ export default function HomeDecisionCard({
       source: "decision_recommendation",
       userTier: isPro ? "pro" : "free",
     });
-  }, [routePlannerSummary?.ready, rawVerdict, currentSiteId, isPro]);
+  }, [routePlannerSummary?.ready, rawVerdict, currentSiteId, isPro, disableAnalytics]);
 
   // canonical_recommendation_viewed — analytics-design follow-up after #377
   // Phase A. Deduped on model.tone itself (not rawVerdict), because model.tone
@@ -192,6 +199,7 @@ export default function HomeDecisionCard({
   // and travel_advisor_free_used remain raw-engine-diagnostic events, unchanged.
   const canonicalViewedToneRef = useRef(null);
   useEffect(() => {
+    if (disableAnalytics) return;
     if (!routePlannerSummary?.ready) return;
     if (canonicalViewedToneRef.current === model.tone) return;
     canonicalViewedToneRef.current = model.tone;
@@ -204,10 +212,11 @@ export default function HomeDecisionCard({
       userTier: isPro ? "pro" : "free",
       current_campsite_id: currentSiteId ?? null,
     });
-  }, [routePlannerSummary?.ready, model.tone, rawVerdict, isPro, currentSiteId]);
+  }, [routePlannerSummary?.ready, model.tone, rawVerdict, isPro, currentSiteId, disableAnalytics]);
 
   const lockedViewedVerdictRef = useRef(null);
   useEffect(() => {
+    if (disableAnalytics) return;
     if (isPro) return;
     if (!model.locked) return;
     if (lockedViewedVerdictRef.current === rawVerdict) return;
@@ -217,7 +226,7 @@ export default function HomeDecisionCard({
       recommendation_type: rawVerdict,
       userTier: "free",
     });
-  }, [isPro, model.locked, rawVerdict]);
+  }, [isPro, model.locked, rawVerdict, disableAnalytics]);
 
   // comparison_viewed / better_nearby_found — unchanged from InstantComparison:
   // fires whenever a qualifying candidate exists, independent of the Free
@@ -226,6 +235,7 @@ export default function HomeDecisionCard({
   const tier = comparisonState?.tier ?? -1;
   const comparisonFiredRef = useRef(null);
   useEffect(() => {
+    if (disableAnalytics) return;
     if (!comparisonState?.showComparison || !best) return;
     const key = `${best.site?.id}:${tier}`;
     if (comparisonFiredRef.current === key) return;
@@ -247,19 +257,21 @@ export default function HomeDecisionCard({
         radiusKm: 50,
       });
     }
-  }, [comparisonState, best, tier]);
+  }, [comparisonState, best, tier, disableAnalytics]);
 
   function handleUpgradeClick() {
-    trackEvent("better_location_upgrade_clicked", {
-      recommendation_type: rawVerdict,
-      userTier: "free",
-      lang,
-    });
+    if (!disableAnalytics) {
+      trackEvent("better_location_upgrade_clicked", {
+        recommendation_type: rawVerdict,
+        userTier: "free",
+        lang,
+      });
+    }
     if (typeof onUpgrade === "function") onUpgrade("decision_recommendation");
   }
 
   function handleSecondaryClick() {
-    trackEvent("homepage_instant_comparison_cta_click");
+    if (!disableAnalytics) trackEvent("homepage_instant_comparison_cta_click");
     if (typeof onCtaClick === "function") {
       onCtaClick();
       return;

@@ -459,6 +459,49 @@ describe("HomeDecisionCard — canonical_recommendation_viewed (analytics-design
   });
 });
 
+describe("HomeDecisionCard — disableAnalytics isolation seam (#395)", () => {
+  beforeEach(() => vi.clearAllMocks());
+
+  it("fires no trackEvent calls at all when disableAnalytics is true, across mount and every interaction", () => {
+    const onUpgrade = vi.fn();
+    renderCard({
+      routePlannerSummary: makeRoutePlanner("move"),
+      comparisonState: makeCandidate(),
+      entitlements: { isPro: false },
+      onUpgrade,
+      disableAnalytics: true,
+    });
+    fireEvent.click(screen.getByText(/decisionLockedCta/));
+    expect(trackEvent).not.toHaveBeenCalled();
+    // onUpgrade itself still fires — only analytics is isolated, not the
+    // caller-supplied interception hook the research quiz relies on.
+    expect(onUpgrade).toHaveBeenCalledWith("decision_recommendation");
+  });
+
+  it("fires the secondary CTA's onCtaClick without emitting homepage_instant_comparison_cta_click when disabled", () => {
+    const onCtaClick = vi.fn();
+    renderCard({
+      routePlannerSummary: makeRoutePlanner("move"),
+      comparisonState: makeCandidate(),
+      entitlements: { isPro: true },
+      onCtaClick,
+      disableAnalytics: true,
+    });
+    fireEvent.click(screen.getByText("icCtaView"));
+    expect(trackEvent).not.toHaveBeenCalled();
+    expect(onCtaClick).toHaveBeenCalled();
+  });
+
+  it("defaults to analytics enabled — every existing production call site is unaffected", () => {
+    renderCard({
+      routePlannerSummary: makeRoutePlanner("move"),
+      comparisonState: makeCandidate(),
+      entitlements: { isPro: false },
+    });
+    expect(trackEvent.mock.calls.some((c) => c[0] === "recommendation_viewed")).toBe(true);
+  });
+});
+
 describe("HomeDecisionCard — i18n key completeness (IS + EN)", () => {
   it.each(["is", "en"])("%s: decisionSimilarTitle/Body and decisionCurrentBetterTitle/Body resolve to real translated copy", (lang) => {
     const tr = (k) => routePlannerTranslations[lang]?.[k] ?? commonTranslations[lang]?.[k] ?? k;

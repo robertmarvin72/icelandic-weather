@@ -28,5 +28,17 @@
     "api/**/*.js": {
       "includeFiles": "server_data/**"
     }
-  }
+  },
+
+  "headers": [
+    {
+      "source": "/research/decision-quiz",
+      "headers": [
+        {
+          "key": "Content-Security-Policy",
+          "value": "connect-src 'self' https://script.google.com https://script.googleusercontent.com"
+        }
+      ]
+    }
+  ]
 }
