@@ -1,22 +1,22 @@
 # Current AI Task
 
-Task: ticket-395
+Task: ticket-392
 Stage: CLOSED
 
 Task directory:
-docs/ai/tasks/ticket-395/
+docs/ai/tasks/ticket-392/
 
 Prompt review:
-docs/ai/tasks/ticket-395/prompt-review.md
+docs/ai/tasks/ticket-392/prompt-review.md
 
 Approved prompt:
-docs/ai/tasks/ticket-395/approved-prompt-v2.md
+docs/ai/tasks/ticket-392/approved-prompt-v1.md
 
 CC report:
-docs/ai/tasks/ticket-395/cc-report.md
+docs/ai/tasks/ticket-392/cc-report.md
 
 Result review:
-docs/ai/tasks/ticket-395/result-review.md
+docs/ai/tasks/ticket-392/result-review.md
 
 ## Rule
 

@@ -14,6 +14,7 @@ import { trackEvent } from "./lib/analytics";
 import AppRoutes from "./AppRoutes";
 import BackToTop from "./components/BackToTop";
 import HomeDecisionCard from "./components/HomeDecisionCard";
+import NorthernLightsCard from "./components/NorthernLightsCard";
 import Footer from "./components/Footer";
 import CampsiteComparisonSection from "./components/CampsiteComparisonSection";
 import ForecastTable from "./components/ForecastTable";
@@ -358,6 +359,8 @@ function IcelandCampingWeatherApp({ page = "home" }) {
                 currentSiteId={siteId}
                 lang={lang}
               />
+
+              <NorthernLightsCard t={t} lang={lang} entitlements={entitlements} onUpgrade={startCheckout} theme={theme} />
 
               <div className="mb-4">
                 <RoutePlannerCard

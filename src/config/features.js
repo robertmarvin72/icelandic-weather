@@ -20,6 +20,12 @@ export const FEATURES = {
 
   // 5) Weather Finder results count (Free sees top 3, Pro sees all)
   weatherFinderResultsCount: { type: "limit", free: 3, pro: 999, label: "Weather Finder results" },
+
+  // 6) Northern Lights decision card (#392) — presentation-only gate. Free
+  // sees coarse guidance (band/verdict, darkness context), Pro sees exact
+  // best location, score, reasons, ranked alternatives and map. The
+  // underlying /api/aurora-decision request/response is identical for both.
+  northernLights: { tier: "pro", preview: true, label: "Northern Lights" },
 };
 
 export const TIERS = {
