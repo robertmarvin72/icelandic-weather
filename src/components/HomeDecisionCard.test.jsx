@@ -299,7 +299,9 @@ describe("HomeDecisionCard — analytics, exactly-once per mount, no duplication
       comparisonState: makeCandidate(),
       entitlements: { isPro: true },
     });
-    fireEvent.click(screen.getByText("icCtaView"));
+    // #396: candidate-visible CTA for move tone is tone-only
+    // (decisionMoveCandidateCta), not the generic tier-based icCtaView.
+    fireEvent.click(screen.getByText("decisionMoveCandidateCta"));
     expect(trackEvent).toHaveBeenCalledWith("homepage_instant_comparison_cta_click");
   });
 });
@@ -487,7 +489,8 @@ describe("HomeDecisionCard — disableAnalytics isolation seam (#395)", () => {
       onCtaClick,
       disableAnalytics: true,
     });
-    fireEvent.click(screen.getByText("icCtaView"));
+    // #396: candidate-visible CTA for move tone is tone-only, not icCtaView.
+    fireEvent.click(screen.getByText("decisionMoveCandidateCta"));
     expect(trackEvent).not.toHaveBeenCalled();
     expect(onCtaClick).toHaveBeenCalled();
   });
@@ -513,5 +516,311 @@ describe("HomeDecisionCard — i18n key completeness (IS + EN)", () => {
     expect(tr("icReasonDrier")).not.toBe("icReasonDrier");
     expect(tr("icReasonWarmer")).not.toBe("icReasonWarmer");
     expect(tr("icDistanceLabel")).not.toBe("icDistanceLabel");
+  });
+});
+
+// ── #396: move/consider comprehension revision ──────────────────────────
+
+describe("HomeDecisionCard — #396 move vs consider strength distinction (Free)", () => {
+  beforeEach(() => vi.clearAllMocks());
+
+  it("Free move: stronger recommendation wording, strength badge, action CTA", () => {
+    renderCard({
+      routePlannerSummary: makeRoutePlanner("move"),
+      comparisonState: makeCandidate(),
+      entitlements: { isPro: false },
+    });
+    expect(screen.getByText("decisionMoveStrengthBadge")).toBeInTheDocument();
+    expect(screen.getByText("decisionMoveLockedBody")).toBeInTheDocument();
+    expect(screen.getByText(/decisionLockedCta/)).toBeInTheDocument();
+  });
+
+  it("Free consider: exploratory wording, distinct badge, compare/monitor CTA — never the move CTA", () => {
+    renderCard({
+      routePlannerSummary: makeRoutePlanner("consider"),
+      comparisonState: makeCandidate(),
+      entitlements: { isPro: false },
+    });
+    expect(screen.getByText("decisionConsiderStrengthBadge")).toBeInTheDocument();
+    expect(screen.getByText("decisionConsiderLockedBody")).toBeInTheDocument();
+    expect(screen.getByText(/decisionConsiderLockedCta/)).toBeInTheDocument();
+    expect(screen.queryByText(/^decisionLockedCta/)).toBeNull();
+  });
+
+  it("move and consider badges are visually distinct (non-color emphasis), not just differently colored dots", () => {
+    const { unmount } = renderCard({
+      routePlannerSummary: makeRoutePlanner("move"),
+      comparisonState: makeCandidate(),
+      entitlements: { isPro: false },
+    });
+    const moveBadgeClass = screen.getByText("decisionMoveStrengthBadge").className;
+    const moveTitleClass = screen.getByText("routeVerdictMoveTitle").className;
+    unmount();
+
+    renderCard({
+      routePlannerSummary: makeRoutePlanner("consider"),
+      comparisonState: makeCandidate(),
+      entitlements: { isPro: false },
+    });
+    const considerBadgeClass = screen.getByText("decisionConsiderStrengthBadge").className;
+    const considerTitleClass = screen.getByText("routeVerdictConsiderTitle").className;
+
+    expect(moveBadgeClass).not.toBe(considerBadgeClass);
+    expect(moveTitleClass).not.toBe(considerTitleClass); // font weight/size differ, not only color
+  });
+});
+
+describe("HomeDecisionCard — #396 candidate-visible CTA precedence matrix (Pro)", () => {
+  beforeEach(() => vi.clearAllMocks());
+
+  it("move: low tier and high tier render the SAME move-only CTA key", () => {
+    const { unmount } = renderCard({
+      routePlannerSummary: makeRoutePlanner("move"),
+      comparisonState: makeCandidate({ tier: 0 }),
+      entitlements: { isPro: true },
+    });
+    expect(screen.getByText("decisionMoveCandidateCta")).toBeInTheDocument();
+    unmount();
+
+    renderCard({
+      routePlannerSummary: makeRoutePlanner("move"),
+      comparisonState: makeCandidate({ tier: 3 }),
+      entitlements: { isPro: true },
+    });
+    expect(screen.getByText("decisionMoveCandidateCta")).toBeInTheDocument();
+  });
+
+  it("consider: low tier and high tier render the SAME consider-only CTA key, distinct from move's", () => {
+    const { unmount } = renderCard({
+      routePlannerSummary: makeRoutePlanner("consider"),
+      comparisonState: makeCandidate({ tier: 0 }),
+      entitlements: { isPro: true },
+    });
+    expect(screen.getByText("decisionConsiderCandidateCta")).toBeInTheDocument();
+    unmount();
+
+    renderCard({
+      routePlannerSummary: makeRoutePlanner("consider"),
+      comparisonState: makeCandidate({ tier: 3 }),
+      entitlements: { isPro: true },
+    });
+    expect(screen.getByText("decisionConsiderCandidateCta")).toBeInTheDocument();
+  });
+
+  it("never falls back to generic icCtaView/icCtaCompare for move or consider", () => {
+    renderCard({
+      routePlannerSummary: makeRoutePlanner("move"),
+      comparisonState: makeCandidate({ tier: 2 }),
+      entitlements: { isPro: true },
+    });
+    expect(screen.queryByText("icCtaView")).toBeNull();
+    expect(screen.queryByText("icCtaCompare")).toBeNull();
+  });
+
+  it("stay-edge case: a candidate visible alongside canonical stay tone keeps the original tier-based generic CTA, never move/consider wording", () => {
+    const { unmount } = renderCard({
+      routePlannerSummary: makeRoutePlanner("stay"),
+      comparisonState: makeCandidate({ tier: 2 }),
+      entitlements: { isPro: true },
+    });
+    expect(screen.getByText("icCtaView")).toBeInTheDocument();
+    expect(screen.queryByText("decisionMoveCandidateCta")).toBeNull();
+    expect(screen.queryByText("decisionConsiderCandidateCta")).toBeNull();
+    unmount();
+
+    renderCard({
+      routePlannerSummary: makeRoutePlanner("stay"),
+      comparisonState: makeCandidate({ tier: 0 }),
+      entitlements: { isPro: true },
+    });
+    expect(screen.getByText("icCtaCompare")).toBeInTheDocument();
+  });
+});
+
+describe("HomeDecisionCard — #396 no unqualified 'better option' copy in active recommendation surfaces", () => {
+  it.each(["is", "en"])("%s: move/consider body, locked body, and CTA copy never contain a bare 'better option'/'betri kostur'", (lang) => {
+    const dict = routePlannerTranslations[lang];
+    const keysToCheck = [
+      "decisionMoveBodyWindowAware",
+      "decisionMoveLockedBody",
+      "decisionConsiderBodyWindowAware",
+      "decisionConsiderLockedBody",
+      "decisionLockedCta",
+      "decisionConsiderLockedCta",
+      "decisionMoveCandidateCta",
+      "decisionConsiderCandidateCta",
+      // RoutePlannerCard's own expanded-details consider description — an
+      // actively rendered secondary recommendation surface, audited for
+      // contradiction with the canonical revision (approved prompt §3).
+      "routeStateConsiderDescription",
+      // #396 Revision 2: RoutePlannerCard's Free-preview CTA body strings
+      // (rendered in the same isPreview block as travelAdvisorMoveCta/
+      // travelAdvisorConsiderCta) — missed in the v1 audit per Jonesy's/
+      // Ripley's result review; both still used the exact banned pattern.
+      "travelAdvisorMoveCtaBody",
+      "travelAdvisorConsiderCtaBody",
+    ];
+    const banned = lang === "is" ? /betri kostur/i : /better option/i;
+    for (const key of keysToCheck) {
+      expect(dict[key]).toBeTypeOf("string");
+      expect(dict[key]).not.toMatch(banned);
+    }
+  });
+
+  it.each(["is", "en"])("%s: consider copy explicitly says the difference is not enough to recommend moving", (lang) => {
+    const dict = routePlannerTranslations[lang];
+    const marker = lang === "is" ? /ekki nóg/i : /not enough/i;
+    expect(dict.decisionConsiderLockedBody).toMatch(marker);
+    expect(dict.decisionConsiderBodyWindowAware).toMatch(marker);
+    // #396 Revision 2: travelAdvisorConsiderCtaBody must also carry this
+    // qualification — it previously never stated the difference was
+    // insufficient to recommend moving.
+    expect(dict.travelAdvisorConsiderCtaBody).toMatch(marker);
+  });
+
+  it.each(["is", "en"])("%s: RoutePlannerCard's Free-preview CTA bodies explicitly qualify weather, not a bare finding", (lang) => {
+    const dict = routePlannerTranslations[lang];
+    const weatherMarker = lang === "is" ? /veður/i : /weather/i;
+    expect(dict.travelAdvisorMoveCtaBody).toMatch(weatherMarker);
+    expect(dict.travelAdvisorConsiderCtaBody).toMatch(weatherMarker);
+  });
+});
+
+// #396 Revision 3 (owner copy follow-up): routePainConsiderBody,
+// routePainConsiderBulletLessPleasant, and icConsiderFallback must frame
+// consider around comfort/poor weather/comparison/monitoring — never
+// danger, hazards, or severe warnings — and the IS grammar fix
+// ("minna notalegt", not "minni notalegt") must hold.
+describe("HomeDecisionCard — #396 Revision 3: consider copy has no danger/hazard framing", () => {
+  const DANGER_PATTERN = /danger|dangerous|hazard|serious warning|hætta|hættulegt|alvarleg[a-zú]*\s+ve[dð]urvi[dð]v[oö]run/i;
+
+  it.each(["is", "en"])("%s: routePainConsiderBody, routePainConsiderBulletLessPleasant, and icConsiderFallback contain no danger/hazard/severe-warning framing", (lang) => {
+    const routeDict = routePlannerTranslations[lang];
+    const commonDict = commonTranslations[lang];
+    for (const value of [
+      routeDict.routePainConsiderBody,
+      routeDict.routePainConsiderBulletLessPleasant,
+      commonDict.icConsiderFallback,
+    ]) {
+      expect(value).toBeTypeOf("string");
+      expect(value).not.toMatch(DANGER_PATTERN);
+    }
+  });
+
+  it("IS routePainConsiderBody uses the grammatically correct 'minna notalegt', never 'minni notalegt'", () => {
+    const value = routePlannerTranslations.is.routePainConsiderBody;
+    expect(value).toMatch(/minna notalegt/);
+    expect(value).not.toMatch(/minni notalegt/);
+  });
+
+  it.each(["is", "en"])("%s: the three keys remain real translated copy, not an untranslated key/fallback", (lang) => {
+    const routeDict = routePlannerTranslations[lang];
+    const commonDict = commonTranslations[lang];
+    expect(routeDict.routePainConsiderBody).not.toBe("routePainConsiderBody");
+    expect(routeDict.routePainConsiderBulletLessPleasant).not.toBe("routePainConsiderBulletLessPleasant");
+    expect(commonDict.icConsiderFallback).not.toBe("icConsiderFallback");
+    expect(routeDict.routePainConsiderBody.length).toBeGreaterThan(0);
+    expect(routeDict.routePainConsiderBulletLessPleasant.length).toBeGreaterThan(0);
+    expect(commonDict.icConsiderFallback.length).toBeGreaterThan(0);
+  });
+
+  it("icConsiderFallback does not imply moving is recommended", () => {
+    for (const lang of ["is", "en"]) {
+      const value = commonTranslations[lang].icConsiderFallback;
+      expect(value).not.toMatch(/mælt er með að færa|moving is recommended|recommend moving/i);
+    }
+  });
+});
+
+describe("HomeDecisionCard — #396 regression: stay/similar/current_better unchanged", () => {
+  beforeEach(() => vi.clearAllMocks());
+
+  it("stay (no candidate) renders exactly as before — no badge, no candidate CTA", () => {
+    renderCard({
+      routePlannerSummary: makeRoutePlanner("stay"),
+      comparisonState: noCandidateState(),
+      entitlements: { isPro: false },
+    });
+    expect(screen.getByText("routeVerdictStayTitle")).toBeInTheDocument();
+    expect(screen.queryByText(/decisionMoveStrengthBadge|decisionConsiderStrengthBadge/)).toBeNull();
+  });
+
+  it("similar direction still overrides raw move to canonical stay, unaffected by the badge/CTA changes", () => {
+    renderCard({
+      routePlannerSummary: makeRoutePlanner("move"),
+      comparisonState: { ...noCandidateState(), showComparison: true, direction: "similar" },
+      entitlements: { isPro: false },
+    });
+    expect(screen.getByText("decisionSimilarTitle")).toBeDefined();
+    expect(screen.queryByText("decisionMoveStrengthBadge")).toBeNull();
+  });
+
+  it("current_better direction still overrides raw consider to canonical stay", () => {
+    renderCard({
+      routePlannerSummary: makeRoutePlanner("consider"),
+      comparisonState: { ...noCandidateState(), showComparison: true, direction: "current_better" },
+      entitlements: { isPro: false },
+    });
+    expect(screen.getByText("decisionCurrentBetterTitle")).toBeDefined();
+    expect(screen.queryByText("decisionConsiderStrengthBadge")).toBeNull();
+  });
+
+  it("raw-verdict and canonical-tone analytics events keep unchanged names/payload semantics", () => {
+    renderCard({
+      routePlannerSummary: makeRoutePlanner("move"),
+      comparisonState: { ...noCandidateState(), showComparison: true, direction: "similar" },
+      entitlements: { isPro: false },
+    });
+    const rawCalls = trackEvent.mock.calls.filter((c) => c[0] === "recommendation_viewed");
+    expect(rawCalls).toHaveLength(1);
+    expect(rawCalls[0][1]).toEqual(expect.objectContaining({ recommendation_type: "move" }));
+
+    const canonicalCalls = trackEvent.mock.calls.filter((c) => c[0] === "canonical_recommendation_viewed");
+    expect(canonicalCalls).toHaveLength(1);
+    expect(canonicalCalls[0][1]).toEqual(
+      expect.objectContaining({ recommendation_type: "stay", raw_verdict: "move", tone_overridden: true }),
+    );
+  });
+});
+
+describe("HomeDecisionCard — #396 candidate non-disclosure still holds for Free move/consider", () => {
+  it("Free never exposes candidate identity anywhere in the DOM for either tone", () => {
+    const { unmount } = renderCard({
+      routePlannerSummary: makeRoutePlanner("move"),
+      comparisonState: makeCandidate(),
+      entitlements: { isPro: false },
+    });
+    expect(document.body.textContent).not.toContain("Nearby Site");
+    unmount();
+
+    renderCard({
+      routePlannerSummary: makeRoutePlanner("consider"),
+      comparisonState: makeCandidate(),
+      entitlements: { isPro: false },
+    });
+    expect(document.body.textContent).not.toContain("Nearby Site");
+  });
+});
+
+describe("HomeDecisionCard — #396 new translation keys are complete for IS + EN", () => {
+  it.each(["is", "en"])("%s: new #396 keys resolve to real copy, not the key itself", (lang) => {
+    const tr = (k) => routePlannerTranslations[lang]?.[k] ?? k;
+    for (const key of [
+      "decisionMoveCandidateCta",
+      "decisionConsiderCandidateCta",
+      "decisionMoveStrengthBadge",
+      "decisionConsiderStrengthBadge",
+    ]) {
+      expect(tr(key)).not.toBe(key);
+      expect(tr(key).length).toBeGreaterThan(0);
+    }
+  });
+
+  it("candidate-name interpolation in decisionMoveBodyWindowAware/decisionConsiderBodyWindowAware still works", () => {
+    for (const lang of ["is", "en"]) {
+      const template = routePlannerTranslations[lang].decisionMoveBodyWindowAware;
+      expect(template).toContain("{site}");
+      expect(template.replace("{site}", "Flúðir")).toContain("Flúðir");
+    }
   });
 });

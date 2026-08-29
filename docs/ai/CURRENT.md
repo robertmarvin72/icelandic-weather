@@ -1,22 +1,22 @@
 # Current AI Task
 
-Task: ticket-392
+Task: ticket-396
 Stage: CLOSED
 
 Task directory:
-docs/ai/tasks/ticket-392/
+docs/ai/tasks/ticket-396/
 
 Prompt review:
-docs/ai/tasks/ticket-392/prompt-review.md
+docs/ai/tasks/ticket-396/prompt-review.md
 
 Approved prompt:
-docs/ai/tasks/ticket-392/approved-prompt-v1.md
+docs/ai/tasks/ticket-396/approved-prompt-v3.md
 
 CC report:
-docs/ai/tasks/ticket-392/cc-report.md
+docs/ai/tasks/ticket-396/cc-report.md
 
 Result review:
-docs/ai/tasks/ticket-392/result-review.md
+docs/ai/tasks/ticket-396/result-review.md (Revision 3: Jonesy PASS, Ripley PASS)
 
 ## Rule
 

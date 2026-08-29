@@ -455,7 +455,10 @@ export const commonTranslations = {
     icRainDelta: "{diff} mm less rain",
     icTempDelta: "{diff}°C warmer",
     icDistanceLabel: "~{km} km as the crow flies",
-    icConsiderFallback: "The weather isn't dangerous, but it may be worth checking nearby options.",
+    // #396 Revision 3 (owner copy follow-up): removed the "isn't dangerous"
+    // contrast — calm compare/monitor wording, consistent with canonical
+    // consider semantics; does not imply moving is recommended.
+    icConsiderFallback: "Conditions nearby may be a little different — worth comparing or keeping an eye on things.",
     icStayVerdict: "You are probably in a good spot.",
     icStayNoAlternative: "No nearby campsite clearly looks better over the next few days.",
     icLockedHeadline: "A better option may be nearby",
@@ -977,7 +980,7 @@ export const commonTranslations = {
     icRainDelta: "{diff} mm minna regn",
     icTempDelta: "{diff}°C hlýrra",
     icDistanceLabel: "~{km} km í beinni línu",
-    icConsiderFallback: "Veðrið er ekki hættulegt, en það gæti verið þess virði að skoða valkosti í nágrenninu.",
+    icConsiderFallback: "Aðstæður í nágrenninu gætu verið örlítið öðruvísi — vert að bera saman eða fylgjast með.",
     icStayVerdict: "Þú ert líklega á góðum stað.",
     icStayNoAlternative: "Enginn nálægur staður lítur greinilega betur út næstu daga.",
     icLockedHeadline: "Betri kostur gæti verið í nágrenninu",

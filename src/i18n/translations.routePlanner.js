@@ -32,11 +32,16 @@ export const routePlannerTranslations = {
       "Chase the Weather compares nearby conditions and highlights where weather may be better tomorrow. \n\nWith Pro you can search a larger area, explore more days and see detailed comparisons.",
     routePlannerPreviewNoBetter:
       "No clearly better option was found within 30 km tomorrow. Pro searches a larger area and more days.",
+    // #396 Revision 2: was "A better option was found nearby" — unqualified
+    // "better option" with no weather qualifier, missed in the v1 audit.
     travelAdvisorMoveCtaBody:
-      "A better option was found nearby. Pro shows you exactly where and why.",
+      "Better weather was found nearby. Pro shows you exactly where and why.",
     travelAdvisorMoveCta: "See the better spot with Pro",
+    // #396 Revision 2: was "There may be a slightly better option nearby" —
+    // same unqualified pattern, and never stated the difference is
+    // insufficient to recommend moving.
     travelAdvisorConsiderCtaBody:
-      "There may be a slightly better option nearby. Pro helps you explore it.",
+      "Weather conditions may be slightly better nearby, but not enough to recommend moving. Pro helps you compare.",
     travelAdvisorConsiderCta: "Explore more options with Pro",
     routePlannerCandidatesPreselected: "Nearby campsites checked",
     routePlannerCandidatesScored: "Scored",
@@ -240,8 +245,12 @@ export const routePlannerTranslations = {
 
     decisionConsiderTitle: "Consider moving",
     decisionConsiderBody: "Better weather is likely at {site}.",
+    // #396: "conditions" -> "weather conditions" (explicit qualifier, never
+    // vague "better option"), and explicitly states the difference is NOT
+    // enough for the product to recommend moving — consider must never read
+    // as an immediate relocation recommendation.
     decisionConsiderBodyWindowAware:
-      "Slightly better conditions may be available at {site} over the next few days.",
+      "Weather conditions may be slightly better at {site} over the next few days, but not enough for us to recommend moving — worth comparing.",
 
     decisionSimilarTitle: "No clear reason to move",
     decisionSimilarBody:
@@ -250,14 +259,32 @@ export const routePlannerTranslations = {
     decisionCurrentBetterBody:
       "Conditions at your current campsite look better than at the nearby alternatives over the next few days.",
 
+    // #396: move must read as the strongest, forecast-grounded action
+    // signal — an explicit recommendation, not a neutral invitation.
     decisionMoveBodyWindowAware:
-      "Better weather is likely at {site} over the next few days, even if your current campsite scores best overall this week.",
-    decisionMoveLockedBody: "A better option may be nearby over the next few days.",
-    decisionConsiderLockedBody: "A slightly better option may be nearby over the next few days.",
+      "Better weather is likely at {site} over the next few days — moving there is recommended, even though your current campsite scores best overall this week.",
+    decisionMoveLockedBody:
+      "Better weather is likely nearby — moving is recommended over the next few days.",
+    // #396: explicitly hedged — weather may be a little better, but that is
+    // NOT enough to recommend moving. Never "better option"/"slightly
+    // better option" without a weather qualifier.
+    decisionConsiderLockedBody:
+      "Weather may be a little better nearby, but not enough to recommend moving — worth comparing or keeping an eye on it.",
     // move: canonical tone supports asserting a better spot exists.
-    decisionLockedCta: "See the better spot with Pro",
-    // consider: must stay hedged — never "found"/"better spot" as fact.
-    decisionConsiderLockedCta: "Explore more options with Pro",
+    decisionLockedCta: "See why moving is recommended (Pro)",
+    // consider: must stay hedged — compare/monitor wording, never a claim
+    // that relocation is recommended.
+    decisionConsiderLockedCta: "Compare conditions with Pro",
+
+    // #396: candidate-visible secondary CTA — tone-only, identical across
+    // every candidate-visible tier (see HomeDecisionCard.jsx's candidate CTA
+    // precedence). Never repurposed from generic icCtaView/icCtaCompare.
+    decisionMoveCandidateCta: "See why moving is recommended",
+    decisionConsiderCandidateCta: "Compare conditions",
+
+    // #396: non-color text cue distinguishing recommendation strength.
+    decisionMoveStrengthBadge: "Recommended",
+    decisionConsiderStrengthBadge: "Worth a look",
 
     decisionStayTitle: "Stay put for now",
     decisionStayBodyGood: "Conditions aren’t great, but no nearby option clearly looks better.",
@@ -282,7 +309,14 @@ export const routePlannerTranslations = {
 
     routeStateMoveDescription: "A nearby campsite looks better for the selected days.",
     routeStateStayDescription: "This campsite is still one of the better options nearby.",
-    routeStateConsiderDescription: "There may be a better option nearby, but the difference is not huge.",
+    // #396: was "There may be a better option nearby..." — vague "better
+    // option" with no weather qualifier, and didn't state the difference is
+    // insufficient to recommend moving. This is RoutePlannerCard's own
+    // expanded-details consider description, an actively rendered secondary
+    // recommendation surface — must not contradict HomeDecisionCard's
+    // canonical framing.
+    routeStateConsiderDescription:
+      "Weather may be a little better nearby, but not enough to recommend moving.",
     routeStateBetterNearbyDescription: "Nearby conditions look calmer or drier for part of your stay.",
     routeStateFewerWarningsNearbyDescription: "Nearby campsites show fewer rough weather warnings.",
 
@@ -293,9 +327,15 @@ export const routePlannerTranslations = {
     routePainMoveBulletTentCaravan: "Worth considering if you are in a tent, caravan, or campervan.",
 
     routePainConsiderHeadline: "Why this matters",
-    routePainConsiderBody: "The weather may not be dangerous, but it could still make camping less pleasant.",
+    // #396 Revision 3 (owner copy follow-up): removed the danger/hazard
+    // contrast — genuinely dangerous conditions are rare and this state
+    // normally describes modest comfort differences, not a "not dangerous"
+    // reassurance.
+    routePainConsiderBody: "Poor weather can still make camping less comfortable.",
     routePainConsiderBulletCheckNearby: "It may be worth checking nearby options before deciding to stay.",
-    routePainConsiderBulletLessPleasant: "Conditions may be unpleasant even if no serious warnings are active.",
+    // #396 Revision 3: removed the "serious warnings" contrast — describes
+    // ordinary camping comfort instead.
+    routePainConsiderBulletLessPleasant: "Conditions may be a little less comfortable than ideal.",
 
     routePainStayHeadline: "Why this matters",
     routePainStayBody: "You do not appear to be missing much better conditions nearby.",
@@ -344,10 +384,10 @@ export const routePlannerTranslations = {
     routePlannerPreviewNoBetter:
       "Enginn greinilega betri kostur fannst innan 30 km á morgun. Pro leitar á stærra svæði og yfir fleiri daga.",
     travelAdvisorMoveCtaBody:
-      "Betri kostur fannst í nágrenninu. Pro sýnir þér nákvæmlega hvar og hvers vegna.",
+      "Betra veður fannst í nágrenninu. Pro sýnir þér nákvæmlega hvar og hvers vegna.",
     travelAdvisorMoveCta: "Sjá betri staðinn með Pro",
     travelAdvisorConsiderCtaBody:
-      "Það gæti verið örlítið betri kostur í nágrenninu. Pro hjálpar þér að skoða hann.",
+      "Veðurskilyrði gætu verið örlítið betri í nágrenninu, en ekki nóg til að mæla með að færa sig. Pro hjálpar þér að bera saman.",
     travelAdvisorConsiderCta: "Skoða fleiri möguleika með Pro",
     routePlannerCandidatesPreselected: "Skoðuð svæði í kringum þig",
     routePlannerCandidatesScored: "Metið",
@@ -552,7 +592,8 @@ export const routePlannerTranslations = {
 
     decisionConsiderTitle: "Íhugaðu að færa þig",
     decisionConsiderBody: "Betra veður er líklegt hjá {site}.",
-    decisionConsiderBodyWindowAware: "Aðeins betri aðstæður gætu verið hjá {site} næstu daga.",
+    decisionConsiderBodyWindowAware:
+      "Veðurskilyrði gætu verið örlítið betri hjá {site} næstu daga, en ekki nóg til að mæla með að færa sig — vert að bera saman.",
 
     decisionSimilarTitle: "Engin skýr ástæða til að færa sig",
     decisionSimilarBody:
@@ -562,13 +603,21 @@ export const routePlannerTranslations = {
       "Aðstæður á núverandi tjaldsvæði virðast betri en á nálægum valkostum næstu daga.",
 
     decisionMoveBodyWindowAware:
-      "Betra veður er líklegt hjá {site} næstu daga, jafnvel þótt núverandi tjaldsvæði skori hæst þessa vikuna.",
-    decisionMoveLockedBody: "Betri kostur gæti verið í nágrenninu næstu daga.",
-    decisionConsiderLockedBody: "Örlítið betri kostur gæti verið í nágrenninu næstu daga.",
+      "Betra veður er líklegt hjá {site} næstu daga — mælt er með að færa sig þangað, jafnvel þótt núverandi tjaldsvæði skori hæst þessa vikuna.",
+    decisionMoveLockedBody:
+      "Betra veður er líklegt í nágrenninu — mælt er með að færa sig næstu daga.",
+    decisionConsiderLockedBody:
+      "Veðrið gæti verið aðeins betra í nágrenninu, en ekki nóg til að mæla með að færa sig — vert að bera saman eða fylgjast með.",
     // move: canonical tónn leyfir að fullyrða að betri staður sé til.
-    decisionLockedCta: "Sjá betri staðinn með Pro",
+    decisionLockedCta: "Sjá af hverju mælt er með að færa sig (Pro)",
     // consider: verður að vera hedged — aldrei "fannst"/staðreynd um betri stað.
-    decisionConsiderLockedCta: "Skoða fleiri möguleika með Pro",
+    decisionConsiderLockedCta: "Bera saman aðstæður með Pro",
+
+    decisionMoveCandidateCta: "Sjá af hverju mælt er með að færa sig",
+    decisionConsiderCandidateCta: "Bera saman aðstæður",
+
+    decisionMoveStrengthBadge: "Mælt með",
+    decisionConsiderStrengthBadge: "Þess virði að skoða",
 
     decisionStayTitle: "Best að vera kyrr í bili",
     decisionStayBodyGood:
@@ -591,7 +640,8 @@ export const routePlannerTranslations = {
 
     routeStateMoveDescription: "Nálægt tjaldsvæði lítur betur út fyrir valda daga.",
     routeStateStayDescription: "Þetta tjaldsvæði er enn einn betri kosturinn í nágrenninu.",
-    routeStateConsiderDescription: "Það gæti verið betri kostur í nágrenninu, en munurinn er ekki mjög mikill.",
+    routeStateConsiderDescription:
+      "Veðrið gæti verið aðeins betra í nágrenninu, en ekki nóg til að mæla með að færa sig.",
     routeStateBetterNearbyDescription: "Veðrið í nágrenninu virðist rólegra eða þurrara hluta dvalarinnar.",
     routeStateFewerWarningsNearbyDescription: "Nálæg tjaldsvæði sýna færri erfiðar veðurviðvaranir.",
 
@@ -602,9 +652,9 @@ export const routePlannerTranslations = {
     routePainMoveBulletTentCaravan: "Þess virði að skoða sérstaklega ef þú ert í tjaldi, ferðavagni eða húsbíl.",
 
     routePainConsiderHeadline: "Af hverju skiptir þetta máli",
-    routePainConsiderBody: "Veðrið er ekki endilega hættulegt, en það gæti gert tjaldlíf minni notalegt.",
+    routePainConsiderBody: "Slakt veður getur samt gert tjaldlífið minna notalegt.",
     routePainConsiderBulletCheckNearby: "Það gæti borgað sig að skoða aðra staði áður en þú ákveður að vera kyrr.",
-    routePainConsiderBulletLessPleasant: "Aðstæður gætu verið óþægilegar jafnvel þótt engar alvarlegar veðurviðvaranir séu virkar.",
+    routePainConsiderBulletLessPleasant: "Aðstæður gætu verið aðeins minna notalegar en best verður á kosið.",
 
     routePainStayHeadline: "Af hverju skiptir þetta máli",
     routePainStayBody: "Þú virðist ekki vera að missa af miklu betri aðstæðum í nágrenninu.",

@@ -96,11 +96,12 @@ export default function HomeDecisionCard({
         body: isPro
           ? (
               t("decisionMoveBodyWindowAware") ||
-              "Better weather is likely at {site} over the next few days, even if your current campsite scores best overall this week."
+              "Better weather is likely at {site} over the next few days — moving there is recommended, even though your current campsite scores best overall this week."
             ).replace("{site}", candidateName)
           : t("decisionMoveLockedBody") ||
-            "A better option may be nearby over the next few days.",
+            "Better weather is likely nearby — moving is recommended over the next few days.",
         painLine: t("routePainMoveBody"),
+        badge: t("decisionMoveStrengthBadge") || "Recommended",
         locked: !isPro,
       };
     }
@@ -113,11 +114,12 @@ export default function HomeDecisionCard({
         body: isPro
           ? (
               t("decisionConsiderBodyWindowAware") ||
-              "Slightly better conditions may be available at {site} over the next few days."
+              "Weather conditions may be slightly better at {site} over the next few days, but not enough for us to recommend moving — worth comparing."
             ).replace("{site}", candidateName)
           : t("decisionConsiderLockedBody") ||
-            "A slightly better option may be nearby over the next few days.",
+            "Weather may be a little better nearby, but not enough to recommend moving — worth comparing or keeping an eye on it.",
         painLine: t("routePainConsiderBody"),
+        badge: t("decisionConsiderStrengthBadge") || "Worth a look",
         locked: !isPro,
       };
     }
@@ -304,7 +306,20 @@ export default function HomeDecisionCard({
         </div>
 
         <div className="min-w-0 flex-1">
-          <div className="text-sm font-semibold">{model.title}</div>
+          {model.badge && (
+            <span
+              className={`mb-1 inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide ${
+                model.tone === "move"
+                  ? "bg-emerald-600 text-white"
+                  : "border border-amber-400 text-amber-800 dark:border-amber-600 dark:text-amber-200"
+              }`}
+            >
+              {model.badge}
+            </span>
+          )}
+          <div className={model.tone === "move" ? "text-base font-bold" : "text-sm font-semibold"}>
+            {model.title}
+          </div>
           <div className="mt-1.5 text-sm opacity-90">{model.body}</div>
           {model.painLine && (
             <div className="mt-1 text-xs opacity-75">{model.painLine}</div>
@@ -336,8 +351,8 @@ export default function HomeDecisionCard({
                     verdict — move may assert a better spot; consider must stay
                     hedged and never claim one was found. */}
                 {model.tone === "move"
-                  ? t("decisionLockedCta") || "See the better spot with Pro"
-                  : t("decisionConsiderLockedCta") || "Explore more options with Pro"}{" "}
+                  ? t("decisionLockedCta") || "See why moving is recommended (Pro)"
+                  : t("decisionConsiderLockedCta") || "Compare conditions with Pro"}{" "}
                 →
               </button>
             )}
@@ -348,7 +363,22 @@ export default function HomeDecisionCard({
                 onClick={handleSecondaryClick}
                 className="text-xs font-semibold underline decoration-dotted underline-offset-2 opacity-75 transition-opacity hover:opacity-100"
               >
-                {tier >= 2 ? t("icCtaView") : t("icCtaCompare")}
+                {/* #396 candidate-visible CTA precedence: for move/consider,
+                    the canonical displayed tone alone selects copy — the
+                    same key for every candidate-visible tier, never
+                    combined with tier. showCandidate is only ever true for
+                    move/consider when !model.locked (i.e. Pro), so this
+                    branch is Pro-only for those two tones. The stay tone
+                    (including similar/current_better overrides) keeps its
+                    original tier-based generic comparison CTA unchanged —
+                    it never gets move/consider wording. */}
+                {model.tone === "move"
+                  ? t("decisionMoveCandidateCta") || "See why moving is recommended"
+                  : model.tone === "consider"
+                    ? t("decisionConsiderCandidateCta") || "Compare conditions"
+                    : tier >= 2
+                      ? t("icCtaView")
+                      : t("icCtaCompare")}
               </button>
             )}
           </div>
