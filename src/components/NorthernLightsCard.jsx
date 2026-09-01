@@ -153,6 +153,7 @@ export default function NorthernLightsCard({ t, lang, entitlements, onUpgrade, t
     const isResultOutcome = classification.primary === "success" || classification.primary === "partial";
 
     trackEvent("northern_lights_card_viewed", {
+      lang,
       outcome: classification.primary,
       freshness: classification.freshness,
       band: classification.body?.best?.band ?? null,
@@ -164,12 +165,12 @@ export default function NorthernLightsCard({ t, lang, entitlements, onUpgrade, t
     });
 
     if (classification.primary === "domain_unavailable" || classification.primary === "no_darkness" || classification.primary === "contract_defect") {
-      trackEvent("northern_lights_unavailable_viewed", { outcome: classification.primary, tier: isPro ? "pro" : "free" });
+      trackEvent("northern_lights_unavailable_viewed", { lang, outcome: classification.primary, tier: isPro ? "pro" : "free" });
     }
     if (classification.freshness === "stale") {
-      trackEvent("northern_lights_stale_viewed", { outcome: classification.primary, tier: isPro ? "pro" : "free" });
+      trackEvent("northern_lights_stale_viewed", { lang, outcome: classification.primary, tier: isPro ? "pro" : "free" });
     }
-  }, [classification, requestKey, isPro, display.hasQualifyingLocations]);
+  }, [classification, requestKey, isPro, display.hasQualifyingLocations, lang]);
 
   // Aligned with actual rendered exposure (approved prompt §7): fires only
   // when the corresponding surface is genuinely shown, never merely because
@@ -182,24 +183,24 @@ export default function NorthernLightsCard({ t, lang, entitlements, onUpgrade, t
     if (!detailsExpanded || !requestKey || !display.showRanking) return;
     if (rankingViewedRef.current === requestKey) return;
     rankingViewedRef.current = requestKey;
-    trackEvent("northern_lights_ranking_viewed", { tier: "pro" });
-  }, [detailsExpanded, requestKey, display.showRanking]);
+    trackEvent("northern_lights_ranking_viewed", { lang, tier: "pro" });
+  }, [detailsExpanded, requestKey, display.showRanking, lang]);
 
   const mapViewedRef = useRef(null);
   useEffect(() => {
     if (!detailsExpanded || !requestKey || !display.showMap) return;
     if (mapViewedRef.current === requestKey) return;
     mapViewedRef.current = requestKey;
-    trackEvent("northern_lights_map_viewed", { tier: "pro" });
-  }, [detailsExpanded, requestKey, display.showMap]);
+    trackEvent("northern_lights_map_viewed", { lang, tier: "pro" });
+  }, [detailsExpanded, requestKey, display.showMap, lang]);
 
   function handleDetailsToggle() {
-    if (!detailsExpanded) trackEvent("northern_lights_details_opened", { tier: isPro ? "pro" : "free" });
+    if (!detailsExpanded) trackEvent("northern_lights_details_opened", { lang, tier: isPro ? "pro" : "free" });
     toggleDetails();
   }
 
   function handleUpgrade(source) {
-    trackEvent("northern_lights_upgrade_clicked", { source, tier: "free" });
+    trackEvent("northern_lights_upgrade_clicked", { lang, source, tier: "free" });
     if (typeof onUpgrade === "function") onUpgrade(source);
   }
 

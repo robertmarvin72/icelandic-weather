@@ -229,7 +229,10 @@ describe("NorthernLightsCard — Free: coarse guidance without Pro data leakage"
     await waitFor(() => expect(screen.getByText("nlUpgradeCta")).toBeInTheDocument());
     fireEvent.click(screen.getByText("nlUpgradeCta"));
     expect(onUpgrade).toHaveBeenCalledWith("northern_lights_card");
-    expect(trackEvent).toHaveBeenCalledWith("northern_lights_upgrade_clicked", expect.objectContaining({ source: "northern_lights_card" }));
+    expect(trackEvent).toHaveBeenCalledWith(
+      "northern_lights_upgrade_clicked",
+      expect.objectContaining({ lang: "is", source: "northern_lights_card" }),
+    );
   });
 });
 
@@ -300,6 +303,10 @@ describe("NorthernLightsCard — stale + partial disclose simultaneously, for bo
     await waitFor(() => expect(screen.getByText("nlWarningPartial")).toBeInTheDocument());
     expect(screen.getByText((text) => text.startsWith("nlWarningStale"))).toBeInTheDocument();
     expect(screen.getByText("nlHeadlineGood")).toBeInTheDocument();
+    expect(trackEvent).toHaveBeenCalledWith(
+      "northern_lights_stale_viewed",
+      expect.objectContaining({ lang: "is" }),
+    );
   });
 
   it("Pro sees both disclosures without any change to result/order", async () => {
@@ -334,6 +341,10 @@ describe("NorthernLightsCard — truthful unavailable/no-darkness/transport/cont
     expect(screen.queryByText("nlUpgradeCta")).toBeNull();
     expect(screen.getByText("nlRetry")).toBeInTheDocument();
     expect(screen.queryByText(/^nlPill/)).toBeNull();
+    expect(trackEvent).toHaveBeenCalledWith(
+      "northern_lights_unavailable_viewed",
+      expect.objectContaining({ lang: "is" }),
+    );
   });
 
   it("unambiguous no_darkness: natural non-error copy, no upgrade CTA, no poor-scoring treatment", async () => {
@@ -482,6 +493,10 @@ describe("NorthernLightsCard — analytics exact-once, unaffected by visual rede
     await waitFor(() =>
       expect(trackEvent.mock.calls.filter((c) => c[0] === "northern_lights_card_viewed")).toHaveLength(1),
     );
+    expect(trackEvent).toHaveBeenCalledWith(
+      "northern_lights_card_viewed",
+      expect.objectContaining({ lang: "is" }),
+    );
     rerender(
       <NorthernLightsCard t={t} lang="en" entitlements={{ isPro: false }} onUpgrade={vi.fn()} theme="dark" now={IN_SEASON_NOW} fetchImpl={fetchImpl} />,
     );
@@ -503,6 +518,9 @@ describe("NorthernLightsCard — analytics exact-once, unaffected by visual rede
     fireEvent.click(screen.getByRole("button", { name: "nlCtaGood" }));
     expect(trackEvent.mock.calls.filter((c) => c[0] === "northern_lights_ranking_viewed")).toHaveLength(1);
     expect(trackEvent.mock.calls.filter((c) => c[0] === "northern_lights_map_viewed")).toHaveLength(1);
+    expect(trackEvent).toHaveBeenCalledWith("northern_lights_details_opened", { lang: "is", tier: "pro" });
+    expect(trackEvent).toHaveBeenCalledWith("northern_lights_ranking_viewed", { lang: "is", tier: "pro" });
+    expect(trackEvent).toHaveBeenCalledWith("northern_lights_map_viewed", { lang: "is", tier: "pro" });
 
     fireEvent.click(screen.getByRole("button", { name: "nlDetailsHide" })); // collapse
     fireEvent.click(screen.getByRole("button", { name: "nlCtaGood" })); // re-expand
