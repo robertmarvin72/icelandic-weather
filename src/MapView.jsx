@@ -6,6 +6,7 @@ import { getForecast } from "./lib/forecastCache";
 import MarkerClusterGroup from "react-leaflet-cluster";
 import { scoreSiteDay } from "./lib/scoring";
 import { normalizeDailyToScoreInput } from "./lib/forecastNormalize";
+import { auroraBandColor, auroraBandLabelKey } from "./lib/auroraBandPresentation";
 
 // ───────────────────────────────────────────────
 // Color mapping by weekly total score (0–70: sum of 7 daily scores, each 0–10).
@@ -187,7 +188,17 @@ export default function MapView({
   userLocation,
   t,
   theme = "light",
+  // "weather" (default, unchanged) fetches/scores each site's own 7-day
+  // generic forecast internally. "aurora" (Ticket 397, #397) instead trusts
+  // each `campsites[i].band` — the canonical Aurora band already computed
+  // by Ticket 2/3 — and never fetches or scores anything itself. This is
+  // the minimal explicit presentation-mode boundary required by approved
+  // prompt §6, instead of duplicating Leaflet architecture or copying
+  // scoring into this component.
+  mode = "weather",
 }) {
+  const isAuroraMode = mode === "aurora";
+
   const [forecastById, setForecastById] = useState({});
   const [loadingById, setLoadingById] = useState({});
   const [errorById, setErrorById] = useState({});
@@ -210,8 +221,11 @@ export default function MapView({
     return () => clearTimeout(timer);
   }, [mapReady, tileLoaded, tileErrorCount, mapFailed]);
 
-  // Preload a first batch so overlay is useful immediately
+  // Preload a first batch so overlay is useful immediately — skipped
+  // entirely in Aurora mode, which never fetches/scores a second generic
+  // forecast (approved prompt §6).
   useEffect(() => {
+    if (isAuroraMode) return;
     const initialSites = campsites.slice(0, 120);
     initialSites.forEach((site) => {
       if (!forecastById[site.id] && !loadingById[site.id]) {
@@ -219,31 +233,46 @@ export default function MapView({
       }
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [campsites]);
+  }, [campsites, isAuroraMode]);
 
   const isDark = theme === "dark";
 
   const tileUrl = "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
   const tileAttribution = "&copy; OpenStreetMap";
 
+  const BAND_RANK = { excellent: 4, good: 3, fair: 2, poor: 1, "very-poor": 0 };
+
   const iconCreateFunction = (cluster) => {
     const markers = cluster.getAllChildMarkers();
 
-    let sum = 0;
-    let n = 0;
-
-    for (const m of markers) {
-      const id = m?.options?.siteId;
-      const s = forecastById[id]?.score;
-      if (typeof s === "number") {
-        sum += s;
-        n += 1;
+    let color;
+    if (isAuroraMode) {
+      // No numeric average across discrete Aurora bands — use the best
+      // (highest-ranked) band actually present among the clustered markers.
+      let bestBand = null;
+      for (const m of markers) {
+        const id = m?.options?.siteId;
+        const band = campsites.find((c) => c.id === id)?.band;
+        if (band && (bestBand == null || BAND_RANK[band] > BAND_RANK[bestBand])) bestBand = band;
       }
-    }
+      color = bestBand ? auroraBandColor(bestBand) : "#94a3b8";
+    } else {
+      let sum = 0;
+      let n = 0;
 
-    const avg = n ? sum / n : null;
-    const overlayColor = avg != null ? colorForScore(avg) : "#94a3b8";
-    const color = showWeatherOverlay ? overlayColor : "#3b82f6";
+      for (const m of markers) {
+        const id = m?.options?.siteId;
+        const s = forecastById[id]?.score;
+        if (typeof s === "number") {
+          sum += s;
+          n += 1;
+        }
+      }
+
+      const avg = n ? sum / n : null;
+      const overlayColor = avg != null ? colorForScore(avg) : "#94a3b8";
+      color = showWeatherOverlay ? overlayColor : "#3b82f6";
+    }
 
     const count = cluster.getChildCount();
     const size = count < 10 ? 34 : count < 50 ? 40 : count < 100 ? 46 : 52;
@@ -335,8 +364,14 @@ export default function MapView({
             const fdata = forecastById[site.id];
             const hasScore = fdata != null && typeof fdata.score === "number";
             const score = fdata?.score ?? 0;
-            const overlayColor = hasScore ? colorForScore(score) : "#94a3b8"; // gray = not yet loaded
-            const color = showWeatherOverlay ? overlayColor : "#3b82f6";
+
+            const color = isAuroraMode
+              ? auroraBandColor(site.band)
+              : showWeatherOverlay
+                ? hasScore
+                  ? colorForScore(score)
+                  : "#94a3b8" // gray = not yet loaded
+                : "#3b82f6";
             const scoreLabel = hasScore ? labelForScore(score, t) : "…";
 
             const isSelected = site.id === selectedId;
@@ -356,7 +391,7 @@ export default function MapView({
                 eventHandlers={{
                   click: async () => {
                     onSelect?.(site.id);
-                    if (!forecastById[site.id] && !loadingById[site.id]) {
+                    if (!isAuroraMode && !forecastById[site.id] && !loadingById[site.id]) {
                       await loadForecast(site);
                     }
                   },
@@ -366,38 +401,45 @@ export default function MapView({
                   <div className="text-sm">
                     <div className="font-semibold mb-1">{site.name}</div>
 
-                    {loading && (
-                      <div className="text-slate-600">
-                        {typeof t === "function" ? t("mapLoadingForecast") : "Loading forecast…"}
+                    {isAuroraMode ? (
+                      <div className="text-slate-700">
+                        {typeof t === "function" ? t("mapAuroraConditionLabel") : "Aurora-viewing conditions"}:{" "}
+                        <b>{typeof t === "function" ? t(auroraBandLabelKey(site.band)) : site.band}</b>
                       </div>
-                    )}
-                    {err && (
-                      <div className="text-red-600">
-                        {typeof t === "function" ? t("mapErrorPrefix") : "Error:"} {err}
-                      </div>
-                    )}
-
-                    {!loading && !err && (
-                      <div>
-                        <div className="text-slate-700">
-                          {typeof t === "function" ? t("mapWeeklyScore") : "Weekly score"}:{" "}
-                          <b>{score}</b>
-                        </div>
-
-                        {season === "winter" ? (
-                          <div className="mt-1 text-xs text-slate-500">
-                            ❄️ {typeof t === "function" ? t("mapWinterMode") : "Winter mode"}
+                    ) : (
+                      <>
+                        {loading && (
+                          <div className="text-slate-600">
+                            {typeof t === "function" ? t("mapLoadingForecast") : "Loading forecast…"}
                           </div>
-                        ) : null}
-
-                        <div className="mt-1 text-xs text-slate-500">
-                          {typeof t === "function" ? t("mapCondition") : "Condition"}:{" "}
-                          <b>{scoreLabel}</b>
-                          <div className="text-xs text-slate-500 mt-1">
-                            {typeof t === "function"
-                              ? t("mapBasedOnNext7Days")
-                              : "Based on next 7 days combined"}
+                        )}
+                        {err && (
+                          <div className="text-red-600">
+                            {typeof t === "function" ? t("mapErrorPrefix") : "Error:"} {err}
                           </div>
+                        )}
+
+                        {!loading && !err && (
+                          <div>
+                            <div className="text-slate-700">
+                              {typeof t === "function" ? t("mapWeeklyScore") : "Weekly score"}:{" "}
+                              <b>{score}</b>
+                            </div>
+
+                            {season === "winter" ? (
+                              <div className="mt-1 text-xs text-slate-500">
+                                ❄️ {typeof t === "function" ? t("mapWinterMode") : "Winter mode"}
+                              </div>
+                            ) : null}
+
+                            <div className="mt-1 text-xs text-slate-500">
+                              {typeof t === "function" ? t("mapCondition") : "Condition"}:{" "}
+                              <b>{scoreLabel}</b>
+                              <div className="text-xs text-slate-500 mt-1">
+                                {typeof t === "function"
+                                  ? t("mapBasedOnNext7Days")
+                                  : "Based on next 7 days combined"}
+                              </div>
                         </div>
                         <div className="mt-1 text-xs text-slate-500">
                           {showWeatherOverlay
@@ -409,6 +451,8 @@ export default function MapView({
                               : "Turn on weather colors to color-code campsites"}
                         </div>
                       </div>
+                    )}
+                      </>
                     )}
                   </div>
                 </Popup>
@@ -439,7 +483,9 @@ export default function MapView({
         </div>
       )}
 
-      {!mapFailed && (
+      {/* Weather-color toggle is a generic-mode-only concept — Aurora mode
+          has exactly one dimension and always shows it. */}
+      {!mapFailed && !isAuroraMode && (
         <button
           type="button"
           onClick={() => setShowWeatherOverlay((v) => !v)}
@@ -455,7 +501,21 @@ export default function MapView({
         </button>
       )}
 
-      {showWeatherOverlay && !mapFailed && (
+      {isAuroraMode && !mapFailed && (
+        <div className="absolute bottom-3 right-3 z-[500] rounded-2xl border border-slate-200 bg-white/90 px-3 py-3 text-xs text-slate-700 shadow backdrop-blur-sm">
+          <div className="mb-2 font-semibold">
+            {typeof t === "function" ? t("mapAuroraLegendTitle") : "Aurora-viewing conditions"}
+          </div>
+          {["excellent", "good", "fair"].map((band) => (
+            <div key={band} className="mt-1 flex items-center gap-2 first:mt-0">
+              <span className="inline-block h-3 w-3 rounded-full" style={{ backgroundColor: auroraBandColor(band) }} />
+              <span>{typeof t === "function" ? t(auroraBandLabelKey(band)) : band}</span>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {!isAuroraMode && showWeatherOverlay && !mapFailed && (
         <div className="absolute bottom-3 right-3 z-[500] rounded-2xl border border-slate-200 bg-white/90 px-3 py-3 text-xs text-slate-700 shadow backdrop-blur-sm">
           <div className="mb-2 font-semibold">
             {typeof t === "function" ? t("mapWeatherConditions") : "Weather conditions"}

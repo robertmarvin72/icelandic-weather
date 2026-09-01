@@ -1,7 +1,9 @@
 export const northernLightsTranslations = {
   en: {
     nlCardTitle: "Northern Lights tonight",
-    nlCardSubtitle: "A quick, secondary check — not the main recommendation above.",
+    // #397 Ticket 397: natural copy that explains the feature directly,
+    // replacing the awkward "not the main recommendation" framing.
+    nlCardSubtitle: "We compare cloud cover and Aurora conditions across a few locations.",
     nlLoading: "Checking conditions…",
 
     nlBandExcellent: "Excellent viewing conditions",
@@ -30,7 +32,10 @@ export const northernLightsTranslations = {
     nlViewingWindowLabel: "Viewing window is based on",
     nlNationalReferenceCaveat: "a national darkness estimate, not this exact location.",
 
-    nlAlternativesHeading: "Other locations checked tonight",
+    // #397: renamed from nlAlternativesHeading — "checked tonight" implied
+    // "all locations checked," which is exactly the framing this ticket
+    // removes. Describes actual worthwhile places instead.
+    nlQualifyingHeading: "Recommended locations tonight",
     nlSomeExcludedNote: "Some locations could not be checked and are not shown.",
 
     nlWarningPartial: "Some locations could not be checked tonight.",
@@ -43,16 +48,29 @@ export const northernLightsTranslations = {
     nlNoDarknessTitle: "Not dark enough to check tonight",
     nlNoDarknessBody: "This isn't an error — it's simply too light right now for a meaningful check.",
 
+    // #397: honest no-qualifying-place result — distinct from unavailable/
+    // no-darkness/transport/contract-defect. Never implies missing data,
+    // danger, or a guaranteed future improvement.
+    nlAllPoorTitle: "No good Aurora-viewing spot right now",
+    nlAllPoorBody:
+      "Cloud cover or other conditions are poor at the checked locations tonight. Check again later.",
+    nlAllPoorBestLabel: "Best of the checked options (still poor):",
+
     nlUnavailableBody: "Northern Lights data isn't available right now.",
     nlContractDefectBody: "Something is temporarily misconfigured with this feature.",
     nlTransportErrorBody: "Couldn't check conditions right now.",
     nlRetry: "Try again",
 
     nlMapLoading: "Loading map…",
+    // #397: MapView's Aurora presentation mode — explicitly labels the
+    // dimension shown so it can never be confused with generic 7-day
+    // campsite weather (the Höfn contradiction this ticket fixes).
+    mapAuroraConditionLabel: "Aurora-viewing conditions",
+    mapAuroraLegendTitle: "Aurora-viewing conditions",
   },
   is: {
     nlCardTitle: "Norðurljós í kvöld",
-    nlCardSubtitle: "Fljótleg, aukaleg athugun — ekki aðalráðleggingin hér að ofan.",
+    nlCardSubtitle: "Við berum saman skýjahulu og norðurljósaskilyrði á nokkrum stöðum.",
     nlLoading: "Athuga aðstæður…",
 
     nlBandExcellent: "Frábærar aðstæður til að sjá norðurljós",
@@ -81,7 +99,7 @@ export const northernLightsTranslations = {
     nlViewingWindowLabel: "Skoðunartími byggir á",
     nlNationalReferenceCaveat: "landsviðmiði fyrir myrkur, ekki þessum nákvæma stað.",
 
-    nlAlternativesHeading: "Aðrir staðir sem voru skoðaðir í kvöld",
+    nlQualifyingHeading: "Mælt með þessum stöðum í kvöld",
     nlSomeExcludedNote: "Ekki var hægt að athuga suma staði og þeir birtast því ekki.",
 
     nlWarningPartial: "Ekki var hægt að athuga alla staði í kvöld.",
@@ -94,11 +112,18 @@ export const northernLightsTranslations = {
     nlNoDarknessTitle: "Ekki nógu dimmt til að athuga í kvöld",
     nlNoDarknessBody: "Þetta er ekki villa — það er einfaldlega of bjart núna til að marktæk athugun sé möguleg.",
 
+    nlAllPoorTitle: "Enginn góður staður til að sjá norðurljós núna",
+    nlAllPoorBody:
+      "Skýjahula eða önnur skilyrði eru slæm á þeim stöðum sem voru skoðaðir í kvöld. Athugaðu aftur síðar.",
+    nlAllPoorBestLabel: "Besti af skoðuðum stöðum (samt slæmur):",
+
     nlUnavailableBody: "Norðurljósagögn eru ekki tiltæk núna.",
     nlContractDefectBody: "Þetta atriði er tímabundið rangstillt.",
     nlTransportErrorBody: "Ekki tókst að athuga aðstæður núna.",
     nlRetry: "Reyna aftur",
 
     nlMapLoading: "Hleð upp korti…",
+    mapAuroraConditionLabel: "Norðurljósaskilyrði",
+    mapAuroraLegendTitle: "Norðurljósaskilyrði",
   },
 };

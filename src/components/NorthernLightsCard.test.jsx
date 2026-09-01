@@ -12,9 +12,12 @@ vi.mock("../lib/analytics", () => ({ trackEvent: vi.fn() }));
 // with its own IntersectionObserver-gated mount, covered independently in
 // NorthernLightsMap.test.jsx. Mocked here so these tests exercise
 // NorthernLightsCard's own logic (gating, ordering, disclosure) without
-// needing a jsdom IntersectionObserver polyfill.
+// needing a jsdom IntersectionObserver polyfill. Captures `band` too, so
+// #397 tests can prove the Aurora map receives canonical bands in order.
 vi.mock("./NorthernLightsMap", () => ({
-  default: ({ locations }) => <div data-testid="nl-map-container">{locations.map((l) => l.id).join(",")}</div>,
+  default: ({ locations }) => (
+    <div data-testid="nl-map-container">{locations.map((l) => `${l.id}:${l.band}`).join(",")}</div>
+  ),
 }));
 
 const t = (k) => k;
@@ -122,7 +125,7 @@ describe("NorthernLightsCard — Free: coarse guidance without Pro data leakage"
     expect(screen.queryByText(String(BEST.lat))).toBeNull();
     expect(screen.queryByText("nlReasonClearSky")).toBeNull();
     expect(screen.queryByTestId("nl-map-container")).toBeNull();
-    expect(screen.queryByText("nlAlternativesHeading")).toBeNull();
+    expect(screen.queryByText("nlQualifyingHeading")).toBeNull();
     expect(screen.getByText("nlFreeHint")).toBeInTheDocument();
     expect(screen.getByText("nlUpgradeCta")).toBeInTheDocument();
   });
@@ -152,7 +155,7 @@ describe("NorthernLightsCard — Pro: full detail from the same response", () =>
     expect(screen.getByTestId("nl-map-container")).toBeInTheDocument();
 
     // Canonical order preserved: best first, then alternatives, in list and map input.
-    const rankedList = screen.getByRole("list", { name: "nlAlternativesHeading" });
+    const rankedList = screen.getByRole("list", { name: "nlQualifyingHeading" });
     const items = within(rankedList).getAllByRole("listitem");
     expect(items[0]).toHaveTextContent(BEST.name);
     expect(items[1]).toHaveTextContent(ALTERNATIVE.name);
@@ -280,5 +283,196 @@ describe("NorthernLightsCard — real i18n copy exists for IS and EN (not just k
       expect(dict[key]).not.toBe(key);
       expect(dict[key].length).toBeGreaterThan(0);
     }
+  });
+
+  it.each(["is", "en"])("%s: #397 new/renamed keys resolve to real copy, and the subtitle no longer uses the old awkward framing", (lang) => {
+    const dict = northernLightsTranslations[lang];
+    for (const key of [
+      "nlCardSubtitle",
+      "nlQualifyingHeading",
+      "nlAllPoorTitle",
+      "nlAllPoorBody",
+      "nlAllPoorBestLabel",
+      "mapAuroraConditionLabel",
+      "mapAuroraLegendTitle",
+    ]) {
+      expect(dict[key]).toBeTypeOf("string");
+      expect(dict[key]).not.toBe(key);
+      expect(dict[key].length).toBeGreaterThan(0);
+    }
+    expect(dict.nlCardSubtitle).not.toMatch(/not the main recommendation|ekki aðalráðleggingin/i);
+    expect(dict).not.toHaveProperty("nlAlternativesHeading");
+  });
+});
+
+// #397 (issue #397): stop presenting a fixed six-place checklist when
+// conditions are poor — filter to qualifying bands, cap at six, no backfill.
+// IDs/names are deliberately distinctive multi-character strings — a
+// single-letter id would risk false-positive substring matches against
+// unrelated rendered text (e.g. "a" inside "Aurora"/"data").
+function loc(id, band) {
+  return { locationId: id, name: id, lat: 64, lon: -20, score: 50, band, reasons: [], flags: ["national_reference_times"] };
+}
+
+describe("NorthernLightsCard — #397 mixed-band filtering, order, and cap", () => {
+  it("filters to only excellent/good/fair, preserves canonical order, and caps at six without backfill", async () => {
+    const mixedBody = successBody({
+      best: loc("loc-1", "excellent"),
+      alternatives: [
+        loc("loc-2", "poor"),
+        loc("loc-3", "good"),
+        loc("loc-4", "very-poor"),
+        loc("loc-5", "fair"),
+        loc("loc-6", "fair"),
+        loc("loc-7", "good"),
+        loc("loc-8", "excellent"), // 7th qualifying entry — must be dropped by the cap
+      ],
+    });
+    renderCard({ entitlements: { isPro: true }, fetchImpl: makeFetchImpl(mixedBody) });
+    await waitFor(() => expect(screen.getByText("loc-1")).toBeInTheDocument());
+    fireEvent.click(screen.getByRole("button", { name: "nlDetailsShow" }));
+
+    const rankedList = screen.getByRole("list", { name: "nlQualifyingHeading" });
+    const items = within(rankedList).getAllByRole("listitem");
+    // loc-1,3,5,6,7,8 qualify (6 of them) — loc-2/loc-4 (poor/very-poor) are
+    // excluded, canonical order preserved, capped at six (loc-8 is present,
+    // nothing beyond it, no poor entry backfilled to pad the count).
+    expect(items).toHaveLength(6);
+    expect(items.map((el) => el.textContent)).toEqual([
+      expect.stringContaining("loc-1"),
+      expect.stringContaining("loc-3"),
+      expect.stringContaining("loc-5"),
+      expect.stringContaining("loc-6"),
+      expect.stringContaining("loc-7"),
+      expect.stringContaining("loc-8"),
+    ]);
+  });
+});
+
+describe("NorthernLightsCard — #397 all-poor state", () => {
+  const allPoorBody = successBody({
+    best: loc("loc-poor-1", "poor"),
+    alternatives: [loc("loc-poor-2", "very-poor"), loc("loc-poor-3", "poor")],
+  });
+
+  it("Free: honest no-good-place message, no six-place list, no map, no upgrade CTA", async () => {
+    renderCard({ entitlements: { isPro: false }, fetchImpl: makeFetchImpl(allPoorBody) });
+    await waitFor(() => expect(screen.getByTestId("nl-all-poor")).toBeInTheDocument());
+    expect(screen.getByText("nlAllPoorTitle")).toBeInTheDocument();
+    expect(screen.queryByRole("list")).toBeNull();
+    expect(screen.queryByTestId("nl-map-container")).toBeNull();
+    expect(screen.queryByText("nlUpgradeCta")).toBeNull();
+    expect(screen.queryByText("nlFreeHint")).toBeNull();
+    expect(document.body.textContent).not.toContain("loc-poor-1"); // no identity/score/coords leaked
+  });
+
+  it("Pro: shows at most one canonical bestAvailable, still poor, never as a recommendation, behind the details disclosure — never the six-place list/map", async () => {
+    renderCard({ entitlements: { isPro: true }, fetchImpl: makeFetchImpl(allPoorBody) });
+    await waitFor(() => expect(screen.getByTestId("nl-all-poor")).toBeInTheDocument());
+    expect(screen.queryByText("loc-poor-1")).toBeNull(); // not shown until expanded
+
+    fireEvent.click(screen.getByRole("button", { name: "nlDetailsShow" }));
+    expect(screen.getByText("loc-poor-1")).toBeInTheDocument();
+    expect(document.getElementById("nl-all-poor-details-panel").textContent).toContain("nlBandPoor");
+    expect(screen.queryByText("loc-poor-2")).toBeNull(); // never more than the one bestAvailable
+    expect(screen.queryByText("loc-poor-3")).toBeNull();
+    expect(screen.queryByRole("list")).toBeNull(); // still never the ranking list
+    expect(screen.queryByTestId("nl-map-container")).toBeNull(); // still never the map
+  });
+
+  it("a persisted expanded-details preference does not leak list/map content or fire their analytics in the all-poor state", async () => {
+    sessionStorage.setItem("nl_details_expanded", "true");
+    renderCard({ entitlements: { isPro: true }, fetchImpl: makeFetchImpl(allPoorBody) });
+    await waitFor(() => expect(screen.getByTestId("nl-all-poor")).toBeInTheDocument());
+
+    expect(screen.queryByRole("list")).toBeNull();
+    expect(screen.queryByTestId("nl-map-container")).toBeNull();
+    expect(trackEvent.mock.calls.some((c) => c[0] === "northern_lights_ranking_viewed")).toBe(false);
+    expect(trackEvent.mock.calls.some((c) => c[0] === "northern_lights_map_viewed")).toBe(false);
+  });
+
+  it("partial + stale still compose correctly with the all-poor presentation", async () => {
+    const stalePartialAllPoor = successBody({
+      status: "partial",
+      auroraCache: { state: "stale", sourceFetchedAt: "2026-09-01T12:00:00.000Z", ageMinutes: 480 },
+      best: loc("loc-poor-1", "poor"),
+      alternatives: [loc("loc-poor-2", "very-poor")],
+      excluded: [{ locationId: "loc-x", name: "X", status: "weather_fetch_failed", reasons: ["weather_fetch_failed"] }],
+      warnings: ["national_reference_window", "aurora_data_stale", "some_locations_excluded"],
+    });
+    renderCard({ entitlements: { isPro: false }, fetchImpl: makeFetchImpl(stalePartialAllPoor) });
+    await waitFor(() => expect(screen.getByTestId("nl-all-poor")).toBeInTheDocument());
+    expect(screen.getByText("nlWarningPartial")).toBeInTheDocument();
+    expect(screen.getByText((text) => text.startsWith("nlWarningStale"))).toBeInTheDocument();
+  });
+
+  it("all-poor card-view analytics records resultState: all_poor; a qualifying result records resultState: qualifying", async () => {
+    const { unmount } = renderCard({ entitlements: { isPro: true }, fetchImpl: makeFetchImpl(allPoorBody) });
+    await waitFor(() =>
+      expect(trackEvent).toHaveBeenCalledWith("northern_lights_card_viewed", expect.objectContaining({ resultState: "all_poor" })),
+    );
+    unmount();
+    vi.clearAllMocks();
+    clearAuroraDecisionCache(); // same (evening, locationIds) identity as above — must not reuse the cached all-poor result
+
+    renderCard({ entitlements: { isPro: true } }); // default successBody: excellent + good
+    await waitFor(() =>
+      expect(trackEvent).toHaveBeenCalledWith("northern_lights_card_viewed", expect.objectContaining({ resultState: "qualifying" })),
+    );
+  });
+});
+
+describe("NorthernLightsCard — #397 map visibility rule (>=2 qualifying, >=2 distinct bands)", () => {
+  it("hidden with zero qualifying locations (all-poor)", async () => {
+    renderCard({
+      entitlements: { isPro: true },
+      fetchImpl: makeFetchImpl(successBody({ best: loc("loc-1", "poor"), alternatives: [] })),
+    });
+    await waitFor(() => expect(screen.getByTestId("nl-all-poor")).toBeInTheDocument());
+    expect(screen.queryByTestId("nl-map-container")).toBeNull();
+  });
+
+  it("hidden with exactly one qualifying location", async () => {
+    renderCard({
+      entitlements: { isPro: true },
+      fetchImpl: makeFetchImpl(successBody({ best: loc("loc-1", "good"), alternatives: [loc("loc-2", "poor")] })),
+    });
+    await waitFor(() => expect(screen.getByText("loc-1")).toBeInTheDocument());
+    fireEvent.click(screen.getByRole("button", { name: "nlDetailsShow" }));
+    expect(screen.queryByTestId("nl-map-container")).toBeNull();
+    expect(screen.getByRole("list", { name: "nlQualifyingHeading" })).toBeInTheDocument(); // list still shown
+  });
+
+  it("hidden with two-or-more qualifying locations that share the SAME band", async () => {
+    renderCard({
+      entitlements: { isPro: true },
+      fetchImpl: makeFetchImpl(successBody({ best: loc("loc-1", "good"), alternatives: [loc("loc-2", "good")] })),
+    });
+    await waitFor(() => expect(screen.getByText("loc-1")).toBeInTheDocument());
+    fireEvent.click(screen.getByRole("button", { name: "nlDetailsShow" }));
+    expect(screen.queryByTestId("nl-map-container")).toBeNull();
+  });
+
+  it("shown with two-or-more qualifying locations across two distinct bands, receiving exact canonical order + bands", async () => {
+    renderCard({
+      entitlements: { isPro: true },
+      fetchImpl: makeFetchImpl(successBody({ best: loc("loc-1", "excellent"), alternatives: [loc("loc-2", "fair")] })),
+    });
+    await waitFor(() => expect(screen.getByText("loc-1")).toBeInTheDocument());
+    fireEvent.click(screen.getByRole("button", { name: "nlDetailsShow" }));
+    const mapContainer = screen.getByTestId("nl-map-container");
+    expect(mapContainer).toHaveTextContent("loc-1:excellent,loc-2:fair");
+  });
+
+  it("map-view analytics never fires when the map is hidden, even with details expanded", async () => {
+    renderCard({
+      entitlements: { isPro: true },
+      fetchImpl: makeFetchImpl(successBody({ best: loc("loc-1", "good"), alternatives: [loc("loc-2", "good")] })),
+    });
+    await waitFor(() => expect(screen.getByText("loc-1")).toBeInTheDocument());
+    fireEvent.click(screen.getByRole("button", { name: "nlDetailsShow" }));
+    expect(trackEvent.mock.calls.some((c) => c[0] === "northern_lights_map_viewed")).toBe(false);
+    // Ranking analytics still fires — the list itself IS shown, only the map isn't.
+    expect(trackEvent.mock.calls.some((c) => c[0] === "northern_lights_ranking_viewed")).toBe(true);
   });
 });

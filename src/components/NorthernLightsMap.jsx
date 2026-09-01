@@ -2,8 +2,11 @@ import React, { useEffect, useRef, useState, lazy, Suspense } from "react";
 
 // Mirrors LazyMap.jsx's existing prefetch + IntersectionObserver pattern
 // exactly (approved prompt §6: "reuse existing Leaflet patterns") — a
-// second, Pro-only, secondary map fed by the SAME ranked Ticket 3 locations
-// (best + alternatives), never an independent selection/order.
+// second, Pro-only, secondary map fed by the SAME qualifying, canonically-
+// ordered Ticket 3 locations (never an independent selection/order),
+// rendered through MapView's explicit `mode="aurora"` presentation adapter
+// (Ticket 397, #397) so markers/popups/legend show the canonical Aurora
+// band, never a second independently-fetched generic 7-day score.
 const MapView = lazy(() => import("../MapView"));
 
 export default function NorthernLightsMap({ locations, selectedId, onSelect, lang, t, theme }) {
@@ -42,7 +45,16 @@ export default function NorthernLightsMap({ locations, selectedId, onSelect, lan
             </div>
           }
         >
-          <MapView campsites={locations} selectedId={selectedId} onSelect={onSelect} userLocation={null} lang={lang} t={t} theme={theme} />
+          <MapView
+            campsites={locations}
+            selectedId={selectedId}
+            onSelect={onSelect}
+            userLocation={null}
+            lang={lang}
+            t={t}
+            theme={theme}
+            mode="aurora"
+          />
         </Suspense>
       )}
     </div>
