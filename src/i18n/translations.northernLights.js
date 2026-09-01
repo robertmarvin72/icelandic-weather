@@ -6,6 +6,33 @@ export const northernLightsTranslations = {
     nlCardSubtitle: "We compare cloud cover and Aurora conditions across a few locations.",
     nlLoading: "Checking conditions…",
 
+    // #398 (Ticket 398): visual-state pill/headline/body — grouped from the
+    // precise canonical band via src/lib/auroraVisualState.js. Never a
+    // guarantee/probability claim; "gæti sést"/"could be visible" style
+    // qualitative phrasing only.
+    nlNewBadge: "New",
+    nlPillGood: "Good conditions",
+    nlHeadlineGood: "Good conditions tonight",
+    nlBodyGood: "Skies look favorable for spotting the Aurora tonight.",
+    nlCtaGood: "See the best spots",
+
+    nlPillFair: "Fair conditions",
+    nlHeadlineFair: "Might be visible with a bit of luck",
+    nlBodyFair: "Conditions are mixed — worth a look, but nothing is guaranteed.",
+    nlCtaFair: "Check conditions",
+
+    nlPillPoor: "Low chance tonight",
+    nlHeadlinePoor: "Little hope tonight",
+    nlBodyPoor: "Cloud cover or other conditions make the Aurora unlikely to be visible tonight.",
+
+    nlPillNeutral: "Status unavailable",
+    nlHeadlineNeutral: "Aurora status unavailable",
+    nlBodyNeutral: "We couldn't determine tonight's Aurora-viewing conditions.",
+
+    // #398: Pro qualifying supporting sentence — keeps the exact canonical
+    // best-location name visible while the card is collapsed.
+    nlBestTonight: "Best conditions tonight: {name}",
+
     nlBandExcellent: "Excellent viewing conditions",
     nlBandGood: "Good viewing conditions",
     nlBandFair: "Fair viewing conditions",
@@ -51,9 +78,12 @@ export const northernLightsTranslations = {
     // #397: honest no-qualifying-place result — distinct from unavailable/
     // no-darkness/transport/contract-defect. Never implies missing data,
     // danger, or a guaranteed future improvement.
-    nlAllPoorTitle: "No good Aurora-viewing spot right now",
-    nlAllPoorBody:
-      "Cloud cover or other conditions are poor at the checked locations tonight. Check again later.",
+    // #398: the all-poor headline/body now come from the shared "poor"
+    // visual-state tokens (nlHeadlinePoor/nlBodyPoor) — all-poor IS the
+    // poor visual state (qualifying results are excellent/good/fair only by
+    // construction, so there is no separate "qualifying but poor" case).
+    // nlAllPoorTitle/nlAllPoorBody were removed as obsolete (no remaining
+    // consumer) once this ticket consolidated the two.
     nlAllPoorBestLabel: "Best of the checked options (still poor):",
 
     nlUnavailableBody: "Northern Lights data isn't available right now.",
@@ -72,6 +102,27 @@ export const northernLightsTranslations = {
     nlCardTitle: "Norðurljós í kvöld",
     nlCardSubtitle: "Við berum saman skýjahulu og norðurljósaskilyrði á nokkrum stöðum.",
     nlLoading: "Athuga aðstæður…",
+
+    nlNewBadge: "Nýtt",
+    nlPillGood: "Góð skilyrði",
+    nlHeadlineGood: "Góð skilyrði í kvöld",
+    nlBodyGood: "Himininn lítur vel út til að sjá norðurljós í kvöld.",
+    nlCtaGood: "Sjá bestu staðina",
+
+    nlPillFair: "Sæmileg skilyrði",
+    nlHeadlineFair: "Gæti sést með smá heppni",
+    nlBodyFair: "Skilyrðin eru blönduð — þess virði að athuga, en ekkert er tryggt.",
+    nlCtaFair: "Skoða skilyrði",
+
+    nlPillPoor: "Litlar líkur í kvöld",
+    nlHeadlinePoor: "Lítil von í kvöld",
+    nlBodyPoor: "Skýjahula eða önnur skilyrði gera ólíklegt að norðurljós sjáist í kvöld.",
+
+    nlPillNeutral: "Staða ekki tiltæk",
+    nlHeadlineNeutral: "Staða norðurljósa ekki tiltæk",
+    nlBodyNeutral: "Við gátum ekki ákvarðað norðurljósaskilyrði kvöldsins.",
+
+    nlBestTonight: "Bestu skilyrðin í kvöld: {name}",
 
     nlBandExcellent: "Frábærar aðstæður til að sjá norðurljós",
     nlBandGood: "Góðar aðstæður til að sjá norðurljós",
@@ -112,9 +163,6 @@ export const northernLightsTranslations = {
     nlNoDarknessTitle: "Ekki nógu dimmt til að athuga í kvöld",
     nlNoDarknessBody: "Þetta er ekki villa — það er einfaldlega of bjart núna til að marktæk athugun sé möguleg.",
 
-    nlAllPoorTitle: "Enginn góður staður til að sjá norðurljós núna",
-    nlAllPoorBody:
-      "Skýjahula eða önnur skilyrði eru slæm á þeim stöðum sem voru skoðaðir í kvöld. Athugaðu aftur síðar.",
     nlAllPoorBestLabel: "Besti af skoðuðum stöðum (samt slæmur):",
 
     nlUnavailableBody: "Norðurljósagögn eru ekki tiltæk núna.",
