@@ -107,6 +107,27 @@ describe("refresh-aurora — flow", () => {
     expect(releaseAuroraRefreshLease).not.toHaveBeenCalled(); // persist already clears the lease
   });
 
+  it("Ticket 401: success passes the deterministic successful-fetch timestamp (not a later/DB time) into persistAuroraSnapshot", async () => {
+    claimAuroraRefreshLease.mockResolvedValue(true);
+    fetchAuroraXml.mockResolvedValue(SAMPLE_XML);
+    persistAuroraSnapshot.mockResolvedValue(undefined);
+
+    const frozenNow = new Date("2026-09-08T14:00:00.000Z");
+    vi.useFakeTimers();
+    vi.setSystemTime(frozenNow);
+    try {
+      const res = makeRes();
+      await handler(authedReq(), res);
+      expect(res.statusCode).toBe(200);
+    } finally {
+      vi.useRealTimers();
+    }
+
+    expect(persistAuroraSnapshot).toHaveBeenCalledOnce();
+    const [, persistArg] = persistAuroraSnapshot.mock.calls[0];
+    expect(persistArg.sourceFetchedAt).toBe(frozenNow.toISOString());
+  });
+
   it("lease not acquired: skips cleanly, never calls Vedur.is", async () => {
     claimAuroraRefreshLease.mockResolvedValue(false);
 

@@ -333,6 +333,133 @@ describe("NorthernLightsCard — stale + partial disclose simultaneously, for bo
   });
 });
 
+describe("NorthernLightsCard — Ticket 401 (#401) Round 2: stale event gated on rendered usable-stale exposure", () => {
+  const STALE_CACHE = { state: "stale", sourceFetchedAt: "2026-09-01T12:00:00.000Z", ageMinutes: 480 };
+
+  it("success + stale: renders the stale notice and emits northern_lights_stale_viewed exactly once", async () => {
+    const body = successBody({ auroraCache: STALE_CACHE });
+    renderCard({ fetchImpl: makeFetchImpl(body) });
+    await waitFor(() => expect(screen.getByText((text) => text.startsWith("nlWarningStale"))).toBeInTheDocument());
+    expect(trackEvent.mock.calls.filter((c) => c[0] === "northern_lights_stale_viewed")).toHaveLength(1);
+    expect(trackEvent).toHaveBeenCalledWith(
+      "northern_lights_stale_viewed",
+      { lang: "is", outcome: "success", tier: "free" },
+    );
+  });
+
+  it("partial + stale: renders both notices and emits the stale event exactly once", async () => {
+    const body = successBody({
+      status: "partial",
+      auroraCache: STALE_CACHE,
+      excluded: [{ locationId: "x", name: "X", status: "weather_fetch_failed", reasons: ["weather_fetch_failed"] }],
+      warnings: ["national_reference_window", "aurora_data_stale", "some_locations_excluded"],
+    });
+    renderCard({ fetchImpl: makeFetchImpl(body) });
+    await waitFor(() => expect(screen.getByText("nlWarningPartial")).toBeInTheDocument());
+    expect(screen.getByText((text) => text.startsWith("nlWarningStale"))).toBeInTheDocument();
+    expect(trackEvent.mock.calls.filter((c) => c[0] === "northern_lights_stale_viewed")).toHaveLength(1);
+  });
+
+  it("stale cache + night_not_found: renders the existing domain-unavailable state, no stale notice, no stale event", async () => {
+    const body = {
+      ok: true,
+      evening: "2026-09-01",
+      auroraCache: STALE_CACHE,
+      viewingWindow: null,
+      status: "unavailable",
+      reason: "night_not_found",
+      best: null,
+      alternatives: [],
+      excluded: [],
+      warnings: [],
+    };
+    renderCard({ fetchImpl: makeFetchImpl(body) });
+    await waitFor(() => expect(screen.getByTestId("nl-unavailable")).toBeInTheDocument());
+    expect(screen.queryByText((text) => text.startsWith("nlWarningStale"))).toBeNull();
+    expect(trackEvent.mock.calls.some((c) => c[0] === "northern_lights_stale_viewed")).toBe(false);
+  });
+
+  it("stale cache + invalid_darkness_window: renders the existing no-darkness state, no stale notice, no stale event", async () => {
+    const body = {
+      ok: true,
+      evening: "2026-06-01",
+      auroraCache: STALE_CACHE,
+      viewingWindow: null,
+      status: "unavailable",
+      reason: "invalid_darkness_window",
+      best: null,
+      alternatives: [],
+      excluded: [],
+      warnings: [],
+    };
+    renderCard({ fetchImpl: makeFetchImpl(body) });
+    await waitFor(() => expect(screen.getByTestId("nl-no-darkness")).toBeInTheDocument());
+    expect(screen.queryByText((text) => text.startsWith("nlWarningStale"))).toBeNull();
+    expect(trackEvent.mock.calls.some((c) => c[0] === "northern_lights_stale_viewed")).toBe(false);
+  });
+
+  it("stale cache + no_locations_scored (unambiguous no-darkness shape — every excluded site not_viewable_tonight): no stale notice, no stale event", async () => {
+    const body = {
+      ok: true,
+      evening: "2026-09-01",
+      auroraCache: STALE_CACHE,
+      viewingWindow: { start: "2026-09-01T22:00:00.000Z", end: "2026-09-02T05:00:00.000Z" },
+      status: "unavailable",
+      reason: "no_locations_scored",
+      best: null,
+      alternatives: [],
+      excluded: [{ locationId: "a", name: "A", status: "not_viewable_tonight", reasons: [] }],
+      warnings: [],
+    };
+    renderCard({ fetchImpl: makeFetchImpl(body) });
+    await waitFor(() => expect(screen.getByTestId("nl-no-darkness")).toBeInTheDocument());
+    expect(screen.queryByText((text) => text.startsWith("nlWarningStale"))).toBeNull();
+    expect(trackEvent.mock.calls.some((c) => c[0] === "northern_lights_stale_viewed")).toBe(false);
+  });
+
+  it("stale cache + no_locations_scored (ambiguous/generic shape — mixed exclusion statuses): domain-unavailable, no stale notice, no stale event", async () => {
+    const body = {
+      ok: true,
+      evening: "2026-09-01",
+      auroraCache: STALE_CACHE,
+      viewingWindow: { start: "2026-09-01T22:00:00.000Z", end: "2026-09-02T05:00:00.000Z" },
+      status: "unavailable",
+      reason: "no_locations_scored",
+      best: null,
+      alternatives: [],
+      excluded: [
+        { locationId: "a", name: "A", status: "not_viewable_tonight", reasons: [] },
+        { locationId: "b", name: "B", status: "weather_fetch_failed", reasons: [] },
+      ],
+      warnings: [],
+    };
+    renderCard({ fetchImpl: makeFetchImpl(body) });
+    await waitFor(() => expect(screen.getByTestId("nl-unavailable")).toBeInTheDocument());
+    expect(screen.queryByText((text) => text.startsWith("nlWarningStale"))).toBeNull();
+    expect(trackEvent.mock.calls.some((c) => c[0] === "northern_lights_stale_viewed")).toBe(false);
+  });
+
+  it("theme/language/ordinary rerenders of a usable stale result do not duplicate the stale event or change its payload semantics", async () => {
+    const body = successBody({ auroraCache: STALE_CACHE });
+    const fetchImpl = makeFetchImpl(body);
+    const { rerender } = renderCard({ fetchImpl });
+    await waitFor(() =>
+      expect(trackEvent.mock.calls.filter((c) => c[0] === "northern_lights_stale_viewed")).toHaveLength(1),
+    );
+
+    rerender(
+      <NorthernLightsCard t={t} lang="en" entitlements={{ isPro: false }} onUpgrade={vi.fn()} theme="dark" now={IN_SEASON_NOW} fetchImpl={fetchImpl} />,
+    );
+    rerender(
+      <NorthernLightsCard t={t} lang="en" entitlements={{ isPro: false }} onUpgrade={vi.fn()} theme="light" now={IN_SEASON_NOW} fetchImpl={fetchImpl} />,
+    );
+
+    expect(trackEvent.mock.calls.filter((c) => c[0] === "northern_lights_stale_viewed")).toHaveLength(1);
+    const [, payload] = trackEvent.mock.calls.find((c) => c[0] === "northern_lights_stale_viewed");
+    expect(payload).toEqual({ lang: "is", outcome: "success", tier: "free" });
+  });
+});
+
 describe("NorthernLightsCard — truthful unavailable/no-darkness/transport/contract-defect states", () => {
   it("domain_unavailable: neutral copy, retry, no upgrade CTA, no favorable pill", async () => {
     const body = { ok: true, evening: "2026-09-01", auroraCache: { state: "unavailable", reason: "too_old" }, viewingWindow: null, status: "unavailable", reason: "aurora_cache_unavailable", best: null, alternatives: [], excluded: [], warnings: [] };

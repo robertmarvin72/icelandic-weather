@@ -167,7 +167,13 @@ export default function NorthernLightsCard({ t, lang, entitlements, onUpgrade, t
     if (classification.primary === "domain_unavailable" || classification.primary === "no_darkness" || classification.primary === "contract_defect") {
       trackEvent("northern_lights_unavailable_viewed", { lang, outcome: classification.primary, tier: isPro ? "pro" : "free" });
     }
-    if (classification.freshness === "stale") {
+    // Ticket 401 (#401) Round 2: freshness is orthogonal to primary outcome
+    // — a stale-but-usable cache can still back a non-result response
+    // (domain_unavailable/no_darkness), which renders no stale disclosure
+    // at all. The stale event must only fire when the stale notice is
+    // actually rendered — i.e. for the same usable-result outcomes that
+    // gate resultState above.
+    if (isResultOutcome && classification.freshness === "stale") {
       trackEvent("northern_lights_stale_viewed", { lang, outcome: classification.primary, tier: isPro ? "pro" : "free" });
     }
   }, [classification, requestKey, isPro, display.hasQualifyingLocations, lang]);

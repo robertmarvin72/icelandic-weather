@@ -41,6 +41,21 @@ describe("classifyAuroraCache", () => {
     expect(result.state).toBe("stale");
   });
 
+  it("Ticket 401: the smallest possible crossing above the fresh threshold (480min + 1ms) is stale, not fresh", () => {
+    const row = { snapshot: { nights: [] }, source_fetched_at: FETCHED_AT.toISOString() };
+    const now = new Date(FETCHED_AT.getTime() + AURORA_FRESH_MAX_AGE_MINUTES * 60000 + 1);
+    const result = classifyAuroraCache(row, now);
+    expect(result.state).toBe("stale");
+  });
+
+  it("Ticket 401: future clock skew (source_fetched_at appears to be in the future) still clamps age to 0/fresh, not negative", () => {
+    const row = { snapshot: { nights: [] }, source_fetched_at: FETCHED_AT.toISOString() };
+    const now = new Date(FETCHED_AT.getTime() - 5 * 60000); // "now" is 5 minutes BEFORE the fetch time
+    const result = classifyAuroraCache(row, now);
+    expect(result.state).toBe("fresh");
+    expect(result.ageMinutes).toBe(0);
+  });
+
   it("is stale at and below the stale threshold (inclusive boundary)", () => {
     const row = { snapshot: { nights: [] }, source_fetched_at: FETCHED_AT.toISOString() };
     const result = classifyAuroraCache(row, nowAfterMinutes(AURORA_STALE_MAX_AGE_MINUTES));

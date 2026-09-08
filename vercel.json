@@ -6,7 +6,7 @@
     },
     {
       "path": "/api/cron/refresh-aurora",
-      "schedule": "0 12,20 * * *"
+      "schedule": "0 8,14,20 * * *"
     }
   ],
   "rewrites": [

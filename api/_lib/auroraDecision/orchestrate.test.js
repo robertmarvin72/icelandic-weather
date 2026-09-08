@@ -22,7 +22,7 @@ const NIGHT = {
 
 const FRESH_FETCHED_AT = "2026-08-24T10:00:00.000Z";
 const NOW_FRESH = () => new Date("2026-08-24T12:00:00.000Z"); // 2h after fetch -> fresh
-const NOW_STALE = () => new Date("2026-08-24T20:00:00.000Z"); // 10h after fetch -> stale (360 < age <= 1440 min)
+const NOW_STALE = () => new Date("2026-08-24T20:00:00.000Z"); // 10h after fetch -> stale (480 < age <= 1440 min)
 const NOW_TOO_OLD = () => new Date("2026-08-27T20:00:00.000Z"); // ~82h after fetch -> unavailable
 
 function makeSql(rows) {
