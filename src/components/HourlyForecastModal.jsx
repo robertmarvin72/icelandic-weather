@@ -1,5 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { getForecast } from "../lib/forecastCache";
+import { WeatherIcon } from "./WeatherIcon";
+import { resolveWeatherPresentation, isDaytimeHour } from "../lib/weatherPresentation";
 import {
   convertTemp,
   convertRain,
@@ -67,26 +69,17 @@ function buildHourlyRows(data, selectedDate) {
     .filter((row) => row.hour != null && row.hour % 3 === 0);
 }
 
-function getWeatherInfo(code, weatherMap, t, lang = "en") {
-  if (code == null) {
-    return {
-      icon: "—",
-      label: lang === "is" ? "Óþekkt veður" : "Unknown weather",
-    };
-  }
-
-  const fromMap = weatherMap?.[code];
-
-  if (fromMap) {
-    return {
-      icon: fromMap.icon || "•",
-      label: typeof t === "function" ? t(fromMap.textKey) : fromMap.textKey || `Weather ${code}`,
-    };
-  }
-
+// Generalizes the safe behavior this function already had (null is
+// explicitly unknown; an unrecognized present value is never silently
+// assigned a known weather meaning) through the shared canonical resolver,
+// so daily and hourly views can never disagree about the same WMO code
+// (Ticket 400, #400 Round 2 §1).
+function getWeatherInfo(code, hour, t) {
+  const presentation = resolveWeatherPresentation(code, { isDay: isDaytimeHour(hour) });
   return {
-    icon: "•",
-    label: lang === "is" ? `Veður ${code}` : `Weather ${code}`,
+    iconId: presentation.iconId,
+    isUnknown: presentation.isUnknown,
+    label: typeof t === "function" ? t(presentation.textKey) : presentation.textKey,
   };
 }
 
@@ -173,7 +166,6 @@ export default function HourlyForecastModal({
   units = "metric",
   lang = "en",
   t,
-  weatherMap,
   onClose,
 }) {
   const [loading, setLoading] = useState(false);
@@ -368,7 +360,7 @@ export default function HourlyForecastModal({
 
               {hourlyRows.map((row) => {
                 const metrics = getMetricStrings(row, units);
-                const weather = getWeatherInfo(row.weatherCode, weatherMap, t, lang);
+                const weather = getWeatherInfo(row.weatherCode, row.hour, t);
                 const state = getWindowState(row);
                 const badge = getWindowBadge(state, t);
 
@@ -381,7 +373,17 @@ export default function HourlyForecastModal({
 
                       <div className="min-w-0">
                         <div className="flex flex-wrap items-center gap-2 text-base text-slate-700 dark:text-slate-200">
-                          <span className="text-xl">{weather.icon}</span>
+                          {weather.isUnknown ? (
+                            <span
+                              role="img"
+                              aria-label={weather.label}
+                              className="flex h-6 w-6 items-center justify-center text-slate-400 dark:text-slate-500"
+                            >
+                              <span aria-hidden>—</span>
+                            </span>
+                          ) : (
+                            <WeatherIcon iconId={weather.iconId} aria-label={weather.label} className="h-6 w-6" role="img" />
+                          )}
                           <span className="font-medium">{weather.label}</span>
 
                           {badge ? (

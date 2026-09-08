@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import LoadingShimmer from "./LoadingShimmer";
 import { WeatherIcon } from "./WeatherIcon";
-import { mapWeatherCodeToIconId } from "../utils/WeatherIconMapping";
+import { resolveWeatherPresentation, WEATHER_FAMILIES } from "../lib/weatherPresentation";
 import ScoreExplanation from "./ScoreExplanation";
 import { getSiteAvailability } from "../config/availability";
 import { HAZARDS_V1 } from "../config/hazards";
@@ -80,7 +80,6 @@ export default function ForecastTable({
   loading,
   error,
   units,
-  weatherMap,
   mapSlot,
   lang,
   t,
@@ -274,8 +273,12 @@ export default function ForecastTable({
 
               <tbody className="[&>tr:nth-child(even)]:bg-slate-50 dark:[&>tr:nth-child(even)]:bg-slate-800/40">
                 {rows.map((r, idx) => {
-                  const code = Number(r.code ?? 0);
-                  const weatherKey = weatherMap?.[code]?.textKey ?? "unknown";
+                  // Null-preserving: a missing/unusable summaryCode or code
+                  // must reach the resolver as unknown, never coerced to
+                  // WMO 0 (clear sky) — see approved prompt Round 2 §1.
+                  const displayCode = r.summaryCode ?? r.code ?? null;
+                  const presentation = resolveWeatherPresentation(displayCode, { isDay: true });
+                  const weatherKey = presentation.textKey;
 
                   const warnings = computeWarningsFromRow(r);
                   const hasHigh = rowHasHighWarning(warnings);
@@ -347,12 +350,22 @@ export default function ForecastTable({
                                     : "bg-red-100 text-red-800")
                           }
                         >
-                          <WeatherIcon
-                            iconId={mapWeatherCodeToIconId(code, true)}
-                            aria-label={t?.(weatherKey)}
-                            className="w-9 h-9"
-                            role="img"
-                          />
+                          {presentation.isUnknown ? (
+                            <span
+                              role="img"
+                              aria-label={t?.(weatherKey)}
+                              className="flex h-9 w-9 items-center justify-center text-slate-400 dark:text-slate-500"
+                            >
+                              <span aria-hidden>—</span>
+                            </span>
+                          ) : (
+                            <WeatherIcon
+                              iconId={presentation.iconId}
+                              aria-label={t?.(weatherKey)}
+                              className="w-9 h-9"
+                              role="img"
+                            />
+                          )}
 
                           <span>{t?.(r.class?.toLowerCase?.()) ?? r.class}</span>
 
@@ -399,14 +412,18 @@ export default function ForecastTable({
                         {(() => {
                           const base = t?.(weatherKey);
 
-                          const code = Number(r.code ?? 0);
-
-                          // Open-Meteo style mapping
-                          const SNOW_CODES = [71, 73, 75, 77, 85, 86];
-                          const RAIN_CODES = [51, 53, 55, 61, 63, 65, 80, 81, 82];
-
-                          const isSnow = SNOW_CODES.includes(code);
-                          const isRain = RAIN_CODES.includes(code);
+                          // Keyed from the same displayed summary family
+                          // (summaryCode ?? row.code) that produced the
+                          // headline/icon above — never from raw row.code
+                          // alone, so the caption can't contradict what's
+                          // already shown (approved prompt Round 2 §3).
+                          // Freezing precipitation gets truthful base
+                          // wording only; it must never borrow rain/snow
+                          // duration phrasing.
+                          const isSnow = presentation.family === WEATHER_FAMILIES.SNOW;
+                          const isRain =
+                            presentation.family === WEATHER_FAMILIES.RAIN ||
+                            presentation.family === WEATHER_FAMILIES.DRIZZLE;
 
                           if (!isSnow && !isRain) return base;
 

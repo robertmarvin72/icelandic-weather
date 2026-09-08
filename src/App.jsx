@@ -46,7 +46,6 @@ import { useTop5Campsites } from "./hooks/useTop5Campsites";
 import { useComparisonState } from "./hooks/useComparisonState";
 import About from "./pages/About";
 import { formatDay } from "./utils/date";
-import { WEATHER_MAP } from "./utils/weatherMap";
 import HourlyForecastModal from "./components/HourlyForecastModal";
 
 function IcelandCampingWeatherApp({ page = "home" }) {
@@ -399,7 +398,6 @@ function IcelandCampingWeatherApp({ page = "home" }) {
                   loading={loading}
                   error={error}
                   units={units}
-                  weatherMap={WEATHER_MAP}
                   lang={lang}
                   t={t}
                   onSelectDay={handleOpenHourlyForecast}
@@ -412,7 +410,6 @@ function IcelandCampingWeatherApp({ page = "home" }) {
                     units={units}
                     lang={lang}
                     t={t}
-                    weatherMap={WEATHER_MAP}
                     onClose={handleCloseHourlyForecast}
                   />
                 )}

@@ -60,6 +60,7 @@ export const commonTranslations = {
     mainlyClear: "Mainly clear",
     partlyCloudy: "Partly cloudy",
     overcast: "Overcast",
+    unknownWeather: "Unknown weather",
 
     fog: "Fog",
     rimeFog: "Rime fog",
@@ -589,6 +590,7 @@ export const commonTranslations = {
     mainlyClear: "Að mestu heiðskírt",
     partlyCloudy: "Hálfskýjað",
     overcast: "Alskýjað",
+    unknownWeather: "Óþekkt veður",
 
     fog: "Þoka",
     rimeFog: "Hrímþoka",
