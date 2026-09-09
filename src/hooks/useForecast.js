@@ -6,7 +6,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { getForecast } from "../lib/forecastCache";
 import { scoreSiteDay } from "../lib/scoring";
 import { normalizeDailyToScoreInput } from "../lib/forecastNormalize";
-import { summarizeDailyWeatherCode } from "../lib/dailyWeatherSummary";
+import { summarizeDailyWeather } from "../lib/dailyWeatherSummary";
 
 async function fetchForecast({ lat, lon }) {
   return getForecast({ lat, lon });
@@ -144,13 +144,14 @@ function useForecast(lat, lon, opts = {}) {
 
     return baseRows.map((row) => {
       // scoreSiteDay reads only the untouched raw daily row (row.code stays
-      // Open-Meteo's daily.weathercode) — summaryCode below is computed
-      // separately, from hourly data, purely for display, and is merged in
-      // only after scoring has already run on the pristine row (Ticket 400,
-      // #400). It must never be passed into scoreSiteDay or any other
-      // scoring/ranking/recommendation consumer.
+      // Open-Meteo's daily.weathercode) — summaryCode/summaryTextKey below
+      // are computed separately, from hourly data, purely for display, and
+      // are merged in only after scoring has already run on the pristine
+      // row (Ticket 400 #400, extended Ticket 402 #402). Neither must ever
+      // be passed into scoreSiteDay or any other scoring/ranking/
+      // recommendation consumer.
       const s = scoreSiteDay(row);
-      const summaryCode = summarizeDailyWeatherCode({
+      const { code: summaryCode, textKey: summaryTextKey } = summarizeDailyWeather({
         hourly: data?.hourly,
         date: row.date,
         fallbackCode: row.code,
@@ -159,6 +160,7 @@ function useForecast(lat, lon, opts = {}) {
       return {
         ...row,
         summaryCode,
+        summaryTextKey,
         class: s.finalClass,
         points: s.points,
         basePts: s.basePts,

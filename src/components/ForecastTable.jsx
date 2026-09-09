@@ -278,7 +278,12 @@ export default function ForecastTable({
                   // WMO 0 (clear sky) — see approved prompt Round 2 §1.
                   const displayCode = r.summaryCode ?? r.code ?? null;
                   const presentation = resolveWeatherPresentation(displayCode, { isDay: true });
-                  const weatherKey = presentation.textKey;
+                  // Ticket 402 (#402): prefer the richer temporal narrative
+                  // key when the summarizer detected one (e.g. "Rain early,
+                  // dry later") — it already describes the day more fully
+                  // than the bare WMO-family text, and the icon above still
+                  // comes from the same coherent `displayCode`.
+                  const weatherKey = r.summaryTextKey ?? presentation.textKey;
 
                   const warnings = computeWarningsFromRow(r);
                   const hasHigh = rowHasHighWarning(warnings);
@@ -411,6 +416,13 @@ export default function ForecastTable({
                       <td className="py-2 pr-3 text-slate-700 dark:text-slate-200">
                         {(() => {
                           const base = t?.(weatherKey);
+
+                          // Ticket 402 (#402): a temporal narrative already
+                          // tells the fuller, more specific story ("Rain
+                          // early, dry later") — the generic amount-based
+                          // getPrecipitationLabel caption below must never
+                          // overwrite it (approved prompt §3).
+                          if (r.summaryTextKey) return base;
 
                           // Keyed from the same displayed summary family
                           // (summaryCode ?? row.code) that produced the

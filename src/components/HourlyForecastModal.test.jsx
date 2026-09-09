@@ -26,6 +26,30 @@ function hourlyFixture(entries) {
 
 beforeEach(() => vi.clearAllMocks());
 
+describe("HourlyForecastModal — Ticket 402 (#402): unaffected by the daily temporal-narrative layer", () => {
+  it("the #402 motivating hourly pattern still shows each real per-hour code, never the daily card's temporal narrative text", async () => {
+    getForecast.mockResolvedValue(
+      hourlyFixture([
+        { hour: 6, code: 55 },
+        { hour: 9, code: 0 },
+        { hour: 12, code: 0 },
+        { hour: 15, code: 0 },
+        { hour: 18, code: 0 },
+        { hour: 21, code: 0 },
+      ]),
+    );
+    render(<HourlyForecastModal site={site} day={{ date: "2026-09-08", dayLabel: "Mon" }} lang="en" t={t} onClose={() => {}} />);
+
+    await waitFor(() => expect(screen.getByText("heavyDrizzle")).toBeInTheDocument());
+    // The dry hours still resolve to their own real per-hour text — the
+    // modal has no concept of "dry later" at all, by design (approved
+    // prompt §3: "does not authorize redesigning or extracting the modal's
+    // ... algorithm").
+    expect(screen.getAllByText("clearSky").length).toBeGreaterThan(0);
+    expect(screen.queryByText("dailySummaryRainEarlyDryLater")).toBeNull();
+  });
+});
+
 describe("HourlyForecastModal — shared canonical weather presentation (#400)", () => {
   it("resolves a daytime clear-sky hour through the shared mapping (real translated text, real icon)", async () => {
     getForecast.mockResolvedValue(hourlyFixture([{ hour: 12, code: 0 }]));

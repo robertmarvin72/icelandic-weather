@@ -88,6 +88,14 @@ export const commonTranslations = {
     thunderHail: "Thunder + hail",
     severeThunderHail: "Severe thunder + hail",
 
+    // Ticket 402 (#402) — temporal daily-summary narratives. Presentation
+    // only (src/lib/dailyWeatherSummary.js), describing a meaningful wet/dry
+    // transition or a brief isolated episode within an otherwise dry usable
+    // day, rather than letting one severe hour define the whole headline.
+    dailySummaryRainEarlyDryLater: "Rain early, dry later",
+    dailySummaryDryEarlyRainLater: "Dry early, rain later",
+    dailySummaryBriefShowers: "Brief showers, otherwise dry",
+
     // Score explanation
     scoreExplanationTitle: "How camping conditions are scored",
 
@@ -617,6 +625,11 @@ export const commonTranslations = {
     thunderstorm: "Þrumuveður",
     thunderHail: "Þruma og haglél",
     severeThunderHail: "Mikið þrumuveður og haglél",
+
+    // Ticket 402 (#402) — sjá EN kafla fyrir samhengi.
+    dailySummaryRainEarlyDryLater: "Rigning framan af, þurrt síðar",
+    dailySummaryDryEarlyRainLater: "Þurrt framan af, rigning síðar",
+    dailySummaryBriefShowers: "Stuttar skúrir, annars þurrt",
 
     // Stigaskýring
     scoreExplanationTitle: "Hvernig aðstæðurnar eru metnar",
