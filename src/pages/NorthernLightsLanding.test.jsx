@@ -43,14 +43,17 @@ afterEach(() => {
 });
 
 describe("NorthernLightsLanding — page structure, order, and required copy", () => {
-  it("renders header, hero, card, how-it-works, disclaimer, and footer in that order", () => {
+  it("Ticket 403: renders header, hero (exact new copy), card, conversion section, how-it-works, disclaimer, and footer in that order", () => {
     renderPage();
 
-    const heading = screen.getByRole("heading", { level: 1, name: "Find the best Northern Lights conditions in Iceland tonight" });
+    const heading = screen.getByRole("heading", { level: 1, name: "Find where to see the Northern Lights in Iceland tonight" });
     expect(heading).toBeInTheDocument();
-    expect(screen.getByText("We compare cloud cover, aurora activity and darkness across locations to help you decide where to go.")).toBeInTheDocument();
+    expect(
+      screen.getByText("We compare aurora activity and cloud conditions across locations in Iceland to help you decide where to go."),
+    ).toBeInTheDocument();
 
     const card = screen.getByTestId("nl-card");
+    const valueHeading = screen.getByRole("heading", { level: 2, name: "Know where to go tonight" });
     const howEyebrow = screen.getByText("How it works");
     const howText = screen.getByText("Current viewing conditions are compared across Iceland using aurora activity, cloud conditions, and darkness.");
     const disclaimer = screen.getByText("The Northern Lights are a natural phenomenon. No forecast can guarantee visibility.");
@@ -63,9 +66,17 @@ describe("NorthernLightsLanding — page structure, order, and required copy", (
     }
 
     expect(isBefore(heading, card)).toBe(true);
-    expect(isBefore(card, howEyebrow)).toBe(true);
+    expect(isBefore(card, valueHeading)).toBe(true);
+    expect(isBefore(valueHeading, howEyebrow)).toBe(true);
     expect(isBefore(howText, disclaimer)).toBe(true);
     expect(isBefore(disclaimer, footerLink)).toBe(true);
+  });
+
+  it("Ticket 403: landing-owned marketing/head copy never claims a best viewing time, viewing window, or peak time", () => {
+    renderPage();
+    const forbidden = /best viewing time|viewing window|peak time/i;
+    expect(document.title).not.toMatch(forbidden);
+    expect(document.body.textContent).not.toMatch(forbidden);
   });
 
   it("Ticket 399 v3 (Round 3): the header renders the English logo at the established full size, with no tagline", () => {
@@ -98,6 +109,38 @@ describe("NorthernLightsLanding — page structure, order, and required copy", (
     renderPage();
     expect(screen.queryByText(/testimonial/i)).toBeNull();
     expect(screen.queryByRole("table")).toBeNull(); // no forecast table / dashboard section
+  });
+});
+
+describe("NorthernLightsLanding — Ticket 403: the lower conversion section", () => {
+  it("is Free-only: renders the four truthful value points and the outcome-led CTA for a Free/logged-out visitor", () => {
+    useMe.mockReturnValue({ me: { ok: true, user: null, entitlements: { pro: false, proUntil: null } }, loadingMe: false, refetchMe: vi.fn() });
+    renderPage();
+
+    expect(screen.getByRole("heading", { level: 2, name: "Know where to go tonight" })).toBeInTheDocument();
+    expect(screen.getByText("Where conditions are best tonight")).toBeInTheDocument();
+    expect(screen.getByText("Ranked alternatives nearby")).toBeInTheDocument();
+    expect(screen.getByText("Why each spot ranks — aurora activity & cloud conditions")).toBeInTheDocument();
+    expect(screen.getByText("All of it on the map")).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Show me where to go tonight" })).toBeInTheDocument();
+    expect(screen.getByText("Included with Chase the Weather Pro")).toBeInTheDocument();
+  });
+
+  it("is hidden entirely for Pro — no purchase lock/CTA/value section at all", () => {
+    useMe.mockReturnValue({ me: { ok: true, user: { email: "pro@example.com" }, entitlements: { pro: true, proUntil: "2027-01-01" } }, loadingMe: false, refetchMe: vi.fn() });
+    renderPage();
+
+    expect(screen.queryByRole("heading", { level: 2, name: "Know where to go tonight" })).toBeNull();
+    expect(screen.queryByRole("button", { name: "Show me where to go tonight" })).toBeNull();
+  });
+
+  it("does not imply a favorable result has already been found — describes product capability, independent of the card's own state", () => {
+    // The default mocked fetch never resolves (card stays loading), yet the
+    // conversion section still renders for Free — proving it is not
+    // conditioned on tonight's result at all.
+    renderPage();
+    expect(screen.getByTestId("nl-loading")).toBeInTheDocument();
+    expect(screen.getByRole("heading", { level: 2, name: "Know where to go tonight" })).toBeInTheDocument();
   });
 });
 

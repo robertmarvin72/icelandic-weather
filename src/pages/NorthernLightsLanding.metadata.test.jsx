@@ -39,9 +39,20 @@ describe("NorthernLightsLanding — metadata (real react-helmet-async)", () => {
     renderWithRealHelmet();
     await waitFor(() => expect(document.querySelector('meta[name="description"]')).not.toBeNull());
     const description = document.querySelector('meta[name="description"]').getAttribute("content");
-    expect(description).toMatch(/cloud cover|aurora|darkness/i);
+    expect(description).toMatch(/aurora|cloud|conditions/i);
     // Truthful — no unsupported real-time-precision/coverage claims.
     expect(description.toLowerCase()).not.toMatch(/real-time|guarantee|100%|always accurate/);
+  });
+
+  it("Ticket 403: title and description never claim a best viewing time, viewing window, or peak time", async () => {
+    renderWithRealHelmet();
+    await waitFor(() => expect(document.querySelector('meta[name="description"]')).not.toBeNull());
+    const description = document.querySelector('meta[name="description"]').getAttribute("content");
+    const forbidden = /best viewing time|viewing window|peak time/i;
+    expect(document.title).not.toMatch(forbidden);
+    expect(description).not.toMatch(forbidden);
+    // The revised value proposition is about WHERE, not WHEN.
+    expect(document.title.toLowerCase()).toContain("where");
   });
 
   it("the canonical URL is query-free even though the visited URL carried UTM params", async () => {

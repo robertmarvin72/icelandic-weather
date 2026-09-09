@@ -11,7 +11,7 @@
 // presentation-only — the request/response is identical for Free and Pro.
 
 import React, { useEffect, useMemo, useRef, useState } from "react";
-import { Sparkles } from "lucide-react";
+import { Sparkles, Lock } from "lucide-react";
 import { isFeatureAvailable } from "../config/features";
 import { trackEvent } from "../lib/analytics";
 import { useAuroraDecision } from "../hooks/useAuroraDecision";
@@ -90,7 +90,14 @@ function AccentGlow({ glowClass }) {
   );
 }
 
-export default function NorthernLightsCard({ t, lang, entitlements, onUpgrade, theme, fetchImpl, now }) {
+// Ticket 403 (#403): variant="landing" is an explicit, additive presentation
+// switch — default behavior (homepage and every other consumer) is
+// completely unchanged when this prop is omitted. It only ever affects the
+// Free/logged-out qualifying-result CTA block below; every other state,
+// the Pro experience, scoring/classification/request logic, and the
+// existing `northern_lights_upgrade_clicked` event are identical regardless
+// of variant.
+export default function NorthernLightsCard({ t, lang, entitlements, onUpgrade, theme, fetchImpl, now, variant = "default" }) {
   const seasonActive = isAuroraSeason(now ? now() : undefined);
   const evening = todayEveningUtc(now ? now() : undefined);
 
@@ -206,6 +213,14 @@ export default function NorthernLightsCard({ t, lang, entitlements, onUpgrade, t
   }
 
   function handleUpgrade(source) {
+    // Ticket 403 (#403): the landing page's own conversion analytics —
+    // fires only for variant="landing" (never on the homepage/default
+    // card), once per deliberate click, before forwarding to checkout.
+    // Intentionally distinct from northern_lights_upgrade_clicked below:
+    // separate semantic layers, both allowed to fire from the same click.
+    if (variant === "landing") {
+      trackEvent("northern_lights_landing_cta_clicked", { lang, tier: "free", placement: "card", source });
+    }
     trackEvent("northern_lights_upgrade_clicked", { lang, source, tier: "free" });
     if (typeof onUpgrade === "function") onUpgrade(source);
   }
@@ -289,6 +304,7 @@ export default function NorthernLightsCard({ t, lang, entitlements, onUpgrade, t
               display={display}
               nowMs={now ? now().getTime() : Date.now()}
               visualTokens={visualTokens}
+              variant={variant}
             />
           )}
         </div>
@@ -315,7 +331,45 @@ function StaleParialNotices({ t, isPartial, isStale, staleAgo }) {
   );
 }
 
-function AuroraResult({ t, lang, theme, classification, isPro, detailsExpanded, onToggleDetails, onUpgrade, display, nowMs, visualTokens }) {
+// Ticket 403 (#403): the landing-only locked-value treatment. Deliberately
+// receives no location/result data at all — only `t` and a click callback —
+// so it is structurally incapable of leaking any Pro-only name, ranking,
+// reason, coordinate, or map content into the DOM, regardless of what the
+// canonical result actually contains.
+function LandingLockedValue({ t, onUpgrade }) {
+  const items = [
+    "nlLandingLockedBestLocation",
+    "nlLandingLockedAlternatives",
+    "nlLandingLockedReasons",
+    "nlLandingLockedMap",
+  ];
+
+  return (
+    <div>
+      <p className="flex items-center gap-1.5 text-xs font-semibold text-slate-300/90">
+        <Lock aria-hidden="true" className="h-3 w-3" />
+        {t("nlLandingLockedHeading")}
+      </p>
+      <ul className="mt-1.5 space-y-1">
+        {items.map((key) => (
+          <li key={key} className="text-xs text-slate-300/80">
+            {t(key)}
+          </li>
+        ))}
+      </ul>
+      <button
+        type="button"
+        onClick={onUpgrade}
+        className="mt-2 inline-flex items-center rounded-full bg-emerald-500 px-3 py-1.5 text-xs font-semibold text-slate-950 hover:bg-emerald-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-300"
+      >
+        {t("nlLandingCtaPrimary")}
+      </button>
+      <p className="mt-1 text-[11px] text-slate-400">{t("nlLandingCtaNote")}</p>
+    </div>
+  );
+}
+
+function AuroraResult({ t, lang, theme, classification, isPro, detailsExpanded, onToggleDetails, onUpgrade, display, nowMs, visualTokens, variant = "default" }) {
   const body = classification.body;
   const isPartial = classification.primary === "partial";
   const isStale = classification.freshness === "stale";
@@ -366,14 +420,20 @@ function AuroraResult({ t, lang, theme, classification, isPro, detailsExpanded, 
 
       {!isPro && (
         <div className="mt-2">
-          <p className="text-xs text-slate-300/80">{t("nlFreeHint")}</p>
-          <button
-            type="button"
-            onClick={() => onUpgrade("northern_lights_card")}
-            className="mt-2 inline-flex items-center rounded-full bg-emerald-500 px-3 py-1.5 text-xs font-semibold text-slate-950 hover:bg-emerald-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-300"
-          >
-            {t("nlUpgradeCta")}
-          </button>
+          {variant === "landing" ? (
+            <LandingLockedValue t={t} onUpgrade={() => onUpgrade("northern_lights_card")} />
+          ) : (
+            <>
+              <p className="text-xs text-slate-300/80">{t("nlFreeHint")}</p>
+              <button
+                type="button"
+                onClick={() => onUpgrade("northern_lights_card")}
+                className="mt-2 inline-flex items-center rounded-full bg-emerald-500 px-3 py-1.5 text-xs font-semibold text-slate-950 hover:bg-emerald-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-300"
+              >
+                {t("nlUpgradeCta")}
+              </button>
+            </>
+          )}
         </div>
       )}
 

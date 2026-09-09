@@ -192,12 +192,17 @@ export const landingTranslations = {
     // boundary), so the "is" companion values below exist only to satisfy
     // this file's established translation-shape convention and are never
     // actually rendered by that route.
-    auroraLandingMetaTitle: "Northern Lights Forecast Tonight | Iceland Viewing Conditions",
+    // Ticket 403 (#403): hero/metadata revised to sell the real WHERE-to-go
+    // value proposition — never a claimed best viewing time/window/peak
+    // time (approved prompt §1's explicit prohibition).
+    auroraLandingMetaTitle: "Where to See the Northern Lights in Iceland Tonight",
     auroraLandingMetaDescription:
-      "Compare cloud cover, aurora activity, and darkness across Iceland to find the best Northern Lights viewing conditions tonight.",
-    auroraLandingHeroTitle: "Find the best Northern Lights conditions in Iceland tonight",
+      "Compare aurora activity and cloud conditions across locations in Iceland to find out where to go for the Northern Lights tonight.",
+    auroraLandingHeroTitle: "Find where to see the Northern Lights in Iceland tonight",
     auroraLandingHeroSubtitle:
-      "We compare cloud cover, aurora activity and darkness across locations to help you decide where to go.",
+      "We compare aurora activity and cloud conditions across locations in Iceland to help you decide where to go.",
+    // Ticket 403: Free-only conversion section heading, below the card.
+    auroraLandingValueSectionHeading: "Know where to go tonight",
     auroraLandingHowEyebrow: "How it works",
     auroraLandingHowText:
       "Current viewing conditions are compared across Iceland using aurora activity, cloud conditions, and darkness.",
@@ -389,12 +394,15 @@ export const landingTranslations = {
 
     // Ticket 399 (#399) — companion values only; /en/northern-lights is
     // route-locked to English and never renders these.
-    auroraLandingMetaTitle: "Norðurljósaspá í kvöld | Skilyrði á Íslandi",
+    // Ticket 403 (#403): revised to match the English WHERE-to-go value
+    // proposition; still unused by the (English-only) route.
+    auroraLandingMetaTitle: "Hvert á að fara til að sjá norðurljósin á Íslandi í kvöld",
     auroraLandingMetaDescription:
-      "Berðu saman skýjahulu, norðurljósavirkni og myrkur um allt Ísland til að finna bestu skilyrðin til að sjá norðurljós í kvöld.",
-    auroraLandingHeroTitle: "Finndu bestu norðurljósaskilyrðin á Íslandi í kvöld",
+      "Berðu saman norðurljósavirkni og skýjahulu á milli staða á Íslandi til að finna út hvert á að fara til að sjá norðurljósin í kvöld.",
+    auroraLandingHeroTitle: "Finndu hvar má sjá norðurljósin á Íslandi í kvöld",
     auroraLandingHeroSubtitle:
-      "Við berum saman skýjahulu, norðurljósavirkni og myrkur á milli staða til að hjálpa þér að ákveða hvert á að fara.",
+      "Við berum saman norðurljósavirkni og skýjahulu á milli staða á Íslandi til að hjálpa þér að ákveða hvert á að fara.",
+    auroraLandingValueSectionHeading: "Vittu hvert á að fara í kvöld",
     auroraLandingHowEyebrow: "Hvernig þetta virkar",
     auroraLandingHowText:
       "Núverandi skilyrði eru borin saman um allt Ísland út frá norðurljósavirkni, skýjahulu og myrkri.",

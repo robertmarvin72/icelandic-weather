@@ -51,6 +51,21 @@ export const northernLightsTranslations = {
     nlFreeHint: "Conditions may be worth checking somewhere in Iceland tonight.",
     nlUpgradeCta: "See where and why (Pro)",
 
+    // Ticket 403 (#403) — landing-only locked-value treatment (variant
+    // "landing" on NorthernLightsCard) shown to Free/logged-out visitors in
+    // place of nlFreeHint/nlUpgradeCta, only for a qualifying result. Names
+    // the four real Pro capabilities truthfully; no invented data, no
+    // timing/"best time" claims. nlLandingCtaPrimary/nlLandingCtaNote are
+    // reused verbatim by the landing page's own lower conversion section
+    // (same keys, same copy, two placements).
+    nlLandingLockedHeading: "Pro shows you:",
+    nlLandingLockedBestLocation: "Where conditions are best tonight",
+    nlLandingLockedAlternatives: "Ranked alternatives nearby",
+    nlLandingLockedReasons: "Why each spot ranks — aurora activity & cloud conditions",
+    nlLandingLockedMap: "All of it on the map",
+    nlLandingCtaPrimary: "Show me where to go tonight",
+    nlLandingCtaNote: "Included with Chase the Weather Pro",
+
     nlHighWindNote: "Windy conditions expected — dress warmly if you go out to look.",
 
     nlDetailsShow: "See details",
@@ -141,6 +156,17 @@ export const northernLightsTranslations = {
 
     nlFreeHint: "Aðstæður gætu verið þess virði að skoða einhvers staðar á Íslandi í kvöld.",
     nlUpgradeCta: "Sjá hvar og af hverju (Pro)",
+
+    // Ticket 403 (#403) — companion values; the "landing" variant is only
+    // ever rendered on the English-locked /en/northern-lights route today,
+    // but kept real/translated per this file's established convention.
+    nlLandingLockedHeading: "Pro sýnir þér:",
+    nlLandingLockedBestLocation: "Besta staðsetningin í kvöld",
+    nlLandingLockedAlternatives: "Röðaða valkosti í nágrenninu",
+    nlLandingLockedReasons: "Af hverju hver staður raðast — norðurljósavirkni og skýjahula",
+    nlLandingLockedMap: "Allt á kortinu",
+    nlLandingCtaPrimary: "Sýndu mér hvert ég á að fara í kvöld",
+    nlLandingCtaNote: "Innifalið í Chase the Weather Pro",
 
     nlHighWindNote: "Búast má við vindasömu veðri — klæddu þig vel ef þú ferð út að skoða.",
 

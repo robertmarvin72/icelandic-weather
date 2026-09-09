@@ -81,13 +81,29 @@ export default function NorthernLightsLanding() {
   // a premature "free" guess. No PII: lang + tier only, never email/user
   // id/raw URL/UTM values. The global AnalyticsTracker already fires the
   // pageview for every route (including this one) — this is a separate
-  // semantic event, not a duplicate.
+  // semantic event, not a duplicate. Ticket 403 (#403): unchanged — name,
+  // payload, timing, and exact-once behavior are all preserved.
   const viewedRef = useRef(false);
   useEffect(() => {
     if (viewedRef.current || loadingMe) return;
     viewedRef.current = true;
     trackEvent("aurora_landing_viewed", { lang: "en", tier: entitlements.isPro ? "pro" : "free" });
   }, [loadingMe, entitlements.isPro]);
+
+  // Ticket 403 (#403): the lower Free-only conversion section's own CTA —
+  // a separate placement from the card's internal one. Fires the same new
+  // event with placement="value_section" and a distinct, stable source,
+  // then forwards that exact source to the existing checkout flow
+  // unchanged (no new entitlement/price/plan/attribution semantics).
+  function handleValueSectionCta() {
+    trackEvent("northern_lights_landing_cta_clicked", {
+      lang: "en",
+      tier: entitlements.isPro ? "pro" : "free",
+      placement: "value_section",
+      source: "northern_lights_landing_value_section",
+    });
+    startCheckout("northern_lights_landing_value_section");
+  }
 
   const canonicalUrl = `${typeof window !== "undefined" ? window.location.origin : PRODUCTION_ORIGIN_FALLBACK}${CANONICAL_PATH}`;
   const metaTitle = t("auroraLandingMetaTitle");
@@ -145,8 +161,46 @@ export default function NorthernLightsLanding() {
         </section>
 
         <section className="mx-auto max-w-3xl px-6 pb-6">
-          <NorthernLightsCard t={t} lang={lang} entitlements={entitlements} onUpgrade={startCheckout} theme={theme} />
+          <NorthernLightsCard
+            t={t}
+            lang={lang}
+            entitlements={entitlements}
+            onUpgrade={startCheckout}
+            theme={theme}
+            variant="landing"
+          />
         </section>
+
+        {/* Ticket 403 (#403): Free-only conversion section — describes
+            product capability, not tonight's result, so it renders
+            regardless of the card's own state (qualifying, all-poor,
+            unavailable, loading, etc.) and never claims a favorable
+            outcome. Hidden entirely for Pro (no purchase lock/CTA for
+            paying users). Restates the same four real Pro capabilities the
+            card's own locked-value block names — no new claims. */}
+        {!entitlements.isPro && (
+          <section className="mx-auto max-w-3xl px-6 pb-6">
+            <div className="rounded-2xl border border-slate-200/70 bg-white/70 px-5 py-5 dark:border-slate-800/70 dark:bg-slate-900/70">
+              <h2 className="text-base font-bold text-slate-900 dark:text-slate-100">
+                {t("auroraLandingValueSectionHeading")}
+              </h2>
+              <ul className="mt-3 grid gap-2 sm:grid-cols-2">
+                <li className="text-sm text-slate-600 dark:text-slate-400">{t("nlLandingLockedBestLocation")}</li>
+                <li className="text-sm text-slate-600 dark:text-slate-400">{t("nlLandingLockedAlternatives")}</li>
+                <li className="text-sm text-slate-600 dark:text-slate-400">{t("nlLandingLockedReasons")}</li>
+                <li className="text-sm text-slate-600 dark:text-slate-400">{t("nlLandingLockedMap")}</li>
+              </ul>
+              <button
+                type="button"
+                onClick={handleValueSectionCta}
+                className="mt-4 inline-flex items-center rounded-full bg-emerald-500 px-4 py-2 text-sm font-semibold text-slate-950 hover:bg-emerald-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400"
+              >
+                {t("nlLandingCtaPrimary")}
+              </button>
+              <p className="mt-1.5 text-xs text-slate-500 dark:text-slate-400">{t("nlLandingCtaNote")}</p>
+            </div>
+          </section>
+        )}
 
         <section className="mx-auto max-w-3xl px-6 pb-6">
           <div className="rounded-2xl border border-slate-200/70 bg-white/70 px-5 py-5 dark:border-slate-800/70 dark:bg-slate-900/70">
