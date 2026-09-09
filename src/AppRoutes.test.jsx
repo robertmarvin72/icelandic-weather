@@ -40,6 +40,9 @@ vi.mock("./pages/CampaignLandingPage", () => ({
   default: () => <div data-testid="page-campaign" />,
 }));
 vi.mock("./pages/Welcome", () => ({ default: () => <div data-testid="page-welcome" /> }));
+vi.mock("./pages/NorthernLightsLanding", () => ({
+  default: () => <div data-testid="page-northern-lights-landing" />,
+}));
 
 function StubHome() {
   return <div data-testid="page-home" />;
@@ -91,6 +94,28 @@ describe("AppRoutes — route-matching baseline (#217 pre-upgrade regression gat
 
   it("an unknown path renders NotFound", () => {
     renderAt("/does-not-exist");
+    expect(screen.getByTestId("page-notfound")).toBeInTheDocument();
+  });
+});
+
+describe("AppRoutes — /en/northern-lights (#399)", () => {
+  it("renders the Northern Lights landing route", () => {
+    renderAt("/en/northern-lights");
+    expect(screen.getByTestId("page-northern-lights-landing")).toBeInTheDocument();
+  });
+
+  it("query parameters (including UTMs) still match the same route", () => {
+    renderAt("/en/northern-lights?utm_source=google&utm_campaign=aurora&foo=bar");
+    expect(screen.getByTestId("page-northern-lights-landing")).toBeInTheDocument();
+  });
+
+  it("an internal double slash renders NotFound, same as every other route", () => {
+    renderAt("/en//northern-lights");
+    expect(screen.getByTestId("page-notfound")).toBeInTheDocument();
+  });
+
+  it("a near-miss path (no /en prefix) renders NotFound, not the landing page", () => {
+    renderAt("/northern-lights");
     expect(screen.getByTestId("page-notfound")).toBeInTheDocument();
   });
 });

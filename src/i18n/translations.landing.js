@@ -186,6 +186,23 @@ export const landingTranslations = {
     campaignWeekendCampingHeadline: "Find better camping weather for the weekend",
     campaignWeekendCampingSubheadline: "Compare nearby campsites before leaving so wind or rain does not catch you out.",
     campaignWeekendCampingCta: "Plan this weekend",
+
+    // Ticket 399 (#399) — /en/northern-lights, a permanent English-only
+    // product-entry page. Route-locked to English (useT("en") at the route
+    // boundary), so the "is" companion values below exist only to satisfy
+    // this file's established translation-shape convention and are never
+    // actually rendered by that route.
+    auroraLandingMetaTitle: "Northern Lights Forecast Tonight | Iceland Viewing Conditions",
+    auroraLandingMetaDescription:
+      "Compare cloud cover, aurora activity, and darkness across Iceland to find the best Northern Lights viewing conditions tonight.",
+    auroraLandingHeroTitle: "Find the best Northern Lights conditions in Iceland tonight",
+    auroraLandingHeroSubtitle:
+      "We compare cloud cover, aurora activity and darkness across locations to help you decide where to go.",
+    auroraLandingHowEyebrow: "How it works",
+    auroraLandingHowText:
+      "Current viewing conditions are compared across Iceland using aurora activity, cloud conditions, and darkness.",
+    auroraLandingDisclaimer:
+      "The Northern Lights are a natural phenomenon. No forecast can guarantee visibility.",
   },
 
   is: {
@@ -369,5 +386,19 @@ export const landingTranslations = {
     campaignWeekendCampingHeadline: "Finndu betra tjaldveður fyrir helgina",
     campaignWeekendCampingSubheadline: "Berðu saman nálæg tjaldsvæði áður en þú leggur af stað svo vindur eða rigning komi síður á óvart.",
     campaignWeekendCampingCta: "Skipuleggja helgina",
+
+    // Ticket 399 (#399) — companion values only; /en/northern-lights is
+    // route-locked to English and never renders these.
+    auroraLandingMetaTitle: "Norðurljósaspá í kvöld | Skilyrði á Íslandi",
+    auroraLandingMetaDescription:
+      "Berðu saman skýjahulu, norðurljósavirkni og myrkur um allt Ísland til að finna bestu skilyrðin til að sjá norðurljós í kvöld.",
+    auroraLandingHeroTitle: "Finndu bestu norðurljósaskilyrðin á Íslandi í kvöld",
+    auroraLandingHeroSubtitle:
+      "Við berum saman skýjahulu, norðurljósavirkni og myrkur á milli staða til að hjálpa þér að ákveða hvert á að fara.",
+    auroraLandingHowEyebrow: "Hvernig þetta virkar",
+    auroraLandingHowText:
+      "Núverandi skilyrði eru borin saman um allt Ísland út frá norðurljósavirkni, skýjahulu og myrkri.",
+    auroraLandingDisclaimer:
+      "Norðurljós eru náttúrufyrirbæri. Engin spá getur tryggt að þau sjáist.",
   },
 };
