@@ -79,3 +79,31 @@ describe("weatherVoiceTypes.js — declaration completeness (source review)", ()
     expect(Object.keys(mod)).toEqual([]);
   });
 });
+
+describe("weatherVoiceTypes.js — Ticket 406 (#406) Phase 2 typedefs", () => {
+  it("declares the comment/presentation/history contracts, preserving every Phase 1 typedef", () => {
+    for (const typedefName of [
+      // Phase 1 (#405) — must remain present, unchanged in meaning:
+      "WeatherVoiceCondition",
+      "TjaldurMood",
+      "WeatherVoiceInput",
+      "WeatherVoiceResult",
+      // Phase 2 (#406) — new:
+      "WeatherVoiceCtaType",
+      "WeatherVoiceCommentMetadata",
+      "WeatherVoiceCommentEntry",
+      "WeatherVoicePresentation",
+      "WeatherVoiceHistory",
+    ]) {
+      expect(SOURCE).toMatch(new RegExp(`@typedef[^\\n]*\\}\\s*${typedefName}\\b`));
+    }
+  });
+
+  it("the WeatherVoiceCtaType typedef declares all five approved CTA strings", () => {
+    const match = SOURCE.match(/@typedef\s*\{([^}]*)\}\s*WeatherVoiceCtaType/);
+    expect(match).not.toBeNull();
+    for (const cta of ["better_location", "calmer_location", "drier_location", "warmer_location", "best_locations"]) {
+      expect(match[1]).toContain(`"${cta}"`);
+    }
+  });
+});

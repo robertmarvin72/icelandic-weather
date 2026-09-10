@@ -64,4 +64,73 @@
  * @typedef {WeatherVoiceSilentResult|WeatherVoiceActiveResult} WeatherVoiceResult
  */
 
+// ── Weather Voice (#406) Phase 2 — content, selection, and history ────────
+
+/**
+ * The five MVP-declared CTA destination types a comment entry may
+ * reference. All MVP entries (issue #406) use `null` — no destination
+ * promise or navigation is implemented in Phase 2.
+ * @typedef {"better_location"|"calmer_location"|"drier_location"|"warmer_location"|"best_locations"} WeatherVoiceCtaType
+ */
+
+/**
+ * Authored, per-ID metadata (src/lib/weatherVoiceContent.js's shared
+ * registry) — everything about a comment except its language-specific
+ * text. `severityMin`/`severityMax` default to 0/3 when omitted;
+ * `repeatCooldownDays` defaults to 7; `ctaType` defaults to `null`.
+ * @typedef {Object} WeatherVoiceCommentMetadata
+ * @property {WeatherVoiceCondition} condition
+ * @property {TjaldurMood} mood
+ * @property {number} [severityMin] - Inclusive integer 0-3.
+ * @property {number} [severityMax] - Inclusive integer 0-3.
+ * @property {number} [repeatCooldownDays] - Finite, nonnegative.
+ * @property {WeatherVoiceCtaType|null} [ctaType]
+ */
+
+/**
+ * One fully-resolved library entry — a language's `{id, text}` merged
+ * with its WeatherVoiceCommentMetadata, defaults applied
+ * (src/lib/weatherVoiceContent.js's getWeatherVoiceLibrary() output shape).
+ * @typedef {Object} WeatherVoiceCommentEntry
+ * @property {string} id - Stable ASCII id, language-independent and stable across deploys.
+ * @property {string} text - Nonempty comment text in the resolved language.
+ * @property {WeatherVoiceCondition} condition
+ * @property {TjaldurMood} mood
+ * @property {number} severityMin
+ * @property {number} severityMax
+ * @property {number} repeatCooldownDays
+ * @property {WeatherVoiceCtaType|null} ctaType
+ */
+
+/**
+ * @typedef {Object} WeatherVoiceCommentRef
+ * @property {string} id
+ * @property {string} text
+ */
+
+/**
+ * @typedef {Object} WeatherVoiceActivePresentation
+ * @property {true} show
+ * @property {WeatherVoiceCondition} condition - Copied verbatim from the Phase 1 engine result, never from content.
+ * @property {TjaldurMood} mood - Copied verbatim from the Phase 1 engine result.
+ * @property {0|1|2|3} severity - Copied verbatim from the Phase 1 engine result.
+ * @property {WeatherVoiceCommentRef} comment - The selected entry's id/text only (no other metadata leaks into presentation).
+ * @property {WeatherVoiceCtaType|null} ctaType
+ */
+
+/**
+ * weatherVoiceSelector.js's selectWeatherVoiceComment() result:
+ * `{ show: false }` or a WeatherVoiceActivePresentation.
+ * @typedef {WeatherVoiceSilentResult|WeatherVoiceActivePresentation} WeatherVoicePresentation
+ */
+
+/**
+ * weatherVoiceHistory.js's in-memory/persisted shape: stable comment `id`
+ * -> the single latest epoch-ms timestamp it was actually shown at (not a
+ * list of every exposure). No coordinates, identity, weather data, or
+ * comment text is ever stored — see weatherVoiceHistory.js for the
+ * persisted-JSON shape (`{ version, records: { [id]: epochMs } }`).
+ * @typedef {Map<string, number>} WeatherVoiceHistory
+ */
+
 export {};
