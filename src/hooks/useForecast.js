@@ -32,6 +32,19 @@ function useForecast(lat, lon, opts = {}) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [retrying, setRetrying] = useState(false);
+  // Ticket 408 (#408) — narrow, additive request-provenance seam: which
+  // requested coordinates the CURRENT `data`/`rows` actually came from.
+  // `loading` alone can't answer this — on the render immediately after
+  // `lat`/`lon` change, `rows` (derived from the still-old `data`) and
+  // `loading` (still whatever it was before this effect re-ran) are both
+  // stale for the new coordinates until this effect's fetch resolves.
+  // Deliberately the REQUESTED lat/lon (this hook's own params), never the
+  // provider's own (possibly grid-rounded) response coordinates — so a
+  // consumer can reliably compare `requestedFor` against the coordinates
+  // it currently cares about. Set in the same synchronous block as
+  // setData(j) below (including the cached-response path, which resolves
+  // through this same call site) so both land in one batched commit.
+  const [requestedFor, setRequestedFor] = useState(null);
 
   const [refreshKey, setRefreshKey] = useState(0);
   const refetch = useCallback(() => setRefreshKey((k) => k + 1), []);
@@ -60,8 +73,11 @@ function useForecast(lat, lon, opts = {}) {
             throw new Error("Invalid forecast payload");
           }
 
-          if (!aborted) setData(j);
-          if (!aborted) setRetrying(false);
+          if (!aborted) {
+            setData(j);
+            setRequestedFor({ lat, lon });
+            setRetrying(false);
+          }
           return;
         } catch (e) {
           if (aborted) return;
@@ -173,7 +189,7 @@ function useForecast(lat, lon, opts = {}) {
     });
   }, [data?.daily, data?.hourly]);
 
-  return { data, rows, windDir, shelter, loading, error, retrying, refetch };
+  return { data, rows, windDir, shelter, loading, error, retrying, refetch, requestedFor };
 }
 
 export { useForecast };

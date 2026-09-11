@@ -147,6 +147,22 @@ describe("DecisionQuizResearch — enabled: consent gate, full flow, confirmatio
     expect(screen.getAllByRole("radio").length).toBeGreaterThan(0);
   });
 
+  // Ticket 408 (#408), Revision 2 — Weather Voice is a standalone
+  // WeatherVoiceCard rendered only from App.jsx's homepage call site,
+  // never from HomeDecisionCard itself (HomeDecisionCard carries no
+  // Weather Voice props at all — see HomeDecisionCard.jsx/.test.jsx).
+  // DecisionQuizResearch renders the real HomeDecisionCard directly and
+  // never mounts App.jsx or WeatherVoiceCard, so no Weather Voice
+  // selection, history access, or DOM can appear here by construction,
+  // not merely because a prop happens to be omitted.
+  it("never renders Weather Voice content — no /tjaldur/ asset, no selection/history access", () => {
+    renderQuiz();
+    fireEvent.click(screen.getByRole("button", { name: /start|byrja/i }));
+    expect(screen.getByTestId("quiz-scenario")).toBeInTheDocument();
+    const images = screen.queryAllByRole("img", { hidden: true });
+    expect(images.every((img) => !img.getAttribute("src")?.includes("/tjaldur/"))).toBe(true);
+  });
+
   it("emits zero production analytics calls across render, transition, and interaction", async () => {
     vi.stubGlobal(
       "fetch",

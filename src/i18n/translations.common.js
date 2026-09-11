@@ -464,6 +464,19 @@ export const commonTranslations = {
     icRainDelta: "{diff} mm less rain",
     icTempDelta: "{diff}°C warmer",
     icDistanceLabel: "~{km} km as the crow flies",
+    // Weather Voice card eyebrow label (standalone card, not the verdict card).
+    weatherVoiceLabel: "TJALDUR SAYS",
+    // Ticket 408 (#408) — Weather Voice optional CTA labels. All five map
+    // to the same kind of underlying exploration action; production
+    // content never sets a non-null ctaType today (#406's 27 MVP entries
+    // are all CTA=null), so these exist for the tested capability, not a
+    // live production path. Wording describes exploring/comparing, never
+    // promises a specific better site exists.
+    weatherVoiceCtaBetterLocation: "Compare conditions",
+    weatherVoiceCtaCalmerLocation: "See calmer spots",
+    weatherVoiceCtaDrierLocation: "See drier spots",
+    weatherVoiceCtaWarmerLocation: "See warmer spots",
+    weatherVoiceCtaBestLocations: "See the best spots",
     // #396 Revision 3 (owner copy follow-up): removed the "isn't dangerous"
     // contrast — calm compare/monitor wording, consistent with canonical
     // consider semantics; does not imply moving is recommended.
@@ -995,6 +1008,15 @@ export const commonTranslations = {
     icRainDelta: "{diff} mm minna regn",
     icTempDelta: "{diff}°C hlýrra",
     icDistanceLabel: "~{km} km í beinni línu",
+    // Weather Voice card eyebrow label (standalone card, not the verdict card).
+    weatherVoiceLabel: "TJALDUR SEGIR",
+    // Ticket 408 (#408) — Weather Voice optional CTA labels. See the EN
+    // block's comment for why production never renders these today.
+    weatherVoiceCtaBetterLocation: "Bera saman aðstæður",
+    weatherVoiceCtaCalmerLocation: "Skoða rólegri staði",
+    weatherVoiceCtaDrierLocation: "Skoða þurrari staði",
+    weatherVoiceCtaWarmerLocation: "Skoða hlýrri staði",
+    weatherVoiceCtaBestLocations: "Skoða bestu staðina",
     icConsiderFallback: "Aðstæður í nágrenninu gætu verið örlítið öðruvísi — vert að bera saman eða fylgjast með.",
     icStayVerdict: "Þú ert líklega á góðum stað.",
     icStayNoAlternative: "Enginn nálægur staður lítur greinilega betur út næstu daga.",

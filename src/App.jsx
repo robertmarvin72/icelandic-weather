@@ -14,6 +14,7 @@ import { trackEvent } from "./lib/analytics";
 import AppRoutes from "./AppRoutes";
 import BackToTop from "./components/BackToTop";
 import HomeDecisionCard from "./components/HomeDecisionCard";
+import WeatherVoiceCard from "./components/WeatherVoiceCard";
 import NorthernLightsCard from "./components/NorthernLightsCard";
 import Footer from "./components/Footer";
 import CampsiteComparisonSection from "./components/CampsiteComparisonSection";
@@ -32,6 +33,7 @@ import { useCampsites } from "./hooks/useCampsites";
 import { useCheckoutFlow } from "./hooks/useCheckoutFlow";
 import { useDistanceTo } from "./hooks/useDistanceTo";
 import { useForecast } from "./hooks/useForecast";
+import { useWeatherVoice } from "./hooks/useWeatherVoice";
 import { useLanguage } from "./hooks/useLanguage";
 import { useLeaderboardScores } from "./hooks/useLeaderboardScores";
 import { useLocalStorageState } from "./hooks/useLocalStorageState";
@@ -226,7 +228,7 @@ function IcelandCampingWeatherApp({ page = "home" }) {
   }, [showCampsitesGate, siteId, siteList, setSiteId]);
 
   const site = showCampsitesGate ? null : siteList.find((s) => s.id === siteId) || siteList[0];
-  const { rows, windDir, shelter, loading, error } = useForecast(site?.lat, site?.lon, {
+  const { rows, windDir, shelter, loading, error, requestedFor } = useForecast(site?.lat, site?.lon, {
     t,
     toast: pushToast,
     retries: 2,
@@ -246,6 +248,30 @@ function IcelandCampingWeatherApp({ page = "home" }) {
     () => rows.map((r) => ({ ...r, dayLabel: formatDay(r.date, lang) })),
     [rows, lang]
   );
+
+  // Ticket 408 (#408) — same underlying action HomeDecisionCard's own
+  // secondary CTA already falls back to when no onCtaClick is supplied
+  // (App.jsx passes none today). Deliberately NOT routed through
+  // HomeDecisionCard's handleSecondaryClick, which fires the PRIMARY
+  // homepage_instant_comparison_cta_click analytics event — reusing that
+  // handler for a Weather Voice click would fabricate that event.
+  // Production Weather Voice content never sets a non-null ctaType (see
+  // #406), so this only fires for the tested-but-unused optional CTA path.
+  const scrollToComparisonSection = useCallback(() => {
+    document.getElementById("comparison-section")?.scrollIntoView({ behavior: "smooth", block: "start" });
+  }, []);
+
+  const weatherVoice = useWeatherVoice({
+    enabled: !showCampsitesGate && page === "home",
+    site,
+    rows: rowsWithDay,
+    requestedFor,
+    loading,
+    error,
+    lang,
+    t,
+    onExplore: scrollToComparisonSection,
+  });
 
   const currentScore = useMemo(
     () => Number(scoresById?.[siteId]?.score ?? 0),
@@ -357,6 +383,15 @@ function IcelandCampingWeatherApp({ page = "home" }) {
                 onUpgrade={startCheckout}
                 currentSiteId={siteId}
                 lang={lang}
+              />
+
+              <WeatherVoiceCard
+                result={weatherVoice.presentation}
+                surface="homepage_decision"
+                episodeKey={weatherVoice.episodeKey}
+                action={weatherVoice.action}
+                t={t}
+                onVisible={weatherVoice.onVisible}
               />
 
               <NorthernLightsCard t={t} lang={lang} entitlements={entitlements} onUpgrade={startCheckout} theme={theme} />

@@ -1,0 +1,11 @@
+{
+  "historyBeforeVisible": null,
+  "historyAfterVisible": "{\"version\":1,\"records\":{\"excellent_03\":1789151776003}}",
+  "recordedOnRealVisibility": true,
+  "commentIdSiteA": "TJALDUR SEGIR„Nú vantar bara kaffið.“",
+  "historyAfterSwitchSettled": "{\"version\":1,\"records\":{\"excellent_03\":1789151776003,\"cold_02\":1789151777105}}",
+  "newEpisodeRecordedDistinctFromOld": true,
+  "commentIdSiteB": "TJALDUR SEGIR„Peysan fær framlengingu.“",
+  "historyAfterReToggle": "{\"version\":1,\"records\":{\"excellent_03\":1789151776003,\"cold_02\":1789151777105}}",
+  "noDuplicateOnReToggle": true
+}

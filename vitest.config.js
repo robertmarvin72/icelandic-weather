@@ -3,6 +3,14 @@ import react from "@vitejs/plugin-react";
 
 export default defineConfig({
   plugins: [react()],
+  resolve: {
+    alias: {
+      // Only exists via the real vite-plugin-pwa build pipeline, not this
+      // plugin list — aliased so App.jsx (which imports it directly) can
+      // be rendered in tests at all. See src/test/mocks/virtualPwaRegister.js.
+      "virtual:pwa-register": "/src/test/mocks/virtualPwaRegister.js",
+    },
+  },
   test: {
     environment: "jsdom",
     globals: true,

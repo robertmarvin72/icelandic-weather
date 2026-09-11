@@ -1,0 +1,80 @@
+[
+  {
+    "name": "01-extreme_wind-320-is-light",
+    "scrollWidth": 320,
+    "clientWidth": 320,
+    "horizontalOverflow": false,
+    "weatherVoicePresent": true,
+    "weatherVoiceText": "TJALDUR SEGIR\n\n„Ég tek þetta sem persónulega árás.“"
+  },
+  {
+    "name": "02-heavy_rain-390-is-light",
+    "scrollWidth": 390,
+    "clientWidth": 390,
+    "horizontalOverflow": false,
+    "weatherVoicePresent": true,
+    "weatherVoiceText": "TJALDUR SEGIR\n\n„Þetta er fullmikill áhugi á vatni.“"
+  },
+  {
+    "name": "03-cold-390-is-dark",
+    "scrollWidth": 390,
+    "clientWidth": 390,
+    "horizontalOverflow": false,
+    "weatherVoicePresent": true,
+    "weatherVoiceText": "TJALDUR SEGIR\n\n„Kaffið kólnar af samúð.“"
+  },
+  {
+    "name": "04-excellent-768-is-light",
+    "scrollWidth": 768,
+    "clientWidth": 768,
+    "horizontalOverflow": false,
+    "weatherVoicePresent": true,
+    "weatherVoiceText": "TJALDUR SEGIR\n\n„Þetta er grunsamlega gott.“"
+  },
+  {
+    "name": "05-excellent-1280-is-light",
+    "scrollWidth": 1280,
+    "clientWidth": 1280,
+    "horizontalOverflow": false,
+    "weatherVoicePresent": true,
+    "weatherVoiceText": "TJALDUR SEGIR\n\n„Nú vantar bara kaffið.“"
+  },
+  {
+    "name": "06-cold-1280-is-dark",
+    "scrollWidth": 1280,
+    "clientWidth": 1280,
+    "horizontalOverflow": false,
+    "weatherVoicePresent": true,
+    "weatherVoiceText": "TJALDUR SEGIR\n\n„Lopapeysan hafði rétt fyrir sér.“"
+  },
+  {
+    "name": "07-silent-390-is-light",
+    "scrollWidth": 390,
+    "clientWidth": 390,
+    "horizontalOverflow": false,
+    "weatherVoicePresent": false,
+    "weatherVoiceText": null
+  },
+  {
+    "name": "08-excellent-390-is-light-PRO",
+    "scrollWidth": 390,
+    "clientWidth": 390,
+    "horizontalOverflow": false,
+    "weatherVoicePresent": true,
+    "weatherVoiceText": "TJALDUR SEGIR\n\n„Ekki segja neinum.“"
+  },
+  {
+    "name": "09-excellent-390-en-light-SILENT-EN",
+    "scrollWidth": 390,
+    "clientWidth": 390,
+    "horizontalOverflow": false,
+    "weatherVoicePresent": false,
+    "weatherVoiceText": null
+  },
+  {
+    "name": "site-switch",
+    "beforeText": "TJALDUR SEGIR\n\n„Nú vantar bara kaffið.“",
+    "afterText": "TJALDUR SEGIR\n\n„Peysan fær framlengingu.“",
+    "changedCorrectly": true
+  }
+]
