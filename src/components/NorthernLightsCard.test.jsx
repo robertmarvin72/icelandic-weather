@@ -158,15 +158,31 @@ describe("NorthernLightsCard — loading state", () => {
 });
 
 describe("NorthernLightsCard — #398 visual-state pill/headline/body per band (good/fair/poor), IS and EN", () => {
-  it.each(["is", "en"])("%s: excellent/good band -> GOOD visual state copy", async (lang) => {
+  // Ticket 414 (#414): excellent shares GOOD's headline/body (unchanged
+  // behavior) but must get its OWN accurate pill label — never nlPillGood,
+  // which is exactly the bug this ticket fixes (an excellent result was
+  // previously mislabeled "Good conditions").
+  it.each(["is", "en"])("%s: excellent band -> GOOD headline/body copy, but its OWN excellent pill label", async (lang) => {
     const dict = northernLightsTranslations[lang];
     const realT = (k) => dict[k] ?? k;
     render(
       <NorthernLightsCard t={realT} lang={lang} entitlements={{ isPro: false }} onUpgrade={vi.fn()} theme="light" now={IN_SEASON_NOW} fetchImpl={makeFetchImpl(successBody({ best: loc("a", "excellent") }))} />,
     );
     await waitFor(() => expect(screen.getByText(dict.nlHeadlineGood)).toBeInTheDocument());
+    expect(screen.getByText(dict.nlPillExcellent)).toBeInTheDocument();
+    expect(screen.queryByText(dict.nlPillGood)).toBeNull();
+    expect(screen.getByText(dict.nlBodyGood)).toBeInTheDocument(); // Free body line, shared with good
+  });
+
+  it.each(["is", "en"])("%s: good band -> GOOD visual state copy, including the (unchanged) good pill", async (lang) => {
+    const dict = northernLightsTranslations[lang];
+    const realT = (k) => dict[k] ?? k;
+    render(
+      <NorthernLightsCard t={realT} lang={lang} entitlements={{ isPro: false }} onUpgrade={vi.fn()} theme="light" now={IN_SEASON_NOW} fetchImpl={makeFetchImpl(successBody({ best: loc("a", "good") }))} />,
+    );
+    await waitFor(() => expect(screen.getByText(dict.nlHeadlineGood)).toBeInTheDocument());
     expect(screen.getByText(dict.nlPillGood)).toBeInTheDocument();
-    expect(screen.getByText(dict.nlBodyGood)).toBeInTheDocument(); // Free body line
+    expect(screen.getByText(dict.nlBodyGood)).toBeInTheDocument();
   });
 
   it.each(["is", "en"])("%s: fair band -> FAIR visual state copy, hedged", async (lang) => {
@@ -204,7 +220,9 @@ describe("NorthernLightsCard — Free: coarse guidance without Pro data leakage"
     renderCard({ entitlements: { isPro: false } });
     await waitFor(() => expect(screen.getByText("nlHeadlineGood")).toBeInTheDocument());
 
-    expect(screen.getByText("nlPillGood")).toBeInTheDocument();
+    // BEST's fixture band is "excellent" — Ticket 414 (#414): its own pill
+    // label, never nlPillGood.
+    expect(screen.getByText("nlPillExcellent")).toBeInTheDocument();
     expect(screen.getByText("nlBodyGood")).toBeInTheDocument();
     expect(screen.queryByText(BEST.name)).toBeNull();
     expect(screen.queryByText("90")).toBeNull();
@@ -681,6 +699,7 @@ describe("NorthernLightsCard — real i18n copy exists for IS and EN (not just k
     const dict = northernLightsTranslations[lang];
     for (const key of [
       "nlCardTitle",
+      "nlPillExcellent",
       "nlPillGood",
       "nlHeadlineGood",
       "nlBodyGood",
@@ -700,6 +719,9 @@ describe("NorthernLightsCard — real i18n copy exists for IS and EN (not just k
       "nlUpgradeCta",
       "nlNoDarknessTitle",
       "nlRetry",
+      "nlLegendExcellent",
+      "nlLegendGood",
+      "nlLegendFair",
     ]) {
       expect(dict[key]).toBeTypeOf("string");
       expect(dict[key]).not.toBe(key);

@@ -76,6 +76,22 @@ export const AURORA_VISUAL_STATE_TOKENS = {
   },
 };
 
+// Ticket 414 (#414) — narrow canonical-band presentation override. GOOD's
+// grouping (`auroraVisualState("excellent") === GOOD`, above) is
+// deliberately UNCHANGED: CTA-key selection, headline/body copy, and every
+// other behavior keyed off the visual state keep treating excellent as
+// GOOD. Only the status PILL — and the accent glow/bar that share its
+// color language — get an accurate, visibly distinct purple/"excellent"
+// treatment, so an excellent result no longer wears a "Good conditions"
+// badge. Never applied to headlineKey/bodyKey, which stay GOOD's.
+const EXCELLENT_PILL_OVERRIDE = {
+  pillKey: "nlPillExcellent",
+  pillClass: "bg-purple-400/15 text-purple-200 ring-1 ring-inset ring-purple-400/40",
+  accentGlowClass: "bg-purple-400/25",
+  accentBarClass: "bg-purple-400",
+};
+
 export function auroraVisualStateTokens(band) {
-  return AURORA_VISUAL_STATE_TOKENS[auroraVisualState(band)];
+  const tokens = AURORA_VISUAL_STATE_TOKENS[auroraVisualState(band)];
+  return band === "excellent" ? { ...tokens, ...EXCELLENT_PILL_OVERRIDE } : tokens;
 }

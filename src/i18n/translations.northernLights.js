@@ -11,6 +11,9 @@ export const northernLightsTranslations = {
     // guarantee/probability claim; "gæti sést"/"could be visible" style
     // qualitative phrasing only.
     nlNewBadge: "New",
+    // Ticket 414 (#414): narrow status-pill override for excellent — headline/
+    // body/CTA still come from the shared GOOD copy below, unchanged.
+    nlPillExcellent: "Excellent conditions",
     nlPillGood: "Good conditions",
     nlHeadlineGood: "Good conditions tonight",
     nlBodyGood: "Skies look favorable for spotting the Aurora tonight.",
@@ -38,6 +41,12 @@ export const northernLightsTranslations = {
     nlBandFair: "Fair viewing conditions",
     nlBandPoor: "Poor viewing conditions",
     nlBandVeryPoor: "Very poor viewing conditions",
+
+    // Ticket 414 (#414) — short map-legend-only labels, distinct from the
+    // descriptive nlBand* labels above (kept unchanged for popups/lists).
+    nlLegendExcellent: "Excellent",
+    nlLegendGood: "Good",
+    nlLegendFair: "Fair",
 
     nlReasonMeaningfulActivity: "Meaningful aurora activity forecast",
     nlReasonLowActivity: "Low aurora activity forecast",
@@ -119,6 +128,7 @@ export const northernLightsTranslations = {
     nlLoading: "Athuga aðstæður…",
 
     nlNewBadge: "Nýtt",
+    nlPillExcellent: "Frábær skilyrði",
     nlPillGood: "Góð skilyrði",
     nlHeadlineGood: "Góð skilyrði í kvöld",
     nlBodyGood: "Himininn lítur vel út til að sjá norðurljós í kvöld.",
@@ -144,6 +154,10 @@ export const northernLightsTranslations = {
     nlBandFair: "Sæmilegar aðstæður til að sjá norðurljós",
     nlBandPoor: "Slæmar aðstæður til að sjá norðurljós",
     nlBandVeryPoor: "Mjög slæmar aðstæður til að sjá norðurljós",
+
+    nlLegendExcellent: "Frábær",
+    nlLegendGood: "Góð",
+    nlLegendFair: "Sæmileg",
 
     nlReasonMeaningfulActivity: "Marktæk norðurljósavirkni í spá",
     nlReasonLowActivity: "Lítil norðurljósavirkni í spá",

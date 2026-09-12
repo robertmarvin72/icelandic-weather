@@ -6,7 +6,7 @@ import { getForecast } from "./lib/forecastCache";
 import MarkerClusterGroup from "react-leaflet-cluster";
 import { scoreSiteDay } from "./lib/scoring";
 import { normalizeDailyToScoreInput } from "./lib/forecastNormalize";
-import { auroraBandColor, auroraBandLabelKey } from "./lib/auroraBandPresentation";
+import { auroraBandColor, auroraBandLabelKey, auroraBandShortLabelKey } from "./lib/auroraBandPresentation";
 
 // ───────────────────────────────────────────────
 // Color mapping by weekly total score (0–70: sum of 7 daily scores, each 0–10).
@@ -72,9 +72,16 @@ function escapeHtml(str) {
 // (3 px white inner + 3 px slate-950 outer) via box-shadow on the rotated
 // shape, and a stronger drop-shadow. The ring colour (#0f172a) is the
 // app's foreground token — distinct from all four score/data colours.
-function scorePinIcon(color, isSelected = false, name = "") {
+function scorePinIcon(color, isSelected = false, name = "", ariaLabel = "") {
   const width = isSelected ? 30 : 24;
   const height = isSelected ? 42 : 34;
+  // Ticket 414 (#414): narrow accessible-name addition for Aurora category
+  // markers only (the only caller passing a non-empty ariaLabel) — this
+  // divIcon HTML pattern has no `alt` (that's an L.icon-only prop), so a
+  // role="img"/aria-label pair on the wrapper is the existing pattern's own
+  // way to expose one. Ordinary weather-mode markers pass no ariaLabel and
+  // are byte-for-byte unchanged.
+  const a11yAttrs = ariaLabel ? ` role="img" aria-label="${escapeHtml(ariaLabel)}"` : "";
 
   if (isSelected) {
     return L.divIcon({
@@ -83,7 +90,7 @@ function scorePinIcon(color, isSelected = false, name = "") {
       iconAnchor: [(width + 10) / 2, height + 8],
       popupAnchor: [0, -height],
       html: `
-        <div style="
+        <div${a11yAttrs} style="
           position: relative;
           width: ${width + 10}px;
           height: ${height + 10}px;
@@ -138,14 +145,14 @@ function scorePinIcon(color, isSelected = false, name = "") {
     });
   }
 
-  // Unselected: exactly as before.
+  // Unselected: exactly as before (plus a11yAttrs, empty unless ariaLabel is set).
   return L.divIcon({
     className: "",
     iconSize: [width + 10, height + 10],
     iconAnchor: [(width + 10) / 2, height + 8],
     popupAnchor: [0, -height],
     html: `
-      <div style="
+      <div${a11yAttrs} style="
         position: relative;
         width: ${width + 10}px;
         height: ${height + 10}px;
@@ -375,7 +382,14 @@ export default function MapView({
             const scoreLabel = hasScore ? labelForScore(score, t) : "…";
 
             const isSelected = site.id === selectedId;
-            const icon = scorePinIcon(color, isSelected, isSelected ? site.name : "");
+            // Ticket 414 (#414): accessible name for Aurora category markers
+            // — text alternative for the color-only category signal, mirroring
+            // the same long/descriptive label already shown in the popup.
+            // Ordinary weather-mode markers pass no ariaLabel, unchanged.
+            const ariaLabel = isAuroraMode
+              ? `${site.name}: ${typeof t === "function" ? t(auroraBandLabelKey(site.band)) : site.band}`
+              : "";
+            const icon = scorePinIcon(color, isSelected, isSelected ? site.name : "", ariaLabel);
 
             const loading = loadingById[site.id];
             const err = errorById[site.id];
@@ -502,14 +516,17 @@ export default function MapView({
       )}
 
       {isAuroraMode && !mapFailed && (
-        <div className="absolute bottom-3 right-3 z-[500] rounded-2xl border border-slate-200 bg-white/90 px-3 py-3 text-xs text-slate-700 shadow backdrop-blur-sm">
+        <div data-testid="aurora-legend" className="absolute bottom-3 right-3 z-[500] rounded-2xl border border-slate-200 bg-white/90 px-3 py-3 text-xs text-slate-700 shadow backdrop-blur-sm">
           <div className="mb-2 font-semibold">
             {typeof t === "function" ? t("mapAuroraLegendTitle") : "Aurora-viewing conditions"}
           </div>
           {["excellent", "good", "fair"].map((band) => (
             <div key={band} className="mt-1 flex items-center gap-2 first:mt-0">
               <span className="inline-block h-3 w-3 rounded-full" style={{ backgroundColor: auroraBandColor(band) }} />
-              <span>{typeof t === "function" ? t(auroraBandLabelKey(band)) : band}</span>
+              {/* Ticket 414 (#414): legend uses the short label (Frábær/Góð/
+                  Sæmileg — Excellent/Good/Fair); popups/lists below keep the
+                  longer, descriptive auroraBandLabelKey unchanged. */}
+              <span>{typeof t === "function" ? t(auroraBandShortLabelKey(band)) : band}</span>
             </div>
           ))}
         </div>

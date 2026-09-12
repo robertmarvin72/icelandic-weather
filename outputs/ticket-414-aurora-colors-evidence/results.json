@@ -1,0 +1,34 @@
+{
+  "01-mobile-is-light": {
+    "pillText": "Frábær skilyrði",
+    "pillClass": "rounded-full px-2 py-0.5 text-[11px] font-semibold bg-purple-400/15 text-purple-200 ring-1 ring-inset ring-purple-400/40",
+    "legendVisible": true,
+    "legendText": "NorðurljósaskilyrðiFrábærGóðSæmileg",
+    "noHorizontalOverflow": true,
+    "pillNoOverflow": true
+  },
+  "02-mobile-en-dark": {
+    "pillText": "Excellent conditions",
+    "pillClass": "rounded-full px-2 py-0.5 text-[11px] font-semibold bg-purple-400/15 text-purple-200 ring-1 ring-inset ring-purple-400/40",
+    "legendVisible": true,
+    "legendText": "Aurora-viewing conditionsExcellentGoodFair",
+    "noHorizontalOverflow": true,
+    "pillNoOverflow": true
+  },
+  "03-desktop-is-light": {
+    "pillText": "Frábær skilyrði",
+    "pillClass": "rounded-full px-2 py-0.5 text-[11px] font-semibold bg-purple-400/15 text-purple-200 ring-1 ring-inset ring-purple-400/40",
+    "legendVisible": true,
+    "legendText": "NorðurljósaskilyrðiFrábærGóðSæmileg",
+    "noHorizontalOverflow": true,
+    "pillNoOverflow": true
+  },
+  "04-desktop-en-dark": {
+    "pillText": "Excellent conditions",
+    "pillClass": "rounded-full px-2 py-0.5 text-[11px] font-semibold bg-purple-400/15 text-purple-200 ring-1 ring-inset ring-purple-400/40",
+    "legendVisible": true,
+    "legendText": "Aurora-viewing conditionsExcellentGoodFair",
+    "noHorizontalOverflow": true,
+    "pillNoOverflow": true
+  }
+}

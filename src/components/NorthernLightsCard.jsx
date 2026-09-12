@@ -72,7 +72,9 @@ function CardHeader({ t, pill }) {
         )}
       </div>
       {pill && (
-        <span className={`rounded-full px-2 py-0.5 text-[11px] font-semibold ${pill.pillClass}`}>{t(pill.pillKey)}</span>
+        <span data-testid="nl-status-pill" className={`rounded-full px-2 py-0.5 text-[11px] font-semibold ${pill.pillClass}`}>
+          {t(pill.pillKey)}
+        </span>
       )}
     </div>
   );

@@ -1,22 +1,22 @@
 # Current AI Task
 
-Task: ticket-413
+Task: ticket-414
 Stage: CLOSED
 
 Task directory:
-docs/ai/tasks/ticket-413/
+docs/ai/tasks/ticket-414/
 
 Prompt review:
-docs/ai/tasks/ticket-413/prompt-review.md
+docs/ai/tasks/ticket-414/prompt-review.md
 
 Approved prompt:
-docs/ai/tasks/ticket-413/approved-prompt-v2.md
+docs/ai/tasks/ticket-414/approved-prompt-v1.md
 
 CC report:
-docs/ai/tasks/ticket-413/cc-report.md
+docs/ai/tasks/ticket-414/cc-report.md
 
 Result review:
-docs/ai/tasks/ticket-413/result-review.md (Round 1: Jonesy PASS, Ripley REVISE; Round 2 correction: Jonesy PASS, Ripley PASS)
+docs/ai/tasks/ticket-414/result-review.md (Round 1: Jonesy PASS, Ripley PASS)
 
 ## Rule
 

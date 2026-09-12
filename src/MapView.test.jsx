@@ -11,7 +11,7 @@
 
 import React from "react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { render, screen, fireEvent } from "@testing-library/react";
+import { render, screen, fireEvent, within } from "@testing-library/react";
 
 vi.mock("leaflet", () => ({
   default: {
@@ -119,7 +119,7 @@ describe("MapView — Aurora mode (Ticket 397, #397)", () => {
     render(<MapView campsites={AURORA_SITES} selectedId={null} onSelect={vi.fn()} userLocation={null} t={t} mode="aurora" />);
     const marker1Html = screen.getByTestId("marker-loc-1").dataset.iconHtml;
     const marker2Html = screen.getByTestId("marker-loc-2").dataset.iconHtml;
-    expect(marker1Html).toContain("#16a34a"); // excellent
+    expect(marker1Html).toContain("#a855f7"); // excellent (Ticket 414: purple)
     expect(marker2Html).toContain("#facc15"); // fair
     expect(marker1Html).not.toBe(marker2Html);
   });
@@ -130,6 +130,35 @@ describe("MapView — Aurora mode (Ticket 397, #397)", () => {
     expect(screen.queryByText("mapShowWeatherColors")).toBeNull();
     expect(screen.getByText("mapAuroraLegendTitle")).toBeInTheDocument();
     expect(screen.queryByText("mapWeatherConditions")).toBeNull();
+  });
+
+  // Ticket 414 (#414): the legend must use the short label keys, never the
+  // long descriptive ones already proven (above) to appear in popups.
+  it("legend uses short labels (nlLegendExcellent/Good/Fair), not the long descriptive popup labels", () => {
+    render(<MapView campsites={AURORA_SITES} selectedId={null} onSelect={vi.fn()} userLocation={null} t={t} mode="aurora" />);
+    const legend = within(screen.getByTestId("aurora-legend"));
+    expect(legend.getByText("nlLegendExcellent")).toBeInTheDocument();
+    expect(legend.getByText("nlLegendGood")).toBeInTheDocument();
+    expect(legend.getByText("nlLegendFair")).toBeInTheDocument();
+    // The long descriptive labels legitimately appear elsewhere (popups,
+    // asserted above) — only the legend itself must avoid them.
+    expect(legend.queryByText("nlBandExcellent")).toBeNull();
+    expect(legend.queryByText("nlBandGood")).toBeNull();
+    expect(legend.queryByText("nlBandFair")).toBeNull();
+  });
+
+  // Ticket 414 (#414): color alone must not be the only way excellent/good/
+  // fair is conveyed — markers get a text-alternative accessible name.
+  it("Aurora markers carry an accessible name (role=img + aria-label) naming the site and its band; generic weather markers get none", () => {
+    render(<MapView campsites={AURORA_SITES} selectedId={null} onSelect={vi.fn()} userLocation={null} t={t} mode="aurora" />);
+    const marker1Html = screen.getByTestId("marker-loc-1").dataset.iconHtml;
+    expect(marker1Html).toContain('role="img"');
+    expect(marker1Html).toContain('aria-label="Loc One: nlBandExcellent"');
+
+    render(<MapView campsites={WEATHER_SITES} selectedId={null} onSelect={vi.fn()} userLocation={null} t={t} />);
+    const weatherMarkerHtml = screen.getByTestId("marker-site-1").dataset.iconHtml;
+    expect(weatherMarkerHtml).not.toContain("role=");
+    expect(weatherMarkerHtml).not.toContain("aria-label");
   });
 
   it("never shows a place as poor/very-poor Aurora-wise while any generic Good/Fair/Rough label leaks through (the Höfn contradiction this ticket fixes)", () => {

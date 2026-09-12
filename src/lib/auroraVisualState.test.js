@@ -59,4 +59,41 @@ describe("auroraVisualStateTokens — styling/copy tokens per visual state", () 
     expect(neutral.headlineKey).not.toBe(fair.headlineKey);
     expect(poor.headlineKey).not.toBe(neutral.headlineKey);
   });
+
+  // Ticket 414 (#414): excellent must render its own purple pill/glow/bar —
+  // never good's green/emerald pill — while everything that governs BEHAVIOR
+  // (grouping, headline, body) stays exactly GOOD's, unchanged. This is the
+  // "narrow presentation override, not a new behavioral state" contract.
+  describe("excellent pill override (Ticket 414, #414)", () => {
+    it("gets its own pillKey/pillClass/accentGlowClass/accentBarClass, distinct from good's", () => {
+      const excellent = auroraVisualStateTokens("excellent");
+      const good = auroraVisualStateTokens("good");
+      expect(excellent.pillKey).toBe("nlPillExcellent");
+      expect(excellent.pillKey).not.toBe(good.pillKey);
+      expect(excellent.pillClass).not.toBe(good.pillClass);
+      expect(excellent.pillClass).toContain("purple");
+      expect(excellent.accentGlowClass).not.toBe(good.accentGlowClass);
+      expect(excellent.accentGlowClass).toContain("purple");
+      expect(excellent.accentBarClass).not.toBe(good.accentBarClass);
+      expect(excellent.accentBarClass).toContain("purple");
+    });
+
+    it("headline and body stay identical to good's — only the pill/accent are overridden", () => {
+      const excellent = auroraVisualStateTokens("excellent");
+      const good = auroraVisualStateTokens("good");
+      expect(excellent.headlineKey).toBe(good.headlineKey);
+      expect(excellent.bodyKey).toBe(good.bodyKey);
+    });
+
+    it("auroraVisualState(excellent) is still GOOD — the override never changes the behavioral grouping", () => {
+      expect(auroraVisualState("excellent")).toBe(AURORA_VISUAL_STATES.GOOD);
+    });
+
+    it("the override is scoped to exactly 'excellent' — every other band's tokens are untouched", () => {
+      for (const band of ["good", "fair", "poor", "very-poor", undefined, "not-a-band"]) {
+        const tokens = auroraVisualStateTokens(band);
+        expect(tokens.pillKey).not.toBe("nlPillExcellent");
+      }
+    });
+  });
 });
