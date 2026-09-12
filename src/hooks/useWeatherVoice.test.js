@@ -103,8 +103,18 @@ describe("useWeatherVoice — real Phase 1/2 outputs and today-only scope", () =
     expect(result.current.presentation).toEqual({ show: false });
   });
 
-  it("empty EN never falls back to IS — a genuinely active Phase 1 result stays silent for lang=en", () => {
+  // Ticket 412 (#412): EN is no longer the deliberately-empty MVP
+  // placeholder — a real excellent-producing row now selects a real
+  // active EN presentation too, mirroring the IS test above exactly.
+  it("a real excellent-producing row selects a real active presentation from the real EN library too", () => {
     const { result } = renderHook(() => useWeatherVoice(baseArgs({ lang: "en" })));
+    expect(result.current.presentation).toMatchObject({ show: true, condition: "excellent", mood: "excellent", severity: 0 });
+    expect(typeof result.current.presentation.comment.text).toBe("string");
+    expect(result.current.presentation.comment.text.length).toBeGreaterThan(0);
+  });
+
+  it("an unsupported language never falls back to IS — a genuinely active Phase 1 result stays silent for lang=fr (real getWeatherVoiceLibrary behavior, not a content fixture)", () => {
+    const { result } = renderHook(() => useWeatherVoice(baseArgs({ lang: "fr" })));
     expect(result.current.presentation).toEqual({ show: false });
   });
 

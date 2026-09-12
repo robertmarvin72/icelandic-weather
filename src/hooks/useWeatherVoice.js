@@ -10,7 +10,7 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { evaluateWeatherVoice } from "../lib/weatherVoiceEngine";
-import { getWeatherVoiceLibrary } from "../lib/weatherVoiceContent";
+import { getWeatherVoiceLibrary, devWarnEmptyEligiblePool } from "../lib/weatherVoiceContent";
 import { selectWeatherVoiceComment } from "../lib/weatherVoiceSelector";
 import { createWeatherVoiceHistory } from "../lib/weatherVoiceHistory";
 import { resolveWeatherVoiceCta } from "../lib/weatherVoicePresentation";
@@ -148,6 +148,16 @@ export function useWeatherVoice({
       const library = getWeatherVoiceLibrary(lang);
       const history = historyRef.current.getHistory(now());
       const selected = selectWeatherVoiceComment({ engineResult, library, history, now: now(), rng });
+      // Ticket 412 (#412): the engine wanted to show something, but this
+      // language's resolved library had zero eligible entries for that
+      // exact condition/mood — the approved prompt's "exceptional"
+      // wholly-absent-pool case. selectWeatherVoiceComment already fails
+      // closed (show:false) on its own; this only adds a bounded,
+      // dev-only diagnostic on top of that already-conservative behavior
+      // — the selector itself stays pure, untouched.
+      if (engineResult.show && !selected.show) {
+        devWarnEmptyEligiblePool(lang, engineResult.condition, engineResult.mood);
+      }
       selectionCacheRef.current = { key: episodeKey, presentation: selected };
     }
     setResolvedKey(episodeKey);

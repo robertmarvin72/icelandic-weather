@@ -46,7 +46,7 @@ function row(date, overrides = {}) {
   return { date, tmax: 16, windMax: 0, rain: 0, code: 0, ...overrides }; // excellent by default
 }
 
-function Harness({ site, rows, requestedFor, storage, rng = () => 0 }) {
+function Harness({ site, rows, requestedFor, storage, rng = () => 0, lang = "is" }) {
   const wv = useWeatherVoice({
     enabled: true,
     site,
@@ -54,7 +54,7 @@ function Harness({ site, rows, requestedFor, storage, rng = () => 0 }) {
     requestedFor,
     loading: false,
     error: null,
-    lang: "is",
+    lang,
     t,
     now: () => NOW,
     rng,
@@ -180,5 +180,65 @@ describe("useWeatherVoice + WeatherVoiceCard — integrated exposure lifecycle",
     const storage = fakeStorage();
     render(<Harness site={SITE_A} rows={[row(DAY1)]} requestedFor={{ lat: SITE_A.lat, lon: SITE_A.lon }} storage={storage} />);
     expect(storage._dump()).toEqual({});
+  });
+
+  // Ticket 412 (#412): a language change is, mechanically, exactly the same
+  // kind of episode replacement as a site/day/weather change — episodeKey
+  // includes lang — but this ticket's own subject is language switching, so
+  // it gets its own explicit regression rather than relying only on the
+  // site-based replacement test above to imply the same guarantee holds.
+  it("language change: an old observer callback, fired after switching languages, cannot write history for the new-language episode", () => {
+    const storage = fakeStorage();
+    const { rerender } = render(<Harness site={SITE_A} rows={[row(DAY1)]} requestedFor={{ lat: SITE_A.lat, lon: SITE_A.lon }} storage={storage} lang="is" />);
+    const oldObserver = FakeIntersectionObserver.instances[0];
+
+    rerender(<Harness site={SITE_A} rows={[row(DAY1)]} requestedFor={{ lat: SITE_A.lat, lon: SITE_A.lon }} storage={storage} lang="en" />);
+
+    oldObserver.trigger([{ isIntersecting: true, intersectionRatio: 1 }]);
+    expect(storage._dump()).toEqual({}); // rejected — the IS episode's stale observer cannot credit the EN episode
+
+    const newObserver = FakeIntersectionObserver.instances[FakeIntersectionObserver.instances.length - 1];
+    expect(newObserver).not.toBe(oldObserver);
+    newObserver.trigger([{ isIntersecting: true, intersectionRatio: 1 }]); // genuine — must record
+    const persisted = JSON.parse(storage._dump()["weather_voice_history_v1"]);
+    expect(Object.keys(persisted.records)).toHaveLength(1);
+  });
+
+  // Ticket 412 (#412): IS -> EN -> IS for IDENTICAL unchanged weather must
+  // settle to visible localized content at every step — condition/mood
+  // (and therefore the rendered mood asset) never change with language,
+  // only the comment text does, and each genuinely-observed episode along
+  // the way records its own exposure exactly once.
+  it("IS -> EN -> IS for identical weather: condition/mood stay stable, text is correctly localized at each step, no permanent suppression", () => {
+    const storage = fakeStorage();
+    const props = { site: SITE_A, rows: [row(DAY1)], requestedFor: { lat: SITE_A.lat, lon: SITE_A.lon }, storage };
+
+    const { rerender, container } = render(<Harness {...props} lang="is" />);
+    const isText1 = container.querySelector("p:nth-of-type(2)")?.textContent;
+    expect(isText1).toBeTruthy();
+    FakeIntersectionObserver.instances.at(-1).trigger([{ isIntersecting: true, intersectionRatio: 1 }]);
+
+    rerender(<Harness {...props} lang="en" />);
+    const enText = container.querySelector("p:nth-of-type(2)")?.textContent;
+    expect(enText).toBeTruthy();
+    expect(enText).not.toBe(isText1); // genuinely localized, not the same string reused
+    FakeIntersectionObserver.instances.at(-1).trigger([{ isIntersecting: true, intersectionRatio: 1 }]);
+
+    rerender(<Harness {...props} lang="is" />);
+    const isText2 = container.querySelector("p:nth-of-type(2)")?.textContent;
+    expect(isText2).toBeTruthy(); // settled back to visible IS content — no permanent suppression
+    FakeIntersectionObserver.instances.at(-1).trigger([{ isIntersecting: true, intersectionRatio: 1 }]);
+
+    // Exactly two distinct episodeKeys were involved here, not three: the
+    // final "is" step's episodeKey (surface/siteId/date/lang/condition/
+    // mood/severity) is IDENTICAL to the first "is" step's — same
+    // unchanged weather, same day, same language — so it's a genuine
+    // re-visit of the SAME episode, already recorded once; recordedShown
+    // correctly does not double-record it. The middle "en" step is a truly
+    // distinct episode (different lang) and recorded separately. This is
+    // the existing "no forced exact-text continuity, but no double-count
+    // of an unchanged episode either" policy — this ticket does not change it.
+    const persisted = JSON.parse(storage._dump()["weather_voice_history_v1"]);
+    expect(Object.keys(persisted.records)).toHaveLength(2);
   });
 });

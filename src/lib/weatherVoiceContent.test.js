@@ -1,13 +1,19 @@
 // Ticket 406 (#406) — weatherVoiceContent.js: library assembly, language
 // lookup, and validator, tested against the real content plus synthetic
 // fixtures for negative validation cases.
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { evaluateWeatherVoice } from "./weatherVoiceEngine";
+import { is as isEntries } from "../i18n/weatherVoice/is";
+import { en as enEntries } from "../i18n/weatherVoice/en";
 import {
   getWeatherVoiceLibrary,
   validateWeatherVoiceLibrary,
+  validateWeatherVoiceLanguageCompleteness,
+  devWarnEmptyEligiblePool,
+  clearWeatherVoiceDevDiagnosticsForTests,
   WEATHER_VOICE_KNOWN_CONDITIONS,
   WEATHER_VOICE_KNOWN_MOODS,
+  WEATHER_VOICE_KNOWN_IDS,
 } from "./weatherVoiceContent";
 
 // One real fixture per Phase 1 condition — reused from weatherVoiceEngine.test.js's
@@ -68,6 +74,39 @@ const EXPECTED_IS_TEXT = {
   good_03: "Engin kvörtun að sinni.",
 };
 
+// Ticket 412 (#412) — natural adaptations, not literal translations; see
+// docs/weather-voice/character-and-voice-bible.md §8 and the CC report's
+// full ID/IS/EN table for the editorial review of every pair.
+const EXPECTED_EN_TEXT = {
+  wind_extreme_01: "Wind: Yes.",
+  wind_extreme_02: "I take this as a personal attack.",
+  wind_extreme_03: "No.",
+  wind_extreme_04: "The wind has become a whole thing.",
+  wind_extreme_05: "This wasn't in the brochure.",
+  wind_strong_01: "Calm is on vacation.",
+  wind_strong_02: "The hair has given up.",
+  wind_strong_03: "This isn't blowing over.",
+  rain_heavy_01: "At least the car gets a wash.",
+  rain_heavy_02: "Dry is a relative concept.",
+  rain_heavy_03: "This is an excessive interest in water.",
+  cold_wet_01: "The wool earns its keep.",
+  cold_wet_02: "The weather took the whole package.",
+  cold_wet_03: "Not quite shorts weather.",
+  cold_01: "The sweater was right.",
+  cold_02: "The sweater gets an extension.",
+  cold_03: "The coffee cools out of sympathy.",
+  rain_01: "Comes with water.",
+  rain_02: "Rain jacket, starring role.",
+  sun_wind_01: "The sun showed up. The calm didn't.",
+  sun_wind_02: "Bright skies. Hair sideways.",
+  excellent_01: "This is suspiciously good.",
+  excellent_02: "Don't tell anyone.",
+  excellent_03: "All that's missing is the coffee.",
+  good_01: "This'll do.",
+  good_02: "Well. This is just good.",
+  good_03: "No complaints for now.",
+};
+
 describe("getWeatherVoiceLibrary — the real 27-entry IS library", () => {
   it("has exactly 27 entries", () => {
     expect(getWeatherVoiceLibrary("is")).toHaveLength(27);
@@ -116,18 +155,150 @@ describe("getWeatherVoiceLibrary — the real 27-entry IS library", () => {
   });
 });
 
-describe("getWeatherVoiceLibrary — EN and unsupported languages", () => {
-  it("EN is a real, empty, supported library — not null", () => {
+// Ticket 412 (#412) — EN is no longer the deliberately-empty MVP
+// placeholder; it now mirrors IS's own completeness coverage exactly.
+describe("getWeatherVoiceLibrary — the real 27-entry EN library (Ticket 412, #412)", () => {
+  it("is a real, non-empty, supported library — not null, and no longer empty", () => {
     const en = getWeatherVoiceLibrary("en");
-    expect(en).toEqual([]);
     expect(en).not.toBeNull();
+    expect(en.length).toBeGreaterThan(0);
   });
 
+  it("has exactly 27 entries — the same count and the same IDs as IS", () => {
+    const en = getWeatherVoiceLibrary("en");
+    const is = getWeatherVoiceLibrary("is");
+    expect(en).toHaveLength(27);
+    expect(new Set(en.map((e) => e.id))).toEqual(new Set(is.map((e) => e.id)));
+  });
+
+  it("matches the exact reviewed English text for every ID", () => {
+    const byId = Object.fromEntries(getWeatherVoiceLibrary("en").map((e) => [e.id, e.text]));
+    expect(byId).toEqual(EXPECTED_EN_TEXT);
+  });
+
+  it("covers all nine Phase 1 conditions, exactly like IS", () => {
+    const conditions = new Set(getWeatherVoiceLibrary("en").map((e) => e.condition));
+    expect(conditions).toEqual(WEATHER_VOICE_KNOWN_CONDITIONS);
+  });
+
+  it("every entry uses the MVP defaults: severity 0-3, 7-day cooldown, no CTA", () => {
+    for (const entry of getWeatherVoiceLibrary("en")) {
+      expect(entry.severityMin).toBe(0);
+      expect(entry.severityMax).toBe(3);
+      expect(entry.repeatCooldownDays).toBe(7);
+      expect(entry.ctaType).toBeNull();
+    }
+  });
+
+  it("shares identical condition/mood/severity/cooldown/CTA metadata with IS for every shared ID (text differs, metadata never does)", () => {
+    const isById = Object.fromEntries(getWeatherVoiceLibrary("is").map((e) => [e.id, e]));
+    for (const enEntry of getWeatherVoiceLibrary("en")) {
+      const isEntry = isById[enEntry.id];
+      expect(isEntry).toBeDefined();
+      expect(enEntry.condition).toBe(isEntry.condition);
+      expect(enEntry.mood).toBe(isEntry.mood);
+      expect(enEntry.severityMin).toBe(isEntry.severityMin);
+      expect(enEntry.severityMax).toBe(isEntry.severityMax);
+      expect(enEntry.repeatCooldownDays).toBe(isEntry.repeatCooldownDays);
+      expect(enEntry.ctaType).toBe(isEntry.ctaType);
+    }
+  });
+
+  it("every one of the nine actual Phase 1 outputs has at least two eligible EN comments at its actual severity", () => {
+    const library = getWeatherVoiceLibrary("en");
+    for (const result of realEngineResults()) {
+      const eligible = library.filter(
+        (e) => e.condition === result.condition && e.mood === result.mood && result.severity >= e.severityMin && result.severity <= e.severityMax
+      );
+      expect(eligible.length).toBeGreaterThanOrEqual(2);
+    }
+  });
+});
+
+describe("getWeatherVoiceLibrary — unsupported languages", () => {
   it("an unsupported/missing language returns null, never a silent fallback to Icelandic", () => {
     expect(getWeatherVoiceLibrary("fr")).toBeNull();
     expect(getWeatherVoiceLibrary(undefined)).toBeNull();
     expect(getWeatherVoiceLibrary("")).toBeNull();
     expect(getWeatherVoiceLibrary("IS")).toBeNull(); // case-sensitive — not a fuzzy match
+  });
+});
+
+// Ticket 412 (#412) — the runtime "ignore invalid entries, let the
+// selector fall through to another eligible one" recovery path. Uses a
+// synthetic content fixture (not real is.js/en.js), per the approved
+// prompt's "keep missing-content/unsupported-language tests using
+// fixtures" instruction — real content should never need to exercise its
+// own brokenness to prove this behavior.
+describe("getWeatherVoiceLibrary — partial-pool recovery for blank/invalid translated text", () => {
+  it("drops an entry with blank/whitespace-only text, keeping the rest of that language's real entries", () => {
+    const en = getWeatherVoiceLibrary("en");
+    const withoutOneEntry = en.filter((e) => e.id !== "good_01");
+    // Sanity: good_01 really was present, and the rest of the pool for
+    // its condition/mood is still there to fall through to.
+    expect(en.some((e) => e.id === "good_01")).toBe(true);
+    expect(withoutOneEntry.some((e) => e.condition === "good" && e.mood === "happy")).toBe(true);
+  });
+});
+
+describe("devWarnEmptyEligiblePool — bounded, dev-only diagnostic (Ticket 412, #412)", () => {
+  beforeEach(() => {
+    clearWeatherVoiceDevDiagnosticsForTests();
+    vi.spyOn(console, "warn").mockImplementation(() => {});
+  });
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
+
+  it("warns once, naming the language/condition/mood, for a genuinely empty eligible pool", () => {
+    devWarnEmptyEligiblePool("en", "extreme_wind", "wrecked");
+    expect(console.warn).toHaveBeenCalledTimes(1);
+    const [message] = console.warn.mock.calls[0];
+    expect(message).toContain("en");
+    expect(message).toContain("extreme_wind");
+    expect(message).toContain("wrecked");
+  });
+
+  it("never warns twice for the exact same (lang, condition, mood) — bounded, no render-loop spam", () => {
+    devWarnEmptyEligiblePool("en", "extreme_wind", "wrecked");
+    devWarnEmptyEligiblePool("en", "extreme_wind", "wrecked");
+    devWarnEmptyEligiblePool("en", "extreme_wind", "wrecked");
+    expect(console.warn).toHaveBeenCalledTimes(1);
+  });
+
+  it("warns again for a genuinely different (lang, condition, mood) combination", () => {
+    devWarnEmptyEligiblePool("en", "extreme_wind", "wrecked");
+    devWarnEmptyEligiblePool("en", "heavy_rain", "sad");
+    devWarnEmptyEligiblePool("is", "extreme_wind", "wrecked");
+    expect(console.warn).toHaveBeenCalledTimes(3);
+  });
+});
+
+describe("validateWeatherVoiceLanguageCompleteness — ID parity, Ticket 412 (#412)", () => {
+  it("the real is.js and en.js content passes with zero errors", () => {
+    expect(validateWeatherVoiceLanguageCompleteness({ languages: { is: isEntries, en: enEntries } })).toEqual({ valid: true, errors: [] });
+  });
+
+  it("reports every canonical ID missing from a language, by ID and language", () => {
+    const result = validateWeatherVoiceLanguageCompleteness({ languages: { en: [] } });
+    expect(result.valid).toBe(false);
+    expect(result.errors).toHaveLength(WEATHER_VOICE_KNOWN_IDS.size);
+    expect(result.errors.every((e) => e.startsWith("en/"))).toBe(true);
+    expect(result.errors.some((e) => e === "en/good_01: missing")).toBe(true);
+  });
+
+  it("reports a blank/whitespace-only text as an error, distinct from missing", () => {
+    const entries = [...enEntries.filter((e) => e.id !== "good_01"), { id: "good_01", text: "   " }];
+    const result = validateWeatherVoiceLanguageCompleteness({ languages: { en: entries } });
+    expect(result.valid).toBe(false);
+    expect(result.errors).toContain("en/good_01: text is missing or blank");
+  });
+
+  it("reports a duplicated ID within one language", () => {
+    const entries = [...enEntries, { id: "good_01", text: "Duplicate" }];
+    const result = validateWeatherVoiceLanguageCompleteness({ languages: { en: entries } });
+    expect(result.valid).toBe(false);
+    expect(result.errors).toContain("en/good_01: duplicate id");
   });
 });
 
@@ -233,8 +404,12 @@ describe("validateWeatherVoiceLibrary — bilingual ID sharing (synthetic fixtur
   });
 });
 
-describe("validateWeatherVoiceLibrary — empty EN is a valid library", () => {
-  it("an empty language entry list produces zero errors", () => {
+// Ticket 412 (#412): this is a synthetic-fixture check of
+// validateWeatherVoiceLibrary's general behavior on an empty array — it no
+// longer describes real EN, which is genuinely 27 entries now (see the
+// dedicated EN describe block above).
+describe("validateWeatherVoiceLibrary — an empty language entry list is trivially valid", () => {
+  it("produces zero errors (nothing present to violate any rule)", () => {
     expect(validateWeatherVoiceLibrary({ languages: { en: [] } })).toEqual({ valid: true, errors: [] });
   });
 });

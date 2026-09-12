@@ -108,13 +108,86 @@ function normalizeMetadata(meta) {
 
 const LANGUAGE_TEXT_ENTRIES = { is: isEntries, en: enEntries };
 
+function isNonEmptyText(text) {
+  return typeof text === "string" && text.trim().length > 0;
+}
+
+// ── Dev-only diagnostics (Ticket 412, #412) ────────────────────────────
+// Bounded: each distinct case warns at most once per page session via a
+// module-level dedup set (mirrors this codebase's existing
+// clearAuroraDecisionCache pattern — see auroraDecisionCache.js — for a
+// module-level cache with a test-only clear hook). Dev-only
+// (import.meta.env.DEV, the same convention already used in analytics.js/
+// App.jsx); reads only this module's own static content, never user data,
+// analytics, or network calls. Deliberately kept OUT of
+// weatherVoiceEngine.js/weatherVoiceSelector.js, which stay pure — this is
+// the "content/integration boundary" the approved prompt calls for.
+const warnedIncompleteLanguages = new Set();
+const warnedEmptyEligiblePools = new Set();
+
+export function clearWeatherVoiceDevDiagnosticsForTests() {
+  warnedIncompleteLanguages.clear();
+  warnedEmptyEligiblePools.clear();
+}
+
+// Called from getWeatherVoiceLibrary() itself so any consumer (not only
+// useWeatherVoice.js) gets the same warning the first time it resolves a
+// genuinely incomplete language — a stale/missing/blank ID would otherwise
+// only be discovered by noticing a shorter-than-expected pool.
+function devWarnIncompleteLanguage(lang, rawEntries) {
+  if (!import.meta.env.DEV) return;
+  if (warnedIncompleteLanguages.has(lang)) return;
+
+  const textById = new Map();
+  for (const entry of rawEntries) {
+    if (typeof entry?.id === "string") textById.set(entry.id, entry.text);
+  }
+
+  const missing = [];
+  for (const id of WEATHER_VOICE_KNOWN_IDS) {
+    if (!isNonEmptyText(textById.get(id))) missing.push(id);
+  }
+  if (missing.length === 0) return;
+
+  warnedIncompleteLanguages.add(lang);
+  console.warn(`[weatherVoiceContent] "${lang}" is missing or has blank translations for: ${missing.join(", ")}`);
+}
+
+/**
+ * devWarnEmptyEligiblePool(lang, condition, mood) — called from
+ * useWeatherVoice.js's selection effect (the integration boundary, which
+ * is the only place that has both the engine's result AND the selector's
+ * result) when the engine wanted to show something but the resolved
+ * language's eligible pool for that exact condition/mood was empty — the
+ * approved prompt's "exceptional" wholly-absent-pool case. Fires at most
+ * once per (lang, condition, mood) per page session.
+ */
+export function devWarnEmptyEligiblePool(lang, condition, mood) {
+  if (!import.meta.env.DEV) return;
+  const key = `${lang}|${condition}|${mood}`;
+  if (warnedEmptyEligiblePools.has(key)) return;
+  warnedEmptyEligiblePools.add(key);
+  console.warn(
+    `[weatherVoiceContent] no eligible "${lang}" Weather Voice content for condition="${condition}" mood="${mood}" — failing closed (silent) rather than showing untranslated/fabricated/stale text.`
+  );
+}
+
 /**
  * getWeatherVoiceLibrary(lang) -> WeatherVoiceCommentEntry[] | null
  *
- * Pure. `lang` must be exactly "is" or "en"; any other value (including
- * missing/unsupported languages) returns `null` — never a silent fallback
- * to Icelandic. `"en"` is a genuine, supported, currently-empty array, a
- * different outcome from `null`.
+ * Pure (aside from the bounded, dev-only diagnostic below — see its own
+ * doc comment). `lang` must be exactly "is" or "en"; any other value
+ * (including missing/unsupported languages) returns `null` — never a
+ * silent fallback to Icelandic. Ticket 412 (#412): both "is" and "en" are
+ * now genuinely complete (27 entries each, ID-for-ID parity — see
+ * `validateWeatherVoiceLanguageCompleteness` and its test coverage);
+ * `"en"` is no longer the deliberately-empty MVP placeholder it started as.
+ * An entry whose registered metadata is missing OR whose `text` is
+ * missing/blank is silently dropped here — never surfaced as a broken
+ * card — so the selector automatically falls through to another valid
+ * entry for the same condition/mood/severity; this is what makes a
+ * partially-broken translation self-heal at the existing selector
+ * boundary without any selector change (see docs/ai/tasks/ticket-412).
  *
  * @param {string} lang
  * @returns {import("./weatherVoiceTypes").WeatherVoiceCommentEntry[] | null}
@@ -123,10 +196,13 @@ export function getWeatherVoiceLibrary(lang) {
   const textEntries = LANGUAGE_TEXT_ENTRIES[lang];
   if (!Array.isArray(textEntries)) return null;
 
+  devWarnIncompleteLanguage(lang, textEntries);
+
   const out = [];
   for (const { id, text } of textEntries) {
     const meta = WEATHER_VOICE_COMMENT_METADATA[id];
     if (!meta) continue; // defensive: content without registered metadata is never surfaced
+    if (typeof text !== "string" || text.trim().length === 0) continue; // defensive: blank/invalid translated text is never surfaced — selector picks another eligible entry instead
     out.push({ id, text, ...normalizeMetadata(meta) });
   }
   return out;
@@ -257,6 +333,54 @@ export function validateWeatherVoiceLibrary({ languages, canonicalPairs } = {}) 
       if (!same) {
         errors.push(`${id}: metadata mismatch between languages "${first.lang}" and "${lang}" (text may differ, metadata must not)`);
       }
+    }
+  }
+
+  return { valid: errors.length === 0, errors };
+}
+
+/**
+ * validateWeatherVoiceLanguageCompleteness({ languages }) -> { valid, errors }
+ *
+ * Ticket 412 (#412) — cross-language ID PARITY validator, distinct from
+ * validateWeatherVoiceLibrary above: that function checks metadata/text
+ * validity for entries that ARE present, but never checks whether an
+ * expected id is missing entirely. This one does exactly that: every
+ * canonical id in WEATHER_VOICE_KNOWN_IDS must have exactly one non-blank
+ * entry in each given language's RAW `{id, text}` array (the is.js/en.js
+ * export shape, before metadata is joined in by getWeatherVoiceLibrary).
+ * Pure, test/build-tooling use only — never called from a production
+ * render path.
+ *
+ * @param {{ languages: Record<string, Array<{id: string, text: string}>> }} args
+ * @returns {{ valid: boolean, errors: string[] }}
+ */
+export function validateWeatherVoiceLanguageCompleteness({ languages } = {}) {
+  const errors = [];
+
+  for (const [lang, entries] of Object.entries(languages || {})) {
+    if (!Array.isArray(entries)) {
+      errors.push(`${lang}: entries must be an array`);
+      continue;
+    }
+
+    const seen = new Set();
+    for (const entry of entries) {
+      const id = entry?.id;
+      if (typeof id !== "string") continue; // malformed id shape is validateWeatherVoiceLibrary's concern, not parity
+
+      if (seen.has(id)) {
+        errors.push(`${lang}/${id}: duplicate id`);
+      }
+      seen.add(id);
+
+      if (!isNonEmptyText(entry?.text)) {
+        errors.push(`${lang}/${id}: text is missing or blank`);
+      }
+    }
+
+    for (const id of WEATHER_VOICE_KNOWN_IDS) {
+      if (!seen.has(id)) errors.push(`${lang}/${id}: missing`);
     }
   }
 

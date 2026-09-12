@@ -1,0 +1,227 @@
+{
+  "01-desktop-1280-is-light": {
+    "beforeScroll": {
+      "present": true,
+      "visible": true,
+      "boxWidth": 1120,
+      "boxHeight": 122,
+      "imgWidth": 100,
+      "imgHeight": 100,
+      "naturalWidth": 480,
+      "naturalHeight": 320,
+      "moodAsset": "/tjaldur/excellent.png",
+      "text": "„Þetta er grunsamlega gott.“",
+      "documentOverflowing": false
+    },
+    "afterScroll": {
+      "present": true,
+      "visible": true,
+      "boxWidth": 1120,
+      "boxHeight": 122,
+      "imgWidth": 100,
+      "imgHeight": 100,
+      "naturalWidth": 480,
+      "naturalHeight": 320,
+      "moodAsset": "/tjaldur/excellent.png",
+      "text": "„Þetta er grunsamlega gott.“",
+      "documentOverflowing": false
+    }
+  },
+  "02-desktop-1280-en-dark": {
+    "beforeScroll": {
+      "present": true,
+      "visible": true,
+      "boxWidth": 1120,
+      "boxHeight": 122,
+      "imgWidth": 100,
+      "imgHeight": 100,
+      "naturalWidth": 480,
+      "naturalHeight": 320,
+      "moodAsset": "/tjaldur/excellent.png",
+      "text": "„This is suspiciously good.“",
+      "documentOverflowing": false
+    },
+    "afterScroll": {
+      "present": true,
+      "visible": true,
+      "boxWidth": 1120,
+      "boxHeight": 122,
+      "imgWidth": 100,
+      "imgHeight": 100,
+      "naturalWidth": 480,
+      "naturalHeight": 320,
+      "moodAsset": "/tjaldur/excellent.png",
+      "text": "„This is suspiciously good.“",
+      "documentOverflowing": false
+    }
+  },
+  "03-mobile-390-is-light": {
+    "beforeScroll": {
+      "present": true,
+      "visible": true,
+      "boxWidth": 358,
+      "boxHeight": 102,
+      "imgWidth": 80,
+      "imgHeight": 80,
+      "naturalWidth": 480,
+      "naturalHeight": 320,
+      "moodAsset": "/tjaldur/excellent.png",
+      "text": "„Nú vantar bara kaffið.“",
+      "documentOverflowing": false
+    },
+    "afterScroll": {
+      "present": true,
+      "visible": true,
+      "boxWidth": 358,
+      "boxHeight": 102,
+      "imgWidth": 80,
+      "imgHeight": 80,
+      "naturalWidth": 480,
+      "naturalHeight": 320,
+      "moodAsset": "/tjaldur/excellent.png",
+      "text": "„Nú vantar bara kaffið.“",
+      "documentOverflowing": false
+    }
+  },
+  "04-mobile-390-en-dark": {
+    "beforeScroll": {
+      "present": true,
+      "visible": true,
+      "boxWidth": 358,
+      "boxHeight": 102,
+      "imgWidth": 80,
+      "imgHeight": 80,
+      "naturalWidth": 480,
+      "naturalHeight": 320,
+      "moodAsset": "/tjaldur/excellent.png",
+      "text": "„Don't tell anyone.“",
+      "documentOverflowing": false
+    },
+    "afterScroll": {
+      "present": true,
+      "visible": true,
+      "boxWidth": 358,
+      "boxHeight": 102,
+      "imgWidth": 80,
+      "imgHeight": 80,
+      "naturalWidth": 480,
+      "naturalHeight": 320,
+      "moodAsset": "/tjaldur/excellent.png",
+      "text": "„Don't tell anyone.“",
+      "documentOverflowing": false
+    }
+  },
+  "05-mobile-320-is-light": {
+    "beforeScroll": {
+      "present": true,
+      "visible": true,
+      "boxWidth": 288,
+      "boxHeight": 118.875,
+      "imgWidth": 80,
+      "imgHeight": 80,
+      "naturalWidth": 480,
+      "naturalHeight": 320,
+      "moodAsset": "/tjaldur/excellent.png",
+      "text": "„Þetta er grunsamlega gott.“",
+      "documentOverflowing": false
+    },
+    "afterScroll": {
+      "present": true,
+      "visible": true,
+      "boxWidth": 288,
+      "boxHeight": 118.875,
+      "imgWidth": 80,
+      "imgHeight": 80,
+      "naturalWidth": 480,
+      "naturalHeight": 320,
+      "moodAsset": "/tjaldur/excellent.png",
+      "text": "„Þetta er grunsamlega gott.“",
+      "documentOverflowing": false
+    }
+  },
+  "06-mobile-320-en-light": {
+    "beforeScroll": {
+      "present": true,
+      "visible": true,
+      "boxWidth": 288,
+      "boxHeight": 102,
+      "imgWidth": 80,
+      "imgHeight": 80,
+      "naturalWidth": 480,
+      "naturalHeight": 320,
+      "moodAsset": "/tjaldur/excellent.png",
+      "text": "„Don't tell anyone.“",
+      "documentOverflowing": false
+    },
+    "afterScroll": {
+      "present": true,
+      "visible": true,
+      "boxWidth": 288,
+      "boxHeight": 102,
+      "imgWidth": 80,
+      "imgHeight": 80,
+      "naturalWidth": 480,
+      "naturalHeight": 320,
+      "moodAsset": "/tjaldur/excellent.png",
+      "text": "„Don't tell anyone.“",
+      "documentOverflowing": false
+    }
+  },
+  "toggle-session": {
+    "step1_is": {
+      "present": true,
+      "visible": true,
+      "boxWidth": 1120,
+      "boxHeight": 122,
+      "imgWidth": 100,
+      "imgHeight": 100,
+      "naturalWidth": 480,
+      "naturalHeight": 320,
+      "moodAsset": "/tjaldur/excellent.png",
+      "text": "„Þetta er grunsamlega gott.“",
+      "documentOverflowing": false
+    },
+    "step2_en": {
+      "present": true,
+      "visible": true,
+      "boxWidth": 1120,
+      "boxHeight": 122,
+      "imgWidth": 100,
+      "imgHeight": 100,
+      "naturalWidth": 480,
+      "naturalHeight": 320,
+      "moodAsset": "/tjaldur/excellent.png",
+      "text": "„All that's missing is the coffee.“",
+      "documentOverflowing": false
+    },
+    "step3_is_again": {
+      "present": true,
+      "visible": true,
+      "boxWidth": 1120,
+      "boxHeight": 122,
+      "imgWidth": 100,
+      "imgHeight": 100,
+      "naturalWidth": 480,
+      "naturalHeight": 320,
+      "moodAsset": "/tjaldur/excellent.png",
+      "text": "„Ekki segja neinum.“",
+      "documentOverflowing": false
+    }
+  },
+  "10-desktop-silent-is": {
+    "beforeScroll": {
+      "present": false
+    },
+    "afterScroll": {
+      "present": false
+    }
+  },
+  "11-mobile-390-silent-en": {
+    "beforeScroll": {
+      "present": false
+    },
+    "afterScroll": {
+      "present": false
+    }
+  }
+}
