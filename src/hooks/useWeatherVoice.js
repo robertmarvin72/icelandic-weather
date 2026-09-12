@@ -7,6 +7,16 @@
 // recording. Never fetches or normalizes forecast data itself — reads
 // only what useForecast.js already produced — and never renders anything
 // (src/components/WeatherVoice.jsx is the pure renderer).
+//
+// Ticket 409 (#409) — a single `weather_voice_viewed` analytics event is
+// emitted from inside the SAME validated exposure boundary as history
+// recording (see `onVisible` below), never a second observer or a raw/
+// intermediate trigger. Payload is a minimal derived subset of episode
+// identity (voice_id/language/severity/weather_type/surface) — no free
+// text, coordinates, user identity, raw forecast, full episode key, or
+// timestamps. No `weather_voice_interacted` event exists: every one of
+// today's 27 IS/EN comments has `ctaType: null`, so there is no authored
+// interaction to measure (see docs/analytics/weather-voice-production-validation.md).
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { evaluateWeatherVoice } from "../lib/weatherVoiceEngine";
@@ -14,6 +24,7 @@ import { getWeatherVoiceLibrary, devWarnEmptyEligiblePool } from "../lib/weather
 import { selectWeatherVoiceComment } from "../lib/weatherVoiceSelector";
 import { createWeatherVoiceHistory } from "../lib/weatherVoiceHistory";
 import { resolveWeatherVoiceCta } from "../lib/weatherVoicePresentation";
+import { trackEvent } from "../lib/analytics";
 
 const SURFACE_HOMEPAGE_DECISION = "homepage_decision";
 const MIDNIGHT_POLL_MS = 60000;
@@ -179,9 +190,11 @@ export function useWeatherVoice({
   const episodeKeyRef = useRef(episodeKey);
   const resolvedKeyRef = useRef(resolvedKey);
   const presentationRef = useRef(presentation);
+  const langRef = useRef(lang);
   episodeKeyRef.current = episodeKey;
   resolvedKeyRef.current = resolvedKey;
   presentationRef.current = presentation;
+  langRef.current = lang;
 
   // Revision 3 (#408, Ripley Revision 2 REVISE) — `onVisible` now REQUIRES
   // the caller (WeatherVoiceCard's observer) to report WHICH episode it
@@ -194,6 +207,17 @@ export function useWeatherVoice({
   // reported identity against the CURRENT episode (via the same
   // always-latest refs as before) rejects that case explicitly, not by
   // coincidence of value equality.
+  // Ticket 409 (#409): analytics is added at this SAME already-validated
+  // boundary — never a second observer, never from render/selection/asset
+  // load. Every rejection check above (mismatched/stale key, mid-selection,
+  // non-show, already-recorded) gates the analytics call exactly as it
+  // already gates history, so "recorded in history" and "counted as a
+  // weather_voice_viewed impression" always correspond to the same real
+  // observation. `recordedEpisodesRef.add(key)` happens BEFORE the
+  // analytics call, so a thrown analytics helper can never cause a retry/
+  // duplicate emission for this episode — it only ever loses that one
+  // impression, isolated from history (which already recorded) and from
+  // rendering (unaffected either way).
   const onVisible = useCallback(
     (observedEpisodeKey) => {
       const key = episodeKeyRef.current;
@@ -205,6 +229,18 @@ export function useWeatherVoice({
       if (recordedEpisodesRef.current.has(key)) return; // already recorded this episode this mount
       recordedEpisodesRef.current.add(key);
       historyRef.current.recordShown(current, now());
+      try {
+        trackEvent("weather_voice_viewed", {
+          voice_id: current.comment.id,
+          language: langRef.current,
+          severity: current.severity,
+          weather_type: current.condition,
+          surface: SURFACE_HOMEPAGE_DECISION,
+        });
+      } catch {
+        // Isolated: an analytics helper failure must never break visibility
+        // or history handling, which have already completed above.
+      }
     },
     [now]
   );

@@ -1,0 +1,56 @@
+{
+  "01-desktop-1280-is-light": {
+    "eventsBeforeScroll": 0,
+    "eventsAfterFirstScroll": 1,
+    "eventsAfterSecondScroll": 1,
+    "gaRequestCount": 0,
+    "eventLogs": [
+      "[event] weather_voice_viewed {voice_id: excellent_02, language: is, severity: 0, weather_type: excellent, surface: homepage_decision}"
+    ]
+  },
+  "02-desktop-1280-en-dark": {
+    "eventsBeforeScroll": 0,
+    "eventsAfterFirstScroll": 1,
+    "eventsAfterSecondScroll": 1,
+    "gaRequestCount": 0,
+    "eventLogs": [
+      "[event] weather_voice_viewed {voice_id: excellent_03, language: en, severity: 0, weather_type: excellent, surface: homepage_decision}"
+    ]
+  },
+  "03-mobile-390-is-light": {
+    "eventsBeforeScroll": 0,
+    "eventsAfterFirstScroll": 1,
+    "eventsAfterSecondScroll": 1,
+    "gaRequestCount": 0,
+    "eventLogs": [
+      "[event] weather_voice_viewed {voice_id: excellent_03, language: is, severity: 0, weather_type: excellent, surface: homepage_decision}"
+    ]
+  },
+  "04-mobile-390-en-dark": {
+    "eventsBeforeScroll": 0,
+    "eventsAfterFirstScroll": 1,
+    "eventsAfterSecondScroll": 1,
+    "gaRequestCount": 0,
+    "eventLogs": [
+      "[event] weather_voice_viewed {voice_id: excellent_03, language: en, severity: 0, weather_type: excellent, surface: homepage_decision}"
+    ]
+  },
+  "05-site-switch-session": {
+    "eventsAfterSiteA": 1,
+    "eventsAfterSiteB": 2,
+    "gaRequestCount": 0,
+    "eventLogs": [
+      "[event] weather_voice_viewed {voice_id: excellent_02, language: is, severity: 0, weather_type: excellent, surface: homepage_decision}",
+      "[event] weather_voice_viewed {voice_id: cold_01, language: is, severity: 1, weather_type: cold, surface: homepage_decision}"
+    ]
+  },
+  "06-lang-switch-session": {
+    "eventsAfterIs": 1,
+    "eventsAfterEn": 2,
+    "gaRequestCount": 0,
+    "eventLogs": [
+      "[event] weather_voice_viewed {voice_id: excellent_03, language: is, severity: 0, weather_type: excellent, surface: homepage_decision}",
+      "[event] weather_voice_viewed {voice_id: excellent_02, language: en, severity: 0, weather_type: excellent, surface: homepage_decision}"
+    ]
+  }
+}

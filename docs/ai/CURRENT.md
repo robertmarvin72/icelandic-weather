@@ -1,22 +1,22 @@
 # Current AI Task
 
-Task: ticket-412
-Stage: CLOSED
+Task: ticket-409
+Stage: BLOCKED
 
 Task directory:
-docs/ai/tasks/ticket-412/
+docs/ai/tasks/ticket-409/
 
 Prompt review:
-docs/ai/tasks/ticket-412/prompt-review.md (Round 1: Jonesy APPROVED)
+docs/ai/tasks/ticket-409/prompt-review.md (Round 1: Jonesy APPROVED)
 
 Approved prompt:
-docs/ai/tasks/ticket-412/approved-prompt-v1.md
+docs/ai/tasks/ticket-409/approved-prompt-v1.md
 
 CC report:
-docs/ai/tasks/ticket-412/cc-report.md
+docs/ai/tasks/ticket-409/cc-report.md
 
 Result review:
-docs/ai/tasks/ticket-412/result-review.md (Round 1: Jonesy PASS, Ripley PASS)
+docs/ai/tasks/ticket-409/result-review.md (Round 1: Jonesy PASS, Ripley implementation PASS; full task BLOCKED pending production/GA4 verification, seven-day data and safety-validation dependency)
 
 ## Rule
 
