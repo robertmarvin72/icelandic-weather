@@ -1,5 +1,6 @@
-import React, { useEffect, useRef } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { getTjaldurMoodAssetPath } from "../lib/weatherVoicePresentation";
+import WeatherVoiceShareDialog from "./WeatherVoiceShareDialog";
 
 const INTERSECTION_THRESHOLD = 0.5;
 
@@ -34,8 +35,54 @@ const INTERSECTION_THRESHOLD = 0.5;
 // episode — a bare "onVisible fired" signal is not by itself evidence
 // that today's episode, specifically, was seen; provenance travels with
 // the call, not a same-value-coincidence "must still be current" guess.
-export default function WeatherVoiceCard({ result, surface, episodeKey, action = null, supportingText, t, onVisible }) {
+// Ticket 410 (#410) — `shareSnapshot` is the narrow, already-frozen
+// share-context adapter output (useWeatherVoice.js), `null` whenever the
+// current episode isn't share-eligible. `lang` here is display-only
+// (dialog copy fallback) and is never used to re-derive anything the
+// snapshot already carries.
+export default function WeatherVoiceCard({ result, surface, episodeKey, action = null, supportingText, t, lang, onVisible, shareSnapshot = null }) {
   const nodeRef = useRef(null);
+  // Ticket 410 Revision 2 (#410, Ripley Round 1 finding #3) — the ACTUAL
+  // snapshot object captured at open time, not merely its episode key.
+  // `useWeatherVoice.js` rebuilds `shareSnapshot` as a new object whenever
+  // `site`/`todayRow` identity changes (e.g. a forecast refetch), even
+  // when every underlying value is unchanged — passing the live prop
+  // straight into the dialog let a same-episode refetch silently swap out
+  // the open preview's data mid-generation. `openedShareSnapshot` is
+  // React state, so it stays the SAME object reference across parent
+  // rerenders unless this component itself replaces it — the dialog's own
+  // image generation, downloaded/native file, and analytics payload are
+  // therefore bound to one frozen object for the entire time it's open.
+  const [openedShareSnapshot, setOpenedShareSnapshot] = useState(null);
+
+  // Invalidation: a GENUINE episode change (or the episode becoming
+  // structurally invalid) closes the open preview, requiring the user to
+  // reopen for the new episode — never letting a late image promise or
+  // stale snapshot leak into the next episode's preview. Compares the
+  // live prop's episodeKey against the FROZEN opened snapshot's own key,
+  // so unrelated object-identity churn for the SAME episode never
+  // triggers this (only a real key divergence, including the prop
+  // becoming null/ineligible, does).
+  useEffect(() => {
+    if (!openedShareSnapshot) return;
+    if (shareSnapshot?.episodeKey !== openedShareSnapshot.episodeKey) {
+      setOpenedShareSnapshot(null);
+    }
+  }, [shareSnapshot, openedShareSnapshot]);
+
+  function openShareDialog() {
+    if (!shareSnapshot) return;
+    setOpenedShareSnapshot(shareSnapshot);
+  }
+  // Ticket 410 Revision 2 (#410) — memoized with a stable identity
+  // (useState setters are themselves stable across renders) so the
+  // dialog's own `onClose` prop never changes reference on an unrelated
+  // parent rerender. Passing a freshly-declared function here instead
+  // would re-run the dialog's focus-trap effect (which depends on
+  // `onClose`) on every unrelated rerender, visibly snapping focus back
+  // to the dialog's first control and disrupting wherever the user had
+  // actually tabbed to.
+  const closeShareDialog = useCallback(() => setOpenedShareSnapshot(null), []);
 
   const isActive = !!result?.show;
   const moodAssetPath = isActive ? getTjaldurMoodAssetPath(result.mood) : null;
@@ -126,16 +173,35 @@ export default function WeatherVoiceCard({ result, surface, episodeKey, action =
           „{result.comment.text}“
         </p>
         {supportingText && <p className="mt-1 text-sm leading-snug opacity-70">{supportingText}</p>}
-        {action && (
-          <button
-            type="button"
-            onClick={action.onClick}
-            className="mt-1.5 text-xs font-semibold underline decoration-dotted underline-offset-2 opacity-75 transition-opacity hover:opacity-100"
-          >
-            {action.label}
-          </button>
-        )}
+        <div className="mt-1.5 flex flex-wrap items-center gap-x-3 gap-y-1">
+          {action && (
+            <button
+              type="button"
+              onClick={action.onClick}
+              className="text-xs font-semibold underline decoration-dotted underline-offset-2 opacity-75 transition-opacity hover:opacity-100"
+            >
+              {action.label}
+            </button>
+          )}
+          {/* Ticket 410 (#410) — separate secondary action, never the
+              weather CTA seam above (ctaType/`action` is untouched by
+              this ticket). Only rendered when the hook's own conservative
+              editorial policy produced a snapshot for THIS episode. */}
+          {shareSnapshot && (
+            <button
+              type="button"
+              onClick={openShareDialog}
+              className="text-xs font-semibold underline decoration-dotted underline-offset-2 opacity-75 transition-opacity hover:opacity-100"
+            >
+              {t?.("weatherVoiceShareButtonLabel") || (lang === "is" ? "Deila Tjaldi" : "Share Tjaldur")}
+            </button>
+          )}
+        </div>
       </div>
+
+      {openedShareSnapshot && (
+        <WeatherVoiceShareDialog snapshot={openedShareSnapshot} lang={lang} t={t} onClose={closeShareDialog} />
+      )}
     </div>
   );
 }

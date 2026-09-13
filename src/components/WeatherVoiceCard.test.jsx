@@ -7,6 +7,21 @@ import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { render, screen, fireEvent } from "@testing-library/react";
 import WeatherVoiceCard from "./WeatherVoiceCard";
 
+// Ticket 410 (#410) — WeatherVoiceShareDialog's own lifecycle/native-share/
+// analytics behavior is covered independently in
+// WeatherVoiceShareDialog.test.jsx. Mocked here so these tests exercise
+// only WeatherVoiceCard's OWN responsibility: whether the share button/
+// dialog renders at all, and the open/close/invalidation wiring around it.
+vi.mock("./WeatherVoiceShareDialog", () => ({
+  default: ({ snapshot, onClose }) => (
+    <div data-testid="share-dialog" data-episode-key={snapshot?.episodeKey} data-tmax={snapshot?.tmax} data-text={snapshot?.text}>
+      <button type="button" onClick={onClose}>
+        mock-dialog-close
+      </button>
+    </div>
+  ),
+}));
+
 const ALL_TWELVE_MOODS = [
   "happy",
   "excellent",
@@ -263,5 +278,119 @@ describe("WeatherVoiceCard — visibility-based exposure signal", () => {
 
     oldObserver.trigger([{ isIntersecting: true, intersectionRatio: 1 }]);
     expect(onVisible).not.toHaveBeenCalled();
+  });
+});
+
+describe("WeatherVoiceCard — secondary share action (Ticket 410, #410)", () => {
+  function snapshot(overrides = {}) {
+    return { voiceId: "excellent_01", text: "x", language: "is", mood: "excellent", condition: "excellent", severity: 0, siteName: "Þingvellir", date: "2026-09-08", tmax: 16, code: 0, episodeKey: "ep-share-1", ...overrides };
+  }
+
+  it("no share button and no dialog when shareSnapshot is absent — never for a CTA-less/ineligible episode", () => {
+    render(<WeatherVoiceCard result={activeResult()} surface="homepage_decision" t={t} />);
+    expect(screen.queryByText("weatherVoiceShareButtonLabel")).toBeNull();
+    expect(screen.queryByTestId("share-dialog")).toBeNull();
+  });
+
+  it("the share button renders (and is a SEPARATE element from the weather CTA action) when shareSnapshot is present", () => {
+    const onClick = vi.fn();
+    render(<WeatherVoiceCard result={activeResult()} surface="homepage_decision" t={t} action={{ label: "Compare conditions", onClick }} shareSnapshot={snapshot()} />);
+    expect(screen.getByText("Compare conditions")).toBeInTheDocument();
+    expect(screen.getByText("weatherVoiceShareButtonLabel")).toBeInTheDocument();
+  });
+
+  it("falls back to hardcoded IS/EN labels when t() has no translation for the share button", () => {
+    const identityT = (k) => (k === "weatherVoiceShareButtonLabel" ? undefined : k);
+    const { rerender } = render(<WeatherVoiceCard result={activeResult()} surface="homepage_decision" t={identityT} lang="is" shareSnapshot={snapshot()} />);
+    expect(screen.getByText("Deila Tjaldi")).toBeInTheDocument();
+    rerender(<WeatherVoiceCard result={activeResult()} surface="homepage_decision" t={identityT} lang="en" shareSnapshot={snapshot()} />);
+    expect(screen.getByText("Share Tjaldur")).toBeInTheDocument();
+  });
+
+  it("clicking the share button opens the dialog with the current snapshot; the dialog's own onClose closes it", () => {
+    render(<WeatherVoiceCard result={activeResult()} surface="homepage_decision" t={t} shareSnapshot={snapshot()} />);
+    expect(screen.queryByTestId("share-dialog")).toBeNull();
+
+    fireEvent.click(screen.getByText("weatherVoiceShareButtonLabel"));
+    const dialog = screen.getByTestId("share-dialog");
+    expect(dialog).toHaveAttribute("data-episode-key", "ep-share-1");
+
+    fireEvent.click(screen.getByText("mock-dialog-close"));
+    expect(screen.queryByTestId("share-dialog")).toBeNull();
+  });
+
+  it("a genuine episode change (different episodeKey) while the dialog is open closes it automatically", () => {
+    const { rerender } = render(<WeatherVoiceCard result={activeResult()} surface="homepage_decision" t={t} shareSnapshot={snapshot({ episodeKey: "ep-share-1" })} />);
+    fireEvent.click(screen.getByText("weatherVoiceShareButtonLabel"));
+    expect(screen.getByTestId("share-dialog")).toBeInTheDocument();
+
+    rerender(<WeatherVoiceCard result={activeResult()} surface="homepage_decision" t={t} shareSnapshot={snapshot({ episodeKey: "ep-share-2", voiceId: "excellent_02" })} />);
+    expect(screen.queryByTestId("share-dialog")).toBeNull();
+  });
+
+  it("the episode becoming ineligible (shareSnapshot -> null) while the dialog is open closes it too", () => {
+    const { rerender } = render(<WeatherVoiceCard result={activeResult()} surface="homepage_decision" t={t} shareSnapshot={snapshot()} />);
+    fireEvent.click(screen.getByText("weatherVoiceShareButtonLabel"));
+    expect(screen.getByTestId("share-dialog")).toBeInTheDocument();
+
+    rerender(<WeatherVoiceCard result={activeResult()} surface="homepage_decision" t={t} shareSnapshot={null} />);
+    expect(screen.queryByTestId("share-dialog")).toBeNull();
+    expect(screen.queryByText("weatherVoiceShareButtonLabel")).toBeNull();
+  });
+
+  it("an unrelated rerender with the SAME episodeKey does not close an open dialog", () => {
+    const { rerender } = render(<WeatherVoiceCard result={activeResult()} surface="homepage_decision" t={t} shareSnapshot={snapshot()} />);
+    fireEvent.click(screen.getByText("weatherVoiceShareButtonLabel"));
+    expect(screen.getByTestId("share-dialog")).toBeInTheDocument();
+
+    rerender(<WeatherVoiceCard result={activeResult()} surface="homepage_decision" t={t} shareSnapshot={snapshot()} supportingText="unrelated change" />);
+    expect(screen.getByTestId("share-dialog")).toBeInTheDocument();
+  });
+
+  // Ticket 410 Revision 2 (#410, Ripley Round 1 finding #3) — the dialog
+  // must receive the FROZEN object captured at open time, never a live,
+  // newly-rebuilt-but-same-episode `shareSnapshot` prop. `snapshot()`
+  // below is called fresh each time, producing a structurally-equal but
+  // referentially DIFFERENT object for the same episodeKey — exactly the
+  // "site/todayRow identity changes within the same episode" scenario
+  // useWeatherVoice.js's own useMemo can produce on an unrelated refetch.
+  it("a same-episode object rebuild (new shareSnapshot object, same episodeKey, different tmax) does NOT replace the open preview's frozen content", () => {
+    const { rerender } = render(<WeatherVoiceCard result={activeResult()} surface="homepage_decision" t={t} shareSnapshot={snapshot({ tmax: 16 })} />);
+    fireEvent.click(screen.getByText("weatherVoiceShareButtonLabel"));
+    const dialog = screen.getByTestId("share-dialog");
+    expect(dialog).toHaveAttribute("data-tmax", "16");
+
+    // A brand-new object, same episodeKey, different tmax — simulates a
+    // same-episode forecast refetch producing new object identity.
+    rerender(<WeatherVoiceCard result={activeResult()} surface="homepage_decision" t={t} shareSnapshot={snapshot({ tmax: 17 })} />);
+
+    expect(screen.getByTestId("share-dialog")).toHaveAttribute("data-tmax", "16"); // unchanged — still the frozen opening snapshot
+  });
+
+  // v2 §4: "Include object-identity churn for at least one non-good/
+  // excellent condition" — proves the frozen-snapshot fix is not
+  // accidentally coupled to the old (now-removed) good/excellent policy.
+  it("the same frozen-snapshot immunity holds for a non-good/excellent condition (cold)", () => {
+    const coldSnapshot = (overrides = {}) => snapshot({ condition: "cold", mood: "freezing", voiceId: "cold_01", text: "Lopapeysan hafði rétt fyrir sér.", tmax: 2, ...overrides });
+    const { rerender } = render(<WeatherVoiceCard result={activeResult({ condition: "cold" })} surface="homepage_decision" t={t} shareSnapshot={coldSnapshot({ tmax: 2 })} />);
+    fireEvent.click(screen.getByText("weatherVoiceShareButtonLabel"));
+    expect(screen.getByTestId("share-dialog")).toHaveAttribute("data-tmax", "2");
+
+    rerender(<WeatherVoiceCard result={activeResult({ condition: "cold" })} surface="homepage_decision" t={t} shareSnapshot={coldSnapshot({ tmax: 1 })} />);
+    expect(screen.getByTestId("share-dialog")).toHaveAttribute("data-tmax", "2"); // still frozen
+  });
+
+  it("a GENUINE invalidation (episodeKey actually changes) still closes the dialog, even after surviving object-identity churn", () => {
+    const { rerender } = render(<WeatherVoiceCard result={activeResult()} surface="homepage_decision" t={t} shareSnapshot={snapshot({ episodeKey: "ep-share-1" })} />);
+    fireEvent.click(screen.getByText("weatherVoiceShareButtonLabel"));
+    expect(screen.getByTestId("share-dialog")).toBeInTheDocument();
+
+    // First, a same-episode churn (must survive)...
+    rerender(<WeatherVoiceCard result={activeResult()} surface="homepage_decision" t={t} shareSnapshot={snapshot({ episodeKey: "ep-share-1", tmax: 99 })} />);
+    expect(screen.getByTestId("share-dialog")).toBeInTheDocument();
+
+    // ...then a genuine episode change (must close).
+    rerender(<WeatherVoiceCard result={activeResult()} surface="homepage_decision" t={t} shareSnapshot={snapshot({ episodeKey: "ep-share-2" })} />);
+    expect(screen.queryByTestId("share-dialog")).toBeNull();
   });
 });

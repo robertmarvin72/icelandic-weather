@@ -1,0 +1,27 @@
+{
+  "rainScenario": {
+    "commentText": "„Regnjakki með aðalhlutverk.“",
+    "shareButtonPresent": true,
+    "previewAppeared": true,
+    "downloadedFileSize": 186117
+  },
+  "extremeWindScenario": {
+    "commentText": "„Þetta var ekki í bæklingnum.“",
+    "shareButtonPresent": true,
+    "previewAppeared": true
+  },
+  "longSiteNameScenario": {
+    "previewAppeared": true,
+    "downloadedFileSize": 197157,
+    "path": "C:\\Users\\Notandi\\forritun\\icelandic-weather\\outputs\\ticket-410-weather-voice-share-evidence/12-revision2-long-site-name-exported.png"
+  },
+  "shortLandscapeScenario": {
+    "saveButtonReachableAfterScroll": true,
+    "boundingBox": {
+      "x": 179,
+      "y": 247,
+      "width": 104.453125,
+      "height": 36
+    }
+  }
+}

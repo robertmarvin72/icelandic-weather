@@ -477,6 +477,23 @@ export const commonTranslations = {
     weatherVoiceCtaDrierLocation: "See drier spots",
     weatherVoiceCtaWarmerLocation: "See warmer spots",
     weatherVoiceCtaBestLocations: "See the best spots",
+    // Ticket 410 (#410) — secondary share action, a separate seam from the
+    // weather CTA above. Shown only for the conservative good/excellent
+    // editorial promotion policy (weatherVoiceSharePolicy.js).
+    weatherVoiceShareButtonLabel: "Share Tjaldur",
+    weatherVoiceShareDialogTitle: "Share Tjaldur",
+    weatherVoiceShareGenerating: "Preparing image…",
+    weatherVoiceShareError: "Couldn't prepare the image.",
+    weatherVoiceShareNative: "Share",
+    weatherVoiceShareSave: "Save image",
+    weatherVoiceShareCancelled: "Sharing cancelled.",
+    weatherVoiceShareUnavailable: "Direct sharing didn't work — you can still save the image.",
+    weatherVoiceShareImageAlt: "Share image preview",
+    // Ticket 410 Revision 2 (#410, Ripley Round 1 finding #1) — explicit
+    // daily-forecast/daily-high labeling in the exported image's context
+    // line, never an unqualified temperature reading.
+    weatherVoiceShareDailyForecastLabel: "Daily forecast",
+    weatherVoiceShareHighTempLabel: "High",
     // #396 Revision 3 (owner copy follow-up): removed the "isn't dangerous"
     // contrast — calm compare/monitor wording, consistent with canonical
     // consider semantics; does not imply moving is recommended.
@@ -1017,6 +1034,19 @@ export const commonTranslations = {
     weatherVoiceCtaDrierLocation: "Skoða þurrari staði",
     weatherVoiceCtaWarmerLocation: "Skoða hlýrri staði",
     weatherVoiceCtaBestLocations: "Skoða bestu staðina",
+    // Ticket 410 (#410) — see EN block's comment.
+    weatherVoiceShareButtonLabel: "Deila Tjaldi",
+    weatherVoiceShareDialogTitle: "Deila Tjaldi",
+    weatherVoiceShareGenerating: "Undirbý mynd…",
+    weatherVoiceShareError: "Ekki tókst að útbúa mynd.",
+    weatherVoiceShareNative: "Deila",
+    weatherVoiceShareSave: "Vista mynd",
+    weatherVoiceShareCancelled: "Deiling hætt við.",
+    weatherVoiceShareUnavailable: "Ekki tókst að deila beint — hægt er að vista myndina í staðinn.",
+    weatherVoiceShareImageAlt: "Forskoðun myndar til að deila",
+    // Ticket 410 Revision 2 (#410) — sjá EN blokk.
+    weatherVoiceShareDailyForecastLabel: "Dagsspá",
+    weatherVoiceShareHighTempLabel: "Hámark",
     icConsiderFallback: "Aðstæður í nágrenninu gætu verið örlítið öðruvísi — vert að bera saman eða fylgjast með.",
     icStayVerdict: "Þú ert líklega á góðum stað.",
     icStayNoAlternative: "Enginn nálægur staður lítur greinilega betur út næstu daga.",

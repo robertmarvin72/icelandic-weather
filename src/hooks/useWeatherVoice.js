@@ -17,6 +17,13 @@
 // timestamps. No `weather_voice_interacted` event exists: every one of
 // today's 27 IS/EN comments has `ctaType: null`, so there is no authored
 // interaction to measure (see docs/analytics/weather-voice-production-validation.md).
+//
+// Ticket 410 (#410) — this hook also computes `shareSnapshot`: a narrow,
+// frozen snapshot of the actually-displayed episode for the secondary
+// "share" action, gated by a conservative editorial promotion policy
+// (weatherVoiceSharePolicy.js) — never a safety classifier. See
+// src/components/WeatherVoiceShareDialog.jsx for the sharing UI/lifecycle
+// and docs/analytics/weather-voice-share-pilot.md for the event contract.
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { evaluateWeatherVoice } from "../lib/weatherVoiceEngine";
@@ -25,6 +32,7 @@ import { selectWeatherVoiceComment } from "../lib/weatherVoiceSelector";
 import { createWeatherVoiceHistory } from "../lib/weatherVoiceHistory";
 import { resolveWeatherVoiceCta } from "../lib/weatherVoicePresentation";
 import { trackEvent } from "../lib/analytics";
+import { buildWeatherVoiceShareSnapshot } from "../lib/weatherVoiceShareSnapshot";
 
 const SURFACE_HOMEPAGE_DECISION = "homepage_decision";
 const MIDNIGHT_POLL_MS = 60000;
@@ -71,7 +79,7 @@ export function buildWeatherVoiceEpisodeKey({ surface, siteId, dateString, lang,
 }
 
 /**
- * useWeatherVoice(args) -> { presentation, action, episodeKey, onVisible }
+ * useWeatherVoice(args) -> { presentation, action, episodeKey, onVisible, shareSnapshot }
  *
  * `episodeKey` identifies the current episode (site/date/language/Phase-1-
  * outcome) and must be passed through to WeatherVoiceCard's `episodeKey`
@@ -250,6 +258,28 @@ export function useWeatherVoice({
     [presentation.show, presentation.ctaType, t, onExplore]
   );
 
+  // Ticket 410 (#410) — narrow share-context adapter, computed at this
+  // SAME hook/integration boundary from the exact triple (presentation,
+  // todayRow, site) already backing the rendered card — never an
+  // independent fetch, never a newly-selected comment, never mixed with a
+  // different site/day's data. `null` whenever the episode is not
+  // share-eligible (conservative good/excellent-only policy, invalid/
+  // missing data, unsupported language, or an available hazard veto — see
+  // weatherVoiceSharePolicy.js) or the display hasn't settled on this
+  // episode yet.
+  const shareSnapshot = useMemo(
+    () =>
+      episodeKey && resolvedKey === episodeKey
+        ? buildWeatherVoiceShareSnapshot({ presentation, lang, site, todayRow, todayDate, episodeKey })
+        : null,
+    // Depends on presentation's own relevant fields, not the object
+    // reference itself — `presentation` is a fresh `{ show: false }`
+    // literal on every render along the "not resolved yet" branch above,
+    // which would otherwise make this memo recompute every render.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [episodeKey, resolvedKey, presentation.show, presentation.condition, presentation.mood, presentation.severity, presentation.comment?.id, presentation.comment?.text, lang, site, todayRow, todayDate]
+  );
+
   // Revision 2 (#408, Jonesy Round 1 BLOCKED) — a nine-condition
   // "supportingText" auto-hookup was built here in an earlier pass without
   // review; it's removed. WeatherVoiceCard.jsx still accepts an optional
@@ -258,5 +288,5 @@ export function useWeatherVoice({
   // one — production support is genuinely absent until that content is
   // authored and approved on its own terms.
 
-  return { presentation, action, episodeKey, onVisible };
+  return { presentation, action, episodeKey, onVisible, shareSnapshot };
 }

@@ -1,0 +1,38 @@
+{
+  "01-desktop-1280-is-light": {
+    "shareButtonPresent": true,
+    "dialogOpened": true,
+    "previewImageAppeared": true,
+    "downloadedFile": "C:\\Users\\Notandi\\forritun\\icelandic-weather\\outputs\\ticket-410-weather-voice-share-evidence/01-desktop-1280-is-light-exported.png",
+    "downloadedFileSize": 156555,
+    "dialogClosedAfterEscape": true,
+    "focusReturnedToTrigger": true
+  },
+  "02-desktop-1280-en-dark": {
+    "shareButtonPresent": true,
+    "dialogOpened": true,
+    "previewImageAppeared": true,
+    "downloadedFile": "C:\\Users\\Notandi\\forritun\\icelandic-weather\\outputs\\ticket-410-weather-voice-share-evidence/02-desktop-1280-en-dark-exported.png",
+    "downloadedFileSize": 154762,
+    "dialogClosedAfterEscape": true,
+    "focusReturnedToTrigger": true
+  },
+  "03-mobile-390-is-light": {
+    "shareButtonPresent": true,
+    "dialogOpened": true,
+    "previewImageAppeared": true,
+    "downloadedFile": "C:\\Users\\Notandi\\forritun\\icelandic-weather\\outputs\\ticket-410-weather-voice-share-evidence/03-mobile-390-is-light-exported.png",
+    "downloadedFileSize": 156555,
+    "dialogClosedAfterEscape": true,
+    "focusReturnedToTrigger": true
+  },
+  "04-mobile-320-en-dark": {
+    "shareButtonPresent": true,
+    "dialogOpened": true,
+    "previewImageAppeared": true,
+    "downloadedFile": "C:\\Users\\Notandi\\forritun\\icelandic-weather\\outputs\\ticket-410-weather-voice-share-evidence/04-mobile-320-en-dark-exported.png",
+    "downloadedFileSize": 154762,
+    "dialogClosedAfterEscape": true,
+    "focusReturnedToTrigger": true
+  }
+}

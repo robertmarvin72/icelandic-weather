@@ -391,7 +391,9 @@ function IcelandCampingWeatherApp({ page = "home" }) {
                 episodeKey={weatherVoice.episodeKey}
                 action={weatherVoice.action}
                 t={t}
+                lang={lang}
                 onVisible={weatherVoice.onVisible}
+                shareSnapshot={weatherVoice.shareSnapshot}
               />
 
               <NorthernLightsCard t={t} lang={lang} entitlements={entitlements} onUpgrade={startCheckout} theme={theme} />

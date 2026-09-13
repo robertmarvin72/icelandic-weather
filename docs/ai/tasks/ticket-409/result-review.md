@@ -47,3 +47,7 @@ Independently reran the 15-file targeted Weather Voice/provenance/scoring-invari
 The code and validation document are ready for owner-controlled commit/deployment. The FULL issue cannot be closed: deployed revision and production smoke matrix are unverified; GA4 DebugView/report ingestion and property configuration/access remain unverified; the seven-day observation window has not started; real-weather examples remain uncollected; dangerous-weather safety/tone compliance remains an unresolved dependency from #413. No scheduled monitoring or elapsed observation period is implied.
 
 CURRENT.md set to BLOCKED in accordance with the approved workflow completion contract. Resume production validation after the owner supplies deployment/GA4 evidence or access and resolves the safety-validation scope dependency. No implementation edits, commit, push, deployment, GA4 admin changes, issue publication or issue closure performed by this assessment.
+
+## Owner-directed sequencing exception
+
+The owner explicitly authorized activating #410 without waiting for #409 results. CURRENT.md now points to #410; #409 retains its implementation PASS and full-task BLOCKED assessment above. Deployment/GA4 verification, the seven-day observation window and safety validation remain outstanding. No CLOSED/CANCELLED status or completed observation is implied by this handoff.

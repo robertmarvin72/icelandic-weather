@@ -1,0 +1,64 @@
+# Ticket 410 — Approved prompt v1
+
+Approved by Jonesy in Initial prompt, Round 1, including the implementation clarifications below. Execute only after the owner's Prompt approved handoff, with CURRENT.md at READY_FOR_CC and referencing this file. Follow docs/ai/README.md: set CC_IN_PROGRESS before work, write the report, then set CC_COMPLETE. This file remains immutable.
+
+### Goal and owner authorization
+
+Implement #410's bilingual Weather Voice share image and secondary sharing action, plus local analytics and a reviewable manual Facebook pilot plan. The owner explicitly authorized proceeding without #409 production results. Do not reintroduce that waiting dependency. #409's outstanding checks remain recorded separately; this task neither closes them nor claims they passed.
+
+Read AGENTS.md, CLAUDE.md, docs/ai/README.md, CURRENT.md, #413's Bible, #408 exposure fixes and #412/#409 code before editing. Audit App -> useForecast -> useWeatherVoice -> WeatherVoiceCard, current assets, i18n, analytics and attribution. The entrypoint is the existing standalone homepage Weather Voice card. Keep its position, dominant comment, mascot size and existing exposure observer.
+
+### 1. Conservative share promotion policy
+
+This ticket must not invent a dangerous-weather classifier. Instead define a narrow editorial promotion policy: only current canonical `good` and `excellent` episodes are eligible for the new share action in this first release. All other conditions, invalid/missing data, unsupported language, stale provenance and unknown conditions suppress the action. This is a deliberately conservative growth-feature limit, NOT a declaration that good/excellent implies safe travel. Do not label any episode SAFE, derive safety from numeric severity/mood, or change the engine or its output.
+
+Audit existing warning evidence associated with the same site/day. Any available active hazard/warning must veto promotion even for good/excellent. Reuse an existing result where available; do not copy thresholds, reinterpret raw data with a new classifier, or use another site's warning as if it belonged to this episode. Record the exact available warning signal and its coverage; unavailable optional signals must not be presented as an all-clear. If an authoritative safety-critical message signal is introduced later, its true/unknown state must veto promotion until explicitly cleared. No serious/safety-message share CTA should become enabled by default when new content types arrive.
+
+The image renderer may handle synthetic long serious text for layout testing, but production sharing is restricted as above. Wind/rain/cold pilot posts remain editorially deferred, not automatically approved. This explicitly limits the initial pilot to good/unusually good weather pending a separately reviewed broader promotion policy. Jonesy must assess this narrowing against the issue; return REVISE if it needs a different concrete policy. Do not silently implement a broad severity whitelist or claim this resolves #413's safety gap.
+
+### 2. Share snapshot and image
+
+Add a narrow share-context adapter at the hook/integration boundary. Snapshot the actually displayed comment id/text, language, mood asset, site display name when it is a public campsite, forecast date and the same normalized daily context. Preserve original engine condition/severity and episode key internally. Never fetch independent weather for sharing, select a new joke, or combine old text with a newly selected site's forecast.
+
+Use a standalone 1080x1080 PNG composition rendered with browser canvas and existing local PNG/logo assets. No screenshot-of-UI, new dependency, backend or AI runtime image generation. Warm light surface, restrained orange accent, prominent mascot and quoted comment, smaller context/date, modest Eltum Veðrið branding and visible eltumvedrid.is. Preserve mascot aspect ratio/transparency. Adapt text naturally to IS/EN with language-appropriate quotes. Use existing fonts or a reliable fallback; await font readiness/image decoding. Wrap text by measured width, reduce within a documented readable floor and fail clearly rather than crop/ellipsis the actual comment. Test the longest current IS/EN entries and a synthetic long message. Use full-image evidence, not just DOM screenshots.
+
+Weather context is DAILY, not live: explicitly label date and daily forecast in the selected language. Do not render tmax/windMax as an unqualified 'now: 8°C, 12m/s' reading; normalized windMax may be time-weighted. Prefer existing accurate daily labels and units, or omit an ambiguous metric while retaining truthful daily context. No precise user coordinates, personal location labels, official-warning claims or inferred movement recommendation. An exported image is a dated static snapshot; it is not a live weather link preview.
+
+### 3. Secondary share UX and lifecycle
+
+Add a separate secondary action: IS 'Deila Tjaldi', EN 'Share Tjaldur'. Do not repurpose ctaType or change weather-CTA metadata. Clicking opens a compact accessible preview/dialog with localized controls, image preview, method actions and status/error messaging; retain keyboard focus, Escape/close and focus restoration using existing patterns. Sharing never becomes the primary card content.
+
+Prepare the PNG while preview opens; after ready, an explicit user click invokes native sharing with a File only if navigator.share and navigator.canShare({files}) support it. This second gesture preserves transient user activation; do not await slow rendering before the navigator.share invocation in that final click. Offer 'Vista mynd' / 'Save image' as a working download fallback on every supported browser. Clipboard/link/text fallback is optional and should only be added if it reuses a simple existing pattern; do not broaden into a menu of unnecessary options.
+
+A locale/site/day/outcome change invalidates an open or generating preview and cancels stale work; close it with appropriate accessible feedback or require reopening. Do not allow a late image promise to overwrite the next episode's preview. Disable double invocation while busy. Handle AbortError as user cancellation without a frightening error or completion claim; handle unsupported/rejected sharing with the still-available save action. Rendering/load/tainted-canvas failures must not download a blank file. Revoke blob URLs on replacement/close/unmount after download consumers have had time to use them. No persistent image store.
+
+### 4. Event contract
+
+Reuse trackEvent and preserve weather_voice_viewed exactly. Emit weather_voice_share_clicked only when the user explicitly invokes an available final method (native share or download), with exactly voice_id, language, severity, weather_type, surface='homepage_decision', share_method='native'|'download'. Opening the preview is not a method attempt and emits no share event. Capture payload from the approved snapshot, not live drifting refs. One event per accepted gesture, with in-flight double-click suppression; a later intentional retry is a new attempt. Failed/canceled attempts still count as clicks, never completed posts. Catch analytics errors without breaking sharing.
+
+Do NOT emit weather_voice_share_completed: browser resolution/download initiation does not prove destination publication. Do not fabricate weather_voice_interacted, user identifiers, site ids/names, coordinates, full text or episode keys in analytics. Document that click-rate is attempts/views, not successful shares/users. No production fixture traffic; mock analytics transport for local browser verification.
+
+### 5. Facebook pilot and links
+
+Create docs/analytics/weather-voice-share-pilot.md covering the event dictionary, platform limitations, UTM convention, editorial safety restriction, deployment/publishing checklist and evidence table. Define manual Facebook links with utm_source=facebook, utm_medium=social, utm_campaign=weather_voice_pilot and nonpersonal per-post utm_content identifiers (e.g. post_01). Use URL/URLSearchParams and existing language routing; do not promise a permalink reproduces the same joke/weather without such a route. Show the canonical domain on the image; put clickable campaign URLs in post captions.
+
+Native user shares must not falsely claim Facebook attribution; destination is unknown. If they include a URL, use a documented destination-neutral campaign/source convention or an untagged canonical language-appropriate URL. Preserve attribution.js behavior; no tracking cookies or attribution redesign.
+
+Prepare a few DRAFT captions using existing eligible comments and clearly label mock weather examples as fixtures. Actual pilot posts require contemporaneous weather/context review and the owner's explicit publishing handoff. Do not publish, message others, create a paid campaign or schedule auto-posting. Full pilot measurements require actual Facebook reach/reactions/comments/shares/link clicks plus tagged sessions and onsite engagement; document unavailable access/data as pending and small samples as inconclusive. Code completion is not pilot completion.
+
+### 6. Tests, visual verification and scope
+
+Add meaningful tests for editorial eligibility (good/excellent allowed; others/unknown/silent/stale and available hazard veto rejected), same-episode context, async invalidation, decode/render failure, native canShare support, second-gesture invocation, cancellation/errors, download fallback, duplicate-action guard, URL cleanup and exact event payload/throw isolation. Rendering tests should cover wrapping/diacritics and sizes without relying solely on snapshots or mirroring implementation constants. Preserve #408/#409 impression and history regression tests, including locale changes and StrictMode.
+
+Run affected unit/integration suites, Weather Voice hook/card/App/engine/content/selector/history regressions, lint/build and whitespace checks. Browser-check IS/EN at 320/390/1280px, light/dark, preview keyboard flow, native API mocked branches, real download file and actual exported PNGs. Inspect PNGs for readable text, visible branding/date, correct asset and no clipping. Real native OS share-sheet behavior must be verified where available or explicitly left unverified; Playwright API stubs are not OS proof. Retain scripts/results/screenshots/exported PNGs under outputs/ticket-410-weather-voice-share-evidence/.
+
+Expected code surfaces: narrow share helper/hook/dialog, WeatherVoiceCard/App integration as required, i18n and tests. No new dependencies, backend, scoring, thresholds, weather classification, forecast normalization, entitlement, checkout, Northern Lights or existing content-library changes. No new joke IDs. No commit/push/deploy or Facebook publication. STOP for work beyond scope, a safety policy conflict, context requiring unsupported live-weather claims, or a need to change shared scoring/provenance. Document concrete evidence rather than asking for permission for routine reversible choices.
+
+### Handoff and completion
+
+CC follows READY_FOR_CC -> CC_IN_PROGRESS -> CC_COMPLETE only after approval and owner handoff. Report exact audit findings (including warning-signal coverage), changed files, policy, commands/results, inspected exports, browser support limits, and pending deployment/pilot steps in docs/ai/tasks/ticket-410/cc-report.md. Preserve earlier history. Jonesy reviews both code and exported design; Ripley performs final assessment. A code-level PASS can coexist with unfinished production analytics/native-device validation/Facebook pilot; do not mark the full issue CLOSED without its actual acceptance evidence. #409 results are explicitly not a prerequisite for this work.
+### Jonesy's approved implementation clarifications
+
+- Audit and explicitly report warning-signal availability. Current daily Weather Voice inputs contain no already-computed per-site/day hazard result. If confirmed, record the veto as 'not evaluated — no existing per-day signal available' in the report and pilot document. The approved good/excellent editorial promotion may proceed with this documented limitation; absence of a signal is not an all-clear. Do not thread hourly data into Weather Voice or manufacture a new hazard classifier/check to fill the gap. Preserve the veto requirement if a relevant existing signal is actually available.
+- Implement and test keyboard focus containment/restoration for the new dialog. HourlyForecastModal provides dialog semantics, Escape and scroll locking, but no focus trap/restoration to reuse. Report this as new implementation, not an already-existing capability. Restore focus to a valid trigger or sensible fallback if that trigger disappears during episode invalidation.
+- Current selectable sites come from fixed campsite lists; tier affects list access, not whether site names are public. Do not invent a private-site flag or filtering branch without a real data contract.

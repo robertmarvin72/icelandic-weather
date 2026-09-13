@@ -95,7 +95,7 @@ describe("useWeatherVoice — real Phase 1/2 outputs and today-only scope", () =
     const { result } = renderHook(() => useWeatherVoice(baseArgs()));
     expect(result.current.presentation.show).toBe(true);
     expect(result.current.supportingText).toBeUndefined();
-    expect(Object.keys(result.current).sort()).toEqual(["action", "episodeKey", "onVisible", "presentation"]);
+    expect(Object.keys(result.current).sort()).toEqual(["action", "episodeKey", "onVisible", "presentation", "shareSnapshot"]);
   });
 
   it("ordinary weather stays silent (real Phase 1 silence, not a content-availability failure)", () => {

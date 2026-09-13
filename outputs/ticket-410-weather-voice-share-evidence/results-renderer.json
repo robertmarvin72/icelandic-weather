@@ -1,0 +1,25 @@
+{
+  "longest-is-wind-extreme-02": {
+    "rendered": true,
+    "sizeBytes": 218462,
+    "path": "C:\\Users\\Notandi\\forritun\\icelandic-weather\\outputs\\ticket-410-weather-voice-share-evidence/longest-is-wind-extreme-02.png"
+  },
+  "longest-en-rain-heavy-03": {
+    "rendered": true,
+    "sizeBytes": 186190,
+    "path": "C:\\Users\\Notandi\\forritun\\icelandic-weather\\outputs\\ticket-410-weather-voice-share-evidence/longest-en-rain-heavy-03.png"
+  },
+  "revision2-four-to-five-lines": {
+    "rendered": true,
+    "sizeBytes": 209692,
+    "path": "C:\\Users\\Notandi\\forritun\\icelandic-weather\\outputs\\ticket-410-weather-voice-share-evidence/revision2-four-to-five-lines.png"
+  },
+  "synthetic-too-long": {
+    "rejected": true,
+    "message": "Weather Voice share content does not fit within the readable floor sizes and reserved layout (comment floor 34px/5 lines, context floor 20px/2 lines)."
+  },
+  "revision2-unbroken-token": {
+    "rejected": true,
+    "message": "Weather Voice share content does not fit within the readable floor sizes and reserved layout (comment floor 34px/5 lines, context floor 20px/2 lines)."
+  }
+}
