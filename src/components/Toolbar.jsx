@@ -4,6 +4,7 @@ import CampsitePicker from "./CampsitePicker";
 import DevProToggle from "./DevProToggle";
 import { getSeasonForDate } from "../lib/scoring";
 import { trackEvent } from "../lib/analytics";
+import { getHomepageHeroVariant, getHomepageHeroCopyKeys } from "../config/homepageHero";
 
 /**
  * Toolbar
@@ -32,12 +33,29 @@ export default function Toolbar({
   devPro,
   onToggleDevPro,
 }) {
+  // NOTE (Ticket 411, #411): two independent "winter" concepts coexist in
+  // this component. `season` below is scoring.js's browser-local,
+  // October-April "winter hint/badge" rule (unchanged) — it only controls
+  // the small ❄ hint under the hero, not the hero copy itself. `heroVariant`
+  // is a separate, Reykjavik-calendar-based presentation choice (see
+  // src/config/homepageHero.js) that controls the hero title/subtitle/CTA
+  // text. Their boundaries do not match (Oct 1 vs Sept 1, Apr 30 vs Mar 31)
+  // and are not meant to — keep them independent, do not unify them.
   const season = getSeasonForDate(new Date());
   const [settingsOpen, setSettingsOpen] = useState(false);
+
+  const heroVariant = getHomepageHeroVariant(new Date());
+  const heroCopyKeys = getHomepageHeroCopyKeys(heroVariant);
+  const heroCtaLabel = t?.(heroCopyKeys.ctaKey) ?? "Finna betri stað";
 
   function scrollToComparison() {
     document.getElementById("comparison-section")?.scrollIntoView({ behavior: "smooth", block: "start" });
     trackEvent("homepage_hero_cta_click");
+    trackEvent("homepage_primary_cta_clicked", {
+      hero_variant: heroVariant,
+      cta_label: heroCtaLabel,
+      language: lang,
+    });
   }
 
   return (
@@ -47,10 +65,10 @@ export default function Toolbar({
         {/* Hero copy */}
         <div className="max-w-xl">
           <h1 className="text-2xl md:text-3xl font-black tracking-tight leading-tight">
-            {t?.("heroStayMoveTitle")}
+            {t?.(heroCopyKeys.titleKey)}
           </h1>
           <p className="mt-2 text-sm text-slate-500 dark:text-slate-400 max-w-md leading-relaxed">
-            {t?.("heroStayMoveSubtitle")}
+            {t?.(heroCopyKeys.subtitleKey)}
           </p>
 
           <button
@@ -58,7 +76,7 @@ export default function Toolbar({
             onClick={scrollToComparison}
             className="mt-4 inline-flex items-center gap-2 rounded-full bg-emerald-600 px-5 py-2.5 text-sm font-semibold text-white shadow-md hover:bg-emerald-700 active:bg-emerald-800 transition-colors"
           >
-            {t?.("heroCta") ?? "Finna betri stað"} →
+            {heroCtaLabel} →
           </button>
 
           {season === "winter" && (

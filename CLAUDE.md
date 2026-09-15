@@ -248,6 +248,7 @@ Homepage optimization should prioritize:
 Key events:
 
 - `homepage_hero_cta_click`
+- `homepage_primary_cta_clicked`
 - `homepage_instant_comparison_cta_click`
 
 #### Analytics Conventions
@@ -267,6 +268,8 @@ Primary homepage funnel:
 - `better_nearby_found`
 - `stay_recommended`
 - `move_recommended`
+
+**Homepage hero seasonal variants (Ticket 411, #411):** the Toolbar hero (title/subtitle/CTA above the fold) renders one of three copy variants purely from the calendar date — `winter_weather_aurora` (Sept 1 - Mar 31, weather + Northern Lights mention), `winter_weather` (April 1-30, weather only, no aurora mention), `summer_camping` (May 1 - Aug 31, the original unchanged camping copy). Variant selection lives in `src/config/homepageHero.js`, using Atlantic/Reykjavik calendar months (Iceland is UTC+0 year-round, no DST — same technique as `auroraSeason.js`) — deliberately independent from `auroraSeason.js`'s own Sept-March aurora feature gate and from `scoring.js`'s `getSeasonForDate` Oct-April browser-local winter-hint rule, even though the aurora-window boundary is the same by product decision, not shared code. On every actual CTA click, both the pre-existing `homepage_hero_cta_click` (unchanged, no metadata) and a new `homepage_primary_cta_clicked` fire, the latter carrying `hero_variant` (one of the three IDs above), `cta_label` (the current translated button text, bounded application copy), and `language` (`is`/`en`). April emits `hero_variant: "winter_weather"` even though its CTA label text is identical to the Sept-March variant's — the variant is read from the resolved config, never inferred from the label. These two events represent the same click and must not be summed as distinct interactions.
 
 **Event semantics change — `travel_advisor_destination_locked`:** from production deployment **2026-08-17 19:02 UTC** (the GA4 cutover for before/after analysis), this event fires only when a Free user actually opens RoutePlannerCard's "Sjá nánar" details and the locked destination state is genuinely shown — not on data-load/computation alone as before that time. `stay_recommended`, `move_recommended`, and `travel_advisor_free_used` are unchanged — they keep mount/data-load semantics regardless of "Sjá nánar" state.
 

@@ -94,3 +94,13 @@ Jonesy's blocking finding concerned two missing daily-context translation keys. 
 The implementation otherwise satisfies approved v2: every displayed condition exposes sharing, structural and unsupported-language guards remain, snapshots are frozen, renderer bounds and localized daily context are addressed, and dialog/pilot requirements are documented. No implementation edits were made here.
 
 The workflow remains **BLOCKED** until deployment, real native OS share-sheet verification, and the separately controlled Facebook pilot are completed or explicitly waived by the owner. No commit, push, deployment, publication or issue closure was performed.
+
+## Owner confirmation and Ripley closure (2026-09-15)
+
+**Verdict: PASS; workflow CLOSED by explicit owner acceptance.**
+
+The owner reported: "Já ég prófaði þetta og gat share-að á facebook" (tested the feature and successfully shared to Facebook). Asked explicitly whether Ripley should close #410 using that test as sufficient final verification without further Facebook measurement, the owner replied: "Gerðu það".
+
+This accepts the owner's successful sharing test as the final completion evidence and waives the remaining external-verification closure gates. It does not independently establish the deployment environment, device, native-share versus download path, GA4 verification, or measured Facebook pilot results; none of those details were supplied. No reach, engagement, or campaign outcome is claimed.
+
+The existing implementation PASS is retained; no code changes or additional tests were needed for this documentation-only closure. CURRENT.md is set to CLOSED. #409's separately recorded outstanding validation is unaffected. This closes the local workflow only; no GitHub issue closure, commit, push, deployment, or publication was performed by this session.
