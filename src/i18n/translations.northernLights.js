@@ -121,6 +121,24 @@ export const northernLightsTranslations = {
     // campsite weather (the Höfn contradiction this ticket fixes).
     mapAuroraConditionLabel: "Aurora-viewing conditions",
     mapAuroraLegendTitle: "Aurora-viewing conditions",
+
+    // Ticket 416 (#416) — homepage-level off-season fallback for the
+    // `/#northern-lights` anchor (App.jsx, outside NorthernLightsCard.jsx).
+    // Shown only when isAuroraSeason() is false, so the anchor never lands
+    // on an empty div outside September-March.
+    nlOffSeasonFallback: "Northern Lights forecasts return in September.",
+
+    // Ticket 416 (#416) — shared cross-page Aurora marketing copy (About,
+    // PricingInfo, Pricing). Kept separate from the in-card nl* presentation
+    // strings above: these are prose for marketing/info pages, not literal
+    // card UI. Reused verbatim wherever the same claim is made, per the
+    // approved prompt's "reuse shared translation keys for identical claims"
+    // instruction.
+    auroraInfoSameAssessment:
+      "Free and Pro use the same nightly Northern Lights assessment — Pro reveals more information and comparison, not a better prediction.",
+    auroraInfoNoGuarantee: "Good conditions do not guarantee that the Northern Lights will be visible.",
+    auroraInfoSeasonalNote:
+      "Northern Lights forecasts are shown from September through March, when Iceland has enough darkness for a meaningful check.",
   },
   is: {
     nlCardTitle: "Norðurljós í kvöld",
@@ -213,5 +231,13 @@ export const northernLightsTranslations = {
     nlMapLoading: "Hleð upp korti…",
     mapAuroraConditionLabel: "Norðurljósaskilyrði",
     mapAuroraLegendTitle: "Norðurljósaskilyrði",
+
+    nlOffSeasonFallback: "Norðurljósaspáin kemur aftur í september.",
+
+    auroraInfoSameAssessment:
+      "Free og Pro nota sama kvöldmat á norðurljósum — Pro sýnir meiri upplýsingar og samanburð, ekki betri spá.",
+    auroraInfoNoGuarantee: "Góð skilyrði tryggja ekki að norðurljós sjáist.",
+    auroraInfoSeasonalNote:
+      "Norðurljósaspá er sýnd frá september til mars, þegar nægilegt myrkur er á Íslandi til að gera marktæka athugun.",
   },
 };

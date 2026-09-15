@@ -1,28 +1,28 @@
 # Current AI Task
 
-Task: ticket-411
+Task: ticket-416
 Stage: CLOSED
 
 Task directory:
-docs/ai/tasks/ticket-411/
+docs/ai/tasks/ticket-416/
 
 Prompt review:
-docs/ai/tasks/ticket-411/prompt-review.md (Round 1: Jonesy REVISE on the April aurora-copy question, three options returned to owner. Round 2: owner approved option B; Jonesy APPROVED — confirmed the new winter_weather_aurora boundary is calendar-identical to auroraSeason.js's own gate.)
+docs/ai/tasks/ticket-416/prompt-review.md (Round 1 APPROVED with three notes; Round 2 correction APPROVED — both incorporated and executed.)
 
 Approved prompt:
-docs/ai/tasks/ticket-411/approved-prompt-v1.md (Jonesy APPROVED Round 2; ready for and executed by CC.)
+docs/ai/tasks/ticket-416/approved-prompt-v1.md (executed, PASS) and approved-prompt-v2.md (correction, executed).
 
 CC report:
-docs/ai/tasks/ticket-411/cc-report.md (implementation, tests, real-browser evidence complete)
+docs/ai/tasks/ticket-416/cc-report.md (v1 + Round 2 correction section, both complete.)
 
 Result review:
-docs/ai/tasks/ticket-411/result-review.md (Jonesy PASS; Ripley final PASS 2026-09-15. Independently reran 195 tests across five suites, checked application diffs and three retained screenshots. Evidence limits and non-blocking assertion-coverage caveat recorded. Workflow CLOSED; GitHub issue closure and commit/push remain owner-controlled.)
+docs/ai/tasks/ticket-416/result-review.md (Ripley final PASS Round 2: exact bilingual correction verified, 40 tests independently passed, retained mobile paragraph layout inspected. Production-parity and browser-fixture limitations recorded. Workflow CLOSED.)
 
-## Previous task and sequencing
+## Previous tasks and sequencing
 
-#410 is CLOSED: see docs/ai/tasks/ticket-410/result-review.md, owner confirmation and Ripley closure dated 2026-09-15 (owner tested Facebook sharing directly and accepted it as final evidence).
+#411 is CLOSED in docs/ai/tasks/ticket-411/result-review.md. The owner selected #416 next. #416 is now CLOSED after final assessment.
 
-#409 remains unfinished/BLOCKED as recorded in docs/ai/tasks/ticket-409/result-review.md. Its pending validation and prior owner-directed sequencing exception are preserved; activating #411 does not close or cancel #409.
+#410 remains CLOSED. #409 remains unfinished/BLOCKED as recorded in docs/ai/tasks/ticket-409/result-review.md; its outstanding validation and prior owner-directed sequencing exception are preserved. Activating #416 does not close or cancel #409.
 
 ## Rule
 

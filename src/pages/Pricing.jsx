@@ -238,6 +238,7 @@ export default function Pricing({ onClose, lang = "is", theme = "dark", t, me })
     T("pricingFeatureComparisons", "Compare all 242 campsites across Iceland"),
     T("pricingFeatureAllPro", "All Pro features unlocked"),
     T("pricingFeatureWindShelter", "Wind direction + shelter score"),
+    T("pricingFeatureAurora", "Northern Lights: details and place comparison"),
     T("pricingFeatureCancelAnytime", "Cancel anytime"),
   ];
 
@@ -245,6 +246,7 @@ export default function Pricing({ onClose, lang = "is", theme = "dark", t, me })
     T("pricingFeatureComparisons", "Compare all 242 campsites across Iceland"),
     T("pricingFeatureAllPro", "All Pro features unlocked"),
     T("pricingFeatureWindShelter", "Wind direction + shelter score"),
+    T("pricingFeatureAurora", "Northern Lights: details and place comparison"),
     T("pricingFeatureCancelAnytime", "Cancel anytime"),
   ];
 
@@ -252,12 +254,14 @@ export default function Pricing({ onClose, lang = "is", theme = "dark", t, me })
     T("pricingFeatureComparisons", "Compare all 242 campsites across Iceland"),
     T("pricingFeatureAllPro", "All Pro features unlocked"),
     T("pricingFeatureWindShelter", "Wind direction + shelter score"),
+    T("pricingFeatureAurora", "Northern Lights: details and place comparison"),
   ];
 
   const featuresPassYear = [
     T("pricingFeatureComparisons", "Compare all 242 campsites across Iceland"),
     T("pricingFeatureAllPro", "All Pro features unlocked"),
     T("pricingFeatureWindShelter", "Wind direction + shelter score"),
+    T("pricingFeatureAurora", "Northern Lights: details and place comparison"),
   ];
 
   return (
@@ -584,6 +588,20 @@ export default function Pricing({ onClose, lang = "is", theme = "dark", t, me })
 
           <div style={styles.finePrint}>
             {T("pricingFinePrint", "You can manage or cancel anytime in the billing portal.")}
+          </div>
+
+          {/* Ticket 416 (#416): the Aurora bullet above must not imply a
+              Pro-exclusive basic forecast — this shared qualification (same
+              assessment for both tiers) plus a link to the detailed
+              PricingInfo explanation covers all four plans in one place. */}
+          <div style={{ ...styles.finePrint, marginTop: 6 }}>
+            {T(
+              "auroraInfoSameAssessment",
+              "Free and Pro use the same nightly Northern Lights assessment — Pro reveals more information and comparison, not a better prediction."
+            )}{" "}
+            <a href="/pricing-info" style={styles.termsLink}>
+              {T("pricingAuroraLearnMoreLink", "Learn more about Northern Lights on Pro")}
+            </a>
           </div>
         </div>
       </div>

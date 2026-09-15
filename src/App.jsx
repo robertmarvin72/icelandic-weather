@@ -49,6 +49,7 @@ import { useComparisonState } from "./hooks/useComparisonState";
 import About from "./pages/About";
 import { formatDay } from "./utils/date";
 import HourlyForecastModal from "./components/HourlyForecastModal";
+import { isAuroraSeason } from "./lib/auroraSeason";
 
 function IcelandCampingWeatherApp({ page = "home" }) {
   const [units, setUnits] = useLocalStorageState("units", "metric");
@@ -286,6 +287,21 @@ function IcelandCampingWeatherApp({ page = "home" }) {
     });
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
+  // Ticket 416 (#416) — minimal, reliable hash-scroll handling for the
+  // Icelandic Aurora entrypoint (`/#northern-lights`). The `#northern-lights`
+  // anchor only exists once campsites have finished loading (it lives inside
+  // the showCampsitesGate-gated branch below), so a plain browser-native
+  // hash scroll on first load/reload can lose the race against that async
+  // mount. Re-checking window.location.hash once showCampsitesGate clears
+  // covers reload, delayed campsite loading, and cross-page (About-to-home)
+  // navigation alike — all of them land here as a fresh mount of this
+  // component with the hash already present in the URL.
+  useEffect(() => {
+    if (page !== "home" || showCampsitesGate) return;
+    if (typeof window === "undefined" || window.location.hash !== "#northern-lights") return;
+    document.getElementById("northern-lights")?.scrollIntoView({ behavior: "smooth", block: "start" });
+  }, [page, showCampsitesGate]);
+
   const initialSiteRef = useRef(true);
   useEffect(() => {
     if (initialSiteRef.current) {
@@ -347,7 +363,7 @@ function IcelandCampingWeatherApp({ page = "home" }) {
 
         <div id="comparison-section" className="mx-auto max-w-6xl px-4 pt-3 pb-10 md:pt-4 md:pb-10">
           {page === "about" ? (
-            <About t={t} />
+            <About t={t} lang={lang} />
           ) : showCampsitesGate ? (
             <div className="flex min-h-[50vh] items-center justify-center p-6">
               <div className="max-w-md text-center">
@@ -396,7 +412,25 @@ function IcelandCampingWeatherApp({ page = "home" }) {
                 shareSnapshot={weatherVoice.shareSnapshot}
               />
 
-              <NorthernLightsCard t={t} lang={lang} entitlements={entitlements} onUpgrade={startCheckout} theme={theme} />
+              {/* Ticket 416 (#416): stable anchor for the Icelandic Aurora
+                  entrypoint (`/#northern-lights`, per the literal id Jonesy
+                  pinned). The off-season fallback is deliberately placed
+                  here, outside NorthernLightsCard.jsx, as a sibling — it
+                  reuses isAuroraSeason() read-only for display only, never
+                  touches the card's own season gate/null-return, never adds
+                  a card prop/branch, and never mounts a duplicate card or
+                  causes an extra Aurora request. */}
+              <div id="northern-lights">
+                <NorthernLightsCard t={t} lang={lang} entitlements={entitlements} onUpgrade={startCheckout} theme={theme} />
+                {!isAuroraSeason() && (
+                  <div
+                    data-testid="nl-off-season-fallback"
+                    className="mb-3 rounded-2xl border border-slate-200/70 bg-white/70 px-4 py-3 text-sm text-slate-600 shadow-sm dark:border-slate-800/70 dark:bg-slate-900/60 dark:text-slate-300"
+                  >
+                    {t("nlOffSeasonFallback")}
+                  </div>
+                )}
+              </div>
 
               <div className="mb-4">
                 <RoutePlannerCard

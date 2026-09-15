@@ -181,6 +181,19 @@ export const commonTranslations = {
       "More insight into when moving campsites may be worthwhile",
     ],
 
+    // Ticket 416 (#416) — compact Northern Lights section. auroraInfo*
+    // (same-assessment, no-guarantee, seasonal note) are shared keys, see
+    // translations.northernLights.js.
+    aboutAuroraTitle: "Northern Lights",
+    // Ticket 416 (#416) Round 2 correction: the prior wording ("at your
+    // campsite") falsely implied a per-site assessment — NorthernLightsCard
+    // always requests the fixed AURORA_CANDIDATE_LOCATION_IDS roster
+    // (src/config/auroraCandidates.js), independent of the selected site.
+    aboutAuroraBody:
+      "We assess Northern Lights activity together with local weather conditions to evaluate tonight's viewing conditions at the places we check.",
+    aboutAuroraProNote: "Pro adds named locations, reasons and place comparison when results support them.",
+    aboutAuroraLink: "See the Northern Lights forecast",
+
     aboutOutro:
       "Chase the Weather is designed specifically for Icelandic camping conditions and continues to evolve based on user feedback.",
 
@@ -749,6 +762,17 @@ export const commonTranslations = {
       "Nánari samanburður á stöðum",
       "Meiri innsýn í hvenær gæti borgað sig að færa sig",
     ],
+
+    aboutAuroraTitle: "Norðurljós",
+    // Ticket 416 (#416) Round 2 leiðrétting: fyrra orðalagið ("á þínu
+    // tjaldsvæði") gaf ranglega til kynna staðbundið mat fyrir valið
+    // tjaldsvæði — NorthernLightsCard notar alltaf fasta staðalistann
+    // AURORA_CANDIDATE_LOCATION_IDS (src/config/auroraCandidates.js),
+    // óháð völdu tjaldsvæði.
+    aboutAuroraBody:
+      "Við metum norðurljósavirkni ásamt staðbundnum veðurskilyrðum til að meta aðstæður til norðurljósaskoðunar í kvöld á þeim stöðum sem við skoðum.",
+    aboutAuroraProNote: "Pro bætir við nafngreindum stöðum, ástæðum og samanburði staða þegar niðurstöður leyfa.",
+    aboutAuroraLink: "Skoða norðurljósaspána",
 
     aboutOutro:
       "Eltum Veðrið er byggt fyrir íslenskt veður og aðstæður á ferðalögum.",

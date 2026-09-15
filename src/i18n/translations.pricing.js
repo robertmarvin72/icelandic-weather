@@ -75,6 +75,9 @@ export const pricingTranslations = {
     pricingFeatureWindShelter: "Wind direction & shelter score — see why one site is calmer",
     pricingFeatureComparisons: "Unlimited comparisons across all 242 campsites in Iceland",
     pricingFeatureCancelAnytime: "Cancel anytime",
+    // Ticket 416 (#416) — same short bullet on all four plan feature arrays.
+    pricingFeatureAurora: "Northern Lights: details and place comparison",
+    pricingAuroraLearnMoreLink: "Learn more about Northern Lights on Pro",
 
     pricingCtaYearly: "Start annual subscription",
     pricingCtaMonthly: "Start monthly subscription",
@@ -116,6 +119,16 @@ export const pricingTranslations = {
     pricingInfoFeature4Title: "Compare two campsites",
     pricingInfoFeature4Body:
       "See day by day which campsite is calmer, drier or warmer, and open an hourly breakdown when the decision matters.",
+
+    // Ticket 416 (#416) — compact Free/Pro Northern Lights explanation.
+    // auroraInfo* (same-assessment, seasonal note) are shared keys, see
+    // translations.northernLights.js.
+    pricingInfoAuroraTitle: "Northern Lights: same assessment, more detail in Pro",
+    pricingInfoAuroraFreeLabel: "Free",
+    pricingInfoAuroraFreeBody: "An evening overview of tonight's chances.",
+    pricingInfoAuroraProLabel: "Pro",
+    pricingInfoAuroraProBody:
+      "The named best location, reasons and expanded comparison — plus a list of qualifying places and a map when results support them.",
 
     pricingInfoMonthlyLabel: "Monthly",
     pricingInfoMonthlyPrice: "/ month",
@@ -212,6 +225,8 @@ export const pricingTranslations = {
     pricingFeatureWindShelter: "Vindátt og skjólstuðull — sjáðu af hverju einn staður er rólegri",
     pricingFeatureComparisons: "Ótakmarkaður samanburður á öllum 242 tjaldsvæðum landsins",
     pricingFeatureCancelAnytime: "Hægt að segja upp hvenær sem er",
+    pricingFeatureAurora: "Norðurljós: nánari upplýsingar og samanburður staða",
+    pricingAuroraLearnMoreLink: "Sjá nánar um norðurljós í Pro",
 
     pricingCtaYearly: "Hefja ársáskrift",
     pricingCtaMonthly: "Hefja mánaðaráskrift",
@@ -254,6 +269,13 @@ export const pricingTranslations = {
     pricingInfoFeature4Title: "Berðu saman tvö tjaldsvæði",
     pricingInfoFeature4Body:
       "Sjáðu dag frá degi hvort tjaldsvæðið er rólegra, þurrara eða hlýrra og opnaðu klukkutímasamanburð þegar ákvörðunin skiptir máli.",
+
+    pricingInfoAuroraTitle: "Norðurljós: sama mat, meiri smáatriði í Pro",
+    pricingInfoAuroraFreeLabel: "Free",
+    pricingInfoAuroraFreeBody: "Kvöldyfirlit yfir líkur kvöldsins.",
+    pricingInfoAuroraProLabel: "Pro",
+    pricingInfoAuroraProBody:
+      "Nafngreindur besti staðurinn, ástæður og ítarlegri samanburður — auk lista yfir hæfa staði og korts þegar niðurstöður leyfa.",
 
     pricingInfoMonthlyLabel: "Mánaðaráskrift",
     pricingInfoMonthlyPrice: "/ mánuður",

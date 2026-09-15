@@ -76,6 +76,34 @@ export default function PricingInfo({ lang = "is", theme = "light", t, onUpgrade
             </div>
           </div>
 
+          {/* Ticket 416 (#416): compact Free/Pro Northern Lights
+              explanation — within the existing tile/card structure, not a
+              redesign. Never promises a numeric score, live data, exact
+              timing, or a map/list for every result. */}
+          <div className="mt-4 rounded-2xl border border-slate-200/70 bg-slate-50/80 p-5 dark:border-slate-700/70 dark:bg-slate-800/60">
+            <div className="text-base font-semibold">{t("pricingInfoAuroraTitle")}</div>
+            <div className="mt-3 grid gap-3 sm:grid-cols-2">
+              <div>
+                <div className="text-sm font-semibold text-slate-500 dark:text-slate-400">
+                  {t("pricingInfoAuroraFreeLabel")}
+                </div>
+                <div className="mt-1 text-sm text-slate-600 dark:text-slate-300">
+                  {t("pricingInfoAuroraFreeBody")}
+                </div>
+              </div>
+              <div>
+                <div className="text-sm font-semibold text-slate-500 dark:text-slate-400">
+                  {t("pricingInfoAuroraProLabel")}
+                </div>
+                <div className="mt-1 text-sm text-slate-600 dark:text-slate-300">
+                  {t("pricingInfoAuroraProBody")}
+                </div>
+              </div>
+            </div>
+            <p className="mt-3 text-xs text-slate-500 dark:text-slate-400">{t("auroraInfoSameAssessment")}</p>
+            <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">{t("auroraInfoSeasonalNote")}</p>
+          </div>
+
           <p className="mt-6 text-xs text-slate-500 dark:text-slate-400">
             {t("pricingChargedInEur")}
           </p>

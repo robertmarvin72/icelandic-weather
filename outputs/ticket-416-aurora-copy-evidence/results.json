@@ -1,0 +1,223 @@
+{
+  "pageShots": [
+    {
+      "label": "about",
+      "lang": "is",
+      "theme": "light",
+      "viewport": "mobile",
+      "noHorizontalOverflow": true,
+      "screenshot": "C:\\Users\\Notandi\\forritun\\icelandic-weather\\outputs\\ticket-416-aurora-copy-evidence/about-is-light-mobile.png"
+    },
+    {
+      "label": "about",
+      "lang": "is",
+      "theme": "light",
+      "viewport": "desktop",
+      "noHorizontalOverflow": true,
+      "screenshot": "C:\\Users\\Notandi\\forritun\\icelandic-weather\\outputs\\ticket-416-aurora-copy-evidence/about-is-light-desktop.png"
+    },
+    {
+      "label": "about",
+      "lang": "is",
+      "theme": "dark",
+      "viewport": "mobile",
+      "noHorizontalOverflow": true,
+      "screenshot": "C:\\Users\\Notandi\\forritun\\icelandic-weather\\outputs\\ticket-416-aurora-copy-evidence/about-is-dark-mobile.png"
+    },
+    {
+      "label": "about",
+      "lang": "is",
+      "theme": "dark",
+      "viewport": "desktop",
+      "noHorizontalOverflow": true,
+      "screenshot": "C:\\Users\\Notandi\\forritun\\icelandic-weather\\outputs\\ticket-416-aurora-copy-evidence/about-is-dark-desktop.png"
+    },
+    {
+      "label": "about",
+      "lang": "en",
+      "theme": "light",
+      "viewport": "mobile",
+      "noHorizontalOverflow": true,
+      "screenshot": "C:\\Users\\Notandi\\forritun\\icelandic-weather\\outputs\\ticket-416-aurora-copy-evidence/about-en-light-mobile.png"
+    },
+    {
+      "label": "about",
+      "lang": "en",
+      "theme": "light",
+      "viewport": "desktop",
+      "noHorizontalOverflow": true,
+      "screenshot": "C:\\Users\\Notandi\\forritun\\icelandic-weather\\outputs\\ticket-416-aurora-copy-evidence/about-en-light-desktop.png"
+    },
+    {
+      "label": "about",
+      "lang": "en",
+      "theme": "dark",
+      "viewport": "mobile",
+      "noHorizontalOverflow": true,
+      "screenshot": "C:\\Users\\Notandi\\forritun\\icelandic-weather\\outputs\\ticket-416-aurora-copy-evidence/about-en-dark-mobile.png"
+    },
+    {
+      "label": "about",
+      "lang": "en",
+      "theme": "dark",
+      "viewport": "desktop",
+      "noHorizontalOverflow": true,
+      "screenshot": "C:\\Users\\Notandi\\forritun\\icelandic-weather\\outputs\\ticket-416-aurora-copy-evidence/about-en-dark-desktop.png"
+    },
+    {
+      "label": "pricing-info",
+      "lang": "is",
+      "theme": "light",
+      "viewport": "mobile",
+      "noHorizontalOverflow": true,
+      "screenshot": "C:\\Users\\Notandi\\forritun\\icelandic-weather\\outputs\\ticket-416-aurora-copy-evidence/pricing-info-is-light-mobile.png"
+    },
+    {
+      "label": "pricing-info",
+      "lang": "is",
+      "theme": "light",
+      "viewport": "desktop",
+      "noHorizontalOverflow": true,
+      "screenshot": "C:\\Users\\Notandi\\forritun\\icelandic-weather\\outputs\\ticket-416-aurora-copy-evidence/pricing-info-is-light-desktop.png"
+    },
+    {
+      "label": "pricing-info",
+      "lang": "is",
+      "theme": "dark",
+      "viewport": "mobile",
+      "noHorizontalOverflow": true,
+      "screenshot": "C:\\Users\\Notandi\\forritun\\icelandic-weather\\outputs\\ticket-416-aurora-copy-evidence/pricing-info-is-dark-mobile.png"
+    },
+    {
+      "label": "pricing-info",
+      "lang": "is",
+      "theme": "dark",
+      "viewport": "desktop",
+      "noHorizontalOverflow": true,
+      "screenshot": "C:\\Users\\Notandi\\forritun\\icelandic-weather\\outputs\\ticket-416-aurora-copy-evidence/pricing-info-is-dark-desktop.png"
+    },
+    {
+      "label": "pricing-info",
+      "lang": "en",
+      "theme": "light",
+      "viewport": "mobile",
+      "noHorizontalOverflow": true,
+      "screenshot": "C:\\Users\\Notandi\\forritun\\icelandic-weather\\outputs\\ticket-416-aurora-copy-evidence/pricing-info-en-light-mobile.png"
+    },
+    {
+      "label": "pricing-info",
+      "lang": "en",
+      "theme": "light",
+      "viewport": "desktop",
+      "noHorizontalOverflow": true,
+      "screenshot": "C:\\Users\\Notandi\\forritun\\icelandic-weather\\outputs\\ticket-416-aurora-copy-evidence/pricing-info-en-light-desktop.png"
+    },
+    {
+      "label": "pricing-info",
+      "lang": "en",
+      "theme": "dark",
+      "viewport": "mobile",
+      "noHorizontalOverflow": true,
+      "screenshot": "C:\\Users\\Notandi\\forritun\\icelandic-weather\\outputs\\ticket-416-aurora-copy-evidence/pricing-info-en-dark-mobile.png"
+    },
+    {
+      "label": "pricing-info",
+      "lang": "en",
+      "theme": "dark",
+      "viewport": "desktop",
+      "noHorizontalOverflow": true,
+      "screenshot": "C:\\Users\\Notandi\\forritun\\icelandic-weather\\outputs\\ticket-416-aurora-copy-evidence/pricing-info-en-dark-desktop.png"
+    },
+    {
+      "label": "pricing",
+      "lang": "is",
+      "theme": "light",
+      "viewport": "mobile",
+      "noHorizontalOverflow": true,
+      "screenshot": "C:\\Users\\Notandi\\forritun\\icelandic-weather\\outputs\\ticket-416-aurora-copy-evidence/pricing-is-light-mobile.png"
+    },
+    {
+      "label": "pricing",
+      "lang": "is",
+      "theme": "light",
+      "viewport": "desktop",
+      "noHorizontalOverflow": true,
+      "screenshot": "C:\\Users\\Notandi\\forritun\\icelandic-weather\\outputs\\ticket-416-aurora-copy-evidence/pricing-is-light-desktop.png"
+    },
+    {
+      "label": "pricing",
+      "lang": "is",
+      "theme": "dark",
+      "viewport": "mobile",
+      "noHorizontalOverflow": true,
+      "screenshot": "C:\\Users\\Notandi\\forritun\\icelandic-weather\\outputs\\ticket-416-aurora-copy-evidence/pricing-is-dark-mobile.png"
+    },
+    {
+      "label": "pricing",
+      "lang": "is",
+      "theme": "dark",
+      "viewport": "desktop",
+      "noHorizontalOverflow": true,
+      "screenshot": "C:\\Users\\Notandi\\forritun\\icelandic-weather\\outputs\\ticket-416-aurora-copy-evidence/pricing-is-dark-desktop.png"
+    },
+    {
+      "label": "pricing",
+      "lang": "en",
+      "theme": "light",
+      "viewport": "mobile",
+      "noHorizontalOverflow": true,
+      "screenshot": "C:\\Users\\Notandi\\forritun\\icelandic-weather\\outputs\\ticket-416-aurora-copy-evidence/pricing-en-light-mobile.png"
+    },
+    {
+      "label": "pricing",
+      "lang": "en",
+      "theme": "light",
+      "viewport": "desktop",
+      "noHorizontalOverflow": true,
+      "screenshot": "C:\\Users\\Notandi\\forritun\\icelandic-weather\\outputs\\ticket-416-aurora-copy-evidence/pricing-en-light-desktop.png"
+    },
+    {
+      "label": "pricing",
+      "lang": "en",
+      "theme": "dark",
+      "viewport": "mobile",
+      "noHorizontalOverflow": true,
+      "screenshot": "C:\\Users\\Notandi\\forritun\\icelandic-weather\\outputs\\ticket-416-aurora-copy-evidence/pricing-en-dark-mobile.png"
+    },
+    {
+      "label": "pricing",
+      "lang": "en",
+      "theme": "dark",
+      "viewport": "desktop",
+      "noHorizontalOverflow": true,
+      "screenshot": "C:\\Users\\Notandi\\forritun\\icelandic-weather\\outputs\\ticket-416-aurora-copy-evidence/pricing-en-dark-desktop.png"
+    }
+  ],
+  "checks": {
+    "aboutLinks": {
+      "isAnchorLinkPresent": true,
+      "enStandaloneLinkPresent": true
+    },
+    "aboutToHomeInSeason": {
+      "anchorBoxY": 222.5,
+      "anchorNearViewportTop": true,
+      "realCardPresent": true,
+      "auroraRequestsFired": 1
+    },
+    "aboutEnSession": {
+      "enStandaloneLinkPresent": true,
+      "icelandicAnchorLinkAbsent": true
+    },
+    "offSeasonApril": {
+      "anchorPresent": true,
+      "fallbackText": "Norðurljósaspáin kemur aftur í september.",
+      "cardPresent": false,
+      "auroraRequestsFired": 0
+    },
+    "delayedCampsiteLoadingScroll": {
+      "anchorBoxY": 222.5,
+      "anchorNearViewportTop": true
+    },
+    "pricingCtasStillPresent": true
+  }
+}

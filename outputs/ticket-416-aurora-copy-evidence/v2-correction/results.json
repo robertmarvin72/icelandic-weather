@@ -1,0 +1,16 @@
+[
+  {
+    "lang": "is",
+    "theme": "light",
+    "noHorizontalOverflow": true,
+    "bodyText": "Við metum norðurljósavirkni ásamt staðbundnum veðurskilyrðum til að meta aðstæður til norðurljósaskoðunar í kvöld á þeim stöðum sem við skoðum.",
+    "screenshot": "C:\\Users\\Notandi\\forritun\\icelandic-weather\\outputs\\ticket-416-aurora-copy-evidence\\v2-correction/about-correction-is-mobile.png"
+  },
+  {
+    "lang": "en",
+    "theme": "light",
+    "noHorizontalOverflow": true,
+    "bodyText": "We assess Northern Lights activity together with local weather conditions to evaluate tonight's viewing conditions at the places we check.",
+    "screenshot": "C:\\Users\\Notandi\\forritun\\icelandic-weather\\outputs\\ticket-416-aurora-copy-evidence\\v2-correction/about-correction-en-mobile.png"
+  }
+]
