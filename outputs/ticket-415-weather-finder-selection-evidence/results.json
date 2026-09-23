@@ -1,0 +1,70 @@
+{
+  "screenshotMatrix": [
+    {
+      "lang": "is",
+      "theme": "light",
+      "viewport": "mobile",
+      "noHorizontalOverflow": true,
+      "screenshot": "C:\\Users\\Notandi\\forritun\\icelandic-weather\\outputs\\ticket-415-weather-finder-selection-evidence/finder-is-light-mobile.png"
+    },
+    {
+      "lang": "is",
+      "theme": "light",
+      "viewport": "desktop",
+      "noHorizontalOverflow": true,
+      "screenshot": "C:\\Users\\Notandi\\forritun\\icelandic-weather\\outputs\\ticket-415-weather-finder-selection-evidence/finder-is-light-desktop.png"
+    },
+    {
+      "lang": "is",
+      "theme": "dark",
+      "viewport": "mobile",
+      "noHorizontalOverflow": true,
+      "screenshot": "C:\\Users\\Notandi\\forritun\\icelandic-weather\\outputs\\ticket-415-weather-finder-selection-evidence/finder-is-dark-mobile.png"
+    },
+    {
+      "lang": "is",
+      "theme": "dark",
+      "viewport": "desktop",
+      "noHorizontalOverflow": true,
+      "screenshot": "C:\\Users\\Notandi\\forritun\\icelandic-weather\\outputs\\ticket-415-weather-finder-selection-evidence/finder-is-dark-desktop.png"
+    },
+    {
+      "lang": "en",
+      "theme": "light",
+      "viewport": "mobile",
+      "noHorizontalOverflow": true,
+      "screenshot": "C:\\Users\\Notandi\\forritun\\icelandic-weather\\outputs\\ticket-415-weather-finder-selection-evidence/finder-en-light-mobile.png"
+    },
+    {
+      "lang": "en",
+      "theme": "light",
+      "viewport": "desktop",
+      "noHorizontalOverflow": true,
+      "screenshot": "C:\\Users\\Notandi\\forritun\\icelandic-weather\\outputs\\ticket-415-weather-finder-selection-evidence/finder-en-light-desktop.png"
+    },
+    {
+      "lang": "en",
+      "theme": "dark",
+      "viewport": "mobile",
+      "noHorizontalOverflow": true,
+      "screenshot": "C:\\Users\\Notandi\\forritun\\icelandic-weather\\outputs\\ticket-415-weather-finder-selection-evidence/finder-en-dark-mobile.png"
+    },
+    {
+      "lang": "en",
+      "theme": "dark",
+      "viewport": "desktop",
+      "noHorizontalOverflow": true,
+      "screenshot": "C:\\Users\\Notandi\\forritun\\icelandic-weather\\outputs\\ticket-415-weather-finder-selection-evidence/finder-en-dark-desktop.png"
+    }
+  ],
+  "keyboard": {
+    "pickerBefore": "Alpha Camp▾",
+    "focusedIsBeta": true,
+    "pickerAfterEnter": "Beta Camp▾",
+    "pickerAfterSpace": "Gamma Camp▾"
+  },
+  "longName": {
+    "longNameButtonWidth": 86.484375,
+    "noHorizontalOverflow": true
+  }
+}

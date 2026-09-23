@@ -518,6 +518,7 @@ function IcelandCampingWeatherApp({ page = "home" }) {
                   t={t}
                   me={me}
                   onUpgrade={startCheckout}
+                  onSelectSite={handleSelectSite}
                 />
               </div>
 

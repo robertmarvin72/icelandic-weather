@@ -25,7 +25,7 @@ const RESULT_TITLE_KEY = {
   driest: "weatherFinderResultTitleDriest",
 };
 
-export default function WeatherFinder({ siteList, scoresById, userLoc, entitlements, units, t, onUpgrade }) {
+export default function WeatherFinder({ siteList, scoresById, userLoc, entitlements, units, t, onUpgrade, onSelectSite }) {
   const isPro = !!entitlements?.isPro;
 
   const [mode, setMode] = useState("calmest");
@@ -73,6 +73,25 @@ export default function WeatherFinder({ siteList, scoresById, userLoc, entitleme
 
   const visibleResults = showAll ? ranked : ranked.slice(0, INITIAL_VISIBLE_COUNT);
   const hasMore = ranked.length > INITIAL_VISIBLE_COUNT;
+
+  // Ticket 415 (#415): the owner-clarified selection behavior — activating a
+  // visible result must match selecting a place in the top list exactly:
+  // same site-id-based callback (App's handleSelectSite, unchanged/reused,
+  // never duplicated here), same map-scroll side effect. Fired once per
+  // genuine activation, before onSelectSite, honestly describing this as a
+  // `weather_finder` list click (no canonical stay/move verdict exists
+  // here) rather than reusing weekly_ranking_site_clicked, which belongs to
+  // a different surface.
+  function handleSelectResult(result) {
+    if (!result?.id) return;
+    trackEvent("recommendation_destination_clicked", {
+      destination_id: result.id,
+      destination_name: result.name,
+      recommendation_type: "weather_finder",
+      reason: mode,
+    });
+    onSelectSite(result.id);
+  }
 
   if (!sites.length) return null;
 
@@ -197,6 +216,7 @@ export default function WeatherFinder({ siteList, scoresById, userLoc, entitleme
                 mode={mode}
                 units={units}
                 t={t}
+                onSelect={typeof onSelectSite === "function" ? handleSelectResult : undefined}
               />
             ))}
           </div>
