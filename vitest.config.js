@@ -22,6 +22,10 @@ export default defineConfig({
       "src/**/*.test.jsx", "src/**/*.spec.jsx",
       "api/**/*.test.js",
       "google-apps-script/**/*.test.js",
+      // Ticket 417 (#417) Round 2 — isolated, testable export-script
+      // helpers (scripts/weatherVoiceShareExportLib.mjs). Importing this
+      // test file must never launch Chromium or the export main routine.
+      "scripts/**/*.test.mjs",
     ],
 
     coverage: {

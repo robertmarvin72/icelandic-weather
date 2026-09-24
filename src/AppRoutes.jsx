@@ -22,6 +22,7 @@ import CampaignLandingPage from "./pages/CampaignLandingPage";
 import Welcome from "./pages/Welcome";
 import DecisionQuizResearch from "./pages/DecisionQuizResearch";
 import NorthernLightsLanding from "./pages/NorthernLightsLanding";
+import ShareFallback from "./pages/ShareFallback";
 
 function PricingRoute() {
   const pageProps = usePageRouteProps();
@@ -142,6 +143,20 @@ function WelcomeRoute() {
   return <Welcome {...pageProps} />;
 }
 
+// Ticket 417 (#417) Round 2 — only reached for an UNKNOWN path anywhere
+// under /share/tjaldur (unknown version, unknown id, unsupported language,
+// or the bare namespace root): every real, generated share URL is served
+// as an actual static .html file before this route is ever considered
+// (see docs/ai/tasks/ticket-417's cc-report for the filesystem-precedence
+// verification). Scoped to `/share/tjaldur` — NOT hardcoded to a specific
+// version segment (Ripley Round 1 finding: a v1-only pattern silently
+// fell through to generic NotFound for any other version) — so unrelated
+// routes/NotFound behavior stay untouched.
+function ShareFallbackRoute() {
+  const pageProps = usePageRouteProps();
+  return <ShareFallback {...pageProps} />;
+}
+
 function BlogRoute({ langOverride }) {
   const pageProps = usePageRouteProps();
   return <BlogIndex {...pageProps} lang={langOverride || pageProps.lang} />;
@@ -180,6 +195,7 @@ export default function AppRoutes({ HomeComponent }) {
       <Route path="/en/blog" element={<BlogRoute langOverride="en" />} />
       <Route path="/en/blog/:slug" element={<BlogPostRoute langOverride="en" />} />
       <Route path="/en/northern-lights" element={<NorthernLightsLanding />} />
+      <Route path="/share/tjaldur/*" element={<ShareFallbackRoute />} />
       <Route path="/brochure" element={<Brochure />} />
       <Route path="/welcome" element={<WelcomeRoute />} />
       {/* Unlisted research route (#395) — not in navigation/sitemap. */}

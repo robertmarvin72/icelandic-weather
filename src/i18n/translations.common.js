@@ -513,6 +513,18 @@ export const commonTranslations = {
     // line, never an unqualified temperature reading.
     weatherVoiceShareDailyForecastLabel: "Daily forecast",
     weatherVoiceShareHighTempLabel: "High",
+    // Ticket 417 (#417) — compact two-action share choice (image vs
+    // Facebook) shown before the existing image dialog content.
+    weatherVoiceShareChoiceTitle: "Share Tjaldur",
+    weatherVoiceShareChoiceImage: "Share image",
+    weatherVoiceShareChoiceFacebook: "Share on Facebook",
+    weatherVoiceShareBack: "Back",
+    weatherVoiceShareFacebookOpensNewWindow: "Opens Facebook in a new window.",
+    weatherVoiceShareFacebookUnavailable: "Facebook sharing isn't available for this comment yet — you can still share the image.",
+    // Ticket 417 (#417) — scoped fallback for an unknown /share/tjaldur/v1/* path.
+    shareFallbackTitle: "This shared comment isn't available",
+    shareFallbackBody: "This link may be outdated, or the comment is no longer part of the current catalogue.",
+    shareFallbackHomeLink: "Go to the homepage",
     // #396 Revision 3 (owner copy follow-up): removed the "isn't dangerous"
     // contrast — calm compare/monitor wording, consistent with canonical
     // consider semantics; does not imply moving is recommended.
@@ -1083,6 +1095,16 @@ export const commonTranslations = {
     // Ticket 410 Revision 2 (#410) — sjá EN blokk.
     weatherVoiceShareDailyForecastLabel: "Dagsspá",
     weatherVoiceShareHighTempLabel: "Hámark",
+    // Ticket 417 (#417) — sjá EN blokk.
+    weatherVoiceShareChoiceTitle: "Deila Tjaldi",
+    weatherVoiceShareChoiceImage: "Deila mynd",
+    weatherVoiceShareChoiceFacebook: "Deila á Facebook",
+    weatherVoiceShareBack: "Til baka",
+    weatherVoiceShareFacebookOpensNewWindow: "Opnar Facebook í nýjum glugga.",
+    weatherVoiceShareFacebookUnavailable: "Ekki er hægt að deila þessu ummæli á Facebook núna — samt er hægt að deila myndinni.",
+    shareFallbackTitle: "Þetta deilda ummæli er ekki tiltækt",
+    shareFallbackBody: "Þessi tengill gæti verið úreltur, eða ummælið er ekki lengur hluti af núverandi safni.",
+    shareFallbackHomeLink: "Fara á forsíðuna",
     icConsiderFallback: "Aðstæður í nágrenninu gætu verið örlítið öðruvísi — vert að bera saman eða fylgjast með.",
     icStayVerdict: "Þú ert líklega á góðum stað.",
     icStayNoAlternative: "Enginn nálægur staður lítur greinilega betur út næstu daga.",

@@ -18,6 +18,11 @@ yarn-error.log*
 # Local AI-generated artifacts (PDFs, previews, screenshots, temp generators)
 .local-artifacts/
 
+# Ticket 417 (#417) Round 2 — ephemeral per-test fixtures for
+# scripts/weatherVoiceShareExportLib.test.mjs, created and removed by the
+# test itself; never meant to be committed.
+scripts/.tmp-export-lib-test/
+
 # OS files
 .DS_Store
 Thumbs.db

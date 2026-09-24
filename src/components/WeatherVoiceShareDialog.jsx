@@ -19,9 +19,10 @@
 // provides role="dialog"/Escape/scroll-lock but NO focus trap or restore-
 // on-close — both are genuinely new implementation here, not reused from
 // an existing pattern.
-import React, { useEffect, useRef, useState, useCallback } from "react";
+import React, { useEffect, useMemo, useRef, useState, useCallback } from "react";
 import { renderWeatherVoiceShareImage } from "../lib/weatherVoiceShareImage";
 import { getTjaldurMoodAssetPath } from "../lib/weatherVoicePresentation";
+import { resolveWeatherVoiceFacebookShare } from "../lib/weatherVoiceFacebookShare";
 import { trackEvent } from "../lib/analytics";
 
 const SURFACE_HOMEPAGE_DECISION = "homepage_decision";
@@ -46,6 +47,24 @@ function emitShareClicked(snapshot, method) {
   }
 }
 
+// Ticket 417 (#417) — a genuinely different event/surface from
+// weather_voice_share_clicked above: Facebook sharing never depends on
+// canvas generation or navigator.share/file support, so it is never
+// counted as a native/download share_method. Exactly the issue-defined
+// payload — no voice_id, per Jonesy's disposition note #1 (prompt-review).
+function emitFacebookShareClicked(snapshot) {
+  try {
+    trackEvent("tjaldur_facebook_share_clicked", {
+      mood: snapshot.mood,
+      language: snapshot.language,
+      source: SURFACE_HOMEPAGE_DECISION,
+    });
+  } catch {
+    // Isolated: an analytics failure must never block the anchor's own
+    // native navigation (no preventDefault happens anywhere in this file).
+  }
+}
+
 export default function WeatherVoiceShareDialog({ snapshot, lang, t, onClose }) {
   const dialogRef = useRef(null);
   const previouslyFocusedRef = useRef(null);
@@ -61,16 +80,32 @@ export default function WeatherVoiceShareDialog({ snapshot, lang, t, onClose }) 
   // while a later, deliberate retry (after that tick) still works.
   const attemptInFlightRef = useRef(false);
 
-  const [imageState, setImageState] = useState("generating"); // "generating" | "ready" | "error"
+  // Ticket 417 (#417) — a compact two-action choice ("Share image" /
+  // "Share on Facebook") is shown FIRST; the existing PNG dialog content
+  // below is unchanged but now lives behind the "Share image" choice, and
+  // canvas generation never starts until that choice is actually made —
+  // Facebook must never depend on successful canvas generation.
+  const [view, setView] = useState("choice"); // "choice" | "image"
+  const [imageState, setImageState] = useState("idle"); // "idle" | "generating" | "ready" | "error"
   const [file, setFile] = useState(null);
   const [objectUrl, setObjectUrl] = useState(null);
   const [canShareFile, setCanShareFile] = useState(false);
   const [busyMethod, setBusyMethod] = useState(null); // "native" | "download" | null
   const [shareNotice, setShareNotice] = useState(null); // "cancelled" | "share_error" | null
 
-  // ── Image generation, cancelled on unmount (episode invalidation is
-  // handled by the parent unmounting/remounting this whole component). ──
+  // Resolved once per frozen snapshot: exact voiceId/language/text/mood
+  // match against the generated static-export manifest, never a different
+  // quote and never an inference from severity. See
+  // weatherVoiceFacebookShare.js for the matching rule.
+  const facebookShare = useMemo(() => resolveWeatherVoiceFacebookShare(snapshot), [snapshot]);
+
+  // ── Image generation — only once the user actually picks "Share image",
+  // cancelled on unmount or a view change away from "image" (episode
+  // invalidation is handled by the parent unmounting/remounting this whole
+  // component; a mere view change here never needs a stale-promise guard
+  // beyond the existing AbortController). ──
   useEffect(() => {
+    if (view !== "image") return undefined;
     const controller = new AbortController();
     setImageState("generating");
     setFile(null);
@@ -110,10 +145,11 @@ export default function WeatherVoiceShareDialog({ snapshot, lang, t, onClose }) 
       });
 
     return () => controller.abort();
-    // Re-runs only if a genuinely different snapshot object is passed —
-    // the parent guarantees a stable snapshot reference per open episode.
+    // Re-runs when a genuinely different snapshot object is passed (the
+    // parent guarantees a stable snapshot reference per open episode) or
+    // when the user switches into the "image" view.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [snapshot]);
+  }, [snapshot, view]);
 
   // Revoke the object URL on replacement/unmount, after consumers (the
   // preview <img>, a completed download) have had time to use it.
@@ -167,6 +203,26 @@ export default function WeatherVoiceShareDialog({ snapshot, lang, t, onClose }) 
       }
     };
   }, [onClose]);
+
+  // Ticket 417 (#417) — the choice->image transition never unmounts this
+  // component (the parent's frozen-snapshot lifecycle is untouched), so the
+  // trap effect above (mount-only) doesn't refocus when the choice
+  // buttons are replaced by the image view's own controls. This refocuses
+  // to the new view's first focusable control WITHOUT touching
+  // previouslyFocusedRef or the keydown listener — re-running the effect
+  // above on every view change would incorrectly recapture "previously
+  // focused" as whatever was focused INSIDE the dialog a moment earlier,
+  // breaking restore-on-close.
+  const isInitialViewRef = useRef(true);
+  useEffect(() => {
+    if (isInitialViewRef.current) {
+      isInitialViewRef.current = false;
+      return;
+    }
+    const node = dialogRef.current;
+    const focusable = node ? Array.from(node.querySelectorAll(FOCUSABLE_SELECTOR)) : [];
+    (focusable[0] || node)?.focus?.();
+  }, [view]);
 
   const handleDownload = useCallback(() => {
     if (attemptInFlightRef.current || !file || !objectUrl) return;
@@ -222,7 +278,18 @@ export default function WeatherVoiceShareDialog({ snapshot, lang, t, onClose }) 
     }
   }, [file, snapshot]);
 
-  const title = t?.("weatherVoiceShareDialogTitle") || (lang === "is" ? "Deila Tjaldi" : "Share Tjaldur");
+  // Fires synchronously, before the browser follows the anchor's own href
+  // (no await, no preventDefault anywhere in this handler or its caller) —
+  // an analytics exception is isolated inside emitFacebookShareClicked and
+  // can never block that native navigation. A later, separate deliberate
+  // click on this same link is a new, genuine activation and counts again.
+  const handleFacebookClick = useCallback(() => {
+    emitFacebookShareClicked(snapshot);
+  }, [snapshot]);
+
+  const choiceTitle = t?.("weatherVoiceShareChoiceTitle") || (lang === "is" ? "Deila Tjaldi" : "Share Tjaldur");
+  const imageTitle = t?.("weatherVoiceShareDialogTitle") || (lang === "is" ? "Deila Tjaldi" : "Share Tjaldur");
+  const title = view === "choice" ? choiceTitle : imageTitle;
 
   return (
     <div
@@ -256,58 +323,111 @@ export default function WeatherVoiceShareDialog({ snapshot, lang, t, onClose }) 
           </button>
         </div>
 
-        <div className="mt-3 flex items-center justify-center overflow-hidden rounded-xl bg-amber-50 dark:bg-amber-950/20" style={{ aspectRatio: "1 / 1" }}>
-          {imageState === "generating" && (
-            <p className="px-4 text-center text-sm text-slate-600 dark:text-slate-300" role="status" aria-live="polite">
-              {t?.("weatherVoiceShareGenerating") || (lang === "is" ? "Undirbý mynd…" : "Preparing image…")}
-            </p>
-          )}
-          {imageState === "error" && (
-            <p className="px-4 text-center text-sm text-red-600 dark:text-red-400" role="alert">
-              {t?.("weatherVoiceShareError") || (lang === "is" ? "Ekki tókst að útbúa mynd." : "Couldn't prepare the image.")}
-            </p>
-          )}
-          {imageState === "ready" && objectUrl && (
-            <img
-              src={objectUrl}
-              alt={t?.("weatherVoiceShareImageAlt") || (lang === "is" ? "Forskoðun myndar til að deila" : "Share image preview")}
-              className="h-full w-full object-contain"
-            />
-          )}
-        </div>
-
-        {shareNotice === "cancelled" && (
-          <p className="mt-2 text-xs text-slate-500 dark:text-slate-400" role="status">
-            {t?.("weatherVoiceShareCancelled") || (lang === "is" ? "Deiling hætt við." : "Sharing cancelled.")}
-          </p>
-        )}
-        {shareNotice === "share_error" && (
-          <p className="mt-2 text-xs text-amber-700 dark:text-amber-400" role="status">
-            {t?.("weatherVoiceShareUnavailable") ||
-              (lang === "is" ? "Ekki tókst að deila beint — hægt er að vista myndina í staðinn." : "Direct sharing didn't work — you can still save the image.")}
-          </p>
-        )}
-
-        <div className="mt-4 flex flex-wrap gap-2">
-          {canShareFile && (
+        {view === "choice" && (
+          <div className="mt-4 flex flex-col gap-2" data-testid="weather-voice-share-choice">
             <button
               type="button"
-              onClick={handleNativeShare}
-              disabled={imageState !== "ready" || !!busyMethod}
-              className="inline-flex items-center rounded-full bg-amber-600 px-4 py-2 text-sm font-semibold text-white hover:bg-amber-700 disabled:opacity-50"
+              onClick={() => setView("image")}
+              className="inline-flex items-center justify-center rounded-full bg-amber-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-amber-700"
             >
-              {t?.("weatherVoiceShareNative") || (lang === "is" ? "Deila" : "Share")}
+              {t?.("weatherVoiceShareChoiceImage") || (lang === "is" ? "Deila mynd" : "Share image")}
             </button>
-          )}
-          <button
-            type="button"
-            onClick={handleDownload}
-            disabled={imageState !== "ready" || !!busyMethod}
-            className="inline-flex items-center rounded-full bg-white px-4 py-2 text-sm font-semibold text-slate-900 ring-1 ring-inset ring-slate-300 hover:bg-slate-50 disabled:opacity-50 dark:bg-slate-800 dark:text-slate-100 dark:ring-slate-600"
-          >
-            {t?.("weatherVoiceShareSave") || (lang === "is" ? "Vista mynd" : "Save image")}
-          </button>
-        </div>
+
+            {facebookShare.available ? (
+              <>
+                {/* Real accessible external anchor with immediate user
+                    activation — never a button + window.open, and never
+                    gated on/awaiting the image renderer above. No PNG
+                    upload, no SDK, no prefilled personal text. */}
+                <a
+                  href={facebookShare.facebookUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={handleFacebookClick}
+                  className="inline-flex items-center justify-center rounded-full bg-[#1877F2] px-4 py-2.5 text-sm font-semibold text-white hover:bg-[#166FE5]"
+                >
+                  {t?.("weatherVoiceShareChoiceFacebook") || (lang === "is" ? "Deila á Facebook" : "Share on Facebook")}
+                </a>
+                <p className="text-center text-[11px] text-slate-400 dark:text-slate-500">
+                  {t?.("weatherVoiceShareFacebookOpensNewWindow") ||
+                    (lang === "is" ? "Opnar Facebook í nýjum glugga." : "Opens Facebook in a new window.")}
+                </p>
+              </>
+            ) : (
+              <p className="text-center text-xs text-slate-500 dark:text-slate-400" role="status">
+                {t?.("weatherVoiceShareFacebookUnavailable") ||
+                  (lang === "is"
+                    ? "Ekki er hægt að deila þessu ummæli á Facebook núna — samt er hægt að deila myndinni."
+                    : "Facebook sharing isn't available for this comment yet — you can still share the image.")}
+              </p>
+            )}
+          </div>
+        )}
+
+        {view === "image" && (
+          <>
+            <button
+              type="button"
+              onClick={() => setView("choice")}
+              className="mt-3 text-xs font-semibold text-slate-500 underline decoration-dotted underline-offset-2 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200"
+            >
+              ← {t?.("weatherVoiceShareBack") || (lang === "is" ? "Til baka" : "Back")}
+            </button>
+
+            <div className="mt-3 flex items-center justify-center overflow-hidden rounded-xl bg-amber-50 dark:bg-amber-950/20" style={{ aspectRatio: "1 / 1" }}>
+              {imageState === "generating" && (
+                <p className="px-4 text-center text-sm text-slate-600 dark:text-slate-300" role="status" aria-live="polite">
+                  {t?.("weatherVoiceShareGenerating") || (lang === "is" ? "Undirbý mynd…" : "Preparing image…")}
+                </p>
+              )}
+              {imageState === "error" && (
+                <p className="px-4 text-center text-sm text-red-600 dark:text-red-400" role="alert">
+                  {t?.("weatherVoiceShareError") || (lang === "is" ? "Ekki tókst að útbúa mynd." : "Couldn't prepare the image.")}
+                </p>
+              )}
+              {imageState === "ready" && objectUrl && (
+                <img
+                  src={objectUrl}
+                  alt={t?.("weatherVoiceShareImageAlt") || (lang === "is" ? "Forskoðun myndar til að deila" : "Share image preview")}
+                  className="h-full w-full object-contain"
+                />
+              )}
+            </div>
+
+            {shareNotice === "cancelled" && (
+              <p className="mt-2 text-xs text-slate-500 dark:text-slate-400" role="status">
+                {t?.("weatherVoiceShareCancelled") || (lang === "is" ? "Deiling hætt við." : "Sharing cancelled.")}
+              </p>
+            )}
+            {shareNotice === "share_error" && (
+              <p className="mt-2 text-xs text-amber-700 dark:text-amber-400" role="status">
+                {t?.("weatherVoiceShareUnavailable") ||
+                  (lang === "is" ? "Ekki tókst að deila beint — hægt er að vista myndina í staðinn." : "Direct sharing didn't work — you can still save the image.")}
+              </p>
+            )}
+
+            <div className="mt-4 flex flex-wrap gap-2">
+              {canShareFile && (
+                <button
+                  type="button"
+                  onClick={handleNativeShare}
+                  disabled={imageState !== "ready" || !!busyMethod}
+                  className="inline-flex items-center rounded-full bg-amber-600 px-4 py-2 text-sm font-semibold text-white hover:bg-amber-700 disabled:opacity-50"
+                >
+                  {t?.("weatherVoiceShareNative") || (lang === "is" ? "Deila" : "Share")}
+                </button>
+              )}
+              <button
+                type="button"
+                onClick={handleDownload}
+                disabled={imageState !== "ready" || !!busyMethod}
+                className="inline-flex items-center rounded-full bg-white px-4 py-2 text-sm font-semibold text-slate-900 ring-1 ring-inset ring-slate-300 hover:bg-slate-50 disabled:opacity-50 dark:bg-slate-800 dark:text-slate-100 dark:ring-slate-600"
+              >
+                {t?.("weatherVoiceShareSave") || (lang === "is" ? "Vista mynd" : "Save image")}
+              </button>
+            </div>
+          </>
+        )}
       </div>
     </div>
   );

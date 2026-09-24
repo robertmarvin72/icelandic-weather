@@ -1,0 +1,90 @@
+{
+  "screenshotMatrix": [
+    {
+      "lang": "is",
+      "theme": "light",
+      "viewport": "mobile",
+      "hasImageChoice": true,
+      "hasFacebookChoice": true,
+      "screenshot": "C:\\Users\\Notandi\\forritun\\icelandic-weather\\outputs\\ticket-417-facebook-share-evidence/choice-is-light-mobile.png"
+    },
+    {
+      "lang": "is",
+      "theme": "light",
+      "viewport": "desktop",
+      "hasImageChoice": true,
+      "hasFacebookChoice": true,
+      "screenshot": "C:\\Users\\Notandi\\forritun\\icelandic-weather\\outputs\\ticket-417-facebook-share-evidence/choice-is-light-desktop.png"
+    },
+    {
+      "lang": "is",
+      "theme": "dark",
+      "viewport": "mobile",
+      "hasImageChoice": true,
+      "hasFacebookChoice": true,
+      "screenshot": "C:\\Users\\Notandi\\forritun\\icelandic-weather\\outputs\\ticket-417-facebook-share-evidence/choice-is-dark-mobile.png"
+    },
+    {
+      "lang": "is",
+      "theme": "dark",
+      "viewport": "desktop",
+      "hasImageChoice": true,
+      "hasFacebookChoice": true,
+      "screenshot": "C:\\Users\\Notandi\\forritun\\icelandic-weather\\outputs\\ticket-417-facebook-share-evidence/choice-is-dark-desktop.png"
+    },
+    {
+      "lang": "en",
+      "theme": "light",
+      "viewport": "mobile",
+      "hasImageChoice": true,
+      "hasFacebookChoice": true,
+      "screenshot": "C:\\Users\\Notandi\\forritun\\icelandic-weather\\outputs\\ticket-417-facebook-share-evidence/choice-en-light-mobile.png"
+    },
+    {
+      "lang": "en",
+      "theme": "light",
+      "viewport": "desktop",
+      "hasImageChoice": true,
+      "hasFacebookChoice": true,
+      "screenshot": "C:\\Users\\Notandi\\forritun\\icelandic-weather\\outputs\\ticket-417-facebook-share-evidence/choice-en-light-desktop.png"
+    },
+    {
+      "lang": "en",
+      "theme": "dark",
+      "viewport": "mobile",
+      "hasImageChoice": true,
+      "hasFacebookChoice": true,
+      "screenshot": "C:\\Users\\Notandi\\forritun\\icelandic-weather\\outputs\\ticket-417-facebook-share-evidence/choice-en-dark-mobile.png"
+    },
+    {
+      "lang": "en",
+      "theme": "dark",
+      "viewport": "desktop",
+      "hasImageChoice": true,
+      "hasFacebookChoice": true,
+      "screenshot": "C:\\Users\\Notandi\\forritun\\icelandic-weather\\outputs\\ticket-417-facebook-share-evidence/choice-en-dark-desktop.png"
+    }
+  ],
+  "popupIntercept": {
+    "popupUrl": "https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Feltumvedrid.is%2Fshare%2Ftjaldur%2Fv1%2Fis%2Frain_01.html",
+    "isSharerUrl": true,
+    "decodedU": "https://eltumvedrid.is/share/tjaldur/v1/is/rain_01.html"
+  },
+  "keyboard": {
+    "focusedIsFacebookLink": true,
+    "activatedViaKeyboard": true
+  },
+  "shortLandscape": {
+    "facebookLinkReachable": true,
+    "boundingBox": {
+      "x": 179,
+      "y": 173.75,
+      "width": 342,
+      "height": 40
+    }
+  },
+  "downloadRegression": {
+    "downloadedFileSize": 179910,
+    "isRealPng": true
+  }
+}

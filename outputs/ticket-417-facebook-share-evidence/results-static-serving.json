@@ -1,0 +1,63 @@
+{
+  "knownHtmlPage": {
+    "path": "/share/tjaldur/v1/is/rain_02.html",
+    "status": 200,
+    "contentType": "text/html;charset=utf-8",
+    "bodyLength": 2335,
+    "bodySnippet": "<!doctype html>\n<html lang=\"is\">\n<head>\n<meta charset=\"utf-8\">\n<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n<title>Tjaldur segir: „Regnjakki með aðalhlutverk.“</title>\n<meta na",
+    "matchesExpectedStatus": true
+  },
+  "knownHtmlPageHasQuoteInRawBody": true,
+  "knownImage": {
+    "path": "/share/tjaldur/v1/is/rain_02.png",
+    "status": 200,
+    "contentType": "image/png",
+    "byteLength": 96128,
+    "isPng": true
+  },
+  "knownHtmlPageEn": {
+    "path": "/share/tjaldur/v1/en/rain_heavy_03.html",
+    "status": 200,
+    "contentType": "text/html;charset=utf-8",
+    "bodyLength": 2455,
+    "bodySnippet": "<!doctype html>\n<html lang=\"en\">\n<head>\n<meta charset=\"utf-8\">\n<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n<title>Tjaldur says: “This is an excessive interest in water.”</titl",
+    "matchesExpectedStatus": true
+  },
+  "unknownVoiceId": {
+    "path": "/share/tjaldur/v1/is/not_a_real_id.html",
+    "status": 200,
+    "contentType": "text/html",
+    "bodyLength": 1974,
+    "bodySnippet": "<!doctype html>\r\n<html lang=\"is\">\r\n<head>\r\n  <meta charset=\"UTF-8\" />\r\n  <link rel=\"preconnect\" href=\"https://fonts.googleapis.com\">\r\n  <link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossori",
+    "matchesExpectedStatus": true
+  },
+  "unsupportedLanguage": {
+    "path": "/share/tjaldur/v1/fr/rain_02.html",
+    "status": 200,
+    "contentType": "text/html",
+    "bodyLength": 1974,
+    "bodySnippet": "<!doctype html>\r\n<html lang=\"is\">\r\n<head>\r\n  <meta charset=\"UTF-8\" />\r\n  <link rel=\"preconnect\" href=\"https://fonts.googleapis.com\">\r\n  <link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossori",
+    "matchesExpectedStatus": true
+  },
+  "malformedPath": {
+    "path": "/share/tjaldur/v1/is/../../../etc/passwd",
+    "status": 200,
+    "contentType": "text/html",
+    "bodyLength": 1974,
+    "bodySnippet": "<!doctype html>\r\n<html lang=\"is\">\r\n<head>\r\n  <meta charset=\"UTF-8\" />\r\n  <link rel=\"preconnect\" href=\"https://fonts.googleapis.com\">\r\n  <link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossori",
+    "matchesExpectedStatus": true
+  },
+  "queryStringNotReflected": {
+    "status": 200,
+    "bodyIdenticalToPlainRequest": true,
+    "containsRawScriptTag": false
+  },
+  "fullPageChecks": {
+    "hasRobotsNoindex": true,
+    "hasOgImageWidth1200": true,
+    "hasOgImageHeight630": true,
+    "hasAbsoluteCanonical": true,
+    "hasNoScriptTag": true,
+    "hasHomepageLink": true
+  }
+}

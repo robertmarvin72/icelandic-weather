@@ -1,0 +1,18 @@
+{
+  "fallbackAndCleanup": {
+    "robotsOnAbout": false,
+    "bodyText": "Þetta deilda ummæli er ekki tiltækt\n\nÞessi tengill gæti verið úreltur, eða ummælið er ekki lengur hluti af núverandi safni.\n\nFara á forsíðuna",
+    "robotsOnFallback": "noindex, follow",
+    "brandImgSrc": "/eltumvedrid-light-is.png"
+  },
+  "cleanupOnRealNavigation": {
+    "robotsPresent": true,
+    "robotsAfterNavigatingHome": false,
+    "urlAfterNav": "http://localhost:5183/"
+  },
+  "serviceWorkerBypass": {
+    "swControlled": true,
+    "title": "Tjaldur segir: „Regnjakki með aðalhlutverk.“",
+    "loadedRealPage": true
+  }
+}

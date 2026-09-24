@@ -15,6 +15,7 @@
     "test:ui": "vitest --ui",
     "test:coverage": "vitest run --coverage",
     "campsites:full": "node scripts/generateCampsitesFromOSM.mjs",
+    "share:export": "node scripts/exportWeatherVoiceShare.mjs",
     "test:e2e": "playwright test"
   },
   "dependencies": {

@@ -1,28 +1,28 @@
 # Current AI Task
 
-Task: ticket-415
+Task: ticket-417
 Stage: CLOSED
 
 Task directory:
-docs/ai/tasks/ticket-415/
+docs/ai/tasks/ticket-417/
 
 Prompt review:
-docs/ai/tasks/ticket-415/prompt-review.md (Round 1: Jonesy APPROVED, no notes.)
+docs/ai/tasks/ticket-417/prompt-review.md (Round 2: Jonesy APPROVED without notes; consolidated by Ripley as approved-prompt-v2.md.)
 
 Approved prompt:
-docs/ai/tasks/ticket-415/approved-prompt-v1.md (executed.)
+docs/ai/tasks/ticket-417/approved-prompt-v2.md (approved correction scope; executed. v1 remains immutable.)
 
 CC report:
-docs/ai/tasks/ticket-415/cc-report.md (implementation, tests, real-browser evidence complete.)
+docs/ai/tasks/ticket-417/cc-report.md (Round 1 implementation + Round 2 correction, both complete. Live Facebook preview acceptance and production GA4 receipt remain explicit pending external steps.)
 
 Result review:
-docs/ai/tasks/ticket-415/result-review.md (Jonesy PASS Round 1; Ripley final PASS on 2026-09-23. Independently reviewed implementation and tests, reran 9 suites / 125 tests successfully, checked browser evidence and git diff --check. Local workflow CLOSED; GitHub issue closure and commit/push remain owner-controlled.)
+docs/ai/tasks/ticket-417/result-review.md (Ripley Round 2 PASS on 2026-09-24. 272 targeted tests passed; added actual-PNG regression and its 59-test suite passed. Local workflow CLOSED; live Facebook/Vercel/GA4 verification remains pending after owner deployment.)
 
 ## Previous tasks and sequencing
 
-#415 is CLOSED after Ripley's final PASS on 2026-09-23. #416 remains CLOSED after Ripley's Round 2 final PASS. No task is currently active.
+#417 is CLOSED after Ripley Round 2 PASS on 2026-09-24. No task is currently active. External post-deployment verification remains recorded in the #417 result review.
 
-#411 and #410 remain CLOSED. #409 remains unfinished/BLOCKED per docs/ai/tasks/ticket-409/result-review.md; previous owner-directed sequencing and outstanding validation are preserved.
+#415, #416, #411 and #410 remain CLOSED. #409 remains unfinished/BLOCKED per docs/ai/tasks/ticket-409/result-review.md; previous owner-directed sequencing and outstanding validation are preserved.
 
 ## Rule
 

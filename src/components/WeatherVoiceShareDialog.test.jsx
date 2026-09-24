@@ -4,14 +4,25 @@
 // isolation. `renderWeatherVoiceShareImage` and `trackEvent` are mocked —
 // real canvas rendering/asset loading is exercised by real-browser
 // evidence instead (outputs/ticket-410-weather-voice-share-evidence/).
+//
+// Ticket 417 (#417) — the dialog now opens on a compact "choice" screen
+// first (Share image / Share on Facebook); every image/native/download
+// test below now explicitly picks "Share image" before exercising that
+// existing behavior, which is otherwise completely unchanged. New describe
+// blocks at the bottom cover the choice screen and Facebook sharing
+// itself. `weatherVoiceFacebookShare.js` is mocked here (like
+// `renderWeatherVoiceShareImage`) — real manifest-matching logic has its
+// own dedicated unit tests (weatherVoiceFacebookShare.test.js).
 import React from "react";
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { render, screen, waitFor, fireEvent } from "@testing-library/react";
 import WeatherVoiceShareDialog from "./WeatherVoiceShareDialog";
 import { renderWeatherVoiceShareImage } from "../lib/weatherVoiceShareImage";
+import { resolveWeatherVoiceFacebookShare } from "../lib/weatherVoiceFacebookShare";
 import { trackEvent } from "../lib/analytics";
 
 vi.mock("../lib/weatherVoiceShareImage", () => ({ renderWeatherVoiceShareImage: vi.fn() }));
+vi.mock("../lib/weatherVoiceFacebookShare", () => ({ resolveWeatherVoiceFacebookShare: vi.fn() }));
 vi.mock("../lib/analytics", () => ({ trackEvent: vi.fn() }));
 
 const t = (k) => k;
@@ -29,6 +40,13 @@ const SNAPSHOT = Object.freeze({
   code: 0,
   episodeKey: "homepage_decision|site-a|2026-09-08|is|excellent|excellent|0",
 });
+
+const FACEBOOK_AVAILABLE = Object.freeze({
+  available: true,
+  pageUrl: "https://eltumvedrid.is/share/tjaldur/v1/is/excellent_01.html",
+  facebookUrl: "https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Feltumvedrid.is%2Fshare%2Ftjaldur%2Fv1%2Fis%2Fexcellent_01.html",
+});
+const FACEBOOK_UNAVAILABLE = Object.freeze({ available: false, reason: "mismatch" });
 
 function fakeBlob() {
   return new Blob(["fake-png-bytes"], { type: "image/png" });
@@ -49,6 +67,7 @@ function setNativeShareSupport({ share, canShare } = {}) {
 
 beforeEach(() => {
   vi.clearAllMocks();
+  resolveWeatherVoiceFacebookShare.mockReturnValue(FACEBOOK_AVAILABLE);
   setNativeShareSupport({});
   vi.spyOn(URL, "createObjectURL").mockReturnValue("blob:fake-url");
   vi.spyOn(URL, "revokeObjectURL").mockImplementation(() => {});
@@ -64,11 +83,18 @@ function renderDialog(props = {}) {
   return { onClose, ...utils };
 }
 
+// Ticket 417 (#417): every pre-existing image/native/download test picks
+// "Share image" first, since the dialog now opens on the choice screen.
+function chooseImage() {
+  fireEvent.click(screen.getByText("weatherVoiceShareChoiceImage"));
+}
+
 describe("WeatherVoiceShareDialog — image lifecycle", () => {
   it("shows a generating status, then the preview once rendering resolves", async () => {
     let resolveRender;
     renderWeatherVoiceShareImage.mockReturnValue(new Promise((resolve) => (resolveRender = resolve)));
     renderDialog();
+    chooseImage();
     expect(screen.getByRole("status")).toHaveTextContent("weatherVoiceShareGenerating");
 
     resolveRender(fakeBlob());
@@ -78,6 +104,7 @@ describe("WeatherVoiceShareDialog — image lifecycle", () => {
   it("shows an error state, never a blank/partial image, when rendering fails (decode/render failure)", async () => {
     renderWeatherVoiceShareImage.mockRejectedValue(new Error("decode failed"));
     renderDialog();
+    chooseImage();
     await waitFor(() => expect(screen.getByRole("alert")).toHaveTextContent("weatherVoiceShareError"));
     expect(screen.queryByRole("img")).toBeNull();
   });
@@ -85,6 +112,7 @@ describe("WeatherVoiceShareDialog — image lifecycle", () => {
   it("revokes the created object URL on unmount, after it was available for use", async () => {
     renderWeatherVoiceShareImage.mockResolvedValue(fakeBlob());
     const { unmount } = renderDialog();
+    chooseImage();
     await waitFor(() => expect(screen.getByRole("img")).toBeInTheDocument());
     unmount();
     expect(URL.revokeObjectURL).toHaveBeenCalledWith("blob:fake-url");
@@ -93,6 +121,7 @@ describe("WeatherVoiceShareDialog — image lifecycle", () => {
   it("passes an AbortSignal to the renderer and aborts it on unmount (async invalidation)", () => {
     renderWeatherVoiceShareImage.mockReturnValue(new Promise(() => {})); // never resolves
     const { unmount } = renderDialog();
+    chooseImage();
     const passedSignal = renderWeatherVoiceShareImage.mock.calls[0][1].signal;
     expect(passedSignal.aborted).toBe(false);
     unmount();
@@ -103,8 +132,15 @@ describe("WeatherVoiceShareDialog — image lifecycle", () => {
     let resolveRender;
     renderWeatherVoiceShareImage.mockReturnValue(new Promise((resolve) => (resolveRender = resolve)));
     const { unmount } = renderDialog();
+    chooseImage();
     unmount();
     expect(() => resolveRender(fakeBlob())).not.toThrow();
+  });
+
+  it("does not call the image renderer at all while still on the choice screen", () => {
+    renderWeatherVoiceShareImage.mockReturnValue(new Promise(() => {}));
+    renderDialog();
+    expect(renderWeatherVoiceShareImage).not.toHaveBeenCalled();
   });
 });
 
@@ -112,6 +148,7 @@ describe("WeatherVoiceShareDialog — native share support and second-gesture in
   it("the native Share button is absent when navigator.share/canShare are unsupported", async () => {
     renderWeatherVoiceShareImage.mockResolvedValue(fakeBlob());
     renderDialog();
+    chooseImage();
     await waitFor(() => expect(screen.getByRole("img")).toBeInTheDocument());
     expect(screen.queryByText("weatherVoiceShareNative")).toBeNull();
   });
@@ -122,6 +159,7 @@ describe("WeatherVoiceShareDialog — native share support and second-gesture in
     setNativeShareSupport({ share, canShare });
     renderWeatherVoiceShareImage.mockResolvedValue(fakeBlob());
     renderDialog();
+    chooseImage();
     await waitFor(() => expect(screen.getByText("weatherVoiceShareNative")).toBeInTheDocument());
     expect(canShare).toHaveBeenCalledWith({ files: [expect.any(File)] });
   });
@@ -131,6 +169,7 @@ describe("WeatherVoiceShareDialog — native share support and second-gesture in
     setNativeShareSupport({ share, canShare: () => true });
     renderWeatherVoiceShareImage.mockResolvedValue(fakeBlob());
     renderDialog();
+    chooseImage();
     await waitFor(() => expect(screen.getByText("weatherVoiceShareNative")).toBeInTheDocument());
     expect(share).not.toHaveBeenCalled();
 
@@ -146,6 +185,7 @@ describe("WeatherVoiceShareDialog — cancellation, errors, and the download fal
     setNativeShareSupport({ share, canShare: () => true });
     renderWeatherVoiceShareImage.mockResolvedValue(fakeBlob());
     renderDialog();
+    chooseImage();
     await waitFor(() => expect(screen.getByText("weatherVoiceShareNative")).toBeInTheDocument());
 
     fireEvent.click(screen.getByText("weatherVoiceShareNative"));
@@ -158,6 +198,7 @@ describe("WeatherVoiceShareDialog — cancellation, errors, and the download fal
     setNativeShareSupport({ share, canShare: () => true });
     renderWeatherVoiceShareImage.mockResolvedValue(fakeBlob());
     renderDialog();
+    chooseImage();
     await waitFor(() => expect(screen.getByText("weatherVoiceShareNative")).toBeInTheDocument());
 
     fireEvent.click(screen.getByText("weatherVoiceShareNative"));
@@ -168,6 +209,7 @@ describe("WeatherVoiceShareDialog — cancellation, errors, and the download fal
   it("the download fallback works on every render (an <a download> click), independent of native support", async () => {
     renderWeatherVoiceShareImage.mockResolvedValue(fakeBlob());
     renderDialog();
+    chooseImage();
     await waitFor(() => expect(screen.getByText("weatherVoiceShareSave")).not.toBeDisabled());
 
     const clickSpy = vi.spyOn(HTMLAnchorElement.prototype, "click").mockImplementation(() => {});
@@ -178,6 +220,7 @@ describe("WeatherVoiceShareDialog — cancellation, errors, and the download fal
   it("rendering failure never allows a download of a blank file — the save button stays disabled", async () => {
     renderWeatherVoiceShareImage.mockRejectedValue(new Error("render failed"));
     renderDialog();
+    chooseImage();
     await waitFor(() => expect(screen.getByRole("alert")).toBeInTheDocument());
     expect(screen.getByText("weatherVoiceShareSave")).toBeDisabled();
   });
@@ -190,6 +233,7 @@ describe("WeatherVoiceShareDialog — duplicate-action guard", () => {
     setNativeShareSupport({ share, canShare: () => true });
     renderWeatherVoiceShareImage.mockResolvedValue(fakeBlob());
     renderDialog();
+    chooseImage();
     await waitFor(() => expect(screen.getByText("weatherVoiceShareNative")).toBeInTheDocument());
 
     fireEvent.click(screen.getByText("weatherVoiceShareNative"));
@@ -219,6 +263,7 @@ describe("WeatherVoiceShareDialog — duplicate-action guard", () => {
   it("Revision 2 (#410): rapid, synchronous repeat download clicks trigger only one real attempt; a later retry after a tick succeeds", async () => {
     renderWeatherVoiceShareImage.mockResolvedValue(fakeBlob());
     renderDialog();
+    chooseImage();
     await waitFor(() => expect(screen.getByText("weatherVoiceShareSave")).not.toBeDisabled());
     const clickSpy = vi.spyOn(HTMLAnchorElement.prototype, "click").mockImplementation(() => {});
 
@@ -244,6 +289,7 @@ describe("WeatherVoiceShareDialog — Revision 2 (#410, Ripley Round 1 finding #
     setNativeShareSupport({ canShare: () => true }); // share left unset
     renderWeatherVoiceShareImage.mockResolvedValue(fakeBlob());
     renderDialog();
+    chooseImage();
     await waitFor(() => expect(screen.getByText("weatherVoiceShareSave")).not.toBeDisabled());
     expect(screen.queryByText("weatherVoiceShareNative")).toBeNull();
   });
@@ -252,6 +298,7 @@ describe("WeatherVoiceShareDialog — Revision 2 (#410, Ripley Round 1 finding #
     setNativeShareSupport({ share: vi.fn() }); // canShare left unset
     renderWeatherVoiceShareImage.mockResolvedValue(fakeBlob());
     renderDialog();
+    chooseImage();
     await waitFor(() => expect(screen.getByText("weatherVoiceShareSave")).not.toBeDisabled());
     expect(screen.queryByText("weatherVoiceShareNative")).toBeNull();
   });
@@ -260,6 +307,7 @@ describe("WeatherVoiceShareDialog — Revision 2 (#410, Ripley Round 1 finding #
     setNativeShareSupport({ share: vi.fn(), canShare: () => true });
     renderWeatherVoiceShareImage.mockResolvedValue(fakeBlob());
     renderDialog();
+    chooseImage();
     await waitFor(() => expect(screen.getByText("weatherVoiceShareNative")).toBeInTheDocument());
   });
 });
@@ -284,10 +332,11 @@ describe("WeatherVoiceShareDialog — Revision 2 (#410): focus behavior through 
   });
 });
 
-describe("WeatherVoiceShareDialog — exact event payload and analytics-throw isolation", () => {
+describe("WeatherVoiceShareDialog — exact event payload and analytics-throw isolation (native/download, image path)", () => {
   it("emits weather_voice_share_clicked with exactly the documented fields on download, from the frozen snapshot", async () => {
     renderWeatherVoiceShareImage.mockResolvedValue(fakeBlob());
     renderDialog();
+    chooseImage();
     await waitFor(() => expect(screen.getByText("weatherVoiceShareSave")).not.toBeDisabled());
     vi.spyOn(HTMLAnchorElement.prototype, "click").mockImplementation(() => {});
 
@@ -312,6 +361,7 @@ describe("WeatherVoiceShareDialog — exact event payload and analytics-throw is
     setNativeShareSupport({ share, canShare: () => true });
     renderWeatherVoiceShareImage.mockResolvedValue(fakeBlob());
     renderDialog();
+    chooseImage();
     await waitFor(() => expect(screen.getByText("weatherVoiceShareNative")).toBeInTheDocument());
 
     fireEvent.click(screen.getByText("weatherVoiceShareNative"));
@@ -324,6 +374,7 @@ describe("WeatherVoiceShareDialog — exact event payload and analytics-throw is
   it("opening the preview alone (before any click) never emits an event", async () => {
     renderWeatherVoiceShareImage.mockResolvedValue(fakeBlob());
     renderDialog();
+    chooseImage();
     await waitFor(() => expect(screen.getByText("weatherVoiceShareSave")).not.toBeDisabled());
     expect(trackEvent).not.toHaveBeenCalled();
   });
@@ -334,6 +385,7 @@ describe("WeatherVoiceShareDialog — exact event payload and analytics-throw is
     });
     renderWeatherVoiceShareImage.mockResolvedValue(fakeBlob());
     renderDialog();
+    chooseImage();
     await waitFor(() => expect(screen.getByText("weatherVoiceShareSave")).not.toBeDisabled());
     const clickSpy = vi.spyOn(HTMLAnchorElement.prototype, "click").mockImplementation(() => {});
 
@@ -344,6 +396,7 @@ describe("WeatherVoiceShareDialog — exact event payload and analytics-throw is
   it("never includes free text, site name, coordinates, or the full episode key in the payload", async () => {
     renderWeatherVoiceShareImage.mockResolvedValue(fakeBlob());
     renderDialog();
+    chooseImage();
     await waitFor(() => expect(screen.getByText("weatherVoiceShareSave")).not.toBeDisabled());
     vi.spyOn(HTMLAnchorElement.prototype, "click").mockImplementation(() => {});
     fireEvent.click(screen.getByText("weatherVoiceShareSave"));
@@ -392,6 +445,7 @@ describe("WeatherVoiceShareDialog — keyboard focus containment and restoration
     setNativeShareSupport({ share, canShare: () => true });
     renderWeatherVoiceShareImage.mockResolvedValue(fakeBlob());
     renderDialog();
+    chooseImage();
     await waitFor(() => expect(screen.getByText("weatherVoiceShareNative")).toBeInTheDocument());
 
     const dialog = screen.getByRole("dialog");
@@ -416,5 +470,199 @@ describe("WeatherVoiceShareDialog — keyboard focus containment and restoration
     expect(onClose).not.toHaveBeenCalled();
     fireEvent.click(screen.getByRole("presentation"));
     expect(onClose).toHaveBeenCalledTimes(1);
+  });
+
+  it("switching from the choice screen into the image view refocuses the dialog's first focusable control", async () => {
+    renderWeatherVoiceShareImage.mockReturnValue(new Promise(() => {}));
+    renderDialog();
+    const dialog = screen.getByRole("dialog");
+    expect(dialog.contains(document.activeElement)).toBe(true);
+
+    chooseImage();
+    // The choice buttons are gone now; focus must land on a real control
+    // inside the dialog (the new "Back" link), never a detached node.
+    expect(dialog.contains(document.activeElement)).toBe(true);
+    expect(document.activeElement).not.toBeNull();
+  });
+});
+
+describe("WeatherVoiceShareDialog — Ticket 417 (#417): the compact two-action choice screen", () => {
+  it("opens on the choice screen by default — both action labels visible, no image content yet", () => {
+    renderDialog();
+    expect(screen.getByText("weatherVoiceShareChoiceImage")).toBeInTheDocument();
+    expect(screen.getByText("weatherVoiceShareChoiceFacebook")).toBeInTheDocument();
+    expect(screen.queryByRole("img")).toBeNull();
+    expect(screen.queryByRole("status")).toBeNull();
+  });
+
+  it("the dialog title on the choice screen is the choice title key, not the image dialog title", () => {
+    renderDialog();
+    expect(screen.getByRole("dialog")).toHaveAttribute("aria-label", "weatherVoiceShareChoiceTitle");
+  });
+
+  it("never presents the square PNG preview as part of the Facebook choice — no <img> exists before a choice is made", () => {
+    renderDialog();
+    expect(screen.queryByRole("img")).toBeNull();
+  });
+
+  it("clicking Share image transitions into the existing image dialog content and starts generation", () => {
+    renderWeatherVoiceShareImage.mockReturnValue(new Promise(() => {}));
+    renderDialog();
+    chooseImage();
+    expect(renderWeatherVoiceShareImage).toHaveBeenCalledTimes(1);
+    expect(screen.getByRole("status")).toHaveTextContent("weatherVoiceShareGenerating");
+    expect(screen.getByText(/weatherVoiceShareBack/)).toBeInTheDocument();
+  });
+
+  it("the Back link in the image view returns to the choice screen", async () => {
+    renderWeatherVoiceShareImage.mockResolvedValue(fakeBlob());
+    renderDialog();
+    chooseImage();
+    await waitFor(() => expect(screen.getByRole("img")).toBeInTheDocument());
+
+    fireEvent.click(screen.getByText(/weatherVoiceShareBack/));
+    expect(screen.getByText("weatherVoiceShareChoiceImage")).toBeInTheDocument();
+    expect(screen.getByRole("dialog")).toHaveAttribute("aria-label", "weatherVoiceShareChoiceTitle");
+  });
+});
+
+describe("WeatherVoiceShareDialog — Ticket 417 (#417): Facebook sharing", () => {
+  it("resolves Facebook availability from the exact frozen snapshot, once", () => {
+    renderDialog();
+    expect(resolveWeatherVoiceFacebookShare).toHaveBeenCalledWith(SNAPSHOT);
+  });
+
+  it("renders a real external anchor with the resolved sharer URL, opening in a new tab safely", () => {
+    renderDialog();
+    const link = screen.getByText("weatherVoiceShareChoiceFacebook").closest("a");
+    expect(link).toHaveAttribute("href", FACEBOOK_AVAILABLE.facebookUrl);
+    expect(link).toHaveAttribute("target", "_blank");
+    expect(link.getAttribute("rel")).toEqual(expect.stringContaining("noopener"));
+    expect(link.getAttribute("rel")).toEqual(expect.stringContaining("noreferrer"));
+  });
+
+  it("fires tjaldur_facebook_share_clicked with exactly {mood, language, source} on click, never weather_voice_share_clicked", () => {
+    renderDialog();
+    fireEvent.click(screen.getByText("weatherVoiceShareChoiceFacebook"));
+
+    expect(trackEvent).toHaveBeenCalledTimes(1);
+    const [name, payload] = trackEvent.mock.calls[0];
+    expect(name).toBe("tjaldur_facebook_share_clicked");
+    expect(Object.keys(payload).sort()).toEqual(["language", "mood", "source"]);
+    expect(payload).toEqual({ mood: "excellent", language: "is", source: "homepage_decision" });
+  });
+
+  it("repeated intentional clicks each count once", () => {
+    renderDialog();
+    const link = screen.getByText("weatherVoiceShareChoiceFacebook");
+    fireEvent.click(link);
+    fireEvent.click(link);
+    const calls = trackEvent.mock.calls.filter((c) => c[0] === "tjaldur_facebook_share_clicked");
+    expect(calls).toHaveLength(2);
+  });
+
+  it("does not fire on render, on opening the choice screen, or on choosing the image path instead", async () => {
+    renderWeatherVoiceShareImage.mockResolvedValue(fakeBlob());
+    renderDialog();
+    expect(trackEvent).not.toHaveBeenCalled();
+    chooseImage();
+    await waitFor(() => expect(screen.getByRole("img")).toBeInTheDocument());
+    expect(trackEvent.mock.calls.filter((c) => c[0] === "tjaldur_facebook_share_clicked")).toHaveLength(0);
+  });
+
+  it("never emits weather_voice_share_clicked for a Facebook click", () => {
+    renderDialog();
+    fireEvent.click(screen.getByText("weatherVoiceShareChoiceFacebook"));
+    expect(trackEvent.mock.calls.filter((c) => c[0] === "weather_voice_share_clicked")).toHaveLength(0);
+  });
+
+  it("a throwing trackEvent does not prevent the anchor's own click/navigation", () => {
+    trackEvent.mockImplementation(() => {
+      throw new Error("analytics exploded");
+    });
+    renderDialog();
+    const link = screen.getByText("weatherVoiceShareChoiceFacebook");
+    expect(() => fireEvent.click(link)).not.toThrow();
+  });
+
+  it("never includes voice_id, quote text, episodeKey, or any location in the Facebook event payload", () => {
+    renderDialog();
+    fireEvent.click(screen.getByText("weatherVoiceShareChoiceFacebook"));
+    const [, payload] = trackEvent.mock.calls[0];
+    const serialized = JSON.stringify(payload);
+    expect(serialized).not.toContain(SNAPSHOT.voiceId);
+    expect(serialized).not.toContain(SNAPSHOT.text);
+    expect(serialized).not.toContain(SNAPSHOT.siteName);
+    expect(serialized).not.toContain(SNAPSHOT.episodeKey);
+  });
+
+  it("Facebook does NOT depend on successful canvas generation — the link is present and clickable even if the image renderer would reject", () => {
+    renderWeatherVoiceShareImage.mockRejectedValue(new Error("canvas exploded"));
+    renderDialog();
+    // Never chose "Share image" — renderer was never even invoked — yet
+    // the Facebook link is fully present and functional.
+    expect(renderWeatherVoiceShareImage).not.toHaveBeenCalled();
+    const link = screen.getByText("weatherVoiceShareChoiceFacebook").closest("a");
+    expect(link).toHaveAttribute("href", FACEBOOK_AVAILABLE.facebookUrl);
+    fireEvent.click(link);
+    expect(trackEvent).toHaveBeenCalledWith("tjaldur_facebook_share_clicked", expect.any(Object));
+  });
+
+  describe("localized unavailable state (missing/mismatched manifest entry)", () => {
+    beforeEach(() => {
+      resolveWeatherVoiceFacebookShare.mockReturnValue(FACEBOOK_UNAVAILABLE);
+    });
+
+    it("shows a localized unavailable notice instead of the Facebook link", () => {
+      renderDialog();
+      expect(screen.queryByText("weatherVoiceShareChoiceFacebook")).toBeNull();
+      expect(screen.getByText("weatherVoiceShareFacebookUnavailable")).toBeInTheDocument();
+    });
+
+    it("image sharing remains fully available", async () => {
+      renderWeatherVoiceShareImage.mockResolvedValue(fakeBlob());
+      renderDialog();
+      expect(screen.getByText("weatherVoiceShareChoiceImage")).toBeInTheDocument();
+      chooseImage();
+      await waitFor(() => expect(screen.getByRole("img")).toBeInTheDocument());
+    });
+
+    it("never substitutes a different quote's share link", () => {
+      renderDialog();
+      expect(screen.queryByRole("link")).toBeNull();
+    });
+  });
+
+  describe("Ticket 417 (#417): same-episode object churn must not swap the resolved choice; a genuine episode change invalidates it", () => {
+    it("a new snapshot OBJECT for the same episodeKey (same voiceId/text/mood/language) still resolves consistently on rerender", () => {
+      const { rerender } = renderDialog();
+      expect(resolveWeatherVoiceFacebookShare).toHaveBeenCalledTimes(1);
+
+      // A structurally-identical but referentially-different snapshot for
+      // the SAME episode (e.g. an unrelated parent rerender rebuilding the
+      // object) — WeatherVoiceCard.jsx's own frozen-state design (Ticket
+      // 410 Revision 2) is what actually prevents this from happening in
+      // production; this test proves the dialog's OWN memoization still
+      // only re-resolves when the snapshot reference genuinely changes.
+      const sameEpisodeNewObject = { ...SNAPSHOT };
+      rerender(<WeatherVoiceShareDialog snapshot={sameEpisodeNewObject} lang="is" t={t} onClose={vi.fn()} />);
+      expect(resolveWeatherVoiceFacebookShare).toHaveBeenCalledTimes(2); // useMemo keys on the object reference, so this DOES re-run...
+      // ...but resolves to the same result since the underlying resolver is pure and given equal fields:
+      expect(resolveWeatherVoiceFacebookShare).toHaveBeenLastCalledWith(sameEpisodeNewObject);
+    });
+
+    it("a genuine episode change (different voiceId) resolves Facebook availability again from the new snapshot", () => {
+      const { rerender } = renderDialog();
+      const otherSnapshot = { ...SNAPSHOT, voiceId: "good_01", text: "Þetta má alveg.", mood: "happy", condition: "good" };
+      resolveWeatherVoiceFacebookShare.mockReturnValue({
+        available: true,
+        pageUrl: "https://eltumvedrid.is/share/tjaldur/v1/is/good_01.html",
+        facebookUrl: "https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Feltumvedrid.is%2Fshare%2Ftjaldur%2Fv1%2Fis%2Fgood_01.html",
+      });
+      rerender(<WeatherVoiceShareDialog snapshot={otherSnapshot} lang="is" t={t} onClose={vi.fn()} />);
+      expect(resolveWeatherVoiceFacebookShare).toHaveBeenLastCalledWith(otherSnapshot);
+      const link = screen.getByText("weatherVoiceShareChoiceFacebook").closest("a");
+      expect(link).toHaveAttribute("href", expect.stringContaining("good_01"));
+    });
   });
 });

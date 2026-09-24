@@ -43,6 +43,9 @@ vi.mock("./pages/Welcome", () => ({ default: () => <div data-testid="page-welcom
 vi.mock("./pages/NorthernLightsLanding", () => ({
   default: () => <div data-testid="page-northern-lights-landing" />,
 }));
+vi.mock("./pages/ShareFallback", () => ({
+  default: () => <div data-testid="page-share-fallback" />,
+}));
 
 function StubHome() {
   return <div data-testid="page-home" />;
@@ -117,5 +120,51 @@ describe("AppRoutes — /en/northern-lights (#399)", () => {
   it("a near-miss path (no /en prefix) renders NotFound, not the landing page", () => {
     renderAt("/northern-lights");
     expect(screen.getByTestId("page-notfound")).toBeInTheDocument();
+  });
+});
+
+describe("AppRoutes — Ticket 417 (#417) Round 2: scoped /share/tjaldur fallback covers ANY version, not only v1", () => {
+  it("an unknown voiceId under the current v1 namespace renders the scoped ShareFallback, not generic NotFound", () => {
+    renderAt("/share/tjaldur/v1/is/not_a_real_id");
+    expect(screen.getByTestId("page-share-fallback")).toBeInTheDocument();
+    expect(screen.queryByTestId("page-notfound")).toBeNull();
+  });
+
+  it("an unsupported language under the share namespace also renders the scoped fallback", () => {
+    renderAt("/share/tjaldur/v1/fr/rain_02");
+    expect(screen.getByTestId("page-share-fallback")).toBeInTheDocument();
+  });
+
+  it("the bare v1 version root also renders the scoped fallback", () => {
+    renderAt("/share/tjaldur/v1/");
+    expect(screen.getByTestId("page-share-fallback")).toBeInTheDocument();
+  });
+
+  // Round 2 correction (Ripley Round 1 REVISE, finding #3): the original
+  // route pattern was hardcoded to /share/tjaldur/v1/* and silently fell
+  // through to generic NotFound for any OTHER version segment — an
+  // unrecognized version is exactly as "unknown" as an unrecognized id and
+  // must get the same honest, scoped fallback, not a bare 404.
+  it("an entirely UNKNOWN version (e.g. v2, not yet released) still renders the scoped fallback, never generic NotFound", () => {
+    renderAt("/share/tjaldur/v2/is/rain_02");
+    expect(screen.getByTestId("page-share-fallback")).toBeInTheDocument();
+    expect(screen.queryByTestId("page-notfound")).toBeNull();
+  });
+
+  it("a malformed/non-versioned segment in that position also renders the scoped fallback", () => {
+    renderAt("/share/tjaldur/not-a-version-at-all");
+    expect(screen.getByTestId("page-share-fallback")).toBeInTheDocument();
+  });
+
+  it("the bare /share/tjaldur namespace root (no version segment at all) also renders the scoped fallback", () => {
+    renderAt("/share/tjaldur");
+    expect(screen.getByTestId("page-share-fallback")).toBeInTheDocument();
+    expect(screen.queryByTestId("page-notfound")).toBeNull();
+  });
+
+  it("a path outside the /share/tjaldur namespace entirely still renders generic NotFound, unaffected", () => {
+    renderAt("/share/something-else");
+    expect(screen.getByTestId("page-notfound")).toBeInTheDocument();
+    expect(screen.queryByTestId("page-share-fallback")).toBeNull();
   });
 });
