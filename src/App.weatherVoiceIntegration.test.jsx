@@ -53,7 +53,7 @@ vi.mock("./hooks/useWeatherVoice", () => ({ useWeatherVoice: vi.fn() }));
 // dependencies. HomeDecisionCard and WeatherVoiceCard are intentionally
 // the REAL components; NorthernLightsCard is stubbed only so it's a
 // simple, unambiguous DOM marker for "comes after WeatherVoiceCard".
-vi.mock("./components/NorthernLightsCard", () => ({ default: () => <div data-testid="northern-lights-stub" /> }));
+vi.mock("./components/NorthernLightsThreeNight", () => ({ default: () => <div data-testid="northern-lights-stub" /> }));
 vi.mock("./components/RoutePlannerCard", () => ({ default: () => <div data-testid="route-planner-stub" /> }));
 vi.mock("./components/CampsiteComparisonSection", () => ({ default: () => <div data-testid="comparison-section-stub" /> }));
 vi.mock("./components/ForecastTable", () => ({ default: () => <div data-testid="forecast-table-stub" /> }));

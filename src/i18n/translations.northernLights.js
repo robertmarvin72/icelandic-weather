@@ -194,6 +194,9 @@ export const northernLightsTranslations = {
     nlCompBestNightScoped: "Best conditions among the available nights: {when}",
     nlCompSimilarScoped: "Similar conditions among the available nights: {dates}",
     nlCompExactTieScoped: "Conditions are evenly matched among the available nights: {dates}",
+
+    // #425: homepage link to the existing English detail page.
+    nlHomeDetailsLink: "See full details for this night",
   },
   is: {
     nlCardTitle: "Norðurljós í kvöld",
@@ -337,5 +340,7 @@ export const northernLightsTranslations = {
     nlCompBestNightScoped: "Bestu skilyrðin meðal tiltækra nátta: {when}",
     nlCompSimilarScoped: "Svipuð skilyrði meðal tiltækra nátta: {dates}",
     nlCompExactTieScoped: "Skilyrðin eru jöfn meðal tiltækra nátta: {dates}",
+
+    nlHomeDetailsLink: "Sjá nánar á ensku síðunni",
   },
 };

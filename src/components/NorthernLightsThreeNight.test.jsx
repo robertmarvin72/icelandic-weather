@@ -161,6 +161,7 @@ describe("NorthernLightsThreeNight — analytics", () => {
       days_ahead: 1,
       forecast_status: "success",
       user_tier: "free",
+      source: "landing",
     });
     expect(trackEvent.mock.calls.filter((c) => c[0] === "northern_lights_night_selected")).toHaveLength(1);
   });
@@ -247,6 +248,7 @@ describe("NorthernLightsThreeNight — analytics", () => {
       days_ahead: 0,
       forecast_status: "success",
       user_tier: "free",
+      source: "landing",
     });
     expect(trackEvent).toHaveBeenCalledWith("northern_lights_upgrade_clicked", { lang: "en", source: "northern_lights_card", tier: "free" });
     expect(trackEvent).toHaveBeenCalledWith("northern_lights_landing_cta_clicked", {

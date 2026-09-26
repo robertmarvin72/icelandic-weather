@@ -8,23 +8,17 @@
 // the saved language (see the existing /en/blog route, which only swaps
 // `lang` and leaves `t` on the saved language — deliberately NOT copied
 // here). This is the one and only place `lang`/`t` are decided for this
-// page; every child (including the real NorthernLightsCard) receives them
+// page; every child (including NorthernLightsThreeNight) receives them
 // from here, so nothing on this route can silently fall back to Icelandic.
 //
-// Ticket #423 Phase 2 (2026-09-25): this page now renders
-// NorthernLightsThreeNight.jsx — a compact three-night forecast module —
-// instead of the single-night NorthernLightsCard used on the homepage. Both
-// reuse the same canonical /api/aurora-decision request/response contract,
-// the same Free/Pro feature gate, and the same lower-level presentation
-// helpers (selectAuroraDisplay, auroraVisualState, NorthernLightsMap).
-// Nothing about Aurora scoring/ranking/freshness/candidates is duplicated,
-// precomputed, or reinterpreted in either component. The homepage's own
-// NorthernLightsCard usage (App.jsx) is completely unaffected by this
-// change.
+// Tickets #423/#425: this page and App.jsx share NorthernLightsThreeNight,
+// with explicit landing/homepage presentation. Both reuse the canonical
+// /api/aurora-decision contract, Free/Pro gate and presentation helpers;
+// scoring, freshness and candidates are not duplicated in this page.
 
-import { useEffect, useMemo, useRef } from "react";
+import { useCallback, useEffect, useMemo, useRef } from "react";
 import { Helmet } from "react-helmet-async";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import Brand from "../components/Brand";
 import Footer from "../components/Footer";
 import LoginModal from "../components/LoginModal";
@@ -38,6 +32,7 @@ import { useToast } from "../hooks/useToast";
 import { useLoginFlow } from "../hooks/useLoginFlow";
 import { useCheckoutFlow } from "../hooks/useCheckoutFlow";
 import { trackEvent } from "../lib/analytics";
+import { parseNightQueryDate, withNightQueryDate, AURORA_NIGHT_QUERY_PARAM } from "../lib/auroraNightQuery";
 
 const CANONICAL_PATH = "/en/northern-lights";
 // Matches the established production-origin convention already used by
@@ -57,6 +52,31 @@ export default function NorthernLightsLanding() {
   useThemeClass(theme === "dark");
 
   const navigate = useNavigate();
+
+  // #425: the selected night arrives as an optional ?date=YYYY-MM-DD query
+  // (from the homepage details link, or browser back/forward). Only a single
+  // exact valid ISO date is passed on; the three-night hook decides whether
+  // it is inside today's window and otherwise falls back to tonight.
+  const [searchParams, setSearchParams] = useSearchParams();
+  const requestedDate = parseNightQueryDate(searchParams);
+  const searchParamsRef = useRef(searchParams);
+  searchParamsRef.current = searchParams;
+
+  // Mirrors the module's selection into the query with router REPLACE (no
+  // history entry per tab), preserving unrelated params. Route entry without
+  // a date param writes nothing; a present-but-unusable date (impossible,
+  // duplicate, malformed, out of window) is normalized to the selection.
+  const handleSelectedDateChange = useCallback(
+    (date, { isInitial }) => {
+      const current = searchParamsRef.current;
+      const hasDateParam = current.getAll(AURORA_NIGHT_QUERY_PARAM).length > 0;
+      if (isInitial && !hasDateParam) return;
+      if (parseNightQueryDate(current) === date) return;
+      setSearchParams(withNightQueryDate(current, date), { replace: true });
+    },
+    [setSearchParams],
+  );
+
   const { toasts, pushToast, dismissToast } = useToast();
   const { me, loadingMe, refetchMe } = useMe();
 
@@ -173,6 +193,9 @@ export default function NorthernLightsLanding() {
             onUpgrade={startCheckout}
             theme={theme}
             loadingMe={loadingMe}
+            surface="landing"
+            requestedDate={requestedDate}
+            onSelectedDateChange={handleSelectedDateChange}
           />
         </section>
 

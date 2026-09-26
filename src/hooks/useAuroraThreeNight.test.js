@@ -290,3 +290,70 @@ describe("useAuroraThreeNight — client-side freshness re-derivation (Round 5)"
     }
   });
 });
+
+describe("useAuroraThreeNight — external requestedDate input (#425)", () => {
+  const now = () => new Date("2026-09-25T20:00:00.000Z");
+
+  it("seeds the INITIAL selection from a valid in-window requestedDate (no tonight flash)", async () => {
+    const fetchImpl = routedFetchImpl();
+    const { result } = renderHook(() => useAuroraThreeNight({ enabled: true, fetchImpl, now, requestedDate: "2026-09-27" }));
+    expect(result.current.selectedDate).toBe("2026-09-27");
+    await waitFor(() => expect(fetchImpl).toHaveBeenCalledTimes(3));
+  });
+
+  it("falls back to tonight for out-of-window dates (past and too far ahead)", () => {
+    for (const requestedDate of ["2026-09-24", "2026-09-28", "2030-01-01"]) {
+      const { result } = renderHook(() => useAuroraThreeNight({ enabled: false, fetchImpl: vi.fn(), now, requestedDate }));
+      expect(result.current.selectedDate).toBe("2026-09-25");
+    }
+  });
+
+  it("re-applies requestedDate only when it actually changes (back/forward), with no extra request", async () => {
+    const fetchImpl = routedFetchImpl();
+    const { result, rerender } = renderHook(({ requestedDate }) => useAuroraThreeNight({ enabled: true, fetchImpl, now, requestedDate }), {
+      initialProps: { requestedDate: "2026-09-26" },
+    });
+    await waitFor(() => expect(result.current.slots.every((s) => s.status === "resolved")).toBe(true));
+    expect(result.current.selectedDate).toBe("2026-09-26");
+
+    // A user selection made in-page is NOT overridden by an ordinary rerender
+    // with the same requestedDate, nor by data completion.
+    act(() => result.current.setSelectedDate("2026-09-27"));
+    rerender({ requestedDate: "2026-09-26" });
+    expect(result.current.selectedDate).toBe("2026-09-27");
+
+    rerender({ requestedDate: "2026-09-25" }); // external change (history navigation)
+    expect(result.current.selectedDate).toBe("2026-09-25");
+
+    rerender({ requestedDate: null }); // entry without a date -> tonight
+    expect(result.current.selectedDate).toBe("2026-09-25");
+    rerender({ requestedDate: "2026-09-27" });
+    expect(result.current.selectedDate).toBe("2026-09-27");
+    rerender({ requestedDate: "2026-02-30" }); // unusable -> tonight
+    expect(result.current.selectedDate).toBe("2026-09-25");
+
+    expect(fetchImpl).toHaveBeenCalledTimes(3);
+  });
+
+  it("an unavailable requested date stays selected once results arrive", async () => {
+    const fetchImpl = routedFetchImpl({ "2026-09-27": () => Promise.resolve(jsonResponse({ ok: true, evening: "2026-09-27", status: "unavailable", reason: "night_not_found", auroraCache: { state: "fresh", sourceFetchedAt: "2026-09-25T18:00:00.000Z" }, best: null, alternatives: [], excluded: [], warnings: [] })) });
+    const { result } = renderHook(() => useAuroraThreeNight({ enabled: true, fetchImpl, now, requestedDate: "2026-09-27" }));
+    await waitFor(() => expect(result.current.slots.every((s) => s.status === "resolved")).toBe(true));
+    expect(result.current.selectedDate).toBe("2026-09-27");
+  });
+
+  it("midnight rollover preserves a requested date that is still in the new window (reset of a dropped date is covered above)", async () => {
+    vi.useFakeTimers();
+    let mockNow = new Date("2026-09-25T23:50:00.000Z");
+    const fetchImpl = routedFetchImpl();
+    const { result } = renderHook(() => useAuroraThreeNight({ enabled: true, fetchImpl, now: () => mockNow, requestedDate: "2026-09-26" }));
+    await vi.waitFor(() => expect(fetchImpl).toHaveBeenCalledTimes(3));
+    expect(result.current.selectedDate).toBe("2026-09-26");
+
+    mockNow = new Date("2026-09-26T00:05:00.000Z");
+    await act(async () => {
+      await vi.advanceTimersByTimeAsync(11 * 60 * 1000);
+    });
+    expect(result.current.selectedDate).toBe("2026-09-26"); // still in the new window
+  });
+});

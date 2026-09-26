@@ -15,7 +15,7 @@ import AppRoutes from "./AppRoutes";
 import BackToTop from "./components/BackToTop";
 import HomeDecisionCard from "./components/HomeDecisionCard";
 import WeatherVoiceCard from "./components/WeatherVoiceCard";
-import NorthernLightsCard from "./components/NorthernLightsCard";
+import NorthernLightsThreeNight from "./components/NorthernLightsThreeNight";
 import Footer from "./components/Footer";
 import CampsiteComparisonSection from "./components/CampsiteComparisonSection";
 import ForecastTable from "./components/ForecastTable";
@@ -62,7 +62,9 @@ function IcelandCampingWeatherApp({ page = "home" }) {
   const { toasts, pushToast, dismissToast } = useToast();
   const navigate = useNavigate();
 
-  const { me, refetchMe } = useMe();
+  // useMe's own loading flag is `loadingMe` — forwarded so exposure analytics
+  // never record a premature Free guess while entitlements are unresolved.
+  const { me, loadingMe, refetchMe } = useMe();
   const serverPro = !!me?.entitlements?.pro;
   const serverProUntil = me?.entitlements?.proUntil ?? null;
 
@@ -415,13 +417,21 @@ function IcelandCampingWeatherApp({ page = "home" }) {
               {/* Ticket 416 (#416): stable anchor for the Icelandic Aurora
                   entrypoint (`/#northern-lights`, per the literal id Jonesy
                   pinned). The off-season fallback is deliberately placed
-                  here, outside NorthernLightsCard.jsx, as a sibling — it
-                  reuses isAuroraSeason() read-only for display only, never
-                  touches the card's own season gate/null-return, never adds
-                  a card prop/branch, and never mounts a duplicate card or
-                  causes an extra Aurora request. */}
+                  here, outside the shared three-night module (#425 replaced the
+                  single-night card here), as a sibling — it reuses
+                  isAuroraSeason() read-only for display only, never touches
+                  the module's own season gate/null-return, and never mounts
+                  a second data owner or causes an extra Aurora request. */}
               <div id="northern-lights">
-                <NorthernLightsCard t={t} lang={lang} entitlements={entitlements} onUpgrade={startCheckout} theme={theme} />
+                <NorthernLightsThreeNight
+                  t={t}
+                  lang={lang}
+                  entitlements={entitlements}
+                  onUpgrade={startCheckout}
+                  theme={theme}
+                  loadingMe={loadingMe}
+                  surface="homepage"
+                />
                 {!isAuroraSeason() && (
                   <div
                     data-testid="nl-off-season-fallback"

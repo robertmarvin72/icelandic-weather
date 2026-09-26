@@ -1,16 +1,19 @@
 // src/components/AuroraNightOutlook.jsx
 //
-// Ticket #423 Phase 2 — the selected-night presentation body for the
-// multi-night landing controller (NorthernLightsThreeNight.jsx). Reuses the
-// same canonical pure helpers NorthernLightsCard.jsx uses
+// Ticket #423 Phase 2 / #425 — the selected-night presentation body for the
+// shared three-night controller (NorthernLightsThreeNight.jsx), used on both
+// the homepage and the landing page. Reuses the same canonical pure helpers
+// the retired single-night NorthernLightsCard used
 // (selectAuroraDisplay, auroraVisualState, auroraBandLabelKey,
 // selectAuroraReasonSummaries, NorthernLightsMap) unchanged — no scoring,
 // ranking, or reinterpretation happens here either. This is a sibling of
 // NorthernLightsCard's internal AuroraResult/AllPoorResult, not a copy of
-// its JSX: every string that would say "tonight" for a night that isn't
+// its JSX: every string that would say "tonight" for a night that is not
 // tonight uses a date-neutral or {when}-parameterized key instead (see
-// translations.northernLights.js's "Ticket #423 Phase 2" section) — the
-// homepage card's own copy/keys are completely untouched.
+// translations.northernLights.js's "Ticket #423 Phase 2" section). The
+// retired card's own copy/keys are untouched. `surface` only chooses the Free
+// upgrade block: landing shows the locked-value marketing block, the
+// homepage shows the compact hint plus a single upgrade button.
 
 import React from "react";
 import { Lock } from "lucide-react";
@@ -133,6 +136,7 @@ export default function AuroraNightOutlook({
   onRetry,
   nowMs,
   when,
+  surface = "landing",
 }) {
   if (status !== "resolved") {
     return (
@@ -280,7 +284,20 @@ export default function AuroraNightOutlook({
 
       {!isPro && (
         <div className="mt-2">
-          <LockedValue t={t} onUpgrade={() => onUpgrade("northern_lights_card")} />
+          {surface === "homepage" ? (
+            <>
+              <p className="text-xs text-slate-300/80">{t("nlMultiFreeHint")}</p>
+              <button
+                type="button"
+                onClick={() => onUpgrade("northern_lights_card")}
+                className="mt-2 inline-flex items-center rounded-full bg-emerald-500 px-3 py-1.5 text-xs font-semibold text-slate-950 hover:bg-emerald-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-300"
+              >
+                {t("nlUpgradeCta")}
+              </button>
+            </>
+          ) : (
+            <LockedValue t={t} onUpgrade={() => onUpgrade("northern_lights_card")} />
+          )}
         </div>
       )}
 

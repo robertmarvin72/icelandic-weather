@@ -1,19 +1,22 @@
 // Ticket 416 (#416) — the homepage `/#northern-lights` anchor, its
-// off-season fallback (outside NorthernLightsCard.jsx), and the minimal
+// off-season fallback (a sibling outside the shared module), and the minimal
 // hash-scroll handling for asynchronous rendering (reload, delayed
 // campsite loading, About-to-home navigation). Renders the REAL App (real
 // BrowserRouter/AppRoutes/IcelandCampingWeatherApp) with data-fetching
-// hooks mocked and NorthernLightsCard left REAL, so the actual season gate
+// hooks mocked and the shared NorthernLightsThreeNight module left REAL
+// (#425 replaced the homepage's single-night card with it), so the actual season gate
 // (isAuroraSeason, unmocked) genuinely drives the anchor's content —
 // mirroring the established pattern in App.weatherVoiceIntegration.test.jsx.
 import React from "react";
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
-import { render, screen } from "@testing-library/react";
+import { render, screen, fireEvent, waitFor, within } from "@testing-library/react";
 import App from "./App";
 import { useWeatherVoice } from "./hooks/useWeatherVoice";
 import { useCampsites } from "./hooks/useCampsites";
 import { trackEvent } from "./lib/analytics";
 import { translations } from "./i18n/translations";
+import { clearAuroraDecisionCache } from "./lib/auroraDecisionCache";
+import { AURORA_CANDIDATE_LOCATION_IDS as AURORA_IDS } from "./config/auroraCandidates";
 
 vi.mock("@vercel/analytics/react", () => ({ Analytics: () => null }));
 vi.mock("@vercel/speed-insights/react", () => ({ SpeedInsights: () => null }));
@@ -22,7 +25,8 @@ vi.mock("./lib/analytics", () => ({ trackEvent: vi.fn(), trackPageView: vi.fn(),
 const SITE = { id: "site-1", name: "Test Campsite", lat: 64.1, lon: -21.9 };
 
 vi.mock("./hooks/useCampsites", () => ({ useCampsites: vi.fn() }));
-vi.mock("./hooks/useMe", () => ({ useMe: () => ({ me: null, refetchMe: vi.fn() }) }));
+const meState = vi.hoisted(() => ({ loadingMe: false }));
+vi.mock("./hooks/useMe", () => ({ useMe: () => ({ me: null, loadingMe: meState.loadingMe, refetchMe: () => {} }) }));
 const startCheckout = vi.fn();
 vi.mock("./hooks/useCheckoutFlow", () => ({
   useCheckoutFlow: () => ({ startCheckout, openBillingPortal: vi.fn() }),
@@ -46,8 +50,8 @@ vi.mock("./hooks/useForecast", () => ({
 vi.mock("./hooks/useWeatherVoice", () => ({ useWeatherVoice: vi.fn() }));
 
 // Irrelevant to this ticket's scope — stubbed so this file stays focused
-// and independent of their own data dependencies. NorthernLightsCard and
-// About are intentionally left REAL.
+// and independent of their own data dependencies. NorthernLightsThreeNight
+// and About are intentionally left REAL.
 vi.mock("./components/RoutePlannerCard", () => ({ default: () => <div data-testid="route-planner-stub" /> }));
 vi.mock("./components/CampsiteComparisonSection", () => ({ default: () => <div data-testid="comparison-section-stub" /> }));
 vi.mock("./components/ForecastTable", () => ({ default: () => <div data-testid="forecast-table-stub" /> }));
@@ -79,6 +83,8 @@ function loadingCampsites() {
 beforeEach(() => {
   localStorage.clear();
   vi.clearAllMocks();
+  clearAuroraDecisionCache();
+  meState.loadingMe = false;
   window.history.pushState({}, "", "/");
   Element.prototype.scrollIntoView = vi.fn();
   global.fetch = vi.fn(() => Promise.reject(new Error("no network in tests")));
@@ -106,13 +112,14 @@ describe("App — Ticket 416 (#416): the /#northern-lights anchor's literal id",
   });
 });
 
-describe("App — in season (September): the real card is the destination, no off-season message", () => {
-  it("September: real NorthernLightsCard shell renders inside the anchor, off-season fallback absent", () => {
+describe("App — in season (September): the real shared module is the destination, no off-season message", () => {
+  it("September: real NorthernLightsThreeNight shell renders inside the anchor, off-season fallback absent", () => {
     vi.useFakeTimers();
     vi.setSystemTime(utcNoon("2026-09-15"));
     render(<App />);
     const anchor = document.getElementById("northern-lights");
-    expect(anchor.querySelector('[data-testid="nl-card"]')).not.toBeNull();
+    expect(anchor.querySelector('[data-testid="nl3-module"]')).not.toBeNull();
+    expect(anchor.querySelector('[data-testid="nl-card"]')).toBeNull(); // the retired single-night card is not mounted
     expect(screen.queryByTestId("nl-off-season-fallback")).toBeNull();
   });
 });
@@ -134,6 +141,7 @@ describe("App — off season (April, August fixtures): honest localized fallback
     expect(fallback.textContent).toBe(translations.is.nlOffSeasonFallback);
     expect(fallback.textContent.length).toBeGreaterThan(0);
 
+    expect(anchor.querySelector('[data-testid="nl3-module"]')).toBeNull();
     expect(anchor.querySelector('[data-testid="nl-card"]')).toBeNull();
     expect(global.fetch).not.toHaveBeenCalled();
   });
@@ -229,7 +237,7 @@ describe("App — About-to-home navigation reuses the same anchor/scroll path", 
     window.history.pushState({}, "", "/#northern-lights");
     render(<App />);
     expect(Element.prototype.scrollIntoView).toHaveBeenCalled();
-    expect(document.getElementById("northern-lights").querySelector('[data-testid="nl-card"]')).not.toBeNull();
+    expect(document.getElementById("northern-lights").querySelector('[data-testid="nl3-module"]')).not.toBeNull();
   });
 
   it("no dead route: /about always renders real About content, never a 404", () => {
@@ -246,5 +254,111 @@ describe("App — About-to-home navigation reuses the same anchor/scroll path", 
     expect(startCheckout).not.toHaveBeenCalled();
     const checkoutEvents = trackEvent.mock.calls.filter(([name]) => /checkout|attribution/i.test(name));
     expect(checkoutEvents).toHaveLength(0);
+  });
+});
+
+// ── #425: the REAL homepage wiring of the shared three-night module ──────────
+function auroraBody(evening) {
+  const ids = AURORA_IDS;
+  const entries = ids.map((id, i) => ({ locationId: id, name: `Spot ${i + 1}`, lat: 64, lon: -20, score: 80 - i, band: "good", reasons: [], flags: [] }));
+  const [best, ...alternatives] = entries;
+  return {
+    ok: true,
+    evening,
+    auroraCache: { state: "fresh", sourceFetchedAt: "2026-01-15T10:00:00.000Z", ageMinutes: 120 },
+    viewingWindow: { start: `${evening}T22:00:00.000Z`, end: `${evening}T23:00:00.000Z` },
+    status: "success",
+    best,
+    alternatives,
+    excluded: [],
+    warnings: [],
+  };
+}
+
+function stubAuroraFetch() {
+  global.fetch = vi.fn(async (url, opts) => {
+    if (String(url).includes("/api/aurora-decision")) {
+      const { evening } = JSON.parse(opts.body);
+      return { ok: true, status: 200, json: async () => auroraBody(evening) };
+    }
+    throw new Error("no network in tests");
+  });
+}
+const auroraCalls = () => global.fetch.mock.calls.filter((c) => String(c[0]).includes("/api/aurora-decision"));
+
+describe("App — #425: the real homepage runs exactly one shared three-night data owner", () => {
+  it("Icelandic homepage (default): IS module inside the anchor, one owner, three requests, IS details link naming the English page", async () => {
+    vi.useFakeTimers({ toFake: ["Date"] });
+    vi.setSystemTime(utcNoon("2026-01-15"));
+    stubAuroraFetch();
+    render(<App />);
+    const anchor = document.getElementById("northern-lights");
+    await waitFor(() => expect(anchor.querySelector('[data-testid="nl3-result"]')).not.toBeNull());
+
+    expect(anchor.querySelectorAll('[data-testid="nl3-module"]')).toHaveLength(1);
+    expect(document.querySelectorAll('[data-testid="nl3-module"]')).toHaveLength(1);
+    expect(anchor.querySelector('[data-testid="nl-card"]')).toBeNull();
+    expect(within(anchor).getByText(translations.is.nlMultiSectionTitle)).toBeInTheDocument();
+    expect(auroraCalls()).toHaveLength(3);
+
+    const link = within(anchor).getByTestId("nl3-details-link");
+    expect(link.textContent).toBe(translations.is.nlHomeDetailsLink);
+    expect(link.getAttribute("href")).toBe("/en/northern-lights?date=2026-01-15");
+
+    // Selecting a night changes content in place: no extra request.
+    fireEvent.click(within(anchor).getAllByRole("button").find((b) => b.getAttribute("aria-pressed") === "false"));
+    expect(auroraCalls()).toHaveLength(3);
+  });
+
+  it("English homepage (saved lang=en): EN module and normal detail-page copy, same three requests", async () => {
+    localStorage.setItem("lang", JSON.stringify("en"));
+    vi.useFakeTimers({ toFake: ["Date"] });
+    vi.setSystemTime(utcNoon("2026-01-15"));
+    stubAuroraFetch();
+    render(<App />);
+    const anchor = document.getElementById("northern-lights");
+    await waitFor(() => expect(anchor.querySelector('[data-testid="nl3-result"]')).not.toBeNull());
+    expect(within(anchor).getByText(translations.en.nlMultiSectionTitle)).toBeInTheDocument();
+    expect(within(anchor).getByTestId("nl3-details-link").textContent).toBe(translations.en.nlHomeDetailsLink);
+    expect(auroraCalls()).toHaveLength(3);
+  });
+
+  it("forwards useMe's real loading flag (loadingMe): no exposure event while entitlements are unresolved", async () => {
+    vi.useFakeTimers({ toFake: ["Date"] });
+    vi.setSystemTime(utcNoon("2026-01-15"));
+    stubAuroraFetch();
+    meState.loadingMe = true;
+    const { rerender } = render(<App />);
+    const anchor = document.getElementById("northern-lights");
+    await waitFor(() => expect(anchor.querySelector('[data-testid="nl3-result"]')).not.toBeNull());
+    expect(trackEvent.mock.calls.filter((c) => c[0] === "northern_lights_card_viewed")).toHaveLength(0);
+
+    meState.loadingMe = false;
+    rerender(<App />);
+    await waitFor(() => expect(trackEvent.mock.calls.filter((c) => c[0] === "northern_lights_card_viewed")).toHaveLength(1));
+    expect(trackEvent.mock.calls.find((c) => c[0] === "northern_lights_card_viewed")[1]).toMatchObject({ lang: "is", tier: "free" });
+  });
+
+  it("the Free upgrade button uses the real checkout callback with the unchanged northern_lights_card source and no landing-only event", async () => {
+    vi.useFakeTimers({ toFake: ["Date"] });
+    vi.setSystemTime(utcNoon("2026-01-15"));
+    stubAuroraFetch();
+    render(<App />);
+    const anchor = document.getElementById("northern-lights");
+    await waitFor(() => expect(anchor.querySelector('[data-testid="nl3-result"]')).not.toBeNull());
+
+    fireEvent.click(within(anchor).getByRole("button", { name: translations.is.nlUpgradeCta }));
+    expect(startCheckout).toHaveBeenCalledWith("northern_lights_card");
+    expect(trackEvent.mock.calls.some((c) => c[0] === "northern_lights_landing_cta_clicked")).toBe(false);
+  });
+
+  it("season off: the sibling fallback stays and zero Aurora requests are made", () => {
+    vi.useFakeTimers({ toFake: ["Date"] });
+    vi.setSystemTime(utcNoon("2026-04-15"));
+    stubAuroraFetch();
+    render(<App />);
+    expect(screen.getByTestId("nl-off-season-fallback")).toBeInTheDocument();
+    expect(document.querySelector('[data-testid="nl3-module"]')).toBeNull();
+    expect(auroraCalls()).toHaveLength(0);
   });
 });

@@ -18,7 +18,7 @@
 // additional guard beyond keyRef, exactly as approved-prompt-v4.md §3 asks
 // for ("match success bodies to requested evening as an additional guard").
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useAuroraDecision } from "./useAuroraDecision";
 import { classifyAuroraOutcome } from "../lib/auroraDecisionClassify";
 import { buildThreeEveningSlotDates } from "../lib/auroraNightSlots";
@@ -30,11 +30,27 @@ function msUntilNextUtcMidnight(date) {
   return Math.max(1000, next - date.getTime());
 }
 
-export function useAuroraThreeNight({ enabled, fetchImpl, now = () => new Date() }) {
+export function useAuroraThreeNight({ enabled, fetchImpl, now = () => new Date(), requestedDate = null }) {
   const [baseNow, setBaseNow] = useState(() => now());
   const slotDates = useMemo(() => buildThreeEveningSlotDates(baseNow), [baseNow]);
 
-  const [selectedDate, setSelectedDate] = useState(slotDates[0].date);
+  // `requestedDate` is an optional EXTERNAL selection input (e.g. the landing
+  // page's ?date= query). It seeds the initial selection when it is one of
+  // today's three slots, and afterwards is re-applied only when it actually
+  // changes (browser back/forward) — never on ordinary rerenders or data
+  // completion. Anything outside the window falls back to tonight.
+  const [selectedDate, setSelectedDate] = useState(() =>
+    requestedDate && slotDates.some((s) => s.date === requestedDate) ? requestedDate : slotDates[0].date,
+  );
+
+  const previousRequestedRef = useRef(requestedDate);
+  useEffect(() => {
+    if (previousRequestedRef.current === requestedDate) return;
+    previousRequestedRef.current = requestedDate;
+    const target = requestedDate && slotDates.some((s) => s.date === requestedDate) ? requestedDate : slotDates[0].date;
+    setSelectedDate((current) => (current === target ? current : target));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [requestedDate]);
 
   // Preserve the selected calendar date across a rollover if it's still in
   // the new 3-night window; otherwise reset to tonight. No periodic

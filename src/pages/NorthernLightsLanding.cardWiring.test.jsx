@@ -25,9 +25,9 @@ import { trackEvent } from "../lib/analytics";
 import NorthernLightsThreeNight from "../components/NorthernLightsThreeNight";
 import NorthernLightsLanding from "./NorthernLightsLanding";
 
-function renderPage() {
+function renderPage(entry = "/en/northern-lights") {
   return render(
-    <MemoryRouter initialEntries={["/en/northern-lights"]}>
+    <MemoryRouter initialEntries={[entry]}>
       <NorthernLightsLanding />
     </MemoryRouter>,
   );
@@ -69,6 +69,36 @@ describe("NorthernLightsLanding — exact props reach the canonical NorthernLigh
     const props = NorthernLightsThreeNight.mock.calls[0][0];
     expect(props.entitlements).toEqual({ isPro: false, proUntil: null });
     expect(props.loadingMe).toBe(true);
+  });
+});
+
+// This file mocks NorthernLightsThreeNight (verified: the page imports that
+// module, not the retired NorthernLightsCard) purely to pin the exact props
+// the page passes. The real shared component, hook, policy and router
+// hand-off are exercised un-mocked in NorthernLightsLanding.homeHandoff.test.jsx.
+describe("NorthernLightsLanding — #425 surface and query wiring props", () => {
+  it("declares surface=landing and passes a query-derived requestedDate plus a selection-report callback", () => {
+    useMe.mockReturnValue({ me: { ok: true, user: null, entitlements: { pro: false, proUntil: null } }, loadingMe: false, refetchMe: vi.fn() });
+    renderPage("/en/northern-lights?date=2026-09-26&utm_source=x");
+    const props = NorthernLightsThreeNight.mock.calls[0][0];
+    expect(props.surface).toBe("landing");
+    expect(props.requestedDate).toBe("2026-09-26");
+    expect(typeof props.onSelectedDateChange).toBe("function");
+  });
+
+  it("passes requestedDate=null for a missing, duplicate, malformed or impossible date", () => {
+    useMe.mockReturnValue({ me: { ok: true, user: null, entitlements: { pro: false, proUntil: null } }, loadingMe: false, refetchMe: vi.fn() });
+    for (const entry of [
+      "/en/northern-lights",
+      "/en/northern-lights?date=2026-09-26&date=2026-09-27",
+      "/en/northern-lights?date=nope",
+      "/en/northern-lights?date=2026-02-30",
+    ]) {
+      NorthernLightsThreeNight.mockClear();
+      const { unmount } = renderPage(entry);
+      expect(NorthernLightsThreeNight.mock.calls[0][0].requestedDate, entry).toBeNull();
+      unmount();
+    }
   });
 });
 

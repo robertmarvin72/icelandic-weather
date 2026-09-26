@@ -1,20 +1,28 @@
 // src/components/NorthernLightsThreeNight.jsx
 //
-// Ticket #423 Phase 2 — compact three-night controller for the Northern
-// Lights landing page (/en/northern-lights). Owns the three fixed
+// Ticket #423 Phase 2 / #425 — the shared three-night Northern Lights
+// controller, mounted on BOTH the homepage (#northern-lights, IS and EN) and
+// the English landing page (/en/northern-lights). Owns the three fixed
 // useAuroraDecision call sites (via useAuroraThreeNight) and renders ONE
 // selected-night body (AuroraNightOutlook) plus a cross-night comparison
 // summary (auroraMultiNightPolicy) — never three full cards, never three
-// maps. Homepage's NorthernLightsCard is completely unaffected: this is a
-// new sibling module, not a modification of it.
+// maps, and exactly one data owner per mounted surface. The legacy
+// single-night NorthernLightsCard is no longer mounted by the app (see
+// cc-report.md for #425); its CARD_SHELL_CLASS is still shared from there.
 //
-// Round 5: this module replaced the landing page's NorthernLightsCard, so it
-// also carries that card's existing analytics (card/unavailable/stale
-// viewed, details opened, ranking/map viewed, upgrade + landing-card CTA
-// clicks) with their original payloads — but only for the SELECTED night's
-// visible content, never background-loaded nights.
+// `surface` ("landing" default | "homepage") is the only fork, and it only
+// affects presentation and analytics labelling: the homepage shows the
+// compact Free hint instead of landing marketing copy, keeps its own details
+// preference key, links the SELECTED night to the landing page, and never
+// emits the landing-only CTA event. Forecast logic is identical on both.
+//
+// It carries the retired card's analytics (card/unavailable/stale viewed,
+// details opened, ranking/map viewed, upgrade clicks) with their original
+// payloads — only for the SELECTED night's visible content, never
+// background-loaded nights.
 
 import React, { useEffect, useMemo, useRef, useState } from "react";
+import { Link } from "react-router-dom";
 import { Sparkles } from "lucide-react";
 import { isFeatureAvailable } from "../config/features";
 import { trackEvent } from "../lib/analytics";
@@ -25,10 +33,15 @@ import { AURORA_CANDIDATE_LOCATION_IDS } from "../config/auroraCandidates";
 import { formatNightWhenLabel, formatNightTabLabel } from "../lib/auroraNightLabel";
 import { auroraNightOverview } from "../lib/auroraNightIndicator";
 import { selectAuroraDisplay } from "../lib/auroraDisplaySelection";
+import { buildNightDetailPath } from "../lib/auroraNightQuery";
 import AuroraNightOutlook from "./AuroraNightOutlook";
 import { CARD_SHELL_CLASS } from "./NorthernLightsCard";
 
-const DETAILS_EXPANDED_KEY = "nl3_details_expanded";
+// Intentional per-surface preference keys: the homepage keeps the key the
+// retired homepage card used (so an existing preference survives), the
+// landing page keeps its own. Navigating between them never carries an
+// expanded state across, and Free never has hidden content to expose.
+const DETAILS_KEYS = { homepage: "nl_details_expanded", landing: "nl3_details_expanded" };
 
 function forecastStatusFor(slot) {
   if (slot.status !== "resolved") return "loading";
@@ -111,18 +124,32 @@ function ComparisonSummary({ t, lang, multiNight, onSeeNight }) {
   );
 }
 
-export default function NorthernLightsThreeNight({ t, lang, entitlements, onUpgrade, theme, fetchImpl, now, loadingMe }) {
+export default function NorthernLightsThreeNight({
+  t,
+  lang,
+  entitlements,
+  onUpgrade,
+  theme,
+  fetchImpl,
+  now,
+  loadingMe,
+  surface = "landing",
+  requestedDate = null,
+  onSelectedDateChange,
+}) {
+  const isHomepage = surface === "homepage";
+  const detailsKey = isHomepage ? DETAILS_KEYS.homepage : DETAILS_KEYS.landing;
   const seasonActive = isAuroraSeason(now ? now() : undefined);
 
   const gate = isFeatureAvailable("northernLights", entitlements);
   const isPro = !!gate.available;
   const tier = isPro ? "pro" : "free";
 
-  const { slots, selectedDate, setSelectedDate, nowMs } = useAuroraThreeNight({ enabled: seasonActive, fetchImpl, now });
+  const { slots, selectedDate, setSelectedDate, nowMs } = useAuroraThreeNight({ enabled: seasonActive, fetchImpl, now, requestedDate });
 
   const [detailsExpanded, setDetailsExpanded] = useState(() => {
     try {
-      return sessionStorage.getItem(DETAILS_EXPANDED_KEY) === "true";
+      return sessionStorage.getItem(detailsKey) === "true";
     } catch {
       return false;
     }
@@ -150,7 +177,7 @@ export default function NorthernLightsThreeNight({ t, lang, entitlements, onUpgr
     setDetailsExpanded((prev) => {
       const next = !prev;
       try {
-        sessionStorage.setItem(DETAILS_EXPANDED_KEY, String(next));
+        sessionStorage.setItem(detailsKey, String(next));
       } catch {
         /* unavailable */
       }
@@ -167,6 +194,7 @@ export default function NorthernLightsThreeNight({ t, lang, entitlements, onUpgr
       days_ahead: target?.daysAhead ?? null,
       forecast_status: target ? forecastStatusFor(target) : "loading",
       user_tier: tier,
+      source: surface,
     });
   }
 
@@ -176,7 +204,7 @@ export default function NorthernLightsThreeNight({ t, lang, entitlements, onUpgr
       trackEvent("northern_lights_details_opened", { lang, tier });
       setDetailsExpanded(true);
       try {
-        sessionStorage.setItem(DETAILS_EXPANDED_KEY, "true");
+        sessionStorage.setItem(detailsKey, "true");
       } catch {
         /* unavailable */
       }
@@ -187,13 +215,15 @@ export default function NorthernLightsThreeNight({ t, lang, entitlements, onUpgr
   // multi-day event: each fires once per actual click, before forwarding
   // the existing checkout source unchanged.
   function handleUpgrade(source) {
-    trackEvent("northern_lights_landing_cta_clicked", { lang, tier: "free", placement: "card", source });
+    // Landing-only conversion event: the homepage is not landing traffic.
+    if (!isHomepage) trackEvent("northern_lights_landing_cta_clicked", { lang, tier: "free", placement: "card", source });
     trackEvent("northern_lights_upgrade_clicked", { lang, source, tier: "free" });
     trackEvent("northern_lights_multi_day_upgrade_clicked", {
       selected_date: selectedSlot.date,
       days_ahead: selectedSlot.daysAhead,
       forecast_status: forecastStatusFor(selectedSlot),
       user_tier: tier,
+      source: surface,
     });
     if (typeof onUpgrade === "function") onUpgrade(source);
   }
@@ -267,9 +297,24 @@ export default function NorthernLightsThreeNight({ t, lang, entitlements, onUpgr
       days_ahead: multiNight.comparison.daysAhead,
       forecast_status: "success",
       user_tier: tier,
+      source: surface,
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [multiNight.state, multiNight.comparison, loadingMe, tier]);
+
+  // Reports the selected date to a hosting page (the landing page mirrors it
+  // into its query with router replace). Fires only when the selection
+  // actually changes — never on ordinary rerenders or data completion — and
+  // never counts as a user-selection analytics event.
+  const lastNotifiedRef = useRef(null);
+  useEffect(() => {
+    if (typeof onSelectedDateChange !== "function") return;
+    if (lastNotifiedRef.current === selectedDate) return;
+    const isInitial = lastNotifiedRef.current === null;
+    lastNotifiedRef.current = selectedDate;
+    onSelectedDateChange(selectedDate, { isInitial });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedDate]);
 
   if (!seasonActive) return null;
 
@@ -308,8 +353,19 @@ export default function NorthernLightsThreeNight({ t, lang, entitlements, onUpgr
             onRetry={selectedSlot.retry}
             nowMs={nowMs}
             when={when}
+            surface={surface}
           />
         </div>
+
+        {isHomepage && (
+          <Link
+            to={buildNightDetailPath(selectedSlot.date)}
+            data-testid="nl3-details-link"
+            className="mt-3 inline-block text-xs font-semibold text-indigo-200 underline underline-offset-2 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-300"
+          >
+            {t("nlHomeDetailsLink")}
+          </Link>
+        )}
       </div>
     </div>
   );

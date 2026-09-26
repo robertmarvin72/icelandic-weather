@@ -53,9 +53,9 @@ vi.mock("./hooks/useLeaderboardScores", () => ({
 }));
 
 // Irrelevant to selection wiring — stubbed to keep this file focused.
-// NorthernLightsCard fetches internally; stub it to avoid unrelated network
+// The shared Northern Lights module fetches internally; stub it to avoid unrelated network
 // noise. WeatherFinder and Top5Leaderboard are intentionally REAL.
-vi.mock("./components/NorthernLightsCard", () => ({ default: () => null }));
+vi.mock("./components/NorthernLightsThreeNight", () => ({ default: () => null }));
 vi.mock("./components/RoutePlannerCard", () => ({ default: () => <div data-testid="route-planner-stub" /> }));
 vi.mock("./components/CampsiteComparisonSection", () => ({ default: () => <div data-testid="comparison-section-stub" /> }));
 vi.mock("./components/ForecastTable", () => ({ default: () => <div data-testid="forecast-table-stub" /> }));
