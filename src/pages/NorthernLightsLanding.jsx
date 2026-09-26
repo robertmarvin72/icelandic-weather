@@ -11,11 +11,16 @@
 // page; every child (including the real NorthernLightsCard) receives them
 // from here, so nothing on this route can silently fall back to Icelandic.
 //
-// The card itself is the same canonical src/components/NorthernLightsCard.jsx
-// used on the homepage — same request, classification, Free/Pro
-// presentation, details/ranking/map exposure, upgrade click, and analytics.
+// Ticket #423 Phase 2 (2026-09-25): this page now renders
+// NorthernLightsThreeNight.jsx — a compact three-night forecast module —
+// instead of the single-night NorthernLightsCard used on the homepage. Both
+// reuse the same canonical /api/aurora-decision request/response contract,
+// the same Free/Pro feature gate, and the same lower-level presentation
+// helpers (selectAuroraDisplay, auroraVisualState, NorthernLightsMap).
 // Nothing about Aurora scoring/ranking/freshness/candidates is duplicated,
-// precomputed, or reinterpreted here.
+// precomputed, or reinterpreted in either component. The homepage's own
+// NorthernLightsCard usage (App.jsx) is completely unaffected by this
+// change.
 
 import { useEffect, useMemo, useRef } from "react";
 import { Helmet } from "react-helmet-async";
@@ -24,7 +29,7 @@ import Brand from "../components/Brand";
 import Footer from "../components/Footer";
 import LoginModal from "../components/LoginModal";
 import ToastHub from "../components/ToastHub";
-import NorthernLightsCard from "../components/NorthernLightsCard";
+import NorthernLightsThreeNight from "../components/NorthernLightsThreeNight";
 import { useT } from "../hooks/useT";
 import { useLocalStorageState } from "../hooks/useLocalStorageState";
 import { useThemeClass } from "../hooks/useThemeClass";
@@ -161,13 +166,13 @@ export default function NorthernLightsLanding() {
         </section>
 
         <section className="mx-auto max-w-3xl px-6 pb-6">
-          <NorthernLightsCard
+          <NorthernLightsThreeNight
             t={t}
             lang={lang}
             entitlements={entitlements}
             onUpgrade={startCheckout}
             theme={theme}
-            variant="landing"
+            loadingMe={loadingMe}
           />
         </section>
 

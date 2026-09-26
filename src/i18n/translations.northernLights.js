@@ -139,6 +139,61 @@ export const northernLightsTranslations = {
     auroraInfoNoGuarantee: "Good conditions do not guarantee that the Northern Lights will be visible.",
     auroraInfoSeasonalNote:
       "Northern Lights forecasts are shown from September through March, when Iceland has enough darkness for a meaningful check.",
+
+    // Ticket #423 Phase 2 — multi-night (landing three-night forecast).
+    // Additive only: none of the keys above are reused/reworded, so the
+    // homepage single-night card's copy is completely unchanged. These
+    // exist because several homepage strings above hardcode "tonight" and
+    // would be actively wrong if reused for a future selected night — see
+    // data-audit.md §6's "audit every reused visible string for tonight
+    // references" requirement.
+    nlMultiSectionTitle: "Northern Lights forecast",
+    nlMultiPillPoor: "Low chance",
+    nlMultiHeadlineGood: "Good conditions",
+    nlMultiBodyGood: "Skies look favorable for spotting the Aurora.",
+    nlMultiHeadlinePoor: "Little hope",
+    nlMultiBodyPoor: "Cloud cover or other conditions make the Aurora unlikely to be visible.",
+    nlMultiBodyNeutral: "We couldn't determine this night's Aurora-viewing conditions.",
+    nlMultiBestOn: "Best conditions {when}: {name}",
+    nlMultiFreeHint: "Conditions may be worth checking somewhere in Iceland.",
+    nlMultiQualifyingHeading: "Recommended locations",
+    nlMultiWarningPartial: "Some locations could not be checked for this night.",
+    nlMultiNoDarknessTitle: "Not dark enough to check",
+    nlMultiLandingLockedBestLocation: "Where conditions are best",
+    nlMultiLandingCtaPrimary: "Show me where to go",
+
+    // Night-reference phrases, shared by the selected-night body copy above
+    // ({when} placeholders) and the selector tabs below.
+    nlWhenTonight: "tonight",
+    nlWhenTomorrowNight: "tomorrow night",
+    nlWhenWeekdayNight: "{weekday} night",
+    nlTabTonight: "Tonight",
+    nlTabTomorrow: "Tomorrow night",
+
+    // Cross-night comparison summary (src/lib/auroraMultiNightPolicy.js's
+    // states/kinds map 1:1 to these keys).
+    nlCompPending: "Comparing the next three nights…",
+    nlCompUnavailableAll: "We couldn't determine conditions for the next three nights.",
+    nlCompSoleAvailable: "Only {when} has a result right now — the other nights aren't available yet.",
+    nlCompIneligible: "We can't reliably compare these nights right now.",
+    nlCompAllThreeLowChance: "Low chance across the next three nights.",
+    nlCompNoFavorable: "No favorable conditions among the available nights.",
+    nlCompBestNight: "Best conditions expected: {when}",
+    nlCompSimilar: "Similar conditions expected: {dates}",
+    nlCompExactTie: "Conditions are evenly matched: {dates}",
+    nlCompSeeNight: "See {when}",
+
+    // Round 5 additions: tab outlook text, data-update line, expired state,
+    // and comparison conclusions explicitly limited to available nights.
+    nlTabLoading: "Checking…",
+    nlTabNoDarkness: "Not dark enough",
+    nlTabExpired: "Data expired",
+    nlMultiDataUpdated: "Aurora data updated {ago}",
+    nlMultiDataUpdatedUnknown: "Aurora data update time unavailable",
+    nlMultiExpiredBody: "This Aurora forecast has expired. Refresh to check again.",
+    nlCompBestNightScoped: "Best conditions among the available nights: {when}",
+    nlCompSimilarScoped: "Similar conditions among the available nights: {dates}",
+    nlCompExactTieScoped: "Conditions are evenly matched among the available nights: {dates}",
   },
   is: {
     nlCardTitle: "Norðurljós í kvöld",
@@ -239,5 +294,48 @@ export const northernLightsTranslations = {
     auroraInfoNoGuarantee: "Góð skilyrði tryggja ekki að norðurljós sjáist.",
     auroraInfoSeasonalNote:
       "Norðurljósaspá er sýnd frá september til mars, þegar nægilegt myrkur er á Íslandi til að gera marktæka athugun.",
+
+    // Ticket #423 Phase 2 — multi-night (landing three-night forecast).
+    nlMultiSectionTitle: "Norðurljósaspá",
+    nlMultiPillPoor: "Litlar líkur",
+    nlMultiHeadlineGood: "Góð skilyrði",
+    nlMultiBodyGood: "Himininn lítur vel út til að sjá norðurljós.",
+    nlMultiHeadlinePoor: "Lítil von",
+    nlMultiBodyPoor: "Skýjahula eða önnur skilyrði gera ólíklegt að norðurljós sjáist.",
+    nlMultiBodyNeutral: "Við gátum ekki ákvarðað norðurljósaskilyrði þessa kvölds.",
+    nlMultiBestOn: "Bestu skilyrðin {when}: {name}",
+    nlMultiFreeHint: "Aðstæður gætu verið þess virði að skoða einhvers staðar á Íslandi.",
+    nlMultiQualifyingHeading: "Mælt með þessum stöðum",
+    nlMultiWarningPartial: "Ekki var hægt að athuga alla staði þetta kvöld.",
+    nlMultiNoDarknessTitle: "Ekki nógu dimmt til að athuga",
+    nlMultiLandingLockedBestLocation: "Hvar aðstæður eru bestar",
+    nlMultiLandingCtaPrimary: "Sýndu mér hvert ég á að fara",
+
+    nlWhenTonight: "í kvöld",
+    nlWhenTomorrowNight: "annað kvöld",
+    nlWhenWeekdayNight: "{weekday}kvöld",
+    nlTabTonight: "Í kvöld",
+    nlTabTomorrow: "Annað kvöld",
+
+    nlCompPending: "Ber saman næstu þrjár nætur…",
+    nlCompUnavailableAll: "Við gátum ekki ákvarðað aðstæður fyrir næstu þrjár nætur.",
+    nlCompSoleAvailable: "Aðeins {when} er með niðurstöðu núna — hinar næturnar eru ekki tiltækar enn.",
+    nlCompIneligible: "Við getum ekki borið þessar nætur saman með vissu núna.",
+    nlCompAllThreeLowChance: "Litlar líkur næstu þrjár nætur.",
+    nlCompNoFavorable: "Engin hagstæð skilyrði meðal tiltækra nátta.",
+    nlCompBestNight: "Bestu skilyrðin: {when}",
+    nlCompSimilar: "Svipaðra skilyrða að vænta: {dates}",
+    nlCompExactTie: "Skilyrðin eru jöfn: {dates}",
+    nlCompSeeNight: "Sjá {when}",
+
+    nlTabLoading: "Athuga…",
+    nlTabNoDarkness: "Ekki nógu dimmt",
+    nlTabExpired: "Gögn útrunnin",
+    nlMultiDataUpdated: "Norðurljósagögn uppfærð fyrir {ago}",
+    nlMultiDataUpdatedUnknown: "Uppfærslutími norðurljósagagna ekki tiltækur",
+    nlMultiExpiredBody: "Þessi norðurljósaspá er útrunnin. Endurnýjaðu til að athuga aftur.",
+    nlCompBestNightScoped: "Bestu skilyrðin meðal tiltækra nátta: {when}",
+    nlCompSimilarScoped: "Svipuð skilyrði meðal tiltækra nátta: {dates}",
+    nlCompExactTieScoped: "Skilyrðin eru jöfn meðal tiltækra nátta: {dates}",
   },
 };

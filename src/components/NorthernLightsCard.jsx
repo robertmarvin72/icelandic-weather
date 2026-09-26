@@ -23,39 +23,23 @@ import { auroraBandLabelKey } from "../lib/auroraBandPresentation";
 import { auroraVisualState, auroraVisualStateTokens, AURORA_VISUAL_STATES } from "../lib/auroraVisualState";
 import { selectAuroraReasonSummaries } from "../lib/auroraReasonSummaries";
 import { AURORA_NEW_BADGE_ENABLED } from "../config/auroraNewBadge";
+import { AURORA_REASON_KEYS as REASON_KEYS } from "../lib/auroraReasonKeys";
+import { formatAuroraDataAge } from "../lib/auroraFreshnessFormat";
 import NorthernLightsMap from "./NorthernLightsMap";
-
-const REASON_KEYS = {
-  meaningful_activity: "nlReasonMeaningfulActivity",
-  low_activity: "nlReasonLowActivity",
-  clear_sky: "nlReasonClearSky",
-  partial_cloud: "nlReasonPartialCloud",
-  heavy_cloud: "nlReasonHeavyCloud",
-  cloud_hard_cap_applied: "nlReasonCloudHardCap",
-  precipitation_reduced_visibility: "nlReasonPrecipitation",
-  moonlight_reduced_visibility: "nlReasonMoonlight",
-};
 
 const DETAILS_EXPANDED_KEY = "nl_details_expanded";
 
 // Dark "evening sky" surface — identical background/text in both page
 // themes; only shadow/border separate the card from its surroundings
 // (approved prompt §3). Never swaps to a light background in light mode.
-const CARD_SHELL_CLASS =
+// Exported (additive) so AuroraNightOutlook's multi-night controller
+// (NorthernLightsThreeNight.jsx, Ticket #423 Phase 2) can reuse the exact
+// same shell for visual consistency — this card's own usage is unchanged.
+export const CARD_SHELL_CLASS =
   "relative overflow-hidden rounded-2xl border px-4 py-3 " +
   "bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-950 text-slate-100 " +
   "border-slate-800/70 shadow-lg " +
   "dark:border-slate-500/40 dark:shadow-md";
-
-function formatAgo(iso, t, nowMs) {
-  if (!iso) return null;
-  const ms = nowMs - new Date(iso).getTime();
-  if (!Number.isFinite(ms) || ms < 0) return null;
-  const hours = Math.round(ms / 3600000);
-  if (hours <= 0) return t("nlAgeLessThanHour");
-  if (hours === 1) return t("nlAgeOneHour");
-  return t("nlAgeHours").replace("{hours}", String(hours));
-}
 
 function CardHeader({ t, pill }) {
   return (
@@ -375,7 +359,7 @@ function AuroraResult({ t, lang, theme, classification, isPro, detailsExpanded, 
   const body = classification.body;
   const isPartial = classification.primary === "partial";
   const isStale = classification.freshness === "stale";
-  const staleAgo = isStale ? formatAgo(body.auroraCache?.sourceFetchedAt, t, nowMs) : null;
+  const staleAgo = isStale ? formatAuroraDataAge(body.auroraCache?.sourceFetchedAt, t, nowMs) : null;
 
   if (!display.hasQualifyingLocations) {
     return (

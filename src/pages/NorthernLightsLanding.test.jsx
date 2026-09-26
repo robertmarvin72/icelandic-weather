@@ -52,7 +52,7 @@ describe("NorthernLightsLanding — page structure, order, and required copy", (
       screen.getByText("We compare aurora activity and cloud conditions across locations in Iceland to help you decide where to go."),
     ).toBeInTheDocument();
 
-    const card = screen.getByTestId("nl-card");
+    const card = screen.getByTestId("nl3-module");
     const valueHeading = screen.getByRole("heading", { level: 2, name: "Know where to go tonight" });
     const howEyebrow = screen.getByText("How it works");
     const howText = screen.getByText("Current viewing conditions are compared across Iceland using aurora activity, cloud conditions, and darkness.");
@@ -139,22 +139,22 @@ describe("NorthernLightsLanding — Ticket 403: the lower conversion section", (
     // conversion section still renders for Free — proving it is not
     // conditioned on tonight's result at all.
     renderPage();
-    expect(screen.getByTestId("nl-loading")).toBeInTheDocument();
+    expect(screen.getByTestId("nl3-loading")).toBeInTheDocument();
     expect(screen.getByRole("heading", { level: 2, name: "Know where to go tonight" })).toBeInTheDocument();
   });
 });
 
-describe("NorthernLightsLanding — forced English regardless of saved language (real card translation path)", () => {
-  it("renders the real NorthernLightsCard's English title even when localStorage.lang is 'is'", () => {
+describe("NorthernLightsLanding — forced English regardless of saved language (real module translation path)", () => {
+  it("renders the real NorthernLightsThreeNight module's English title even when localStorage.lang is 'is'", () => {
     localStorage.setItem("lang", JSON.stringify("is"));
 
     renderPage();
 
-    // Real card, real i18n lookup — not a lang-prop-only assertion. This is
-    // nlCardTitle's actual EN value, unmistakably distinct from the IS
-    // value "Norðurljós í kvöld".
-    expect(screen.getByText("Northern Lights tonight")).toBeInTheDocument();
-    expect(screen.queryByText("Norðurljós í kvöld")).toBeNull();
+    // Real module, real i18n lookup — not a lang-prop-only assertion. This is
+    // nlMultiSectionTitle's actual EN value, unmistakably distinct from the
+    // IS value "Norðurljósaspá".
+    expect(screen.getByText("Northern Lights forecast")).toBeInTheDocument();
+    expect(screen.queryByText("Norðurljósaspá")).toBeNull();
   });
 
   it("visiting the route never overwrites the user's saved language", () => {
@@ -171,7 +171,7 @@ describe("NorthernLightsLanding — forced English regardless of saved language 
     // only proves the page requests it (the mock renders its children,
     // and <html lang="en" /> is a valid, harmless self-closing element in
     // that pass-through tree — no error is thrown).
-    expect(screen.getByTestId("nl-card")).toBeInTheDocument();
+    expect(screen.getByTestId("nl3-module")).toBeInTheDocument();
   });
 });
 

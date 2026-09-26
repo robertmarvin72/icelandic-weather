@@ -10,8 +10,8 @@ vi.mock("react-helmet-async", () => ({
 }));
 vi.mock("../hooks/useMe", () => ({ useMe: vi.fn() }));
 vi.mock("../lib/analytics", () => ({ trackEvent: vi.fn() }));
-vi.mock("../components/NorthernLightsCard", () => ({
-  default: vi.fn(() => <div data-testid="nl-card-stub" />),
+vi.mock("../components/NorthernLightsThreeNight", () => ({
+  default: vi.fn(() => <div data-testid="nl3-module-stub" />),
 }));
 
 const { navigateSpy } = vi.hoisted(() => ({ navigateSpy: vi.fn() }));
@@ -22,7 +22,7 @@ vi.mock("react-router-dom", async (importOriginal) => {
 
 import { useMe } from "../hooks/useMe";
 import { trackEvent } from "../lib/analytics";
-import NorthernLightsCard from "../components/NorthernLightsCard";
+import NorthernLightsThreeNight from "../components/NorthernLightsThreeNight";
 import NorthernLightsLanding from "./NorthernLightsLanding";
 
 function renderPage() {
@@ -39,42 +39,41 @@ beforeEach(() => {
   localStorage.setItem("theme", JSON.stringify("dark"));
 });
 
-describe("NorthernLightsLanding — exact props reach the canonical NorthernLightsCard", () => {
-  it("passes the independently-built English t, lang='en', truthful entitlements, and the saved theme", () => {
+describe("NorthernLightsLanding — exact props reach the canonical NorthernLightsThreeNight module", () => {
+  it("passes the independently-built English t, lang='en', truthful entitlements, the saved theme, and truthful loadingMe", () => {
     useMe.mockReturnValue({ me: { ok: true, user: null, entitlements: { pro: false, proUntil: null } }, loadingMe: false, refetchMe: vi.fn() });
     renderPage();
 
-    expect(NorthernLightsCard).toHaveBeenCalledOnce();
-    const props = NorthernLightsCard.mock.calls[0][0];
+    expect(NorthernLightsThreeNight).toHaveBeenCalledOnce();
+    const props = NorthernLightsThreeNight.mock.calls[0][0];
 
     expect(props.lang).toBe("en");
     expect(props.theme).toBe("dark");
-    expect(props.t("nlCardTitle")).toBe(northernLightsTranslations.en.nlCardTitle);
-    expect(props.t("nlCardTitle")).not.toBe(northernLightsTranslations.is.nlCardTitle);
+    expect(props.t("nlMultiSectionTitle")).toBe(northernLightsTranslations.en.nlMultiSectionTitle);
+    expect(props.t("nlMultiSectionTitle")).not.toBe(northernLightsTranslations.is.nlMultiSectionTitle);
     expect(props.entitlements).toEqual({ isPro: false, proUntil: null });
     expect(typeof props.onUpgrade).toBe("function");
-    // Ticket 403 (#403): the page must request the landing presentation
-    // explicitly — the homepage/default consumer never passes this.
-    expect(props.variant).toBe("landing");
+    expect(props.loadingMe).toBe(false);
   });
 
   it("reflects a truthful Pro entitlement", () => {
     useMe.mockReturnValue({ me: { ok: true, user: { email: "a@b.com" }, entitlements: { pro: true, proUntil: "2027-01-01" } }, loadingMe: false, refetchMe: vi.fn() });
     renderPage();
-    const props = NorthernLightsCard.mock.calls[0][0];
+    const props = NorthernLightsThreeNight.mock.calls[0][0];
     expect(props.entitlements).toEqual({ isPro: true, proUntil: "2027-01-01" });
   });
 
-  it("never assumes Pro or Free before entitlement resolution — reflects the safe default while loading, matching the homepage's own contract", () => {
+  it("never assumes Pro or Free before entitlement resolution — reflects the safe default while loading, and reports loadingMe truthfully", () => {
     useMe.mockReturnValue({ me: null, loadingMe: true, refetchMe: vi.fn() });
     renderPage();
-    const props = NorthernLightsCard.mock.calls[0][0];
+    const props = NorthernLightsThreeNight.mock.calls[0][0];
     expect(props.entitlements).toEqual({ isPro: false, proUntil: null });
+    expect(props.loadingMe).toBe(true);
   });
 });
 
-describe("NorthernLightsLanding — the card's upgrade source reaches the existing checkout boundary unchanged", () => {
-  it("logged-in Free user: calling the card's onUpgrade('northern_lights_card') navigates to /pricing carrying that exact source", async () => {
+describe("NorthernLightsLanding — the module's upgrade source reaches the existing checkout boundary unchanged", () => {
+  it("logged-in Free user: calling the module's onUpgrade('northern_lights_card') navigates to /pricing carrying that exact source", async () => {
     useMe.mockReturnValue({
       me: { ok: true, user: { email: "camper@example.com" }, entitlements: { pro: false, proUntil: null } },
       loadingMe: false,
@@ -82,7 +81,7 @@ describe("NorthernLightsLanding — the card's upgrade source reaches the existi
     });
     renderPage();
 
-    const { onUpgrade } = NorthernLightsCard.mock.calls[0][0];
+    const { onUpgrade } = NorthernLightsThreeNight.mock.calls[0][0];
     await act(async () => {
       await onUpgrade("northern_lights_card");
     });
@@ -101,7 +100,7 @@ describe("NorthernLightsLanding — the card's upgrade source reaches the existi
 
     expect(screen.queryByRole("dialog")).toBeNull();
 
-    const { onUpgrade } = NorthernLightsCard.mock.calls[0][0];
+    const { onUpgrade } = NorthernLightsThreeNight.mock.calls[0][0];
     await act(async () => {
       await onUpgrade("northern_lights_card");
     });
@@ -111,7 +110,7 @@ describe("NorthernLightsLanding — the card's upgrade source reaches the existi
   });
 });
 
-describe("NorthernLightsLanding — Ticket 403: the lower conversion section's own CTA", () => {
+describe("NorthernLightsLanding — Ticket 403: the lower conversion section's own CTA (unaffected by Ticket #423 Phase 2)", () => {
   it("logged-in Free user: clicking the value-section CTA fires northern_lights_landing_cta_clicked (placement: value_section) exactly once, then navigates to /pricing carrying that exact source", async () => {
     useMe.mockReturnValue({
       me: { ok: true, user: { email: "camper@example.com" }, entitlements: { pro: false, proUntil: null } },
@@ -139,7 +138,7 @@ describe("NorthernLightsLanding — Ticket 403: the lower conversion section's o
     expect(url.searchParams.get("src")).toBe("northern_lights_landing_value_section");
   });
 
-  it("the value-section CTA never fires the card's own northern_lights_upgrade_clicked event", async () => {
+  it("the value-section CTA never fires the multi-night module's own northern_lights_multi_day_upgrade_clicked event", async () => {
     useMe.mockReturnValue({ me: { ok: true, user: { email: "camper@example.com" }, entitlements: { pro: false, proUntil: null } }, loadingMe: false, refetchMe: vi.fn() });
     renderPage();
 
@@ -147,6 +146,6 @@ describe("NorthernLightsLanding — Ticket 403: the lower conversion section's o
       screen.getByRole("button", { name: "Show me where to go tonight" }).click();
     });
 
-    expect(trackEvent.mock.calls.some((c) => c[0] === "northern_lights_upgrade_clicked")).toBe(false);
+    expect(trackEvent.mock.calls.some((c) => c[0] === "northern_lights_multi_day_upgrade_clicked")).toBe(false);
   });
 });
