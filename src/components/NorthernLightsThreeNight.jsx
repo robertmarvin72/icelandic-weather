@@ -11,10 +11,12 @@
 // cc-report.md for #425); its CARD_SHELL_CLASS is still shared from there.
 //
 // `surface` ("landing" default | "homepage") is the only fork, and it only
-// affects presentation and analytics labelling: the homepage shows the
-// compact Free hint instead of landing marketing copy, keeps its own details
-// preference key, links the SELECTED night to the landing page, and never
-// emits the landing-only CTA event. Forecast logic is identical on both.
+// affects presentation and analytics labelling: the homepage shows its own
+// truthful, comparison-oriented Free conversion block (#426) instead of
+// landing's marketing copy, keeps its own details preference key, links the
+// SELECTED night to the landing page (EN homepage only — #426 removed the IS
+// link), and never emits the landing-only CTA event. Forecast logic is
+// identical on both.
 //
 // It carries the retired card's analytics (card/unavailable/stale viewed,
 // details opened, ranking/map viewed, upgrade clicks) with their original
@@ -214,16 +216,24 @@ export default function NorthernLightsThreeNight({
   // Existing card-level events (original payloads/sources) plus the new
   // multi-day event: each fires once per actual click, before forwarding
   // the existing checkout source unchanged.
-  function handleUpgrade(source) {
-    // Landing-only conversion event: the homepage is not landing traffic.
+  // #426: on the homepage, the click is explicitly attributed to this
+  // surface via a bounded `upgrade_source` value, added to the existing
+  // events without removing/repurposing any existing field. Landing keeps
+  // its exact prior payloads (no upgrade_source field there).
+  function handleUpgrade(rawSource) {
+    const source = isHomepage ? "northern_lights_homepage" : rawSource;
     if (!isHomepage) trackEvent("northern_lights_landing_cta_clicked", { lang, tier: "free", placement: "card", source });
-    trackEvent("northern_lights_upgrade_clicked", { lang, source, tier: "free" });
+    trackEvent(
+      "northern_lights_upgrade_clicked",
+      isHomepage ? { lang, source, tier: "free", upgrade_source: "northern_lights_homepage" } : { lang, source, tier: "free" },
+    );
     trackEvent("northern_lights_multi_day_upgrade_clicked", {
       selected_date: selectedSlot.date,
       days_ahead: selectedSlot.daysAhead,
       forecast_status: forecastStatusFor(selectedSlot),
       user_tier: tier,
       source: surface,
+      ...(isHomepage ? { upgrade_source: "northern_lights_homepage" } : {}),
     });
     if (typeof onUpgrade === "function") onUpgrade(source);
   }
@@ -354,10 +364,15 @@ export default function NorthernLightsThreeNight({
             nowMs={nowMs}
             when={when}
             surface={surface}
+            loadingMe={loadingMe}
           />
         </div>
 
-        {isHomepage && (
+        {/* #426: the IS homepage never renders this link (any tier, any
+            selected date, any disclosure state) — no replacement language
+            link is added; landing's route/query behavior and the EN
+            homepage link are otherwise unchanged. */}
+        {isHomepage && lang !== "is" && (
           <Link
             to={buildNightDetailPath(selectedSlot.date)}
             data-testid="nl3-details-link"

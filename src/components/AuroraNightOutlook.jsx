@@ -12,8 +12,13 @@
 // tonight uses a date-neutral or {when}-parameterized key instead (see
 // translations.northernLights.js's "Ticket #423 Phase 2" section). The
 // retired card's own copy/keys are untouched. `surface` only chooses the Free
-// upgrade block: landing shows the locked-value marketing block, the
-// homepage shows the compact hint plus a single upgrade button.
+// upgrade block: landing shows the locked-value marketing block, unchanged;
+// the homepage shows one compact, comparison-truthful value block (#426) —
+// one heading/body/CTA for a qualifying result, a separate truthful one for
+// a poor/very-poor result (never promoting the least-bad site as good) —
+// gated on `!loadingMe` so a Pro user is never briefly shown a Free upsell
+// while entitlement resolution is still in flight. The general forecast
+// (headline/pill/notices/update time) is never hidden by that guard.
 
 import React from "react";
 import { Lock } from "lucide-react";
@@ -117,6 +122,27 @@ function LockedValue({ t, onUpgrade }) {
   );
 }
 
+// Homepage-only, truthful, comparison-oriented Free conversion block (#426).
+// Never receives location data — structurally incapable of leaking a name,
+// coordinate or reason, same as landing's LockedValue. `headingKey`/`bodyKey`/
+// `ctaKey` select the exact issue copy for the qualifying vs. poor case.
+function FreeValueBlock({ t, when, headingKey, bodyKey, ctaKey, onUpgrade }) {
+  return (
+    <div data-testid="nl3-free-value">
+      <p className="text-[11px] text-slate-400">{t("nlMultiFreeValueForNight").replace("{when}", when)}</p>
+      <p className="text-sm font-semibold text-slate-100">{t(headingKey)}</p>
+      <p className="mt-1 text-xs text-slate-300/80">{t(bodyKey)}</p>
+      <button
+        type="button"
+        onClick={onUpgrade}
+        className="mt-2 inline-flex items-center rounded-full bg-emerald-500 px-3 py-1.5 text-xs font-semibold text-slate-950 hover:bg-emerald-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-300"
+      >
+        {t(ctaKey)}
+      </button>
+    </div>
+  );
+}
+
 /**
  * The selected-night body. Every prop describes ONLY the currently selected
  * slot — the caller (NorthernLightsThreeNight) is responsible for ensuring
@@ -137,7 +163,10 @@ export default function AuroraNightOutlook({
   nowMs,
   when,
   surface = "landing",
+  loadingMe = false,
 }) {
+  const isHomepage = surface === "homepage";
+  const showHomepageFreeValue = isHomepage && !isPro && !loadingMe;
   if (status !== "resolved") {
     return (
       <div className="h-16 animate-pulse rounded-lg bg-slate-800/60" data-testid="nl3-loading">
@@ -223,6 +252,18 @@ export default function AuroraNightOutlook({
         <p className="mt-1 text-sm text-slate-200">{copy.body}</p>
         <StaleParialNotices t={t} isPartial={isPartial} isStale={isStale} staleAgo={staleAgo} />
         <DataUpdatedLine t={t} sourceFetchedAt={body.auroraCache?.sourceFetchedAt} nowMs={nowMs} />
+        {showHomepageFreeValue && (
+          <div className="mt-2">
+            <FreeValueBlock
+              t={t}
+              when={when}
+              headingKey="nlMultiFreePoorHeading"
+              bodyKey="nlMultiFreePoorBody"
+              ctaKey="nlMultiFreePoorCta"
+              onUpgrade={() => onUpgrade("northern_lights_card")}
+            />
+          </div>
+        )}
         {isPro && bestAvailable && (
           <div className="mt-2">
             <button
@@ -282,22 +323,21 @@ export default function AuroraNightOutlook({
       <StaleParialNotices t={t} isPartial={isPartial} isStale={isStale} staleAgo={staleAgo} />
       <DataUpdatedLine t={t} sourceFetchedAt={body.auroraCache?.sourceFetchedAt} nowMs={nowMs} />
 
-      {!isPro && (
+      {!isPro && !isHomepage && (
         <div className="mt-2">
-          {surface === "homepage" ? (
-            <>
-              <p className="text-xs text-slate-300/80">{t("nlMultiFreeHint")}</p>
-              <button
-                type="button"
-                onClick={() => onUpgrade("northern_lights_card")}
-                className="mt-2 inline-flex items-center rounded-full bg-emerald-500 px-3 py-1.5 text-xs font-semibold text-slate-950 hover:bg-emerald-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-300"
-              >
-                {t("nlUpgradeCta")}
-              </button>
-            </>
-          ) : (
-            <LockedValue t={t} onUpgrade={() => onUpgrade("northern_lights_card")} />
-          )}
+          <LockedValue t={t} onUpgrade={() => onUpgrade("northern_lights_card")} />
+        </div>
+      )}
+      {showHomepageFreeValue && (
+        <div className="mt-2">
+          <FreeValueBlock
+            t={t}
+            when={when}
+            headingKey="nlMultiFreeValueHeading"
+            bodyKey="nlMultiFreeValueBody"
+            ctaKey="nlMultiFreeValueCta"
+            onUpgrade={() => onUpgrade("northern_lights_card")}
+          />
         </div>
       )}
 

@@ -1,29 +1,27 @@
 # Current AI Task
 
-Task: ticket-425
+Task: ticket-426
 Stage: CLOSED
 
 Task directory:
-docs/ai/tasks/ticket-425/
+docs/ai/tasks/ticket-426/
 
 Prompt review:
-docs/ai/tasks/ticket-425/prompt-review.md (Ripley Round 1 implementation prompt: Jonesy APPROVED, with one required addition — correct two now-stale header comments (NorthernLightsThreeNight.jsx, AuroraNightOutlook.jsx) claiming the homepage NorthernLightsCard is unaffected, and have CC explicitly report NorthernLightsCard.jsx's new orphaned-default-export status in cc-report.md, since App.jsx is its only remaining production caller. Ripley incorporated these requirements and the named wiring-test checks into approved-prompt-v1.md; handoff complete.)
+docs/ai/tasks/ticket-426/prompt-review.md (Ripley Round 1: homepage Free/Pro value/CTA and IS detail-link removal. Jonesy APPROVED, with three required clarifications/additions before execution: (1) specify the exact `upgrade_source` analytics-field shape for northern_lights_upgrade_clicked on homepage — new field vs. restating the existing `source` field's new value; (2) the entitlement-loading flash-guard ("hide subscription copy while unknown") should thread `loadingMe` through AuroraNightOutlook so it covers the existing qualifying-branch Free CTA as well as the new poor-branch one, not just the latter; (3) have CC explicitly report in cc-report.md what happens to the now-production-orphaned IS `nlHomeDetailsLink` translation value once the IS detail link is removed. Ripley incorporated all three into approved-prompt-v1.md on 2026-09-28; handoff complete.)
 
 Approved prompt:
-docs/ai/tasks/ticket-425/approved-prompt-v1.md (ACTIVE — sole execution prompt. Jonesy APPROVED; required comment/status/test follow-through consolidated.)
+docs/ai/tasks/ticket-426/approved-prompt-v1.md (ACTIVE — sole execution prompt; Jonesy APPROVED, all three clarifications incorporated.)
 
 CC report:
-docs/ai/tasks/ticket-425/cc-report.md (implementation, tests, browser evidence and NorthernLightsCard orphan status reported.)
+docs/ai/tasks/ticket-426/cc-report.md (implementation, analytics schema, IS-link/translation disposition, real-adapter checkout tests, and browser evidence reported.)
 
 Result review:
-docs/ai/tasks/ticket-425/result-review.md (Ripley Round 1 PASS: 7 focused files/122 tests, lint and production build independently passed. Jonesy''s stale header comment fixed. Locale fallback limitation recorded.)
+docs/ai/tasks/ticket-426/result-review.md (Ripley Round 1 PASS: independently verified source, 7 files/106 tests, lint and production build. Locale fallback and existing login-continuation attribution/date limitations recorded.)
 
 ## Previous tasks and sequencing
 
-Owner selected #425 on 2026-09-26 after #423 CLOSED/PASS. #423's final assessment records 10 focused files/174 passing tests, lint and build; its live provider/DB/cron verification remains unperformed. The dependency is resolved. #425 exposes that shared three-night behavior on IS/EN homepage and preserves selected night when opening the existing English landing page. #425 workflow is CLOSED on PASS. Not committed, not pushed; the required stale-comment fix is complete. Browser locale fallback and live-provider validation limitations remain recorded in the result review.
-
-#417 remains locally CLOSED; external Facebook/Vercel/GA4 verification remains in its result review. #415, #416, #411 and #410 remain CLOSED. #409 remains unfinished/BLOCKED per its result review. No commit, push, deployment or GitHub closure is implied by workflow completion.
+Owner selected #426 on 2026-09-26 after #425 CLOSED/PASS. Working tree clean at preflight. #425 and #423 remain CLOSED; documented browser locale fallback/live-provider limitations remain in their reviews (the same locale limitation recurs, disclosed, in #426's own browser evidence — not a new regression). #417 remains locally CLOSED with external Facebook/Vercel/GA4 verification outstanding; #415, #416, #411 and #410 CLOSED. #409 remains unfinished/BLOCKED. #426 workflow CLOSED on PASS. Not committed, not pushed; documented locale/login-continuation limitations remain.
 
 ## Rule
 
-Always read this file before acting on an AI workflow task. Do not infer state from chat history alone.
+Read this file before workflow actions; do not infer state solely from chat. No automatic commit, push, deployment or GitHub closure.

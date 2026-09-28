@@ -197,6 +197,19 @@ export const northernLightsTranslations = {
 
     // #425: homepage link to the existing English detail page.
     nlHomeDetailsLink: "See full details for this night",
+
+    // #426 — homepage-only Free conversion block, replacing nlMultiFreeHint/
+    // nlUpgradeCta on that surface (landing's LockedValue is unchanged).
+    // Exact issue strings, verbatim.
+    nlMultiFreeValueHeading: "Where are conditions best?",
+    nlMultiFreeValueBody: "With Pro, see the top locations, ranked alternatives and a map.",
+    nlMultiFreeValueCta: "See the best locations with Pro",
+    nlMultiFreePoorHeading: "Compare locations with Pro",
+    nlMultiFreePoorBody: "With Pro, see which of the checked locations comes out best. Conditions are still unfavorable, and no location is recommended right now.",
+    nlMultiFreePoorCta: "Compare locations with Pro",
+    // Small caption naming the SELECTED night the block above describes —
+    // none of the mandated exact strings above reference a date themselves.
+    nlMultiFreeValueForNight: "For {when}",
   },
   is: {
     nlCardTitle: "Norðurljós í kvöld",
@@ -342,5 +355,13 @@ export const northernLightsTranslations = {
     nlCompExactTieScoped: "Skilyrðin eru jöfn meðal tiltækra nátta: {dates}",
 
     nlHomeDetailsLink: "Sjá nánar á ensku síðunni",
+
+    nlMultiFreeValueHeading: "Hvar eru aðstæður bestar?",
+    nlMultiFreeValueBody: "Með Pro sérðu hvaða staðir koma best út, aðra valkosti og kort.",
+    nlMultiFreeValueCta: "Sjá bestu staðina með Pro",
+    nlMultiFreePoorHeading: "Berðu saman staðina með Pro",
+    nlMultiFreePoorBody: "Með Pro sérðu hvaða staðir koma best út af þeim sem voru skoðaðir. Aðstæður eru þó óhagstæðar og enginn staður er ráðlagður núna.",
+    nlMultiFreePoorCta: "Bera saman staði með Pro",
+    nlMultiFreeValueForNight: "Fyrir {when}",
   },
 };
