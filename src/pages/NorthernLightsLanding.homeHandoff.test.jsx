@@ -597,3 +597,91 @@ describe("Pro: gating, single map, and intentional details storage", () => {
     expect(screen.queryByTestId("nl-map-container")).toBeNull();
   });
 });
+
+// #427: real shared-module integration for the deterministic weekday table.
+// A dedicated fixed clock (Monday) is used here so the real third selected
+// date lands on a genuine Wednesday, matching the exact scenario the
+// approved prompt names — the file's other D0/D1/D2 constants (a different
+// week) are untouched by this block.
+describe("#427: deterministic third-night weekday — real components, IS homepage, EN homepage, forced-English landing", () => {
+  const WED_TODAY = "2026-09-28"; // Monday
+  const WED_TOMORROW = "2026-09-29"; // Tuesday
+  const WED_DAY2 = "2026-09-30"; // Wednesday
+
+  const WED_FETCHED = "2026-09-28T18:00:00.000Z"; // 2h before the fixed Monday clock below — fresh, not expired
+  function wedBody(evening, entries) {
+    const [best, ...alternatives] = entries;
+    return {
+      ok: true,
+      evening,
+      auroraCache: { state: "fresh", sourceFetchedAt: WED_FETCHED, ageMinutes: 0 },
+      viewingWindow: { start: `${evening}T22:00:00.000Z`, end: `${evening}T23:00:00.000Z` },
+      status: "success",
+      best,
+      alternatives,
+      excluded: [],
+      warnings: [],
+    };
+  }
+  function wedFixtures() {
+    return {
+      [WED_TODAY]: wedBody(WED_TODAY, six(95, () => "excellent", "Mon Spot")),
+      [WED_TOMORROW]: wedBody(WED_TOMORROW, six(70, () => "good", "Tue Spot")),
+      [WED_DAY2]: wedBody(WED_DAY2, six(50, () => "fair", "Wed Spot")),
+    };
+  }
+
+  beforeEach(() => {
+    vi.setSystemTime(new Date("2026-09-28T20:00:00.000Z"));
+    stubFetch(wedFixtures());
+  });
+
+  it("IS homepage: selecting the third night shows miðvikudagur (tab) and miðvikudagskvöld (caption) — never Wednesday", async () => {
+    renderApp("/", { lang: "is" });
+    await waitFor(() => expect(screen.getByTestId("nl3-result")).toBeInTheDocument());
+
+    const dayTabs = within(group()).getAllByRole("button");
+    expect(dayTabs[2]).toHaveTextContent("miðvikudagur");
+    fireEvent.click(dayTabs[2]);
+
+    await waitFor(() => expect(screen.getByTestId("nl3-free-value")).toHaveTextContent("Fyrir miðvikudagskvöld"));
+    expect(document.body.textContent).not.toMatch(/Wednesday/);
+  });
+
+  it("EN homepage: selecting the third night shows Wednesday (tab) and 'Wednesday night' (caption)", async () => {
+    renderApp("/", { lang: "en" });
+    await waitFor(() => expect(screen.getByTestId("nl3-result")).toBeInTheDocument());
+
+    const dayTabs = within(group()).getAllByRole("button");
+    expect(dayTabs[2]).toHaveTextContent("Wednesday");
+    fireEvent.click(dayTabs[2]);
+
+    await waitFor(() => expect(screen.getByTestId("nl3-free-value")).toHaveTextContent("For Wednesday night"));
+  });
+
+  it("forced-English landing shows the same Wednesday label even with saved IS language", async () => {
+    localStorage.setItem("lang", JSON.stringify("is"));
+    renderApp(landingPath(WED_DAY2));
+    await waitFor(() => expect(screen.getByText("Northern Lights forecast")).toBeInTheDocument());
+    expect(pressed()).toHaveTextContent(/Wednesday/);
+    expect(document.body.textContent).not.toMatch(/miðvikudag/);
+  });
+
+  it("switching the homepage language IS<->EN retains the selected third night and issues no new fetch or selection/exposure event", async () => {
+    const { rerender } = render(homeAppTree({ lang: "is" }));
+    await waitFor(() => expect(screen.getByTestId("nl3-result")).toBeInTheDocument());
+    fireEvent.click(within(group()).getAllByRole("button")[2]);
+    await waitFor(() => expect(pressed()).toHaveTextContent(/miðvikudagur/));
+
+    const callsBefore = auroraCalls().length;
+    const nightSelectedBefore = events("northern_lights_night_selected").length;
+    const cardViewedBefore = events("northern_lights_card_viewed").length;
+
+    rerender(homeAppTree({ lang: "en" })); // language-only change, same instance
+
+    expect(pressed()).toHaveTextContent(/Wednesday/); // same night, now in English
+    expect(auroraCalls()).toHaveLength(callsBefore); // no new request
+    expect(events("northern_lights_night_selected")).toHaveLength(nightSelectedBefore); // not a user selection
+    expect(events("northern_lights_card_viewed")).toHaveLength(cardViewedBefore); // not a new exposure
+  });
+});

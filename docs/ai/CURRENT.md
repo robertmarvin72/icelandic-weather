@@ -1,27 +1,27 @@
 # Current AI Task
 
-Task: ticket-426
+Task: ticket-427
 Stage: CLOSED
 
 Task directory:
-docs/ai/tasks/ticket-426/
+docs/ai/tasks/ticket-427/
 
 Prompt review:
-docs/ai/tasks/ticket-426/prompt-review.md (Ripley Round 1: homepage Free/Pro value/CTA and IS detail-link removal. Jonesy APPROVED, with three required clarifications/additions before execution: (1) specify the exact `upgrade_source` analytics-field shape for northern_lights_upgrade_clicked on homepage — new field vs. restating the existing `source` field's new value; (2) the entitlement-loading flash-guard ("hide subscription copy while unknown") should thread `loadingMe` through AuroraNightOutlook so it covers the existing qualifying-branch Free CTA as well as the new poor-branch one, not just the latter; (3) have CC explicitly report in cc-report.md what happens to the now-production-orphaned IS `nlHomeDetailsLink` translation value once the IS detail link is removed. Ripley incorporated all three into approved-prompt-v1.md on 2026-09-28; handoff complete.)
+docs/ai/tasks/ticket-427/prompt-review.md (Ripley Round 1: Aurora weekday localization/deterministic fallback — Jonesy REVISE (Round 1) on the two-path Intl+fallback design. Ripley Round 2 accepted the table-only recommendation: drop Intl entirely, resolve weekday names via getUTCDay() indexing into translation keys in translations.northernLights.js, reuse the existing Icelandic genitive-stem transform unchanged, plus a minimal residual regression proving no accidental Intl dependency remains. Jonesy APPROVED Round 2 — precisely resolves the Round 1 concern with no remaining gap. Ripley consolidated the approved requirements into approved-prompt-v1.md; ready for CC.)
 
 Approved prompt:
-docs/ai/tasks/ticket-426/approved-prompt-v1.md (ACTIVE — sole execution prompt; Jonesy APPROVED, all three clarifications incorporated.)
+docs/ai/tasks/ticket-427/approved-prompt-v1.md (Jonesy APPROVED Round 2; consolidated by Ripley on 2026-09-28. Ready for CC.)
 
 CC report:
-docs/ai/tasks/ticket-426/cc-report.md (implementation, analytics schema, IS-link/translation disposition, real-adapter checkout tests, and browser evidence reported.)
+docs/ai/tasks/ticket-427/cc-report.md (created; Intl removed, deterministic weekday tables, real-dictionary tests, and browser evidence closing the #425/#426 locale limitation. Reviewed by Jonesy.)
 
 Result review:
-docs/ai/tasks/ticket-426/result-review.md (Ripley Round 1 PASS: independently verified source, 7 files/106 tests, lint and production build. Locale fallback and existing login-continuation attribution/date limitations recorded.)
+docs/ai/tasks/ticket-427/result-review.md (Jonesy PASS, no findings, Round 1. Implementation matches the approved table-only design exactly; unit tests, new homepage/landing integration block, and browser evidence all independently verified against live source. Ripley PASS on 2026-09-28: independently verified production/test diff, 8 focused files / 149 tests, lint and screenshot evidence. Task CLOSED; commit/push remain owner-controlled.)
 
 ## Previous tasks and sequencing
 
-Owner selected #426 on 2026-09-26 after #425 CLOSED/PASS. Working tree clean at preflight. #425 and #423 remain CLOSED; documented browser locale fallback/live-provider limitations remain in their reviews (the same locale limitation recurs, disclosed, in #426's own browser evidence — not a new regression). #417 remains locally CLOSED with external Facebook/Vercel/GA4 verification outstanding; #415, #416, #411 and #410 CLOSED. #409 remains unfinished/BLOCKED. #426 workflow CLOSED on PASS. Not committed, not pushed; documented locale/login-continuation limitations remain.
+Owner selected #427 on 2026-09-28 after #426 CLOSED/PASS. Working tree clean at preflight. #427 addresses the real browser locale fallback limitation documented in #425/#426; source already requests is-IS, so locale selection alone is insufficient. #423/#425/#426 remain CLOSED. Their live-provider and login-continuation limitations are not part of #427. #417 remains locally CLOSED with external Facebook/Vercel/GA4 verification outstanding; #415/#416/#411/#410 CLOSED; #409 unfinished/BLOCKED. #427 is now CLOSED/PASS; no active task.
 
 ## Rule
 
-Read this file before workflow actions; do not infer state solely from chat. No automatic commit, push, deployment or GitHub closure.
+Read this file before workflow actions. No automatic commit, push, deployment or GitHub closure.

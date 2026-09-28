@@ -170,6 +170,17 @@ export const northernLightsTranslations = {
     nlTabTonight: "Tonight",
     nlTabTomorrow: "Tomorrow night",
 
+    // #427: deterministic weekday names for the third-night tab/caption,
+    // Sunday-to-Saturday (index = getUTCDay()) — replaces Intl.DateTimeFormat
+    // entirely, so there is no browser-locale-data dependency at all.
+    nlWeekdaySunday: "Sunday",
+    nlWeekdayMonday: "Monday",
+    nlWeekdayTuesday: "Tuesday",
+    nlWeekdayWednesday: "Wednesday",
+    nlWeekdayThursday: "Thursday",
+    nlWeekdayFriday: "Friday",
+    nlWeekdaySaturday: "Saturday",
+
     // Cross-night comparison summary (src/lib/auroraMultiNightPolicy.js's
     // states/kinds map 1:1 to these keys).
     nlCompPending: "Comparing the next three nights…",
@@ -332,6 +343,14 @@ export const northernLightsTranslations = {
     nlWhenWeekdayNight: "{weekday}kvöld",
     nlTabTonight: "Í kvöld",
     nlTabTomorrow: "Annað kvöld",
+
+    nlWeekdaySunday: "sunnudagur",
+    nlWeekdayMonday: "mánudagur",
+    nlWeekdayTuesday: "þriðjudagur",
+    nlWeekdayWednesday: "miðvikudagur",
+    nlWeekdayThursday: "fimmtudagur",
+    nlWeekdayFriday: "föstudagur",
+    nlWeekdaySaturday: "laugardagur",
 
     nlCompPending: "Ber saman næstu þrjár nætur…",
     nlCompUnavailableAll: "Við gátum ekki ákvarðað aðstæður fyrir næstu þrjár nætur.",
