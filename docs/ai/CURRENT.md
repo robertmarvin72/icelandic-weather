@@ -1,26 +1,26 @@
 # Current AI Task
 
-Task: ticket-427
+Task: ticket-428
 Stage: CLOSED
 
 Task directory:
-docs/ai/tasks/ticket-427/
+docs/ai/tasks/ticket-428/
 
 Prompt review:
-docs/ai/tasks/ticket-427/prompt-review.md (Ripley Round 1: Aurora weekday localization/deterministic fallback — Jonesy REVISE (Round 1) on the two-path Intl+fallback design. Ripley Round 2 accepted the table-only recommendation: drop Intl entirely, resolve weekday names via getUTCDay() indexing into translation keys in translations.northernLights.js, reuse the existing Icelandic genitive-stem transform unchanged, plus a minimal residual regression proving no accidental Intl dependency remains. Jonesy APPROVED Round 2 — precisely resolves the Round 1 concern with no remaining gap. Ripley consolidated the approved requirements into approved-prompt-v1.md; ready for CC.)
+docs/ai/tasks/ticket-428/prompt-review.md (Ripley Round 1: investigate alleged wind/rain coupling. Current source and direct reproduction show independent wind penalty; proposed audit, consumer verification and regression tests, no speculative production fix. Jonesy APPROVED Round 1 with no required clarifications. Ripley consolidated approved-prompt-v1.md on 2026-09-29.)
 
 Approved prompt:
-docs/ai/tasks/ticket-427/approved-prompt-v1.md (Jonesy APPROVED Round 2; consolidated by Ripley on 2026-09-28. Ready for CC.)
+docs/ai/tasks/ticket-428/approved-prompt-v1.md (Approved investigation and regression protection; executed by CC.)
 
 CC report:
-docs/ai/tasks/ticket-427/cc-report.md (created; Intl removed, deterministic weekday tables, real-dictionary tests, and browser evidence closing the #425/#426 locale limitation. Reviewed by Jonesy.)
+docs/ai/tasks/ticket-428/cc-report.md (created; premise not reproducible against current source, confirmed by independent source audit, consumer map, and git history inspection of both cited commits plus a broadened all-branch search. No production change; 4 new regression test files, 11 tests, added across scoring/forecastNormalize/useLeaderboardScores/relocationEngine. Full suite 146 files / 2031 tests passing, lint clean. Reviewed by Jonesy.)
 
 Result review:
-docs/ai/tasks/ticket-427/result-review.md (Jonesy PASS, no findings, Round 1. Implementation matches the approved table-only design exactly; unit tests, new homepage/landing integration block, and browser evidence all independently verified against live source. Ripley PASS on 2026-09-28: independently verified production/test diff, 8 focused files / 149 tests, lint and screenshot evidence. Task CLOSED; commit/push remain owner-controlled.)
+docs/ai/tasks/ticket-428/result-review.md (Jonesy PASS, no findings, Round 1. Independently re-derived every asserted number in all 4 new test files by hand against the live scoring formula; all matched. Confirmed no production file touched (mtime-verified) and both self-disclosed out-of-map findings (weatherVoiceRules.js, shelterUtils.js constant/variable reuse) genuinely unrelated. Git-history and full-suite-count claims not independently reproducible — no device_bash this round. Ripley PASS on 2026-09-29: 12 suites / 124 tests and changed-file lint independently passed; historical-search/report qualifications recorded in final assessment. No production change.)
 
 ## Previous tasks and sequencing
 
-Owner selected #427 on 2026-09-28 after #426 CLOSED/PASS. Working tree clean at preflight. #427 addresses the real browser locale fallback limitation documented in #425/#426; source already requests is-IS, so locale selection alone is insufficient. #423/#425/#426 remain CLOSED. Their live-provider and login-continuation limitations are not part of #427. #417 remains locally CLOSED with external Facebook/Vercel/GA4 verification outstanding; #415/#416/#411/#410 CLOSED; #409 unfinished/BLOCKED. #427 is now CLOSED/PASS; no active task.
+Owner selected #428 on 2026-09-29 after #427 CLOSED/PASS. Working tree clean at preflight. #423/#425/#426/#427 remain CLOSED; prior live-provider and login-continuation limitations remain outside scope. #417 locally CLOSED with external verification outstanding; #415/#416/#411/#410 CLOSED; #409 unfinished/BLOCKED. #428 CLOSED/PASS; no active task. Deployment parity remains unverified.
 
 ## Rule
 
