@@ -1,4 +1,6 @@
 // Ticket 416 (#416) — compact Free/Pro Northern Lights explanation on PricingInfo.jsx.
+// Ticket #431: Free and Pro now show identical body text (same access for
+// every tier); the title no longer claims Pro has more detail.
 import React from "react";
 import { describe, it, expect, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
@@ -26,9 +28,11 @@ describe("PricingInfo — Ticket 416 (#416): Aurora Free/Pro explanation, real t
 
     expect(screen.getByText(dict.pricingInfoAuroraTitle)).toBeInTheDocument();
     expect(screen.getByText(dict.pricingInfoAuroraFreeLabel)).toBeInTheDocument();
-    expect(screen.getByText(dict.pricingInfoAuroraFreeBody)).toBeInTheDocument();
     expect(screen.getByText(dict.pricingInfoAuroraProLabel)).toBeInTheDocument();
-    expect(screen.getByText(dict.pricingInfoAuroraProBody)).toBeInTheDocument();
+    // Ticket #431: Free and Pro bodies are now identical (same access for
+    // every tier), so the exact text legitimately appears twice.
+    expect(screen.getAllByText(dict.pricingInfoAuroraFreeBody)).toHaveLength(2);
+    expect(dict.pricingInfoAuroraFreeBody).toBe(dict.pricingInfoAuroraProBody);
     expect(screen.getByText(dict.auroraInfoSameAssessment)).toBeInTheDocument();
     expect(screen.getByText(dict.auroraInfoSeasonalNote)).toBeInTheDocument();
 

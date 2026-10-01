@@ -1,0 +1,20 @@
+[
+  {
+    "tier": "free",
+    "markerCount": 6,
+    "markerClicked": true,
+    "eventsBeforeClick": 5,
+    "totalEventsAfterClick": 6,
+    "locationSelectedEventCount": 1,
+    "locationSelectedEventText": "[event] northern_lights_location_selected {location_id: osm_way_712155124, selected_date: 2026-10-01, days_ahead: 0, source: landing, user_tier: free}"
+  },
+  {
+    "tier": "pro",
+    "markerCount": 6,
+    "markerClicked": true,
+    "eventsBeforeClick": 5,
+    "totalEventsAfterClick": 6,
+    "locationSelectedEventCount": 1,
+    "locationSelectedEventText": "[event] northern_lights_location_selected {location_id: osm_way_712155124, selected_date: 2026-10-01, days_ahead: 0, source: landing, user_tier: pro}"
+  }
+]

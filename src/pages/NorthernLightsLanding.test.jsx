@@ -5,6 +5,7 @@ import { MemoryRouter } from "react-router-dom";
 import NorthernLightsLanding from "./NorthernLightsLanding";
 import { trackEvent } from "../lib/analytics";
 import { clearAuroraDecisionCache } from "../lib/auroraDecisionCache";
+import { NL_FREE_EXPERIMENT_ID } from "../config/features";
 
 vi.mock("react-helmet-async", () => ({
   Helmet: ({ children }) => <>{children}</>,
@@ -43,7 +44,7 @@ afterEach(() => {
 });
 
 describe("NorthernLightsLanding — page structure, order, and required copy", () => {
-  it("Ticket 403: renders header, hero (exact new copy), card, conversion section, how-it-works, disclaimer, and footer in that order", () => {
+  it("Ticket 403/#431: renders header, hero (exact new copy), card, how-it-works, disclaimer, and footer in that order — no conversion section", () => {
     renderPage();
 
     const heading = screen.getByRole("heading", { level: 1, name: "Find where to see the Northern Lights in Iceland tonight" });
@@ -53,7 +54,6 @@ describe("NorthernLightsLanding — page structure, order, and required copy", (
     ).toBeInTheDocument();
 
     const card = screen.getByTestId("nl3-module");
-    const valueHeading = screen.getByRole("heading", { level: 2, name: "Know where to go tonight" });
     const howEyebrow = screen.getByText("How it works");
     const howText = screen.getByText("Current viewing conditions are compared across Iceland using aurora activity, cloud conditions, and darkness.");
     const disclaimer = screen.getByText("The Northern Lights are a natural phenomenon. No forecast can guarantee visibility.");
@@ -66,8 +66,7 @@ describe("NorthernLightsLanding — page structure, order, and required copy", (
     }
 
     expect(isBefore(heading, card)).toBe(true);
-    expect(isBefore(card, valueHeading)).toBe(true);
-    expect(isBefore(valueHeading, howEyebrow)).toBe(true);
+    expect(isBefore(card, howEyebrow)).toBe(true);
     expect(isBefore(howText, disclaimer)).toBe(true);
     expect(isBefore(disclaimer, footerLink)).toBe(true);
   });
@@ -112,21 +111,17 @@ describe("NorthernLightsLanding — page structure, order, and required copy", (
   });
 });
 
-describe("NorthernLightsLanding — Ticket 403: the lower conversion section", () => {
-  it("is Free-only: renders the four truthful value points and the outcome-led CTA for a Free/logged-out visitor", () => {
+describe("NorthernLightsLanding — Ticket #431: the lower conversion section is removed, for every tier", () => {
+  it("renders no purchase lock/CTA/value section for a Free/logged-out visitor", () => {
     useMe.mockReturnValue({ me: { ok: true, user: null, entitlements: { pro: false, proUntil: null } }, loadingMe: false, refetchMe: vi.fn() });
     renderPage();
 
-    expect(screen.getByRole("heading", { level: 2, name: "Know where to go tonight" })).toBeInTheDocument();
-    expect(screen.getByText("Where conditions are best tonight")).toBeInTheDocument();
-    expect(screen.getByText("Ranked alternatives nearby")).toBeInTheDocument();
-    expect(screen.getByText("Why each spot ranks — aurora activity & cloud conditions")).toBeInTheDocument();
-    expect(screen.getByText("All of it on the map")).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "Show me where to go tonight" })).toBeInTheDocument();
-    expect(screen.getByText("Included with Chase the Weather Pro")).toBeInTheDocument();
+    expect(screen.queryByRole("heading", { level: 2, name: "Know where to go tonight" })).toBeNull();
+    expect(screen.queryByRole("button", { name: "Show me where to go tonight" })).toBeNull();
+    expect(screen.queryByText("Included with Chase the Weather Pro")).toBeNull();
   });
 
-  it("is hidden entirely for Pro — no purchase lock/CTA/value section at all", () => {
+  it("renders no purchase lock/CTA/value section for Pro either", () => {
     useMe.mockReturnValue({ me: { ok: true, user: { email: "pro@example.com" }, entitlements: { pro: true, proUntil: "2027-01-01" } }, loadingMe: false, refetchMe: vi.fn() });
     renderPage();
 
@@ -134,13 +129,10 @@ describe("NorthernLightsLanding — Ticket 403: the lower conversion section", (
     expect(screen.queryByRole("button", { name: "Show me where to go tonight" })).toBeNull();
   });
 
-  it("does not imply a favorable result has already been found — describes product capability, independent of the card's own state", () => {
-    // The default mocked fetch never resolves (card stays loading), yet the
-    // conversion section still renders for Free — proving it is not
-    // conditioned on tonight's result at all.
+  it("the Northern Lights card itself needs no login or checkout even while its own data is still loading", () => {
     renderPage();
     expect(screen.getByTestId("nl3-loading")).toBeInTheDocument();
-    expect(screen.getByRole("heading", { level: 2, name: "Know where to go tonight" })).toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: /login|log in|sign in/i })).toBeNull();
   });
 });
 
@@ -180,19 +172,19 @@ describe("NorthernLightsLanding — aurora_landing_viewed analytics", () => {
     useMe.mockReturnValue({ me: { ok: true, user: null, entitlements: { pro: false, proUntil: null } }, loadingMe: false, refetchMe: vi.fn() });
     renderPage();
 
-    expect(trackEvent).toHaveBeenCalledWith("aurora_landing_viewed", { lang: "en", tier: "free" });
+    expect(trackEvent).toHaveBeenCalledWith("aurora_landing_viewed", { lang: "en", tier: "free", business_model_experiment: NL_FREE_EXPERIMENT_ID });
     expect(trackEvent.mock.calls.filter((c) => c[0] === "aurora_landing_viewed")).toHaveLength(1);
 
     const payload = trackEvent.mock.calls.find((c) => c[0] === "aurora_landing_viewed")[1];
     for (const key of Object.keys(payload)) {
-      expect(["lang", "tier"]).toContain(key);
+      expect(["lang", "tier", "business_model_experiment"]).toContain(key);
     }
   });
 
   it("reports tier: pro when entitlement resolution truthfully shows an active Pro subscription", () => {
     useMe.mockReturnValue({ me: { ok: true, user: { email: "a@b.com" }, entitlements: { pro: true, proUntil: "2027-01-01" } }, loadingMe: false, refetchMe: vi.fn() });
     renderPage();
-    expect(trackEvent).toHaveBeenCalledWith("aurora_landing_viewed", { lang: "en", tier: "pro" });
+    expect(trackEvent).toHaveBeenCalledWith("aurora_landing_viewed", { lang: "en", tier: "pro", business_model_experiment: NL_FREE_EXPERIMENT_ID });
   });
 
   it("does not fire while entitlement resolution is still loading, and does not label it Free", () => {

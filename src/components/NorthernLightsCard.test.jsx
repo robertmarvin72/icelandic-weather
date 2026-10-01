@@ -162,27 +162,32 @@ describe("NorthernLightsCard — #398 visual-state pill/headline/body per band (
   // behavior) but must get its OWN accurate pill label — never nlPillGood,
   // which is exactly the bug this ticket fixes (an excellent result was
   // previously mislabeled "Good conditions").
-  it.each(["is", "en"])("%s: excellent band -> GOOD headline/body copy, but its OWN excellent pill label", async (lang) => {
+  // Ticket #431: isFeatureAvailable("northernLights", ...) now unconditionally
+  // grants access (freeDuringExperiment), so this unmounted legacy card's own
+  // `isPro` is always true too — its Free-only body line is unreachable via
+  // any real entitlements shape. These two cases now assert the Pro-shaped
+  // "best tonight" line instead, consistent with that shared registry change.
+  it.each(["is", "en"])("%s: excellent band -> GOOD headline copy, but its OWN excellent pill label", async (lang) => {
     const dict = northernLightsTranslations[lang];
-    const realT = (k) => dict[k] ?? k;
+    const realT = (k) => (k === "nlBestTonight" ? "nlBestTonight:{name}" : dict[k] ?? k);
     render(
       <NorthernLightsCard t={realT} lang={lang} entitlements={{ isPro: false }} onUpgrade={vi.fn()} theme="light" now={IN_SEASON_NOW} fetchImpl={makeFetchImpl(successBody({ best: loc("a", "excellent") }))} />,
     );
     await waitFor(() => expect(screen.getByText(dict.nlHeadlineGood)).toBeInTheDocument());
     expect(screen.getByText(dict.nlPillExcellent)).toBeInTheDocument();
     expect(screen.queryByText(dict.nlPillGood)).toBeNull();
-    expect(screen.getByText(dict.nlBodyGood)).toBeInTheDocument(); // Free body line, shared with good
+    expect(screen.getByText("nlBestTonight:a")).toBeInTheDocument();
   });
 
   it.each(["is", "en"])("%s: good band -> GOOD visual state copy, including the (unchanged) good pill", async (lang) => {
     const dict = northernLightsTranslations[lang];
-    const realT = (k) => dict[k] ?? k;
+    const realT = (k) => (k === "nlBestTonight" ? "nlBestTonight:{name}" : dict[k] ?? k);
     render(
       <NorthernLightsCard t={realT} lang={lang} entitlements={{ isPro: false }} onUpgrade={vi.fn()} theme="light" now={IN_SEASON_NOW} fetchImpl={makeFetchImpl(successBody({ best: loc("a", "good") }))} />,
     );
     await waitFor(() => expect(screen.getByText(dict.nlHeadlineGood)).toBeInTheDocument());
     expect(screen.getByText(dict.nlPillGood)).toBeInTheDocument();
-    expect(screen.getByText(dict.nlBodyGood)).toBeInTheDocument();
+    expect(screen.getByText("nlBestTonight:a")).toBeInTheDocument();
   });
 
   it.each(["is", "en"])("%s: fair band -> FAIR visual state copy, hedged", async (lang) => {
@@ -215,42 +220,35 @@ describe("NorthernLightsCard — #398 visual-state pill/headline/body per band (
   });
 });
 
-describe("NorthernLightsCard — Free: coarse guidance without Pro data leakage", () => {
-  it("shows visual-state headline/pill/body but never the exact name, score, coordinates, reasons, or map", async () => {
+// Ticket #431: this unmounted legacy card reads the same shared
+// isFeatureAvailable("northernLights", ...) registry entry, which now
+// unconditionally grants access (freeDuringExperiment) regardless of actual
+// entitlements. Its own internal `isPro` is therefore always true in
+// practice — the Free-locked/teaser branch below is unreachable via any
+// real entitlements shape, matching the ticket's intent even for this
+// retired, unmounted component. These tests are updated to that now-true
+// reality; the component's own code is left untouched since it is not part
+// of the active user journey.
+describe("NorthernLightsCard — Ticket #431: this unmounted legacy card now also gets full access via the shared registry", () => {
+  it("shows the exact name, reasons, and (once expanded) the map — the former Free-locked branch is unreachable", async () => {
     renderCard({ entitlements: { isPro: false } });
     await waitFor(() => expect(screen.getByText("nlHeadlineGood")).toBeInTheDocument());
 
-    // BEST's fixture band is "excellent" — Ticket 414 (#414): its own pill
-    // label, never nlPillGood.
     expect(screen.getByText("nlPillExcellent")).toBeInTheDocument();
-    expect(screen.getByText("nlBodyGood")).toBeInTheDocument();
-    expect(screen.queryByText(BEST.name)).toBeNull();
-    expect(screen.queryByText("90")).toBeNull();
-    expect(screen.queryByText(String(BEST.lat))).toBeNull();
-    expect(screen.queryByText("nlReasonClearSky")).toBeNull();
-    expect(screen.queryByTestId("nl-map-container")).toBeNull();
-    expect(screen.queryByText("nlQualifyingHeading")).toBeNull();
-    expect(screen.getByText("nlFreeHint")).toBeInTheDocument();
-    expect(screen.getByText("nlUpgradeCta")).toBeInTheDocument();
+    expect(screen.getByText("nlBestTonight:" + BEST.name)).toBeInTheDocument();
+    expect(screen.getByText("nlReasonClearSky")).toBeInTheDocument();
+    expect(screen.queryByText("nlFreeHint")).toBeNull();
+    expect(screen.queryByText("nlUpgradeCta")).toBeNull();
+
+    fireEvent.click(screen.getByRole("button", { name: "nlCtaGood" }));
+    expect(screen.getByTestId("nl-map-container")).toBeInTheDocument();
   });
 
-  it("never renders hidden Pro data even in the accessible DOM (full body text)", async () => {
+  it("the former Free upgrade CTA no longer renders with any entitlements shape", async () => {
     renderCard({ entitlements: { isPro: false } });
     await waitFor(() => expect(screen.getByText("nlHeadlineGood")).toBeInTheDocument());
-    expect(document.body.textContent).not.toContain(BEST.name);
-    expect(document.body.textContent).not.toContain(String(BEST.lon));
-  });
-
-  it("upgrade attribution remains northern_lights_card, semantically separate from analytics source", async () => {
-    const onUpgrade = vi.fn();
-    renderCard({ entitlements: { isPro: false }, onUpgrade });
-    await waitFor(() => expect(screen.getByText("nlUpgradeCta")).toBeInTheDocument());
-    fireEvent.click(screen.getByText("nlUpgradeCta"));
-    expect(onUpgrade).toHaveBeenCalledWith("northern_lights_card");
-    expect(trackEvent).toHaveBeenCalledWith(
-      "northern_lights_upgrade_clicked",
-      expect.objectContaining({ lang: "is", source: "northern_lights_card" }),
-    );
+    expect(screen.queryByText("nlUpgradeCta")).toBeNull();
+    expect(trackEvent.mock.calls.some((c) => c[0] === "northern_lights_upgrade_clicked")).toBe(false);
   });
 });
 
@@ -359,9 +357,11 @@ describe("NorthernLightsCard — Ticket 401 (#401) Round 2: stale event gated on
     renderCard({ fetchImpl: makeFetchImpl(body) });
     await waitFor(() => expect(screen.getByText((text) => text.startsWith("nlWarningStale"))).toBeInTheDocument());
     expect(trackEvent.mock.calls.filter((c) => c[0] === "northern_lights_stale_viewed")).toHaveLength(1);
+    // Ticket #431: this card's own `isPro` is always true now (shared
+    // registry), so its tier label is "pro" even for nominal Free entitlements.
     expect(trackEvent).toHaveBeenCalledWith(
       "northern_lights_stale_viewed",
-      { lang: "is", outcome: "success", tier: "free" },
+      { lang: "is", outcome: "success", tier: "pro" },
     );
   });
 
@@ -474,7 +474,7 @@ describe("NorthernLightsCard — Ticket 401 (#401) Round 2: stale event gated on
 
     expect(trackEvent.mock.calls.filter((c) => c[0] === "northern_lights_stale_viewed")).toHaveLength(1);
     const [, payload] = trackEvent.mock.calls.find((c) => c[0] === "northern_lights_stale_viewed");
-    expect(payload).toEqual({ lang: "is", outcome: "success", tier: "free" });
+    expect(payload).toEqual({ lang: "is", outcome: "success", tier: "pro" });
   });
 });
 

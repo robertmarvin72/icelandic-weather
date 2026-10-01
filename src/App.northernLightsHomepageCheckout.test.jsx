@@ -1,9 +1,12 @@
-// Ticket #426 — verifies the homepage Northern Lights CTA through the REAL
-// checkout/login adapter (useCheckoutFlow, useLoginFlow, LoginModal), not a
-// mock of it. Only data-fetching hooks and Aurora/network calls are
-// stubbed, mirroring App.northernLightsAnchor.test.jsx's established
-// pattern. useNavigate is spied (not mocked away) so the actual pricing URL
-// useCheckoutFlow builds can be asserted directly.
+// Ticket #426 — originally verified the homepage Northern Lights CTA through
+// the real checkout/login adapter (useCheckoutFlow, useLoginFlow, LoginModal).
+//
+// Ticket #431 — that CTA (and the purchase lock it served) is removed: full
+// Northern Lights access is open to every tier via the
+// "northern_lights_free_v1" experiment, so this file now verifies the
+// opposite: the real "see the best spots" details toggle opens details
+// directly, for a logged-in Free user AND a logged-out visitor alike, with
+// no login modal and no navigation to checkout ever triggered from it.
 import React from "react";
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { render, screen, fireEvent, waitFor, within } from "@testing-library/react";
@@ -28,8 +31,8 @@ vi.mock("./hooks/useForecast", () => ({
 vi.mock("./hooks/useWeatherVoice", () => ({ useWeatherVoice: vi.fn() }));
 
 // Irrelevant surfaces stubbed for focus; useCheckoutFlow, useLoginFlow and
-// LoginModal are deliberately left REAL — that real adapter is what this
-// file verifies.
+// LoginModal are deliberately left REAL — this file proves none of them are
+// ever reached from the Northern Lights module any more.
 vi.mock("./components/RoutePlannerCard", () => ({ default: () => <div data-testid="route-planner-stub" /> }));
 vi.mock("./components/CampsiteComparisonSection", () => ({ default: () => <div data-testid="comparison-section-stub" /> }));
 vi.mock("./components/ForecastTable", () => ({ default: () => <div data-testid="forecast-table-stub" /> }));
@@ -44,6 +47,14 @@ vi.mock("./components/Footer", () => ({ default: () => <div data-testid="footer-
 vi.mock("./components/BackToTop", () => ({ default: () => null }));
 vi.mock("./components/Splash", () => ({ default: () => null }));
 vi.mock("./components/ToastHub", () => ({ default: () => null }));
+
+// Ticket #431: details (including the map) now open for Free too — the real
+// NorthernLightsMap needs an IntersectionObserver this jsdom environment
+// doesn't provide, so it's mocked here the same way every other Northern
+// Lights test file already does.
+vi.mock("./components/NorthernLightsMap", () => ({
+  default: ({ locations }) => <div data-testid="nl-map-container">{locations.map((l) => l.id).join(",")}</div>,
+}));
 
 const { navigateSpy } = vi.hoisted(() => ({ navigateSpy: vi.fn() }));
 vi.mock("react-router-dom", async (importOriginal) => {
@@ -86,6 +97,7 @@ function stubFetch() {
 
 beforeEach(() => {
   localStorage.clear();
+  sessionStorage.clear();
   vi.clearAllMocks();
   window.history.pushState({}, "", "/");
   Element.prototype.scrollIntoView = vi.fn();
@@ -100,59 +112,41 @@ afterEach(() => {
   vi.useRealTimers();
 });
 
-describe("App — homepage Northern Lights CTA through the real checkout/login adapter (#426)", () => {
-  it("logged-in Free: clicking the CTA navigates to /pricing carrying src=northern_lights_homepage and the real email — no login modal", async () => {
+describe("App — Ticket #431: Northern Lights needs no checkout/login any more, logged-in Free", () => {
+  it("clicking the real details toggle opens details directly — no navigation, no dialog, no purchase-click event", async () => {
     useMe.mockReturnValue({ me: { ok: true, user: { email: "camper@example.com" }, entitlements: { pro: false, proUntil: null } }, loadingMe: false, refetchMe: vi.fn() });
     render(<App />);
     const anchor = document.getElementById("northern-lights");
     await waitFor(() => expect(anchor.querySelector('[data-testid="nl3-result"]')).not.toBeNull());
 
-    fireEvent.click(within(anchor).getByRole("button", { name: "Sjá bestu staðina með Pro" }));
+    expect(within(anchor).queryByRole("button", { name: /með Pro/ })).toBeNull();
+    fireEvent.click(within(anchor).getByRole("button", { name: "Sjá bestu staðina" }));
 
     expect(screen.queryByRole("dialog")).toBeNull();
-    expect(navigateSpy).toHaveBeenCalledOnce();
-    const url = new URL(navigateSpy.mock.calls[0][0], "https://example.test");
-    expect(url.pathname).toBe("/pricing");
-    expect(url.searchParams.get("src")).toBe("northern_lights_homepage");
-    expect(url.searchParams.get("email")).toBe("camper@example.com");
-  });
-
-  it("logged-out: clicking the CTA opens the real login modal instead of navigating, and fires the click-attribution events regardless", async () => {
-    useMe.mockReturnValue({ me: { ok: true, user: null, entitlements: { pro: false, proUntil: null } }, loadingMe: false, refetchMe: vi.fn() });
-    render(<App />);
-    const anchor = document.getElementById("northern-lights");
-    await waitFor(() => expect(anchor.querySelector('[data-testid="nl3-result"]')).not.toBeNull());
-
-    expect(screen.queryByRole("dialog")).toBeNull();
-    fireEvent.click(within(anchor).getByRole("button", { name: "Sjá bestu staðina með Pro" }));
-
-    expect(screen.getByRole("dialog")).toBeInTheDocument();
     expect(navigateSpy).not.toHaveBeenCalled();
-    expect(trackEvent).toHaveBeenCalledWith(
-      "northern_lights_upgrade_clicked",
-      expect.objectContaining({ source: "northern_lights_homepage", upgrade_source: "northern_lights_homepage" }),
-    );
+    for (const name of ["northern_lights_upgrade_clicked", "northern_lights_multi_day_upgrade_clicked", "northern_lights_landing_cta_clicked"]) {
+      expect(trackEvent.mock.calls.some((c) => c[0] === name)).toBe(false);
+    }
+    await waitFor(() => expect(anchor.querySelector('[data-testid="nl-map-container"]')).not.toBeNull());
   });
+});
 
-  it("documents the existing supported boundary: logged-out modal submission does NOT currently carry the homepage src through to pricing", async () => {
+describe("App — Ticket #431: Northern Lights needs no checkout/login any more, logged-out visitor", () => {
+  it("clicking the real details toggle opens details directly — no login modal appears", async () => {
     useMe.mockReturnValue({ me: { ok: true, user: null, entitlements: { pro: false, proUntil: null } }, loadingMe: false, refetchMe: vi.fn() });
     render(<App />);
     const anchor = document.getElementById("northern-lights");
     await waitFor(() => expect(anchor.querySelector('[data-testid="nl3-result"]')).not.toBeNull());
-    fireEvent.click(within(anchor).getByRole("button", { name: "Sjá bestu staðina með Pro" }));
-    const dialog = screen.getByRole("dialog");
 
-    // The real login flow does its own /api/login network call on submit,
-    // which this test does not stub (out of scope: this test only needs to
-    // show the modal opened without src continuation, not complete a real
-    // login). No assertion is made about a subsequent pricing navigation
-    // here — useLoginFlow's own existing success path sends only email,
-    // never src/selected-date, confirmed by source inspection
-    // (src/hooks/useLoginFlow.js), and is unchanged by this ticket.
-    expect(within(dialog).getByRole("textbox")).toBeInTheDocument();
+    expect(screen.queryByRole("dialog")).toBeNull();
+    fireEvent.click(within(anchor).getByRole("button", { name: "Sjá bestu staðina" }));
+
+    expect(screen.queryByRole("dialog")).toBeNull();
+    expect(navigateSpy).not.toHaveBeenCalled();
+    await waitFor(() => expect(anchor.querySelector('[data-testid="nl-map-container"]')).not.toBeNull());
   });
 
-  it("opening and closing the login modal preserves the selected night and issues no extra Aurora request", async () => {
+  it("opening details preserves the selected night and issues no extra Aurora request", async () => {
     useMe.mockReturnValue({ me: { ok: true, user: null, entitlements: { pro: false, proUntil: null } }, loadingMe: false, refetchMe: vi.fn() });
     render(<App />);
     const anchor = document.getElementById("northern-lights");
@@ -164,11 +158,7 @@ describe("App — homepage Northern Lights CTA through the real checkout/login a
     const before = auroraCallCount();
     const selectedBefore = Array.from(tabs()).find((b) => b.getAttribute("aria-pressed") === "true").textContent;
 
-    fireEvent.click(within(anchor).getByRole("button", { name: "Sjá bestu staðina með Pro" }));
-    const dialog = screen.getByRole("dialog");
-    const closeBtn = within(dialog).queryByRole("button", { name: /close|loka/i }) ?? within(dialog).getAllByRole("button")[0];
-    fireEvent.click(closeBtn);
-    await waitFor(() => expect(screen.queryByRole("dialog")).toBeNull());
+    fireEvent.click(within(anchor).getByRole("button", { name: /Sjá bestu staðina|Gæti sést/ }));
 
     const selectedAfter = Array.from(tabs()).find((b) => b.getAttribute("aria-pressed") === "true").textContent;
     expect(selectedAfter).toBe(selectedBefore);

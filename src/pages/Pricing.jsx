@@ -234,11 +234,14 @@ export default function Pricing({ onClose, lang = "is", theme = "dark", t, me })
   const pass30Price = prices.pass30; // "€6.99"  or "995 kr"
   const passYearPrice = prices.passyear; // "€29.99" or "4.268 kr"
 
+  // Ticket #431: the Northern Lights bullet is removed from every plan's
+  // feature list — it is no longer a Pro-exclusive benefit (full access is
+  // open to every tier for the "northern_lights_free_v1" experiment), so
+  // listing it here would be a false "pay for this" claim.
   const featuresYearly = [
     T("pricingFeatureComparisons", "Compare all 242 campsites across Iceland"),
     T("pricingFeatureAllPro", "All Pro features unlocked"),
     T("pricingFeatureWindShelter", "Wind direction + shelter score"),
-    T("pricingFeatureAurora", "Northern Lights: details and place comparison"),
     T("pricingFeatureCancelAnytime", "Cancel anytime"),
   ];
 
@@ -246,7 +249,6 @@ export default function Pricing({ onClose, lang = "is", theme = "dark", t, me })
     T("pricingFeatureComparisons", "Compare all 242 campsites across Iceland"),
     T("pricingFeatureAllPro", "All Pro features unlocked"),
     T("pricingFeatureWindShelter", "Wind direction + shelter score"),
-    T("pricingFeatureAurora", "Northern Lights: details and place comparison"),
     T("pricingFeatureCancelAnytime", "Cancel anytime"),
   ];
 
@@ -254,14 +256,12 @@ export default function Pricing({ onClose, lang = "is", theme = "dark", t, me })
     T("pricingFeatureComparisons", "Compare all 242 campsites across Iceland"),
     T("pricingFeatureAllPro", "All Pro features unlocked"),
     T("pricingFeatureWindShelter", "Wind direction + shelter score"),
-    T("pricingFeatureAurora", "Northern Lights: details and place comparison"),
   ];
 
   const featuresPassYear = [
     T("pricingFeatureComparisons", "Compare all 242 campsites across Iceland"),
     T("pricingFeatureAllPro", "All Pro features unlocked"),
     T("pricingFeatureWindShelter", "Wind direction + shelter score"),
-    T("pricingFeatureAurora", "Northern Lights: details and place comparison"),
   ];
 
   return (
@@ -590,17 +590,17 @@ export default function Pricing({ onClose, lang = "is", theme = "dark", t, me })
             {T("pricingFinePrint", "You can manage or cancel anytime in the billing portal.")}
           </div>
 
-          {/* Ticket 416 (#416): the Aurora bullet above must not imply a
-              Pro-exclusive basic forecast — this shared qualification (same
-              assessment for both tiers) plus a link to the detailed
-              PricingInfo explanation covers all four plans in one place. */}
+          {/* Ticket #431: the Pro-exclusive Aurora bullet is gone (above),
+              but this note (same assessment, same detail for every tier) and
+              its link to the detailed PricingInfo explanation remain genuinely
+              informative on their own. */}
           <div style={{ ...styles.finePrint, marginTop: 6 }}>
             {T(
               "auroraInfoSameAssessment",
-              "Free and Pro use the same nightly Northern Lights assessment — Pro reveals more information and comparison, not a better prediction."
+              "Free and Pro use the same nightly Northern Lights assessment, with the same level of detail and comparison."
             )}{" "}
             <a href="/pricing-info" style={styles.termsLink}>
-              {T("pricingAuroraLearnMoreLink", "Learn more about Northern Lights on Pro")}
+              {T("pricingAuroraLearnMoreLink", "Learn more about Northern Lights")}
             </a>
           </div>
         </div>

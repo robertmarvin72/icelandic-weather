@@ -15,23 +15,28 @@
 // with explicit landing/homepage presentation. Both reuse the canonical
 // /api/aurora-decision contract, Free/Pro gate and presentation helpers;
 // scoring, freshness and candidates are not duplicated in this page.
+//
+// Ticket #431: this route needs no login/checkout journey any more — full
+// Northern Lights access is open to every tier (see features.js's
+// "northern_lights_free_v1" experiment), so the Free-only conversion
+// section, its CTA handler, and the login/checkout machinery that only
+// existed to serve it (useLoginFlow, useCheckoutFlow, LoginModal, ToastHub)
+// are removed. `entitlements`/`loadingMe` are kept — they still drive
+// aurora_landing_viewed's genuine-tier attribution and
+// NorthernLightsThreeNight's own entitlement-resolution gating.
 
 import { useCallback, useEffect, useMemo, useRef } from "react";
 import { Helmet } from "react-helmet-async";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import Brand from "../components/Brand";
 import Footer from "../components/Footer";
-import LoginModal from "../components/LoginModal";
-import ToastHub from "../components/ToastHub";
 import NorthernLightsThreeNight from "../components/NorthernLightsThreeNight";
 import { useT } from "../hooks/useT";
 import { useLocalStorageState } from "../hooks/useLocalStorageState";
 import { useThemeClass } from "../hooks/useThemeClass";
 import { useMe } from "../hooks/useMe";
-import { useToast } from "../hooks/useToast";
-import { useLoginFlow } from "../hooks/useLoginFlow";
-import { useCheckoutFlow } from "../hooks/useCheckoutFlow";
 import { trackEvent } from "../lib/analytics";
+import { NL_FREE_EXPERIMENT_ID } from "../config/features";
 import { parseNightQueryDate, withNightQueryDate, AURORA_NIGHT_QUERY_PARAM } from "../lib/auroraNightQuery";
 
 const CANONICAL_PATH = "/en/northern-lights";
@@ -50,8 +55,6 @@ export default function NorthernLightsLanding() {
 
   const [theme] = useLocalStorageState("theme", "light");
   useThemeClass(theme === "dark");
-
-  const navigate = useNavigate();
 
   // #425: the selected night arrives as an optional ?date=YYYY-MM-DD query
   // (from the homepage details link, or browser back/forward). Only a single
@@ -77,24 +80,7 @@ export default function NorthernLightsLanding() {
     [setSearchParams],
   );
 
-  const { toasts, pushToast, dismissToast } = useToast();
-  const { me, loadingMe, refetchMe } = useMe();
-
-  const {
-    loginOpen,
-    loginEmail,
-    loginBusy,
-    setLoginEmail,
-    openLoginModal,
-    closeLoginModal,
-    submitLogin,
-  } = useLoginFlow({ me, navigate, pushToast, refetchMe, t });
-
-  // Same established login/checkout journey as the homepage — no new auth
-  // or payment flow. onUpgrade is passed straight through to the card
-  // unwrapped, so the card's own `source` argument reaches this exactly as
-  // App.jsx's own `onUpgrade={startCheckout}` wiring does.
-  const { startCheckout } = useCheckoutFlow({ me, navigate, openLoginModal, pushToast, refetchMe, t });
+  const { me, loadingMe } = useMe();
 
   const entitlements = useMemo(
     () => ({ isPro: !!me?.entitlements?.pro, proUntil: me?.entitlements?.proUntil ?? null }),
@@ -112,23 +98,12 @@ export default function NorthernLightsLanding() {
   useEffect(() => {
     if (viewedRef.current || loadingMe) return;
     viewedRef.current = true;
-    trackEvent("aurora_landing_viewed", { lang: "en", tier: entitlements.isPro ? "pro" : "free" });
-  }, [loadingMe, entitlements.isPro]);
-
-  // Ticket 403 (#403): the lower Free-only conversion section's own CTA —
-  // a separate placement from the card's internal one. Fires the same new
-  // event with placement="value_section" and a distinct, stable source,
-  // then forwards that exact source to the existing checkout flow
-  // unchanged (no new entitlement/price/plan/attribution semantics).
-  function handleValueSectionCta() {
-    trackEvent("northern_lights_landing_cta_clicked", {
+    trackEvent("aurora_landing_viewed", {
       lang: "en",
       tier: entitlements.isPro ? "pro" : "free",
-      placement: "value_section",
-      source: "northern_lights_landing_value_section",
+      business_model_experiment: NL_FREE_EXPERIMENT_ID,
     });
-    startCheckout("northern_lights_landing_value_section");
-  }
+  }, [loadingMe, entitlements.isPro]);
 
   const canonicalUrl = `${typeof window !== "undefined" ? window.location.origin : PRODUCTION_ORIGIN_FALLBACK}${CANONICAL_PATH}`;
   const metaTitle = t("auroraLandingMetaTitle");
@@ -148,17 +123,6 @@ export default function NorthernLightsLanding() {
         <meta name="twitter:title" content={metaTitle} />
         <meta name="twitter:description" content={metaDescription} />
       </Helmet>
-
-      <ToastHub toasts={toasts} onDismiss={dismissToast} />
-      <LoginModal
-        open={loginOpen}
-        loginBusy={loginBusy}
-        loginEmail={loginEmail}
-        setLoginEmail={setLoginEmail}
-        closeLoginModal={closeLoginModal}
-        submitLogin={submitLogin}
-        t={t}
-      />
 
       <div className="min-h-screen bg-soft-grid text-slate-900 dark:bg-slate-950 dark:text-slate-100">
         <header className="sticky top-0 z-30 border-b border-slate-200/60 bg-white/80 backdrop-blur-sm dark:border-slate-800/60 dark:bg-slate-950/80">
@@ -190,7 +154,6 @@ export default function NorthernLightsLanding() {
             t={t}
             lang={lang}
             entitlements={entitlements}
-            onUpgrade={startCheckout}
             theme={theme}
             loadingMe={loadingMe}
             surface="landing"
@@ -198,37 +161,6 @@ export default function NorthernLightsLanding() {
             onSelectedDateChange={handleSelectedDateChange}
           />
         </section>
-
-        {/* Ticket 403 (#403): Free-only conversion section — describes
-            product capability, not tonight's result, so it renders
-            regardless of the card's own state (qualifying, all-poor,
-            unavailable, loading, etc.) and never claims a favorable
-            outcome. Hidden entirely for Pro (no purchase lock/CTA for
-            paying users). Restates the same four real Pro capabilities the
-            card's own locked-value block names — no new claims. */}
-        {!entitlements.isPro && (
-          <section className="mx-auto max-w-3xl px-6 pb-6">
-            <div className="rounded-2xl border border-slate-200/70 bg-white/70 px-5 py-5 dark:border-slate-800/70 dark:bg-slate-900/70">
-              <h2 className="text-base font-bold text-slate-900 dark:text-slate-100">
-                {t("auroraLandingValueSectionHeading")}
-              </h2>
-              <ul className="mt-3 grid gap-2 sm:grid-cols-2">
-                <li className="text-sm text-slate-600 dark:text-slate-400">{t("nlLandingLockedBestLocation")}</li>
-                <li className="text-sm text-slate-600 dark:text-slate-400">{t("nlLandingLockedAlternatives")}</li>
-                <li className="text-sm text-slate-600 dark:text-slate-400">{t("nlLandingLockedReasons")}</li>
-                <li className="text-sm text-slate-600 dark:text-slate-400">{t("nlLandingLockedMap")}</li>
-              </ul>
-              <button
-                type="button"
-                onClick={handleValueSectionCta}
-                className="mt-4 inline-flex items-center rounded-full bg-emerald-500 px-4 py-2 text-sm font-semibold text-slate-950 hover:bg-emerald-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400"
-              >
-                {t("nlLandingCtaPrimary")}
-              </button>
-              <p className="mt-1.5 text-xs text-slate-500 dark:text-slate-400">{t("nlLandingCtaNote")}</p>
-            </div>
-          </section>
-        )}
 
         <section className="mx-auto max-w-3xl px-6 pb-6">
           <div className="rounded-2xl border border-slate-200/70 bg-white/70 px-5 py-5 dark:border-slate-800/70 dark:bg-slate-900/70">

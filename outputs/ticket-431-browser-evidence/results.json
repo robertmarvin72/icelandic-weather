@@ -1,0 +1,134 @@
+[
+  {
+    "prefix": "desktop-free-is-homepage",
+    "tier": "free",
+    "route": "is-homepage",
+    "viewport": "desktop",
+    "hasPaywallWordBefore": false,
+    "detailsOpened": true,
+    "mapPresent": true,
+    "hasLoginDialogAfterOpeningDetails": false,
+    "bodyLength": 2286
+  },
+  {
+    "prefix": "desktop-free-en-homepage",
+    "tier": "free",
+    "route": "en-homepage",
+    "viewport": "desktop",
+    "hasPaywallWordBefore": false,
+    "detailsOpened": true,
+    "mapPresent": true,
+    "hasLoginDialogAfterOpeningDetails": false,
+    "bodyLength": 2320
+  },
+  {
+    "prefix": "desktop-free-en-landing",
+    "tier": "free",
+    "route": "en-landing",
+    "viewport": "desktop",
+    "hasPaywallWordBefore": false,
+    "detailsOpened": true,
+    "mapPresent": true,
+    "hasLoginDialogAfterOpeningDetails": false,
+    "bodyLength": 1526
+  },
+  {
+    "prefix": "desktop-pro-is-homepage",
+    "tier": "pro",
+    "route": "is-homepage",
+    "viewport": "desktop",
+    "hasPaywallWordBefore": false,
+    "detailsOpened": true,
+    "mapPresent": true,
+    "hasLoginDialogAfterOpeningDetails": false,
+    "bodyLength": 2285
+  },
+  {
+    "prefix": "desktop-pro-en-homepage",
+    "tier": "pro",
+    "route": "en-homepage",
+    "viewport": "desktop",
+    "hasPaywallWordBefore": false,
+    "detailsOpened": true,
+    "mapPresent": true,
+    "hasLoginDialogAfterOpeningDetails": false,
+    "bodyLength": 2320
+  },
+  {
+    "prefix": "desktop-pro-en-landing",
+    "tier": "pro",
+    "route": "en-landing",
+    "viewport": "desktop",
+    "hasPaywallWordBefore": false,
+    "detailsOpened": true,
+    "mapPresent": true,
+    "hasLoginDialogAfterOpeningDetails": false,
+    "bodyLength": 1526
+  },
+  {
+    "prefix": "mobile-free-is-homepage",
+    "tier": "free",
+    "route": "is-homepage",
+    "viewport": "mobile",
+    "hasPaywallWordBefore": false,
+    "detailsOpened": true,
+    "mapPresent": true,
+    "hasLoginDialogAfterOpeningDetails": false,
+    "bodyLength": 2286
+  },
+  {
+    "prefix": "mobile-free-en-homepage",
+    "tier": "free",
+    "route": "en-homepage",
+    "viewport": "mobile",
+    "hasPaywallWordBefore": false,
+    "detailsOpened": true,
+    "mapPresent": true,
+    "hasLoginDialogAfterOpeningDetails": false,
+    "bodyLength": 2320
+  },
+  {
+    "prefix": "mobile-free-en-landing",
+    "tier": "free",
+    "route": "en-landing",
+    "viewport": "mobile",
+    "hasPaywallWordBefore": false,
+    "detailsOpened": true,
+    "mapPresent": true,
+    "hasLoginDialogAfterOpeningDetails": false,
+    "bodyLength": 1405
+  },
+  {
+    "prefix": "mobile-pro-is-homepage",
+    "tier": "pro",
+    "route": "is-homepage",
+    "viewport": "mobile",
+    "hasPaywallWordBefore": false,
+    "detailsOpened": true,
+    "mapPresent": true,
+    "hasLoginDialogAfterOpeningDetails": false,
+    "bodyLength": 2285
+  },
+  {
+    "prefix": "mobile-pro-en-homepage",
+    "tier": "pro",
+    "route": "en-homepage",
+    "viewport": "mobile",
+    "hasPaywallWordBefore": false,
+    "detailsOpened": true,
+    "mapPresent": true,
+    "hasLoginDialogAfterOpeningDetails": false,
+    "bodyLength": 2320
+  },
+  {
+    "prefix": "mobile-pro-en-landing",
+    "tier": "pro",
+    "route": "en-landing",
+    "viewport": "mobile",
+    "hasPaywallWordBefore": false,
+    "detailsOpened": true,
+    "mapPresent": true,
+    "hasLoginDialogAfterOpeningDetails": false,
+    "bodyLength": 1405
+  }
+]

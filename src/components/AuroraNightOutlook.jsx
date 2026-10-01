@@ -11,17 +11,22 @@
 // its JSX: every string that would say "tonight" for a night that is not
 // tonight uses a date-neutral or {when}-parameterized key instead (see
 // translations.northernLights.js's "Ticket #423 Phase 2" section). The
-// retired card's own copy/keys are untouched. `surface` only chooses the Free
-// upgrade block: landing shows the locked-value marketing block, unchanged;
-// the homepage shows one compact, comparison-truthful value block (#426) —
-// one heading/body/CTA for a qualifying result, a separate truthful one for
-// a poor/very-poor result (never promoting the least-bad site as good) —
-// gated on `!loadingMe` so a Pro user is never briefly shown a Free upsell
-// while entitlement resolution is still in flight. The general forecast
-// (headline/pill/notices/update time) is never hidden by that guard.
+// retired card's own copy/keys are untouched.
+//
+// Ticket #431: the former Free-only teaser blocks (landing's locked-value
+// marketing block and the homepage's comparison-truthful value block, #426)
+// are removed — `isPro` (really "has Northern Lights access," per
+// selectAuroraDisplay's own doc comment) is unconditionally true during the
+// "northern_lights_free_v1" experiment, so every tier now sees the same
+// reasons/best-location line/details-ranking-map content a Pro user always
+// saw. No `surface`/`onUpgrade`/`loadingMe` prop is needed here any more.
+//
+// Ticket #431 v2: `onLocationSelect` forwards an actual aurora-map marker
+// click (never the map's own mount/render) up to the controller, which owns
+// all analytics — this component stays a pure presentation layer and never
+// calls trackEvent itself.
 
 import React from "react";
-import { Lock } from "lucide-react";
 import { selectAuroraDisplay } from "../lib/auroraDisplaySelection";
 import { auroraBandLabelKey } from "../lib/auroraBandPresentation";
 import { auroraVisualState, auroraVisualStateTokens, AURORA_VISUAL_STATES } from "../lib/auroraVisualState";
@@ -91,58 +96,6 @@ function DataUpdatedLine({ t, sourceFetchedAt, nowMs }) {
   );
 }
 
-// Structurally identical to NorthernLightsCard's LandingLockedValue —
-// receives no location/result data, so it cannot leak Pro-only content
-// regardless of what the canonical result contains. Only the "best
-// location" line's key differs (date-neutral here).
-function LockedValue({ t, onUpgrade }) {
-  const items = ["nlMultiLandingLockedBestLocation", "nlLandingLockedAlternatives", "nlLandingLockedReasons", "nlLandingLockedMap"];
-  return (
-    <div>
-      <p className="flex items-center gap-1.5 text-xs font-semibold text-slate-300/90">
-        <Lock aria-hidden="true" className="h-3 w-3" />
-        {t("nlLandingLockedHeading")}
-      </p>
-      <ul className="mt-1.5 space-y-1">
-        {items.map((key) => (
-          <li key={key} className="text-xs text-slate-300/80">
-            {t(key)}
-          </li>
-        ))}
-      </ul>
-      <button
-        type="button"
-        onClick={onUpgrade}
-        className="mt-2 inline-flex items-center rounded-full bg-emerald-500 px-3 py-1.5 text-xs font-semibold text-slate-950 hover:bg-emerald-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-300"
-      >
-        {t("nlMultiLandingCtaPrimary")}
-      </button>
-      <p className="mt-1 text-[11px] text-slate-400">{t("nlLandingCtaNote")}</p>
-    </div>
-  );
-}
-
-// Homepage-only, truthful, comparison-oriented Free conversion block (#426).
-// Never receives location data — structurally incapable of leaking a name,
-// coordinate or reason, same as landing's LockedValue. `headingKey`/`bodyKey`/
-// `ctaKey` select the exact issue copy for the qualifying vs. poor case.
-function FreeValueBlock({ t, when, headingKey, bodyKey, ctaKey, onUpgrade }) {
-  return (
-    <div data-testid="nl3-free-value">
-      <p className="text-[11px] text-slate-400">{t("nlMultiFreeValueForNight").replace("{when}", when)}</p>
-      <p className="text-sm font-semibold text-slate-100">{t(headingKey)}</p>
-      <p className="mt-1 text-xs text-slate-300/80">{t(bodyKey)}</p>
-      <button
-        type="button"
-        onClick={onUpgrade}
-        className="mt-2 inline-flex items-center rounded-full bg-emerald-500 px-3 py-1.5 text-xs font-semibold text-slate-950 hover:bg-emerald-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-300"
-      >
-        {t(ctaKey)}
-      </button>
-    </div>
-  );
-}
-
 /**
  * The selected-night body. Every prop describes ONLY the currently selected
  * slot — the caller (NorthernLightsThreeNight) is responsible for ensuring
@@ -158,15 +111,11 @@ export default function AuroraNightOutlook({
   isPro,
   detailsExpanded,
   onToggleDetails,
-  onUpgrade,
   onRetry,
+  onLocationSelect = () => {},
   nowMs,
   when,
-  surface = "landing",
-  loadingMe = false,
 }) {
-  const isHomepage = surface === "homepage";
-  const showHomepageFreeValue = isHomepage && !isPro && !loadingMe;
   if (status !== "resolved") {
     return (
       <div className="h-16 animate-pulse rounded-lg bg-slate-800/60" data-testid="nl3-loading">
@@ -252,18 +201,6 @@ export default function AuroraNightOutlook({
         <p className="mt-1 text-sm text-slate-200">{copy.body}</p>
         <StaleParialNotices t={t} isPartial={isPartial} isStale={isStale} staleAgo={staleAgo} />
         <DataUpdatedLine t={t} sourceFetchedAt={body.auroraCache?.sourceFetchedAt} nowMs={nowMs} />
-        {showHomepageFreeValue && (
-          <div className="mt-2">
-            <FreeValueBlock
-              t={t}
-              when={when}
-              headingKey="nlMultiFreePoorHeading"
-              bodyKey="nlMultiFreePoorBody"
-              ctaKey="nlMultiFreePoorCta"
-              onUpgrade={() => onUpgrade("northern_lights_card")}
-            />
-          </div>
-        )}
         {isPro && bestAvailable && (
           <div className="mt-2">
             <button
@@ -323,24 +260,6 @@ export default function AuroraNightOutlook({
       <StaleParialNotices t={t} isPartial={isPartial} isStale={isStale} staleAgo={staleAgo} />
       <DataUpdatedLine t={t} sourceFetchedAt={body.auroraCache?.sourceFetchedAt} nowMs={nowMs} />
 
-      {!isPro && !isHomepage && (
-        <div className="mt-2">
-          <LockedValue t={t} onUpgrade={() => onUpgrade("northern_lights_card")} />
-        </div>
-      )}
-      {showHomepageFreeValue && (
-        <div className="mt-2">
-          <FreeValueBlock
-            t={t}
-            when={when}
-            headingKey="nlMultiFreeValueHeading"
-            bodyKey="nlMultiFreeValueBody"
-            ctaKey="nlMultiFreeValueCta"
-            onUpgrade={() => onUpgrade("northern_lights_card")}
-          />
-        </div>
-      )}
-
       {isPro && (
         <div className="mt-3">
           <button
@@ -386,7 +305,7 @@ export default function AuroraNightOutlook({
                 <NorthernLightsMap
                   locations={display.qualifyingLocations.map((l) => ({ id: l.locationId, name: l.name, lat: l.lat, lon: l.lon, band: l.band }))}
                   selectedId={best.locationId}
-                  onSelect={() => {}}
+                  onSelect={onLocationSelect}
                   lang={lang}
                   t={t}
                   theme={theme}

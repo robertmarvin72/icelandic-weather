@@ -191,7 +191,10 @@ export const commonTranslations = {
     // (src/config/auroraCandidates.js), independent of the selected site.
     aboutAuroraBody:
       "We assess Northern Lights activity together with local weather conditions to evaluate tonight's viewing conditions at the places we check.",
-    aboutAuroraProNote: "Pro adds named locations, reasons and place comparison when results support them.",
+    // Ticket #431: named locations, reasons and place comparison are open to
+    // every tier now (full access for the "northern_lights_free_v1"
+    // experiment) — no longer a Pro-exclusive addition.
+    aboutAuroraProNote: "Named locations, reasons and place comparison, when results support them.",
     aboutAuroraLink: "See the Northern Lights forecast",
 
     aboutOutro:
@@ -783,7 +786,7 @@ export const commonTranslations = {
     // óháð völdu tjaldsvæði.
     aboutAuroraBody:
       "Við metum norðurljósavirkni ásamt staðbundnum veðurskilyrðum til að meta aðstæður til norðurljósaskoðunar í kvöld á þeim stöðum sem við skoðum.",
-    aboutAuroraProNote: "Pro bætir við nafngreindum stöðum, ástæðum og samanburði staða þegar niðurstöður leyfa.",
+    aboutAuroraProNote: "Nafngreindir staðir, ástæður og samanburður staða, þegar niðurstöður leyfa.",
     aboutAuroraLink: "Skoða norðurljósaspána",
 
     aboutOutro:

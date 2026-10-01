@@ -427,7 +427,6 @@ function IcelandCampingWeatherApp({ page = "home" }) {
                   t={t}
                   lang={lang}
                   entitlements={entitlements}
-                  onUpgrade={startCheckout}
                   theme={theme}
                   loadingMe={loadingMe}
                   surface="homepage"

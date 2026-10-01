@@ -11,6 +11,7 @@ import { trackEvent } from "../lib/analytics";
 import { clearAuroraDecisionCache } from "../lib/auroraDecisionCache";
 import { AURORA_CANDIDATE_LOCATION_IDS } from "../config/auroraCandidates";
 import { northernLightsTranslations } from "../i18n/translations.northernLights";
+import { NL_FREE_EXPERIMENT_ID } from "../config/features";
 
 vi.mock("../lib/analytics", () => ({ trackEvent: vi.fn() }));
 vi.mock("./NorthernLightsMap", () => ({
@@ -73,7 +74,6 @@ function element(props = {}) {
       t={tReal}
       lang="en"
       entitlements={{ isPro: false }}
-      onUpgrade={vi.fn()}
       theme="light"
       now={NOW}
       loadingMe={false}
@@ -191,12 +191,17 @@ describe("readable outlooks and accessibility", () => {
     expect(screen.getByTestId("nl3-status-pill").className).not.toContain("purple");
   });
 
-  it("Free overview names only canonical outlooks — never a location name or coordinate", async () => {
+  it("the night-tab overview pills name only canonical outlooks, never a location name or coordinate (unaffected by Ticket #431)", async () => {
     renderModule();
     await waitFor(() => expect(screen.getByTestId("nl3-result")).toBeInTheDocument());
     const group = screen.getByRole("group", { name: "Northern Lights forecast" });
     expect(group.textContent).not.toMatch(/Place|64\.|-20\./);
-    expect(document.body.textContent).not.toMatch(/Place \d/);
+  });
+
+  it("Ticket #431: Free now sees the named best location in the main result body, same as Pro", async () => {
+    renderModule({ entitlements: { isPro: false } });
+    await waitFor(() => expect(screen.getByTestId("nl3-result")).toBeInTheDocument());
+    expect(document.body.textContent).toMatch(/Place 1/);
   });
 
   it("Icelandic dictionary renders the same overview/pill/timestamp structure", async () => {
@@ -262,7 +267,15 @@ describe("restored landing analytics", () => {
   it("card_viewed fires once for the selected night with the original payload, never for background nights", async () => {
     renderModule({ fetchImpl: scenario() });
     await waitFor(() => expect(cardViewed()).toHaveLength(1));
-    expect(cardViewed()[0][1]).toEqual({ lang: "en", outcome: "success", freshness: "fresh", band: "excellent", tier: "free", resultState: "qualifying" });
+    expect(cardViewed()[0][1]).toEqual({
+      lang: "en",
+      outcome: "success",
+      freshness: "fresh",
+      band: "excellent",
+      tier: "free",
+      resultState: "qualifying",
+      business_model_experiment: NL_FREE_EXPERIMENT_ID,
+    });
     await waitFor(() => expect(within(screen.getByRole("group")).getByRole("button", { name: /Tomorrow night.*Low chance/ })).toBeInTheDocument());
     expect(cardViewed()).toHaveLength(1);
   });
@@ -287,7 +300,12 @@ describe("restored landing analytics", () => {
     await waitFor(() => expect(cardViewed()).toHaveLength(1));
     fireEvent.click(screen.getByRole("button", { name: /Sunday/ }));
     await waitFor(() => expect(screen.getByTestId("nl3-unavailable")).toBeInTheDocument());
-    expect(trackEvent).toHaveBeenCalledWith("northern_lights_unavailable_viewed", { lang: "en", outcome: "domain_unavailable", tier: "free" });
+    expect(trackEvent).toHaveBeenCalledWith("northern_lights_unavailable_viewed", {
+      lang: "en",
+      outcome: "domain_unavailable",
+      tier: "free",
+      business_model_experiment: NL_FREE_EXPERIMENT_ID,
+    });
     const before = trackEvent.mock.calls.filter((c) => c[0] === "northern_lights_unavailable_viewed").length;
 
     fireEvent.click(screen.getByRole("button", { name: "Try again" }));
@@ -297,7 +315,14 @@ describe("restored landing analytics", () => {
 
   it("stale_viewed fires only for a visible usable stale result", async () => {
     renderModule({ fetchImpl: routed({ "2026-09-25": successBody("2026-09-25", mixedSix(), "2026-09-25T04:00:00.000Z") }) });
-    await waitFor(() => expect(trackEvent).toHaveBeenCalledWith("northern_lights_stale_viewed", { lang: "en", outcome: "success", tier: "free" }));
+    await waitFor(() =>
+      expect(trackEvent).toHaveBeenCalledWith("northern_lights_stale_viewed", {
+        lang: "en",
+        outcome: "success",
+        tier: "free",
+        business_model_experiment: NL_FREE_EXPERIMENT_ID,
+      }),
+    );
     expect(cardViewed()[0][1]).toMatchObject({ freshness: "stale" });
   });
 
@@ -312,15 +337,23 @@ describe("restored landing analytics", () => {
     expect(cardViewed()[0][1].tier).toBe("pro");
   });
 
-  it("Free never fires details/ranking/map events", async () => {
-    renderModule({ fetchImpl: scenario() });
-    await waitFor(() => expect(cardViewed()).toHaveLength(1));
+  it("Ticket #431: Free fires details/ranking/map events too — never hardcoded 'pro', always the genuine tier", async () => {
+    renderModule({ entitlements: { isPro: false }, fetchImpl: scenario() });
+    await waitFor(() => expect(screen.getByTestId("nl3-result")).toBeInTheDocument());
+    expect(trackEvent.mock.calls.some((c) => c[0] === "northern_lights_ranking_viewed")).toBe(false);
+
+    fireEvent.click(screen.getByRole("button", { name: "See the best spots" }));
+    await waitFor(() => expect(screen.getByTestId("nl-map-container")).toBeInTheDocument());
+
+    expect(trackEvent).toHaveBeenCalledWith("northern_lights_details_opened", { lang: "en", tier: "free", business_model_experiment: NL_FREE_EXPERIMENT_ID });
+    expect(trackEvent).toHaveBeenCalledWith("northern_lights_ranking_viewed", { lang: "en", tier: "free", business_model_experiment: NL_FREE_EXPERIMENT_ID });
+    expect(trackEvent).toHaveBeenCalledWith("northern_lights_map_viewed", { lang: "en", tier: "free", business_model_experiment: NL_FREE_EXPERIMENT_ID });
     for (const name of ["northern_lights_details_opened", "northern_lights_ranking_viewed", "northern_lights_map_viewed"]) {
-      expect(trackEvent.mock.calls.some((c) => c[0] === name)).toBe(false);
+      expect(trackEvent.mock.calls.filter((c) => c[0] === name)).toHaveLength(1);
     }
   });
 
-  it("Pro: details_opened, ranking_viewed and map_viewed each fire once, only once details are actually shown", async () => {
+  it("Pro: details_opened, ranking_viewed and map_viewed each fire once, only once details are actually shown, with the genuine 'pro' tier", async () => {
     renderModule({ entitlements: { isPro: true }, fetchImpl: scenario() });
     await waitFor(() => expect(screen.getByTestId("nl3-result")).toBeInTheDocument());
     expect(trackEvent.mock.calls.some((c) => c[0] === "northern_lights_ranking_viewed")).toBe(false);
@@ -328,9 +361,9 @@ describe("restored landing analytics", () => {
     fireEvent.click(screen.getByRole("button", { name: "See the best spots" }));
     await waitFor(() => expect(screen.getByTestId("nl-map-container")).toBeInTheDocument());
 
-    expect(trackEvent).toHaveBeenCalledWith("northern_lights_details_opened", { lang: "en", tier: "pro" });
-    expect(trackEvent).toHaveBeenCalledWith("northern_lights_ranking_viewed", { lang: "en", tier: "pro" });
-    expect(trackEvent).toHaveBeenCalledWith("northern_lights_map_viewed", { lang: "en", tier: "pro" });
+    expect(trackEvent).toHaveBeenCalledWith("northern_lights_details_opened", { lang: "en", tier: "pro", business_model_experiment: NL_FREE_EXPERIMENT_ID });
+    expect(trackEvent).toHaveBeenCalledWith("northern_lights_ranking_viewed", { lang: "en", tier: "pro", business_model_experiment: NL_FREE_EXPERIMENT_ID });
+    expect(trackEvent).toHaveBeenCalledWith("northern_lights_map_viewed", { lang: "en", tier: "pro", business_model_experiment: NL_FREE_EXPERIMENT_ID });
     for (const name of ["northern_lights_details_opened", "northern_lights_ranking_viewed", "northern_lights_map_viewed"]) {
       expect(trackEvent.mock.calls.filter((c) => c[0] === name)).toHaveLength(1);
     }

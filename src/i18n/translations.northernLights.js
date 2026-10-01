@@ -134,8 +134,11 @@ export const northernLightsTranslations = {
     // card UI. Reused verbatim wherever the same claim is made, per the
     // approved prompt's "reuse shared translation keys for identical claims"
     // instruction.
+    // Ticket #431: Pro no longer reveals more than Free (full access is open
+    // to everyone for the "northern_lights_free_v1" experiment) — reworded
+    // to stop claiming otherwise.
     auroraInfoSameAssessment:
-      "Free and Pro use the same nightly Northern Lights assessment — Pro reveals more information and comparison, not a better prediction.",
+      "Free and Pro use the same nightly Northern Lights assessment, with the same level of detail and comparison.",
     auroraInfoNoGuarantee: "Good conditions do not guarantee that the Northern Lights will be visible.",
     auroraInfoSeasonalNote:
       "Northern Lights forecasts are shown from September through March, when Iceland has enough darkness for a meaningful check.",
@@ -317,7 +320,7 @@ export const northernLightsTranslations = {
     nlOffSeasonFallback: "Norðurljósaspáin kemur aftur í september.",
 
     auroraInfoSameAssessment:
-      "Free og Pro nota sama kvöldmat á norðurljósum — Pro sýnir meiri upplýsingar og samanburð, ekki betri spá.",
+      "Free og Pro nota sama kvöldmat á norðurljósum, með sömu smáatriðum og samanburði.",
     auroraInfoNoGuarantee: "Góð skilyrði tryggja ekki að norðurljós sjáist.",
     auroraInfoSeasonalNote:
       "Norðurljósaspá er sýnd frá september til mars, þegar nægilegt myrkur er á Íslandi til að gera marktæka athugun.",

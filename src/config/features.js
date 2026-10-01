@@ -1,6 +1,11 @@
 // src/config/features.js
 // Single source of truth for Free/Pro/Preview gating.
 
+// Ticket #431 — named business-model-experiment id, analytics-only (carried
+// as `business_model_experiment` on the relevant Northern Lights events).
+// Not an entitlement value and not read by isFeatureAvailable itself.
+export const NL_FREE_EXPERIMENT_ID = "northern_lights_free_v1";
+
 export const FEATURES = {
   // 1) Forecast table days (I recommend keeping 7 for both; Pro value comes from overlays/features)
   forecastDays: { type: "limit", free: 7, pro: 7, label: "Forecast days" },
@@ -21,11 +26,23 @@ export const FEATURES = {
   // 5) Weather Finder results count (Free sees top 3, Pro sees all)
   weatherFinderResultsCount: { type: "limit", free: 3, pro: 999, label: "Weather Finder results" },
 
-  // 6) Northern Lights decision card (#392) — presentation-only gate. Free
-  // sees coarse guidance (band/verdict, darkness context), Pro sees exact
-  // best location, score, reasons, ranked alternatives and map. The
-  // underlying /api/aurora-decision request/response is identical for both.
-  northernLights: { tier: "pro", preview: true, label: "Northern Lights" },
+  // 6) Northern Lights decision card (#392) — presentation-only gate.
+  // Ticket #431: opened to Free for the "northern_lights_free_v1" business
+  // model experiment. `tier: "pro"` is left in place as the feature's real
+  // entitlement model (so rollback is a one-line flip of
+  // `freeDuringExperiment`, not a re-add of the tier gate); while the
+  // experiment runs, `freeDuringExperiment` unconditionally grants access —
+  // including to anonymous/not-yet-resolved entitlements — without touching
+  // getUserTier/entitlements or any other feature's gate. The underlying
+  // /api/aurora-decision request/response remains identical for every tier.
+  // See docs/ai/tasks/ticket-431/experiment-note.md.
+  northernLights: {
+    tier: "pro",
+    preview: true,
+    label: "Northern Lights",
+    freeDuringExperiment: true,
+    experimentId: NL_FREE_EXPERIMENT_ID,
+  },
 };
 
 export const TIERS = {
@@ -51,6 +68,9 @@ export function isFeatureAvailable(featureKey, entitlements) {
   }
 
   if (def.tier === "pro" && tier !== TIERS.PRO) {
+    if (def.freeDuringExperiment) {
+      return { available: true, preview: false, reason: "experiment_free", experimentId: def.experimentId };
+    }
     return { available: false, preview: !!def.preview, reason: "requires_pro" };
   }
 

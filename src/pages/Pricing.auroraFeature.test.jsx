@@ -1,5 +1,9 @@
 // Ticket 416 (#416) — same short Aurora Pro-value bullet on all four plan
 // feature arrays, plus the shared same-assessment qualification/link.
+// Ticket #431: the bullet is removed (Northern Lights is no longer
+// Pro-exclusive — full access is open to every tier for the
+// "northern_lights_free_v1" experiment); the shared qualification/link
+// remain and are now independently true without it.
 import React from "react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { render, screen } from "@testing-library/react";
@@ -30,16 +34,10 @@ function renderPricing(lang = "is") {
 describe("Pricing — Ticket 416 (#416): Aurora bullet on all four plans, real translations dictionary", () => {
   beforeEach(() => vi.clearAllMocks());
 
-  it.each(["is", "en"])("%s: the exact Aurora bullet text appears at least 4 times — one per plan card", (lang) => {
+  it.each(["is", "en"])("%s: the Aurora bullet no longer appears on any plan card (Ticket #431 — no longer Pro-exclusive)", (lang) => {
     const dict = translations[lang];
     renderPricing(lang);
-    const nodes = screen.getAllByText(dict.pricingFeatureAurora);
-    expect(nodes.length).toBe(4);
-  });
-
-  it("exact bullet text matches the approved prompt's wording", () => {
-    expect(translations.en.pricingFeatureAurora).toBe("Northern Lights: details and place comparison");
-    expect(translations.is.pricingFeatureAurora).toBe("Norðurljós: nánari upplýsingar og samanburður staða");
+    expect(screen.queryAllByText(dict.pricingFeatureAurora)).toHaveLength(0);
   });
 
   it("renders the shared same-assessment qualification and a link to the detailed PricingInfo explanation", () => {

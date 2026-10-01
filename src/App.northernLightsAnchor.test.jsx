@@ -342,7 +342,7 @@ describe("App — #425: the real homepage runs exactly one shared three-night da
     expect(trackEvent.mock.calls.find((c) => c[0] === "northern_lights_card_viewed")[1]).toMatchObject({ lang: "is", tier: "free" });
   });
 
-  it("the Free upgrade button uses the real checkout callback with the homepage-attributed source and no landing-only event (#426)", async () => {
+  it("Ticket #431: there is no Free upgrade button any more — the real checkout callback is never reached from Northern Lights", async () => {
     vi.useFakeTimers({ toFake: ["Date"] });
     vi.setSystemTime(utcNoon("2026-01-15"));
     stubAuroraFetch();
@@ -350,13 +350,11 @@ describe("App — #425: the real homepage runs exactly one shared three-night da
     const anchor = document.getElementById("northern-lights");
     await waitFor(() => expect(anchor.querySelector('[data-testid="nl3-result"]')).not.toBeNull());
 
-    fireEvent.click(within(anchor).getByRole("button", { name: translations.is.nlMultiFreeValueCta }));
-    expect(startCheckout).toHaveBeenCalledWith("northern_lights_homepage");
-    expect(trackEvent.mock.calls.some((c) => c[0] === "northern_lights_landing_cta_clicked")).toBe(false);
-    expect(trackEvent).toHaveBeenCalledWith(
-      "northern_lights_upgrade_clicked",
-      expect.objectContaining({ source: "northern_lights_homepage", upgrade_source: "northern_lights_homepage" }),
-    );
+    expect(within(anchor).queryByRole("button", { name: translations.is.nlMultiFreeValueCta })).toBeNull();
+    expect(startCheckout).not.toHaveBeenCalled();
+    for (const name of ["northern_lights_landing_cta_clicked", "northern_lights_upgrade_clicked", "northern_lights_multi_day_upgrade_clicked"]) {
+      expect(trackEvent.mock.calls.some((c) => c[0] === name)).toBe(false);
+    }
   });
 
   it("season off: the sibling fallback stays and zero Aurora requests are made", () => {

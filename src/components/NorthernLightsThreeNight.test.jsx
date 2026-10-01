@@ -5,6 +5,7 @@ import NorthernLightsThreeNight from "./NorthernLightsThreeNight";
 import { trackEvent } from "../lib/analytics";
 import { clearAuroraDecisionCache } from "../lib/auroraDecisionCache";
 import { AURORA_CANDIDATE_LOCATION_IDS } from "../config/auroraCandidates";
+import { NL_FREE_EXPERIMENT_ID } from "../config/features";
 
 vi.mock("../lib/analytics", () => ({ trackEvent: vi.fn() }));
 
@@ -60,7 +61,6 @@ function renderModule(props = {}) {
       t={t}
       lang="en"
       entitlements={{ isPro: false }}
-      onUpgrade={vi.fn()}
       theme="light"
       now={IN_SEASON_NOW}
       loadingMe={false}
@@ -138,14 +138,48 @@ describe("NorthernLightsThreeNight — tab selection updates content atomically"
   });
 });
 
-describe("NorthernLightsThreeNight — Free tier leaks no detailed location data", () => {
-  it("Free DOM never contains a location name, coordinate, or ranked list for a qualifying result", async () => {
-    renderModule({ entitlements: { isPro: false } });
+describe("NorthernLightsThreeNight — Ticket #431: Free gets the same full access as Pro", () => {
+  it("Free sees the named best location and, once details are opened, the ranked list and map — identical to Pro", async () => {
+    renderModule({
+      entitlements: { isPro: false },
+      fetchImpl: routedFetchImpl({
+        "2026-09-25": successBody("2026-09-25", [
+          loc(AURORA_CANDIDATE_LOCATION_IDS[0], 90, "excellent", "Tonight Place"),
+          loc(AURORA_CANDIDATE_LOCATION_IDS[1], 70, "good", "Second Place"),
+        ]),
+        "2026-09-26": successBody("2026-09-26", [loc(AURORA_CANDIDATE_LOCATION_IDS[1], 30, "poor", "Tomorrow Place")]),
+        "2026-09-27": successBody("2026-09-27", [loc(AURORA_CANDIDATE_LOCATION_IDS[2], 25, "very-poor", "Day2 Place")]),
+      }),
+    });
     await waitFor(() => expect(screen.getByTestId("nl3-result")).toBeInTheDocument());
 
-    expect(screen.queryByText("Tonight Place")).toBeNull();
-    expect(document.body.textContent).not.toMatch(/64\.\d|-20\.\d/); // no raw lat/lon
-    expect(screen.queryByTestId("nl-map-container")).toBeNull();
+    // Named best location visible without opening anything (same as Pro).
+    expect(screen.getByText(/nlMultiBestOn:nlWhenTonight:Tonight Place/)).toBeInTheDocument();
+
+    // No upgrade/locked/teaser surface is rendered anywhere.
+    expect(screen.queryByText("nlLandingLockedHeading")).toBeNull();
+    expect(screen.queryByTestId("nl3-free-value")).toBeNull();
+
+    // Opening details reveals the ranked list and map, exactly like Pro.
+    fireEvent.click(screen.getByText(/nlCtaGood/));
+    await waitFor(() => expect(screen.getByTestId("nl-map-container")).toBeInTheDocument());
+    expect(document.body.textContent).toContain("Second Place");
+  });
+
+  it("Free sees the same truthful all-poor copy and details toggle as Pro, with no upsell block", async () => {
+    renderModule({
+      entitlements: { isPro: false },
+      fetchImpl: routedFetchImpl({
+        "2026-09-25": successBody("2026-09-25", [loc(AURORA_CANDIDATE_LOCATION_IDS[0], 20, "very-poor", "Bad Place")]),
+        "2026-09-26": unavailableBody("2026-09-26"),
+        "2026-09-27": unavailableBody("2026-09-27"),
+      }),
+    });
+    await waitFor(() => expect(screen.getByTestId("nl3-all-poor")).toBeInTheDocument());
+
+    expect(screen.queryByTestId("nl3-free-value")).toBeNull();
+    fireEvent.click(screen.getByText(/nlDetailsShow/));
+    expect(screen.getByText("Bad Place")).toBeInTheDocument();
   });
 });
 
@@ -162,6 +196,7 @@ describe("NorthernLightsThreeNight — analytics", () => {
       forecast_status: "success",
       user_tier: "free",
       source: "landing",
+      business_model_experiment: NL_FREE_EXPERIMENT_ID,
     });
     expect(trackEvent.mock.calls.filter((c) => c[0] === "northern_lights_night_selected")).toHaveLength(1);
   });
@@ -234,32 +269,31 @@ describe("NorthernLightsThreeNight — analytics", () => {
     expect(trackEvent).not.toHaveBeenCalledWith("northern_lights_best_night_viewed", expect.anything());
   });
 
-  it("a Free upgrade click forwards the existing northern_lights_card source and fires the two existing events plus the new multi-day event, once each", async () => {
-    const onUpgrade = vi.fn();
-    renderModule({ entitlements: { isPro: false }, onUpgrade });
+  it("Ticket #431: no upgrade/checkout UI exists any more — no purchase-click event ever fires for Free", async () => {
+    renderModule({ entitlements: { isPro: false } });
     await waitFor(() => expect(screen.getByTestId("nl3-result")).toBeInTheDocument());
 
-    fireEvent.click(screen.getByRole("button", { name: "nlMultiLandingCtaPrimary" }));
-
-    expect(onUpgrade).toHaveBeenCalledTimes(1);
-    expect(onUpgrade).toHaveBeenCalledWith("northern_lights_card");
-    expect(trackEvent).toHaveBeenCalledWith("northern_lights_multi_day_upgrade_clicked", {
-      selected_date: "2026-09-25",
-      days_ahead: 0,
-      forecast_status: "success",
-      user_tier: "free",
-      source: "landing",
-    });
-    expect(trackEvent).toHaveBeenCalledWith("northern_lights_upgrade_clicked", { lang: "en", source: "northern_lights_card", tier: "free" });
-    expect(trackEvent).toHaveBeenCalledWith("northern_lights_landing_cta_clicked", {
-      lang: "en",
-      tier: "free",
-      placement: "card",
-      source: "northern_lights_card",
-    });
+    expect(screen.queryByRole("button", { name: /nlMultiLandingCtaPrimary|nlMultiFreeValueCta|nlMultiFreePoorCta/ })).toBeNull();
     for (const name of ["northern_lights_multi_day_upgrade_clicked", "northern_lights_upgrade_clicked", "northern_lights_landing_cta_clicked"]) {
-      expect(trackEvent.mock.calls.filter((c) => c[0] === name)).toHaveLength(1);
+      expect(trackEvent).not.toHaveBeenCalledWith(name, expect.anything());
     }
+  });
+
+  it("ranking_viewed and map_viewed report the genuine account tier, never a hardcoded 'pro'", async () => {
+    const allSix = (baseScore) => AURORA_CANDIDATE_LOCATION_IDS.map((id, i) => loc(id, baseScore - i, i === 0 ? "excellent" : "good"));
+    renderModule({
+      entitlements: { isPro: false },
+      fetchImpl: routedFetchImpl({
+        "2026-09-25": successBody("2026-09-25", allSix(90)),
+        "2026-09-26": successBody("2026-09-26", allSix(30).map((l) => ({ ...l, band: "poor" }))),
+        "2026-09-27": successBody("2026-09-27", allSix(30).map((l) => ({ ...l, band: "poor" }))),
+      }),
+    });
+    await waitFor(() => expect(screen.getByTestId("nl3-result")).toBeInTheDocument());
+    fireEvent.click(screen.getByText(/nlCtaGood/));
+
+    await waitFor(() => expect(trackEvent).toHaveBeenCalledWith("northern_lights_ranking_viewed", { lang: "en", tier: "free", business_model_experiment: NL_FREE_EXPERIMENT_ID }));
+    expect(trackEvent).toHaveBeenCalledWith("northern_lights_map_viewed", { lang: "en", tier: "free", business_model_experiment: NL_FREE_EXPERIMENT_ID });
   });
 });
 

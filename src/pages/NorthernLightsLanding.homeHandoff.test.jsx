@@ -15,6 +15,7 @@ import { trackEvent } from "../lib/analytics";
 import { clearAuroraDecisionCache } from "../lib/auroraDecisionCache";
 import { AURORA_CANDIDATE_LOCATION_IDS } from "../config/auroraCandidates";
 import { northernLightsTranslations } from "../i18n/translations.northernLights";
+import { NL_FREE_EXPERIMENT_ID } from "../config/features";
 
 vi.mock("react-helmet-async", () => ({ Helmet: ({ children }) => <>{children}</>, HelmetProvider: ({ children }) => <>{children}</> }));
 vi.mock("../lib/analytics", () => ({ trackEvent: vi.fn() }));
@@ -99,10 +100,10 @@ function NavButtons() {
   );
 }
 
-function HomeHost({ lang = "is", isPro = false, onUpgrade = vi.fn(), loadingMe = false }) {
+function HomeHost({ lang = "is", isPro = false, loadingMe = false }) {
   return (
     <div id="northern-lights">
-      <NorthernLightsThreeNight t={tFor(lang)} lang={lang} entitlements={{ isPro }} onUpgrade={onUpgrade} theme="light" loadingMe={loadingMe} surface="homepage" />
+      <NorthernLightsThreeNight t={tFor(lang)} lang={lang} entitlements={{ isPro }} theme="light" loadingMe={loadingMe} surface="homepage" />
     </div>
   );
 }
@@ -212,53 +213,45 @@ describe("homepage module (real shared components)", () => {
     expect(screen.getByTestId("nl3-details-link").getAttribute("href")).toBe(landingPath(D1));
   });
 
-  it("shows no landing marketing block on the homepage; Free gets ONE compact, truthful, comparison-oriented value block naming the selected night (#426)", async () => {
-    renderApp("/", { lang: "en" });
+  it("Ticket #431: Free gets the SAME full homepage result as Pro — no value/locked block, named best location visible", async () => {
+    renderApp("/", { lang: "en" }); // isPro: false by default
     await waitFor(() => expect(screen.getByTestId("nl3-result")).toBeInTheDocument());
+    // The former Free-only teaser/locked blocks are gone entirely.
     expect(screen.queryByText("Pro shows you:")).toBeNull();
-    expect(screen.getByTestId("nl3-free-value")).toHaveTextContent("For tonight");
-    expect(screen.getByText("Where are conditions best?")).toBeInTheDocument();
-    expect(screen.getByText("With Pro, see the top locations, ranked alternatives and a map.")).toBeInTheDocument();
-    expect(screen.getAllByRole("button", { name: "See the best locations with Pro" })).toHaveLength(1);
-    // The old qualifying-branch keys are no longer rendered on the homepage.
-    expect(screen.queryByText("Conditions may be worth checking somewhere in Iceland.")).toBeNull();
-    expect(screen.queryByText("See where and why (Pro)")).toBeNull();
+    expect(screen.queryByTestId("nl3-free-value")).toBeNull();
+    expect(screen.queryByRole("button", { name: "See the best locations with Pro" })).toBeNull();
+    // The named best location is visible without any upgrade, same as Pro.
+    expect(document.body.textContent).toContain("Night0 Spot 1");
+
+    fireEvent.click(screen.getByRole("button", { name: "See the best spots" }));
+    await waitFor(() => expect(screen.getByTestId("nl-map-container")).toBeInTheDocument());
   });
 
-  it("the value block describes the SELECTED night, not tonight by default, and updates when the selection changes", async () => {
+  it("the headline updates to describe the SELECTED night, not tonight by default, for Free same as Pro", async () => {
     renderApp("/", { lang: "en" });
     await waitFor(() => expect(screen.getByTestId("nl3-result")).toBeInTheDocument());
+    expect(document.body.textContent).toContain("Night0 Spot 1");
     fireEvent.click(screen.getByRole("button", { name: /Tomorrow night/ }));
-    await waitFor(() => expect(screen.getByTestId("nl3-free-value")).toHaveTextContent("For tomorrow night"));
+    await waitFor(() => expect(document.body.textContent).toContain("Night1 Spot 1"));
   });
 
-  it("a poor/very-poor selected night shows the separate truthful comparison block, not the qualifying one, and never promotes the least-bad site (#426)", async () => {
+  it("Ticket #431: a poor/very-poor selected night shows Free the same truthful all-poor details as Pro, once opened", async () => {
     renderApp("/", { lang: "en" }); // D2 (day 2) fixture is poor band
     await waitFor(() => expect(screen.getByTestId("nl3-result")).toBeInTheDocument());
     fireEvent.click(screen.getByRole("button", { name: /Sunday/ }));
     await waitFor(() => expect(screen.getByTestId("nl3-all-poor")).toBeInTheDocument());
 
-    const block = screen.getByTestId("nl3-free-value");
-    expect(block).toHaveTextContent("For Sunday");
-    expect(block).toHaveTextContent("Compare locations with Pro");
-    expect(screen.getByRole("button", { name: "Compare locations with Pro" })).toBeInTheDocument();
-    expect(
-      screen.getByText(
-        "With Pro, see which of the checked locations comes out best. Conditions are still unfavorable, and no location is recommended right now.",
-      ),
-    ).toBeInTheDocument();
-    // The qualifying-branch strings never appear here.
-    expect(screen.queryByText("Where are conditions best?")).toBeNull();
-    // Never a ranked list/map for Free on a poor result.
-    expect(screen.queryByTestId("nl-map-container")).toBeNull();
-    expect(document.body.textContent).not.toMatch(/Night2 Spot/);
+    expect(screen.queryByTestId("nl3-free-value")).toBeNull();
+    fireEvent.click(screen.getByText("See details"));
+    expect(document.body.textContent).toContain("Night2 Spot 1");
   });
 
-  it("Free DOM leaks no location identity, coordinates or reasons on the homepage", async () => {
+  it("Free DOM shows the same location identity as Pro once details are opened — no longer suppressed (Ticket #431)", async () => {
     renderApp("/", { lang: "en" });
     await waitFor(() => expect(screen.getByTestId("nl3-result")).toBeInTheDocument());
-    expect(document.body.textContent).not.toMatch(/Night\d Spot|64\.|-20\.|Meaningful aurora activity|Clear sky/);
-    expect(screen.queryByTestId("nl-map-container")).toBeNull();
+    expect(document.body.textContent).toContain("Night0 Spot 1");
+    fireEvent.click(screen.getByRole("button", { name: "See the best spots" }));
+    await waitFor(() => expect(screen.getByTestId("nl-map-container")).toBeInTheDocument());
   });
 
   it("season off: renders nothing and makes zero Aurora requests", async () => {
@@ -269,29 +262,8 @@ describe("homepage module (real shared components)", () => {
   });
 });
 
-describe("homepage Free value block — entitlement-loading guard (#426, both qualifying and poor branches)", () => {
-  it("qualifying branch: hidden while loadingMe is true, shown after resolving Free, and hidden after resolving Pro — general forecast never hidden", async () => {
-    const { rerender } = render(homeAppTree({ lang: "en", loadingMe: true }));
-    await waitFor(() => expect(screen.getByTestId("nl3-result")).toBeInTheDocument()); // forecast itself renders during loading
-    expect(screen.queryByTestId("nl3-free-value")).toBeNull();
-    expect(screen.getByTestId("nl3-status-pill")).toBeInTheDocument();
-
-    rerender(homeAppTree({ lang: "en", isPro: false, loadingMe: false }));
-    await waitFor(() => expect(screen.getByTestId("nl3-free-value")).toBeInTheDocument());
-
-    rerender(homeAppTree({ lang: "en", isPro: true, loadingMe: false }));
-    await waitFor(() => expect(screen.queryByTestId("nl3-free-value")).toBeNull());
-  });
-
-  it("poor branch: hidden while loadingMe is true, shown after resolving Free, hidden after resolving Pro", async () => {
-    render(homeAppTree({ lang: "en", loadingMe: true }));
-    await waitFor(() => expect(screen.getByTestId("nl3-result")).toBeInTheDocument());
-    fireEvent.click(screen.getByRole("button", { name: /Sunday/ })); // day 2: poor
-    await waitFor(() => expect(screen.getByTestId("nl3-all-poor")).toBeInTheDocument());
-    expect(screen.queryByTestId("nl3-free-value")).toBeNull();
-  });
-
-  it("resolving entitlement while loading preserves the already-selected night (not reset to tonight), in both branches", async () => {
+describe("homepage — entitlement-loading preserves selection (Ticket #431: no Free/Pro content gate left to guard)", () => {
+  it("resolving entitlement while loading preserves the already-selected night (not reset to tonight), qualifying and poor alike", async () => {
     const { rerender } = render(homeAppTree({ lang: "en", loadingMe: true }));
     await waitFor(() => expect(screen.getByTestId("nl3-result")).toBeInTheDocument());
     fireEvent.click(screen.getByRole("button", { name: /Tomorrow night/ }));
@@ -304,14 +276,12 @@ describe("homepage Free value block — entitlement-loading guard (#426, both qu
     // (internal useAuroraThreeNight state) must not reset to tonight.
     expect(pressed()).toHaveTextContent(/Tomorrow night/);
     expect(screen.getByTestId("nl3-status-pill")).toHaveTextContent("Good conditions");
-    expect(screen.getByTestId("nl3-free-value")).toBeInTheDocument(); // now resolved Free -> visible
 
     rerender(homeAppTree({ lang: "en", isPro: true, loadingMe: false }));
     expect(pressed()).toHaveTextContent(/Tomorrow night/); // still preserved
-    expect(screen.queryByTestId("nl3-free-value")).toBeNull(); // Pro -> hidden
   });
 
-  it("poor branch: resolving entitlement in place shows/hides the block while the poor selection is preserved", async () => {
+  it("poor branch: resolving entitlement in place preserves the poor selection, for Free and Pro alike", async () => {
     const { rerender } = render(homeAppTree({ lang: "en", loadingMe: true }));
     await waitFor(() => expect(screen.getByTestId("nl3-result")).toBeInTheDocument());
     fireEvent.click(screen.getByRole("button", { name: /Sunday/ }));
@@ -320,35 +290,21 @@ describe("homepage Free value block — entitlement-loading guard (#426, both qu
     rerender(homeAppTree({ lang: "en", isPro: false, loadingMe: false }));
     expect(pressed()).toHaveTextContent(/Sunday/); // still day 2, not reset to tonight
     expect(screen.getByTestId("nl3-all-poor")).toBeInTheDocument();
-    expect(screen.getByTestId("nl3-free-value")).toHaveTextContent("For Sunday");
-    expect(screen.getByRole("button", { name: "Compare locations with Pro" })).toBeInTheDocument();
 
     rerender(homeAppTree({ lang: "en", isPro: true, loadingMe: false }));
     expect(pressed()).toHaveTextContent(/Sunday/);
-    expect(screen.queryByTestId("nl3-free-value")).toBeNull();
   });
 });
 
 describe("homepage analytics", () => {
-  it("landing-only CTA event never fires on the homepage; the two shared events do, with source metadata; checkout source unchanged", async () => {
-    const onUpgrade = vi.fn();
-    renderApp("/", { lang: "en", onUpgrade });
+  it("Ticket #431: no upgrade-click event ever fires any more (the upgrade/teaser mechanism is removed)", async () => {
+    renderApp("/", { lang: "en" });
     await waitFor(() => expect(screen.getByTestId("nl3-result")).toBeInTheDocument());
 
-    fireEvent.click(screen.getByRole("button", { name: "See the best locations with Pro" }));
-
-    expect(onUpgrade).toHaveBeenCalledTimes(1);
-    expect(onUpgrade).toHaveBeenCalledWith("northern_lights_homepage");
-    expect(events("northern_lights_landing_cta_clicked")).toHaveLength(0);
-    expect(events("northern_lights_upgrade_clicked")).toEqual([
-      ["northern_lights_upgrade_clicked", { lang: "en", source: "northern_lights_homepage", tier: "free", upgrade_source: "northern_lights_homepage" }],
-    ]);
-    expect(events("northern_lights_multi_day_upgrade_clicked")).toEqual([
-      [
-        "northern_lights_multi_day_upgrade_clicked",
-        { selected_date: D0, days_ahead: 0, forecast_status: "success", user_tier: "free", source: "homepage", upgrade_source: "northern_lights_homepage" },
-      ],
-    ]);
+    expect(screen.queryByRole("button", { name: "See the best locations with Pro" })).toBeNull();
+    for (const name of ["northern_lights_landing_cta_clicked", "northern_lights_upgrade_clicked", "northern_lights_multi_day_upgrade_clicked"]) {
+      expect(events(name)).toHaveLength(0);
+    }
   });
 
   it("night_selected carries source=homepage and exact metadata, once per genuine different-date selection; same-date clicks fire nothing", async () => {
@@ -361,7 +317,10 @@ describe("homepage analytics", () => {
 
     fireEvent.click(screen.getByRole("button", { name: /Tomorrow night/ }));
     expect(events("northern_lights_night_selected")).toEqual([
-      ["northern_lights_night_selected", { selected_date: D1, days_ahead: 1, forecast_status: "success", user_tier: "free", source: "homepage" }],
+      [
+        "northern_lights_night_selected",
+        { selected_date: D1, days_ahead: 1, forecast_status: "success", user_tier: "free", source: "homepage", business_model_experiment: NL_FREE_EXPERIMENT_ID },
+      ],
     ]);
   });
 
@@ -384,7 +343,14 @@ describe("homepage analytics", () => {
   it("best_night_viewed records source=homepage once", async () => {
     renderApp("/", { lang: "en" });
     await waitFor(() => expect(events("northern_lights_best_night_viewed")).toHaveLength(1));
-    expect(events("northern_lights_best_night_viewed")[0][1]).toEqual({ selected_date: D0, days_ahead: 0, forecast_status: "success", user_tier: "free", source: "homepage" });
+    expect(events("northern_lights_best_night_viewed")[0][1]).toEqual({
+      selected_date: D0,
+      days_ahead: 0,
+      forecast_status: "success",
+      user_tier: "free",
+      source: "homepage",
+      business_model_experiment: NL_FREE_EXPERIMENT_ID,
+    });
   });
 
   it("holds exposure events while entitlement loading is unresolved, then records the real tier", async () => {
@@ -519,7 +485,10 @@ describe("landing query handling", () => {
     await waitFor(() => expect(screen.getByTestId("loc").textContent).toContain(`date=${D2}`));
     expect(screen.getByTestId("loc").textContent).toContain("utm_source=news");
     expect(events("northern_lights_night_selected")).toEqual([
-      ["northern_lights_night_selected", { selected_date: D2, days_ahead: 2, forecast_status: "success", user_tier: "free", source: "landing" }],
+      [
+        "northern_lights_night_selected",
+        { selected_date: D2, days_ahead: 2, forecast_status: "success", user_tier: "free", source: "landing", business_model_experiment: NL_FREE_EXPERIMENT_ID },
+      ],
     ]);
     expect(auroraCalls()).toHaveLength(3);
 
@@ -543,15 +512,14 @@ describe("landing query handling", () => {
     expect(screen.getByTestId("loc")).toHaveTextContent(landingPath(D2)); // no URL/state loop
   });
 
-  it("landing keeps its own analytics: source=landing and the landing-only CTA event with the unchanged checkout source", async () => {
+  it("Ticket #431: the landing module's former locked-value CTA/button is gone — no landing_cta_clicked or upgrade event fires", async () => {
     const { container } = renderApp(landingPath(D0));
     await waitFor(() => expect(screen.getByTestId("nl3-result")).toBeInTheDocument());
     const moduleEl = within(container.querySelector('[data-testid="nl3-module"]'));
-    fireEvent.click(moduleEl.getByRole("button", { name: "Show me where to go" }));
-    expect(events("northern_lights_landing_cta_clicked")).toEqual([
-      ["northern_lights_landing_cta_clicked", { lang: "en", tier: "free", placement: "card", source: "northern_lights_card" }],
-    ]);
-    expect(events("northern_lights_multi_day_upgrade_clicked")[0][1].source).toBe("landing");
+    expect(moduleEl.queryByRole("button", { name: "Show me where to go" })).toBeNull();
+    for (const name of ["northern_lights_landing_cta_clicked", "northern_lights_multi_day_upgrade_clicked"]) {
+      expect(events(name)).toHaveLength(0);
+    }
   });
 });
 
@@ -636,7 +604,7 @@ describe("#427: deterministic third-night weekday — real components, IS homepa
     stubFetch(wedFixtures());
   });
 
-  it("IS homepage: selecting the third night shows miðvikudagur (tab) and miðvikudagskvöld (caption) — never Wednesday", async () => {
+  it("IS homepage: selecting the third night shows miðvikudagur (tab) and miðvikudagskvöld (in the result body) — never Wednesday", async () => {
     renderApp("/", { lang: "is" });
     await waitFor(() => expect(screen.getByTestId("nl3-result")).toBeInTheDocument());
 
@@ -644,11 +612,11 @@ describe("#427: deterministic third-night weekday — real components, IS homepa
     expect(dayTabs[2]).toHaveTextContent("miðvikudagur");
     fireEvent.click(dayTabs[2]);
 
-    await waitFor(() => expect(screen.getByTestId("nl3-free-value")).toHaveTextContent("Fyrir miðvikudagskvöld"));
+    await waitFor(() => expect(document.body.textContent).toContain("miðvikudagskvöld"));
     expect(document.body.textContent).not.toMatch(/Wednesday/);
   });
 
-  it("EN homepage: selecting the third night shows Wednesday (tab) and 'Wednesday night' (caption)", async () => {
+  it("EN homepage: selecting the third night shows Wednesday (tab) and 'Wednesday night' (in the result body)", async () => {
     renderApp("/", { lang: "en" });
     await waitFor(() => expect(screen.getByTestId("nl3-result")).toBeInTheDocument());
 
@@ -656,7 +624,7 @@ describe("#427: deterministic third-night weekday — real components, IS homepa
     expect(dayTabs[2]).toHaveTextContent("Wednesday");
     fireEvent.click(dayTabs[2]);
 
-    await waitFor(() => expect(screen.getByTestId("nl3-free-value")).toHaveTextContent("For Wednesday night"));
+    await waitFor(() => expect(document.body.textContent).toContain("Wednesday night"));
   });
 
   it("forced-English landing shows the same Wednesday label even with saved IS language", async () => {

@@ -11,22 +11,50 @@
 // cc-report.md for #425); its CARD_SHELL_CLASS is still shared from there.
 //
 // `surface` ("landing" default | "homepage") is the only fork, and it only
-// affects presentation and analytics labelling: the homepage shows its own
-// truthful, comparison-oriented Free conversion block (#426) instead of
-// landing's marketing copy, keeps its own details preference key, links the
-// SELECTED night to the landing page (EN homepage only — #426 removed the IS
-// link), and never emits the landing-only CTA event. Forecast logic is
-// identical on both.
+// affects presentation and analytics labelling: the homepage keeps its own
+// details preference key, links the SELECTED night to the landing page (EN
+// homepage only — #426 removed the IS link). Forecast logic is identical on
+// both.
+//
+// Ticket #431 — full access (details, ranking, map, reasons) is open to
+// every tier for the "northern_lights_free_v1" business-model experiment.
+// `hasNLAccess` (from `isFeatureAvailable("northernLights", entitlements)`)
+// is kept DISTINCT from `tier` (the genuine account tier, via
+// `getUserTier(entitlements)`) — `hasNLAccess` only gates presentation
+// (passed down as AuroraNightOutlook's `isPro` prop, per its own existing
+// "presentation-only gate" contract), `tier` is the only thing analytics
+// ever records. Never conflate the two: `hasNLAccess` is unconditionally
+// true during the experiment (even before login/entitlement resolution),
+// while `tier` still reports the user's real Free/Pro status. The former
+// Free-only teaser/upgrade blocks (LockedValue, FreeValueBlock) and their
+// purchase callbacks are removed from this journey — see
+// docs/ai/tasks/ticket-431/experiment-note.md.
 //
 // It carries the retired card's analytics (card/unavailable/stale viewed,
-// details opened, ranking/map viewed, upgrade clicks) with their original
-// payloads — only for the SELECTED night's visible content, never
-// background-loaded nights.
+// details opened, ranking/map viewed) with their original payloads — only
+// for the SELECTED night's visible content, never background-loaded
+// nights — now additionally carrying `business_model_experiment` on each.
+//
+// Ticket #431 v2 (corrective, per Ripley's final-assessment REVISE on the
+// v1 result review): two gaps in v1's own already-approved items 4 and 6.
+// (a) `tier` (from `getUserTier(entitlements)`) can be a premature "free"
+// guess while `loadingMe` is still true — entitlements default falsy before
+// resolution, same trap v1 already guarded the three EXPOSURE effects
+// against (`if (loadingMe) return;`), but the IMMEDIATE interaction
+// handlers (night selection, details toggle, the recommended-night action,
+// and the new map-marker selection below) were not. `interactionTier`
+// records `"unknown"` while loading and the real tier once resolved — never
+// retroactively relabels an already-fired "unknown" event after resolution,
+// never emits a second copy. (b) the aurora map's marker click was wired to
+// a no-op (`onSelect={() => {}}` in AuroraNightOutlook) — real clicks on an
+// already-exposed map were never measured at all, distinct from
+// `map_viewed`'s own exposure-only semantics. `northern_lights_location_selected`
+// now records that actual action, with the same `interactionTier` treatment.
 
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { Sparkles } from "lucide-react";
-import { isFeatureAvailable } from "../config/features";
+import { isFeatureAvailable, getUserTier, NL_FREE_EXPERIMENT_ID } from "../config/features";
 import { trackEvent } from "../lib/analytics";
 import { isAuroraSeason } from "../lib/auroraSeason";
 import { useAuroraThreeNight } from "../hooks/useAuroraThreeNight";
@@ -130,7 +158,6 @@ export default function NorthernLightsThreeNight({
   t,
   lang,
   entitlements,
-  onUpgrade,
   theme,
   fetchImpl,
   now,
@@ -143,9 +170,16 @@ export default function NorthernLightsThreeNight({
   const detailsKey = isHomepage ? DETAILS_KEYS.homepage : DETAILS_KEYS.landing;
   const seasonActive = isAuroraSeason(now ? now() : undefined);
 
+  // Ticket #431: `hasNLAccess` (presentation gate) and `tier` (genuine
+  // account tier, for analytics) are deliberately separate — see header
+  // comment. Never derive one from the other.
   const gate = isFeatureAvailable("northernLights", entitlements);
-  const isPro = !!gate.available;
-  const tier = isPro ? "pro" : "free";
+  const hasNLAccess = !!gate.available;
+  const tier = getUserTier(entitlements);
+  // Ticket #431 v2: immediate interaction events (never gated by loadingMe
+  // the way the exposure effects below already are) must not guess "free"
+  // before entitlement resolution — see header comment.
+  const interactionTier = loadingMe ? "unknown" : tier;
 
   const { slots, selectedDate, setSelectedDate, nowMs } = useAuroraThreeNight({ enabled: seasonActive, fetchImpl, now, requestedDate });
 
@@ -169,13 +203,13 @@ export default function NorthernLightsThreeNight({
       selectAuroraDisplay({
         best: classification?.body?.best ?? null,
         alternatives: classification?.body?.alternatives,
-        isPro,
+        isPro: hasNLAccess,
       }),
-    [classification, isPro],
+    [classification, hasNLAccess],
   );
 
   function toggleDetails() {
-    if (!detailsExpanded) trackEvent("northern_lights_details_opened", { lang, tier });
+    if (!detailsExpanded) trackEvent("northern_lights_details_opened", { lang, tier: interactionTier, business_model_experiment: NL_FREE_EXPERIMENT_ID });
     setDetailsExpanded((prev) => {
       const next = !prev;
       try {
@@ -195,15 +229,16 @@ export default function NorthernLightsThreeNight({
       selected_date: date,
       days_ahead: target?.daysAhead ?? null,
       forecast_status: target ? forecastStatusFor(target) : "loading",
-      user_tier: tier,
+      user_tier: interactionTier,
       source: surface,
+      business_model_experiment: NL_FREE_EXPERIMENT_ID,
     });
   }
 
   function handleSeeRecommendedNight(date) {
     selectNight(date);
-    if (isPro && !detailsExpanded) {
-      trackEvent("northern_lights_details_opened", { lang, tier });
+    if (hasNLAccess && !detailsExpanded) {
+      trackEvent("northern_lights_details_opened", { lang, tier: interactionTier, business_model_experiment: NL_FREE_EXPERIMENT_ID });
       setDetailsExpanded(true);
       try {
         sessionStorage.setItem(detailsKey, "true");
@@ -213,29 +248,20 @@ export default function NorthernLightsThreeNight({
     }
   }
 
-  // Existing card-level events (original payloads/sources) plus the new
-  // multi-day event: each fires once per actual click, before forwarding
-  // the existing checkout source unchanged.
-  // #426: on the homepage, the click is explicitly attributed to this
-  // surface via a bounded `upgrade_source` value, added to the existing
-  // events without removing/repurposing any existing field. Landing keeps
-  // its exact prior payloads (no upgrade_source field there).
-  function handleUpgrade(rawSource) {
-    const source = isHomepage ? "northern_lights_homepage" : rawSource;
-    if (!isHomepage) trackEvent("northern_lights_landing_cta_clicked", { lang, tier: "free", placement: "card", source });
-    trackEvent(
-      "northern_lights_upgrade_clicked",
-      isHomepage ? { lang, source, tier: "free", upgrade_source: "northern_lights_homepage" } : { lang, source, tier: "free" },
-    );
-    trackEvent("northern_lights_multi_day_upgrade_clicked", {
+  // Ticket #431 v2: the aurora map's marker click — a real, user-initiated
+  // action, distinct from map_viewed's own exposure-only semantics (which
+  // fires once the map is simply shown, not when a marker is clicked).
+  // Never fires on mount/render/popup — only forwarded from an actual
+  // NorthernLightsMap -> MapView onSelect(locationId) click callback.
+  function handleLocationSelect(locationId) {
+    trackEvent("northern_lights_location_selected", {
+      location_id: locationId,
       selected_date: selectedSlot.date,
       days_ahead: selectedSlot.daysAhead,
-      forecast_status: forecastStatusFor(selectedSlot),
-      user_tier: tier,
       source: surface,
-      ...(isHomepage ? { upgrade_source: "northern_lights_homepage" } : {}),
+      user_tier: interactionTier,
+      business_model_experiment: NL_FREE_EXPERIMENT_ID,
     });
-    if (typeof onUpgrade === "function") onUpgrade(source);
   }
 
   // ── Selected-content exposure events, deduped by request/date identity ──
@@ -255,31 +281,35 @@ export default function NorthernLightsThreeNight({
       band: classification.body?.best?.band ?? null,
       tier,
       resultState: isResultOutcome ? (display.hasQualifyingLocations ? "qualifying" : "all_poor") : null,
+      business_model_experiment: NL_FREE_EXPERIMENT_ID,
     });
 
     if (classification.primary === "domain_unavailable" || classification.primary === "no_darkness" || classification.primary === "contract_defect") {
-      trackEvent("northern_lights_unavailable_viewed", { lang, outcome: classification.primary, tier });
+      trackEvent("northern_lights_unavailable_viewed", { lang, outcome: classification.primary, tier, business_model_experiment: NL_FREE_EXPERIMENT_ID });
     }
     if (isResultOutcome && classification.freshness === "stale") {
-      trackEvent("northern_lights_stale_viewed", { lang, outcome: classification.primary, tier });
+      trackEvent("northern_lights_stale_viewed", { lang, outcome: classification.primary, tier, business_model_experiment: NL_FREE_EXPERIMENT_ID });
     }
   }, [classification, requestKey, loadingMe, lang, tier, display.hasQualifyingLocations]);
 
+  // Ticket #431: these two previously hardcoded `tier: "pro"` literally —
+  // confirmed and flagged in Jonesy's Round 1 review — now use the genuine
+  // account tier, since exposure to the ranking/map is no longer Pro-only.
   const rankingViewedRef = useRef(new Set());
   useEffect(() => {
     if (loadingMe || !detailsExpanded || !requestKey || !display.showRanking) return;
     if (rankingViewedRef.current.has(requestKey)) return;
     rankingViewedRef.current.add(requestKey);
-    trackEvent("northern_lights_ranking_viewed", { lang, tier: "pro" });
-  }, [detailsExpanded, requestKey, display.showRanking, loadingMe, lang]);
+    trackEvent("northern_lights_ranking_viewed", { lang, tier, business_model_experiment: NL_FREE_EXPERIMENT_ID });
+  }, [detailsExpanded, requestKey, display.showRanking, loadingMe, lang, tier]);
 
   const mapViewedRef = useRef(new Set());
   useEffect(() => {
     if (loadingMe || !detailsExpanded || !requestKey || !display.showMap) return;
     if (mapViewedRef.current.has(requestKey)) return;
     mapViewedRef.current.add(requestKey);
-    trackEvent("northern_lights_map_viewed", { lang, tier: "pro" });
-  }, [detailsExpanded, requestKey, display.showMap, loadingMe, lang]);
+    trackEvent("northern_lights_map_viewed", { lang, tier, business_model_experiment: NL_FREE_EXPERIMENT_ID });
+  }, [detailsExpanded, requestKey, display.showMap, loadingMe, lang, tier]);
 
   const multiNight = classifyMultiNightComparison({
     slots: slots.map((s) => ({ date: s.date, daysAhead: s.daysAhead, status: s.status, classification: s.classification })),
@@ -308,6 +338,7 @@ export default function NorthernLightsThreeNight({
       forecast_status: "success",
       user_tier: tier,
       source: surface,
+      business_model_experiment: NL_FREE_EXPERIMENT_ID,
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [multiNight.state, multiNight.comparison, loadingMe, tier]);
@@ -356,15 +387,13 @@ export default function NorthernLightsThreeNight({
             theme={theme}
             status={selectedSlot.status}
             classification={selectedSlot.classification}
-            isPro={isPro}
+            isPro={hasNLAccess}
             detailsExpanded={detailsExpanded}
             onToggleDetails={toggleDetails}
-            onUpgrade={handleUpgrade}
             onRetry={selectedSlot.retry}
+            onLocationSelect={handleLocationSelect}
             nowMs={nowMs}
             when={when}
-            surface={surface}
-            loadingMe={loadingMe}
           />
         </div>
 
