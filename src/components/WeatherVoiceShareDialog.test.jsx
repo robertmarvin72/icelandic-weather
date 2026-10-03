@@ -33,6 +33,7 @@ const SNAPSHOT = Object.freeze({
   language: "is",
   mood: "excellent",
   condition: "excellent",
+  voiceLevel: "sarcastic",
   severity: 0,
   siteName: "Þingvellir",
   date: "2026-09-08",
@@ -345,7 +346,7 @@ describe("WeatherVoiceShareDialog — exact event payload and analytics-throw is
     expect(trackEvent).toHaveBeenCalledTimes(1);
     const [name, payload] = trackEvent.mock.calls[0];
     expect(name).toBe("weather_voice_share_clicked");
-    expect(Object.keys(payload).sort()).toEqual(["language", "severity", "share_method", "surface", "voice_id", "weather_type"]);
+    expect(Object.keys(payload).sort()).toEqual(["language", "severity", "share_method", "surface", "voice_id", "voice_level", "weather_type"]);
     expect(payload).toEqual({
       voice_id: "excellent_01",
       language: "is",
@@ -353,6 +354,7 @@ describe("WeatherVoiceShareDialog — exact event payload and analytics-throw is
       weather_type: "excellent",
       surface: "homepage_decision",
       share_method: "download",
+      voice_level: "sarcastic",
     });
   });
 
@@ -548,8 +550,8 @@ describe("WeatherVoiceShareDialog — Ticket 417 (#417): Facebook sharing", () =
     expect(trackEvent).toHaveBeenCalledTimes(1);
     const [name, payload] = trackEvent.mock.calls[0];
     expect(name).toBe("tjaldur_facebook_share_clicked");
-    expect(Object.keys(payload).sort()).toEqual(["language", "mood", "source"]);
-    expect(payload).toEqual({ mood: "excellent", language: "is", source: "homepage_decision" });
+    expect(Object.keys(payload).sort()).toEqual(["language", "mood", "source", "voice_level"]);
+    expect(payload).toEqual({ mood: "excellent", language: "is", source: "homepage_decision", voice_level: "sarcastic" });
   });
 
   it("repeated intentional clicks each count once", () => {

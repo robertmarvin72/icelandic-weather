@@ -283,7 +283,7 @@ describe("WeatherVoiceCard — visibility-based exposure signal", () => {
 
 describe("WeatherVoiceCard — secondary share action (Ticket 410, #410)", () => {
   function snapshot(overrides = {}) {
-    return { voiceId: "excellent_01", text: "x", language: "is", mood: "excellent", condition: "excellent", severity: 0, siteName: "Þingvellir", date: "2026-09-08", tmax: 16, code: 0, episodeKey: "ep-share-1", ...overrides };
+    return { voiceId: "excellent_01", text: "x", language: "is", mood: "excellent", condition: "excellent", voiceLevel: "sarcastic", severity: 0, siteName: "Þingvellir", date: "2026-09-08", tmax: 16, code: 0, episodeKey: "ep-share-1", ...overrides };
   }
 
   it("no share button and no dialog when shareSnapshot is absent — never for a CTA-less/ineligible episode", () => {

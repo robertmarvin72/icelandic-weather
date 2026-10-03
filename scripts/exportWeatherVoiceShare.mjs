@@ -2,8 +2,8 @@
 // scripts/exportWeatherVoiceShare.mjs
 //
 // Ticket 417 (#417) — small, offline asset-export script. Generates the
-// finite, checked-in static-share catalogue (54 combinations today: every
-// (language, comment) pair in getWeatherVoiceLibrary()) as real files
+// finite, checked-in static-share catalogue (26 combinations today: every
+// sarcastic (language, comment) pair in getWeatherVoiceLibrary(), per #432) as real files
 // under public/share/tjaldur/<version>/<language>/<voiceId>.{html,png},
 // plus the generated runtime manifest module at
 // src/lib/weatherVoiceShareManifest.generated.js.

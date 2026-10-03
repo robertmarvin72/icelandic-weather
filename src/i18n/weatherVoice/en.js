@@ -1,35 +1,14 @@
 // src/i18n/weatherVoice/en.js
 //
 // Weather Voice (#406) Phase 2, filled in by Ticket 412 (#412) — English
-// comment library. Natural adaptations of is.js's 27 entries, not literal
+// comment library. Natural adaptations of is.js's entries, not literal
 // word-for-word translations (docs/weather-voice/character-and-voice-bible.md
 // §8: "English is natural adaptation, not obligatory literal translation").
-// Same 27 IDs as is.js, same order, same dry/terse/weather-directed voice —
-// no new IDs, no joke-concept changes, no intensifying or softening of the
-// source's caution level (Bible §3/§5; approved prompt's #413 safety
-// boundary). Metadata (condition/mood/severity/cooldown/CTA) is shared
-// with is.js via weatherVoiceContent.js's single registry, keyed by the
-// same id — never duplicated or re-specified per language here.
-//
-// getWeatherVoiceLibrary("en") now resolves to this genuinely complete,
-// supported library (see weatherVoiceContent.test.js's
-// validateWeatherVoiceLanguageCompleteness coverage) — no longer the
-// deliberately-empty MVP placeholder this file started as.
+// #432: only the 13 sarcastic (joke) entries remain, with the same IDs and
+// order as is.js. The 14 retired cautious/serious-condition jokes are gone
+// and their IDs are reserved (see RETIRED_JOKE_IDS in weatherVoiceContent.js).
+// Metadata is shared with is.js via weatherVoiceContent.js's single registry.
 export const en = [
-  { id: "wind_extreme_01", text: "Wind: Yes." },
-  { id: "wind_extreme_02", text: "I take this as a personal attack." },
-  { id: "wind_extreme_03", text: "No." },
-  { id: "wind_extreme_04", text: "The wind has become a whole thing." },
-  { id: "wind_extreme_05", text: "This wasn't in the brochure." },
-  { id: "wind_strong_01", text: "Calm is on vacation." },
-  { id: "wind_strong_02", text: "The hair has given up." },
-  { id: "wind_strong_03", text: "This isn't blowing over." },
-  { id: "rain_heavy_01", text: "At least the car gets a wash." },
-  { id: "rain_heavy_02", text: "Dry is a relative concept." },
-  { id: "rain_heavy_03", text: "This is an excessive interest in water." },
-  { id: "cold_wet_01", text: "The wool earns its keep." },
-  { id: "cold_wet_02", text: "The weather took the whole package." },
-  { id: "cold_wet_03", text: "Not quite shorts weather." },
   { id: "cold_01", text: "The sweater was right." },
   { id: "cold_02", text: "The sweater gets an extension." },
   { id: "cold_03", text: "The coffee cools out of sympathy." },

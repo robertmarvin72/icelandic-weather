@@ -7,6 +7,7 @@ function activePresentation(overrides = {}) {
   return {
     show: true,
     condition: "excellent",
+    voiceLevel: "sarcastic",
     mood: "excellent",
     severity: 0,
     comment: { id: "excellent_01", text: "Þetta er grunsamlega gott." },
@@ -34,6 +35,7 @@ describe("buildWeatherVoiceShareSnapshot — eligible episode", () => {
       language: "is",
       mood: "excellent",
       condition: "excellent",
+      voiceLevel: "sarcastic",
       severity: 0,
       siteName: "Þingvellir",
       date: "2026-09-08",
@@ -57,23 +59,45 @@ describe("buildWeatherVoiceShareSnapshot — eligible episode", () => {
   });
 });
 
-describe("buildWeatherVoiceShareSnapshot — universal sharing (Ticket 410 Revision 2, #410): every real condition builds a snapshot", () => {
-  it.each(["extreme_wind", "heavy_rain", "strong_wind", "cold_wet", "cold", "rain", "sun_wind", "excellent", "good"])(
-    "%s produces a valid, complete snapshot — no condition allowlist remains",
-    (condition) => {
-      const snapshot = buildWeatherVoiceShareSnapshot({
-        presentation: activePresentation({ condition, mood: "wrecked", comment: { id: "wind_extreme_01", text: "Vindur: Já." } }),
-        lang: "is",
-        site: SITE,
-        todayRow: TODAY_ROW,
-        todayDate: TODAY_ROW.date,
-        episodeKey: "k",
-      });
-      expect(snapshot).not.toBeNull();
-      expect(snapshot.condition).toBe(condition);
-      expect(snapshot.text).toBe("Vindur: Já.");
-    },
-  );
+describe("buildWeatherVoiceShareSnapshot — sarcastic-only sharing (#432)", () => {
+  it.each(["cold", "rain", "sun_wind", "excellent", "good"])("%s (sarcastic) produces a valid, complete snapshot", (condition) => {
+    const snapshot = buildWeatherVoiceShareSnapshot({
+      presentation: activePresentation({ condition, mood: "happy", comment: { id: "good_01", text: "Þetta má alveg." } }),
+      lang: "is",
+      site: SITE,
+      todayRow: TODAY_ROW,
+      todayDate: TODAY_ROW.date,
+      episodeKey: "k",
+    });
+    expect(snapshot).not.toBeNull();
+    expect(snapshot.condition).toBe(condition);
+    expect(snapshot.voiceLevel).toBe("sarcastic");
+  });
+
+  it.each([
+    ["extreme_wind", "serious"],
+    ["heavy_rain", "cautious"],
+    ["strong_wind", "cautious"],
+    ["cold_wet", "cautious"],
+  ])("%s (%s) never produces a snapshot, even with otherwise valid data", (condition, voiceLevel) => {
+    const snapshot = buildWeatherVoiceShareSnapshot({
+      presentation: activePresentation({ condition, voiceLevel, mood: "wrecked", comment: { id: "safety_extreme_wind", text: "x" } }),
+      lang: "is",
+      site: SITE,
+      todayRow: TODAY_ROW,
+      todayDate: TODAY_ROW.date,
+      episodeKey: "k",
+    });
+    expect(snapshot).toBeNull();
+  });
+
+  it("a presentation without a voiceLevel never produces a snapshot — never defaulted to sarcastic", () => {
+    const withoutTone = activePresentation();
+    delete withoutTone.voiceLevel;
+    expect(
+      buildWeatherVoiceShareSnapshot({ presentation: withoutTone, lang: "is", site: SITE, todayRow: TODAY_ROW, todayDate: TODAY_ROW.date, episodeKey: "k" }),
+    ).toBeNull();
+  });
 });
 
 describe("buildWeatherVoiceShareSnapshot — ineligible/invalid inputs never produce a snapshot", () => {

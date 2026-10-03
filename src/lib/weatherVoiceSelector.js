@@ -12,19 +12,31 @@
 // displayed.
 
 import { WEATHER_VOICE_KNOWN_CONDITIONS, WEATHER_VOICE_KNOWN_MOODS } from "./weatherVoiceContent";
+import { voiceLevelForCondition } from "./weatherVoiceRules";
+import { selectWeatherSafetyPresentation } from "./weatherVoiceSafety";
 
 const MS_PER_DAY = 86400000;
 
+// #432 — only an explicit, policy-consistent sarcastic result may reach the
+// joke pool. A missing, unknown or mismatched voiceLevel is silence, never a
+// default to sarcastic.
 function isActiveEngineResult(result) {
   if (!result || result.show !== true) return false;
   if (typeof result.condition !== "string" || !WEATHER_VOICE_KNOWN_CONDITIONS.has(result.condition)) return false;
   if (typeof result.mood !== "string" || !WEATHER_VOICE_KNOWN_MOODS.has(result.mood)) return false;
   if (!Number.isInteger(result.severity) || result.severity < 0 || result.severity > 3) return false;
+  if (result.voiceLevel !== "sarcastic" || voiceLevelForCondition(result.condition) !== "sarcastic") return false;
   return true;
 }
 
 function isEligible(entry, condition, mood, severity) {
-  return entry.condition === condition && entry.mood === mood && severity >= entry.severityMin && severity <= entry.severityMax;
+  return (
+    entry.voiceLevel === "sarcastic" &&
+    entry.condition === condition &&
+    entry.mood === mood &&
+    severity >= entry.severityMin &&
+    severity <= entry.severityMax
+  );
 }
 
 function isAvailable(entry, history, now) {
@@ -115,7 +127,24 @@ export function selectWeatherVoiceComment({ engineResult, library, history, now,
     condition,
     mood,
     severity,
+    voiceLevel: "sarcastic",
     comment: Object.freeze({ id: chosen.id, text: chosen.text }),
     ctaType: chosen.ctaType ?? null,
   });
+}
+
+/**
+ * selectWeatherVoicePresentation({ engineResult, lang, library, history, now, rng })
+ * -> WeatherVoicePresentation
+ *
+ * Routes by the engine result's voice level. Sarcastic results use the joke
+ * selector above, with its cooldown and history. Cautious and serious
+ * results use the deterministic safety selector, which ignores RNG, history
+ * and cooldown. Anything else is silence.
+ */
+export function selectWeatherVoicePresentation({ engineResult, lang, library, history, now, rng }) {
+  if (engineResult?.voiceLevel === "sarcastic") {
+    return selectWeatherVoiceComment({ engineResult, library, history, now, rng });
+  }
+  return selectWeatherSafetyPresentation({ engineResult, lang });
 }

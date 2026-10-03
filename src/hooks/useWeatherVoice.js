@@ -18,6 +18,11 @@
 // today's 27 IS/EN comments has `ctaType: null`, so there is no authored
 // interaction to measure (see docs/analytics/weather-voice-production-validation.md).
 //
+// Ticket 432 (#432) — every active outcome carries a voiceLevel. Sarcastic
+// episodes use the joke pool and its cooldown history. Cautious and serious
+// episodes use the deterministic safety library and never touch that
+// history, and they never produce a share snapshot.
+//
 // Ticket 410 (#410) — this hook also computes `shareSnapshot`: a narrow,
 // frozen snapshot of the actually-displayed episode for the secondary
 // "share" action, gated by a conservative editorial promotion policy
@@ -28,7 +33,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { evaluateWeatherVoice } from "../lib/weatherVoiceEngine";
 import { getWeatherVoiceLibrary, devWarnEmptyEligiblePool } from "../lib/weatherVoiceContent";
-import { selectWeatherVoiceComment } from "../lib/weatherVoiceSelector";
+import { selectWeatherVoicePresentation } from "../lib/weatherVoiceSelector";
 import { createWeatherVoiceHistory } from "../lib/weatherVoiceHistory";
 import { resolveWeatherVoiceCta } from "../lib/weatherVoicePresentation";
 import { trackEvent } from "../lib/analytics";
@@ -166,7 +171,7 @@ export function useWeatherVoice({
     if (selectionCacheRef.current.key !== episodeKey) {
       const library = getWeatherVoiceLibrary(lang);
       const history = historyRef.current.getHistory(now());
-      const selected = selectWeatherVoiceComment({ engineResult, library, history, now: now(), rng });
+      const selected = selectWeatherVoicePresentation({ engineResult, lang, library, history, now: now(), rng });
       // Ticket 412 (#412): the engine wanted to show something, but this
       // language's resolved library had zero eligible entries for that
       // exact condition/mood — the approved prompt's "exceptional"
@@ -236,7 +241,8 @@ export function useWeatherVoice({
       if (!current?.show) return; // selection landed on content-unavailable silence
       if (recordedEpisodesRef.current.has(key)) return; // already recorded this episode this mount
       recordedEpisodesRef.current.add(key);
-      historyRef.current.recordShown(current, now());
+      // #432 — safety text never enters the joke cooldown history.
+      if (current.voiceLevel === "sarcastic") historyRef.current.recordShown(current, now());
       try {
         trackEvent("weather_voice_viewed", {
           voice_id: current.comment.id,
@@ -244,6 +250,7 @@ export function useWeatherVoice({
           severity: current.severity,
           weather_type: current.condition,
           surface: SURFACE_HOMEPAGE_DECISION,
+          voice_level: current.voiceLevel,
         });
       } catch {
         // Isolated: an analytics helper failure must never break visibility

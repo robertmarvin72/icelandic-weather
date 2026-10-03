@@ -10,6 +10,7 @@ function entry(id, overrides = {}) {
   return {
     id,
     text: `text-${id}`,
+    voiceLevel: "sarcastic",
     condition: "rain",
     mood: "unimpressed",
     severityMin: 0,
@@ -20,7 +21,7 @@ function entry(id, overrides = {}) {
   };
 }
 
-const RAIN_RESULT = Object.freeze({ show: true, condition: "rain", mood: "unimpressed", severity: 1 });
+const RAIN_RESULT = Object.freeze({ show: true, condition: "rain", mood: "unimpressed", voiceLevel: "sarcastic", severity: 1 });
 
 function throwingFn(label) {
   return () => {
@@ -74,7 +75,7 @@ describe("selectWeatherVoiceComment — content eligibility", () => {
   });
 
   it("the canonical condition/mood/severity triple is copied verbatim from Phase 1, not from content", () => {
-    const engineResult = { show: true, condition: "rain", mood: "unimpressed", severity: 2 };
+    const engineResult = { show: true, condition: "rain", mood: "unimpressed", voiceLevel: "sarcastic", severity: 2 };
     const library = [entry("a", { severityMin: 0, severityMax: 3 })];
     const result = selectWeatherVoiceComment({ engineResult, library, history: new Map(), now: NOW, rng: () => 0 });
     expect(result).toMatchObject({ condition: "rain", mood: "unimpressed", severity: 2 });

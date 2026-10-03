@@ -1,0 +1,424 @@
+{
+  "baseUrl": "http://localhost:5173",
+  "todayFixture": "2026-10-03",
+  "matrix": [
+    {
+      "label": "desktop-1280-is-extreme_wind",
+      "viewport": "desktop-1280",
+      "lang": "is",
+      "scenario": "extreme_wind",
+      "card": {
+        "text": "„Mjög hvassviðri er í spánni. Aðstæður geta verið varasamar. Athugaðu opinberar veðurviðvaranir áður en þú leggur af stað.“",
+        "moodAsset": "/tjaldur/wrecked.png",
+        "buttons": [],
+        "hasShareButton": false,
+        "quoteFontPx": 19,
+        "quoteWithinViewport": true,
+        "horizontalOverflow": false
+      },
+      "viewedEvents": [
+        "weather_voice_viewed {voice_id: safety_extreme_wind, language: is, severity: 3, weather_type: extreme_wind, surface: homepage_decision}"
+      ],
+      "gaRequestCount": 0
+    },
+    {
+      "label": "desktop-1280-is-heavy_rain",
+      "viewport": "desktop-1280",
+      "lang": "is",
+      "scenario": "heavy_rain",
+      "card": {
+        "text": "„Mikil rigning er í spánni. Það gæti þurft að endurskoða planið.“",
+        "moodAsset": "/tjaldur/sad.png",
+        "buttons": [],
+        "hasShareButton": false,
+        "quoteFontPx": 19,
+        "quoteWithinViewport": true,
+        "horizontalOverflow": false
+      },
+      "viewedEvents": [
+        "weather_voice_viewed {voice_id: safety_heavy_rain, language: is, severity: 2, weather_type: heavy_rain, surface: homepage_decision}"
+      ],
+      "gaRequestCount": 0
+    },
+    {
+      "label": "desktop-1280-is-strong_wind",
+      "viewport": "desktop-1280",
+      "lang": "is",
+      "scenario": "strong_wind",
+      "card": {
+        "text": "„Hvassviðri er í spánni. Skoðaðu aðstæður vel áður en þú ákveður næsta áfangastað.“",
+        "moodAsset": "/tjaldur/struggling.png",
+        "buttons": [],
+        "hasShareButton": false,
+        "quoteFontPx": 19,
+        "quoteWithinViewport": true,
+        "horizontalOverflow": false
+      },
+      "viewedEvents": [
+        "weather_voice_viewed {voice_id: safety_strong_wind, language: is, severity: 2, weather_type: strong_wind, surface: homepage_decision}"
+      ],
+      "gaRequestCount": 0
+    },
+    {
+      "label": "desktop-1280-is-cold_wet",
+      "viewport": "desktop-1280",
+      "lang": "is",
+      "scenario": "cold_wet",
+      "card": {
+        "text": "„Kalt og blautt er í spánni. Taktu mið af því þegar þú skipuleggur daginn.“",
+        "moodAsset": "/tjaldur/unimpressed.png",
+        "buttons": [],
+        "hasShareButton": false,
+        "quoteFontPx": 19,
+        "quoteWithinViewport": true,
+        "horizontalOverflow": false
+      },
+      "viewedEvents": [
+        "weather_voice_viewed {voice_id: safety_cold_wet, language: is, severity: 2, weather_type: cold_wet, surface: homepage_decision}"
+      ],
+      "gaRequestCount": 0
+    },
+    {
+      "label": "desktop-1280-is-excellent",
+      "viewport": "desktop-1280",
+      "lang": "is",
+      "scenario": "excellent",
+      "card": {
+        "text": "„Ekki segja neinum.“",
+        "moodAsset": "/tjaldur/excellent.png",
+        "buttons": [
+          "Deila Tjaldi"
+        ],
+        "hasShareButton": true,
+        "quoteFontPx": 19,
+        "quoteWithinViewport": true,
+        "horizontalOverflow": false
+      },
+      "viewedEvents": [
+        "weather_voice_viewed {voice_id: excellent_02, language: is, severity: 0, weather_type: excellent, surface: homepage_decision}"
+      ],
+      "gaRequestCount": 0
+    },
+    {
+      "label": "desktop-1280-en-extreme_wind",
+      "viewport": "desktop-1280",
+      "lang": "en",
+      "scenario": "extreme_wind",
+      "card": {
+        "text": "„Very strong winds are forecast. Conditions may be hazardous. Check official weather warnings before setting out.“",
+        "moodAsset": "/tjaldur/wrecked.png",
+        "buttons": [],
+        "hasShareButton": false,
+        "quoteFontPx": 19,
+        "quoteWithinViewport": true,
+        "horizontalOverflow": false
+      },
+      "viewedEvents": [
+        "weather_voice_viewed {voice_id: safety_extreme_wind, language: en, severity: 3, weather_type: extreme_wind, surface: homepage_decision}"
+      ],
+      "gaRequestCount": 0
+    },
+    {
+      "label": "desktop-1280-en-heavy_rain",
+      "viewport": "desktop-1280",
+      "lang": "en",
+      "scenario": "heavy_rain",
+      "card": {
+        "text": "„Heavy rain is forecast. You may need to reconsider your plans.“",
+        "moodAsset": "/tjaldur/sad.png",
+        "buttons": [],
+        "hasShareButton": false,
+        "quoteFontPx": 19,
+        "quoteWithinViewport": true,
+        "horizontalOverflow": false
+      },
+      "viewedEvents": [
+        "weather_voice_viewed {voice_id: safety_heavy_rain, language: en, severity: 2, weather_type: heavy_rain, surface: homepage_decision}"
+      ],
+      "gaRequestCount": 0
+    },
+    {
+      "label": "desktop-1280-en-strong_wind",
+      "viewport": "desktop-1280",
+      "lang": "en",
+      "scenario": "strong_wind",
+      "card": {
+        "text": "„Strong winds are forecast. Check conditions carefully before choosing your next destination.“",
+        "moodAsset": "/tjaldur/struggling.png",
+        "buttons": [],
+        "hasShareButton": false,
+        "quoteFontPx": 19,
+        "quoteWithinViewport": true,
+        "horizontalOverflow": false
+      },
+      "viewedEvents": [
+        "weather_voice_viewed {voice_id: safety_strong_wind, language: en, severity: 2, weather_type: strong_wind, surface: homepage_decision}"
+      ],
+      "gaRequestCount": 0
+    },
+    {
+      "label": "desktop-1280-en-cold_wet",
+      "viewport": "desktop-1280",
+      "lang": "en",
+      "scenario": "cold_wet",
+      "card": {
+        "text": "„Cold and wet conditions are forecast. Take this into account when planning your day.“",
+        "moodAsset": "/tjaldur/unimpressed.png",
+        "buttons": [],
+        "hasShareButton": false,
+        "quoteFontPx": 19,
+        "quoteWithinViewport": true,
+        "horizontalOverflow": false
+      },
+      "viewedEvents": [
+        "weather_voice_viewed {voice_id: safety_cold_wet, language: en, severity: 2, weather_type: cold_wet, surface: homepage_decision}"
+      ],
+      "gaRequestCount": 0
+    },
+    {
+      "label": "desktop-1280-en-excellent",
+      "viewport": "desktop-1280",
+      "lang": "en",
+      "scenario": "excellent",
+      "card": {
+        "text": "„All that's missing is the coffee.“",
+        "moodAsset": "/tjaldur/excellent.png",
+        "buttons": [
+          "Share Tjaldur"
+        ],
+        "hasShareButton": true,
+        "quoteFontPx": 19,
+        "quoteWithinViewport": true,
+        "horizontalOverflow": false
+      },
+      "viewedEvents": [
+        "weather_voice_viewed {voice_id: excellent_03, language: en, severity: 0, weather_type: excellent, surface: homepage_decision}"
+      ],
+      "gaRequestCount": 0
+    },
+    {
+      "label": "mobile-390-is-extreme_wind",
+      "viewport": "mobile-390",
+      "lang": "is",
+      "scenario": "extreme_wind",
+      "card": {
+        "text": "„Mjög hvassviðri er í spánni. Aðstæður geta verið varasamar. Athugaðu opinberar veðurviðvaranir áður en þú leggur af stað.“",
+        "moodAsset": "/tjaldur/wrecked.png",
+        "buttons": [],
+        "hasShareButton": false,
+        "quoteFontPx": 19,
+        "quoteWithinViewport": true,
+        "horizontalOverflow": false
+      },
+      "viewedEvents": [
+        "weather_voice_viewed {voice_id: safety_extreme_wind, language: is, severity: 3, weather_type: extreme_wind, surface: homepage_decision}"
+      ],
+      "gaRequestCount": 0
+    },
+    {
+      "label": "mobile-390-is-heavy_rain",
+      "viewport": "mobile-390",
+      "lang": "is",
+      "scenario": "heavy_rain",
+      "card": {
+        "text": "„Mikil rigning er í spánni. Það gæti þurft að endurskoða planið.“",
+        "moodAsset": "/tjaldur/sad.png",
+        "buttons": [],
+        "hasShareButton": false,
+        "quoteFontPx": 19,
+        "quoteWithinViewport": true,
+        "horizontalOverflow": false
+      },
+      "viewedEvents": [
+        "weather_voice_viewed {voice_id: safety_heavy_rain, language: is, severity: 2, weather_type: heavy_rain, surface: homepage_decision}"
+      ],
+      "gaRequestCount": 0
+    },
+    {
+      "label": "mobile-390-is-strong_wind",
+      "viewport": "mobile-390",
+      "lang": "is",
+      "scenario": "strong_wind",
+      "card": {
+        "text": "„Hvassviðri er í spánni. Skoðaðu aðstæður vel áður en þú ákveður næsta áfangastað.“",
+        "moodAsset": "/tjaldur/struggling.png",
+        "buttons": [],
+        "hasShareButton": false,
+        "quoteFontPx": 19,
+        "quoteWithinViewport": true,
+        "horizontalOverflow": false
+      },
+      "viewedEvents": [
+        "weather_voice_viewed {voice_id: safety_strong_wind, language: is, severity: 2, weather_type: strong_wind, surface: homepage_decision}"
+      ],
+      "gaRequestCount": 0
+    },
+    {
+      "label": "mobile-390-is-cold_wet",
+      "viewport": "mobile-390",
+      "lang": "is",
+      "scenario": "cold_wet",
+      "card": {
+        "text": "„Kalt og blautt er í spánni. Taktu mið af því þegar þú skipuleggur daginn.“",
+        "moodAsset": "/tjaldur/unimpressed.png",
+        "buttons": [],
+        "hasShareButton": false,
+        "quoteFontPx": 19,
+        "quoteWithinViewport": true,
+        "horizontalOverflow": false
+      },
+      "viewedEvents": [
+        "weather_voice_viewed {voice_id: safety_cold_wet, language: is, severity: 2, weather_type: cold_wet, surface: homepage_decision}"
+      ],
+      "gaRequestCount": 0
+    },
+    {
+      "label": "mobile-390-is-excellent",
+      "viewport": "mobile-390",
+      "lang": "is",
+      "scenario": "excellent",
+      "card": {
+        "text": "„Þetta er grunsamlega gott.“",
+        "moodAsset": "/tjaldur/excellent.png",
+        "buttons": [
+          "Deila Tjaldi"
+        ],
+        "hasShareButton": true,
+        "quoteFontPx": 19,
+        "quoteWithinViewport": true,
+        "horizontalOverflow": false
+      },
+      "viewedEvents": [
+        "weather_voice_viewed {voice_id: excellent_01, language: is, severity: 0, weather_type: excellent, surface: homepage_decision}"
+      ],
+      "gaRequestCount": 0
+    },
+    {
+      "label": "mobile-390-en-extreme_wind",
+      "viewport": "mobile-390",
+      "lang": "en",
+      "scenario": "extreme_wind",
+      "card": {
+        "text": "„Very strong winds are forecast. Conditions may be hazardous. Check official weather warnings before setting out.“",
+        "moodAsset": "/tjaldur/wrecked.png",
+        "buttons": [],
+        "hasShareButton": false,
+        "quoteFontPx": 19,
+        "quoteWithinViewport": true,
+        "horizontalOverflow": false
+      },
+      "viewedEvents": [
+        "weather_voice_viewed {voice_id: safety_extreme_wind, language: en, severity: 3, weather_type: extreme_wind, surface: homepage_decision}"
+      ],
+      "gaRequestCount": 0
+    },
+    {
+      "label": "mobile-390-en-heavy_rain",
+      "viewport": "mobile-390",
+      "lang": "en",
+      "scenario": "heavy_rain",
+      "card": {
+        "text": "„Heavy rain is forecast. You may need to reconsider your plans.“",
+        "moodAsset": "/tjaldur/sad.png",
+        "buttons": [],
+        "hasShareButton": false,
+        "quoteFontPx": 19,
+        "quoteWithinViewport": true,
+        "horizontalOverflow": false
+      },
+      "viewedEvents": [
+        "weather_voice_viewed {voice_id: safety_heavy_rain, language: en, severity: 2, weather_type: heavy_rain, surface: homepage_decision}"
+      ],
+      "gaRequestCount": 0
+    },
+    {
+      "label": "mobile-390-en-strong_wind",
+      "viewport": "mobile-390",
+      "lang": "en",
+      "scenario": "strong_wind",
+      "card": {
+        "text": "„Strong winds are forecast. Check conditions carefully before choosing your next destination.“",
+        "moodAsset": "/tjaldur/struggling.png",
+        "buttons": [],
+        "hasShareButton": false,
+        "quoteFontPx": 19,
+        "quoteWithinViewport": true,
+        "horizontalOverflow": false
+      },
+      "viewedEvents": [
+        "weather_voice_viewed {voice_id: safety_strong_wind, language: en, severity: 2, weather_type: strong_wind, surface: homepage_decision}"
+      ],
+      "gaRequestCount": 0
+    },
+    {
+      "label": "mobile-390-en-cold_wet",
+      "viewport": "mobile-390",
+      "lang": "en",
+      "scenario": "cold_wet",
+      "card": {
+        "text": "„Cold and wet conditions are forecast. Take this into account when planning your day.“",
+        "moodAsset": "/tjaldur/unimpressed.png",
+        "buttons": [],
+        "hasShareButton": false,
+        "quoteFontPx": 19,
+        "quoteWithinViewport": true,
+        "horizontalOverflow": false
+      },
+      "viewedEvents": [
+        "weather_voice_viewed {voice_id: safety_cold_wet, language: en, severity: 2, weather_type: cold_wet, surface: homepage_decision}"
+      ],
+      "gaRequestCount": 0
+    },
+    {
+      "label": "mobile-390-en-excellent",
+      "viewport": "mobile-390",
+      "lang": "en",
+      "scenario": "excellent",
+      "card": {
+        "text": "„This is suspiciously good.“",
+        "moodAsset": "/tjaldur/excellent.png",
+        "buttons": [
+          "Share Tjaldur"
+        ],
+        "hasShareButton": true,
+        "quoteFontPx": 19,
+        "quoteWithinViewport": true,
+        "horizontalOverflow": false
+      },
+      "viewedEvents": [
+        "weather_voice_viewed {voice_id: excellent_01, language: en, severity: 0, weather_type: excellent, surface: homepage_decision}"
+      ],
+      "gaRequestCount": 0
+    }
+  ],
+  "staleDialog": {
+    "label": "stale-dialog-desktop-is",
+    "before": {
+      "text": "„Nú vantar bara kaffið.“",
+      "moodAsset": "/tjaldur/excellent.png",
+      "buttons": [
+        "Deila Tjaldi"
+      ],
+      "hasShareButton": true,
+      "quoteFontPx": 19,
+      "quoteWithinViewport": true,
+      "horizontalOverflow": false
+    },
+    "dialogOpenBefore": true,
+    "dialogOpenAfter": false,
+    "after": {
+      "text": "„Mikil rigning er í spánni. Það gæti þurft að endurskoða planið.“",
+      "moodAsset": "/tjaldur/sad.png",
+      "buttons": [],
+      "hasShareButton": false,
+      "quoteFontPx": 19,
+      "quoteWithinViewport": true,
+      "horizontalOverflow": false
+    },
+    "viewedEvents": [
+      "weather_voice_viewed {voice_id: excellent_03, language: is, severity: 0, weather_type: excellent, surface: homepage_decision}",
+      "weather_voice_viewed {voice_id: safety_heavy_rain, language: is, severity: 2, weather_type: heavy_rain, surface: homepage_decision}"
+    ],
+    "gaRequestCount": 0
+  }
+}

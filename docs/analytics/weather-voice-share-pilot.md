@@ -75,7 +75,7 @@ This is an **untagged campaign link for the caption**, not a tag embedded in the
 
 **These are two different decisions, made at two different layers, and this section keeps them explicitly separate.**
 
-### 4a. In-app entrypoint — universal (owner-authorized, Revision 2)
+### 4a. In-app entrypoint — universal (owner-authorized, Revision 2) — superseded for cautious/serious content by §10 (#432)
 
 The "Deila Tjaldi"/"Share Tjaldur" button appears for **every** genuinely displayed Tjaldur — `extreme_wind`/`heavy_rain`/`strong_wind`/`cold_wet`/`cold`/`rain`/`sun_wind` included, not only `good`/`excellent`. `src/lib/weatherVoiceSharePolicy.js` was reduced to structural validity only (a real, active, supported-language episode) — the condition allowlist and the (always-inactive) hazard-veto seam were both **removed**, not merely disabled, per the owner's explicit override. This is a genuine product decision: it means Tjaldur's own dry commentary on bad weather is now something any user can share themselves, same as good weather. **It is not a safety determination** — the export renders serious/severe messages faithfully, without added celebratory encouragement or minimization, and does not resolve #413's safety gap (no classifier or `voice_level` field exists; severity remains expressive intensity only).
 
@@ -176,3 +176,14 @@ The universal, user-initiated "Share on Facebook" button (this ticket) and the s
 - No automatic/scheduled posting exists or is implemented anywhere in this codebase.
 - No GitHub issue has been closed and no follow-up issue has been created by CC.
 - **Ticket 417 (#417) addition:** no static share page has been deployed to production, no Facebook Sharing Debugger check has been run, and no Facebook post has been created via the new "Share on Facebook" link by CC — this is client-side code + a checked-in static asset catalogue only.
+
+---
+
+## 10. Ticket 432 (#432) — sarcastic-only sharing (supersedes §4a for cautious and serious content)
+
+- **Policy:** only episodes whose `voiceLevel` is `sarcastic` and whose condition's policy tone is also `sarcastic` may be shared. Missing, unknown, non-string, or mismatched tone is refused. The check runs at the snapshot builder, the share dialog, the image renderer, the catalogue, and the Facebook resolver.
+- **Affected conditions:** `extreme_wind` (serious), `heavy_rain`, `strong_wind`, and `cold_wet` (cautious) have no share entrypoint in any language. The card shows their safety message without a share button.
+- **Active share catalogue:** 26 entries (13 sarcastic comments × IS/EN). The 14 retired joke IDs and the 4 safety message IDs are not in it and have no static share pages.
+- **Released public files:** the 28 retired HTML pages and 28 PNGs under `public/share/tjaldur/v1/` stay on disk, unchanged. Their URLs remain publicly reachable (`noindex, follow`), and their text is not retroactively corrected. Hosted copies, CDN caches, Facebook caches, and published posts were not removed. Deleting or redirecting those URLs is a separate owner decision.
+- **Analytics:** `weather_voice_share_clicked` and `tjaldur_facebook_share_clicked` now also carry `voice_level`. Their other fields are unchanged. Safety IDs never appear in a successful share event, because no share event can occur for cautious or serious content.
+- **Limits:** this is content routing for the nine existing conditions, not a comprehensive hazard classifier or an official warning feed. `windMax` is the normalized daily wind, not gusts. Cold can match snow or freezing-precipitation days and still uses the sarcastic tone. The absence of a serious message never certifies safe travel. None of this authorizes automated or editorial Facebook posting during hazardous weather.

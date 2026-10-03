@@ -30,6 +30,7 @@
 // include the year.
 
 import { resolveWeatherPresentation } from "./weatherPresentation";
+import { evaluateWeatherVoiceSnapshotEligibility } from "./weatherVoiceSharePolicy";
 
 export const SHARE_IMAGE_SIZE = 1080;
 
@@ -337,9 +338,9 @@ function drawContainedImage(ctx, img, box) {
  * -> Promise<Blob>
  *
  * Renders the standalone 1080x1080 share PNG for an already-built,
- * structurally-valid snapshot (see weatherVoiceShareSnapshot.js — every
- * displayed Tjaldur is shareable as of Ticket 410's Round 2 correction;
- * this renderer itself never re-applies any condition-based eligibility).
+ * structurally-valid snapshot whose voice level is sarcastic (#432; see
+ * weatherVoiceSharePolicy.js). Refuses any other snapshot before loading
+ * assets or touching canvas.
  * Rejects (never resolves with a blank/partial image) on: asset load/
  * decode failure, text/context that doesn't fit even at the readable
  * floor sizes and reserved layout, an aborted `signal`, or a
@@ -350,6 +351,9 @@ function drawContainedImage(ctx, img, box) {
  * @returns {Promise<Blob>}
  */
 export async function renderWeatherVoiceShareImage(snapshot, { t, moodAssetPath, brandingAssetPath, signal } = {}) {
+  if (!evaluateWeatherVoiceSnapshotEligibility(snapshot).eligible) {
+    throw new Error("Weather Voice share image refused: snapshot is not shareable.");
+  }
   if (typeof document === "undefined" || typeof document.createElement !== "function") {
     throw new Error("Canvas rendering is unavailable in this environment.");
   }

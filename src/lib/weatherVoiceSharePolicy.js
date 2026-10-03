@@ -1,53 +1,77 @@
 // src/lib/weatherVoiceSharePolicy.js
 //
-// Ticket 410 (#410) Revision 2 — "Every displayed Tjaldur is shareable"
-// (owner-authorized universal sharing override, approved-prompt-v2.md §1,
-// Jonesy Round 2 APPROVED). REDUCED from Revision 1: the condition
-// allowlist (`WEATHER_VOICE_SHARE_ELIGIBLE_CONDITIONS = {good, excellent}`)
-// and the hazard-veto seam (`getWeatherVoiceHazardSignal`) are both
-// REMOVED — not merely disabled. Both were confirmed dead: the hazard
-// signal never had a real source to plug into (no per-site/day hazard
-// result exists anywhere in the Weather Voice data path — see Ticket 410
-// Revision 1's own audit, unchanged), and the condition allowlist is the
-// exact thing the owner explicitly overrode. Keeping either as inert code
-// would be "dead policy that could suppress the entrypoint" — the
-// approved prompt explicitly says to remove that, not leave it disabled.
+// Ticket 410 (#410) Revision 2 — universal sharing for displayed Tjaldur
+// (owner-authorized override). Ticket 432 (#432) supersedes that for
+// cautious and serious content: only an affirmatively sarcastic,
+// policy-consistent episode may be shared.
 //
-// What remains is STRUCTURAL VALIDITY only: a presentation must be a
-// genuine show:true result in a supported language (is/en). This is not,
-// and never was, a safety classifier — removing the condition allowlist
-// does not resolve #413's safety gap. It means the in-app secondary share
-// entrypoint no longer distinguishes by weather condition/severity/mood,
-// which is now the owner's explicit, safety-guarded product decision
-// (serious messages still use the same neutral action, exporting the
-// actual displayed text faithfully, with no celebratory encouragement or
-// minimization added anywhere in the image/dialog copy) — not a
-// determination CC is making about what is safe to promote.
+// A presentation or snapshot is shareable only when all of these hold:
+//   - it is a genuine active result in a supported language (is/en),
+//   - its voiceLevel is exactly "sarcastic", and
+//   - its condition's policy voice level is also "sarcastic".
+// A missing, unknown, non-string or mismatched tone is ineligible. This is
+// an allowlist on purpose, not a denylist of serious/cautious values.
 //
-// Universal in-app user sharing does NOT authorize automated posting or
-// editorial Facebook promotion during hazardous conditions — see
-// docs/analytics/weather-voice-share-pilot.md, which keeps the manual
-// Facebook pilot itself conservative and separately reviewed.
+// This is still not a safety classifier. Universal sharing for sarcastic
+// episodes does not authorize automated posting or editorial Facebook
+// promotion; see docs/analytics/weather-voice-share-pilot.md.
+
+import { voiceLevelForCondition } from "./weatherVoiceRules";
+
+const SUPPORTED_LANGUAGES = new Set(["is", "en"]);
+
+function toneRejection({ voiceLevel, condition }) {
+  if (voiceLevel !== "sarcastic") return "tone_not_sarcastic";
+  if (voiceLevelForCondition(condition) !== "sarcastic") return "tone_condition_mismatch";
+  return null;
+}
 
 /**
  * evaluateWeatherVoiceShareEligibility({ presentation, lang })
  * -> { eligible: boolean, reason: string | null }
  *
- * Pure. The ONLY two rejection reasons remaining: the presentation isn't
- * a genuine active result, or the language isn't one of the two Weather
- * Voice actually supports. No condition, mood, or severity check exists
- * here anymore — every real, active, supported-language episode is
- * eligible.
+ * Pure. Used by the snapshot builder, which is the first share entrypoint.
  *
- * @param {{ presentation: {show:boolean} | null | undefined, lang: string }} args
+ * @param {{ presentation: {show:boolean, condition?:string, voiceLevel?:string} | null | undefined, lang: string }} args
  * @returns {{ eligible: boolean, reason: string | null }}
  */
 export function evaluateWeatherVoiceShareEligibility({ presentation, lang } = {}) {
   if (!presentation?.show) {
     return { eligible: false, reason: "not_active" };
   }
-  if (lang !== "is" && lang !== "en") {
+  if (!SUPPORTED_LANGUAGES.has(lang)) {
     return { eligible: false, reason: "unsupported_language" };
   }
+  const reason = toneRejection(presentation);
+  if (reason) return { eligible: false, reason };
   return { eligible: true, reason: null };
+}
+
+/**
+ * evaluateWeatherVoiceToneEligibility({ voiceLevel, condition }) -> { eligible, reason }
+ *
+ * Tone only. Used by the Facebook resolver, which keeps its own language and
+ * manifest checks (unsupported language -> unknown_entry).
+ */
+export function evaluateWeatherVoiceToneEligibility({ voiceLevel, condition } = {}) {
+  const reason = toneRejection({ voiceLevel, condition });
+  if (reason) return { eligible: false, reason };
+  return { eligible: true, reason: null };
+}
+
+/**
+ * evaluateWeatherVoiceSnapshotEligibility(snapshot) -> { eligible, reason }
+ *
+ * Re-checks a frozen snapshot at each later entrypoint (dialog, image
+ * renderer), so a snapshot that was not built through the policy path is
+ * still refused.
+ */
+export function evaluateWeatherVoiceSnapshotEligibility(snapshot) {
+  if (!snapshot || typeof snapshot.voiceId !== "string" || snapshot.voiceId.length === 0) {
+    return { eligible: false, reason: "missing_snapshot" };
+  }
+  if (!SUPPORTED_LANGUAGES.has(snapshot.language)) {
+    return { eligible: false, reason: "unsupported_language" };
+  }
+  return evaluateWeatherVoiceToneEligibility(snapshot);
 }

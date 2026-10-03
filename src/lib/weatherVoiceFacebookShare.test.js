@@ -14,6 +14,8 @@ describe("resolveWeatherVoiceFacebookShare — Ticket 417 (#417): exact match re
     for (const entry of catalogue) {
       const result = resolveWeatherVoiceFacebookShare({
         voiceId: entry.voiceId,
+        condition: entry.condition,
+        voiceLevel: "sarcastic",
         language: entry.language,
         text: entry.text,
         mood: entry.mood,
@@ -29,6 +31,8 @@ describe("resolveWeatherVoiceFacebookShare — Ticket 417 (#417): exact match re
     const entry = WEATHER_VOICE_SHARE_MANIFEST[anyKey];
     const result = resolveWeatherVoiceFacebookShare({
       voiceId: entry.voiceId,
+      condition: "good",
+      voiceLevel: "sarcastic",
       language: entry.language,
       text: "completely different text",
       mood: entry.mood,
@@ -41,6 +45,8 @@ describe("resolveWeatherVoiceFacebookShare — Ticket 417 (#417): exact match re
     const entry = WEATHER_VOICE_SHARE_MANIFEST[anyKey];
     const result = resolveWeatherVoiceFacebookShare({
       voiceId: entry.voiceId,
+      condition: "good",
+      voiceLevel: "sarcastic",
       language: entry.language,
       text: entry.text,
       mood: "some_other_mood",
@@ -51,6 +57,8 @@ describe("resolveWeatherVoiceFacebookShare — Ticket 417 (#417): exact match re
   it("an unknown voiceId is unavailable", () => {
     const result = resolveWeatherVoiceFacebookShare({
       voiceId: "not_a_real_id",
+      condition: "rain",
+      voiceLevel: "sarcastic",
       language: "is",
       text: "anything",
       mood: "happy",
@@ -61,6 +69,8 @@ describe("resolveWeatherVoiceFacebookShare — Ticket 417 (#417): exact match re
   it("a real id under an unsupported/wrong language is unavailable", () => {
     const result = resolveWeatherVoiceFacebookShare({
       voiceId: "rain_02",
+      condition: "rain",
+      voiceLevel: "sarcastic",
       language: "fr",
       text: "anything",
       mood: "unimpressed",
@@ -82,6 +92,8 @@ describe("resolveWeatherVoiceFacebookShare — Ticket 417 (#417): exact match re
     for (const entry of catalogue) {
       const result = resolveWeatherVoiceFacebookShare({
         voiceId: entry.voiceId,
+        condition: entry.condition,
+        voiceLevel: "sarcastic",
         language: entry.language,
         text: entry.text,
         mood: entry.mood,

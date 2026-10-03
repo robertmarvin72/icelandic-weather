@@ -52,10 +52,22 @@
  */
 
 /**
+ * Tone of the text shown for an episode (#432). Determined only by the
+ * condition, through the policy table in weatherVoiceRules.js
+ * (`voiceLevelForCondition`). It is separate from severity and mood: neither
+ * one, nor the selected text, nor the mascot asset can change it.
+ * - "sarcastic": joke library, selected with cooldown and history.
+ * - "cautious" / "serious": deterministic safety library, never a joke, never
+ *   recorded in joke history, never shareable.
+ * @typedef {"sarcastic"|"cautious"|"serious"} WeatherVoiceVoiceLevel
+ */
+
+/**
  * @typedef {Object} WeatherVoiceActiveResult
  * @property {true} show
  * @property {WeatherVoiceCondition} condition
  * @property {TjaldurMood} mood
+ * @property {WeatherVoiceVoiceLevel} voiceLevel - Derived from `condition` alone (#432). Never inferred from severity or mood.
  * @property {0|1|2|3} severity - Voice intensity only: 0 positive, 1 mild, 2 pronounced, 3 extreme. Never changes points, warnings, recommendations, or entitlement.
  */
 
@@ -81,6 +93,7 @@
  * @typedef {Object} WeatherVoiceCommentMetadata
  * @property {WeatherVoiceCondition} condition
  * @property {TjaldurMood} mood
+ * @property {"sarcastic"} voiceLevel - Required and explicit (#432). The joke registry lists sarcastic entries only; cautious and serious text lives in the safety library.
  * @property {number} [severityMin] - Inclusive integer 0-3.
  * @property {number} [severityMax] - Inclusive integer 0-3.
  * @property {number} [repeatCooldownDays] - Finite, nonnegative.
@@ -96,6 +109,7 @@
  * @property {string} text - Nonempty comment text in the resolved language.
  * @property {WeatherVoiceCondition} condition
  * @property {TjaldurMood} mood
+ * @property {"sarcastic"} voiceLevel - Always sarcastic: the joke library never contains cautious or serious entries (#432).
  * @property {number} severityMin
  * @property {number} severityMax
  * @property {number} repeatCooldownDays
@@ -113,14 +127,21 @@
  * @property {true} show
  * @property {WeatherVoiceCondition} condition - Copied verbatim from the Phase 1 engine result, never from content.
  * @property {TjaldurMood} mood - Copied verbatim from the Phase 1 engine result.
+ * @property {WeatherVoiceVoiceLevel} voiceLevel - Copied verbatim from the engine result (#432). A sarcastic presentation comes from the joke pool, and a cautious or serious one from the safety library. Only sarcastic presentations are recorded in joke history or shareable.
  * @property {0|1|2|3} severity - Copied verbatim from the Phase 1 engine result.
- * @property {WeatherVoiceCommentRef} comment - The selected entry's id/text only (no other metadata leaks into presentation).
+ * @property {WeatherVoiceCommentRef} comment - The selected entry's id/text only (no other metadata leaks into presentation). For a cautious or serious presentation the id is a safety `message_id`, not a joke id.
  * @property {WeatherVoiceCtaType|null} ctaType
  */
 
 /**
- * weatherVoiceSelector.js's selectWeatherVoiceComment() result:
- * `{ show: false }` or a WeatherVoiceActivePresentation.
+ * The result of presentation selection (#432). `{ show: false }` for silence,
+ * or a WeatherVoiceActivePresentation. Two paths produce it:
+ * - weatherVoiceSelector.js's selectWeatherVoiceComment(): the sarcastic joke
+ *   pool, with cooldown and joke history.
+ * - weatherVoiceSelector.js's selectWeatherVoicePresentation() (the dispatcher):
+ *   routes sarcastic results to the joke path and cautious or serious results
+ *   to weatherVoiceSafety.js's selectWeatherSafetyPresentation(), which uses no
+ *   RNG, cooldown, or history.
  * @typedef {WeatherVoiceSilentResult|WeatherVoiceActivePresentation} WeatherVoicePresentation
  */
 

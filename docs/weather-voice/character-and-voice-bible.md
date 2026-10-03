@@ -263,4 +263,20 @@ Fyrir hverja nýja línu, í þessari röð:
 
 ---
 
+## 12. Implemented by #432 (narrow record; §§1–11 above are unchanged history)
+
+- **Voice level is explicit.** Every active outcome carries `voiceLevel`, derived only from the condition by one exhaustive policy table (`src/lib/weatherVoiceRules.js`). `extreme_wind` is `serious`. `heavy_rain`, `strong_wind`, and `cold_wet` are `cautious`. `cold`, `rain`, `sun_wind`, `excellent`, and `good` are `sarcastic`. Tone is never inferred from severity, mood, asset, locale, or text.
+- **Separate safety library.** Four bilingual messages live in `src/i18n/weatherVoice/safety.js`, not in the joke library. Selection is deterministic and independent of RNG, cooldown, and history. Any gap (empty pool, missing language, wrong level, unsupported locale) is silence, never a joke.
+- **Retired jokes.** The 14 jokes for cautious and serious conditions are removed from the active library and their IDs are reserved (`RETIRED_JOKE_IDS`). The 13 remaining sarcastic jokes keep their exact IDs and text.
+- **Sharing.** The #410 "every displayed Tjaldur is shareable" rule is superseded for cautious and serious content. Sharing is an allowlist of sarcastic, policy-consistent episodes, enforced at each entrypoint (see `docs/analytics/weather-voice-share-pilot.md` §10).
+- **Known limits, unchanged by this work.**
+  - No official warning feed or hazard classifier exists. The tone policy is content routing for the nine existing conditions, not a safety determination.
+  - Cold can match snow or freezing-precipitation days and still uses the sarcastic tone.
+  - `windMax` is the normalized daily wind, not gusts.
+  - Absence of a serious or cautious message never certifies safe travel.
+  - The `wrecked` mascot beside the serious message reads as comedic in the English mobile view. Assets were not changed, and the residual concern is recorded here for an owner decision.
+  - Released public share pages for the retired jokes remain reachable and uncorrected.
+
+---
+
 *Þetta skjal er samþykkt sem source-of-truth fyrir Tjaldur's persónuleika og raddar-reglur. Framtíðar Weather Voice content (100-comment library) og hvers kyns runtime-innleiðing á öryggis-reglunum í §5 eru sjálfstæð, síðari verkefni sem eiga að vísa til þessa skjals — ekki hluti af því sem #413 skilar.*

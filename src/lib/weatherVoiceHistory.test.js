@@ -41,6 +41,7 @@ function realPresentation(id, overrides = {}) {
     show: true,
     condition: meta.condition,
     mood: meta.mood,
+    voiceLevel: meta.voiceLevel,
     severity: meta.severityMin,
     comment: { id, text: `text-${id}` },
     ctaType: meta.ctaType,

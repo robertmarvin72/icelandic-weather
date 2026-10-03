@@ -12,6 +12,7 @@
 
 import { WEATHER_VOICE_SHARE_MANIFEST } from "./weatherVoiceShareManifest.generated";
 import { buildFacebookSharerUrl } from "./weatherVoiceShareUrl";
+import { evaluateWeatherVoiceToneEligibility } from "./weatherVoiceSharePolicy";
 
 function manifestKey(language, voiceId) {
   return `${language}|${voiceId}`;
@@ -25,6 +26,9 @@ function manifestKey(language, voiceId) {
 export function resolveWeatherVoiceFacebookShare(snapshot) {
   if (!snapshot || typeof snapshot.voiceId !== "string" || typeof snapshot.language !== "string") {
     return { available: false, reason: "missing_snapshot" };
+  }
+  if (!evaluateWeatherVoiceToneEligibility(snapshot).eligible) {
+    return { available: false, reason: "not_shareable" };
   }
 
   const entry = WEATHER_VOICE_SHARE_MANIFEST[manifestKey(snapshot.language, snapshot.voiceId)];

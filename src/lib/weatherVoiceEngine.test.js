@@ -9,6 +9,7 @@ describe("evaluateWeatherVoice — all nine conditions, exact mood/severity", ()
     expect(evaluateWeatherVoice({ tmax: 4, windMax: 17, rain: 5, code: 61 })).toEqual({
       show: true,
       condition: "extreme_wind",
+      voiceLevel: "serious",
       mood: "wrecked",
       severity: 3,
     });
@@ -18,6 +19,7 @@ describe("evaluateWeatherVoice — all nine conditions, exact mood/severity", ()
     expect(evaluateWeatherVoice({ tmax: 10, windMax: 5, rain: 15, code: 63 })).toEqual({
       show: true,
       condition: "heavy_rain",
+      voiceLevel: "cautious",
       mood: "sad",
       severity: 2,
     });
@@ -27,6 +29,7 @@ describe("evaluateWeatherVoice — all nine conditions, exact mood/severity", ()
     expect(evaluateWeatherVoice({ tmax: 10, windMax: 12, rain: 0, code: 0 })).toEqual({
       show: true,
       condition: "strong_wind",
+      voiceLevel: "cautious",
       mood: "struggling",
       severity: 2,
     });
@@ -36,6 +39,7 @@ describe("evaluateWeatherVoice — all nine conditions, exact mood/severity", ()
     expect(evaluateWeatherVoice({ tmax: 2, windMax: 0, rain: 5, code: 61 })).toEqual({
       show: true,
       condition: "cold_wet",
+      voiceLevel: "cautious",
       mood: "unimpressed",
       severity: 2,
     });
@@ -45,6 +49,7 @@ describe("evaluateWeatherVoice — all nine conditions, exact mood/severity", ()
     expect(evaluateWeatherVoice({ tmax: 2, windMax: 0, rain: 0, code: 0 })).toEqual({
       show: true,
       condition: "cold",
+      voiceLevel: "sarcastic",
       mood: "freezing",
       severity: 1,
     });
@@ -54,6 +59,7 @@ describe("evaluateWeatherVoice — all nine conditions, exact mood/severity", ()
     expect(evaluateWeatherVoice({ tmax: 10, windMax: 0, rain: 5, code: 61 })).toEqual({
       show: true,
       condition: "rain",
+      voiceLevel: "sarcastic",
       mood: "unimpressed",
       severity: 1,
     });
@@ -63,6 +69,7 @@ describe("evaluateWeatherVoice — all nine conditions, exact mood/severity", ()
     expect(evaluateWeatherVoice({ tmax: 10, windMax: 8, rain: 0, code: 0 })).toEqual({
       show: true,
       condition: "sun_wind",
+      voiceLevel: "sarcastic",
       mood: "suspicious",
       severity: 1,
     });
@@ -72,6 +79,7 @@ describe("evaluateWeatherVoice — all nine conditions, exact mood/severity", ()
     expect(evaluateWeatherVoice({ tmax: 16, windMax: 0, rain: 0, code: 0 })).toEqual({
       show: true,
       condition: "excellent",
+      voiceLevel: "sarcastic",
       mood: "excellent",
       severity: 0,
     });
@@ -81,6 +89,7 @@ describe("evaluateWeatherVoice — all nine conditions, exact mood/severity", ()
     expect(evaluateWeatherVoice({ tmax: 13, windMax: 0, rain: 0, code: 3 })).toEqual({
       show: true,
       condition: "good",
+      voiceLevel: "sarcastic",
       mood: "happy",
       severity: 0,
     });
@@ -93,6 +102,7 @@ describe("evaluateWeatherVoice — boundary pairs (no score-style rounding)", ()
     expect(evaluateWeatherVoice({ tmax: 10, windMax: 5.1, rain: 0, code: 0 })).toMatchObject({
       show: true,
       condition: "sun_wind",
+      voiceLevel: "sarcastic",
     });
   });
 
@@ -100,10 +110,12 @@ describe("evaluateWeatherVoice — boundary pairs (no score-style rounding)", ()
     expect(evaluateWeatherVoice({ tmax: 10, windMax: 10, rain: 0, code: 0 })).toMatchObject({
       show: true,
       condition: "sun_wind",
+      voiceLevel: "sarcastic",
     });
     expect(evaluateWeatherVoice({ tmax: 10, windMax: 10.1, rain: 0, code: 0 })).toMatchObject({
       show: true,
       condition: "strong_wind",
+      voiceLevel: "cautious",
     });
   });
 
@@ -111,10 +123,12 @@ describe("evaluateWeatherVoice — boundary pairs (no score-style rounding)", ()
     expect(evaluateWeatherVoice({ tmax: 10, windMax: 15, rain: 0, code: 0 })).toMatchObject({
       show: true,
       condition: "strong_wind",
+      voiceLevel: "cautious",
     });
     expect(evaluateWeatherVoice({ tmax: 10, windMax: 15.1, rain: 0, code: 0 })).toMatchObject({
       show: true,
       condition: "extreme_wind",
+      voiceLevel: "serious",
     });
   });
 
@@ -122,6 +136,7 @@ describe("evaluateWeatherVoice — boundary pairs (no score-style rounding)", ()
     expect(evaluateWeatherVoice({ tmax: 5.9, windMax: 0, rain: 0, code: 0 })).toMatchObject({
       show: true,
       condition: "cold",
+      voiceLevel: "sarcastic",
     });
     expect(evaluateWeatherVoice({ tmax: 6.0, windMax: 0, rain: 0, code: 0 })).toEqual({ show: false });
     expect(evaluateWeatherVoice({ tmax: 6.1, windMax: 0, rain: 0, code: 0 })).toEqual({ show: false });
@@ -132,6 +147,7 @@ describe("evaluateWeatherVoice — boundary pairs (no score-style rounding)", ()
     expect(evaluateWeatherVoice({ tmax: 12.0, windMax: 0, rain: 0, code: 3 })).toMatchObject({
       show: true,
       condition: "good",
+      voiceLevel: "sarcastic",
     });
   });
 
@@ -139,14 +155,17 @@ describe("evaluateWeatherVoice — boundary pairs (no score-style rounding)", ()
     expect(evaluateWeatherVoice({ tmax: 13.9, windMax: 0, rain: 0, code: 0 })).toMatchObject({
       show: true,
       condition: "good",
+      voiceLevel: "sarcastic",
     });
     expect(evaluateWeatherVoice({ tmax: 14.0, windMax: 0, rain: 0, code: 0 })).toMatchObject({
       show: true,
       condition: "good",
+      voiceLevel: "sarcastic",
     });
     expect(evaluateWeatherVoice({ tmax: 14.1, windMax: 0, rain: 0, code: 0 })).toMatchObject({
       show: true,
       condition: "excellent",
+      voiceLevel: "sarcastic",
     });
   });
 
@@ -155,10 +174,12 @@ describe("evaluateWeatherVoice — boundary pairs (no score-style rounding)", ()
     expect(evaluateWeatherVoice({ tmax: 10, windMax: 0, rain: 1.0, code: 61 })).toMatchObject({
       show: true,
       condition: "rain",
+      voiceLevel: "sarcastic",
     });
     expect(evaluateWeatherVoice({ tmax: 10, windMax: 0, rain: 1.1, code: 61 })).toMatchObject({
       show: true,
       condition: "rain",
+      voiceLevel: "sarcastic",
     });
   });
 
@@ -166,14 +187,17 @@ describe("evaluateWeatherVoice — boundary pairs (no score-style rounding)", ()
     expect(evaluateWeatherVoice({ tmax: 10, windMax: 0, rain: 11.9, code: 63 })).toMatchObject({
       show: true,
       condition: "rain",
+      voiceLevel: "sarcastic",
     });
     expect(evaluateWeatherVoice({ tmax: 10, windMax: 0, rain: 12.0, code: 63 })).toMatchObject({
       show: true,
       condition: "heavy_rain",
+      voiceLevel: "cautious",
     });
     expect(evaluateWeatherVoice({ tmax: 10, windMax: 0, rain: 12.1, code: 63 })).toMatchObject({
       show: true,
       condition: "heavy_rain",
+      voiceLevel: "cautious",
     });
   });
 
@@ -185,6 +209,7 @@ describe("evaluateWeatherVoice — boundary pairs (no score-style rounding)", ()
     expect(evaluateWeatherVoice({ tmax: 10, windMax: 15.02, rain: 0, code: 0 })).toMatchObject({
       show: true,
       condition: "extreme_wind",
+      voiceLevel: "serious",
     });
 
     // scoring.js's round1(11.999) -> 12.0 (Math.round(119.99)/10), which
@@ -193,6 +218,7 @@ describe("evaluateWeatherVoice — boundary pairs (no score-style rounding)", ()
     expect(evaluateWeatherVoice({ tmax: 10, windMax: 0, rain: 11.999, code: 63 })).toMatchObject({
       show: true,
       condition: "rain",
+      voiceLevel: "sarcastic",
     });
   });
 });
@@ -202,6 +228,7 @@ describe("evaluateWeatherVoice — priority resolves overlapping conditions to e
     expect(evaluateWeatherVoice({ tmax: 5, windMax: 20, rain: 20, code: 65 })).toMatchObject({
       show: true,
       condition: "extreme_wind",
+      voiceLevel: "serious",
     });
   });
 
@@ -209,6 +236,7 @@ describe("evaluateWeatherVoice — priority resolves overlapping conditions to e
     expect(evaluateWeatherVoice({ tmax: 2, windMax: 12, rain: 0, code: 0 })).toMatchObject({
       show: true,
       condition: "strong_wind",
+      voiceLevel: "cautious",
     });
   });
 
@@ -225,6 +253,7 @@ describe("evaluateWeatherVoice — priority resolves overlapping conditions to e
     expect(evaluateWeatherVoice({ tmax: 16, windMax: 12, rain: 0, code: 0 })).toMatchObject({
       show: true,
       condition: "strong_wind",
+      voiceLevel: "cautious",
     });
   });
 
@@ -232,6 +261,7 @@ describe("evaluateWeatherVoice — priority resolves overlapping conditions to e
     expect(evaluateWeatherVoice({ tmax: 10, windMax: 12, rain: 0, code: 0 })).toMatchObject({
       show: true,
       condition: "strong_wind",
+      voiceLevel: "cautious",
     });
   });
 
@@ -239,6 +269,7 @@ describe("evaluateWeatherVoice — priority resolves overlapping conditions to e
     expect(evaluateWeatherVoice({ tmax: 10, windMax: 12, rain: 15, code: 63 })).toMatchObject({
       show: true,
       condition: "heavy_rain",
+      voiceLevel: "cautious",
     });
   });
 
@@ -246,10 +277,12 @@ describe("evaluateWeatherVoice — priority resolves overlapping conditions to e
     expect(evaluateWeatherVoice({ tmax: 16, windMax: 0, rain: 0, code: 0 })).toMatchObject({
       show: true,
       condition: "excellent",
+      voiceLevel: "sarcastic",
     });
     expect(evaluateWeatherVoice({ tmax: 16, windMax: 0, rain: 0, code: 3 })).toMatchObject({
       show: true,
       condition: "good",
+      voiceLevel: "sarcastic",
     });
   });
 });
@@ -296,6 +329,7 @@ describe("evaluateWeatherVoice — WMO family boundaries", () => {
     expect(evaluateWeatherVoice({ tmax: 2, windMax: 0, rain: 15, code: 73 })).toMatchObject({
       show: true,
       condition: "cold",
+      voiceLevel: "sarcastic",
     });
   });
 
@@ -346,6 +380,7 @@ describe("evaluateWeatherVoice — strict invalid-input handling", () => {
     expect(evaluateWeatherVoice({ tmax: -10, windMax: 0, rain: 0, code: 0 })).toMatchObject({
       show: true,
       condition: "cold",
+      voiceLevel: "sarcastic",
     });
   });
 });

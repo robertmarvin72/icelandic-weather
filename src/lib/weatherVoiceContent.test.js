@@ -14,6 +14,7 @@ import {
   WEATHER_VOICE_KNOWN_CONDITIONS,
   WEATHER_VOICE_KNOWN_MOODS,
   WEATHER_VOICE_KNOWN_IDS,
+  RETIRED_JOKE_IDS,
 } from "./weatherVoiceContent";
 
 // One real fixture per Phase 1 condition — reused from weatherVoiceEngine.test.js's
@@ -45,20 +46,6 @@ function canonicalPairsFromEngine() {
 }
 
 const EXPECTED_IS_TEXT = {
-  wind_extreme_01: "Vindur: Já.",
-  wind_extreme_02: "Ég tek þetta sem persónulega árás.",
-  wind_extreme_03: "Nei.",
-  wind_extreme_04: "Vindurinn hefur orðið.",
-  wind_extreme_05: "Þetta var ekki í bæklingnum.",
-  wind_strong_01: "Lognið á frí.",
-  wind_strong_02: "Hárið hefur gefist upp.",
-  wind_strong_03: "Það blæs ekki af þessu.",
-  rain_heavy_01: "Bíllinn fær allavega þvott.",
-  rain_heavy_02: "Þurrt er afstætt hugtak.",
-  rain_heavy_03: "Þetta er fullmikill áhugi á vatni.",
-  cold_wet_01: "Ullin fær að vinna fyrir kaupinu.",
-  cold_wet_02: "Veðrið tók allan pakkann.",
-  cold_wet_03: "Ekki alveg stuttbuxnaveður.",
   cold_01: "Lopapeysan hafði rétt fyrir sér.",
   cold_02: "Peysan fær framlengingu.",
   cold_03: "Kaffið kólnar af samúð.",
@@ -78,20 +65,6 @@ const EXPECTED_IS_TEXT = {
 // docs/weather-voice/character-and-voice-bible.md §8 and the CC report's
 // full ID/IS/EN table for the editorial review of every pair.
 const EXPECTED_EN_TEXT = {
-  wind_extreme_01: "Wind: Yes.",
-  wind_extreme_02: "I take this as a personal attack.",
-  wind_extreme_03: "No.",
-  wind_extreme_04: "The wind has become a whole thing.",
-  wind_extreme_05: "This wasn't in the brochure.",
-  wind_strong_01: "Calm is on vacation.",
-  wind_strong_02: "The hair has given up.",
-  wind_strong_03: "This isn't blowing over.",
-  rain_heavy_01: "At least the car gets a wash.",
-  rain_heavy_02: "Dry is a relative concept.",
-  rain_heavy_03: "This is an excessive interest in water.",
-  cold_wet_01: "The wool earns its keep.",
-  cold_wet_02: "The weather took the whole package.",
-  cold_wet_03: "Not quite shorts weather.",
   cold_01: "The sweater was right.",
   cold_02: "The sweater gets an extension.",
   cold_03: "The coffee cools out of sympathy.",
@@ -107,9 +80,21 @@ const EXPECTED_EN_TEXT = {
   good_03: "No complaints for now.",
 };
 
-describe("getWeatherVoiceLibrary — the real 27-entry IS library", () => {
-  it("has exactly 27 entries", () => {
-    expect(getWeatherVoiceLibrary("is")).toHaveLength(27);
+const SARCASTIC_CONDITIONS = new Set(["cold", "rain", "sun_wind", "excellent", "good"]);
+const NON_SARCASTIC_CONDITIONS = new Set(["extreme_wind", "heavy_rain", "strong_wind", "cold_wet"]);
+
+describe("getWeatherVoiceLibrary — the real 13-entry IS joke library (#432)", () => {
+  it("has exactly 13 entries", () => {
+    expect(getWeatherVoiceLibrary("is")).toHaveLength(13);
+  });
+
+  it("every entry is explicitly sarcastic", () => {
+    for (const entry of getWeatherVoiceLibrary("is")) expect(entry.voiceLevel).toBe("sarcastic");
+  });
+
+  it("contains no retired ID and no reserved ID", () => {
+    const ids = getWeatherVoiceLibrary("is").map((e) => e.id);
+    for (const id of ids) expect(RETIRED_JOKE_IDS.has(id)).toBe(false);
   });
 
   it("has unique stable ASCII IDs", () => {
@@ -123,9 +108,10 @@ describe("getWeatherVoiceLibrary — the real 27-entry IS library", () => {
     expect(byId).toEqual(EXPECTED_IS_TEXT);
   });
 
-  it("covers all nine Phase 1 conditions", () => {
+  it("covers exactly the five sarcastic conditions and no cautious or serious condition", () => {
     const conditions = new Set(getWeatherVoiceLibrary("is").map((e) => e.condition));
-    expect(conditions).toEqual(WEATHER_VOICE_KNOWN_CONDITIONS);
+    expect(conditions).toEqual(SARCASTIC_CONDITIONS);
+    for (const condition of NON_SARCASTIC_CONDITIONS) expect(conditions.has(condition)).toBe(false);
   });
 
   it("every entry uses the MVP defaults: severity 0-3, 7-day cooldown, no CTA", () => {
@@ -144,30 +130,31 @@ describe("getWeatherVoiceLibrary — the real 27-entry IS library", () => {
     }
   });
 
-  it("every one of the nine actual Phase 1 outputs has at least two eligible IS comments at its actual severity", () => {
+  it("every sarcastic Phase 1 output has at least two eligible IS jokes; cautious/serious outputs have none", () => {
     const library = getWeatherVoiceLibrary("is");
     for (const result of realEngineResults()) {
       const eligible = library.filter(
         (e) => e.condition === result.condition && e.mood === result.mood && result.severity >= e.severityMin && result.severity <= e.severityMax
       );
-      expect(eligible.length).toBeGreaterThanOrEqual(2);
+      if (result.voiceLevel === "sarcastic") expect(eligible.length).toBeGreaterThanOrEqual(2);
+      else expect(eligible).toHaveLength(0);
     }
   });
 });
 
 // Ticket 412 (#412) — EN is no longer the deliberately-empty MVP
 // placeholder; it now mirrors IS's own completeness coverage exactly.
-describe("getWeatherVoiceLibrary — the real 27-entry EN library (Ticket 412, #412)", () => {
+describe("getWeatherVoiceLibrary — the real 13-entry EN joke library (Ticket 412, #412; #432)", () => {
   it("is a real, non-empty, supported library — not null, and no longer empty", () => {
     const en = getWeatherVoiceLibrary("en");
     expect(en).not.toBeNull();
     expect(en.length).toBeGreaterThan(0);
   });
 
-  it("has exactly 27 entries — the same count and the same IDs as IS", () => {
+  it("has exactly 13 entries — the same count and the same IDs as IS", () => {
     const en = getWeatherVoiceLibrary("en");
     const is = getWeatherVoiceLibrary("is");
-    expect(en).toHaveLength(27);
+    expect(en).toHaveLength(13);
     expect(new Set(en.map((e) => e.id))).toEqual(new Set(is.map((e) => e.id)));
   });
 
@@ -176,9 +163,9 @@ describe("getWeatherVoiceLibrary — the real 27-entry EN library (Ticket 412, #
     expect(byId).toEqual(EXPECTED_EN_TEXT);
   });
 
-  it("covers all nine Phase 1 conditions, exactly like IS", () => {
+  it("covers exactly the five sarcastic conditions, exactly like IS", () => {
     const conditions = new Set(getWeatherVoiceLibrary("en").map((e) => e.condition));
-    expect(conditions).toEqual(WEATHER_VOICE_KNOWN_CONDITIONS);
+    expect(conditions).toEqual(SARCASTIC_CONDITIONS);
   });
 
   it("every entry uses the MVP defaults: severity 0-3, 7-day cooldown, no CTA", () => {
@@ -204,13 +191,14 @@ describe("getWeatherVoiceLibrary — the real 27-entry EN library (Ticket 412, #
     }
   });
 
-  it("every one of the nine actual Phase 1 outputs has at least two eligible EN comments at its actual severity", () => {
+  it("every sarcastic Phase 1 output has at least two eligible EN jokes; cautious/serious outputs have none", () => {
     const library = getWeatherVoiceLibrary("en");
     for (const result of realEngineResults()) {
       const eligible = library.filter(
         (e) => e.condition === result.condition && e.mood === result.mood && result.severity >= e.severityMin && result.severity <= e.severityMax
       );
-      expect(eligible.length).toBeGreaterThanOrEqual(2);
+      if (result.voiceLevel === "sarcastic") expect(eligible.length).toBeGreaterThanOrEqual(2);
+      else expect(eligible).toHaveLength(0);
     }
   });
 });
@@ -314,7 +302,7 @@ describe("validateWeatherVoiceLibrary — the real content passes with a real ca
 });
 
 describe("validateWeatherVoiceLibrary — negative fixtures, one per rule", () => {
-  const base = { id: "good_01", condition: "good", mood: "happy", text: "ok", severityMin: 0, severityMax: 3, repeatCooldownDays: 7, ctaType: null };
+  const base = { id: "good_01", condition: "good", mood: "happy", voiceLevel: "sarcastic", text: "ok", severityMin: 0, severityMax: 3, repeatCooldownDays: 7, ctaType: null };
 
   it("rejects a duplicate ID within one language", () => {
     const result = validateWeatherVoiceLibrary({ languages: { is: [base, { ...base }] } });
@@ -380,7 +368,7 @@ describe("validateWeatherVoiceLibrary — negative fixtures, one per rule", () =
 });
 
 describe("validateWeatherVoiceLibrary — bilingual ID sharing (synthetic fixtures)", () => {
-  const isEntry = { id: "shared_01", condition: "good", mood: "happy", text: "Íslenskur texti", severityMin: 0, severityMax: 3, repeatCooldownDays: 7, ctaType: null };
+  const isEntry = { id: "shared_01", condition: "good", mood: "happy", voiceLevel: "sarcastic", text: "Íslenskur texti", severityMin: 0, severityMax: 3, repeatCooldownDays: 7, ctaType: null };
 
   it("allows the same ID in two languages when metadata matches exactly (text may differ)", () => {
     const enEntry = { ...isEntry, text: "English text" };

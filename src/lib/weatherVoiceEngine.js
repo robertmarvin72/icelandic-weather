@@ -25,6 +25,7 @@ import {
   hasLiquidEvidence,
   hasDryEvidence,
   isClearFamily,
+  voiceLevelForCondition,
 } from "./weatherVoiceRules";
 
 function isFiniteNumber(n) {
@@ -55,7 +56,7 @@ function silent() {
 }
 
 function active(condition, mood, severity) {
-  return Object.freeze({ show: true, condition, mood, severity });
+  return Object.freeze({ show: true, condition, mood, severity, voiceLevel: voiceLevelForCondition(condition) });
 }
 
 /**
@@ -80,6 +81,9 @@ function active(condition, mood, severity) {
  *   7. sun_wind     -> suspicious,   severity 1   CLEAR family, windMax > 5, rain < 1
  *   8. excellent    -> excellent,    severity 0   CLEAR family, tmax > 14, windMax <= 5, rain < 1
  *   9. good         -> happy,        severity 0   dry-family evidence, tmax >= 12, windMax <= 5, rain < 1
+ *
+ * Every active result also carries `voiceLevel` (#432), derived from the
+ * matched condition alone via weatherVoiceRules.js's policy table.
  *
  * Otherwise returns exactly `{ show: false }` — ordinary weather (e.g.
  * 8°C / 4 m/s / overcast / dry) is silent by design, not an omission.

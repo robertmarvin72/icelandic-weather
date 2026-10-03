@@ -18,10 +18,10 @@ export const WEATHER_VOICE_SHARE_LANGUAGES = Object.freeze(["is", "en"]);
 /**
  * buildWeatherVoiceShareCatalogue() -> WeatherVoiceShareCatalogueEntry[]
  *
- * Pure. One entry per (language, comment id) pair currently present in
- * getWeatherVoiceLibrary() for that language — 27 entries * 2 languages =
- * 54 today, but this never hardcodes that count; it reflects whatever the
- * real library actually contains at call time.
+ * Pure. One entry per (language, comment id) pair in getWeatherVoiceLibrary()
+ * whose voice level is sarcastic (#432). Retired and safety content is never
+ * included. The count is not hardcoded; it reflects the active library
+ * (13 jokes * 2 languages = 26 today).
  *
  * @returns {Array<{
  *   voiceId: string, language: string, text: string, mood: string,
@@ -35,6 +35,7 @@ export function buildWeatherVoiceShareCatalogue() {
   for (const language of WEATHER_VOICE_SHARE_LANGUAGES) {
     const library = getWeatherVoiceLibrary(language) || [];
     for (const item of library) {
+      if (item.voiceLevel !== "sarcastic") continue;
       const { htmlPath, imagePath } = buildWeatherVoiceShareOutputPaths(language, item.id);
       entries.push({
         voiceId: item.id,

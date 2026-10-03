@@ -23,6 +23,7 @@ import React, { useEffect, useMemo, useRef, useState, useCallback } from "react"
 import { renderWeatherVoiceShareImage } from "../lib/weatherVoiceShareImage";
 import { getTjaldurMoodAssetPath } from "../lib/weatherVoicePresentation";
 import { resolveWeatherVoiceFacebookShare } from "../lib/weatherVoiceFacebookShare";
+import { evaluateWeatherVoiceSnapshotEligibility } from "../lib/weatherVoiceSharePolicy";
 import { trackEvent } from "../lib/analytics";
 
 const SURFACE_HOMEPAGE_DECISION = "homepage_decision";
@@ -41,6 +42,7 @@ function emitShareClicked(snapshot, method) {
       weather_type: snapshot.condition,
       surface: SURFACE_HOMEPAGE_DECISION,
       share_method: method,
+      voice_level: snapshot.voiceLevel,
     });
   } catch {
     // Isolated: an analytics failure must never break sharing itself.
@@ -58,6 +60,7 @@ function emitFacebookShareClicked(snapshot) {
       mood: snapshot.mood,
       language: snapshot.language,
       source: SURFACE_HOMEPAGE_DECISION,
+      voice_level: snapshot.voiceLevel,
     });
   } catch {
     // Isolated: an analytics failure must never block the anchor's own
@@ -286,6 +289,8 @@ export default function WeatherVoiceShareDialog({ snapshot, lang, t, onClose }) 
   const handleFacebookClick = useCallback(() => {
     emitFacebookShareClicked(snapshot);
   }, [snapshot]);
+
+  if (!evaluateWeatherVoiceSnapshotEligibility(snapshot).eligible) return null;
 
   const choiceTitle = t?.("weatherVoiceShareChoiceTitle") || (lang === "is" ? "Deila Tjaldi" : "Share Tjaldur");
   const imageTitle = t?.("weatherVoiceShareDialogTitle") || (lang === "is" ? "Deila Tjaldi" : "Share Tjaldur");

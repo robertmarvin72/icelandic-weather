@@ -14,11 +14,9 @@
 // hourly/live reading. Rendering code (weatherVoiceShareImage.js) is
 // responsible for labeling these as daily context, never as "now."
 //
-// Revision 2 (#410, owner-authorized universal sharing) — this adapter no
-// longer applies any condition/severity-based eligibility narrowing; see
-// weatherVoiceSharePolicy.js's own header for what was removed and why.
-// Every genuinely active, supported-language, structurally-valid episode
-// now produces a snapshot, including extreme_wind/heavy_rain/etc.
+// #432 — the snapshot is produced only for sarcastic, policy-consistent
+// episodes (see weatherVoiceSharePolicy.js). Cautious and serious episodes
+// return null here, so they never reach the dialog, image or Facebook paths.
 
 import { evaluateWeatherVoiceShareEligibility } from "./weatherVoiceSharePolicy";
 
@@ -27,12 +25,14 @@ import { evaluateWeatherVoiceShareEligibility } from "./weatherVoiceSharePolicy"
  * -> WeatherVoiceShareSnapshot | null
  *
  * Pure. Returns `null` whenever the episode isn't structurally valid (not
- * active, unsupported language — see weatherVoiceSharePolicy.js) or the
- * underlying daily row is missing/malformed — a snapshot is only ever
- * built from genuinely valid, already-displayed data.
+ * active, unsupported language — see weatherVoiceSharePolicy.js), the tone
+ * isn't sarcastic (#432: cautious, serious, missing, or mismatched voiceLevel
+ * is ineligible), or the underlying daily row is missing/malformed. A
+ * snapshot is only ever built from genuinely valid, already-displayed data,
+ * and every snapshot it returns has `voiceLevel: "sarcastic"`.
  *
  * @param {{
- *   presentation: {show:boolean, condition?:string, mood?:string, severity?:number, comment?:{id:string,text:string}} | null | undefined,
+ *   presentation: {show:boolean, condition?:string, mood?:string, voiceLevel?:import("./weatherVoiceTypes").WeatherVoiceVoiceLevel, severity?:number, comment?:{id:string,text:string}} | null | undefined,
  *   lang: string,
  *   site: {name?: string} | null | undefined,
  *   todayRow: {tmax?: number, code?: number} | null | undefined,
@@ -41,7 +41,7 @@ import { evaluateWeatherVoiceShareEligibility } from "./weatherVoiceSharePolicy"
  * }} args
  * @returns {{
  *   voiceId: string, text: string, language: string, mood: string,
- *   condition: string, severity: number, siteName: string | null,
+ *   condition: string, voiceLevel: "sarcastic", severity: number, siteName: string | null,
  *   date: string, tmax: number, code: number, episodeKey: string,
  * } | null}
  */
@@ -70,6 +70,7 @@ export function buildWeatherVoiceShareSnapshot({ presentation, lang, site, today
     language: lang,
     mood: presentation.mood,
     condition: presentation.condition,
+    voiceLevel: presentation.voiceLevel,
     severity: presentation.severity,
     // Only ever the fixed-list campsite's own display name — never a
     // freeform/user-entered or inferred location label. Verified in the

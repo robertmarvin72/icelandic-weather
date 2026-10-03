@@ -99,17 +99,37 @@ const ALL_NINE_CONDITION_ROWS = [
   ["good", { tmax: 13, windMax: 0, rain: 0, code: 3 }],
 ];
 
-describe("useWeatherVoice — shareSnapshot across all nine real conditions, IS and EN (Ticket 410 Revision 2, #410)", () => {
+const SAFETY_IDS_BY_CONDITION = {
+  extreme_wind: "safety_extreme_wind",
+  heavy_rain: "safety_heavy_rain",
+  strong_wind: "safety_strong_wind",
+  cold_wet: "safety_cold_wet",
+};
+
+describe("useWeatherVoice — shareSnapshot across all nine real conditions, IS and EN (#432 sarcastic-only sharing)", () => {
   it.each(ALL_NINE_CONDITION_ROWS.flatMap(([condition, weather]) => [
     [condition, "is", weather],
     [condition, "en", weather],
-  ]))("%s in %s: the visible Tjaldur always has a snapshot — condition/severity/mood never suppress it", (expectedCondition, lang, weather) => {
+  ]).filter(([condition]) => !SAFETY_IDS_BY_CONDITION[condition]))("%s in %s: a sarcastic episode is shareable with a snapshot", (expectedCondition, lang, weather) => {
     const { result } = renderHook(() => useWeatherVoice(baseArgs({ lang, rows: [row(DAY1, weather)] })));
     expect(result.current.presentation.show).toBe(true);
+    expect(result.current.presentation.voiceLevel).toBe("sarcastic");
     expect(result.current.presentation.condition).toBe(expectedCondition);
     expect(result.current.shareSnapshot).not.toBeNull();
     expect(result.current.shareSnapshot.condition).toBe(expectedCondition);
     expect(result.current.shareSnapshot.language).toBe(lang);
     expect(result.current.shareSnapshot.text).toBe(result.current.presentation.comment.text);
+  });
+
+  it.each(ALL_NINE_CONDITION_ROWS.flatMap(([condition, weather]) => [
+    [condition, "is", weather],
+    [condition, "en", weather],
+  ]).filter(([condition]) => SAFETY_IDS_BY_CONDITION[condition]))("%s in %s: a cautious/serious episode shows its safety message and never has a share snapshot", (expectedCondition, lang, weather) => {
+    const { result } = renderHook(() => useWeatherVoice(baseArgs({ lang, rows: [row(DAY1, weather)] })));
+    expect(result.current.presentation.show).toBe(true);
+    expect(result.current.presentation.voiceLevel).not.toBe("sarcastic");
+    expect(result.current.presentation.condition).toBe(expectedCondition);
+    expect(result.current.presentation.comment.id).toBe(SAFETY_IDS_BY_CONDITION[expectedCondition]);
+    expect(result.current.shareSnapshot).toBeNull();
   });
 });

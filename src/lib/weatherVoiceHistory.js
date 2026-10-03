@@ -71,6 +71,7 @@ function isValidActivePresentation(presentation) {
 
   if (presentation.condition !== meta.condition) return false;
   if (presentation.mood !== meta.mood) return false;
+  if (presentation.voiceLevel !== "sarcastic" || meta.voiceLevel !== "sarcastic") return false;
 
   const severity = presentation.severity;
   if (!Number.isInteger(severity) || severity < meta.severityMin || severity > meta.severityMax) return false;

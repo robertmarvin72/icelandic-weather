@@ -18,6 +18,7 @@
 
 import { is as isEntries } from "../i18n/weatherVoice/is";
 import { en as enEntries } from "../i18n/weatherVoice/en";
+import { voiceLevelForCondition } from "./weatherVoiceRules";
 
 // Mirrors the exact string vocabulary declared in weatherVoiceTypes.js's
 // WeatherVoiceCondition/TjaldurMood JSDoc typedefs. Phase 1 deliberately
@@ -59,39 +60,48 @@ const DEFAULT_SEVERITY_MAX = 3;
 const DEFAULT_COOLDOWN_DAYS = 7;
 const DEFAULT_CTA_TYPE = null;
 
-// Shared metadata registry — the single source of truth for every MVP
-// entry's condition/mood/severity-range/cooldown/CTA. All 27 MVP entries
-// use every default (severity range 0-3 omitted, 7-day cooldown, no CTA),
-// per the approved prompt's copy table.
+// Shared metadata registry — the single source of truth for every active
+// joke entry's condition/mood/voice level/severity-range/cooldown/CTA. Only
+// sarcastic (joke) conditions are listed here (#432). Each entry states its
+// voice level explicitly; a missing or policy-mismatched level is never
+// defaulted to sarcastic.
 const WEATHER_VOICE_COMMENT_METADATA = Object.freeze({
-  wind_extreme_01: { condition: "extreme_wind", mood: "wrecked" },
-  wind_extreme_02: { condition: "extreme_wind", mood: "wrecked" },
-  wind_extreme_03: { condition: "extreme_wind", mood: "wrecked" },
-  wind_extreme_04: { condition: "extreme_wind", mood: "wrecked" },
-  wind_extreme_05: { condition: "extreme_wind", mood: "wrecked" },
-  wind_strong_01: { condition: "strong_wind", mood: "struggling" },
-  wind_strong_02: { condition: "strong_wind", mood: "struggling" },
-  wind_strong_03: { condition: "strong_wind", mood: "struggling" },
-  rain_heavy_01: { condition: "heavy_rain", mood: "sad" },
-  rain_heavy_02: { condition: "heavy_rain", mood: "sad" },
-  rain_heavy_03: { condition: "heavy_rain", mood: "sad" },
-  cold_wet_01: { condition: "cold_wet", mood: "unimpressed" },
-  cold_wet_02: { condition: "cold_wet", mood: "unimpressed" },
-  cold_wet_03: { condition: "cold_wet", mood: "unimpressed" },
-  cold_01: { condition: "cold", mood: "freezing" },
-  cold_02: { condition: "cold", mood: "freezing" },
-  cold_03: { condition: "cold", mood: "freezing" },
-  rain_01: { condition: "rain", mood: "unimpressed" },
-  rain_02: { condition: "rain", mood: "unimpressed" },
-  sun_wind_01: { condition: "sun_wind", mood: "suspicious" },
-  sun_wind_02: { condition: "sun_wind", mood: "suspicious" },
-  excellent_01: { condition: "excellent", mood: "excellent" },
-  excellent_02: { condition: "excellent", mood: "excellent" },
-  excellent_03: { condition: "excellent", mood: "excellent" },
-  good_01: { condition: "good", mood: "happy" },
-  good_02: { condition: "good", mood: "happy" },
-  good_03: { condition: "good", mood: "happy" },
+  cold_01: { condition: "cold", mood: "freezing", voiceLevel: "sarcastic" },
+  cold_02: { condition: "cold", mood: "freezing", voiceLevel: "sarcastic" },
+  cold_03: { condition: "cold", mood: "freezing", voiceLevel: "sarcastic" },
+  rain_01: { condition: "rain", mood: "unimpressed", voiceLevel: "sarcastic" },
+  rain_02: { condition: "rain", mood: "unimpressed", voiceLevel: "sarcastic" },
+  sun_wind_01: { condition: "sun_wind", mood: "suspicious", voiceLevel: "sarcastic" },
+  sun_wind_02: { condition: "sun_wind", mood: "suspicious", voiceLevel: "sarcastic" },
+  excellent_01: { condition: "excellent", mood: "excellent", voiceLevel: "sarcastic" },
+  excellent_02: { condition: "excellent", mood: "excellent", voiceLevel: "sarcastic" },
+  excellent_03: { condition: "excellent", mood: "excellent", voiceLevel: "sarcastic" },
+  good_01: { condition: "good", mood: "happy", voiceLevel: "sarcastic" },
+  good_02: { condition: "good", mood: "happy", voiceLevel: "sarcastic" },
+  good_03: { condition: "good", mood: "happy", voiceLevel: "sarcastic" },
 });
+
+// #432 — jokes for cautious/serious conditions were retired. These IDs are
+// reserved permanently: never reused, never repurposed, and never active.
+// Their released public share pages stay on disk, unchanged.
+export const RETIRED_JOKE_IDS = Object.freeze(
+  new Set([
+    "wind_extreme_01",
+    "wind_extreme_02",
+    "wind_extreme_03",
+    "wind_extreme_04",
+    "wind_extreme_05",
+    "wind_strong_01",
+    "wind_strong_02",
+    "wind_strong_03",
+    "rain_heavy_01",
+    "rain_heavy_02",
+    "rain_heavy_03",
+    "cold_wet_01",
+    "cold_wet_02",
+    "cold_wet_03",
+  ])
+);
 
 export const WEATHER_VOICE_KNOWN_IDS = Object.freeze(new Set(Object.keys(WEATHER_VOICE_COMMENT_METADATA)));
 
@@ -99,11 +109,16 @@ function normalizeMetadata(meta) {
   return {
     condition: meta.condition,
     mood: meta.mood,
+    voiceLevel: meta.voiceLevel,
     severityMin: meta.severityMin ?? DEFAULT_SEVERITY_MIN,
     severityMax: meta.severityMax ?? DEFAULT_SEVERITY_MAX,
     repeatCooldownDays: meta.repeatCooldownDays ?? DEFAULT_COOLDOWN_DAYS,
     ctaType: meta.ctaType ?? DEFAULT_CTA_TYPE,
   };
+}
+
+function isToneConsistent(meta) {
+  return meta.voiceLevel === "sarcastic" && voiceLevelForCondition(meta.condition) === "sarcastic";
 }
 
 const LANGUAGE_TEXT_ENTRIES = { is: isEntries, en: enEntries };
@@ -179,8 +194,9 @@ export function devWarnEmptyEligiblePool(lang, condition, mood) {
  * doc comment). `lang` must be exactly "is" or "en"; any other value
  * (including missing/unsupported languages) returns `null` — never a
  * silent fallback to Icelandic. Ticket 412 (#412): both "is" and "en" are
- * now genuinely complete (27 entries each, ID-for-ID parity — see
- * `validateWeatherVoiceLanguageCompleteness` and its test coverage);
+ * now genuinely complete (ID-for-ID parity — see
+ * `validateWeatherVoiceLanguageCompleteness` and its test coverage; #432
+ * reduced each language to its 13 sarcastic entries);
  * `"en"` is no longer the deliberately-empty MVP placeholder it started as.
  * An entry whose registered metadata is missing OR whose `text` is
  * missing/blank is silently dropped here — never surfaced as a broken
@@ -202,6 +218,7 @@ export function getWeatherVoiceLibrary(lang) {
   for (const { id, text } of textEntries) {
     const meta = WEATHER_VOICE_COMMENT_METADATA[id];
     if (!meta) continue; // defensive: content without registered metadata is never surfaced
+    if (!isToneConsistent(meta)) continue; // #432: a joke whose tone does not match its condition's policy is never surfaced
     if (typeof text !== "string" || text.trim().length === 0) continue; // defensive: blank/invalid translated text is never surfaced — selector picks another eligible entry instead
     out.push({ id, text, ...normalizeMetadata(meta) });
   }
@@ -282,6 +299,14 @@ export function validateWeatherVoiceLibrary({ languages, canonicalPairs } = {}) 
       if (!WEATHER_VOICE_KNOWN_MOODS.has(entry.mood)) {
         errors.push(`${lang}/${id}: unsupported mood ${JSON.stringify(entry.mood)}`);
       }
+      if (RETIRED_JOKE_IDS.has(id)) {
+        errors.push(`${lang}/${id}: retired joke id must not be active`);
+      }
+      if (entry.voiceLevel !== "sarcastic") {
+        errors.push(`${lang}/${id}: joke library entries must be sarcastic, got ${JSON.stringify(entry.voiceLevel)}`);
+      } else if (WEATHER_VOICE_KNOWN_CONDITIONS.has(entry.condition) && voiceLevelForCondition(entry.condition) !== "sarcastic") {
+        errors.push(`${lang}/${id}: condition ${entry.condition} is not sarcastic under the voice-level policy`);
+      }
       if (
         canonicalPairs &&
         WEATHER_VOICE_KNOWN_CONDITIONS.has(entry.condition) &&
@@ -326,6 +351,7 @@ export function validateWeatherVoiceLibrary({ languages, canonicalPairs } = {}) 
       const same =
         entry.condition === first.entry.condition &&
         entry.mood === first.entry.mood &&
+        entry.voiceLevel === first.entry.voiceLevel &&
         entry.severityMin === first.entry.severityMin &&
         entry.severityMax === first.entry.severityMax &&
         entry.repeatCooldownDays === first.entry.repeatCooldownDays &&

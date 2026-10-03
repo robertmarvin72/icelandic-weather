@@ -146,13 +146,14 @@ describe("weather_voice_viewed — exact payload on valid exposure", () => {
     const [name, payload] = calls[0];
     expect(name).toBe("weather_voice_viewed");
 
-    expect(Object.keys(payload).sort()).toEqual(["language", "severity", "surface", "voice_id", "weather_type"]);
+    expect(Object.keys(payload).sort()).toEqual(["language", "severity", "surface", "voice_id", "voice_level", "weather_type"]);
     expect(payload).toEqual({
       voice_id: "excellent_01", // deterministic: rng=()=>0, condition=excellent/mood=excellent, first-by-id ascending
       language: "is",
       severity: 0,
       weather_type: "excellent",
       surface: "homepage_decision",
+      voice_level: "sarcastic",
     });
 
     // Explicitly confirm the absence of anything the approved prompt forbids.

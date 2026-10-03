@@ -86,3 +86,27 @@ export function hasDryEvidence(code) {
 export function isClearFamily(code) {
   return getWeatherCodeFamily(code) === WEATHER_FAMILIES.CLEAR;
 }
+
+// ── Condition -> voice level (#432) ----------------------------------------
+//
+// Content routing only: which tone a condition's text must use. Keyed by
+// condition alone, never by severity, mood, asset, locale or selected text.
+// This is not a safety classifier and makes no claim that a condition
+// reflects an official warning (see character-and-voice-bible.md §5).
+const CONDITION_VOICE_LEVELS = Object.freeze({
+  extreme_wind: "serious",
+  heavy_rain: "cautious",
+  strong_wind: "cautious",
+  cold_wet: "cautious",
+  cold: "sarcastic",
+  rain: "sarcastic",
+  sun_wind: "sarcastic",
+  excellent: "sarcastic",
+  good: "sarcastic",
+});
+
+export const WEATHER_VOICE_LEVELS = Object.freeze(new Set(["sarcastic", "cautious", "serious"]));
+
+export function voiceLevelForCondition(condition) {
+  return Object.prototype.hasOwnProperty.call(CONDITION_VOICE_LEVELS, condition) ? CONDITION_VOICE_LEVELS[condition] : null;
+}

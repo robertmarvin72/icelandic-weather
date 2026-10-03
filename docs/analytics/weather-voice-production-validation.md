@@ -215,3 +215,15 @@ No GA4 admin configuration was created or modified by this ticket — the approv
 The following is prepared for Róbert's own use if/when he chooses to comment on issue #409 or open a follow-up — **CC has not posted this or any issue comment, and has not opened any follow-up issue**, per the approved prompt's explicit constraint.
 
 > Instrumentation for `weather_voice_viewed` is implemented and locally verified (tests + local browser evidence, both retained). No `weather_voice_interacted` event exists yet since no Weather Voice comment currently has an authored CTA — this is expected, not a gap. Production validation (live matrix across IS/EN/desktop/mobile/themes, real forecast-category examples, GA4 DebugView/ingestion confirmation, and a ≥7-day observation window) is still pending and requires deployment plus GA4 property access. Dangerous-weather safety compliance remains an open, separately-scoped dependency from #413/#412 — this ticket's analytics work does not and cannot resolve it. Recommend: deploy, verify via GA4 DebugView, then let ≥7 days elapse before drawing any usage conclusions.
+
+---
+
+## 12. Addendum — Ticket 432 (#432): voice levels and active `voice_id` changes
+
+This addendum records the contract change. Sections 1–11 above stay as the historical record of #409.
+
+- **New field `voice_level`** on `weather_voice_viewed`, `weather_voice_share_clicked`, and `tjaldur_facebook_share_clicked`. Values are `sarcastic`, `cautious`, or `serious`. It is a bounded categorical field and is not a safety-classification result. The `severity` field keeps its #409 meaning.
+- **`voice_id` set change:** 14 joke IDs were retired: `wind_extreme_01`–`05`, `wind_strong_01`–`03`, `rain_heavy_01`–`03`, and `cold_wet_01`–`03`. Their IDs are reserved and will never be reused. Four safety message IDs were added: `safety_extreme_wind` (serious), and `safety_strong_wind`, `safety_heavy_rain`, `safety_cold_wet` (cautious). Each safety ID is shared across IS/EN. Active joke IDs are now 13 per language.
+- **GA4 reporting implication:** a `voice_id` reporting dimension will show retired IDs in historical data and the four new safety IDs going forward. Historical GA4 data is unaffected and is not restated. Any repeat-ID analysis must treat the retirement as a discontinuity and must not compare pre- and post-#432 counts for the same ID as one series.
+- **Interaction tracking:** unchanged. There is still no `weather_voice_interacted` event, and interaction rate remains "not applicable."
+- **Local evidence only:** the browser evidence in `outputs/ticket-432-browser-evidence/` comes from DEV-mode `console.log` capture. It is not GA4 ingestion, and no GA4 configuration or custom dimension was changed. Registering `voice_level` as an event-scoped custom dimension is a pending, owner-controlled step.
