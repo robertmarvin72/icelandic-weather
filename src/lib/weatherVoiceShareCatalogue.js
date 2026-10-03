@@ -21,7 +21,7 @@ export const WEATHER_VOICE_SHARE_LANGUAGES = Object.freeze(["is", "en"]);
  * Pure. One entry per (language, comment id) pair in getWeatherVoiceLibrary()
  * whose voice level is sarcastic (#432). Retired and safety content is never
  * included. The count is not hardcoded; it reflects the active library
- * (13 jokes * 2 languages = 26 today).
+ * (every active primary ID in both languages).
  *
  * @returns {Array<{
  *   voiceId: string, language: string, text: string, mood: string,

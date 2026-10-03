@@ -279,4 +279,30 @@ Fyrir hverja nýja línu, í þessari röð:
 
 ---
 
+## 13. Implemented by #420 (narrow record; §§1–12 unchanged history)
+
+- **Active primary personality library:** the IS and EN lines across the five sarcastic conditions only (see `docs/ai/tasks/ticket-420/content-validation.md` §1 for the current counts). Owner-activated reserves are included, by the owner's 2026-10-03 request and the Part A round of the approved prompt v3. The primary library has zero cautious or serious entries, in the registry, KNOWN_IDS, share catalogue and manifest. The heavy-rain supplement (§15) is a separate, additive output with exactly three entries, all heavy_rain. The four bilingual safety messages are unchanged from #432 and are counted separately.
+- **Newer rule for new personality text:** the issue's global content rule applies to all new personality text: Tjaldur does not address the user and gives no commands (e.g. "Farðu út", "Taktu mynd", "Klæddu þig"). This is not stated in §2 of this document. It supersedes the imperative example in §3 ("Út með þig. Ég meina það.") and the imperative-style remark in §3's commentary, which stay as historical examples and must not be copied into new lines. The single approved second-person exception is good_21, which addresses the weather.
+- **Retirement:** cold_02 and excellent_02 were retired by #420 (cold_02 as a near-duplicate of cold_01, excellent_02 for its imperative and direct address). Retired IDs are permanently reserved and never reused.
+- **Exclusions:** 63 excluded proposals stay documentation-only, under the cautious and serious policy in §5. They are never active and have no generated share pages.
+- **Known limits, unchanged:** the condition policy is not a hazard classifier and does not certify safe travel. Cold has no lower temperature bound and can match snow, freezing precipitation or thunder days. Daily wind is not gust data. Editorial readings such as "waking implies morning" are judgments, not engine facts. The overlap between excellent_17 and rain_13 is accepted by the owner as an editorial choice: both lines stay active (`docs/ai/tasks/ticket-420/content-validation.md` §7).
+
+## 14. Owner override for the restored HOLD lines (dated 2026-10-03; limited to these IDs)
+
+- On 2026-10-03 the owner authorised 12 primary lines to go live despite Bible rules they conflict with: cold_04, cold_05, cold_06, cold_13, cold_17, cold_24, good_12, rain_10, rain_15, sun_wind_06, sun_wind_21, sun_wind_22.
+- The override applies only to these IDs. It relaxes, for those lines only, the Bible §2 rule against humour aimed at how the user dresses (cold_06, cold_24), the §3 test-5 rule against lines that could minimise real danger (cold_04, cold_05, cold_13, and the others as the reviewer described them), and the global rule against time-of-day inference (cold_17).
+- The override does not change any of these rules for future text. Future personality text is still subject to §§2–3 and to the global content rules in full.
+- The owner approved all 25 restored lines on 2026-10-03 after seeing the complete list in direct chat. The 12 HOLD lines above are a subset of that explicit approval. Nothing here is pending (`docs/ai/tasks/ticket-420/content-validation.md` §4).
+
+## 15. Heavy-rain supplement (#420 Part B; owner exception, dated 2026-10-03)
+
+- **What it is:** three additive lines (`rain_heavy_24`, `rain_heavy_25`, `rain_heavy_29`) shown beneath the unchanged cautious `safety_heavy_rain` message, and only for a heavy-rain cautious episode. The owner chose them alongside the unchanged caution message.
+- **Scope:** `heavy_rain` only. Never `extreme_wind`, `strong_wind` or `cold_wet`. The supplement is never shared, never recorded in joke history, and never part of the primary library, KNOWN_IDS, the share catalogue or the manifest. It has its own history key (`weather_voice_supplement_history_v1`), its own exposure observer (ratio 0.9) and its own event (`weather_voice_supplement_viewed`).
+- **Mixed hazards:** `heavy_rain` takes priority over `strong_wind` in the engine. A heavy-rain episode can therefore coincide with cold or wind. The supplement does not describe those mixed hazards independently, and no mixed-wind suppression is added in this round. This is a limit, not a classifier.
+- **Override, limited to these lines:** the owner authorised these three lines, dated 2026-10-03, as an override of the Bible §2 and §3 rules for these lines only. The override does not change those rules for any future text.
+- **Rollback:** deleting the three registry rows leaves a warning-only card. This is a tested path, not a runtime crash.
+- **Limits:** jokes may weaken the caution tone next to a warning, and the three ark lines can repeat within a week under least-recent fallback. `rain_heavy_29`'s English "when you need him" is a generic "you", a documented guard exception.
+
+---
+
 *Þetta skjal er samþykkt sem source-of-truth fyrir Tjaldur's persónuleika og raddar-reglur. Framtíðar Weather Voice content (100-comment library) og hvers kyns runtime-innleiðing á öryggis-reglunum í §5 eru sjálfstæð, síðari verkefni sem eiga að vísa til þessa skjals — ekki hluti af því sem #413 skilar.*

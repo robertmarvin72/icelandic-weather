@@ -5,6 +5,7 @@ import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { evaluateWeatherVoice } from "./weatherVoiceEngine";
 import { is as isEntries } from "../i18n/weatherVoice/is";
 import { en as enEntries } from "../i18n/weatherVoice/en";
+import { WEATHER_VOICE_LEDGER } from "../test-fixtures/weatherVoiceLedger";
 import {
   getWeatherVoiceLibrary,
   validateWeatherVoiceLibrary,
@@ -45,47 +46,18 @@ function canonicalPairsFromEngine() {
   return pairs;
 }
 
-const EXPECTED_IS_TEXT = {
-  cold_01: "Lopapeysan hafði rétt fyrir sér.",
-  cold_02: "Peysan fær framlengingu.",
-  cold_03: "Kaffið kólnar af samúð.",
-  rain_01: "Það fylgir vatn með.",
-  rain_02: "Regnjakki með aðalhlutverk.",
-  sun_wind_01: "Sólin mætir. Lognið ekki.",
-  sun_wind_02: "Bjart yfir. Hárið á hlið.",
-  excellent_01: "Þetta er grunsamlega gott.",
-  excellent_02: "Ekki segja neinum.",
-  excellent_03: "Nú vantar bara kaffið.",
-  good_01: "Þetta má alveg.",
-  good_02: "Jæja. Þetta er bara gott.",
-  good_03: "Engin kvörtun að sinni.",
-};
-
-// Ticket 412 (#412) — natural adaptations, not literal translations; see
-// docs/weather-voice/character-and-voice-bible.md §8 and the CC report's
-// full ID/IS/EN table for the editorial review of every pair.
-const EXPECTED_EN_TEXT = {
-  cold_01: "The sweater was right.",
-  cold_02: "The sweater gets an extension.",
-  cold_03: "The coffee cools out of sympathy.",
-  rain_01: "Comes with water.",
-  rain_02: "Rain jacket, starring role.",
-  sun_wind_01: "The sun showed up. The calm didn't.",
-  sun_wind_02: "Bright skies. Hair sideways.",
-  excellent_01: "This is suspiciously good.",
-  excellent_02: "Don't tell anyone.",
-  excellent_03: "All that's missing is the coffee.",
-  good_01: "This'll do.",
-  good_02: "Well. This is just good.",
-  good_03: "No complaints for now.",
-};
+// #420 — expected text comes from the TEST-ONLY ledger, never a hand-copied map.
+const ACTIVE_LEDGER_ROWS = WEATHER_VOICE_LEDGER.filter((r) => r.status === "retained" || r.status === "new");
+const EXPECTED_IS_TEXT = Object.fromEntries(ACTIVE_LEDGER_ROWS.map((r) => [r.id, r.is]));
+const EXPECTED_EN_TEXT = Object.fromEntries(ACTIVE_LEDGER_ROWS.map((r) => [r.id, r.en]));
 
 const SARCASTIC_CONDITIONS = new Set(["cold", "rain", "sun_wind", "excellent", "good"]);
 const NON_SARCASTIC_CONDITIONS = new Set(["extreme_wind", "heavy_rain", "strong_wind", "cold_wet"]);
 
-describe("getWeatherVoiceLibrary — the real 13-entry IS joke library (#432)", () => {
-  it("has exactly 13 entries", () => {
-    expect(getWeatherVoiceLibrary("is")).toHaveLength(13);
+describe("getWeatherVoiceLibrary — the real IS primary personality library (#420)", () => {
+  it("has exactly the ledger-active primary entries", () => {
+    expect(getWeatherVoiceLibrary("is")).toHaveLength(ACTIVE_LEDGER_ROWS.length);
+    expect(ACTIVE_LEDGER_ROWS).toHaveLength(113);
   });
 
   it("every entry is explicitly sarcastic", () => {
@@ -144,17 +116,17 @@ describe("getWeatherVoiceLibrary — the real 13-entry IS joke library (#432)", 
 
 // Ticket 412 (#412) — EN is no longer the deliberately-empty MVP
 // placeholder; it now mirrors IS's own completeness coverage exactly.
-describe("getWeatherVoiceLibrary — the real 13-entry EN joke library (Ticket 412, #412; #432)", () => {
+describe("getWeatherVoiceLibrary — the real EN primary personality library (Ticket 412, #412; #420)", () => {
   it("is a real, non-empty, supported library — not null, and no longer empty", () => {
     const en = getWeatherVoiceLibrary("en");
     expect(en).not.toBeNull();
     expect(en.length).toBeGreaterThan(0);
   });
 
-  it("has exactly 13 entries — the same count and the same IDs as IS", () => {
+  it("has exactly the ledger-active entries — the same count and the same IDs as IS", () => {
     const en = getWeatherVoiceLibrary("en");
     const is = getWeatherVoiceLibrary("is");
-    expect(en).toHaveLength(13);
+    expect(en).toHaveLength(ACTIVE_LEDGER_ROWS.length);
     expect(new Set(en.map((e) => e.id))).toEqual(new Set(is.map((e) => e.id)));
   });
 
@@ -393,9 +365,9 @@ describe("validateWeatherVoiceLibrary — bilingual ID sharing (synthetic fixtur
 });
 
 // Ticket 412 (#412): this is a synthetic-fixture check of
-// validateWeatherVoiceLibrary's general behavior on an empty array — it no
-// longer describes real EN, which is genuinely 27 entries now (see the
-// dedicated EN describe block above).
+// validateWeatherVoiceLibrary's general behavior on an empty array. It is a
+// historical #412 note: the real EN library is no longer empty, and its size
+// is derived from the ledger in the dedicated EN describe block above.
 describe("validateWeatherVoiceLibrary — an empty language entry list is trivially valid", () => {
   it("produces zero errors (nothing present to violate any rule)", () => {
     expect(validateWeatherVoiceLibrary({ languages: { en: [] } })).toEqual({ valid: true, errors: [] });

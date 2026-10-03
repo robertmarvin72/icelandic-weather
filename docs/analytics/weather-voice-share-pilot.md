@@ -187,3 +187,18 @@ The universal, user-initiated "Share on Facebook" button (this ticket) and the s
 - **Released public files:** the 28 retired HTML pages and 28 PNGs under `public/share/tjaldur/v1/` stay on disk, unchanged. Their URLs remain publicly reachable (`noindex, follow`), and their text is not retroactively corrected. Hosted copies, CDN caches, Facebook caches, and published posts were not removed. Deleting or redirecting those URLs is a separate owner decision.
 - **Analytics:** `weather_voice_share_clicked` and `tjaldur_facebook_share_clicked` now also carry `voice_level`. Their other fields are unchanged. Safety IDs never appear in a successful share event, because no share event can occur for cautious or serious content.
 - **Limits:** this is content routing for the nine existing conditions, not a comprehensive hazard classifier or an official warning feed. `windMax` is the normalized daily wind, not gusts. Cold can match snow or freezing-precipitation days and still uses the sarcastic tone. The absence of a serious message never certifies safe travel. None of this authorizes automated or editorial Facebook posting during hazardous weather.
+
+## 11. Ticket 420 (#420) — expanded sarcastic catalogue
+
+- **Active catalogue:** 226 language/ID pairs (113 primary IDs × IS/EN). Supplement IDs are not in the catalogue and have no share page. Sharing stays sarcastic-only (§10). Retired and reserved IDs are not in the catalogue and have no share page.
+- **New static share pages:** 204 pairs (408 files, about 18.38 MB) relative to the pre-ticket library. The 22 pairs released before #420 keep their existing files, byte-for-byte.
+- **Retired legacy pages:** 16 IDs (cold_02 and excellent_02 added by #420) × 2 languages = 32 HTML + 32 PNG. They stay public, `noindex, follow`. Their text is not retroactively corrected.
+- **Old URLs remain reachable, including `excellent_02` ("Don't tell anyone").** Nothing here claims that hosted files, CDN or Facebook caches, or published posts were removed.
+- **Sharing:** same sarcastic-only allowlist as §10. The new IDs enter the in-app share flow and the Facebook link naturally. This addendum does not authorize any posting. No live Facebook check is claimed.
+
+## 12. Ticket 420 Part B — the heavy-rain supplement has no share path
+
+- The three supplement lines (`rain_heavy_24`, `rain_heavy_25`, `rain_heavy_29`) are not in the share catalogue or the manifest. They have no static page or image under `public/share` or `dist/share`.
+- A heavy-rain episode stays unshareable, including the supplement. There is no share button, the snapshot is null, the dialog renders nothing, the image renderer refuses, and the Facebook resolver returns `not_shareable` or `unknown_entry`.
+- The 408 new static files are the primary pairs only. Part B adds no share files.
+- This addendum does not authorize any posting or a Facebook check.

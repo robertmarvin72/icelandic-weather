@@ -3,6 +3,9 @@ import { getTjaldurMoodAssetPath } from "../lib/weatherVoicePresentation";
 import WeatherVoiceShareDialog from "./WeatherVoiceShareDialog";
 
 const INTERSECTION_THRESHOLD = 0.5;
+// The heavy-rain supplement is one short line: a half-visible line has not been
+// read, so its exposure needs a stricter ratio (#420 R5).
+const SUPPLEMENT_THRESHOLD = 0.9;
 
 // Weather Voice — pure presentational card. Never interprets weather,
 // selects comment text, or touches storage/analytics — it only renders an
@@ -40,8 +43,21 @@ const INTERSECTION_THRESHOLD = 0.5;
 // current episode isn't share-eligible. `lang` here is display-only
 // (dialog copy fallback) and is never used to re-derive anything the
 // snapshot already carries.
-export default function WeatherVoiceCard({ result, surface, episodeKey, action = null, supportingText, t, lang, onVisible, shareSnapshot = null }) {
+export default function WeatherVoiceCard({
+  result,
+  surface,
+  episodeKey,
+  action = null,
+  supportingText,
+  t,
+  lang,
+  onVisible,
+  shareSnapshot = null,
+  supplement = null,
+  onSupplementVisible,
+}) {
   const nodeRef = useRef(null);
+  const supplementRef = useRef(null);
   // Ticket 410 Revision 2 (#410, Ripley Round 1 finding #3) — the ACTUAL
   // snapshot object captured at open time, not merely its episode key.
   // `useWeatherVoice.js` rebuilds `shareSnapshot` as a new object whenever
@@ -151,6 +167,70 @@ export default function WeatherVoiceCard({ result, surface, episodeKey, action =
     };
   }, [canRender, watchedEpisodeKey, onVisible]);
 
+  // Declared after the card observer, so the card observer stays the first
+  // IntersectionObserver instance and the supplement observer only exists when
+  // a supplement is actually rendered.
+  const supplementVisible = canRender && !!supplement?.show && typeof supplement.text === "string";
+  const supplementId = supplementVisible ? supplement.supplementId : null;
+
+  useEffect(() => {
+    if (!supplementVisible) return undefined;
+    const node = supplementRef.current;
+    if (!node) return undefined;
+    if (typeof IntersectionObserver !== "function") return undefined;
+
+    let cancelled = false;
+    let notified = false;
+    let lastEligible = false;
+    const observedEpisodeKey = watchedEpisodeKey;
+    const observedSupplementId = supplementId;
+
+    function isDocumentVisible() {
+      return typeof document === "undefined" || document.visibilityState === "visible";
+    }
+
+    function isEligible(entry) {
+      return !!entry && !!entry.isIntersecting && (entry.intersectionRatio ?? 0) >= SUPPLEMENT_THRESHOLD;
+    }
+
+    function fireIfEligible() {
+      if (cancelled || notified) return;
+      if (!lastEligible) return;
+      if (!isDocumentVisible()) return;
+      notified = true;
+      onSupplementVisible?.(observedEpisodeKey, observedSupplementId);
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (cancelled) return;
+        for (const entry of entries) {
+          lastEligible = isEligible(entry);
+        }
+        fireIfEligible();
+      },
+      { threshold: SUPPLEMENT_THRESHOLD }
+    );
+
+    function handleVisibilityChange() {
+      if (cancelled) return;
+      fireIfEligible();
+    }
+
+    observer.observe(node);
+    if (typeof document !== "undefined" && typeof document.addEventListener === "function") {
+      document.addEventListener("visibilitychange", handleVisibilityChange);
+    }
+
+    return () => {
+      cancelled = true;
+      observer.disconnect();
+      if (typeof document !== "undefined" && typeof document.removeEventListener === "function") {
+        document.removeEventListener("visibilitychange", handleVisibilityChange);
+      }
+    };
+  }, [supplementVisible, supplementId, watchedEpisodeKey, onSupplementVisible]);
+
   if (!canRender) return null;
 
   const label = t?.("weatherVoiceLabel") || "TJALDUR SEGIR";
@@ -172,6 +252,15 @@ export default function WeatherVoiceCard({ result, surface, episodeKey, action =
         <p className="mt-0.5 min-w-0 break-words text-[19px] font-semibold leading-snug text-slate-900 dark:text-slate-100">
           „{result.comment.text}“
         </p>
+        {supplementVisible && (
+          <p
+            ref={supplementRef}
+            data-weather-voice-supplement={supplementId}
+            className="mt-1.5 min-w-0 break-words text-sm font-medium leading-snug text-slate-700 opacity-80 dark:text-slate-300"
+          >
+            {supplement.text}
+          </p>
+        )}
         {supportingText && <p className="mt-1 text-sm leading-snug opacity-70">{supportingText}</p>}
         <div className="mt-1.5 flex flex-wrap items-center gap-x-3 gap-y-1">
           {action && (

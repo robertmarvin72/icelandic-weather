@@ -39,7 +39,7 @@ function isEligible(entry, condition, mood, severity) {
   );
 }
 
-function isAvailable(entry, history, now) {
+export function isAvailable(entry, history, now) {
   const shownAt = history instanceof Map ? history.get(entry.id) : undefined;
   if (shownAt == null) return true; // never recorded -> immediately eligible
   const cooldownMs = entry.repeatCooldownDays * MS_PER_DAY;
@@ -48,7 +48,7 @@ function isAvailable(entry, history, now) {
 
 // `pool` must already be sorted by ID ascending — the deterministic
 // fallback and the RNG-index mapping both depend on that fixed order.
-function pickUniform(pool, rng) {
+export function pickUniform(pool, rng) {
   let value;
   try {
     value = typeof rng === "function" ? rng() : NaN;
@@ -68,7 +68,7 @@ function pickUniform(pool, rng) {
 // is sorted by ID ascending, so iterating in order and only replacing on a
 // STRICTLY smaller timestamp naturally keeps the lexicographically
 // smallest ID on ties, without a separate tie-break comparison.
-function pickLeastRecentlyShown(pool, history) {
+export function pickLeastRecentlyShown(pool, history) {
   let best = null;
   let bestShownAt = null;
   for (const entry of pool) {

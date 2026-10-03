@@ -1,0 +1,20 @@
+{
+  "target": "good_16",
+  "pin": {
+    "poolSize": 22,
+    "index": 14,
+    "value": 0.6590909090909091
+  },
+  "before": "„Þetta verður ekki mikið betra án þess að verða grunsamlegt.“",
+  "dialogOpenBefore": true,
+  "dialogOpenAfter": false,
+  "after": {
+    "text": "„Mikil rigning er í spánni. Það gæti þurft að endurskoða planið.“",
+    "hasShareButton": false
+  },
+  "viewedEvents": [
+    "weather_voice_viewed {voice_id: good_16, language: is, severity: 0, weather_type: good, surface: homepage_decision}",
+    "weather_voice_viewed {voice_id: safety_heavy_rain, language: is, severity: 2, weather_type: heavy_rain, surface: homepage_decision}"
+  ],
+  "gaRequestCount": 0
+}

@@ -412,6 +412,8 @@ function IcelandCampingWeatherApp({ page = "home" }) {
                 lang={lang}
                 onVisible={weatherVoice.onVisible}
                 shareSnapshot={weatherVoice.shareSnapshot}
+                supplement={weatherVoice.supplement}
+                onSupplementVisible={weatherVoice.onSupplementVisible}
               />
 
               {/* Ticket 416 (#416): stable anchor for the Icelandic Aurora

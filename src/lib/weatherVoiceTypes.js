@@ -154,4 +154,32 @@
  * @typedef {Map<string, number>} WeatherVoiceHistory
  */
 
+// ── Heavy-rain supplement (#420 approved prompt v3, Part B) ─────────────────
+
+/**
+ * One entry of the supplement registry (src/i18n/weatherVoice/supplement.js).
+ * Supplement IDs are separate from the primary library: they are not in
+ * KNOWN_IDS, the share catalogue or the manifest, and they are never shareable.
+ * Only `heavy_rain` is allowed, and it is an owner-authorised exception to the
+ * cautious-tone rules for these lines only.
+ * @typedef {Object} WeatherVoiceSupplementEntry
+ * @property {string} id - Stable ASCII id (never reused).
+ * @property {"heavy_rain"} condition
+ * @property {number} repeatCooldownDays - Seven days, the same baseline as the primary library.
+ * @property {string} text_is
+ * @property {string} text_en
+ */
+
+/**
+ * A supplement result from selectWeatherVoiceSupplement() (weatherVoiceSupplement.js).
+ * It is separate from WeatherVoicePresentation and never a field on it. The
+ * hook returns it as `supplement`, and it has its own history and event.
+ * @typedef {Object} WeatherVoiceSupplement
+ * @property {true} show
+ * @property {string} supplementId
+ * @property {"safety_heavy_rain"} parentVoiceId - The unchanged primary warning this line sits under.
+ * @property {"heavy_rain"} condition
+ * @property {string} text - Localised text in the active language.
+ */
+
 export {};

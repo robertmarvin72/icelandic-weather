@@ -324,7 +324,7 @@ describe("WeatherVoiceCard — secondary share action (Ticket 410, #410)", () =>
     fireEvent.click(screen.getByText("weatherVoiceShareButtonLabel"));
     expect(screen.getByTestId("share-dialog")).toBeInTheDocument();
 
-    rerender(<WeatherVoiceCard result={activeResult()} surface="homepage_decision" t={t} shareSnapshot={snapshot({ episodeKey: "ep-share-2", voiceId: "excellent_02" })} />);
+    rerender(<WeatherVoiceCard result={activeResult()} surface="homepage_decision" t={t} shareSnapshot={snapshot({ episodeKey: "ep-share-2", voiceId: "excellent_03" })} />);
     expect(screen.queryByTestId("share-dialog")).toBeNull();
   });
 

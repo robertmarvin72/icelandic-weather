@@ -7,6 +7,7 @@ import { render, screen } from "@testing-library/react";
 import { useWeatherVoice } from "./useWeatherVoice";
 import WeatherVoiceCard from "../components/WeatherVoiceCard";
 import { trackEvent } from "../lib/analytics";
+import { WEATHER_VOICE_LEDGER } from "../test-fixtures/weatherVoiceLedger";
 
 vi.mock("../lib/analytics", () => ({ trackEvent: vi.fn() }));
 
@@ -99,7 +100,9 @@ describe("cautious exposure (heavy rain, IS)", () => {
       surface: "homepage_decision",
       voice_level: "cautious",
     });
-    expect(storage.setItem).not.toHaveBeenCalled();
+    // Joke history is never written for cautious text. The supplement writes
+    // only its own key, and only after its own exposure (asserted in its suite).
+    expect(storage.setItem).not.toHaveBeenCalledWith("weather_voice_history_v1", expect.anything());
   });
 
   it("shows no share button for a cautious episode", () => {
@@ -119,7 +122,7 @@ describe("serious exposure (extreme wind, EN)", () => {
     const calls = viewedCalls();
     expect(calls).toHaveLength(1);
     expect(calls[0][1]).toMatchObject({ voice_id: "safety_extreme_wind", language: "en", severity: 3, weather_type: "extreme_wind", voice_level: "serious" });
-    expect(storage.setItem).not.toHaveBeenCalled();
+    expect(storage.setItem).not.toHaveBeenCalledWith("weather_voice_history_v1", expect.anything());
   });
 });
 
@@ -132,7 +135,8 @@ describe("sarcastic control episode keeps its joke history and tags voice_level"
     const calls = viewedCalls();
     expect(calls).toHaveLength(1);
     expect(calls[0][1].voice_level).toBe("sarcastic");
-    expect(calls[0][1].voice_id).toMatch(/^excellent_0[1-3]$/);
+    const activeExcellent = WEATHER_VOICE_LEDGER.filter((r) => r.condition === "excellent" && (r.status === "retained" || r.status === "new")).map((r) => r.id);
+    expect(activeExcellent).toContain(calls[0][1].voice_id);
     expect(storage.setItem).toHaveBeenCalledTimes(1);
   });
 });

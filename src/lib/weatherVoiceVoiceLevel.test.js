@@ -11,6 +11,7 @@ import { getWeatherSafetyMessage, selectWeatherSafetyPresentation, validateWeath
 import { weatherSafetyMessages } from "../i18n/weatherVoice/safety";
 import { buildWeatherVoiceShareCatalogue } from "./weatherVoiceShareCatalogue";
 import { evaluateWeatherVoiceToneEligibility } from "./weatherVoiceSharePolicy";
+import { WEATHER_VOICE_LEDGER } from "../test-fixtures/weatherVoiceLedger";
 
 const NINE_CONDITION_INPUTS = {
   extreme_wind: { tmax: 4, windMax: 17, rain: 5, code: 61 },
@@ -41,7 +42,10 @@ const RETIRED_EXPECTED = [
   "wind_strong_01", "wind_strong_02", "wind_strong_03",
   "rain_heavy_01", "rain_heavy_02", "rain_heavy_03",
   "cold_wet_01", "cold_wet_02", "cold_wet_03",
+  "cold_02", "excellent_02",
 ];
+const LEDGER_RETIRED = WEATHER_VOICE_LEDGER.filter((r) => r.status === "retired").map((r) => r.id);
+const LEDGER_ACTIVE = WEATHER_VOICE_LEDGER.filter((r) => r.status === "retained" || r.status === "new");
 
 const APPROVED_SAFETY = {
   safety_extreme_wind: {
@@ -145,9 +149,11 @@ describe("safety library content (#432)", () => {
   });
 });
 
-describe("retired and reserved joke IDs (#432)", () => {
-  it("retires exactly the 14 cautious/serious-condition jokes", () => {
+describe("retired and reserved joke IDs (#432, #420)", () => {
+  it("retires exactly the 16 ledger-retired IDs (14 by #432, cold_02 and excellent_02 by #420)", () => {
     expect([...RETIRED_JOKE_IDS].sort()).toEqual([...RETIRED_EXPECTED].sort());
+    expect([...RETIRED_JOKE_IDS].sort()).toEqual([...LEDGER_RETIRED].sort());
+    expect(RETIRED_JOKE_IDS.size).toBe(16);
   });
 
   it("no retired ID is active in either language", () => {
@@ -158,10 +164,10 @@ describe("retired and reserved joke IDs (#432)", () => {
     for (const id of RETIRED_EXPECTED) expect(WEATHER_VOICE_KNOWN_IDS.has(id)).toBe(false);
   });
 
-  it("the 13 remaining jokes are all explicitly sarcastic in both languages", () => {
+  it("every active primary personality entry is explicitly sarcastic in both languages", () => {
     for (const lang of ["is", "en"]) {
       const library = getWeatherVoiceLibrary(lang);
-      expect(library).toHaveLength(13);
+      expect(library).toHaveLength(LEDGER_ACTIVE.length);
       for (const entry of library) expect(entry.voiceLevel).toBe("sarcastic");
     }
   });
@@ -278,10 +284,10 @@ describe("sarcastic-only sharing tone check (#432)", () => {
   });
 });
 
-describe("active share catalogue after #432", () => {
-  it("contains exactly 26 entries (13 jokes x 2 languages), all sarcastic, with no retired or safety ID", () => {
+describe("active share catalogue after #420", () => {
+  it("has one entry per ledger-active primary ID in each language, all sarcastic, with no retired, excluded, supplemental or safety ID", () => {
     const catalogue = buildWeatherVoiceShareCatalogue();
-    expect(catalogue).toHaveLength(26);
+    expect(catalogue).toHaveLength(LEDGER_ACTIVE.length * 2);
     for (const entry of catalogue) {
       expect(RETIRED_JOKE_IDS.has(entry.voiceId)).toBe(false);
       expect(entry.voiceId.startsWith("safety_")).toBe(false);
@@ -293,19 +299,24 @@ describe("active share catalogue after #432", () => {
 describe("released public artifacts are preserved on disk (#432)", () => {
   const SHARE_ROOT = path.join(process.cwd(), "public", "share", "tjaldur", "v1");
 
-  it("all 28 retired language-specific HTML pages and 28 PNGs still exist, untouched", () => {
+  it("all 32 retired language-specific HTML pages and 32 PNGs (16 IDs x 2 languages) still exist, untouched", () => {
     for (const lang of ["is", "en"]) {
       for (const id of RETIRED_EXPECTED) {
         expect(fs.existsSync(path.join(SHARE_ROOT, lang, `${id}.html`)), `${lang}/${id}.html`).toBe(true);
         expect(fs.existsSync(path.join(SHARE_ROOT, lang, `${id}.png`)), `${lang}/${id}.png`).toBe(true);
       }
     }
+    expect(RETIRED_EXPECTED).toHaveLength(16);
   });
 
-  it("the 26 retained active pages and images still exist", () => {
-    for (const entry of buildWeatherVoiceShareCatalogue()) {
-      expect(fs.existsSync(path.join(process.cwd(), entry.htmlOutputPath))).toBe(true);
-      expect(fs.existsSync(path.join(process.cwd(), entry.imageOutputPath))).toBe(true);
+  it("the 22 retained pairs' pages and images still exist (the other released legacy files are not re-verified here)", () => {
+    const retained = LEDGER_ACTIVE.filter((r) => r.status === "retained");
+    expect(retained).toHaveLength(11);
+    for (const row of retained) {
+      for (const lang of ["is", "en"]) {
+        expect(fs.existsSync(path.join(SHARE_ROOT, lang, `${row.id}.html`)), `${lang}/${row.id}.html`).toBe(true);
+        expect(fs.existsSync(path.join(SHARE_ROOT, lang, `${row.id}.png`)), `${lang}/${row.id}.png`).toBe(true);
+      }
     }
   });
 });

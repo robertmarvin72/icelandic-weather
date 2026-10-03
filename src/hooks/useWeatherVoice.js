@@ -15,7 +15,7 @@
 // identity (voice_id/language/severity/weather_type/surface) — no free
 // text, coordinates, user identity, raw forecast, full episode key, or
 // timestamps. No `weather_voice_interacted` event exists: every one of
-// today's 27 IS/EN comments has `ctaType: null`, so there is no authored
+// every current IS/EN comment has `ctaType: null`, so there is no authored
 // interaction to measure (see docs/analytics/weather-voice-production-validation.md).
 //
 // Ticket 432 (#432) — every active outcome carries a voiceLevel. Sarcastic
@@ -37,6 +37,9 @@ import { selectWeatherVoicePresentation } from "../lib/weatherVoiceSelector";
 import { createWeatherVoiceHistory } from "../lib/weatherVoiceHistory";
 import { resolveWeatherVoiceCta } from "../lib/weatherVoicePresentation";
 import { trackEvent } from "../lib/analytics";
+import { selectWeatherVoiceSupplement, validateWeatherVoiceSupplements } from "../lib/weatherVoiceSupplement";
+import { createWeatherVoiceSupplementHistory } from "../lib/weatherVoiceSupplementHistory";
+import { weatherVoiceSupplements } from "../i18n/weatherVoice/supplement";
 import { buildWeatherVoiceShareSnapshot } from "../lib/weatherVoiceShareSnapshot";
 
 const SURFACE_HOMEPAGE_DECISION = "homepage_decision";
@@ -120,6 +123,7 @@ export function useWeatherVoice({
   now = Date.now,
   rng = Math.random,
   storage,
+  supplementRegistry = weatherVoiceSupplements,
 } = {}) {
   // Stable for the mounted session — never recreated on rerender, never
   // touches localStorage at creation (createWeatherVoiceHistory only
@@ -127,6 +131,19 @@ export function useWeatherVoice({
   const historyRef = useRef(null);
   if (!historyRef.current) {
     historyRef.current = createWeatherVoiceHistory(storage ? { storage } : undefined);
+  }
+
+  // Supplement failures must never reach the primary warning (#420 R1).
+  // Registry iteration is guarded here as well, because it runs at mount.
+  const supplementHistoryRef = useRef(null);
+  if (!supplementHistoryRef.current) {
+    let knownIds = [];
+    try {
+      knownIds = validateWeatherVoiceSupplements(supplementRegistry).valid.map((e) => e.id);
+    } catch {
+      knownIds = [];
+    }
+    supplementHistoryRef.current = createWeatherVoiceSupplementHistory({ storage: storage ?? undefined, knownIds });
   }
 
   const [todayDate, setTodayDate] = useState(() => getReykjavikDateString(now()));
@@ -164,6 +181,7 @@ export function useWeatherVoice({
   // ref survives that replay; the RNG/history call inside the guard does
   // not run twice).
   const selectionCacheRef = useRef({ key: null, presentation: { show: false } });
+  const supplementCacheRef = useRef({ key: null, supplement: { show: false } });
   const [resolvedKey, setResolvedKey] = useState(null);
 
   useEffect(() => {
@@ -183,9 +201,25 @@ export function useWeatherVoice({
         devWarnEmptyEligiblePool(lang, engineResult.condition, engineResult.mood);
       }
       selectionCacheRef.current = { key: episodeKey, presentation: selected };
+
+      let supplement = { show: false };
+      try {
+        supplement = selectWeatherVoiceSupplement({
+          engineResult,
+          presentation: selected,
+          lang,
+          registry: supplementRegistry,
+          history: supplementHistoryRef.current.getHistory(now()),
+          now: now(),
+          rng,
+        });
+      } catch {
+        supplement = { show: false };
+      }
+      supplementCacheRef.current = { key: episodeKey, supplement };
     }
     setResolvedKey(episodeKey);
-  }, [episodeKey, lang, engineResult, now, rng]);
+  }, [episodeKey, lang, engineResult, now, rng, supplementRegistry]);
 
   // Synchronous, render-time derivation — never the lagging `resolvedKey`
   // state alone. The instant episodeKey changes (site/date/language/
@@ -194,6 +228,10 @@ export function useWeatherVoice({
   // effect above has even run — so even the very first render after a
   // change cannot show (or later record) a stale episode's content.
   const presentation = episodeKey && resolvedKey === episodeKey ? selectionCacheRef.current.presentation : { show: false };
+  const supplement =
+    episodeKey && resolvedKey === episodeKey && supplementCacheRef.current.key === episodeKey
+      ? supplementCacheRef.current.supplement
+      : { show: false };
 
   // Exposure recording reads everything through refs (always the LATEST
   // value at call time), so `onVisible` itself can stay a stable callback
@@ -260,6 +298,39 @@ export function useWeatherVoice({
     [now]
   );
 
+  // Separate exposure boundary for the heavy-rain supplement (#420 R5). Only a
+  // real visible supplement for the current episode is recorded, and it goes to
+  // its own history key and its own event, never to the primary viewed event.
+  const recordedSupplementRef = useRef(new Set());
+  const onSupplementVisible = useCallback(
+    (observedEpisodeKey, supplementId) => {
+      try {
+        const key = episodeKeyRef.current;
+        if (!key || observedEpisodeKey !== key) return;
+        if (resolvedKeyRef.current !== key) return;
+        const current = presentationRef.current;
+        if (!current?.show || current.voiceLevel !== "cautious" || current.condition !== "heavy_rain") return;
+        if (current.comment?.id !== "safety_heavy_rain") return;
+        const sup = supplementCacheRef.current.key === key ? supplementCacheRef.current.supplement : null;
+        if (!sup?.show || sup.supplementId !== supplementId) return;
+        const dedupeKey = `${key}|${supplementId}`;
+        if (recordedSupplementRef.current.has(dedupeKey)) return;
+        recordedSupplementRef.current.add(dedupeKey);
+        supplementHistoryRef.current.recordShown(supplementId, now());
+        trackEvent("weather_voice_supplement_viewed", {
+          supplement_id: supplementId,
+          parent_voice_id: sup.parentVoiceId,
+          language: langRef.current,
+          weather_type: sup.condition,
+          surface: SURFACE_HOMEPAGE_DECISION,
+        });
+      } catch {
+        // Isolated: supplement exposure must never affect the primary warning.
+      }
+    },
+    [now]
+  );
+
   const action = useMemo(
     () => resolveWeatherVoiceCta({ ctaType: presentation.show ? presentation.ctaType : null, t, onExplore }),
     [presentation.show, presentation.ctaType, t, onExplore]
@@ -295,5 +366,5 @@ export function useWeatherVoice({
   // one — production support is genuinely absent until that content is
   // authored and approved on its own terms.
 
-  return { presentation, action, episodeKey, onVisible, shareSnapshot };
+  return { presentation, action, episodeKey, onVisible, shareSnapshot, supplement, onSupplementVisible };
 }

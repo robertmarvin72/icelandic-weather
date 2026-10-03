@@ -227,3 +227,21 @@ This addendum records the contract change. Sections 1–11 above stay as the his
 - **GA4 reporting implication:** a `voice_id` reporting dimension will show retired IDs in historical data and the four new safety IDs going forward. Historical GA4 data is unaffected and is not restated. Any repeat-ID analysis must treat the retirement as a discontinuity and must not compare pre- and post-#432 counts for the same ID as one series.
 - **Interaction tracking:** unchanged. There is still no `weather_voice_interacted` event, and interaction rate remains "not applicable."
 - **Local evidence only:** the browser evidence in `outputs/ticket-432-browser-evidence/` comes from DEV-mode `console.log` capture. It is not GA4 ingestion, and no GA4 configuration or custom dimension was changed. Registering `voice_level` as an event-scoped custom dimension is a pending, owner-controlled step.
+
+## 13. Addendum — Ticket 420 (#420): active `voice_id` set expansion
+
+Sections 1–12 stay as the historical record. This addendum records the #420 contract change only.
+
+- **Two further retired IDs:** `cold_02` and `excellent_02`. Both were active `voice_id` values before #420. Historical GA4 data is not restated.
+- **Current state (#420 approved prompt v3, Part A):** 113 primary active personality IDs per language, across the five sarcastic conditions. Of these, 102 are new relative to the pre-ticket library and 11 are retained (good_01/02/03, excellent_01/03, rain_01/02, cold_01/03, sun_wind_01/02), keeping their IDs and live text. The 22 owner-activated reserves are among the 102 new IDs. Part B adds a separate heavy-rain supplement (three IDs, see the Part B section of the CC report). Supplement events use their own event name, `weather_voice_supplement_viewed`, and never the primary `voice_id` set.
+- **Reserved IDs never reach analytics:** the 63 excluded proposals are never active and have no generated share page, so no `voice_id` event can carry them. Reserves no longer exist as a status (see `content-validation.md`).
+- **Interpretation:** the primary `voice_id` set is now the full active primary set (113 IDs per language, per the current ledger), instead of the 13 IDs in place before #420. The heavy-rain supplement IDs are reported only through `weather_voice_supplement_viewed`, never as primary `voice_id`. Repeat-ID analysis must treat the change as a discontinuity, not as one series. The event names, payload fields (`voice_id`, `language`, `severity`, `weather_type`, `surface`, `voice_level`) and deduplication are unchanged.
+- **No live claims:** this addendum makes no GA4 registration, ingestion or production claim. The local evidence is DEV-mode `console.log` capture (see `docs/ai/tasks/ticket-420/content-validation.md` §11).
+
+## 14. Addendum — Ticket 420 Part B: heavy-rain supplement event
+
+- **New event `weather_voice_supplement_viewed`** with exactly these parameters: `supplement_id` (`rain_heavy_24`, `rain_heavy_25` or `rain_heavy_29`), `parent_voice_id` (always `safety_heavy_rain`), `language` (`is` or `en`), `weather_type` (always `heavy_rain`), `surface` (`homepage_decision`). No free text, no PII.
+- **When it fires:** once per episode and supplement ID, when the supplement line is at least 90% visible in the viewport, with the document visible. It never fires on selection, render, mount, or for a hidden or partially visible line. Exact-payload tests prove the fields.
+- **Separation:** the primary `weather_voice_viewed` event and its `voice_id` set are unchanged. The supplement never produces a second primary event. The supplement has its own history key (`weather_voice_supplement_history_v1`). Joke history is not written for heavy-rain episodes.
+- **Not a primary `voice_id`:** supplement IDs are never reported as `voice_id`, and the supplement is never a share event.
+- **No live claims:** this addendum makes no GA4 registration, ingestion, or production claim. Registering `supplement_id` or `parent_voice_id` as custom dimensions is a pending, owner-controlled step.

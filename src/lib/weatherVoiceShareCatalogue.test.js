@@ -3,6 +3,7 @@ import { describe, it, expect } from "vitest";
 import { buildWeatherVoiceShareCatalogue, WEATHER_VOICE_SHARE_LANGUAGES } from "./weatherVoiceShareCatalogue";
 import { getWeatherVoiceLibrary, WEATHER_VOICE_KNOWN_IDS } from "./weatherVoiceContent";
 import { getTjaldurMoodAssetPath } from "./weatherVoicePresentation";
+import { WEATHER_VOICE_LEDGER } from "../test-fixtures/weatherVoiceLedger";
 
 describe("buildWeatherVoiceShareCatalogue — Ticket 417 (#417): full, canonical coverage", () => {
   it("covers exactly every (language, id) pair from the real getWeatherVoiceLibrary — never a manually duplicated list", () => {
@@ -12,9 +13,12 @@ describe("buildWeatherVoiceShareCatalogue — Ticket 417 (#417): full, canonical
       0
     );
     expect(catalogue).toHaveLength(expectedCount);
-    // Today: 27 ids * 2 languages = 54 — asserted as a concrete sanity
-    // check, not the sole source of truth (the length check above is).
-    expect(catalogue).toHaveLength(WEATHER_VOICE_KNOWN_IDS.size * 2);
+    // Concrete sanity check against the TEST-ONLY ledger (#420): the active
+    // primary ids times 2 languages, derived from the ledger, not hard-coded.
+    // Not the sole source of truth (the check above is).
+    const ledgerActive = WEATHER_VOICE_LEDGER.filter((r) => r.status === "retained" || r.status === "new");
+    expect(WEATHER_VOICE_KNOWN_IDS.size).toBe(ledgerActive.length);
+    expect(catalogue).toHaveLength(ledgerActive.length * 2);
   });
 
   it("every entry's text/mood/condition matches the real library exactly, never re-typed", () => {

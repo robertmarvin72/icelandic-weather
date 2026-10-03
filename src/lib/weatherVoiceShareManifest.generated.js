@@ -9,89 +9,9 @@
 // permanently, but are intentionally absent from this active manifest.
 
 export const WEATHER_VOICE_SHARE_MANIFEST_VERSION = "v1";
-export const WEATHER_VOICE_SHARE_MANIFEST_GENERATED_AT = "2026-10-03T15:42:06.168Z";
+export const WEATHER_VOICE_SHARE_MANIFEST_GENERATED_AT = "2026-10-03T21:03:39.101Z";
 
 export const WEATHER_VOICE_SHARE_MANIFEST = {
-  "is|cold_01": {
-    "voiceId": "cold_01",
-    "language": "is",
-    "mood": "freezing",
-    "text": "Lopapeysan hafði rétt fyrir sér.",
-    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/cold_01.html",
-    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/cold_01.png"
-  },
-  "is|cold_02": {
-    "voiceId": "cold_02",
-    "language": "is",
-    "mood": "freezing",
-    "text": "Peysan fær framlengingu.",
-    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/cold_02.html",
-    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/cold_02.png"
-  },
-  "is|cold_03": {
-    "voiceId": "cold_03",
-    "language": "is",
-    "mood": "freezing",
-    "text": "Kaffið kólnar af samúð.",
-    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/cold_03.html",
-    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/cold_03.png"
-  },
-  "is|rain_01": {
-    "voiceId": "rain_01",
-    "language": "is",
-    "mood": "unimpressed",
-    "text": "Það fylgir vatn með.",
-    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/rain_01.html",
-    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/rain_01.png"
-  },
-  "is|rain_02": {
-    "voiceId": "rain_02",
-    "language": "is",
-    "mood": "unimpressed",
-    "text": "Regnjakki með aðalhlutverk.",
-    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/rain_02.html",
-    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/rain_02.png"
-  },
-  "is|sun_wind_01": {
-    "voiceId": "sun_wind_01",
-    "language": "is",
-    "mood": "suspicious",
-    "text": "Sólin mætir. Lognið ekki.",
-    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/sun_wind_01.html",
-    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/sun_wind_01.png"
-  },
-  "is|sun_wind_02": {
-    "voiceId": "sun_wind_02",
-    "language": "is",
-    "mood": "suspicious",
-    "text": "Bjart yfir. Hárið á hlið.",
-    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/sun_wind_02.html",
-    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/sun_wind_02.png"
-  },
-  "is|excellent_01": {
-    "voiceId": "excellent_01",
-    "language": "is",
-    "mood": "excellent",
-    "text": "Þetta er grunsamlega gott.",
-    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/excellent_01.html",
-    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/excellent_01.png"
-  },
-  "is|excellent_02": {
-    "voiceId": "excellent_02",
-    "language": "is",
-    "mood": "excellent",
-    "text": "Ekki segja neinum.",
-    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/excellent_02.html",
-    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/excellent_02.png"
-  },
-  "is|excellent_03": {
-    "voiceId": "excellent_03",
-    "language": "is",
-    "mood": "excellent",
-    "text": "Nú vantar bara kaffið.",
-    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/excellent_03.html",
-    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/excellent_03.png"
-  },
   "is|good_01": {
     "voiceId": "good_01",
     "language": "is",
@@ -116,85 +36,885 @@ export const WEATHER_VOICE_SHARE_MANIFEST = {
     "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/good_03.html",
     "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/good_03.png"
   },
-  "en|cold_01": {
-    "voiceId": "cold_01",
-    "language": "en",
-    "mood": "freezing",
-    "text": "The sweater was right.",
-    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/cold_01.html",
-    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/cold_01.png"
+  "is|good_04": {
+    "voiceId": "good_04",
+    "language": "is",
+    "mood": "happy",
+    "text": "Ég finn ekkert að þessu.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/good_04.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/good_04.png"
   },
-  "en|cold_02": {
-    "voiceId": "cold_02",
-    "language": "en",
-    "mood": "freezing",
-    "text": "The sweater gets an extension.",
-    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/cold_02.html",
-    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/cold_02.png"
+  "is|good_05": {
+    "voiceId": "good_05",
+    "language": "is",
+    "mood": "happy",
+    "text": "Veðrið hagar sér.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/good_05.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/good_05.png"
   },
-  "en|cold_03": {
-    "voiceId": "cold_03",
-    "language": "en",
-    "mood": "freezing",
-    "text": "The coffee cools out of sympathy.",
-    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/cold_03.html",
-    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/cold_03.png"
+  "is|good_06": {
+    "voiceId": "good_06",
+    "language": "is",
+    "mood": "happy",
+    "text": "Það hefur verið verra.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/good_06.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/good_06.png"
   },
-  "en|rain_01": {
-    "voiceId": "rain_01",
-    "language": "en",
-    "mood": "unimpressed",
-    "text": "Comes with water.",
-    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/rain_01.html",
-    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/rain_01.png"
+  "is|good_07": {
+    "voiceId": "good_07",
+    "language": "is",
+    "mood": "happy",
+    "text": "Ég samþykki þetta.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/good_07.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/good_07.png"
   },
-  "en|rain_02": {
-    "voiceId": "rain_02",
-    "language": "en",
-    "mood": "unimpressed",
-    "text": "Rain jacket, starring role.",
-    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/rain_02.html",
-    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/rain_02.png"
+  "is|good_08": {
+    "voiceId": "good_08",
+    "language": "is",
+    "mood": "happy",
+    "text": "Engin ástæða til dramatíkur.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/good_08.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/good_08.png"
   },
-  "en|sun_wind_01": {
-    "voiceId": "sun_wind_01",
-    "language": "en",
-    "mood": "suspicious",
-    "text": "The sun showed up. The calm didn't.",
-    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/sun_wind_01.html",
-    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/sun_wind_01.png"
+  "is|good_09": {
+    "voiceId": "good_09",
+    "language": "is",
+    "mood": "happy",
+    "text": "Þetta er furðulega eðlilegt.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/good_09.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/good_09.png"
   },
-  "en|sun_wind_02": {
-    "voiceId": "sun_wind_02",
-    "language": "en",
-    "mood": "suspicious",
-    "text": "Bright skies. Hair sideways.",
-    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/sun_wind_02.html",
-    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/sun_wind_02.png"
+  "is|good_10": {
+    "voiceId": "good_10",
+    "language": "is",
+    "mood": "happy",
+    "text": "Ég ætla ekki að eyðileggja þetta með kvörtunum.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/good_10.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/good_10.png"
   },
-  "en|excellent_01": {
+  "is|good_11": {
+    "voiceId": "good_11",
+    "language": "is",
+    "mood": "happy",
+    "text": "Þetta stenst skoðun.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/good_11.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/good_11.png"
+  },
+  "is|good_12": {
+    "voiceId": "good_12",
+    "language": "is",
+    "mood": "happy",
+    "text": "Jæja. Engin gild afsökun.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/good_12.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/good_12.png"
+  },
+  "is|good_13": {
+    "voiceId": "good_13",
+    "language": "is",
+    "mood": "happy",
+    "text": "Ég hafði áhyggjur að óþörfu.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/good_13.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/good_13.png"
+  },
+  "is|good_14": {
+    "voiceId": "good_14",
+    "language": "is",
+    "mood": "happy",
+    "text": "Veðrið kom undirbúið.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/good_14.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/good_14.png"
+  },
+  "is|good_15": {
+    "voiceId": "good_15",
+    "language": "is",
+    "mood": "happy",
+    "text": "Ég get unnið með þetta.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/good_15.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/good_15.png"
+  },
+  "is|good_16": {
+    "voiceId": "good_16",
+    "language": "is",
+    "mood": "happy",
+    "text": "Þetta verður ekki mikið betra án þess að verða grunsamlegt.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/good_16.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/good_16.png"
+  },
+  "is|good_17": {
+    "voiceId": "good_17",
+    "language": "is",
+    "mood": "happy",
+    "text": "Ég ætla bara að njóta þessa í hljóði.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/good_17.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/good_17.png"
+  },
+  "is|good_18": {
+    "voiceId": "good_18",
+    "language": "is",
+    "mood": "happy",
+    "text": "Ekkert vesen. Skrítið.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/good_18.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/good_18.png"
+  },
+  "is|good_19": {
+    "voiceId": "good_19",
+    "language": "is",
+    "mood": "happy",
+    "text": "Þetta er næstum því fullorðinslegt veður.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/good_19.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/good_19.png"
+  },
+  "is|good_20": {
+    "voiceId": "good_20",
+    "language": "is",
+    "mood": "happy",
+    "text": "Íslenska veðrið gleymdi sér.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/good_20.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/good_20.png"
+  },
+  "is|good_21": {
+    "voiceId": "good_21",
+    "language": "is",
+    "mood": "happy",
+    "text": "Allt í lagi. Þú vinnur.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/good_21.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/good_21.png"
+  },
+  "is|good_22": {
+    "voiceId": "good_22",
+    "language": "is",
+    "mood": "happy",
+    "text": "Ég var tilbúinn að kvarta.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/good_22.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/good_22.png"
+  },
+  "is|good_23": {
+    "voiceId": "good_23",
+    "language": "is",
+    "mood": "happy",
+    "text": "Þetta er eiginlega bara fínt.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/good_23.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/good_23.png"
+  },
+  "is|excellent_01": {
     "voiceId": "excellent_01",
-    "language": "en",
+    "language": "is",
     "mood": "excellent",
-    "text": "This is suspiciously good.",
-    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/excellent_01.html",
-    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/excellent_01.png"
+    "text": "Þetta er grunsamlega gott.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/excellent_01.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/excellent_01.png"
   },
-  "en|excellent_02": {
-    "voiceId": "excellent_02",
-    "language": "en",
-    "mood": "excellent",
-    "text": "Don't tell anyone.",
-    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/excellent_02.html",
-    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/excellent_02.png"
-  },
-  "en|excellent_03": {
+  "is|excellent_03": {
     "voiceId": "excellent_03",
-    "language": "en",
+    "language": "is",
     "mood": "excellent",
-    "text": "All that's missing is the coffee.",
-    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/excellent_03.html",
-    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/excellent_03.png"
+    "text": "Nú vantar bara kaffið.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/excellent_03.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/excellent_03.png"
+  },
+  "is|excellent_04": {
+    "voiceId": "excellent_04",
+    "language": "is",
+    "mood": "excellent",
+    "text": "Þetta er útiveður.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/excellent_04.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/excellent_04.png"
+  },
+  "is|excellent_05": {
+    "voiceId": "excellent_05",
+    "language": "is",
+    "mood": "excellent",
+    "text": "Jæja. Þetta er óþægilega gott.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/excellent_05.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/excellent_05.png"
+  },
+  "is|excellent_06": {
+    "voiceId": "excellent_06",
+    "language": "is",
+    "mood": "excellent",
+    "text": "Ég var ekki undirbúinn fyrir þetta.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/excellent_06.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/excellent_06.png"
+  },
+  "is|excellent_07": {
+    "voiceId": "excellent_07",
+    "language": "is",
+    "mood": "excellent",
+    "text": "Eitthvað hlýtur að vera að.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/excellent_07.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/excellent_07.png"
+  },
+  "is|excellent_08": {
+    "voiceId": "excellent_08",
+    "language": "is",
+    "mood": "excellent",
+    "text": "Þetta þarf eiginlega ljósmyndasönnun.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/excellent_08.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/excellent_08.png"
+  },
+  "is|excellent_09": {
+    "voiceId": "excellent_09",
+    "language": "is",
+    "mood": "excellent",
+    "text": "Ég hef... ekkert að kvarta yfir.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/excellent_09.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/excellent_09.png"
+  },
+  "is|excellent_10": {
+    "voiceId": "excellent_10",
+    "language": "is",
+    "mood": "excellent",
+    "text": "Þetta gerist víst.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/excellent_10.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/excellent_10.png"
+  },
+  "is|excellent_11": {
+    "voiceId": "excellent_11",
+    "language": "is",
+    "mood": "excellent",
+    "text": "Ég ætla að láta þetta eiga sig.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/excellent_11.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/excellent_11.png"
+  },
+  "is|excellent_12": {
+    "voiceId": "excellent_12",
+    "language": "is",
+    "mood": "excellent",
+    "text": "Nei sko.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/excellent_12.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/excellent_12.png"
+  },
+  "is|excellent_13": {
+    "voiceId": "excellent_13",
+    "language": "is",
+    "mood": "excellent",
+    "text": "Þetta er eiginlega óþarfi.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/excellent_13.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/excellent_13.png"
+  },
+  "is|excellent_14": {
+    "voiceId": "excellent_14",
+    "language": "is",
+    "mood": "excellent",
+    "text": "Veðrið er að sýna sig.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/excellent_14.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/excellent_14.png"
+  },
+  "is|excellent_15": {
+    "voiceId": "excellent_15",
+    "language": "is",
+    "mood": "excellent",
+    "text": "Ég kann ekki alveg við þetta.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/excellent_15.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/excellent_15.png"
+  },
+  "is|excellent_16": {
+    "voiceId": "excellent_16",
+    "language": "is",
+    "mood": "excellent",
+    "text": "Hver pantaði þetta?",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/excellent_16.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/excellent_16.png"
+  },
+  "is|excellent_17": {
+    "voiceId": "excellent_17",
+    "language": "is",
+    "mood": "excellent",
+    "text": "Þetta er ekki mjög íslenskt.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/excellent_17.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/excellent_17.png"
+  },
+  "is|excellent_18": {
+    "voiceId": "excellent_18",
+    "language": "is",
+    "mood": "excellent",
+    "text": "Ég athugaði tvisvar.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/excellent_18.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/excellent_18.png"
+  },
+  "is|excellent_19": {
+    "voiceId": "excellent_19",
+    "language": "is",
+    "mood": "excellent",
+    "text": "Þetta er gott. Grunsamlega gott.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/excellent_19.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/excellent_19.png"
+  },
+  "is|excellent_20": {
+    "voiceId": "excellent_20",
+    "language": "is",
+    "mood": "excellent",
+    "text": "Ég er orðlaus. Næstum því.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/excellent_20.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/excellent_20.png"
+  },
+  "is|excellent_21": {
+    "voiceId": "excellent_21",
+    "language": "is",
+    "mood": "excellent",
+    "text": "Allt í lagi. Þetta er frábært.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/excellent_21.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/excellent_21.png"
+  },
+  "is|excellent_22": {
+    "voiceId": "excellent_22",
+    "language": "is",
+    "mood": "excellent",
+    "text": "Ég ætla ekki að spyrja spurninga.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/excellent_22.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/excellent_22.png"
+  },
+  "is|excellent_23": {
+    "voiceId": "excellent_23",
+    "language": "is",
+    "mood": "excellent",
+    "text": "Svona á víst að gera þetta.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/excellent_23.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/excellent_23.png"
+  },
+  "is|rain_01": {
+    "voiceId": "rain_01",
+    "language": "is",
+    "mood": "unimpressed",
+    "text": "Það fylgir vatn með.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/rain_01.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/rain_01.png"
+  },
+  "is|rain_02": {
+    "voiceId": "rain_02",
+    "language": "is",
+    "mood": "unimpressed",
+    "text": "Regnjakki með aðalhlutverk.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/rain_02.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/rain_02.png"
+  },
+  "is|rain_03": {
+    "voiceId": "rain_03",
+    "language": "is",
+    "mood": "unimpressed",
+    "text": "Vatn. Að ofan.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/rain_03.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/rain_03.png"
+  },
+  "is|rain_04": {
+    "voiceId": "rain_04",
+    "language": "is",
+    "mood": "unimpressed",
+    "text": "Já já. Rigning.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/rain_04.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/rain_04.png"
+  },
+  "is|rain_05": {
+    "voiceId": "rain_05",
+    "language": "is",
+    "mood": "unimpressed",
+    "text": "Auðvitað.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/rain_05.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/rain_05.png"
+  },
+  "is|rain_06": {
+    "voiceId": "rain_06",
+    "language": "is",
+    "mood": "unimpressed",
+    "text": "Þurrt fær frí í dag.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/rain_06.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/rain_06.png"
+  },
+  "is|rain_07": {
+    "voiceId": "rain_07",
+    "language": "is",
+    "mood": "unimpressed",
+    "text": "Himinninn lekur.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/rain_07.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/rain_07.png"
+  },
+  "is|rain_08": {
+    "voiceId": "rain_08",
+    "language": "is",
+    "mood": "unimpressed",
+    "text": "Þetta þurfti greinilega að vera blautt.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/rain_08.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/rain_08.png"
+  },
+  "is|rain_09": {
+    "voiceId": "rain_09",
+    "language": "is",
+    "mood": "unimpressed",
+    "text": "Veðrið valdi vatn.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/rain_09.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/rain_09.png"
+  },
+  "is|rain_10": {
+    "voiceId": "rain_10",
+    "language": "is",
+    "mood": "unimpressed",
+    "text": "Rigningin mætti á réttum tíma. Eins og alltaf.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/rain_10.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/rain_10.png"
+  },
+  "is|rain_11": {
+    "voiceId": "rain_11",
+    "language": "is",
+    "mood": "unimpressed",
+    "text": "Þurrkur var greinilega ekki á dagskrá.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/rain_11.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/rain_11.png"
+  },
+  "is|rain_12": {
+    "voiceId": "rain_12",
+    "language": "is",
+    "mood": "unimpressed",
+    "text": "Vatnsheldur er fallegt orð.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/rain_12.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/rain_12.png"
+  },
+  "is|rain_13": {
+    "voiceId": "rain_13",
+    "language": "is",
+    "mood": "unimpressed",
+    "text": "Þetta er mjög íslenskt.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/rain_13.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/rain_13.png"
+  },
+  "is|rain_14": {
+    "voiceId": "rain_14",
+    "language": "is",
+    "mood": "unimpressed",
+    "text": "Regnið er komið. Það fannst öllum vanta.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/rain_14.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/rain_14.png"
+  },
+  "is|rain_15": {
+    "voiceId": "rain_15",
+    "language": "is",
+    "mood": "unimpressed",
+    "text": "Nú er allt aðeins blautara.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/rain_15.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/rain_15.png"
+  },
+  "is|rain_16": {
+    "voiceId": "rain_16",
+    "language": "is",
+    "mood": "unimpressed",
+    "text": "Himinninn er í þvottaham.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/rain_16.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/rain_16.png"
+  },
+  "is|rain_17": {
+    "voiceId": "rain_17",
+    "language": "is",
+    "mood": "unimpressed",
+    "text": "Rigningin hefur tekið vaktina.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/rain_17.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/rain_17.png"
+  },
+  "is|rain_18": {
+    "voiceId": "rain_18",
+    "language": "is",
+    "mood": "unimpressed",
+    "text": "Það þurfti víst að vökva.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/rain_18.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/rain_18.png"
+  },
+  "is|rain_19": {
+    "voiceId": "rain_19",
+    "language": "is",
+    "mood": "unimpressed",
+    "text": "Veðrið fór blautu leiðina.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/rain_19.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/rain_19.png"
+  },
+  "is|rain_20": {
+    "voiceId": "rain_20",
+    "language": "is",
+    "mood": "unimpressed",
+    "text": "Þurrt hefði verið of einfalt.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/rain_20.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/rain_20.png"
+  },
+  "is|rain_21": {
+    "voiceId": "rain_21",
+    "language": "is",
+    "mood": "unimpressed",
+    "text": "Rigning. Klassískt.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/rain_21.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/rain_21.png"
+  },
+  "is|rain_22": {
+    "voiceId": "rain_22",
+    "language": "is",
+    "mood": "unimpressed",
+    "text": "Skýin eru greinilega með verkefni.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/rain_22.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/rain_22.png"
+  },
+  "is|rain_23": {
+    "voiceId": "rain_23",
+    "language": "is",
+    "mood": "unimpressed",
+    "text": "Þetta er víst gott fyrir gróðurinn.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/rain_23.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/rain_23.png"
+  },
+  "is|cold_01": {
+    "voiceId": "cold_01",
+    "language": "is",
+    "mood": "freezing",
+    "text": "Lopapeysan hafði rétt fyrir sér.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/cold_01.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/cold_01.png"
+  },
+  "is|cold_03": {
+    "voiceId": "cold_03",
+    "language": "is",
+    "mood": "freezing",
+    "text": "Kaffið kólnar af samúð.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/cold_03.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/cold_03.png"
+  },
+  "is|cold_04": {
+    "voiceId": "cold_04",
+    "language": "is",
+    "mood": "freezing",
+    "text": "Þetta er bara hressandi.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/cold_04.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/cold_04.png"
+  },
+  "is|cold_05": {
+    "voiceId": "cold_05",
+    "language": "is",
+    "mood": "freezing",
+    "text": "Það er víst enginn kuldi.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/cold_05.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/cold_05.png"
+  },
+  "is|cold_06": {
+    "voiceId": "cold_06",
+    "language": "is",
+    "mood": "freezing",
+    "text": "Bara spurning um að klæða sig.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/cold_06.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/cold_06.png"
+  },
+  "is|cold_07": {
+    "voiceId": "cold_07",
+    "language": "is",
+    "mood": "freezing",
+    "text": "Hitinn er með mjög hófleg markmið.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/cold_07.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/cold_07.png"
+  },
+  "is|cold_08": {
+    "voiceId": "cold_08",
+    "language": "is",
+    "mood": "freezing",
+    "text": "Þetta telst víst ferskt.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/cold_08.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/cold_08.png"
+  },
+  "is|cold_09": {
+    "voiceId": "cold_09",
+    "language": "is",
+    "mood": "freezing",
+    "text": "Hitamælirinn er ekkert sérstaklega metnaðarfullur.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/cold_09.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/cold_09.png"
+  },
+  "is|cold_10": {
+    "voiceId": "cold_10",
+    "language": "is",
+    "mood": "freezing",
+    "text": "Stuttbuxurnar fá frí.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/cold_10.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/cold_10.png"
+  },
+  "is|cold_11": {
+    "voiceId": "cold_11",
+    "language": "is",
+    "mood": "freezing",
+    "text": "Þetta er peysuveður.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/cold_11.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/cold_11.png"
+  },
+  "is|cold_12": {
+    "voiceId": "cold_12",
+    "language": "is",
+    "mood": "freezing",
+    "text": "Hitinn mætti ekki.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/cold_12.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/cold_12.png"
+  },
+  "is|cold_13": {
+    "voiceId": "cold_13",
+    "language": "is",
+    "mood": "freezing",
+    "text": "Það er allavega ekki of heitt.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/cold_13.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/cold_13.png"
+  },
+  "is|cold_14": {
+    "voiceId": "cold_14",
+    "language": "is",
+    "mood": "freezing",
+    "text": "Hitinn fór eitthvað annað.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/cold_14.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/cold_14.png"
+  },
+  "is|cold_15": {
+    "voiceId": "cold_15",
+    "language": "is",
+    "mood": "freezing",
+    "text": "Jæja. Ull.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/cold_15.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/cold_15.png"
+  },
+  "is|cold_16": {
+    "voiceId": "cold_16",
+    "language": "is",
+    "mood": "freezing",
+    "text": "Ferskt. Mjög ferskt.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/cold_16.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/cold_16.png"
+  },
+  "is|cold_17": {
+    "voiceId": "cold_17",
+    "language": "is",
+    "mood": "freezing",
+    "text": "Þetta er ein leið til að vakna.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/cold_17.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/cold_17.png"
+  },
+  "is|cold_18": {
+    "voiceId": "cold_18",
+    "language": "is",
+    "mood": "freezing",
+    "text": "Hlýtt er afstætt hugtak.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/cold_18.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/cold_18.png"
+  },
+  "is|cold_19": {
+    "voiceId": "cold_19",
+    "language": "is",
+    "mood": "freezing",
+    "text": "Hitamælirinn heldur aftur af sér.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/cold_19.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/cold_19.png"
+  },
+  "is|cold_20": {
+    "voiceId": "cold_20",
+    "language": "is",
+    "mood": "freezing",
+    "text": "Ekki alveg hitabylgja.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/cold_20.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/cold_20.png"
+  },
+  "is|cold_21": {
+    "voiceId": "cold_21",
+    "language": "is",
+    "mood": "freezing",
+    "text": "Hitinn lætur lítið fyrir sér fara.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/cold_21.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/cold_21.png"
+  },
+  "is|cold_22": {
+    "voiceId": "cold_22",
+    "language": "is",
+    "mood": "freezing",
+    "text": "Kuldinn mætti.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/cold_22.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/cold_22.png"
+  },
+  "is|cold_23": {
+    "voiceId": "cold_23",
+    "language": "is",
+    "mood": "freezing",
+    "text": "Það vantar nokkrar gráður.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/cold_23.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/cold_23.png"
+  },
+  "is|cold_24": {
+    "voiceId": "cold_24",
+    "language": "is",
+    "mood": "freezing",
+    "text": "Það er enginn kuldi, bara lélegur klæðnaður.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/cold_24.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/cold_24.png"
+  },
+  "is|sun_wind_01": {
+    "voiceId": "sun_wind_01",
+    "language": "is",
+    "mood": "suspicious",
+    "text": "Sólin mætir. Lognið ekki.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/sun_wind_01.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/sun_wind_01.png"
+  },
+  "is|sun_wind_02": {
+    "voiceId": "sun_wind_02",
+    "language": "is",
+    "mood": "suspicious",
+    "text": "Bjart yfir. Hárið á hlið.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/sun_wind_02.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/sun_wind_02.png"
+  },
+  "is|sun_wind_03": {
+    "voiceId": "sun_wind_03",
+    "language": "is",
+    "mood": "suspicious",
+    "text": "Sólin kom. Vindurinn líka.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/sun_wind_03.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/sun_wind_03.png"
+  },
+  "is|sun_wind_04": {
+    "voiceId": "sun_wind_04",
+    "language": "is",
+    "mood": "suspicious",
+    "text": "Bjart og blásið.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/sun_wind_04.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/sun_wind_04.png"
+  },
+  "is|sun_wind_05": {
+    "voiceId": "sun_wind_05",
+    "language": "is",
+    "mood": "suspicious",
+    "text": "Sólin gerir sitt. Vindurinn líka.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/sun_wind_05.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/sun_wind_05.png"
+  },
+  "is|sun_wind_06": {
+    "voiceId": "sun_wind_06",
+    "language": "is",
+    "mood": "suspicious",
+    "text": "Fallegt. Með mótvindi.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/sun_wind_06.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/sun_wind_06.png"
+  },
+  "is|sun_wind_07": {
+    "voiceId": "sun_wind_07",
+    "language": "is",
+    "mood": "suspicious",
+    "text": "Sólin lofar góðu. Vindurinn hefur aðrar hugmyndir.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/sun_wind_07.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/sun_wind_07.png"
+  },
+  "is|sun_wind_08": {
+    "voiceId": "sun_wind_08",
+    "language": "is",
+    "mood": "suspicious",
+    "text": "Bjart yfir. Rólegt, síður.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/sun_wind_08.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/sun_wind_08.png"
+  },
+  "is|sun_wind_09": {
+    "voiceId": "sun_wind_09",
+    "language": "is",
+    "mood": "suspicious",
+    "text": "Sólin er saklaus af þessu.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/sun_wind_09.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/sun_wind_09.png"
+  },
+  "is|sun_wind_10": {
+    "voiceId": "sun_wind_10",
+    "language": "is",
+    "mood": "suspicious",
+    "text": "Vindurinn lætur sólina ekki eiga sviðið.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/sun_wind_10.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/sun_wind_10.png"
+  },
+  "is|sun_wind_11": {
+    "voiceId": "sun_wind_11",
+    "language": "is",
+    "mood": "suspicious",
+    "text": "Sól með aukahljóðum.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/sun_wind_11.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/sun_wind_11.png"
+  },
+  "is|sun_wind_12": {
+    "voiceId": "sun_wind_12",
+    "language": "is",
+    "mood": "suspicious",
+    "text": "Bjart. En ekki beint kyrrt.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/sun_wind_12.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/sun_wind_12.png"
+  },
+  "is|sun_wind_13": {
+    "voiceId": "sun_wind_13",
+    "language": "is",
+    "mood": "suspicious",
+    "text": "Sólin mætti ekki ein.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/sun_wind_13.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/sun_wind_13.png"
+  },
+  "is|sun_wind_14": {
+    "voiceId": "sun_wind_14",
+    "language": "is",
+    "mood": "suspicious",
+    "text": "Fallegt úr fjarlægð.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/sun_wind_14.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/sun_wind_14.png"
+  },
+  "is|sun_wind_15": {
+    "voiceId": "sun_wind_15",
+    "language": "is",
+    "mood": "suspicious",
+    "text": "Sól og vindur. Klassískt samstarf.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/sun_wind_15.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/sun_wind_15.png"
+  },
+  "is|sun_wind_16": {
+    "voiceId": "sun_wind_16",
+    "language": "is",
+    "mood": "suspicious",
+    "text": "Veðrið gat ekki bara verið gott.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/sun_wind_16.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/sun_wind_16.png"
+  },
+  "is|sun_wind_17": {
+    "voiceId": "sun_wind_17",
+    "language": "is",
+    "mood": "suspicious",
+    "text": "Sólin reynir.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/sun_wind_17.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/sun_wind_17.png"
+  },
+  "is|sun_wind_18": {
+    "voiceId": "sun_wind_18",
+    "language": "is",
+    "mood": "suspicious",
+    "text": "Bjartviðri með fyrirvara.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/sun_wind_18.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/sun_wind_18.png"
+  },
+  "is|sun_wind_19": {
+    "voiceId": "sun_wind_19",
+    "language": "is",
+    "mood": "suspicious",
+    "text": "Sólskin. Með smá mótþróa.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/sun_wind_19.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/sun_wind_19.png"
+  },
+  "is|sun_wind_20": {
+    "voiceId": "sun_wind_20",
+    "language": "is",
+    "mood": "suspicious",
+    "text": "Vindurinn vill líka athygli.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/sun_wind_20.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/sun_wind_20.png"
+  },
+  "is|sun_wind_21": {
+    "voiceId": "sun_wind_21",
+    "language": "is",
+    "mood": "suspicious",
+    "text": "Sól að ofan. Vindur frá hlið.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/sun_wind_21.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/sun_wind_21.png"
+  },
+  "is|sun_wind_22": {
+    "voiceId": "sun_wind_22",
+    "language": "is",
+    "mood": "suspicious",
+    "text": "Næstum því fullkomið.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/sun_wind_22.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/is/sun_wind_22.png"
   },
   "en|good_01": {
     "voiceId": "good_01",
@@ -219,5 +939,885 @@ export const WEATHER_VOICE_SHARE_MANIFEST = {
     "text": "No complaints for now.",
     "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/good_03.html",
     "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/good_03.png"
+  },
+  "en|good_04": {
+    "voiceId": "good_04",
+    "language": "en",
+    "mood": "happy",
+    "text": "I can't find anything wrong with this.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/good_04.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/good_04.png"
+  },
+  "en|good_05": {
+    "voiceId": "good_05",
+    "language": "en",
+    "mood": "happy",
+    "text": "The weather is behaving.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/good_05.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/good_05.png"
+  },
+  "en|good_06": {
+    "voiceId": "good_06",
+    "language": "en",
+    "mood": "happy",
+    "text": "It's been worse.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/good_06.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/good_06.png"
+  },
+  "en|good_07": {
+    "voiceId": "good_07",
+    "language": "en",
+    "mood": "happy",
+    "text": "I approve.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/good_07.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/good_07.png"
+  },
+  "en|good_08": {
+    "voiceId": "good_08",
+    "language": "en",
+    "mood": "happy",
+    "text": "No need for drama.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/good_08.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/good_08.png"
+  },
+  "en|good_09": {
+    "voiceId": "good_09",
+    "language": "en",
+    "mood": "happy",
+    "text": "This is strangely normal.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/good_09.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/good_09.png"
+  },
+  "en|good_10": {
+    "voiceId": "good_10",
+    "language": "en",
+    "mood": "happy",
+    "text": "I'm not ruining this with complaints.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/good_10.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/good_10.png"
+  },
+  "en|good_11": {
+    "voiceId": "good_11",
+    "language": "en",
+    "mood": "happy",
+    "text": "This passes inspection.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/good_11.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/good_11.png"
+  },
+  "en|good_12": {
+    "voiceId": "good_12",
+    "language": "en",
+    "mood": "happy",
+    "text": "Well. No valid complaints.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/good_12.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/good_12.png"
+  },
+  "en|good_13": {
+    "voiceId": "good_13",
+    "language": "en",
+    "mood": "happy",
+    "text": "Apparently I worried for nothing.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/good_13.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/good_13.png"
+  },
+  "en|good_14": {
+    "voiceId": "good_14",
+    "language": "en",
+    "mood": "happy",
+    "text": "The weather came prepared.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/good_14.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/good_14.png"
+  },
+  "en|good_15": {
+    "voiceId": "good_15",
+    "language": "en",
+    "mood": "happy",
+    "text": "I can work with this.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/good_15.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/good_15.png"
+  },
+  "en|good_16": {
+    "voiceId": "good_16",
+    "language": "en",
+    "mood": "happy",
+    "text": "Much better than this would be suspicious.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/good_16.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/good_16.png"
+  },
+  "en|good_17": {
+    "voiceId": "good_17",
+    "language": "en",
+    "mood": "happy",
+    "text": "I'll just quietly appreciate this.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/good_17.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/good_17.png"
+  },
+  "en|good_18": {
+    "voiceId": "good_18",
+    "language": "en",
+    "mood": "happy",
+    "text": "No trouble. Strange.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/good_18.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/good_18.png"
+  },
+  "en|good_19": {
+    "voiceId": "good_19",
+    "language": "en",
+    "mood": "happy",
+    "text": "This is almost responsible weather.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/good_19.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/good_19.png"
+  },
+  "en|good_20": {
+    "voiceId": "good_20",
+    "language": "en",
+    "mood": "happy",
+    "text": "Icelandic weather forgot itself for a moment.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/good_20.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/good_20.png"
+  },
+  "en|good_21": {
+    "voiceId": "good_21",
+    "language": "en",
+    "mood": "happy",
+    "text": "Fine. You win.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/good_21.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/good_21.png"
+  },
+  "en|good_22": {
+    "voiceId": "good_22",
+    "language": "en",
+    "mood": "happy",
+    "text": "I was ready to complain.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/good_22.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/good_22.png"
+  },
+  "en|good_23": {
+    "voiceId": "good_23",
+    "language": "en",
+    "mood": "happy",
+    "text": "This is actually quite nice.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/good_23.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/good_23.png"
+  },
+  "en|excellent_01": {
+    "voiceId": "excellent_01",
+    "language": "en",
+    "mood": "excellent",
+    "text": "This is suspiciously good.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/excellent_01.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/excellent_01.png"
+  },
+  "en|excellent_03": {
+    "voiceId": "excellent_03",
+    "language": "en",
+    "mood": "excellent",
+    "text": "All that's missing is the coffee.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/excellent_03.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/excellent_03.png"
+  },
+  "en|excellent_04": {
+    "voiceId": "excellent_04",
+    "language": "en",
+    "mood": "excellent",
+    "text": "This is outdoor weather.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/excellent_04.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/excellent_04.png"
+  },
+  "en|excellent_05": {
+    "voiceId": "excellent_05",
+    "language": "en",
+    "mood": "excellent",
+    "text": "Well. This is uncomfortably good.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/excellent_05.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/excellent_05.png"
+  },
+  "en|excellent_06": {
+    "voiceId": "excellent_06",
+    "language": "en",
+    "mood": "excellent",
+    "text": "I wasn't prepared for this.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/excellent_06.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/excellent_06.png"
+  },
+  "en|excellent_07": {
+    "voiceId": "excellent_07",
+    "language": "en",
+    "mood": "excellent",
+    "text": "Something must be wrong.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/excellent_07.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/excellent_07.png"
+  },
+  "en|excellent_08": {
+    "voiceId": "excellent_08",
+    "language": "en",
+    "mood": "excellent",
+    "text": "This almost requires photographic evidence.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/excellent_08.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/excellent_08.png"
+  },
+  "en|excellent_09": {
+    "voiceId": "excellent_09",
+    "language": "en",
+    "mood": "excellent",
+    "text": "I have... nothing to complain about.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/excellent_09.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/excellent_09.png"
+  },
+  "en|excellent_10": {
+    "voiceId": "excellent_10",
+    "language": "en",
+    "mood": "excellent",
+    "text": "Apparently this happens.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/excellent_10.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/excellent_10.png"
+  },
+  "en|excellent_11": {
+    "voiceId": "excellent_11",
+    "language": "en",
+    "mood": "excellent",
+    "text": "I'm leaving this one alone.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/excellent_11.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/excellent_11.png"
+  },
+  "en|excellent_12": {
+    "voiceId": "excellent_12",
+    "language": "en",
+    "mood": "excellent",
+    "text": "Well, look at that.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/excellent_12.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/excellent_12.png"
+  },
+  "en|excellent_13": {
+    "voiceId": "excellent_13",
+    "language": "en",
+    "mood": "excellent",
+    "text": "This is almost excessive.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/excellent_13.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/excellent_13.png"
+  },
+  "en|excellent_14": {
+    "voiceId": "excellent_14",
+    "language": "en",
+    "mood": "excellent",
+    "text": "The weather is showing off.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/excellent_14.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/excellent_14.png"
+  },
+  "en|excellent_15": {
+    "voiceId": "excellent_15",
+    "language": "en",
+    "mood": "excellent",
+    "text": "I'm not entirely comfortable with this.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/excellent_15.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/excellent_15.png"
+  },
+  "en|excellent_16": {
+    "voiceId": "excellent_16",
+    "language": "en",
+    "mood": "excellent",
+    "text": "Who ordered this?",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/excellent_16.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/excellent_16.png"
+  },
+  "en|excellent_17": {
+    "voiceId": "excellent_17",
+    "language": "en",
+    "mood": "excellent",
+    "text": "This isn't very Icelandic.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/excellent_17.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/excellent_17.png"
+  },
+  "en|excellent_18": {
+    "voiceId": "excellent_18",
+    "language": "en",
+    "mood": "excellent",
+    "text": "I checked twice.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/excellent_18.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/excellent_18.png"
+  },
+  "en|excellent_19": {
+    "voiceId": "excellent_19",
+    "language": "en",
+    "mood": "excellent",
+    "text": "This is good. Suspiciously good.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/excellent_19.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/excellent_19.png"
+  },
+  "en|excellent_20": {
+    "voiceId": "excellent_20",
+    "language": "en",
+    "mood": "excellent",
+    "text": "I'm speechless. Almost.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/excellent_20.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/excellent_20.png"
+  },
+  "en|excellent_21": {
+    "voiceId": "excellent_21",
+    "language": "en",
+    "mood": "excellent",
+    "text": "Fine. This is excellent.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/excellent_21.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/excellent_21.png"
+  },
+  "en|excellent_22": {
+    "voiceId": "excellent_22",
+    "language": "en",
+    "mood": "excellent",
+    "text": "I'm not asking questions.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/excellent_22.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/excellent_22.png"
+  },
+  "en|excellent_23": {
+    "voiceId": "excellent_23",
+    "language": "en",
+    "mood": "excellent",
+    "text": "Apparently this is how it's done.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/excellent_23.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/excellent_23.png"
+  },
+  "en|rain_01": {
+    "voiceId": "rain_01",
+    "language": "en",
+    "mood": "unimpressed",
+    "text": "Comes with water.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/rain_01.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/rain_01.png"
+  },
+  "en|rain_02": {
+    "voiceId": "rain_02",
+    "language": "en",
+    "mood": "unimpressed",
+    "text": "Rain jacket, starring role.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/rain_02.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/rain_02.png"
+  },
+  "en|rain_03": {
+    "voiceId": "rain_03",
+    "language": "en",
+    "mood": "unimpressed",
+    "text": "Water. From above.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/rain_03.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/rain_03.png"
+  },
+  "en|rain_04": {
+    "voiceId": "rain_04",
+    "language": "en",
+    "mood": "unimpressed",
+    "text": "Yes, yes. Rain.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/rain_04.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/rain_04.png"
+  },
+  "en|rain_05": {
+    "voiceId": "rain_05",
+    "language": "en",
+    "mood": "unimpressed",
+    "text": "Of course.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/rain_05.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/rain_05.png"
+  },
+  "en|rain_06": {
+    "voiceId": "rain_06",
+    "language": "en",
+    "mood": "unimpressed",
+    "text": "Dry has the day off.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/rain_06.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/rain_06.png"
+  },
+  "en|rain_07": {
+    "voiceId": "rain_07",
+    "language": "en",
+    "mood": "unimpressed",
+    "text": "The sky is leaking.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/rain_07.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/rain_07.png"
+  },
+  "en|rain_08": {
+    "voiceId": "rain_08",
+    "language": "en",
+    "mood": "unimpressed",
+    "text": "Apparently this needed to be wet.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/rain_08.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/rain_08.png"
+  },
+  "en|rain_09": {
+    "voiceId": "rain_09",
+    "language": "en",
+    "mood": "unimpressed",
+    "text": "The weather chose water.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/rain_09.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/rain_09.png"
+  },
+  "en|rain_10": {
+    "voiceId": "rain_10",
+    "language": "en",
+    "mood": "unimpressed",
+    "text": "The rain arrived right on time. As always.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/rain_10.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/rain_10.png"
+  },
+  "en|rain_11": {
+    "voiceId": "rain_11",
+    "language": "en",
+    "mood": "unimpressed",
+    "text": "Dry clearly wasn't on the agenda.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/rain_11.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/rain_11.png"
+  },
+  "en|rain_12": {
+    "voiceId": "rain_12",
+    "language": "en",
+    "mood": "unimpressed",
+    "text": "Waterproof is a beautiful word.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/rain_12.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/rain_12.png"
+  },
+  "en|rain_13": {
+    "voiceId": "rain_13",
+    "language": "en",
+    "mood": "unimpressed",
+    "text": "Very Icelandic.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/rain_13.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/rain_13.png"
+  },
+  "en|rain_14": {
+    "voiceId": "rain_14",
+    "language": "en",
+    "mood": "unimpressed",
+    "text": "The rain is here. Apparently it was missed.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/rain_14.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/rain_14.png"
+  },
+  "en|rain_15": {
+    "voiceId": "rain_15",
+    "language": "en",
+    "mood": "unimpressed",
+    "text": "Everything is slightly wetter now.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/rain_15.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/rain_15.png"
+  },
+  "en|rain_16": {
+    "voiceId": "rain_16",
+    "language": "en",
+    "mood": "unimpressed",
+    "text": "The sky is on wash cycle.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/rain_16.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/rain_16.png"
+  },
+  "en|rain_17": {
+    "voiceId": "rain_17",
+    "language": "en",
+    "mood": "unimpressed",
+    "text": "Rain has taken the shift.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/rain_17.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/rain_17.png"
+  },
+  "en|rain_18": {
+    "voiceId": "rain_18",
+    "language": "en",
+    "mood": "unimpressed",
+    "text": "Apparently something needed watering.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/rain_18.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/rain_18.png"
+  },
+  "en|rain_19": {
+    "voiceId": "rain_19",
+    "language": "en",
+    "mood": "unimpressed",
+    "text": "The weather took the wet route.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/rain_19.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/rain_19.png"
+  },
+  "en|rain_20": {
+    "voiceId": "rain_20",
+    "language": "en",
+    "mood": "unimpressed",
+    "text": "Dry would have been too simple.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/rain_20.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/rain_20.png"
+  },
+  "en|rain_21": {
+    "voiceId": "rain_21",
+    "language": "en",
+    "mood": "unimpressed",
+    "text": "Rain. Classic.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/rain_21.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/rain_21.png"
+  },
+  "en|rain_22": {
+    "voiceId": "rain_22",
+    "language": "en",
+    "mood": "unimpressed",
+    "text": "The clouds clearly have a job to do.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/rain_22.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/rain_22.png"
+  },
+  "en|rain_23": {
+    "voiceId": "rain_23",
+    "language": "en",
+    "mood": "unimpressed",
+    "text": "Apparently it's good for the plants.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/rain_23.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/rain_23.png"
+  },
+  "en|cold_01": {
+    "voiceId": "cold_01",
+    "language": "en",
+    "mood": "freezing",
+    "text": "The sweater was right.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/cold_01.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/cold_01.png"
+  },
+  "en|cold_03": {
+    "voiceId": "cold_03",
+    "language": "en",
+    "mood": "freezing",
+    "text": "The coffee cools out of sympathy.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/cold_03.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/cold_03.png"
+  },
+  "en|cold_04": {
+    "voiceId": "cold_04",
+    "language": "en",
+    "mood": "freezing",
+    "text": "It's just refreshing.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/cold_04.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/cold_04.png"
+  },
+  "en|cold_05": {
+    "voiceId": "cold_05",
+    "language": "en",
+    "mood": "freezing",
+    "text": "Apparently there's no such thing as cold.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/cold_05.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/cold_05.png"
+  },
+  "en|cold_06": {
+    "voiceId": "cold_06",
+    "language": "en",
+    "mood": "freezing",
+    "text": "Apparently it's all about the clothing.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/cold_06.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/cold_06.png"
+  },
+  "en|cold_07": {
+    "voiceId": "cold_07",
+    "language": "en",
+    "mood": "freezing",
+    "text": "The temperature has modest ambitions.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/cold_07.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/cold_07.png"
+  },
+  "en|cold_08": {
+    "voiceId": "cold_08",
+    "language": "en",
+    "mood": "freezing",
+    "text": "Apparently this counts as fresh.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/cold_08.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/cold_08.png"
+  },
+  "en|cold_09": {
+    "voiceId": "cold_09",
+    "language": "en",
+    "mood": "freezing",
+    "text": "The thermometer isn't feeling ambitious.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/cold_09.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/cold_09.png"
+  },
+  "en|cold_10": {
+    "voiceId": "cold_10",
+    "language": "en",
+    "mood": "freezing",
+    "text": "The shorts get the day off.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/cold_10.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/cold_10.png"
+  },
+  "en|cold_11": {
+    "voiceId": "cold_11",
+    "language": "en",
+    "mood": "freezing",
+    "text": "Sweater weather.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/cold_11.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/cold_11.png"
+  },
+  "en|cold_12": {
+    "voiceId": "cold_12",
+    "language": "en",
+    "mood": "freezing",
+    "text": "The warmth didn't show up.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/cold_12.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/cold_12.png"
+  },
+  "en|cold_13": {
+    "voiceId": "cold_13",
+    "language": "en",
+    "mood": "freezing",
+    "text": "At least it's not too warm.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/cold_13.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/cold_13.png"
+  },
+  "en|cold_14": {
+    "voiceId": "cold_14",
+    "language": "en",
+    "mood": "freezing",
+    "text": "The warmth went somewhere else.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/cold_14.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/cold_14.png"
+  },
+  "en|cold_15": {
+    "voiceId": "cold_15",
+    "language": "en",
+    "mood": "freezing",
+    "text": "Well. Wool.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/cold_15.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/cold_15.png"
+  },
+  "en|cold_16": {
+    "voiceId": "cold_16",
+    "language": "en",
+    "mood": "freezing",
+    "text": "Fresh. Very fresh.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/cold_16.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/cold_16.png"
+  },
+  "en|cold_17": {
+    "voiceId": "cold_17",
+    "language": "en",
+    "mood": "freezing",
+    "text": "That's one way to wake up.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/cold_17.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/cold_17.png"
+  },
+  "en|cold_18": {
+    "voiceId": "cold_18",
+    "language": "en",
+    "mood": "freezing",
+    "text": "Warm is a relative term.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/cold_18.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/cold_18.png"
+  },
+  "en|cold_19": {
+    "voiceId": "cold_19",
+    "language": "en",
+    "mood": "freezing",
+    "text": "The thermometer is holding back.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/cold_19.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/cold_19.png"
+  },
+  "en|cold_20": {
+    "voiceId": "cold_20",
+    "language": "en",
+    "mood": "freezing",
+    "text": "Not exactly a heatwave.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/cold_20.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/cold_20.png"
+  },
+  "en|cold_21": {
+    "voiceId": "cold_21",
+    "language": "en",
+    "mood": "freezing",
+    "text": "The warmth is keeping a low profile.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/cold_21.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/cold_21.png"
+  },
+  "en|cold_22": {
+    "voiceId": "cold_22",
+    "language": "en",
+    "mood": "freezing",
+    "text": "The cold showed up.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/cold_22.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/cold_22.png"
+  },
+  "en|cold_23": {
+    "voiceId": "cold_23",
+    "language": "en",
+    "mood": "freezing",
+    "text": "A few degrees appear to be missing.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/cold_23.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/cold_23.png"
+  },
+  "en|cold_24": {
+    "voiceId": "cold_24",
+    "language": "en",
+    "mood": "freezing",
+    "text": "There's no bad cold, only bad clothing.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/cold_24.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/cold_24.png"
+  },
+  "en|sun_wind_01": {
+    "voiceId": "sun_wind_01",
+    "language": "en",
+    "mood": "suspicious",
+    "text": "The sun showed up. The calm didn't.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/sun_wind_01.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/sun_wind_01.png"
+  },
+  "en|sun_wind_02": {
+    "voiceId": "sun_wind_02",
+    "language": "en",
+    "mood": "suspicious",
+    "text": "Bright skies. Hair sideways.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/sun_wind_02.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/sun_wind_02.png"
+  },
+  "en|sun_wind_03": {
+    "voiceId": "sun_wind_03",
+    "language": "en",
+    "mood": "suspicious",
+    "text": "The sun came. So did the wind.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/sun_wind_03.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/sun_wind_03.png"
+  },
+  "en|sun_wind_04": {
+    "voiceId": "sun_wind_04",
+    "language": "en",
+    "mood": "suspicious",
+    "text": "Bright and breezy.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/sun_wind_04.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/sun_wind_04.png"
+  },
+  "en|sun_wind_05": {
+    "voiceId": "sun_wind_05",
+    "language": "en",
+    "mood": "suspicious",
+    "text": "The sun is doing its thing. So is the wind.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/sun_wind_05.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/sun_wind_05.png"
+  },
+  "en|sun_wind_06": {
+    "voiceId": "sun_wind_06",
+    "language": "en",
+    "mood": "suspicious",
+    "text": "Beautiful. With a headwind.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/sun_wind_06.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/sun_wind_06.png"
+  },
+  "en|sun_wind_07": {
+    "voiceId": "sun_wind_07",
+    "language": "en",
+    "mood": "suspicious",
+    "text": "The sun looks promising. The wind has other ideas.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/sun_wind_07.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/sun_wind_07.png"
+  },
+  "en|sun_wind_08": {
+    "voiceId": "sun_wind_08",
+    "language": "en",
+    "mood": "suspicious",
+    "text": "Bright skies. Calm, less so.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/sun_wind_08.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/sun_wind_08.png"
+  },
+  "en|sun_wind_09": {
+    "voiceId": "sun_wind_09",
+    "language": "en",
+    "mood": "suspicious",
+    "text": "The sun is innocent in all this.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/sun_wind_09.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/sun_wind_09.png"
+  },
+  "en|sun_wind_10": {
+    "voiceId": "sun_wind_10",
+    "language": "en",
+    "mood": "suspicious",
+    "text": "The wind won't let the sun have the stage.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/sun_wind_10.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/sun_wind_10.png"
+  },
+  "en|sun_wind_11": {
+    "voiceId": "sun_wind_11",
+    "language": "en",
+    "mood": "suspicious",
+    "text": "Sunshine with sound effects.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/sun_wind_11.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/sun_wind_11.png"
+  },
+  "en|sun_wind_12": {
+    "voiceId": "sun_wind_12",
+    "language": "en",
+    "mood": "suspicious",
+    "text": "Bright. Not exactly still.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/sun_wind_12.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/sun_wind_12.png"
+  },
+  "en|sun_wind_13": {
+    "voiceId": "sun_wind_13",
+    "language": "en",
+    "mood": "suspicious",
+    "text": "The sun didn't come alone.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/sun_wind_13.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/sun_wind_13.png"
+  },
+  "en|sun_wind_14": {
+    "voiceId": "sun_wind_14",
+    "language": "en",
+    "mood": "suspicious",
+    "text": "Looks lovely from a distance.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/sun_wind_14.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/sun_wind_14.png"
+  },
+  "en|sun_wind_15": {
+    "voiceId": "sun_wind_15",
+    "language": "en",
+    "mood": "suspicious",
+    "text": "Sun and wind. A classic partnership.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/sun_wind_15.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/sun_wind_15.png"
+  },
+  "en|sun_wind_16": {
+    "voiceId": "sun_wind_16",
+    "language": "en",
+    "mood": "suspicious",
+    "text": "The weather couldn't just be nice.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/sun_wind_16.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/sun_wind_16.png"
+  },
+  "en|sun_wind_17": {
+    "voiceId": "sun_wind_17",
+    "language": "en",
+    "mood": "suspicious",
+    "text": "The sun is trying.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/sun_wind_17.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/sun_wind_17.png"
+  },
+  "en|sun_wind_18": {
+    "voiceId": "sun_wind_18",
+    "language": "en",
+    "mood": "suspicious",
+    "text": "Clear skies, with conditions attached.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/sun_wind_18.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/sun_wind_18.png"
+  },
+  "en|sun_wind_19": {
+    "voiceId": "sun_wind_19",
+    "language": "en",
+    "mood": "suspicious",
+    "text": "Sunshine. With some resistance.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/sun_wind_19.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/sun_wind_19.png"
+  },
+  "en|sun_wind_20": {
+    "voiceId": "sun_wind_20",
+    "language": "en",
+    "mood": "suspicious",
+    "text": "The wind wants attention too.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/sun_wind_20.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/sun_wind_20.png"
+  },
+  "en|sun_wind_21": {
+    "voiceId": "sun_wind_21",
+    "language": "en",
+    "mood": "suspicious",
+    "text": "Sun above. Wind from the side.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/sun_wind_21.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/sun_wind_21.png"
+  },
+  "en|sun_wind_22": {
+    "voiceId": "sun_wind_22",
+    "language": "en",
+    "mood": "suspicious",
+    "text": "Almost perfect.",
+    "pageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/sun_wind_22.html",
+    "imageUrl": "https://eltumvedrid.is/share/tjaldur/v1/en/sun_wind_22.png"
   }
 };
