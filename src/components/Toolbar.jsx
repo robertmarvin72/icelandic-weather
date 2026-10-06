@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import InstallPWA from "./InstallPWA";
 import CampsitePicker from "./CampsitePicker";
 import DevProToggle from "./DevProToggle";
+import { LogOut } from "lucide-react";
 import { getSeasonForDate } from "../lib/scoring";
 import { trackEvent } from "../lib/analytics";
 import { getHomepageHeroVariant, getHomepageHeroCopyKeys } from "../config/homepageHero";
@@ -16,6 +17,11 @@ import { getHomepageHeroVariant, getHomepageHeroCopyKeys } from "../config/homep
  *
  * Pure UI component: no localStorage, no side effects.
  */
+// Shared by units/language/theme/PWA/logout so the settings row is uniform.
+// Logout keeps its text tokens (text-slate-600 / dark:text-slate-300) on every control.
+const SETTINGS_CONTROL_CLASS =
+  "inline-flex min-h-[44px] items-center justify-center gap-1 whitespace-nowrap px-2 py-1 rounded-lg border border-slate-200 bg-slate-50 text-xs text-slate-600 hover:text-slate-900 hover:bg-slate-100 dark:border-slate-700 dark:bg-slate-800/50 dark:text-slate-300 dark:hover:text-slate-100 dark:hover:bg-slate-800 focus-ring cursor-pointer transition-colors";
+
 export default function Toolbar({
   t,
   lang,
@@ -153,12 +159,12 @@ export default function Toolbar({
               id="toolbar-settings-panel"
               className="flex flex-wrap items-center justify-end gap-1.5 rounded-xl border border-slate-200/80 bg-slate-50/80 px-3 py-2 shadow-sm dark:border-slate-700/60 dark:bg-slate-800/40"
             >
-              <InstallPWA />
+              <InstallPWA className={SETTINGS_CONTROL_CLASS} />
 
               <button
                 type="button"
                 onClick={onToggleUnits}
-                className="px-2 py-1 rounded-lg border border-slate-200 bg-slate-50 text-xs text-slate-500 hover:text-slate-700 hover:bg-slate-100 dark:border-slate-700 dark:bg-slate-800/50 dark:text-slate-400 dark:hover:text-slate-200 dark:hover:bg-slate-800 transition-colors"
+                className={SETTINGS_CONTROL_CLASS}
                 aria-label={units === "metric" ? "Switch to imperial units" : "Switch to metric units"}
                 title={units === "metric" ? "Metric units: °C, mm, m/s" : "Imperial units: °F, in, knots"}
               >
@@ -168,7 +174,7 @@ export default function Toolbar({
               <button
                 type="button"
                 onClick={onToggleLanguage}
-                className="px-2 py-1 rounded-lg border border-slate-200 bg-slate-50 text-xs text-slate-500 hover:text-slate-700 hover:bg-slate-100 dark:border-slate-700 dark:bg-slate-800/50 dark:text-slate-400 dark:hover:text-slate-200 dark:hover:bg-slate-800 transition-colors"
+                className={SETTINGS_CONTROL_CLASS}
                 title={t?.("toolbar.toggleLanguage") ?? "Toggle language"}
               >
                 🌐 {lang === "is" ? "EN" : "IS"}
@@ -177,7 +183,7 @@ export default function Toolbar({
               <button
                 type="button"
                 onClick={onToggleTheme}
-                className="px-2 py-1 rounded-lg border border-slate-200 bg-slate-50 text-xs text-slate-500 hover:text-slate-700 hover:bg-slate-100 dark:border-slate-700 dark:bg-slate-800/50 dark:text-slate-400 dark:hover:text-slate-200 dark:hover:bg-slate-800 transition-colors"
+                className={SETTINGS_CONTROL_CLASS}
                 aria-label={darkMode ? "Switch to light mode" : "Switch to dark mode"}
                 title="Toggle dark mode"
               >
@@ -187,15 +193,16 @@ export default function Toolbar({
               {import.meta.env.DEV && <DevProToggle devPro={devPro} onToggleDevPro={onToggleDevPro} />}
 
               {isSignedIn && (
-                <div className="basis-full w-full mt-1 pt-2 border-t border-slate-200/80 dark:border-slate-700/60 flex justify-end">
+                // Content-sized group owns the divider, so the bar always sits beside its button.
+                <div className="flex shrink-0 items-center border-l border-slate-200/80 pl-2 ml-1 dark:border-slate-700/60">
                   <button
                     type="button"
                     onClick={handleLogout}
                     disabled={loggingOut}
                     aria-busy={loggingOut}
-                    className="focus-ring inline-flex min-h-[44px] w-full sm:w-auto items-center justify-center gap-2 px-3 py-2 rounded-lg border border-slate-200 bg-slate-50 text-sm text-slate-600 hover:text-slate-900 hover:bg-slate-100 disabled:opacity-60 dark:border-slate-700 dark:bg-slate-800/50 dark:text-slate-300 dark:hover:text-slate-100 dark:hover:bg-slate-800 transition-colors"
+                    className={`${SETTINGS_CONTROL_CLASS} disabled:opacity-60`}
                   >
-                    <span aria-hidden>🚪</span>
+                    <LogOut size={16} aria-hidden="true" focusable="false" />
                     <span>{loggingOut ? t?.("loggingOutLabel") : t?.("logoutLabel")}</span>
                   </button>
                 </div>

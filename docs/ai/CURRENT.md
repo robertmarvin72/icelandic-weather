@@ -1,47 +1,45 @@
 # Current AI Task
 
-Task: ticket-434
+Task: ticket-435
 Stage: CLOSED
 
 Task directory:
-docs/ai/tasks/ticket-434/
+docs/ai/tasks/ticket-435/
 
 Prompt review:
-docs/ai/tasks/ticket-434/prompt-review.md
+docs/ai/tasks/ticket-435/prompt-review.md
 
 Approved prompt:
-docs/ai/tasks/ticket-434/approved-prompt-v2.md (tests/report correction only; v1 retained as executed immutable history)
+docs/ai/tasks/ticket-435/approved-prompt-v1.md
 
 CC report:
-docs/ai/tasks/ticket-434/cc-report.md
+docs/ai/tasks/ticket-435/cc-report.md
 
 Result review:
-docs/ai/tasks/ticket-434/result-review.md (Jonesy Round 2 PASS; Ripley final PASS after v2)
+docs/ai/tasks/ticket-435/result-review.md
 
 ## Current handoff
 
-2026-10-06: Ripley final PASS after v2; independently reran 7 files / 62 tests, all pass. Local workflow CLOSED. CC's broader suite/lint/browser results remain attributed to CC. Owner-controlled production cookie check on campcast.is and eltumvedrid.is remains pending after deployment; no production verification claimed. Changes uncommitted, no push/deploy/GitHub closure. Owner controls next steps.
+2026-10-06: Ripley final PASS (local, presentation only); independently reran 4 files / 65 tests, all pass, checked Toolbar diff/status and three representative layout/focus screenshots. CC lint/build/browser measurements remain attributed to CC. Workflow CLOSED, changes uncommitted; owner controls review/commit/push/deploy/issue closure. #434 production-cookie check remains pending. No production/test edits in this assessment.
 
-2026-10-06: Jonesy result review Round 2 on CC v2: PASS. F1-F6 and D1-D8 met; no production-file change in v2 (mtimes of all 9 production files identical to v1 review); new App wiring tests (13) and useLoginFlow prefill test verified against live source; browser rerun 46/46 anchored at /api/me response. Unverified by Jonesy (no shell): suite/lint/browser figures. Owner-controlled production cookie check on campcast.is and eltumvedrid.is still pending; server-side revocation unconfirmed when note is present. Awaiting Ripley final assessment. No commit/push/deploy/issue closure.
+2026-10-06: Jonesy result review Round 1 written: PASS (local, presentation only) with six non-blocking observations N1-N6. Independently checked Toolbar.jsx against the approved spec, test file, results.json (29 scenarios, 298/298 assertions, 40 observations), dist freshness/bundle contents, and mtime scope (only Toolbar.jsx and Toolbar.logout.test.jsx changed in src/api/root). Not re-run by Jonesy (no shell): tests, lint, build, git, hashes. Stage RESULT_REVIEW; awaiting Ripley final assessment. No commit, push, deployment or issue closure; #434 production-cookie check still pending.
 
-2026-10-06: CC executed approved-prompt-v2.md (tests and report correction F1-F6, D1-D8). Full suite: 165 files, 2483 tests passed. Lint exit 0. Explicit 20-file set: 242 passed. Browser rerun: 46/46 on the production preview, anonymous state anchored to /api/me. Production source hashes unchanged (9 files). Report appended to docs/ai/tasks/ticket-434/cc-report.md. Ready for Jonesy result review Round 2 (CC búinn). Owner production cookie check still pending. Status wording: browser logout; server-side revocation unconfirmed when note is present.
+2026-10-06: CC executed approved-prompt-v1.md for #435 (presentation only, Toolbar.jsx plus Toolbar.logout.test.jsx). Tests: 4 targeted files, 65 passed; lint exit 0; production build exit 0 (fresh dist after last Toolbar edit). Browser matrix: 29/29 scenarios, 298/298 assertions on production preview; screenshots viewed. Protected files unchanged. Report: docs/ai/tasks/ticket-435/cc-report.md. Ready for Jonesy result review (CC búinn). No commit, push, deployment or issue closure. #434 owner production-cookie check still pending; not established by this task.
 
-2026-10-06: Ripley created approved-prompt-v2.md incorporating Round 3 and Jonesy D1-D8, including before/after evidence preserving existing uncommitted v1 production changes. READY_FOR_CC for tests/report correction. CC awaits owner's Prompt approved; no test/application changes in this handoff.
+2026-10-06: Ripley created approved-prompt-v1.md consolidating Round 1 scope, Round 2 specification and verbatim Jonesy C1-C5, with exact neutral color tokens selected for C2. READY_FOR_CC; owner sends Prompt approved to CC. No application/test changes in this handoff.
 
-2026-10-06: Jonesy Round 3 review of the tests/report correction prompt: APPROVED with conditions D1-D8 (DEV test needs MODE=development for DevProToggle; deterministic useMe wrapper anchor; campsite count baselines; non-tautological login-prefill test; no-production-change proof; accurate v2 report incl. door-glyph correction). v1 stays immutable; no CC execution authorization until v2 exists and the owner sends `Prompt approved`. No application/test changes by Jonesy.
+2026-10-06: Ripley appended Round 2, choosing uniform 44px content-width controls (E1 A), group-owned divider, shared PWA styling, exact tests/scope proof and 29-scenario evidence matrix. PWA timing observation remains report-only. Ready for Jonesy Review uppfært. No application/test changes; stage stays PROMPT_REVIEW.
 
-2026-10-06: Ripley final assessment REVISE; independently reran 5 targeted files / 42 tests, all pass. Round 3 tests/report correction prompt ready for Jonesy review. No active CC execution authorization; v1 remains immutable. Full review loop required before creating v2. No application/test edits in this assessment.
+2026-10-06: Jonesy reviewed Ripley Round 2 against live source (Toolbar.jsx/Toolbar.logout.test.jsx unchanged): APPROVED with conditions C1-C5 appended to prompt-review.md (C1 test mock/DEV-stub mechanics and required settings callback tests, C2 exact colour tokens/contrast, C3 fresh build before preview evidence, C4 evidence details, C5 Settings toggle unchanged). Stage stays PROMPT_REVIEW until Ripley creates approved-prompt-v1.md. No application changes, no execution authorization.
 
-2026-10-06: Jonesy Round 2 APPROVED with C1-C8. Owner explicitly approved the narrow backend cookie-expiry exception with “Samþykkt”. Ripley created approved-prompt-v1.md. CC executed it: backend cookie-expiry helper/logout wiring/tests, client logout action, useMe reset, useCampsites latest-wins, translations, and targeted tests. Lint, build, 146 targeted tests and 42 browser checks (production build, mocked sessions) pass. Status wording: browser logout; server-side revocation unconfirmed when note is present. Owner-controlled item still pending: production cookie verification on campcast.is and eltumvedrid.is. No commit, push, deployment, Neon call or GitHub closure. Jonesy result review Round 1 (2026-10-06): REVISE. Production code and backend cookie helper verified against source; missing mandatory tests (App-level visibility incl. Free/DEV-only/refetch-retained, anonymous check anchoring, Pro-to-Free reload + lastSite, no old email on login), other useMe consumer suites not run, one report inaccuracy (emoji screenshot). Owner-controlled production cookie check still pending. Ripley decides next step.
+2026-10-06: Owner selected #435 in the established Ripley session. Ripley read the GitHub issue and audited Settings presentation, optional PWA/DEV controls and #434 tests. Round 1 ready for Jonesy review. Initial git status clean; no application changes.
 
-## Previous cancellation
-
-Owner cancelled #433 on 2026-10-05. Its history and approved-prompt-v1.md remain historical only, with execution authorization withdrawn. No application code changes to revert. GitHub issue status was not changed.
+2026-10-06: Jonesy reviewed Round 1 against live source: REVISE, findings E1-E7 in prompt-review.md (E1 compact vs 44px spec choice, E2 divider owned by logout group, E3 InstallPWA className replaces default, E4 PWA event only after panel opens, E5 test specifics, E6 baseline/scope proof, E7 evidence matrix). Stage remains PROMPT_REVIEW. No application changes, no execution authorization.
 
 ## Previous tasks and sequencing
 
-#420 CLOSED/PASS locally. #432 safety policy and share preservation remain binding. #423/#425/#426/#427/#428/#431/#432 CLOSED; #417 locally CLOSED with external verification outstanding; #415/#416/#411/#410 CLOSED; #409 unfinished/BLOCKED. #431 live GA4 verification remains unverified. #433 CANCELLED.
+#434 CLOSED/PASS locally; full history in docs/ai/tasks/ticket-434/. Owner-controlled production cookie verification on campcast.is and eltumvedrid.is remains pending; clean git status does not establish deployment/verification. #433 CANCELLED, historical prompt authorization withdrawn. #420 CLOSED/PASS locally. #432 safety policy and share preservation remain binding. #423/#425/#426/#427/#428/#431/#432 CLOSED; #417 locally CLOSED with external verification outstanding; #415/#416/#411/#410 CLOSED; #409 unfinished/BLOCKED. #431 live GA4 verification remains unverified.
 
 ## Rule
 
-Read docs/ai/README.md before workflow actions. No automatic commit, push, deployment, production DB mutation or GitHub closure.
+Read docs/ai/README.md before workflow actions. No automatic commit, push, deployment, production DB mutation or GitHub closure. Prompt-review.md is discussion only.

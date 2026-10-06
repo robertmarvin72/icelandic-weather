@@ -1,0 +1,2030 @@
+[
+  {
+    "scenario": "signed-in-nopwa-320-is-light",
+    "check": "anchor: /api/me answered as the scenario session",
+    "pass": true,
+    "detail": "signed-in"
+  },
+  {
+    "scenario": "signed-in-nopwa-320-is-light",
+    "check": "no horizontal page overflow",
+    "pass": true,
+    "detail": "overflowPx=0"
+  },
+  {
+    "scenario": "signed-in-nopwa-320-is-light",
+    "check": "logout control present for signed-in user",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "scenario": "signed-in-nopwa-320-is-light",
+    "check": "logout text is visible translated label",
+    "pass": true,
+    "detail": "Skrá út"
+  },
+  {
+    "scenario": "signed-in-nopwa-320-is-light",
+    "check": "logout icon: exactly one SVG",
+    "pass": true,
+    "detail": "svgs=1"
+  },
+  {
+    "scenario": "signed-in-nopwa-320-is-light",
+    "check": "logout is the last control group",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "scenario": "signed-in-nopwa-320-is-light",
+    "check": "logout group has left divider, no top border",
+    "pass": true,
+    "detail": "borderLeft=1px"
+  },
+  {
+    "scenario": "signed-in-nopwa-320-is-light",
+    "check": "four row controls each >= 44px high",
+    "pass": true,
+    "detail": "44.0,44.0,44.0,44.0"
+  },
+  {
+    "scenario": "signed-in-nopwa-320-is-light",
+    "check": "four row controls share equal height (<=1px)",
+    "pass": true,
+    "detail": "44.0..44.0"
+  },
+  {
+    "scenario": "signed-in-nopwa-320-is-light",
+    "check": "logout is content-sized (group < 60% of panel width)",
+    "pass": true,
+    "detail": "group=84 panel=249"
+  },
+  {
+    "scenario": "signed-in-nopwa-320-is-light",
+    "check": "controls use pointer cursor",
+    "pass": true,
+    "detail": "{\"units\":\"pointer\",\"lang\":\"pointer\",\"theme\":\"pointer\",\"logout\":\"pointer\"}"
+  },
+  {
+    "scenario": "signed-in-nopwa-320-is-light",
+    "check": "logout contrast >= 4.5:1 (normal state, composited bg)",
+    "pass": true,
+    "detail": "ratio=7.25"
+  },
+  {
+    "scenario": "signed-in-nopwa-320-is-light",
+    "check": "units control contrast (composited)",
+    "pass": null,
+    "detail": "7.25"
+  },
+  {
+    "scenario": "signed-in-nopwa-320-is-light",
+    "check": "row wrap state",
+    "pass": null,
+    "detail": "distinct row tops=1 at 320px"
+  },
+  {
+    "scenario": "signed-in-nopwa-320-is-dark",
+    "check": "anchor: /api/me answered as the scenario session",
+    "pass": true,
+    "detail": "signed-in"
+  },
+  {
+    "scenario": "signed-in-nopwa-320-is-dark",
+    "check": "no horizontal page overflow",
+    "pass": true,
+    "detail": "overflowPx=0"
+  },
+  {
+    "scenario": "signed-in-nopwa-320-is-dark",
+    "check": "logout control present for signed-in user",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "scenario": "signed-in-nopwa-320-is-dark",
+    "check": "logout text is visible translated label",
+    "pass": true,
+    "detail": "Skrá út"
+  },
+  {
+    "scenario": "signed-in-nopwa-320-is-dark",
+    "check": "logout icon: exactly one SVG",
+    "pass": true,
+    "detail": "svgs=1"
+  },
+  {
+    "scenario": "signed-in-nopwa-320-is-dark",
+    "check": "logout is the last control group",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "scenario": "signed-in-nopwa-320-is-dark",
+    "check": "logout group has left divider, no top border",
+    "pass": true,
+    "detail": "borderLeft=1px"
+  },
+  {
+    "scenario": "signed-in-nopwa-320-is-dark",
+    "check": "four row controls each >= 44px high",
+    "pass": true,
+    "detail": "44.0,44.0,44.0,44.0"
+  },
+  {
+    "scenario": "signed-in-nopwa-320-is-dark",
+    "check": "four row controls share equal height (<=1px)",
+    "pass": true,
+    "detail": "44.0..44.0"
+  },
+  {
+    "scenario": "signed-in-nopwa-320-is-dark",
+    "check": "logout is content-sized (group < 60% of panel width)",
+    "pass": true,
+    "detail": "group=84 panel=249"
+  },
+  {
+    "scenario": "signed-in-nopwa-320-is-dark",
+    "check": "controls use pointer cursor",
+    "pass": true,
+    "detail": "{\"units\":\"pointer\",\"lang\":\"pointer\",\"theme\":\"pointer\",\"logout\":\"pointer\"}"
+  },
+  {
+    "scenario": "signed-in-nopwa-320-is-dark",
+    "check": "logout contrast >= 4.5:1 (normal state, composited bg)",
+    "pass": true,
+    "detail": "ratio=11.09"
+  },
+  {
+    "scenario": "signed-in-nopwa-320-is-dark",
+    "check": "units control contrast (composited)",
+    "pass": null,
+    "detail": "11.09"
+  },
+  {
+    "scenario": "signed-in-nopwa-320-is-dark",
+    "check": "row wrap state",
+    "pass": null,
+    "detail": "distinct row tops=1 at 320px"
+  },
+  {
+    "scenario": "signed-in-nopwa-320-en-light",
+    "check": "anchor: /api/me answered as the scenario session",
+    "pass": true,
+    "detail": "signed-in"
+  },
+  {
+    "scenario": "signed-in-nopwa-320-en-light",
+    "check": "no horizontal page overflow",
+    "pass": true,
+    "detail": "overflowPx=0"
+  },
+  {
+    "scenario": "signed-in-nopwa-320-en-light",
+    "check": "logout control present for signed-in user",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "scenario": "signed-in-nopwa-320-en-light",
+    "check": "logout text is visible translated label",
+    "pass": true,
+    "detail": "Log out"
+  },
+  {
+    "scenario": "signed-in-nopwa-320-en-light",
+    "check": "logout icon: exactly one SVG",
+    "pass": true,
+    "detail": "svgs=1"
+  },
+  {
+    "scenario": "signed-in-nopwa-320-en-light",
+    "check": "logout is the last control group",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "scenario": "signed-in-nopwa-320-en-light",
+    "check": "logout group has left divider, no top border",
+    "pass": true,
+    "detail": "borderLeft=1px"
+  },
+  {
+    "scenario": "signed-in-nopwa-320-en-light",
+    "check": "four row controls each >= 44px high",
+    "pass": true,
+    "detail": "44.0,44.0,44.0,44.0"
+  },
+  {
+    "scenario": "signed-in-nopwa-320-en-light",
+    "check": "four row controls share equal height (<=1px)",
+    "pass": true,
+    "detail": "44.0..44.0"
+  },
+  {
+    "scenario": "signed-in-nopwa-320-en-light",
+    "check": "logout is content-sized (group < 60% of panel width)",
+    "pass": true,
+    "detail": "group=88 panel=248"
+  },
+  {
+    "scenario": "signed-in-nopwa-320-en-light",
+    "check": "controls use pointer cursor",
+    "pass": true,
+    "detail": "{\"units\":\"pointer\",\"lang\":\"pointer\",\"theme\":\"pointer\",\"logout\":\"pointer\"}"
+  },
+  {
+    "scenario": "signed-in-nopwa-320-en-light",
+    "check": "logout contrast >= 4.5:1 (normal state, composited bg)",
+    "pass": true,
+    "detail": "ratio=7.25"
+  },
+  {
+    "scenario": "signed-in-nopwa-320-en-light",
+    "check": "units control contrast (composited)",
+    "pass": null,
+    "detail": "7.25"
+  },
+  {
+    "scenario": "signed-in-nopwa-320-en-light",
+    "check": "row wrap state",
+    "pass": null,
+    "detail": "distinct row tops=1 at 320px"
+  },
+  {
+    "scenario": "signed-in-nopwa-320-en-dark",
+    "check": "anchor: /api/me answered as the scenario session",
+    "pass": true,
+    "detail": "signed-in"
+  },
+  {
+    "scenario": "signed-in-nopwa-320-en-dark",
+    "check": "no horizontal page overflow",
+    "pass": true,
+    "detail": "overflowPx=0"
+  },
+  {
+    "scenario": "signed-in-nopwa-320-en-dark",
+    "check": "logout control present for signed-in user",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "scenario": "signed-in-nopwa-320-en-dark",
+    "check": "logout text is visible translated label",
+    "pass": true,
+    "detail": "Log out"
+  },
+  {
+    "scenario": "signed-in-nopwa-320-en-dark",
+    "check": "logout icon: exactly one SVG",
+    "pass": true,
+    "detail": "svgs=1"
+  },
+  {
+    "scenario": "signed-in-nopwa-320-en-dark",
+    "check": "logout is the last control group",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "scenario": "signed-in-nopwa-320-en-dark",
+    "check": "logout group has left divider, no top border",
+    "pass": true,
+    "detail": "borderLeft=1px"
+  },
+  {
+    "scenario": "signed-in-nopwa-320-en-dark",
+    "check": "four row controls each >= 44px high",
+    "pass": true,
+    "detail": "44.0,44.0,44.0,44.0"
+  },
+  {
+    "scenario": "signed-in-nopwa-320-en-dark",
+    "check": "four row controls share equal height (<=1px)",
+    "pass": true,
+    "detail": "44.0..44.0"
+  },
+  {
+    "scenario": "signed-in-nopwa-320-en-dark",
+    "check": "logout is content-sized (group < 60% of panel width)",
+    "pass": true,
+    "detail": "group=88 panel=248"
+  },
+  {
+    "scenario": "signed-in-nopwa-320-en-dark",
+    "check": "controls use pointer cursor",
+    "pass": true,
+    "detail": "{\"units\":\"pointer\",\"lang\":\"pointer\",\"theme\":\"pointer\",\"logout\":\"pointer\"}"
+  },
+  {
+    "scenario": "signed-in-nopwa-320-en-dark",
+    "check": "logout contrast >= 4.5:1 (normal state, composited bg)",
+    "pass": true,
+    "detail": "ratio=11.09"
+  },
+  {
+    "scenario": "signed-in-nopwa-320-en-dark",
+    "check": "units control contrast (composited)",
+    "pass": null,
+    "detail": "11.09"
+  },
+  {
+    "scenario": "signed-in-nopwa-320-en-dark",
+    "check": "row wrap state",
+    "pass": null,
+    "detail": "distinct row tops=1 at 320px"
+  },
+  {
+    "scenario": "signed-in-nopwa-375-is-light",
+    "check": "anchor: /api/me answered as the scenario session",
+    "pass": true,
+    "detail": "signed-in"
+  },
+  {
+    "scenario": "signed-in-nopwa-375-is-light",
+    "check": "no horizontal page overflow",
+    "pass": true,
+    "detail": "overflowPx=0"
+  },
+  {
+    "scenario": "signed-in-nopwa-375-is-light",
+    "check": "logout control present for signed-in user",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "scenario": "signed-in-nopwa-375-is-light",
+    "check": "logout text is visible translated label",
+    "pass": true,
+    "detail": "Skrá út"
+  },
+  {
+    "scenario": "signed-in-nopwa-375-is-light",
+    "check": "logout icon: exactly one SVG",
+    "pass": true,
+    "detail": "svgs=1"
+  },
+  {
+    "scenario": "signed-in-nopwa-375-is-light",
+    "check": "logout is the last control group",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "scenario": "signed-in-nopwa-375-is-light",
+    "check": "logout group has left divider, no top border",
+    "pass": true,
+    "detail": "borderLeft=1px"
+  },
+  {
+    "scenario": "signed-in-nopwa-375-is-light",
+    "check": "four row controls each >= 44px high",
+    "pass": true,
+    "detail": "44.0,44.0,44.0,44.0"
+  },
+  {
+    "scenario": "signed-in-nopwa-375-is-light",
+    "check": "four row controls share equal height (<=1px)",
+    "pass": true,
+    "detail": "44.0..44.0"
+  },
+  {
+    "scenario": "signed-in-nopwa-375-is-light",
+    "check": "logout is content-sized (group < 60% of panel width)",
+    "pass": true,
+    "detail": "group=84 panel=249"
+  },
+  {
+    "scenario": "signed-in-nopwa-375-is-light",
+    "check": "controls use pointer cursor",
+    "pass": true,
+    "detail": "{\"units\":\"pointer\",\"lang\":\"pointer\",\"theme\":\"pointer\",\"logout\":\"pointer\"}"
+  },
+  {
+    "scenario": "signed-in-nopwa-375-is-light",
+    "check": "logout contrast >= 4.5:1 (normal state, composited bg)",
+    "pass": true,
+    "detail": "ratio=7.25"
+  },
+  {
+    "scenario": "signed-in-nopwa-375-is-light",
+    "check": "units control contrast (composited)",
+    "pass": null,
+    "detail": "7.25"
+  },
+  {
+    "scenario": "signed-in-nopwa-375-is-light",
+    "check": "row wrap state",
+    "pass": null,
+    "detail": "distinct row tops=1 at 375px"
+  },
+  {
+    "scenario": "signed-in-nopwa-375-is-dark",
+    "check": "anchor: /api/me answered as the scenario session",
+    "pass": true,
+    "detail": "signed-in"
+  },
+  {
+    "scenario": "signed-in-nopwa-375-is-dark",
+    "check": "no horizontal page overflow",
+    "pass": true,
+    "detail": "overflowPx=0"
+  },
+  {
+    "scenario": "signed-in-nopwa-375-is-dark",
+    "check": "logout control present for signed-in user",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "scenario": "signed-in-nopwa-375-is-dark",
+    "check": "logout text is visible translated label",
+    "pass": true,
+    "detail": "Skrá út"
+  },
+  {
+    "scenario": "signed-in-nopwa-375-is-dark",
+    "check": "logout icon: exactly one SVG",
+    "pass": true,
+    "detail": "svgs=1"
+  },
+  {
+    "scenario": "signed-in-nopwa-375-is-dark",
+    "check": "logout is the last control group",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "scenario": "signed-in-nopwa-375-is-dark",
+    "check": "logout group has left divider, no top border",
+    "pass": true,
+    "detail": "borderLeft=1px"
+  },
+  {
+    "scenario": "signed-in-nopwa-375-is-dark",
+    "check": "four row controls each >= 44px high",
+    "pass": true,
+    "detail": "44.0,44.0,44.0,44.0"
+  },
+  {
+    "scenario": "signed-in-nopwa-375-is-dark",
+    "check": "four row controls share equal height (<=1px)",
+    "pass": true,
+    "detail": "44.0..44.0"
+  },
+  {
+    "scenario": "signed-in-nopwa-375-is-dark",
+    "check": "logout is content-sized (group < 60% of panel width)",
+    "pass": true,
+    "detail": "group=84 panel=249"
+  },
+  {
+    "scenario": "signed-in-nopwa-375-is-dark",
+    "check": "controls use pointer cursor",
+    "pass": true,
+    "detail": "{\"units\":\"pointer\",\"lang\":\"pointer\",\"theme\":\"pointer\",\"logout\":\"pointer\"}"
+  },
+  {
+    "scenario": "signed-in-nopwa-375-is-dark",
+    "check": "logout contrast >= 4.5:1 (normal state, composited bg)",
+    "pass": true,
+    "detail": "ratio=11.09"
+  },
+  {
+    "scenario": "signed-in-nopwa-375-is-dark",
+    "check": "units control contrast (composited)",
+    "pass": null,
+    "detail": "11.09"
+  },
+  {
+    "scenario": "signed-in-nopwa-375-is-dark",
+    "check": "row wrap state",
+    "pass": null,
+    "detail": "distinct row tops=1 at 375px"
+  },
+  {
+    "scenario": "signed-in-nopwa-375-en-light",
+    "check": "anchor: /api/me answered as the scenario session",
+    "pass": true,
+    "detail": "signed-in"
+  },
+  {
+    "scenario": "signed-in-nopwa-375-en-light",
+    "check": "no horizontal page overflow",
+    "pass": true,
+    "detail": "overflowPx=0"
+  },
+  {
+    "scenario": "signed-in-nopwa-375-en-light",
+    "check": "logout control present for signed-in user",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "scenario": "signed-in-nopwa-375-en-light",
+    "check": "logout text is visible translated label",
+    "pass": true,
+    "detail": "Log out"
+  },
+  {
+    "scenario": "signed-in-nopwa-375-en-light",
+    "check": "logout icon: exactly one SVG",
+    "pass": true,
+    "detail": "svgs=1"
+  },
+  {
+    "scenario": "signed-in-nopwa-375-en-light",
+    "check": "logout is the last control group",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "scenario": "signed-in-nopwa-375-en-light",
+    "check": "logout group has left divider, no top border",
+    "pass": true,
+    "detail": "borderLeft=1px"
+  },
+  {
+    "scenario": "signed-in-nopwa-375-en-light",
+    "check": "four row controls each >= 44px high",
+    "pass": true,
+    "detail": "44.0,44.0,44.0,44.0"
+  },
+  {
+    "scenario": "signed-in-nopwa-375-en-light",
+    "check": "four row controls share equal height (<=1px)",
+    "pass": true,
+    "detail": "44.0..44.0"
+  },
+  {
+    "scenario": "signed-in-nopwa-375-en-light",
+    "check": "logout is content-sized (group < 60% of panel width)",
+    "pass": true,
+    "detail": "group=88 panel=248"
+  },
+  {
+    "scenario": "signed-in-nopwa-375-en-light",
+    "check": "controls use pointer cursor",
+    "pass": true,
+    "detail": "{\"units\":\"pointer\",\"lang\":\"pointer\",\"theme\":\"pointer\",\"logout\":\"pointer\"}"
+  },
+  {
+    "scenario": "signed-in-nopwa-375-en-light",
+    "check": "logout contrast >= 4.5:1 (normal state, composited bg)",
+    "pass": true,
+    "detail": "ratio=7.25"
+  },
+  {
+    "scenario": "signed-in-nopwa-375-en-light",
+    "check": "units control contrast (composited)",
+    "pass": null,
+    "detail": "7.25"
+  },
+  {
+    "scenario": "signed-in-nopwa-375-en-light",
+    "check": "row wrap state",
+    "pass": null,
+    "detail": "distinct row tops=1 at 375px"
+  },
+  {
+    "scenario": "signed-in-nopwa-375-en-dark",
+    "check": "anchor: /api/me answered as the scenario session",
+    "pass": true,
+    "detail": "signed-in"
+  },
+  {
+    "scenario": "signed-in-nopwa-375-en-dark",
+    "check": "no horizontal page overflow",
+    "pass": true,
+    "detail": "overflowPx=0"
+  },
+  {
+    "scenario": "signed-in-nopwa-375-en-dark",
+    "check": "logout control present for signed-in user",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "scenario": "signed-in-nopwa-375-en-dark",
+    "check": "logout text is visible translated label",
+    "pass": true,
+    "detail": "Log out"
+  },
+  {
+    "scenario": "signed-in-nopwa-375-en-dark",
+    "check": "logout icon: exactly one SVG",
+    "pass": true,
+    "detail": "svgs=1"
+  },
+  {
+    "scenario": "signed-in-nopwa-375-en-dark",
+    "check": "logout is the last control group",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "scenario": "signed-in-nopwa-375-en-dark",
+    "check": "logout group has left divider, no top border",
+    "pass": true,
+    "detail": "borderLeft=1px"
+  },
+  {
+    "scenario": "signed-in-nopwa-375-en-dark",
+    "check": "four row controls each >= 44px high",
+    "pass": true,
+    "detail": "44.0,44.0,44.0,44.0"
+  },
+  {
+    "scenario": "signed-in-nopwa-375-en-dark",
+    "check": "four row controls share equal height (<=1px)",
+    "pass": true,
+    "detail": "44.0..44.0"
+  },
+  {
+    "scenario": "signed-in-nopwa-375-en-dark",
+    "check": "logout is content-sized (group < 60% of panel width)",
+    "pass": true,
+    "detail": "group=88 panel=248"
+  },
+  {
+    "scenario": "signed-in-nopwa-375-en-dark",
+    "check": "controls use pointer cursor",
+    "pass": true,
+    "detail": "{\"units\":\"pointer\",\"lang\":\"pointer\",\"theme\":\"pointer\",\"logout\":\"pointer\"}"
+  },
+  {
+    "scenario": "signed-in-nopwa-375-en-dark",
+    "check": "logout contrast >= 4.5:1 (normal state, composited bg)",
+    "pass": true,
+    "detail": "ratio=11.09"
+  },
+  {
+    "scenario": "signed-in-nopwa-375-en-dark",
+    "check": "units control contrast (composited)",
+    "pass": null,
+    "detail": "11.09"
+  },
+  {
+    "scenario": "signed-in-nopwa-375-en-dark",
+    "check": "row wrap state",
+    "pass": null,
+    "detail": "distinct row tops=1 at 375px"
+  },
+  {
+    "scenario": "signed-in-nopwa-768-is-light",
+    "check": "anchor: /api/me answered as the scenario session",
+    "pass": true,
+    "detail": "signed-in"
+  },
+  {
+    "scenario": "signed-in-nopwa-768-is-light",
+    "check": "no horizontal page overflow",
+    "pass": true,
+    "detail": "overflowPx=0"
+  },
+  {
+    "scenario": "signed-in-nopwa-768-is-light",
+    "check": "logout control present for signed-in user",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "scenario": "signed-in-nopwa-768-is-light",
+    "check": "logout text is visible translated label",
+    "pass": true,
+    "detail": "Skrá út"
+  },
+  {
+    "scenario": "signed-in-nopwa-768-is-light",
+    "check": "logout icon: exactly one SVG",
+    "pass": true,
+    "detail": "svgs=1"
+  },
+  {
+    "scenario": "signed-in-nopwa-768-is-light",
+    "check": "logout is the last control group",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "scenario": "signed-in-nopwa-768-is-light",
+    "check": "logout group has left divider, no top border",
+    "pass": true,
+    "detail": "borderLeft=1px"
+  },
+  {
+    "scenario": "signed-in-nopwa-768-is-light",
+    "check": "four row controls each >= 44px high",
+    "pass": true,
+    "detail": "44.0,44.0,44.0,44.0"
+  },
+  {
+    "scenario": "signed-in-nopwa-768-is-light",
+    "check": "four row controls share equal height (<=1px)",
+    "pass": true,
+    "detail": "44.0..44.0"
+  },
+  {
+    "scenario": "signed-in-nopwa-768-is-light",
+    "check": "logout is content-sized (group < 60% of panel width)",
+    "pass": true,
+    "detail": "group=84 panel=220"
+  },
+  {
+    "scenario": "signed-in-nopwa-768-is-light",
+    "check": "controls use pointer cursor",
+    "pass": true,
+    "detail": "{\"units\":\"pointer\",\"lang\":\"pointer\",\"theme\":\"pointer\",\"logout\":\"pointer\"}"
+  },
+  {
+    "scenario": "signed-in-nopwa-768-is-light",
+    "check": "logout contrast >= 4.5:1 (normal state, composited bg)",
+    "pass": true,
+    "detail": "ratio=7.25"
+  },
+  {
+    "scenario": "signed-in-nopwa-768-is-light",
+    "check": "units control contrast (composited)",
+    "pass": null,
+    "detail": "7.25"
+  },
+  {
+    "scenario": "signed-in-nopwa-768-is-light",
+    "check": "row wrap state",
+    "pass": null,
+    "detail": "distinct row tops=2 at 768px"
+  },
+  {
+    "scenario": "signed-in-nopwa-768-is-dark",
+    "check": "anchor: /api/me answered as the scenario session",
+    "pass": true,
+    "detail": "signed-in"
+  },
+  {
+    "scenario": "signed-in-nopwa-768-is-dark",
+    "check": "no horizontal page overflow",
+    "pass": true,
+    "detail": "overflowPx=0"
+  },
+  {
+    "scenario": "signed-in-nopwa-768-is-dark",
+    "check": "logout control present for signed-in user",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "scenario": "signed-in-nopwa-768-is-dark",
+    "check": "logout text is visible translated label",
+    "pass": true,
+    "detail": "Skrá út"
+  },
+  {
+    "scenario": "signed-in-nopwa-768-is-dark",
+    "check": "logout icon: exactly one SVG",
+    "pass": true,
+    "detail": "svgs=1"
+  },
+  {
+    "scenario": "signed-in-nopwa-768-is-dark",
+    "check": "logout is the last control group",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "scenario": "signed-in-nopwa-768-is-dark",
+    "check": "logout group has left divider, no top border",
+    "pass": true,
+    "detail": "borderLeft=1px"
+  },
+  {
+    "scenario": "signed-in-nopwa-768-is-dark",
+    "check": "four row controls each >= 44px high",
+    "pass": true,
+    "detail": "44.0,44.0,44.0,44.0"
+  },
+  {
+    "scenario": "signed-in-nopwa-768-is-dark",
+    "check": "four row controls share equal height (<=1px)",
+    "pass": true,
+    "detail": "44.0..44.0"
+  },
+  {
+    "scenario": "signed-in-nopwa-768-is-dark",
+    "check": "logout is content-sized (group < 60% of panel width)",
+    "pass": true,
+    "detail": "group=84 panel=220"
+  },
+  {
+    "scenario": "signed-in-nopwa-768-is-dark",
+    "check": "controls use pointer cursor",
+    "pass": true,
+    "detail": "{\"units\":\"pointer\",\"lang\":\"pointer\",\"theme\":\"pointer\",\"logout\":\"pointer\"}"
+  },
+  {
+    "scenario": "signed-in-nopwa-768-is-dark",
+    "check": "logout contrast >= 4.5:1 (normal state, composited bg)",
+    "pass": true,
+    "detail": "ratio=11.09"
+  },
+  {
+    "scenario": "signed-in-nopwa-768-is-dark",
+    "check": "units control contrast (composited)",
+    "pass": null,
+    "detail": "11.09"
+  },
+  {
+    "scenario": "signed-in-nopwa-768-is-dark",
+    "check": "row wrap state",
+    "pass": null,
+    "detail": "distinct row tops=2 at 768px"
+  },
+  {
+    "scenario": "signed-in-nopwa-768-en-light",
+    "check": "anchor: /api/me answered as the scenario session",
+    "pass": true,
+    "detail": "signed-in"
+  },
+  {
+    "scenario": "signed-in-nopwa-768-en-light",
+    "check": "no horizontal page overflow",
+    "pass": true,
+    "detail": "overflowPx=0"
+  },
+  {
+    "scenario": "signed-in-nopwa-768-en-light",
+    "check": "logout control present for signed-in user",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "scenario": "signed-in-nopwa-768-en-light",
+    "check": "logout text is visible translated label",
+    "pass": true,
+    "detail": "Log out"
+  },
+  {
+    "scenario": "signed-in-nopwa-768-en-light",
+    "check": "logout icon: exactly one SVG",
+    "pass": true,
+    "detail": "svgs=1"
+  },
+  {
+    "scenario": "signed-in-nopwa-768-en-light",
+    "check": "logout is the last control group",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "scenario": "signed-in-nopwa-768-en-light",
+    "check": "logout group has left divider, no top border",
+    "pass": true,
+    "detail": "borderLeft=1px"
+  },
+  {
+    "scenario": "signed-in-nopwa-768-en-light",
+    "check": "four row controls each >= 44px high",
+    "pass": true,
+    "detail": "44.0,44.0,44.0,44.0"
+  },
+  {
+    "scenario": "signed-in-nopwa-768-en-light",
+    "check": "four row controls share equal height (<=1px)",
+    "pass": true,
+    "detail": "44.0..44.0"
+  },
+  {
+    "scenario": "signed-in-nopwa-768-en-light",
+    "check": "logout is content-sized (group < 60% of panel width)",
+    "pass": true,
+    "detail": "group=88 panel=185"
+  },
+  {
+    "scenario": "signed-in-nopwa-768-en-light",
+    "check": "controls use pointer cursor",
+    "pass": true,
+    "detail": "{\"units\":\"pointer\",\"lang\":\"pointer\",\"theme\":\"pointer\",\"logout\":\"pointer\"}"
+  },
+  {
+    "scenario": "signed-in-nopwa-768-en-light",
+    "check": "logout contrast >= 4.5:1 (normal state, composited bg)",
+    "pass": true,
+    "detail": "ratio=7.25"
+  },
+  {
+    "scenario": "signed-in-nopwa-768-en-light",
+    "check": "units control contrast (composited)",
+    "pass": null,
+    "detail": "7.25"
+  },
+  {
+    "scenario": "signed-in-nopwa-768-en-light",
+    "check": "row wrap state",
+    "pass": null,
+    "detail": "distinct row tops=2 at 768px"
+  },
+  {
+    "scenario": "signed-in-nopwa-768-en-dark",
+    "check": "anchor: /api/me answered as the scenario session",
+    "pass": true,
+    "detail": "signed-in"
+  },
+  {
+    "scenario": "signed-in-nopwa-768-en-dark",
+    "check": "no horizontal page overflow",
+    "pass": true,
+    "detail": "overflowPx=0"
+  },
+  {
+    "scenario": "signed-in-nopwa-768-en-dark",
+    "check": "logout control present for signed-in user",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "scenario": "signed-in-nopwa-768-en-dark",
+    "check": "logout text is visible translated label",
+    "pass": true,
+    "detail": "Log out"
+  },
+  {
+    "scenario": "signed-in-nopwa-768-en-dark",
+    "check": "logout icon: exactly one SVG",
+    "pass": true,
+    "detail": "svgs=1"
+  },
+  {
+    "scenario": "signed-in-nopwa-768-en-dark",
+    "check": "logout is the last control group",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "scenario": "signed-in-nopwa-768-en-dark",
+    "check": "logout group has left divider, no top border",
+    "pass": true,
+    "detail": "borderLeft=1px"
+  },
+  {
+    "scenario": "signed-in-nopwa-768-en-dark",
+    "check": "four row controls each >= 44px high",
+    "pass": true,
+    "detail": "44.0,44.0,44.0,44.0"
+  },
+  {
+    "scenario": "signed-in-nopwa-768-en-dark",
+    "check": "four row controls share equal height (<=1px)",
+    "pass": true,
+    "detail": "44.0..44.0"
+  },
+  {
+    "scenario": "signed-in-nopwa-768-en-dark",
+    "check": "logout is content-sized (group < 60% of panel width)",
+    "pass": true,
+    "detail": "group=88 panel=185"
+  },
+  {
+    "scenario": "signed-in-nopwa-768-en-dark",
+    "check": "controls use pointer cursor",
+    "pass": true,
+    "detail": "{\"units\":\"pointer\",\"lang\":\"pointer\",\"theme\":\"pointer\",\"logout\":\"pointer\"}"
+  },
+  {
+    "scenario": "signed-in-nopwa-768-en-dark",
+    "check": "logout contrast >= 4.5:1 (normal state, composited bg)",
+    "pass": true,
+    "detail": "ratio=11.09"
+  },
+  {
+    "scenario": "signed-in-nopwa-768-en-dark",
+    "check": "units control contrast (composited)",
+    "pass": null,
+    "detail": "11.09"
+  },
+  {
+    "scenario": "signed-in-nopwa-768-en-dark",
+    "check": "row wrap state",
+    "pass": null,
+    "detail": "distinct row tops=2 at 768px"
+  },
+  {
+    "scenario": "signed-in-nopwa-1280-is-light",
+    "check": "anchor: /api/me answered as the scenario session",
+    "pass": true,
+    "detail": "signed-in"
+  },
+  {
+    "scenario": "signed-in-nopwa-1280-is-light",
+    "check": "no horizontal page overflow",
+    "pass": true,
+    "detail": "overflowPx=0"
+  },
+  {
+    "scenario": "signed-in-nopwa-1280-is-light",
+    "check": "logout control present for signed-in user",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "scenario": "signed-in-nopwa-1280-is-light",
+    "check": "logout text is visible translated label",
+    "pass": true,
+    "detail": "Skrá út"
+  },
+  {
+    "scenario": "signed-in-nopwa-1280-is-light",
+    "check": "logout icon: exactly one SVG",
+    "pass": true,
+    "detail": "svgs=1"
+  },
+  {
+    "scenario": "signed-in-nopwa-1280-is-light",
+    "check": "logout is the last control group",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "scenario": "signed-in-nopwa-1280-is-light",
+    "check": "logout group has left divider, no top border",
+    "pass": true,
+    "detail": "borderLeft=1px"
+  },
+  {
+    "scenario": "signed-in-nopwa-1280-is-light",
+    "check": "four row controls each >= 44px high",
+    "pass": true,
+    "detail": "44.0,44.0,44.0,44.0"
+  },
+  {
+    "scenario": "signed-in-nopwa-1280-is-light",
+    "check": "four row controls share equal height (<=1px)",
+    "pass": true,
+    "detail": "44.0..44.0"
+  },
+  {
+    "scenario": "signed-in-nopwa-1280-is-light",
+    "check": "logout is content-sized (group < 60% of panel width)",
+    "pass": true,
+    "detail": "group=84 panel=249"
+  },
+  {
+    "scenario": "signed-in-nopwa-1280-is-light",
+    "check": "controls use pointer cursor",
+    "pass": true,
+    "detail": "{\"units\":\"pointer\",\"lang\":\"pointer\",\"theme\":\"pointer\",\"logout\":\"pointer\"}"
+  },
+  {
+    "scenario": "signed-in-nopwa-1280-is-light",
+    "check": "logout contrast >= 4.5:1 (normal state, composited bg)",
+    "pass": true,
+    "detail": "ratio=7.25"
+  },
+  {
+    "scenario": "signed-in-nopwa-1280-is-light",
+    "check": "units control contrast (composited)",
+    "pass": null,
+    "detail": "7.25"
+  },
+  {
+    "scenario": "signed-in-nopwa-1280-is-light",
+    "check": "ample width: units/lang/theme/logout share one row",
+    "pass": true,
+    "detail": "rows=1"
+  },
+  {
+    "scenario": "signed-in-nopwa-1280-is-dark",
+    "check": "anchor: /api/me answered as the scenario session",
+    "pass": true,
+    "detail": "signed-in"
+  },
+  {
+    "scenario": "signed-in-nopwa-1280-is-dark",
+    "check": "no horizontal page overflow",
+    "pass": true,
+    "detail": "overflowPx=0"
+  },
+  {
+    "scenario": "signed-in-nopwa-1280-is-dark",
+    "check": "logout control present for signed-in user",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "scenario": "signed-in-nopwa-1280-is-dark",
+    "check": "logout text is visible translated label",
+    "pass": true,
+    "detail": "Skrá út"
+  },
+  {
+    "scenario": "signed-in-nopwa-1280-is-dark",
+    "check": "logout icon: exactly one SVG",
+    "pass": true,
+    "detail": "svgs=1"
+  },
+  {
+    "scenario": "signed-in-nopwa-1280-is-dark",
+    "check": "logout is the last control group",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "scenario": "signed-in-nopwa-1280-is-dark",
+    "check": "logout group has left divider, no top border",
+    "pass": true,
+    "detail": "borderLeft=1px"
+  },
+  {
+    "scenario": "signed-in-nopwa-1280-is-dark",
+    "check": "four row controls each >= 44px high",
+    "pass": true,
+    "detail": "44.0,44.0,44.0,44.0"
+  },
+  {
+    "scenario": "signed-in-nopwa-1280-is-dark",
+    "check": "four row controls share equal height (<=1px)",
+    "pass": true,
+    "detail": "44.0..44.0"
+  },
+  {
+    "scenario": "signed-in-nopwa-1280-is-dark",
+    "check": "logout is content-sized (group < 60% of panel width)",
+    "pass": true,
+    "detail": "group=84 panel=249"
+  },
+  {
+    "scenario": "signed-in-nopwa-1280-is-dark",
+    "check": "controls use pointer cursor",
+    "pass": true,
+    "detail": "{\"units\":\"pointer\",\"lang\":\"pointer\",\"theme\":\"pointer\",\"logout\":\"pointer\"}"
+  },
+  {
+    "scenario": "signed-in-nopwa-1280-is-dark",
+    "check": "logout contrast >= 4.5:1 (normal state, composited bg)",
+    "pass": true,
+    "detail": "ratio=11.09"
+  },
+  {
+    "scenario": "signed-in-nopwa-1280-is-dark",
+    "check": "units control contrast (composited)",
+    "pass": null,
+    "detail": "11.09"
+  },
+  {
+    "scenario": "signed-in-nopwa-1280-is-dark",
+    "check": "ample width: units/lang/theme/logout share one row",
+    "pass": true,
+    "detail": "rows=1"
+  },
+  {
+    "scenario": "signed-in-nopwa-1280-en-light",
+    "check": "anchor: /api/me answered as the scenario session",
+    "pass": true,
+    "detail": "signed-in"
+  },
+  {
+    "scenario": "signed-in-nopwa-1280-en-light",
+    "check": "no horizontal page overflow",
+    "pass": true,
+    "detail": "overflowPx=0"
+  },
+  {
+    "scenario": "signed-in-nopwa-1280-en-light",
+    "check": "logout control present for signed-in user",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "scenario": "signed-in-nopwa-1280-en-light",
+    "check": "logout text is visible translated label",
+    "pass": true,
+    "detail": "Log out"
+  },
+  {
+    "scenario": "signed-in-nopwa-1280-en-light",
+    "check": "logout icon: exactly one SVG",
+    "pass": true,
+    "detail": "svgs=1"
+  },
+  {
+    "scenario": "signed-in-nopwa-1280-en-light",
+    "check": "logout is the last control group",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "scenario": "signed-in-nopwa-1280-en-light",
+    "check": "logout group has left divider, no top border",
+    "pass": true,
+    "detail": "borderLeft=1px"
+  },
+  {
+    "scenario": "signed-in-nopwa-1280-en-light",
+    "check": "four row controls each >= 44px high",
+    "pass": true,
+    "detail": "44.0,44.0,44.0,44.0"
+  },
+  {
+    "scenario": "signed-in-nopwa-1280-en-light",
+    "check": "four row controls share equal height (<=1px)",
+    "pass": true,
+    "detail": "44.0..44.0"
+  },
+  {
+    "scenario": "signed-in-nopwa-1280-en-light",
+    "check": "logout is content-sized (group < 60% of panel width)",
+    "pass": true,
+    "detail": "group=88 panel=248"
+  },
+  {
+    "scenario": "signed-in-nopwa-1280-en-light",
+    "check": "controls use pointer cursor",
+    "pass": true,
+    "detail": "{\"units\":\"pointer\",\"lang\":\"pointer\",\"theme\":\"pointer\",\"logout\":\"pointer\"}"
+  },
+  {
+    "scenario": "signed-in-nopwa-1280-en-light",
+    "check": "logout contrast >= 4.5:1 (normal state, composited bg)",
+    "pass": true,
+    "detail": "ratio=7.25"
+  },
+  {
+    "scenario": "signed-in-nopwa-1280-en-light",
+    "check": "units control contrast (composited)",
+    "pass": null,
+    "detail": "7.25"
+  },
+  {
+    "scenario": "signed-in-nopwa-1280-en-light",
+    "check": "ample width: units/lang/theme/logout share one row",
+    "pass": true,
+    "detail": "rows=1"
+  },
+  {
+    "scenario": "signed-in-nopwa-1280-en-dark",
+    "check": "anchor: /api/me answered as the scenario session",
+    "pass": true,
+    "detail": "signed-in"
+  },
+  {
+    "scenario": "signed-in-nopwa-1280-en-dark",
+    "check": "no horizontal page overflow",
+    "pass": true,
+    "detail": "overflowPx=0"
+  },
+  {
+    "scenario": "signed-in-nopwa-1280-en-dark",
+    "check": "logout control present for signed-in user",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "scenario": "signed-in-nopwa-1280-en-dark",
+    "check": "logout text is visible translated label",
+    "pass": true,
+    "detail": "Log out"
+  },
+  {
+    "scenario": "signed-in-nopwa-1280-en-dark",
+    "check": "logout icon: exactly one SVG",
+    "pass": true,
+    "detail": "svgs=1"
+  },
+  {
+    "scenario": "signed-in-nopwa-1280-en-dark",
+    "check": "logout is the last control group",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "scenario": "signed-in-nopwa-1280-en-dark",
+    "check": "logout group has left divider, no top border",
+    "pass": true,
+    "detail": "borderLeft=1px"
+  },
+  {
+    "scenario": "signed-in-nopwa-1280-en-dark",
+    "check": "four row controls each >= 44px high",
+    "pass": true,
+    "detail": "44.0,44.0,44.0,44.0"
+  },
+  {
+    "scenario": "signed-in-nopwa-1280-en-dark",
+    "check": "four row controls share equal height (<=1px)",
+    "pass": true,
+    "detail": "44.0..44.0"
+  },
+  {
+    "scenario": "signed-in-nopwa-1280-en-dark",
+    "check": "logout is content-sized (group < 60% of panel width)",
+    "pass": true,
+    "detail": "group=88 panel=248"
+  },
+  {
+    "scenario": "signed-in-nopwa-1280-en-dark",
+    "check": "controls use pointer cursor",
+    "pass": true,
+    "detail": "{\"units\":\"pointer\",\"lang\":\"pointer\",\"theme\":\"pointer\",\"logout\":\"pointer\"}"
+  },
+  {
+    "scenario": "signed-in-nopwa-1280-en-dark",
+    "check": "logout contrast >= 4.5:1 (normal state, composited bg)",
+    "pass": true,
+    "detail": "ratio=11.09"
+  },
+  {
+    "scenario": "signed-in-nopwa-1280-en-dark",
+    "check": "units control contrast (composited)",
+    "pass": null,
+    "detail": "11.09"
+  },
+  {
+    "scenario": "signed-in-nopwa-1280-en-dark",
+    "check": "ample width: units/lang/theme/logout share one row",
+    "pass": true,
+    "detail": "rows=1"
+  },
+  {
+    "scenario": "pwa-visible-320-en-light",
+    "check": "anchor: /api/me answered as the scenario session",
+    "pass": true,
+    "detail": "signed-in"
+  },
+  {
+    "scenario": "pwa-visible-320-en-light",
+    "check": "no horizontal page overflow",
+    "pass": true,
+    "detail": "overflowPx=0"
+  },
+  {
+    "scenario": "pwa-visible-320-en-light",
+    "check": "logout control present for signed-in user",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "scenario": "pwa-visible-320-en-light",
+    "check": "logout text is visible translated label",
+    "pass": true,
+    "detail": "Log out"
+  },
+  {
+    "scenario": "pwa-visible-320-en-light",
+    "check": "logout icon: exactly one SVG",
+    "pass": true,
+    "detail": "svgs=1"
+  },
+  {
+    "scenario": "pwa-visible-320-en-light",
+    "check": "logout is the last control group",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "scenario": "pwa-visible-320-en-light",
+    "check": "logout group has left divider, no top border",
+    "pass": true,
+    "detail": "borderLeft=1px"
+  },
+  {
+    "scenario": "pwa-visible-320-en-light",
+    "check": "four row controls each >= 44px high",
+    "pass": true,
+    "detail": "44.0,44.0,44.0,44.0"
+  },
+  {
+    "scenario": "pwa-visible-320-en-light",
+    "check": "four row controls share equal height (<=1px)",
+    "pass": true,
+    "detail": "44.0..44.0"
+  },
+  {
+    "scenario": "pwa-visible-320-en-light",
+    "check": "logout is content-sized (group < 60% of panel width)",
+    "pass": true,
+    "detail": "group=88 panel=288"
+  },
+  {
+    "scenario": "pwa-visible-320-en-light",
+    "check": "controls use pointer cursor",
+    "pass": true,
+    "detail": "{\"units\":\"pointer\",\"lang\":\"pointer\",\"theme\":\"pointer\",\"logout\":\"pointer\"}"
+  },
+  {
+    "scenario": "pwa-visible-320-en-light",
+    "check": "logout contrast >= 4.5:1 (normal state, composited bg)",
+    "pass": true,
+    "detail": "ratio=7.25"
+  },
+  {
+    "scenario": "pwa-visible-320-en-light",
+    "check": "units control contrast (composited)",
+    "pass": null,
+    "detail": "7.25"
+  },
+  {
+    "scenario": "pwa-visible-320-en-light",
+    "check": "row wrap state",
+    "pass": null,
+    "detail": "distinct row tops=2 at 320px (PWA visible)"
+  },
+  {
+    "scenario": "pwa-visible-320-en-light",
+    "check": "InstallPWA visible with shared class",
+    "pass": true,
+    "detail": "h=44.0"
+  },
+  {
+    "scenario": "pwa-visible-320-en-light",
+    "check": "InstallPWA height >= 44px",
+    "pass": true,
+    "detail": "44.0"
+  },
+  {
+    "scenario": "pwa-visible-320-is-dark",
+    "check": "anchor: /api/me answered as the scenario session",
+    "pass": true,
+    "detail": "signed-in"
+  },
+  {
+    "scenario": "pwa-visible-320-is-dark",
+    "check": "no horizontal page overflow",
+    "pass": true,
+    "detail": "overflowPx=0"
+  },
+  {
+    "scenario": "pwa-visible-320-is-dark",
+    "check": "logout control present for signed-in user",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "scenario": "pwa-visible-320-is-dark",
+    "check": "logout text is visible translated label",
+    "pass": true,
+    "detail": "Skrá út"
+  },
+  {
+    "scenario": "pwa-visible-320-is-dark",
+    "check": "logout icon: exactly one SVG",
+    "pass": true,
+    "detail": "svgs=1"
+  },
+  {
+    "scenario": "pwa-visible-320-is-dark",
+    "check": "logout is the last control group",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "scenario": "pwa-visible-320-is-dark",
+    "check": "logout group has left divider, no top border",
+    "pass": true,
+    "detail": "borderLeft=1px"
+  },
+  {
+    "scenario": "pwa-visible-320-is-dark",
+    "check": "four row controls each >= 44px high",
+    "pass": true,
+    "detail": "44.0,44.0,44.0,44.0"
+  },
+  {
+    "scenario": "pwa-visible-320-is-dark",
+    "check": "four row controls share equal height (<=1px)",
+    "pass": true,
+    "detail": "44.0..44.0"
+  },
+  {
+    "scenario": "pwa-visible-320-is-dark",
+    "check": "logout is content-sized (group < 60% of panel width)",
+    "pass": true,
+    "detail": "group=84 panel=288"
+  },
+  {
+    "scenario": "pwa-visible-320-is-dark",
+    "check": "controls use pointer cursor",
+    "pass": true,
+    "detail": "{\"units\":\"pointer\",\"lang\":\"pointer\",\"theme\":\"pointer\",\"logout\":\"pointer\"}"
+  },
+  {
+    "scenario": "pwa-visible-320-is-dark",
+    "check": "logout contrast >= 4.5:1 (normal state, composited bg)",
+    "pass": true,
+    "detail": "ratio=11.09"
+  },
+  {
+    "scenario": "pwa-visible-320-is-dark",
+    "check": "units control contrast (composited)",
+    "pass": null,
+    "detail": "11.09"
+  },
+  {
+    "scenario": "pwa-visible-320-is-dark",
+    "check": "row wrap state",
+    "pass": null,
+    "detail": "distinct row tops=2 at 320px (PWA visible)"
+  },
+  {
+    "scenario": "pwa-visible-320-is-dark",
+    "check": "InstallPWA visible with shared class",
+    "pass": true,
+    "detail": "h=44.0"
+  },
+  {
+    "scenario": "pwa-visible-320-is-dark",
+    "check": "InstallPWA height >= 44px",
+    "pass": true,
+    "detail": "44.0"
+  },
+  {
+    "scenario": "pwa-visible-768-en-light",
+    "check": "anchor: /api/me answered as the scenario session",
+    "pass": true,
+    "detail": "signed-in"
+  },
+  {
+    "scenario": "pwa-visible-768-en-light",
+    "check": "no horizontal page overflow",
+    "pass": true,
+    "detail": "overflowPx=0"
+  },
+  {
+    "scenario": "pwa-visible-768-en-light",
+    "check": "logout control present for signed-in user",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "scenario": "pwa-visible-768-en-light",
+    "check": "logout text is visible translated label",
+    "pass": true,
+    "detail": "Log out"
+  },
+  {
+    "scenario": "pwa-visible-768-en-light",
+    "check": "logout icon: exactly one SVG",
+    "pass": true,
+    "detail": "svgs=1"
+  },
+  {
+    "scenario": "pwa-visible-768-en-light",
+    "check": "logout is the last control group",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "scenario": "pwa-visible-768-en-light",
+    "check": "logout group has left divider, no top border",
+    "pass": true,
+    "detail": "borderLeft=1px"
+  },
+  {
+    "scenario": "pwa-visible-768-en-light",
+    "check": "four row controls each >= 44px high",
+    "pass": true,
+    "detail": "44.0,44.0,44.0,44.0"
+  },
+  {
+    "scenario": "pwa-visible-768-en-light",
+    "check": "four row controls share equal height (<=1px)",
+    "pass": true,
+    "detail": "44.0..44.0"
+  },
+  {
+    "scenario": "pwa-visible-768-en-light",
+    "check": "logout is content-sized (group < 60% of panel width)",
+    "pass": true,
+    "detail": "group=88 panel=185"
+  },
+  {
+    "scenario": "pwa-visible-768-en-light",
+    "check": "controls use pointer cursor",
+    "pass": true,
+    "detail": "{\"units\":\"pointer\",\"lang\":\"pointer\",\"theme\":\"pointer\",\"logout\":\"pointer\"}"
+  },
+  {
+    "scenario": "pwa-visible-768-en-light",
+    "check": "logout contrast >= 4.5:1 (normal state, composited bg)",
+    "pass": true,
+    "detail": "ratio=7.25"
+  },
+  {
+    "scenario": "pwa-visible-768-en-light",
+    "check": "units control contrast (composited)",
+    "pass": null,
+    "detail": "7.25"
+  },
+  {
+    "scenario": "pwa-visible-768-en-light",
+    "check": "row wrap state",
+    "pass": null,
+    "detail": "distinct row tops=3 at 768px (PWA visible)"
+  },
+  {
+    "scenario": "pwa-visible-768-en-light",
+    "check": "InstallPWA visible with shared class",
+    "pass": true,
+    "detail": "h=44.0"
+  },
+  {
+    "scenario": "pwa-visible-768-en-light",
+    "check": "InstallPWA height >= 44px",
+    "pass": true,
+    "detail": "44.0"
+  },
+  {
+    "scenario": "pwa-visible-1280-is-light",
+    "check": "anchor: /api/me answered as the scenario session",
+    "pass": true,
+    "detail": "signed-in"
+  },
+  {
+    "scenario": "pwa-visible-1280-is-light",
+    "check": "no horizontal page overflow",
+    "pass": true,
+    "detail": "overflowPx=0"
+  },
+  {
+    "scenario": "pwa-visible-1280-is-light",
+    "check": "logout control present for signed-in user",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "scenario": "pwa-visible-1280-is-light",
+    "check": "logout text is visible translated label",
+    "pass": true,
+    "detail": "Skrá út"
+  },
+  {
+    "scenario": "pwa-visible-1280-is-light",
+    "check": "logout icon: exactly one SVG",
+    "pass": true,
+    "detail": "svgs=1"
+  },
+  {
+    "scenario": "pwa-visible-1280-is-light",
+    "check": "logout is the last control group",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "scenario": "pwa-visible-1280-is-light",
+    "check": "logout group has left divider, no top border",
+    "pass": true,
+    "detail": "borderLeft=1px"
+  },
+  {
+    "scenario": "pwa-visible-1280-is-light",
+    "check": "four row controls each >= 44px high",
+    "pass": true,
+    "detail": "44.0,44.0,44.0,44.0"
+  },
+  {
+    "scenario": "pwa-visible-1280-is-light",
+    "check": "four row controls share equal height (<=1px)",
+    "pass": true,
+    "detail": "44.0..44.0"
+  },
+  {
+    "scenario": "pwa-visible-1280-is-light",
+    "check": "logout is content-sized (group < 60% of panel width)",
+    "pass": true,
+    "detail": "group=84 panel=326"
+  },
+  {
+    "scenario": "pwa-visible-1280-is-light",
+    "check": "controls use pointer cursor",
+    "pass": true,
+    "detail": "{\"units\":\"pointer\",\"lang\":\"pointer\",\"theme\":\"pointer\",\"logout\":\"pointer\"}"
+  },
+  {
+    "scenario": "pwa-visible-1280-is-light",
+    "check": "logout contrast >= 4.5:1 (normal state, composited bg)",
+    "pass": true,
+    "detail": "ratio=7.25"
+  },
+  {
+    "scenario": "pwa-visible-1280-is-light",
+    "check": "units control contrast (composited)",
+    "pass": null,
+    "detail": "7.25"
+  },
+  {
+    "scenario": "pwa-visible-1280-is-light",
+    "check": "row wrap state",
+    "pass": null,
+    "detail": "distinct row tops=1 at 1280px (PWA visible)"
+  },
+  {
+    "scenario": "pwa-visible-1280-is-light",
+    "check": "InstallPWA visible with shared class",
+    "pass": true,
+    "detail": "h=44.0"
+  },
+  {
+    "scenario": "pwa-visible-1280-is-light",
+    "check": "InstallPWA height >= 44px",
+    "pass": true,
+    "detail": "44.0"
+  },
+  {
+    "scenario": "pending-320-en-light",
+    "check": "anchor: /api/me answered as the scenario session",
+    "pass": true,
+    "detail": "signed-in"
+  },
+  {
+    "scenario": "pending-320-en-light",
+    "check": "pending label shown and button disabled",
+    "pass": true,
+    "detail": "Logging out…"
+  },
+  {
+    "scenario": "pending-320-en-light",
+    "check": "pending: aria-busy true",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "scenario": "pending-320-en-light",
+    "check": "pending: all row controls still >= 44px",
+    "pass": true,
+    "detail": "44.0,44.0,44.0,44.0"
+  },
+  {
+    "scenario": "pending-320-en-light",
+    "check": "pending: no horizontal overflow",
+    "pass": true,
+    "detail": "overflowPx=0"
+  },
+  {
+    "scenario": "pending-320-en-light",
+    "check": "pending group width vs idle",
+    "pass": null,
+    "detail": "121px pending"
+  },
+  {
+    "scenario": "pending-320-en-light",
+    "check": "pending: resolution closes the panel and returns focus to Settings",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "scenario": "pending-320-is-light",
+    "check": "anchor: /api/me answered as the scenario session",
+    "pass": true,
+    "detail": "signed-in"
+  },
+  {
+    "scenario": "pending-320-is-light",
+    "check": "pending label shown and button disabled",
+    "pass": true,
+    "detail": "Skrái út…"
+  },
+  {
+    "scenario": "pending-320-is-light",
+    "check": "pending: aria-busy true",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "scenario": "pending-320-is-light",
+    "check": "pending: all row controls still >= 44px",
+    "pass": true,
+    "detail": "44.0,44.0,44.0,44.0"
+  },
+  {
+    "scenario": "pending-320-is-light",
+    "check": "pending: no horizontal overflow",
+    "pass": true,
+    "detail": "overflowPx=0"
+  },
+  {
+    "scenario": "pending-320-is-light",
+    "check": "pending group width vs idle",
+    "pass": null,
+    "detail": "95px pending"
+  },
+  {
+    "scenario": "pending-320-is-light",
+    "check": "pending: resolution closes the panel and returns focus to Settings",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "scenario": "pending-1280-en-dark",
+    "check": "anchor: /api/me answered as the scenario session",
+    "pass": true,
+    "detail": "signed-in"
+  },
+  {
+    "scenario": "pending-1280-en-dark",
+    "check": "pending label shown and button disabled",
+    "pass": true,
+    "detail": "Logging out…"
+  },
+  {
+    "scenario": "pending-1280-en-dark",
+    "check": "pending: aria-busy true",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "scenario": "pending-1280-en-dark",
+    "check": "pending: all row controls still >= 44px",
+    "pass": true,
+    "detail": "44.0,44.0,44.0,44.0"
+  },
+  {
+    "scenario": "pending-1280-en-dark",
+    "check": "pending: no horizontal overflow",
+    "pass": true,
+    "detail": "overflowPx=0"
+  },
+  {
+    "scenario": "pending-1280-en-dark",
+    "check": "pending group width vs idle",
+    "pass": null,
+    "detail": "121px pending"
+  },
+  {
+    "scenario": "pending-1280-en-dark",
+    "check": "pending: resolution closes the panel and returns focus to Settings",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "scenario": "pending-1280-is-dark",
+    "check": "anchor: /api/me answered as the scenario session",
+    "pass": true,
+    "detail": "signed-in"
+  },
+  {
+    "scenario": "pending-1280-is-dark",
+    "check": "pending label shown and button disabled",
+    "pass": true,
+    "detail": "Skrái út…"
+  },
+  {
+    "scenario": "pending-1280-is-dark",
+    "check": "pending: aria-busy true",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "scenario": "pending-1280-is-dark",
+    "check": "pending: all row controls still >= 44px",
+    "pass": true,
+    "detail": "44.0,44.0,44.0,44.0"
+  },
+  {
+    "scenario": "pending-1280-is-dark",
+    "check": "pending: no horizontal overflow",
+    "pass": true,
+    "detail": "overflowPx=0"
+  },
+  {
+    "scenario": "pending-1280-is-dark",
+    "check": "pending group width vs idle",
+    "pass": null,
+    "detail": "95px pending"
+  },
+  {
+    "scenario": "pending-1280-is-dark",
+    "check": "pending: resolution closes the panel and returns focus to Settings",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "scenario": "anonymous-320-en-light",
+    "check": "anchor: /api/me answered as the scenario session",
+    "pass": true,
+    "detail": "anonymous"
+  },
+  {
+    "scenario": "anonymous-320-en-light",
+    "check": "anonymous: no logout control",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "scenario": "anonymous-320-en-light",
+    "check": "anonymous: panel has exactly three direct buttons",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "scenario": "anonymous-320-en-light",
+    "check": "anonymous: no divider group",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "scenario": "anonymous-1280-is-dark",
+    "check": "anchor: /api/me answered as the scenario session",
+    "pass": true,
+    "detail": "anonymous"
+  },
+  {
+    "scenario": "anonymous-1280-is-dark",
+    "check": "anonymous: no logout control",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "scenario": "anonymous-1280-is-dark",
+    "check": "anonymous: panel has exactly three direct buttons",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "scenario": "anonymous-1280-is-dark",
+    "check": "anonymous: no divider group",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "scenario": "keyboard-320-en-light",
+    "check": "anchor: /api/me answered as the scenario session",
+    "pass": true,
+    "detail": "signed-in"
+  },
+  {
+    "scenario": "keyboard-320-en-light",
+    "check": "keyboard: Tab reaches logout within bounded presses",
+    "pass": true,
+    "detail": "presses=4"
+  },
+  {
+    "scenario": "keyboard-320-en-light",
+    "check": "keyboard: focused logout shows a visible ring",
+    "pass": true,
+    "detail": "{\"boxShadow\":\"rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgb(255, 255, 255) 0px 0px 0px 1px, oklab(0.685 -0.0912435 -0.142252 / 0.5) 0px 0px 0px 3px, rgba(0, 0, 0, 0) 0px 0px 0px 0px\",\"outline\":\"none 1px\"}"
+  },
+  {
+    "scenario": "keyboard-320-en-light",
+    "check": "keyboard: Enter activates logout (one request)",
+    "pass": true,
+    "detail": "count=1"
+  },
+  {
+    "scenario": "keyboard-320-en-light",
+    "check": "keyboard: success returns focus to Settings toggle",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "scenario": "keyboard-1280-is-dark",
+    "check": "anchor: /api/me answered as the scenario session",
+    "pass": true,
+    "detail": "signed-in"
+  },
+  {
+    "scenario": "keyboard-1280-is-dark",
+    "check": "keyboard: Tab reaches logout within bounded presses",
+    "pass": true,
+    "detail": "presses=4"
+  },
+  {
+    "scenario": "keyboard-1280-is-dark",
+    "check": "keyboard: focused logout shows a visible ring",
+    "pass": true,
+    "detail": "{\"boxShadow\":\"rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgb(255, 255, 255) 0px 0px 0px 1px, oklab(0.685 -0.0912435 -0.142252 / 0.5) 0px 0px 0px 3px, rgba(0, 0, 0, 0) 0px 0px 0px 0px\",\"outline\":\"none 1px\"}"
+  },
+  {
+    "scenario": "keyboard-1280-is-dark",
+    "check": "keyboard: Enter activates logout (one request)",
+    "pass": true,
+    "detail": "count=1"
+  },
+  {
+    "scenario": "keyboard-1280-is-dark",
+    "check": "keyboard: success returns focus to Settings toggle",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "scenario": "failure-375-en-light",
+    "check": "anchor: /api/me answered as the scenario session",
+    "pass": true,
+    "detail": "signed-in"
+  },
+  {
+    "scenario": "failure-375-en-light",
+    "check": "failure: translated feedback shown",
+    "pass": true,
+    "detail": "Could not log out. Please try again."
+  },
+  {
+    "scenario": "failure-375-en-light",
+    "check": "failure: logout re-enabled for retry",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "scenario": "failure-375-en-light",
+    "check": "failure: panel stays open",
+    "pass": true,
+    "detail": ""
+  }
+]
