@@ -26,6 +26,11 @@ export default function PageHeader({
   // NEW: dev Pro toggle plumbing
   devPro,
   onToggleDevPro,
+
+  // Logout row plumbing (absent defaults keep anonymous/tests unchanged)
+  isSignedIn = false,
+  onLogout,
+  loggingOut = false,
 }) {
   return (
     <>
@@ -47,6 +52,9 @@ export default function PageHeader({
           // NEW: pass to Toolbar (where the button lives)
           devPro={devPro}
           onToggleDevPro={onToggleDevPro}
+          isSignedIn={isSignedIn}
+          onLogout={onLogout}
+          loggingOut={loggingOut}
         />
 
         {geoMsg && (

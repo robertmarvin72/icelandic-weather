@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import InstallPWA from "./InstallPWA";
 import CampsitePicker from "./CampsitePicker";
 import DevProToggle from "./DevProToggle";
@@ -32,6 +32,11 @@ export default function Toolbar({
   // NEW: dev pro toggle plumbing
   devPro,
   onToggleDevPro,
+
+  // Logout row: shown only for a signed-in user (existence, not tier)
+  isSignedIn = false,
+  onLogout,
+  loggingOut = false,
 }) {
   // NOTE (Ticket 411, #411): two independent "winter" concepts coexist in
   // this component. `season` below is scoring.js's browser-local,
@@ -43,6 +48,24 @@ export default function Toolbar({
   // and are not meant to — keep them independent, do not unify them.
   const season = getSeasonForDate(new Date());
   const [settingsOpen, setSettingsOpen] = useState(false);
+  const settingsOpenRef = useRef(false);
+  const settingsToggleRef = useRef(null);
+
+  useEffect(() => {
+    settingsOpenRef.current = settingsOpen;
+  }, [settingsOpen]);
+
+  // Close the panel only after a successful logout. Focus returns to the
+  // Settings toggle only if the panel was still open when the request settled,
+  // so a user who closed it in the meantime is not pulled back to it.
+  async function handleLogout() {
+    if (!onLogout || loggingOut) return;
+    const ok = await onLogout();
+    if (ok && settingsOpenRef.current) {
+      setSettingsOpen(false);
+      settingsToggleRef.current?.focus();
+    }
+  }
 
   const heroVariant = getHomepageHeroVariant(new Date());
   const heroCopyKeys = getHomepageHeroCopyKeys(heroVariant);
@@ -113,6 +136,7 @@ export default function Toolbar({
           </div>
 
           <button
+            ref={settingsToggleRef}
             type="button"
             aria-expanded={settingsOpen}
             aria-controls="toolbar-settings-panel"
@@ -161,6 +185,21 @@ export default function Toolbar({
               </button>
 
               {import.meta.env.DEV && <DevProToggle devPro={devPro} onToggleDevPro={onToggleDevPro} />}
+
+              {isSignedIn && (
+                <div className="basis-full w-full mt-1 pt-2 border-t border-slate-200/80 dark:border-slate-700/60 flex justify-end">
+                  <button
+                    type="button"
+                    onClick={handleLogout}
+                    disabled={loggingOut}
+                    aria-busy={loggingOut}
+                    className="focus-ring inline-flex min-h-[44px] w-full sm:w-auto items-center justify-center gap-2 px-3 py-2 rounded-lg border border-slate-200 bg-slate-50 text-sm text-slate-600 hover:text-slate-900 hover:bg-slate-100 disabled:opacity-60 dark:border-slate-700 dark:bg-slate-800/50 dark:text-slate-300 dark:hover:text-slate-100 dark:hover:bg-slate-800 transition-colors"
+                  >
+                    <span aria-hidden>🚪</span>
+                    <span>{loggingOut ? t?.("loggingOutLabel") : t?.("logoutLabel")}</span>
+                  </button>
+                </div>
+              )}
             </div>
           )}
         </div>

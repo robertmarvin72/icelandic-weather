@@ -33,3 +33,29 @@ export function setSessionCookie(res, token, requestHost) {
 
   res.setHeader("Set-Cookie", parts.join("; "));
 }
+
+// Expires the session cookie on logout. A recognized domain expires both the
+// Domain-scoped variant and the host-only variant, because a cookie set with a
+// Domain attribute is not removed by a host-only expiry, and vice versa. Every
+// variant keeps the logout attributes (Path=/, HttpOnly, SameSite=Lax,
+// Max-Age=0, Secure in production). The header is always an array.
+export function clearSessionCookie(res, requestHost) {
+  const secure = process.env.NODE_ENV === "production";
+  const domain = cookieDomain(requestHost);
+
+  const expire = (domainAttr) =>
+    [
+      `${SESSION_COOKIE}=`,
+      "Path=/",
+      "HttpOnly",
+      "SameSite=Lax",
+      "Max-Age=0",
+      secure ? "Secure" : null,
+      domainAttr ? `Domain=${domainAttr}` : null,
+    ]
+      .filter(Boolean)
+      .join("; ");
+
+  const variants = domain ? [expire(domain), expire(null)] : [expire(null)];
+  res.setHeader("Set-Cookie", variants);
+}

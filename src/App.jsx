@@ -38,6 +38,7 @@ import { useLanguage } from "./hooks/useLanguage";
 import { useLeaderboardScores } from "./hooks/useLeaderboardScores";
 import { useLocalStorageState } from "./hooks/useLocalStorageState";
 import { useLoginFlow } from "./hooks/useLoginFlow";
+import { useLogout } from "./hooks/useLogout";
 import { useMe } from "./hooks/useMe";
 import { useMyLocationNearestSite } from "./hooks/useMyLocationNearestSite";
 import { usePwaUpdateToast } from "./hooks/usePwaUpdateToast";
@@ -64,7 +65,7 @@ function IcelandCampingWeatherApp({ page = "home" }) {
 
   // useMe's own loading flag is `loadingMe` — forwarded so exposure analytics
   // never record a premature Free guess while entitlements are unresolved.
-  const { me, loadingMe, refetchMe } = useMe();
+  const { me, loadingMe, refetchMe, resetMe } = useMe();
   const serverPro = !!me?.entitlements?.pro;
   const serverProUntil = me?.entitlements?.proUntil ?? null;
 
@@ -134,6 +135,15 @@ function IcelandCampingWeatherApp({ page = "home" }) {
     closeLoginModal,
     submitLogin,
   } = useLoginFlow({ me, navigate, pushToast, refetchMe, t });
+
+  const { logout, loggingOut } = useLogout({ resetMe, pushToast, t });
+
+  // Drop the in-memory login email too, so the next login does not prefill it.
+  const handleLogout = useCallback(async () => {
+    const ok = await logout();
+    if (ok) setLoginEmail("");
+    return ok;
+  }, [logout, setLoginEmail]);
 
   const { startCheckout, openBillingPortal } = useCheckoutFlow({
     me,
@@ -361,6 +371,9 @@ function IcelandCampingWeatherApp({ page = "home" }) {
           geoMsg={geoMsg}
           devPro={devPro}
           onToggleDevPro={toggleDevPro}
+          isSignedIn={!!me?.user}
+          onLogout={handleLogout}
+          loggingOut={loggingOut}
         />
 
         <div id="comparison-section" className="mx-auto max-w-6xl px-4 pt-3 pb-10 md:pt-4 md:pb-10">

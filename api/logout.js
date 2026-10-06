@@ -1,5 +1,6 @@
 import postgres from "postgres";
 import crypto from "crypto";
+import { clearSessionCookie } from "./_lib/setCookie.js";
 
 const sql = postgres(process.env.POSTGRES_URL, { ssl: "require" });
 
@@ -23,22 +24,6 @@ function getCookie(req, name) {
   return null;
 }
 
-function clearSessionCookie(res) {
-  const secure = process.env.NODE_ENV === "production";
-  const cookie = [
-    `${SESSION_COOKIE}=`,
-    "Path=/",
-    "HttpOnly",
-    "SameSite=Lax",
-    "Max-Age=0",
-    secure ? "Secure" : null,
-  ]
-    .filter(Boolean)
-    .join("; ");
-
-  res.setHeader("Set-Cookie", cookie);
-}
-
 export default async function handler(req, res) {
   if (req.method !== "POST") {
     res.status(405).json({ ok: false, error: "Method not allowed" });
@@ -58,11 +43,11 @@ export default async function handler(req, res) {
       `;
     }
 
-    clearSessionCookie(res);
+    clearSessionCookie(res, req.headers?.host);
     res.status(200).json({ ok: true });
   } catch {
     // still clear cookie even if revoke fails
-    clearSessionCookie(res);
+    clearSessionCookie(res, req.headers?.host);
     res.status(200).json({ ok: true, note: "Cookie cleared; revoke may have failed" });
   }
 }

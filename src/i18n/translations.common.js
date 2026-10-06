@@ -547,6 +547,9 @@ export const commonTranslations = {
 
     // Toolbar
     settingsLabel: "Settings",
+    logoutLabel: "Log out",
+    loggingOutLabel: "Logging out…",
+    logoutFailed: "Could not log out. Please try again.",
 
     // CampsitePicker
     campsitePickerNoMatches: "No matches.",
@@ -1124,6 +1127,9 @@ export const commonTranslations = {
 
     // Toolbar
     settingsLabel: "Stillingar",
+    logoutLabel: "Skrá út",
+    loggingOutLabel: "Skrái út…",
+    logoutFailed: "Ekki tókst að skrá út. Reyndu aftur.",
 
     // CampsitePicker
     campsitePickerNoMatches: "Engar niðurstöður.",

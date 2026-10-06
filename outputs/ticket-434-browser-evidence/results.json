@@ -1,0 +1,278 @@
+[
+  {
+    "scenario": "mobile-320-is",
+    "check": "signed-in shows logout row",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "scenario": "mobile-320-is",
+    "check": "logout touch target >= 44px",
+    "pass": true,
+    "detail": "height=44"
+  },
+  {
+    "scenario": "mobile-320-is",
+    "check": "no horizontal page overflow with panel open",
+    "pass": true,
+    "detail": "overflowPx=0"
+  },
+  {
+    "scenario": "mobile-320-is",
+    "check": "successful logout closes panel",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "scenario": "mobile-320-is",
+    "check": "POST /api/logout sent exactly once",
+    "pass": true,
+    "detail": "count=1"
+  },
+  {
+    "scenario": "mobile-320-is",
+    "check": "focus returns to Settings toggle",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "scenario": "mobile-320-is",
+    "check": "anonymous after logout: row gone",
+    "pass": true,
+    "detail": "count=0"
+  },
+  {
+    "scenario": "mobile-320-is",
+    "check": "no verification /api/me refetch after logout",
+    "pass": true,
+    "detail": "me=1"
+  },
+  {
+    "scenario": "mobile-320-is",
+    "check": "anonymous anchor: /api/me answered anonymous",
+    "pass": true,
+    "detail": "anonymous"
+  },
+  {
+    "scenario": "mobile-320-is",
+    "check": "anonymous: no logout row",
+    "pass": true,
+    "detail": "count=0"
+  },
+  {
+    "scenario": "mobile-320-en",
+    "check": "signed-in shows logout row",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "scenario": "mobile-320-en",
+    "check": "logout touch target >= 44px",
+    "pass": true,
+    "detail": "height=44"
+  },
+  {
+    "scenario": "mobile-320-en",
+    "check": "no horizontal page overflow with panel open",
+    "pass": true,
+    "detail": "overflowPx=0"
+  },
+  {
+    "scenario": "mobile-320-en",
+    "check": "successful logout closes panel",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "scenario": "mobile-320-en",
+    "check": "POST /api/logout sent exactly once",
+    "pass": true,
+    "detail": "count=1"
+  },
+  {
+    "scenario": "mobile-320-en",
+    "check": "focus returns to Settings toggle",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "scenario": "mobile-320-en",
+    "check": "anonymous after logout: row gone",
+    "pass": true,
+    "detail": "count=0"
+  },
+  {
+    "scenario": "mobile-320-en",
+    "check": "no verification /api/me refetch after logout",
+    "pass": true,
+    "detail": "me=1"
+  },
+  {
+    "scenario": "mobile-320-en",
+    "check": "anonymous anchor: /api/me answered anonymous",
+    "pass": true,
+    "detail": "anonymous"
+  },
+  {
+    "scenario": "mobile-320-en",
+    "check": "anonymous: no logout row",
+    "pass": true,
+    "detail": "count=0"
+  },
+  {
+    "scenario": "desktop-1280-is",
+    "check": "signed-in shows logout row",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "scenario": "desktop-1280-is",
+    "check": "logout touch target >= 44px",
+    "pass": true,
+    "detail": "height=44"
+  },
+  {
+    "scenario": "desktop-1280-is",
+    "check": "no horizontal page overflow with panel open",
+    "pass": true,
+    "detail": "overflowPx=0"
+  },
+  {
+    "scenario": "desktop-1280-is",
+    "check": "successful logout closes panel",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "scenario": "desktop-1280-is",
+    "check": "POST /api/logout sent exactly once",
+    "pass": true,
+    "detail": "count=1"
+  },
+  {
+    "scenario": "desktop-1280-is",
+    "check": "focus returns to Settings toggle",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "scenario": "desktop-1280-is",
+    "check": "anonymous after logout: row gone",
+    "pass": true,
+    "detail": "count=0"
+  },
+  {
+    "scenario": "desktop-1280-is",
+    "check": "no verification /api/me refetch after logout",
+    "pass": true,
+    "detail": "me=1"
+  },
+  {
+    "scenario": "desktop-1280-is",
+    "check": "anonymous anchor: /api/me answered anonymous",
+    "pass": true,
+    "detail": "anonymous"
+  },
+  {
+    "scenario": "desktop-1280-is",
+    "check": "anonymous: no logout row",
+    "pass": true,
+    "detail": "count=0"
+  },
+  {
+    "scenario": "desktop-1280-is",
+    "check": "failure shows translated toast",
+    "pass": true,
+    "detail": "Ekki tókst að skrá út. Reyndu aftur."
+  },
+  {
+    "scenario": "desktop-1280-is",
+    "check": "failure keeps panel open and row enabled",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "scenario": "desktop-1280-is",
+    "check": "failure sent one request",
+    "pass": true,
+    "detail": "count=1"
+  },
+  {
+    "scenario": "desktop-1280-en",
+    "check": "signed-in shows logout row",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "scenario": "desktop-1280-en",
+    "check": "logout touch target >= 44px",
+    "pass": true,
+    "detail": "height=44"
+  },
+  {
+    "scenario": "desktop-1280-en",
+    "check": "no horizontal page overflow with panel open",
+    "pass": true,
+    "detail": "overflowPx=0"
+  },
+  {
+    "scenario": "desktop-1280-en",
+    "check": "successful logout closes panel",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "scenario": "desktop-1280-en",
+    "check": "POST /api/logout sent exactly once",
+    "pass": true,
+    "detail": "count=1"
+  },
+  {
+    "scenario": "desktop-1280-en",
+    "check": "focus returns to Settings toggle",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "scenario": "desktop-1280-en",
+    "check": "anonymous after logout: row gone",
+    "pass": true,
+    "detail": "count=0"
+  },
+  {
+    "scenario": "desktop-1280-en",
+    "check": "no verification /api/me refetch after logout",
+    "pass": true,
+    "detail": "me=1"
+  },
+  {
+    "scenario": "desktop-1280-en",
+    "check": "anonymous anchor: /api/me answered anonymous",
+    "pass": true,
+    "detail": "anonymous"
+  },
+  {
+    "scenario": "desktop-1280-en",
+    "check": "anonymous: no logout row",
+    "pass": true,
+    "detail": "count=0"
+  },
+  {
+    "scenario": "desktop-1280-en",
+    "check": "failure shows translated toast",
+    "pass": true,
+    "detail": "Could not log out. Please try again."
+  },
+  {
+    "scenario": "desktop-1280-en",
+    "check": "failure keeps panel open and row enabled",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "scenario": "desktop-1280-en",
+    "check": "failure sent one request",
+    "pass": true,
+    "detail": "count=1"
+  }
+]
