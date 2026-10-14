@@ -1,0 +1,615 @@
+/**
+ * CampCast — App.jsx
+ */
+
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { BrowserRouter, useLocation, useNavigate } from "react-router-dom";
+
+import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/react";
+import { registerSW } from "virtual:pwa-register";
+
+import AnalyticsTracker from "./components/AnalyticsTracker";
+import { trackEvent } from "./lib/analytics";
+import AppRoutes from "./AppRoutes";
+import BackToTop from "./components/BackToTop";
+import HomeDecisionCard from "./components/HomeDecisionCard";
+import WeatherVoiceCard from "./components/WeatherVoiceCard";
+import NorthernLightsThreeNight from "./components/NorthernLightsThreeNight";
+import Footer from "./components/Footer";
+import CampsiteComparisonSection from "./components/CampsiteComparisonSection";
+import ForecastTable from "./components/ForecastTable";
+import LazyMap from "./components/LazyMap";
+import LoginModal from "./components/LoginModal";
+import PageHeader from "./components/PageHeader";
+import RoutePlannerCard from "./components/RoutePlannerCard";
+import Splash from "./components/Splash";
+import ToastHub from "./components/ToastHub";
+import Top5Leaderboard from "./components/Top5Leaderboard";
+import WeatherFinder from "./components/WeatherFinder";
+import { isFeatureAvailable } from "./config/features";
+import { useBooting } from "./hooks/useBooting";
+import { useCampsites } from "./hooks/useCampsites";
+import { useCheckoutFlow } from "./hooks/useCheckoutFlow";
+import { useDistanceTo } from "./hooks/useDistanceTo";
+import { useForecast } from "./hooks/useForecast";
+import { useWeatherVoice } from "./hooks/useWeatherVoice";
+import { useLanguage } from "./hooks/useLanguage";
+import { useLeaderboardScores } from "./hooks/useLeaderboardScores";
+import { useLocalStorageState } from "./hooks/useLocalStorageState";
+import { useLoginFlow } from "./hooks/useLoginFlow";
+import { useLogout } from "./hooks/useLogout";
+import { useMe } from "./hooks/useMe";
+import { useMyLocationNearestSite } from "./hooks/useMyLocationNearestSite";
+import { usePwaUpdateToast } from "./hooks/usePwaUpdateToast";
+import { useT } from "./hooks/useT";
+import { useThemeClass } from "./hooks/useThemeClass";
+import { useToast } from "./hooks/useToast";
+import { useTop5Campsites } from "./hooks/useTop5Campsites";
+import { useComparisonState } from "./hooks/useComparisonState";
+import About from "./pages/About";
+import { formatDay } from "./utils/date";
+import HourlyForecastModal from "./components/HourlyForecastModal";
+import { isAuroraSeason } from "./lib/auroraSeason";
+import { createAffiliateImpressionHolder } from "./lib/affiliateImpressionHolder";
+
+function IcelandCampingWeatherApp({ page = "home" }) {
+  const [units, setUnits] = useLocalStorageState("units", "metric");
+  const [theme, setTheme] = useLocalStorageState("theme", "light");
+  const darkMode = theme === "dark";
+  const mapAnchorRef = useRef(null);
+
+  const { lang, toggleLanguage } = useLanguage();
+  const t = useT(lang);
+  const { toasts, pushToast, dismissToast } = useToast();
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  // Ticket #430 — F2/C2: affiliate impression dedup holder, owned HERE,
+  // ABOVE showCampsitesGate below. The campsites gate toggling (loading,
+  // error, reload, tier/login/logout) unmounts and remounts everything
+  // rendered inside its branch, including NorthernLightsThreeNight and its
+  // CTA — a holder living inside that subtree would reset every time,
+  // reintroducing the remount double-count. A genuine navigation away from
+  // this pathname and back (a different <Route>, which really does unmount
+  // this whole component) is the only thing that starts a new visit.
+  // Computed synchronously during render (the documented
+  // "derive-from-props-during-render" ref pattern), not in an effect, so
+  // the very first render after a pathname change already carries the new
+  // visit id — no transitional render where a stale observer could sneak a
+  // consume through.
+  const affiliateHolderRef = useRef(null);
+  if (!affiliateHolderRef.current) affiliateHolderRef.current = createAffiliateImpressionHolder();
+  const affiliateVisitRef = useRef(null);
+  if (!affiliateVisitRef.current || affiliateVisitRef.current.pathname !== location.pathname) {
+    const seq = affiliateVisitRef.current ? affiliateVisitRef.current.seq + 1 : 1;
+    affiliateVisitRef.current = { pathname: location.pathname, seq, id: `${location.pathname}#${seq}` };
+    affiliateHolderRef.current.startVisit(affiliateVisitRef.current.id);
+  }
+  const affiliateTryConsume = useCallback(
+    (visitId, placement) => affiliateHolderRef.current.tryConsume(visitId, placement),
+    []
+  );
+  const affiliateImpressionHolder = useMemo(
+    () => ({ visitId: affiliateVisitRef.current.id, tryConsume: affiliateTryConsume }),
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- affiliateVisitRef.current.id is read intentionally; ref values are exempt from the rule but this one IS the reactive key.
+    [affiliateVisitRef.current.id, affiliateTryConsume]
+  );
+
+  // useMe's own loading flag is `loadingMe` — forwarded so exposure analytics
+  // never record a premature Free guess while entitlements are unresolved.
+  const { me, loadingMe, refetchMe, resetMe } = useMe();
+  const serverPro = !!me?.entitlements?.pro;
+  const serverProUntil = me?.entitlements?.proUntil ?? null;
+
+  const [devPro, setDevPro] = useLocalStorageState("devPro", false);
+  const toggleDevPro = useCallback(() => setDevPro((v) => !v), [setDevPro]);
+
+  const entitlements = useMemo(() => {
+    const isPro = import.meta.env.DEV ? !!devPro || serverPro : serverPro;
+    return { isPro, proUntil: serverProUntil };
+  }, [devPro, serverPro, serverProUntil]);
+
+  const {
+    campsites: siteList,
+    loading: campsitesLoading,
+    error: campsitesError,
+  } = useCampsites({ reloadKey: entitlements.isPro });
+
+  const showCampsitesGate = campsitesLoading || campsitesError || !siteList?.length;
+  const [siteId, setSiteId] = useLocalStorageState("lastSite", null);
+
+  const [needRefresh, setNeedRefresh] = useState(false);
+  const [offlineReady, setOfflineReady] = useState(false);
+  const updateServiceWorkerRef = useRef(null);
+
+  const [selectedHourlyDay, setSelectedHourlyDay] = useState(null);
+  const [hourlyModalOpen, setHourlyModalOpen] = useState(false);
+
+  useEffect(() => {
+    const updateSW = registerSW({
+      onNeedRefresh() {
+        setNeedRefresh(true);
+      },
+      onOfflineReady() {
+        setOfflineReady(true);
+      },
+    });
+
+    updateServiceWorkerRef.current = updateSW;
+  }, []);
+
+  usePwaUpdateToast({
+    needRefresh,
+    updateServiceWorker: updateServiceWorkerRef.current,
+    pushToast,
+    dismissToast,
+    t,
+  });
+
+  useEffect(() => {
+    if (!offlineReady) return;
+
+    pushToast({
+      type: "success",
+      title: t?.("offlineReadyTitle") ?? "Ready for offline",
+      message: t?.("offlineReadyMsg") ?? "Eltum Veðrið er vistað og getur virkað án nettengingar.",
+    });
+
+    setOfflineReady(false);
+  }, [offlineReady, pushToast, t]);
+
+  const {
+    loginOpen,
+    loginEmail,
+    loginBusy,
+    setLoginEmail,
+    openLoginModal,
+    closeLoginModal,
+    submitLogin,
+  } = useLoginFlow({ me, navigate, pushToast, refetchMe, t });
+
+  const { logout, loggingOut } = useLogout({ resetMe, pushToast, t });
+
+  // Drop the in-memory login email too, so the next login does not prefill it.
+  const handleLogout = useCallback(async () => {
+    const ok = await logout();
+    if (ok) setLoginEmail("");
+    return ok;
+  }, [logout, setLoginEmail]);
+
+  const { startCheckout, openBillingPortal } = useCheckoutFlow({
+    me,
+    navigate,
+    openLoginModal,
+    pushToast,
+    refetchMe,
+    t,
+  });
+
+  const handleSelectSite = useCallback(
+    (id) => {
+      setSiteId(id);
+      mapAnchorRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+    },
+    [setSiteId]
+  );
+
+  const handleOpenHourlyForecast = useCallback(
+    (dayRow, dayIndex) => {
+      const props = { dayIndex };
+      if (dayRow?.date) props.date = dayRow.date;
+      if (siteId) props.siteId = siteId;
+      trackEvent("forecast_day_opened", props);
+      setSelectedHourlyDay(dayRow);
+      setHourlyModalOpen(true);
+    },
+    [siteId]
+  );
+
+  const handleCloseHourlyForecast = useCallback(() => {
+    setHourlyModalOpen(false);
+    setSelectedHourlyDay(null);
+  }, []);
+
+  const toggleTheme = useCallback(
+    () => setTheme((th) => (th === "dark" ? "light" : "dark")),
+    [setTheme]
+  );
+
+  const toggleUnits = useCallback(
+    () => setUnits((u) => (u === "metric" ? "imperial" : "metric")),
+    [setUnits]
+  );
+
+  const { userLoc, geoMsg, useMyLocation } = useMyLocationNearestSite(
+    showCampsitesGate ? [] : siteList,
+    handleSelectSite,
+    t
+  );
+  const distanceTo = useDistanceTo(userLoc);
+
+  const { scoresById, loadingWave1, loadingBg } = useLeaderboardScores(
+    showCampsitesGate ? [] : siteList,
+    siteId,
+    userLoc
+  );
+  const { top5 } = useTop5Campsites(showCampsitesGate ? [] : siteList, scoresById, userLoc);
+
+  const userLocationLabel = useMemo(() => {
+    if (!userLoc || !siteList?.length) return null;
+
+    let nearest = null;
+    let minDist = Infinity;
+
+    for (const site of siteList) {
+      const siteLat = Number(site?.lat);
+      const siteLon = Number(site?.lon);
+      if (!Number.isFinite(siteLat) || !Number.isFinite(siteLon)) continue;
+
+      const dx = siteLat - userLoc.lat;
+      const dy = siteLon - userLoc.lon;
+      const dist = dx * dx + dy * dy;
+
+      if (dist < minDist) {
+        minDist = dist;
+        nearest = site;
+      }
+    }
+
+    return nearest?.name ?? null;
+  }, [userLoc, siteList]);
+
+  useThemeClass(darkMode);
+  useEffect(() => {
+    if (showCampsitesGate) return;
+
+    if (!siteId) {
+      setSiteId(siteList[0].id);
+      return;
+    }
+
+    const exists = siteList.some((s) => s.id === siteId);
+    if (!exists) setSiteId(siteList[0].id);
+  }, [showCampsitesGate, siteId, siteList, setSiteId]);
+
+  const site = showCampsitesGate ? null : siteList.find((s) => s.id === siteId) || siteList[0];
+  const { rows, windDir, shelter, loading, error, requestedFor } = useForecast(site?.lat, site?.lon, {
+    t,
+    toast: pushToast,
+    retries: 2,
+  });
+
+  const gatedWindDir = useMemo(() => {
+    const gate = isFeatureAvailable("windDirection", entitlements);
+    return gate.available ? windDir : null;
+  }, [windDir, entitlements]);
+
+  const gatedShelter = useMemo(() => {
+    const gate = isFeatureAvailable("shelterIndex", entitlements);
+    return gate.available ? shelter : null;
+  }, [shelter, entitlements]);
+
+  const rowsWithDay = useMemo(
+    () => rows.map((r) => ({ ...r, dayLabel: formatDay(r.date, lang) })),
+    [rows, lang]
+  );
+
+  // Ticket 408 (#408) — same underlying action HomeDecisionCard's own
+  // secondary CTA already falls back to when no onCtaClick is supplied
+  // (App.jsx passes none today). Deliberately NOT routed through
+  // HomeDecisionCard's handleSecondaryClick, which fires the PRIMARY
+  // homepage_instant_comparison_cta_click analytics event — reusing that
+  // handler for a Weather Voice click would fabricate that event.
+  // Production Weather Voice content never sets a non-null ctaType (see
+  // #406), so this only fires for the tested-but-unused optional CTA path.
+  const scrollToComparisonSection = useCallback(() => {
+    document.getElementById("comparison-section")?.scrollIntoView({ behavior: "smooth", block: "start" });
+  }, []);
+
+  const weatherVoice = useWeatherVoice({
+    enabled: !showCampsitesGate && page === "home",
+    site,
+    rows: rowsWithDay,
+    requestedFor,
+    loading,
+    error,
+    lang,
+    t,
+    onExplore: scrollToComparisonSection,
+  });
+
+  const currentScore = useMemo(
+    () => Number(scoresById?.[siteId]?.score ?? 0),
+    [scoresById, siteId]
+  );
+
+  useEffect(() => {
+    trackEvent("homepage_loaded", {
+      lang,
+      isPro: entitlements.isPro,
+      mobile: typeof window !== "undefined" && window.innerWidth < 768,
+    });
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Ticket 416 (#416) — minimal, reliable hash-scroll handling for the
+  // Icelandic Aurora entrypoint (`/#northern-lights`). The `#northern-lights`
+  // anchor only exists once campsites have finished loading (it lives inside
+  // the showCampsitesGate-gated branch below), so a plain browser-native
+  // hash scroll on first load/reload can lose the race against that async
+  // mount. Re-checking window.location.hash once showCampsitesGate clears
+  // covers reload, delayed campsite loading, and cross-page (About-to-home)
+  // navigation alike — all of them land here as a fresh mount of this
+  // component with the hash already present in the URL.
+  useEffect(() => {
+    if (page !== "home" || showCampsitesGate) return;
+    if (typeof window === "undefined" || window.location.hash !== "#northern-lights") return;
+    document.getElementById("northern-lights")?.scrollIntoView({ behavior: "smooth", block: "start" });
+  }, [page, showCampsitesGate]);
+
+  const initialSiteRef = useRef(true);
+  useEffect(() => {
+    if (initialSiteRef.current) {
+      initialSiteRef.current = false;
+      return;
+    }
+    if (!siteId || !site) return;
+    trackEvent("campsite_selected", { siteId, siteName: site.name });
+  }, [siteId, site]);
+
+  const [routePlannerSummary, setRoutePlannerSummary] = useState(null);
+
+  // Single source of truth for the metric-based comparison direction.
+  // Passed to HomeDecisionCard and RoutePlannerCard so they always agree.
+  const comparisonState = useComparisonState({
+    site,
+    currentScore,
+    rows,
+    siteList: showCampsitesGate ? [] : siteList,
+    scoresById,
+    radiusKm: 50,
+    routePlannerSummary,
+  });
+
+  const booting = useBooting(loading, rows.length);
+
+  return (
+    <div>
+      <Splash show={booting} minMs={700} fadeMs={500} />
+      <ToastHub toasts={toasts} onDismiss={dismissToast} />
+
+      <LoginModal
+        open={loginOpen}
+        loginBusy={loginBusy}
+        loginEmail={loginEmail}
+        setLoginEmail={setLoginEmail}
+        closeLoginModal={closeLoginModal}
+        submitLogin={submitLogin}
+        t={t}
+      />
+
+      <div className="min-h-screen font-sans bg-soft-grid text-slate-900 dark:bg-slate-950 dark:text-slate-100">
+        <PageHeader
+          t={t}
+          lang={lang}
+          onToggleLanguage={toggleLanguage}
+          siteList={showCampsitesGate ? [] : siteList}
+          siteId={siteId}
+          onSelectSite={handleSelectSite}
+          onUseMyLocation={useMyLocation}
+          units={units}
+          onToggleUnits={toggleUnits}
+          darkMode={darkMode}
+          onToggleTheme={toggleTheme}
+          geoMsg={geoMsg}
+          devPro={devPro}
+          onToggleDevPro={toggleDevPro}
+          isSignedIn={!!me?.user}
+          onLogout={handleLogout}
+          loggingOut={loggingOut}
+        />
+
+        <div id="comparison-section" className="mx-auto max-w-6xl px-4 pt-3 pb-10 md:pt-4 md:pb-10">
+          {page === "about" ? (
+            <About t={t} lang={lang} />
+          ) : showCampsitesGate ? (
+            <div className="flex min-h-[50vh] items-center justify-center p-6">
+              <div className="max-w-md text-center">
+                <div className="mb-2 text-base font-semibold">
+                  {campsitesLoading ? "Loading campsites…" : "Couldn’t load campsites"}
+                </div>
+
+                {!campsitesLoading && (
+                  <div className="mb-4 text-sm opacity-80">
+                    {String(campsitesError?.message || "Unknown error")}
+                  </div>
+                )}
+
+                {!campsitesLoading && (
+                  <button
+                    type="button"
+                    onClick={() => window.location.reload()}
+                    className="rounded-xl bg-slate-900 px-4 py-2 text-sm font-semibold text-white dark:bg-white dark:text-slate-900"
+                  >
+                    Reload
+                  </button>
+                )}
+              </div>
+            </div>
+          ) : (
+            <>
+              <HomeDecisionCard
+                t={t}
+                rows={rowsWithDay}
+                routePlannerSummary={routePlannerSummary}
+                entitlements={entitlements}
+                comparisonState={comparisonState}
+                onUpgrade={startCheckout}
+                currentSiteId={siteId}
+                lang={lang}
+              />
+
+              <WeatherVoiceCard
+                result={weatherVoice.presentation}
+                surface="homepage_decision"
+                episodeKey={weatherVoice.episodeKey}
+                action={weatherVoice.action}
+                t={t}
+                lang={lang}
+                onVisible={weatherVoice.onVisible}
+                shareSnapshot={weatherVoice.shareSnapshot}
+                supplement={weatherVoice.supplement}
+                onSupplementVisible={weatherVoice.onSupplementVisible}
+              />
+
+              {/* Ticket 416 (#416): stable anchor for the Icelandic Aurora
+                  entrypoint (`/#northern-lights`, per the literal id Jonesy
+                  pinned). The off-season fallback is deliberately placed
+                  here, outside the shared three-night module (#425 replaced the
+                  single-night card here), as a sibling — it reuses
+                  isAuroraSeason() read-only for display only, never touches
+                  the module's own season gate/null-return, and never mounts
+                  a second data owner or causes an extra Aurora request. */}
+              <div id="northern-lights">
+                <NorthernLightsThreeNight
+                  t={t}
+                  lang={lang}
+                  entitlements={entitlements}
+                  theme={theme}
+                  loadingMe={loadingMe}
+                  surface="homepage"
+                  affiliateImpressionHolder={affiliateImpressionHolder}
+                />
+                {!isAuroraSeason() && (
+                  <div
+                    data-testid="nl-off-season-fallback"
+                    className="mb-3 rounded-2xl border border-slate-200/70 bg-white/70 px-4 py-3 text-sm text-slate-600 shadow-sm dark:border-slate-800/70 dark:bg-slate-900/60 dark:text-slate-300"
+                  >
+                    {t("nlOffSeasonFallback")}
+                  </div>
+                )}
+              </div>
+
+              <div className="mb-4">
+                <RoutePlannerCard
+                  t={t}
+                  lang={lang}
+                  entitlements={entitlements}
+                  me={me}
+                  onUpgrade={startCheckout}
+                  sites={siteList}
+                  baseSiteId={siteId}
+                  radiusKmDefault={50}
+                  windowDaysDefault={3}
+                  wetThresholdMmDefault={3}
+                  onSummaryChange={setRoutePlannerSummary}
+                  onSelectSite={handleSelectSite}
+                  comparisonState={comparisonState}
+                />
+              </div>
+
+              <CampsiteComparisonSection
+                siteList={siteList}
+                t={t}
+                lang={lang}
+                currentSiteId={siteId}
+                entitlements={entitlements}
+                onUpgrade={startCheckout}
+              />
+
+              <div className="grid gap-4 md:grid-cols-2">
+                <ForecastTable
+                  entitlements={entitlements}
+                  site={site}
+                  userLoc={userLoc}
+                  distanceToKm={distanceTo(site)}
+                  rows={rowsWithDay}
+                  loading={loading}
+                  error={error}
+                  units={units}
+                  lang={lang}
+                  t={t}
+                  onSelectDay={handleOpenHourlyForecast}
+                />
+
+                {hourlyModalOpen && selectedHourlyDay && (
+                  <HourlyForecastModal
+                    site={site}
+                    day={selectedHourlyDay}
+                    units={units}
+                    lang={lang}
+                    t={t}
+                    onClose={handleCloseHourlyForecast}
+                  />
+                )}
+
+                <div className="order-first md:order-last">
+                  <Top5Leaderboard
+                    entitlements={entitlements}
+                    top5={top5}
+                    lang={lang}
+                    scoredCount={Object.keys(scoresById).length}
+                    loadingWave1={loadingWave1}
+                    loadingBg={loadingBg}
+                    units={units}
+                    onSelectSite={handleSelectSite}
+                    me={me}
+                    onUpgrade={startCheckout}
+                    t={t}
+                    shelter={gatedShelter}
+                    windDir={gatedWindDir}
+                    proUntil={me?.entitlements?.proUntil ?? null}
+                    subscription={me?.subscription ?? null}
+                    onManageSubscription={openBillingPortal}
+                    userLocationLabel={userLocationLabel}
+                  />
+                </div>
+              </div>
+
+              <div className="mt-4">
+                <WeatherFinder
+                  siteList={siteList}
+                  scoresById={scoresById}
+                  userLoc={userLoc}
+                  entitlements={entitlements}
+                  units={units}
+                  t={t}
+                  me={me}
+                  onUpgrade={startCheckout}
+                  onSelectSite={handleSelectSite}
+                />
+              </div>
+
+              <div ref={mapAnchorRef} className="mt-4">
+                <LazyMap
+                  campsites={siteList}
+                  selectedId={siteId}
+                  onSelect={(id) => setSiteId(id)}
+                  userLocation={userLoc}
+                  lang={lang}
+                  t={t}
+                  theme={theme}
+                />
+              </div>
+            </>
+          )}
+        </div>
+
+        <Footer t={t} />
+      </div>
+
+      <BackToTop threshold={400} />
+    </div>
+  );
+}
+
+export default function App() {
+  return (
+    <BrowserRouter>
+      <AnalyticsTracker />
+      <AppRoutes HomeComponent={IcelandCampingWeatherApp} />
+      <Analytics />
+      <SpeedInsights />
+    </BrowserRouter>
+  );
+}

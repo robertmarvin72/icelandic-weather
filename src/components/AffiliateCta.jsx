@@ -1,0 +1,174 @@
+// src/components/AffiliateCta.jsx
+//
+// Ticket #430 — secondary Viator ("book a guided tour") next step, rendered
+// by NorthernLightsThreeNight only when a usable, non-expired result for the
+// SELECTED night is actually displayed (see that module's predicate). This
+// is a separate child component, with its own hooks, specifically so the
+// parent module never needs to add a hook after its own
+// `if (!seasonActive) return null` early return — Rules of Hooks stays
+// satisfied by conditionally rendering THIS component, never by a
+// conditional hook inside the parent.
+//
+// Forecast remains free and independent of this CTA: no scoring/ranking
+// logic lives here, and nothing here can change what the forecast shows.
+import { useEffect, useRef } from "react";
+import { trackEvent } from "../lib/analytics";
+import { NL_FREE_EXPERIMENT_ID } from "../config/features";
+import {
+  VIATOR_NORTHERN_LIGHTS_URL,
+  AFFILIATE_PARTNER_VIATOR,
+  AFFILIATE_CAMPAIGN_NORTHERN_LIGHTS,
+  AFFILIATE_DESTINATION_VIATOR_NORTHERN_LIGHTS_SEARCH,
+} from "../config/affiliateOffers";
+
+const IMPRESSION_THRESHOLD = 0.5;
+
+function baseMetadata({ placement, band, selectedNight }) {
+  // Omit absent/invalid optional values entirely — never a null/undefined
+  // placeholder in the emitted payload. No user_tier, no email/user id/IP/
+  // free text/raw URL in any affiliate event (MVP; see runbook limits).
+  const metadata = {
+    partner: AFFILIATE_PARTNER_VIATOR,
+    campaign: AFFILIATE_CAMPAIGN_NORTHERN_LIGHTS,
+    placement,
+    business_model_experiment: NL_FREE_EXPERIMENT_ID,
+  };
+  if (band) metadata.forecast_verdict = band;
+  if (selectedNight) metadata.selected_night = selectedNight;
+  return metadata;
+}
+
+// `t` alone decides the visible copy (both callers pass the right dictionary
+// — landing always EN, homepage the active language); no separate `lang`
+// prop is needed here.
+export default function AffiliateCta({ t, placement, band = null, selectedNight = null, holder = null }) {
+  const nodeRef = useRef(null);
+
+  // ── Impression: IntersectionObserver >= 50% AND the tab actually visible.
+  // Mirrors the existing WeatherVoiceCard.jsx precedent (last-entry
+  // semantics, visibilitychange re-check, disconnect on cleanup) rather than
+  // inventing a new pattern. Holder/placement/band/selectedNight are all
+  // effect dependencies, so a change (e.g. the user picks a different night
+  // before the card ever reaches 50%) tears down and re-creates the
+  // observer with the CURRENT metadata — the eventual impression (if any)
+  // always describes what is on screen when threshold is actually crossed,
+  // never a stale snapshot from mount time.
+  useEffect(() => {
+    const node = nodeRef.current;
+    if (!node) return undefined;
+    if (typeof IntersectionObserver !== "function") return undefined; // no fabricated fallback impression
+
+    let cancelled = false;
+    let notified = false;
+    let lastEligible = false;
+    const visitIdAtSetup = holder?.visitId ?? null;
+
+    function isDocumentVisible() {
+      return typeof document === "undefined" || document.visibilityState === "visible";
+    }
+
+    function isEligible(entry) {
+      return !!entry && !!entry.isIntersecting && (entry.intersectionRatio ?? 0) >= IMPRESSION_THRESHOLD;
+    }
+
+    function fireIfEligible() {
+      if (cancelled || notified) return;
+      if (!lastEligible) return;
+      if (!isDocumentVisible()) return;
+      if (!holder) return; // holder absent: CTA/click still work, impression never emitted
+      // Synchronous, idempotent guard BEFORE emission — the first caller to
+      // pass this wins, so overlapping observers (or a StrictMode double
+      // effect invocation) cannot both consume the same opportunity. A
+      // stale visitId captured before a route change always fails here.
+      const consumed = holder.tryConsume(visitIdAtSetup, placement);
+      if (!consumed) return;
+      notified = true; // one attempted eligible emission; never retried below
+      try {
+        trackEvent("affiliate_offer_viewed", baseMetadata({ placement, band, selectedNight }));
+      } catch {
+        // Telemetry failure undercounts this impression — documented in the
+        // runbook. The forecast/CTA must never crash over an analytics error.
+      }
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (cancelled) return;
+        // Evaluate the LAST entry for the observed target when a callback
+        // carries several (C4 precedent from WeatherVoiceCard).
+        for (const entry of entries) {
+          lastEligible = isEligible(entry);
+        }
+        fireIfEligible();
+      },
+      { threshold: IMPRESSION_THRESHOLD }
+    );
+
+    function handleVisibilityChange() {
+      if (cancelled) return;
+      fireIfEligible();
+    }
+
+    observer.observe(node);
+    if (typeof document !== "undefined" && typeof document.addEventListener === "function") {
+      document.addEventListener("visibilitychange", handleVisibilityChange);
+    }
+
+    return () => {
+      cancelled = true;
+      observer.disconnect();
+      if (typeof document !== "undefined" && typeof document.removeEventListener === "function") {
+        document.removeEventListener("visibilitychange", handleVisibilityChange);
+      }
+    };
+  }, [holder, placement, band, selectedNight]);
+
+  // ── Click: native anchor activation. Left click, keyboard Enter and a
+  // modified click (ctrl/cmd/shift-click, which still fire a native `click`
+  // event) are all measured here, independent of whether an impression was
+  // ever emitted and independent of whether trackEvent/GA succeeds. No
+  // preventDefault, no await, no custom navigation — a thrown analytics
+  // error is caught locally so the real anchor navigation is never blocked.
+  function handleClick() {
+    try {
+      trackEvent(
+        "affiliate_clicked",
+        (() => {
+          const metadata = baseMetadata({ placement, band, selectedNight });
+          metadata.destination = AFFILIATE_DESTINATION_VIATOR_NORTHERN_LIGHTS_SEARCH;
+          return metadata;
+        })()
+      );
+    } catch {
+      // Preserve the native anchor navigation even if analytics throws.
+    }
+  }
+
+  // Middle-click only (button 1). Right-click (contextmenu / "open in new
+  // tab") is explicitly unmeasured — named as a runbook undercount, not
+  // silently patched.
+  function handleAuxClick(e) {
+    if (e.button !== 1) return;
+    handleClick();
+  }
+
+  return (
+    <div ref={nodeRef} data-testid="affiliate-nl-cta" className="mt-4 rounded-xl border border-white/10 bg-white/5 px-3 py-3">
+      <p className="text-xs font-semibold text-slate-100">{t("nlAffiliateTitle")}</p>
+      <p className="mt-1 text-xs text-slate-300/90">{t("nlAffiliateBody")}</p>
+      <a
+        href={VIATOR_NORTHERN_LIGHTS_URL}
+        target="_blank"
+        rel="noopener noreferrer sponsored"
+        onClick={handleClick}
+        onAuxClick={handleAuxClick}
+        className="mt-2 inline-flex items-center gap-1.5 rounded-full bg-indigo-500/90 px-3 py-1.5 text-xs font-semibold text-white hover:bg-indigo-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-300"
+      >
+        {t("nlAffiliateCta")}
+        <span className="sr-only">{` ${t("nlAffiliateNewTabSuffix")}`}</span>
+      </a>
+      {/* #430 v2/F1: was text-[11px] (11px, below the approved "at least text-xs" / 12px floor). */}
+      <p className="mt-1.5 text-xs leading-snug text-slate-400">{t("nlAffiliateDisclosure")}</p>
+    </div>
+  );
+}

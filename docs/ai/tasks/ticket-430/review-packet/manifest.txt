@@ -1,0 +1,21 @@
+# #430 review-packet manifest
+base_head=2091263f031b2fa8a6acf5a7ad7bb04281775ded
+generated_at_utc=2026-10-14T09:35:51Z
+hash_algorithm=sha256_lowercase
+note: live path and packet-copy path (same relative path + .txt suffix) share the same hash of the live file's bytes
+
+6fcc55ae5ea545c07dc068bafdeb392cde5d52ba60726bbe73ff9213cfc9a293  live:src/App.jsx  packet:review-packet/src/App.jsx.txt
+1d70ebfdec2524673497e27cbe9ecda0112f3a632a2cad84a39665dabb18a117  live:src/components/NorthernLightsThreeNight.jsx  packet:review-packet/src/components/NorthernLightsThreeNight.jsx.txt
+6c5cd450752568c75faa9015c7ec900b63050dc54b9f329be941b530eb928461  live:src/i18n/translations.northernLights.js  packet:review-packet/src/i18n/translations.northernLights.js.txt
+f6436e4071f2933632d111d8069251a09217226c8d14f77c510f50aafa23416c  live:src/pages/NorthernLightsLanding.jsx  packet:review-packet/src/pages/NorthernLightsLanding.jsx.txt
+b6a7155258cd8ebac0312858f08fc3d85db57177e29ac683333f103c3a26a5f4  live:src/App.affiliateHolder.test.jsx  packet:review-packet/src/App.affiliateHolder.test.jsx.txt
+4c2009df757c9258a0533a4982d707862ee2308afce69ca40083161a7a684ab9  live:src/components/AffiliateCta.jsx  packet:review-packet/src/components/AffiliateCta.jsx.txt
+dbcc043def8a6b6cb707bed1468d56b337f5fc69f8c073f612ba9b23bcfdca3c  live:src/components/AffiliateCta.test.jsx  packet:review-packet/src/components/AffiliateCta.test.jsx.txt
+ba61f90583b415b6d1ebefc73ba5bfe88c0c19eea7bb8c4e847efedc1321a8ab  live:src/components/NorthernLightsThreeNight.affiliateCta.test.jsx  packet:review-packet/src/components/NorthernLightsThreeNight.affiliateCta.test.jsx.txt
+1b024fdb8a6db4198711c0bbef48d4337e4cc09fbc2a4877adf8a68a9e692db5  live:src/components/NorthernLightsThreeNight.affiliateCtaFallback.test.jsx  packet:review-packet/src/components/NorthernLightsThreeNight.affiliateCtaFallback.test.jsx.txt
+54d1cde5f65262174ab7ab711e0623b4001debdab755f30246078c72d3f24cc2  live:src/config/affiliateOffers.js  packet:review-packet/src/config/affiliateOffers.js.txt
+26e8d83cc405b9dedd0d92ecb41103dac97ce9bbef4f0c1bb80344e919eb366d  live:src/i18n/translations.northernLights.affiliateParity.test.js  packet:review-packet/src/i18n/translations.northernLights.affiliateParity.test.js.txt
+093fabc9a4819137fb5116b2579a8fe5a4225556e2c58c0fb8706c73995b6bb4  live:src/lib/affiliateImpressionHolder.js  packet:review-packet/src/lib/affiliateImpressionHolder.js.txt
+5c58c2bf41d199050a679bd629a95fd64de40c1c2d7cc617b5258a617cad0731  live:src/lib/affiliateImpressionHolder.test.js  packet:review-packet/src/lib/affiliateImpressionHolder.test.js.txt
+5fd1785f6ff7aeca2251a316bec85575947328a38d20f669acb961e5546e4911  live:src/lib/analytics.affiliateGA.test.js  packet:review-packet/src/lib/analytics.affiliateGA.test.js.txt
+a187f3295e0c1417e2b46ba4fa23bbe114a1be9ee21233047a2db635ce4c3c1a  live:src/pages/NorthernLightsLanding.affiliateHolder.test.jsx  packet:review-packet/src/pages/NorthernLightsLanding.affiliateHolder.test.jsx.txt

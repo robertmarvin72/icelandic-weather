@@ -3,7 +3,7 @@
  */
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { BrowserRouter, useNavigate } from "react-router-dom";
+import { BrowserRouter, useLocation, useNavigate } from "react-router-dom";
 
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/react";
@@ -51,6 +51,7 @@ import About from "./pages/About";
 import { formatDay } from "./utils/date";
 import HourlyForecastModal from "./components/HourlyForecastModal";
 import { isAuroraSeason } from "./lib/auroraSeason";
+import { createAffiliateImpressionHolder } from "./lib/affiliateImpressionHolder";
 
 function IcelandCampingWeatherApp({ page = "home" }) {
   const [units, setUnits] = useLocalStorageState("units", "metric");
@@ -62,6 +63,38 @@ function IcelandCampingWeatherApp({ page = "home" }) {
   const t = useT(lang);
   const { toasts, pushToast, dismissToast } = useToast();
   const navigate = useNavigate();
+  const location = useLocation();
+
+  // Ticket #430 — F2/C2: affiliate impression dedup holder, owned HERE,
+  // ABOVE showCampsitesGate below. The campsites gate toggling (loading,
+  // error, reload, tier/login/logout) unmounts and remounts everything
+  // rendered inside its branch, including NorthernLightsThreeNight and its
+  // CTA — a holder living inside that subtree would reset every time,
+  // reintroducing the remount double-count. A genuine navigation away from
+  // this pathname and back (a different <Route>, which really does unmount
+  // this whole component) is the only thing that starts a new visit.
+  // Computed synchronously during render (the documented
+  // "derive-from-props-during-render" ref pattern), not in an effect, so
+  // the very first render after a pathname change already carries the new
+  // visit id — no transitional render where a stale observer could sneak a
+  // consume through.
+  const affiliateHolderRef = useRef(null);
+  if (!affiliateHolderRef.current) affiliateHolderRef.current = createAffiliateImpressionHolder();
+  const affiliateVisitRef = useRef(null);
+  if (!affiliateVisitRef.current || affiliateVisitRef.current.pathname !== location.pathname) {
+    const seq = affiliateVisitRef.current ? affiliateVisitRef.current.seq + 1 : 1;
+    affiliateVisitRef.current = { pathname: location.pathname, seq, id: `${location.pathname}#${seq}` };
+    affiliateHolderRef.current.startVisit(affiliateVisitRef.current.id);
+  }
+  const affiliateTryConsume = useCallback(
+    (visitId, placement) => affiliateHolderRef.current.tryConsume(visitId, placement),
+    []
+  );
+  const affiliateImpressionHolder = useMemo(
+    () => ({ visitId: affiliateVisitRef.current.id, tryConsume: affiliateTryConsume }),
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- affiliateVisitRef.current.id is read intentionally; ref values are exempt from the rule but this one IS the reactive key.
+    [affiliateVisitRef.current.id, affiliateTryConsume]
+  );
 
   // useMe's own loading flag is `loadingMe` — forwarded so exposure analytics
   // never record a premature Free guess while entitlements are unresolved.
@@ -445,6 +478,7 @@ function IcelandCampingWeatherApp({ page = "home" }) {
                   theme={theme}
                   loadingMe={loadingMe}
                   surface="homepage"
+                  affiliateImpressionHolder={affiliateImpressionHolder}
                 />
                 {!isAuroraSeason() && (
                   <div

@@ -1,0 +1,67 @@
+[
+  {
+    "chunk": 1,
+    "bytes": 7451,
+    "pessimisticEstimateTokens": 2612
+  },
+  {
+    "chunk": 2,
+    "bytes": 8619,
+    "pessimisticEstimateTokens": 3001
+  },
+  {
+    "chunk": 3,
+    "bytes": 3016,
+    "pessimisticEstimateTokens": 1134
+  },
+  {
+    "chunk": 4,
+    "bytes": 4201,
+    "pessimisticEstimateTokens": 1529
+  },
+  {
+    "chunk": 5,
+    "bytes": 8637,
+    "pessimisticEstimateTokens": 3007
+  },
+  {
+    "chunk": 6,
+    "bytes": 7897,
+    "pessimisticEstimateTokens": 2761
+  },
+  {
+    "chunk": 7,
+    "bytes": 8589,
+    "pessimisticEstimateTokens": 2991
+  },
+  {
+    "chunk": 8,
+    "bytes": 3064,
+    "pessimisticEstimateTokens": 1150
+  },
+  {
+    "chunk": 9,
+    "bytes": 7795,
+    "pessimisticEstimateTokens": 2727
+  },
+  {
+    "chunk": 10,
+    "bytes": 6117,
+    "pessimisticEstimateTokens": 2167
+  },
+  {
+    "chunk": 11,
+    "bytes": 6078,
+    "pessimisticEstimateTokens": 2154
+  },
+  {
+    "chunk": 12,
+    "bytes": 7783,
+    "pessimisticEstimateTokens": 2723
+  },
+  {
+    "chunk": 13,
+    "bytes": 4688,
+    "pessimisticEstimateTokens": 1691
+  }
+]

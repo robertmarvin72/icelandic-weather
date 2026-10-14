@@ -1,0 +1,7 @@
+1. **Stale closure in `fireIfEligible`**: The `holder.tryConsume` check uses `visitIdAtSetup`, which is captured at effect setup time. If `holder` changes between setup and when the impression fires (e.g., due to a route change), this could lead to incorrect consumption logic or missed impressions.
+
+2. **Race condition in `handleClick`/`handleAuxClick`**: The click handlers don't prevent default behavior, which means native anchor navigation can proceed even if analytics fails. While this is intentional for navigation reliability, it doesn't guard against potential double-tracking or inconsistent UI state if multiple clicks occur rapidly.
+
+3. **Incorrect `onAuxClick` logic**: Only middle-clicks (`e.button === 1`) are tracked, but right-clicks (contextmenu) are explicitly excluded and not measured. This is likely intentional, but the comment says "named as a runbook undercount", implying it's an acknowledged limitation rather than a bug.
+
+4. **Missing cleanup of IntersectionObserver entries**: While `observer.disconnect()` is called on unmount, if the component re-renders with new dependencies (e.g., `holder`, `placement`), old observer instances may still be active or not properly cleaned up due to reuse of the same effect setup.

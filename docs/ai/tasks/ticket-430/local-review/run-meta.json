@@ -1,0 +1,125 @@
+{
+  "model": "qwen3-coder:30b",
+  "ollamaVersion": "0.40.0",
+  "numCtx": 4096,
+  "numPredict": 800,
+  "plannedChunks": 13,
+  "ranChunks": 12,
+  "stoppedOnBudget": true,
+  "totalElapsedMs": 90072,
+  "wallClockBudgetMs": 900000,
+  "log": [
+    {
+      "index": 1,
+      "elapsedMs": 9303,
+      "pessimisticEstimateTokens": 2622,
+      "promptEvalCount": 1964,
+      "evalCount": 195,
+      "fitStatus": "corroborated",
+      "responseFile": "chunk-01-response.txt"
+    },
+    {
+      "index": 2,
+      "elapsedMs": 9970,
+      "pessimisticEstimateTokens": 3012,
+      "promptEvalCount": 2457,
+      "evalCount": 157,
+      "fitStatus": "corroborated",
+      "responseFile": "chunk-02-response.txt"
+    },
+    {
+      "index": 3,
+      "elapsedMs": 2900,
+      "pessimisticEstimateTokens": 1144,
+      "promptEvalCount": 835,
+      "evalCount": 2,
+      "fitStatus": "corroborated",
+      "responseFile": "chunk-03-response.txt"
+    },
+    {
+      "index": 4,
+      "elapsedMs": 6952,
+      "pessimisticEstimateTokens": 1539,
+      "promptEvalCount": 1308,
+      "evalCount": 189,
+      "fitStatus": "corroborated",
+      "responseFile": "chunk-04-response.txt"
+    },
+    {
+      "index": 5,
+      "elapsedMs": 8529,
+      "pessimisticEstimateTokens": 3018,
+      "promptEvalCount": 2470,
+      "evalCount": 2,
+      "fitStatus": "corroborated",
+      "responseFile": "chunk-05-response.txt"
+    },
+    {
+      "index": 6,
+      "elapsedMs": 7100,
+      "pessimisticEstimateTokens": 2771,
+      "promptEvalCount": 2180,
+      "evalCount": 2,
+      "fitStatus": "corroborated",
+      "responseFile": "chunk-06-response.txt"
+    },
+    {
+      "index": 7,
+      "elapsedMs": 9551,
+      "pessimisticEstimateTokens": 3002,
+      "promptEvalCount": 2908,
+      "evalCount": 2,
+      "fitStatus": "corroborated",
+      "responseFile": "chunk-07-response.txt"
+    },
+    {
+      "index": 8,
+      "elapsedMs": 3459,
+      "pessimisticEstimateTokens": 1160,
+      "promptEvalCount": 1048,
+      "evalCount": 2,
+      "fitStatus": "corroborated",
+      "responseFile": "chunk-08-response.txt"
+    },
+    {
+      "index": 9,
+      "elapsedMs": 10702,
+      "pessimisticEstimateTokens": 2737,
+      "promptEvalCount": 2117,
+      "evalCount": 268,
+      "fitStatus": "corroborated",
+      "responseFile": "chunk-09-response.txt"
+    },
+    {
+      "index": 10,
+      "elapsedMs": 6678,
+      "pessimisticEstimateTokens": 2178,
+      "promptEvalCount": 1992,
+      "evalCount": 2,
+      "fitStatus": "corroborated",
+      "responseFile": "chunk-10-response.txt"
+    },
+    {
+      "index": 11,
+      "elapsedMs": 7730,
+      "pessimisticEstimateTokens": 2165,
+      "promptEvalCount": 1708,
+      "evalCount": 184,
+      "fitStatus": "corroborated",
+      "responseFile": "chunk-11-response.txt"
+    },
+    {
+      "index": 12,
+      "elapsedMs": 7162,
+      "pessimisticEstimateTokens": 2733,
+      "promptEvalCount": 2240,
+      "evalCount": 2,
+      "fitStatus": "corroborated",
+      "responseFile": "chunk-12-response.txt"
+    },
+    {
+      "index": 13,
+      "skipped": "max-chunks-reached"
+    }
+  ]
+}

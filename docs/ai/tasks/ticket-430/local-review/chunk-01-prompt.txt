@@ -1,0 +1,144 @@
+You are reviewing a git diff for a React/Vite web app (source-level correctness review). Focus on correctness bugs: race conditions, stale closures, incorrect conditionals, wrong event semantics, missing cleanup, off-by-one logic. Be concise: at most 4 findings as a numbered list, each one or two sentences, or reply exactly NONE if you find nothing. Do not restate the whole diff.
+
+--- chunk nonce: xmltdr1h ---
+
+diff --git a/src/App.jsx b/src/App.jsx
+index b3145fb3..17a239c7 100644
+--- a/src/App.jsx
++++ b/src/App.jsx
+@@ -3,7 +3,7 @@
+  */
+ 
+ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+-import { BrowserRouter, useNavigate } from "react-router-dom";
++import { BrowserRouter, useLocation, useNavigate } from "react-router-dom";
+ 
+ import { Analytics } from "@vercel/analytics/react";
+ import { SpeedInsights } from "@vercel/speed-insights/react";
+@@ -51,6 +51,7 @@ import About from "./pages/About";
+ import { formatDay } from "./utils/date";
+ import HourlyForecastModal from "./components/HourlyForecastModal";
+ import { isAuroraSeason } from "./lib/auroraSeason";
++import { createAffiliateImpressionHolder } from "./lib/affiliateImpressionHolder";
+ 
+ function IcelandCampingWeatherApp({ page = "home" }) {
+   const [units, setUnits] = useLocalStorageState("units", "metric");
+@@ -62,6 +63,38 @@ function IcelandCampingWeatherApp({ page = "home" }) {
+   const t = useT(lang);
+   const { toasts, pushToast, dismissToast } = useToast();
+   const navigate = useNavigate();
++  const location = useLocation();
++
++  // Ticket #430 — F2/C2: affiliate impression dedup holder, owned HERE,
++  // ABOVE showCampsitesGate below. The campsites gate toggling (loading,
++  // error, reload, tier/login/logout) unmounts and remounts everything
++  // rendered inside its branch, including NorthernLightsThreeNight and its
++  // CTA — a holder living inside that subtree would reset every time,
++  // reintroducing the remount double-count. A genuine navigation away from
++  // this pathname and back (a different <Route>, which really does unmount
++  // this whole component) is the only thing that starts a new visit.
++  // Computed synchronously during render (the documented
++  // "derive-from-props-during-render" ref pattern), not in an effect, so
++  // the very first render after a pathname change already carries the new
++  // visit id — no transitional render where a stale observer could sneak a
++  // consume through.
++  const affiliateHolderRef = useRef(null);
++  if (!affiliateHolderRef.current) affiliateHolderRef.current = createAffiliateImpressionHolder();
++  const affiliateVisitRef = useRef(null);
++  if (!affiliateVisitRef.current || affiliateVisitRef.current.pathname !== location.pathname) {
++    const seq = affiliateVisitRef.current ? affiliateVisitRef.current.seq + 1 : 1;
++    affiliateVisitRef.current = { pathname: location.pathname, seq, id: `${location.pathname}#${seq}` };
++    affiliateHolderRef.current.startVisit(affiliateVisitRef.current.id);
++  }
++  const affiliateTryConsume = useCallback(
++    (visitId, placement) => affiliateHolderRef.current.tryConsume(visitId, placement),
++    []
++  );
++  const affiliateImpressionHolder = useMemo(
++    () => ({ visitId: affiliateVisitRef.current.id, tryConsume: affiliateTryConsume }),
++    // eslint-disable-next-line react-hooks/exhaustive-deps -- affiliateVisitRef.current.id is read intentionally; ref values are exempt from the rule but this one IS the reactive key.
++    [affiliateVisitRef.current.id, affiliateTryConsume]
++  );
+ 
+   // useMe's own loading flag is `loadingMe` — forwarded so exposure analytics
+   // never record a premature Free guess while entitlements are unresolved.
+@@ -445,6 +478,7 @@ function IcelandCampingWeatherApp({ page = "home" }) {
+                   theme={theme}
+                   loadingMe={loadingMe}
+                   surface="homepage"
++                  affiliateImpressionHolder={affiliateImpressionHolder}
+                 />
+                 {!isAuroraSeason() && (
+                   <div
+
+diff --git a/src/components/NorthernLightsThreeNight.jsx b/src/components/NorthernLightsThreeNight.jsx
+index 63e1981a..5f693e65 100644
+--- a/src/components/NorthernLightsThreeNight.jsx
++++ b/src/components/NorthernLightsThreeNight.jsx
+@@ -65,7 +65,9 @@ import { auroraNightOverview } from "../lib/auroraNightIndicator";
+ import { selectAuroraDisplay } from "../lib/auroraDisplaySelection";
+ import { buildNightDetailPath } from "../lib/auroraNightQuery";
+ import AuroraNightOutlook from "./AuroraNightOutlook";
++import AffiliateCta from "./AffiliateCta";
+ import { CARD_SHELL_CLASS } from "./NorthernLightsCard";
++import { AFFILIATE_PLACEMENT_BY_SURFACE } from "../config/affiliateOffers";
+ 
+ // Intentional per-surface preference keys: the homepage keeps the key the
+ // retired homepage card used (so an existing preference survives), the
+@@ -165,6 +167,13 @@ export default function NorthernLightsThreeNight({
+   surface = "landing",
+   requestedDate = null,
+   onSelectedDateChange,
++  // Ticket #430 — the affiliate impression dedup holder, owned ABOVE this
++  // module (App.jsx / NorthernLightsLanding.jsx), passed through as a narrow
++  // `{ visitId, tryConsume }` prop. Optional: existing tests that mount this
++  // module standalone pass none, and must keep working (see AffiliateCta's
++  // own "holder absent" contract) — no component-local fallback is created
++  // here if it is missing.
++  affiliateImpressionHolder = null,
+ }) {
+   const isHomepage = surface === "homepage";
+   const detailsKey = isHomepage ? DETAILS_KEYS.homepage : DETAILS_KEYS.landing;
+@@ -316,6 +325,20 @@ export default function NorthernLightsThreeNight({
+     configuredLocationIds: AURORA_CANDIDATE_LOCATION_IDS,
+   });
+ 
++  // Ticket #430 — F1/C1: eligibility for the affiliate CTA, keyed on the
++  // slot ACTUALLY DISPLAYED (`selectedSlot.date`, which already falls back
++  // to slots[0] when selectedDate is outside the window), never on the raw
++  // `selectedDate` directly. No new helper, no re-scoring: `usable` is the
++  // same per-slot fact classifyMultiNightComparison already computes
++  // (success/partial, known band, finite score) — a stale-but-usable result
++  // is eligible (freshness and expiry are already folded into `usable` via
++  // applyClientFreshness turning an expired result into domain_unavailable
++  // upstream); loading/error/no-darkness/contract-defect/unavailable are
++  // not. Good and poor/very-poor are equally eligible.
++  const affiliateDisplayedSlot = multiNight.slots.find((s) => s.date === selectedSlot.date) ?? null;
++  const affiliateEligible = affiliateDisplayedSlot?.usable === true;
++  const affiliatePlacement = AFFILIATE_PLACEMENT_BY_SURFACE[surface] ?? AFFILIATE_PLACEMENT_BY_SURFACE.landing;
++
+   // Fires only once per genuinely new best-night identity actually
+   // displayed, resolved truthfully after entitlement loading (never a
+   // premature "free" guess), never for pending/tie/unavailable/sole/
+@@ -410,6 +433,21 @@ export default function NorthernLightsThreeNight({
+             {t("nlHomeDetailsLink")}
+           </Link>
+         )}
++
++        {/* Ticket #430 — secondary, compact next step. Deliberately LAST in
++            the module shell (after the status region and the EN homepage
++            details link above), outside the role="status" live region: a
++            visibility/click event on this card must never fire inside, or
++            be announced as part of, the forecast's own live region. */}
++        {affiliateEligible && (
++          <AffiliateCta
++            t={t}
++            placement={affiliatePlacement}
++            band={affiliateDisplayedSlot?.best?.band ?? null}
++            selectedNight={selectedSlot.date}
++            holder={affiliateImpressionHolder}
++          />
++        )}
+       </div>
+     </div>
+   );

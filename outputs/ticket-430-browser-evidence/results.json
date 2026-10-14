@@ -1,0 +1,302 @@
+[
+  {
+    "scenario": "homepage-en-light-1280",
+    "check": "CTA is the last element in the module shell (hierarchy)",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "scenario": "homepage-en-light-1280",
+    "check": "exact title text present",
+    "pass": true,
+    "detail": "Want to join a Northern Lights tour?"
+  },
+  {
+    "scenario": "homepage-en-light-1280",
+    "check": "disclosure text present beneath the CTA",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "scenario": "homepage-en-light-1280",
+    "check": "outbound href is the exact Viator URL",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "scenario": "homepage-en-light-1280",
+    "check": "target=_blank, rel sponsored",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "scenario": "homepage-en-light-1280",
+    "check": "no horizontal overflow",
+    "pass": true,
+    "detail": "overflowPx=0"
+  },
+  {
+    "scenario": "homepage-en-light-1280",
+    "check": "real scroll-into-view produces exactly one affiliate_offer_viewed in dataLayer",
+    "pass": true,
+    "detail": "[\"event\",\"affiliate_offer_viewed\",{\"partner\":\"viator\",\"campaign\":\"northern_lights\",\"placement\":\"homepage_northern_lights\",\"business_model_experiment\":\"northern_lights_free_v1\",\"forecast_verdict\":\"good\",\"selected_night\":\"2026-10-14\"}]"
+  },
+  {
+    "scenario": "homepage-en-light-1280",
+    "check": "CTA link shows a visible focus ring",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "scenario": "homepage-en-light-1280",
+    "check": "click opened a new tab/popup request to the exact Viator URL (intercepted, not sent)",
+    "pass": true,
+    "detail": "https://www.viator.com/searchResults/all?text=Iceland+Tours%2C+northern+lights&pid=P00323211&mcid=42383&medium=link&campaign=Northern-lights"
+  },
+  {
+    "scenario": "homepage-en-light-1280",
+    "check": "affiliate_clicked present in dataLayer with destination",
+    "pass": true,
+    "detail": "[\"event\",\"affiliate_clicked\",{\"partner\":\"viator\",\"campaign\":\"northern_lights\",\"placement\":\"homepage_northern_lights\",\"business_model_experiment\":\"northern_lights_free_v1\",\"forecast_verdict\":\"good\",\"selected_night\":\"2026-10-14\",\"destination\":\"viator_northern_lights_search\"}]"
+  },
+  {
+    "scenario": "homepage-is-dark-1280",
+    "check": "CTA is the last element in the module shell (hierarchy)",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "scenario": "homepage-is-dark-1280",
+    "check": "exact title text present",
+    "pass": true,
+    "detail": "Viltu fara í norðurljósaferð með leiðsögumanni?"
+  },
+  {
+    "scenario": "homepage-is-dark-1280",
+    "check": "disclosure text present beneath the CTA",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "scenario": "homepage-is-dark-1280",
+    "check": "outbound href is the exact Viator URL",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "scenario": "homepage-is-dark-1280",
+    "check": "target=_blank, rel sponsored",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "scenario": "homepage-is-dark-1280",
+    "check": "no horizontal overflow",
+    "pass": true,
+    "detail": "overflowPx=0"
+  },
+  {
+    "scenario": "homepage-is-dark-1280",
+    "check": "real scroll-into-view produces exactly one affiliate_offer_viewed in dataLayer",
+    "pass": true,
+    "detail": "[\"event\",\"affiliate_offer_viewed\",{\"partner\":\"viator\",\"campaign\":\"northern_lights\",\"placement\":\"homepage_northern_lights\",\"business_model_experiment\":\"northern_lights_free_v1\",\"forecast_verdict\":\"good\",\"selected_night\":\"2026-10-14\"}]"
+  },
+  {
+    "scenario": "homepage-is-dark-1280",
+    "check": "CTA link shows a visible focus ring",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "scenario": "homepage-is-dark-1280",
+    "check": "click opened a new tab/popup request to the exact Viator URL (intercepted, not sent)",
+    "pass": true,
+    "detail": "https://www.viator.com/searchResults/all?text=Iceland+Tours%2C+northern+lights&pid=P00323211&mcid=42383&medium=link&campaign=Northern-lights"
+  },
+  {
+    "scenario": "homepage-is-dark-1280",
+    "check": "affiliate_clicked present in dataLayer with destination",
+    "pass": true,
+    "detail": "[\"event\",\"affiliate_clicked\",{\"partner\":\"viator\",\"campaign\":\"northern_lights\",\"placement\":\"homepage_northern_lights\",\"business_model_experiment\":\"northern_lights_free_v1\",\"forecast_verdict\":\"good\",\"selected_night\":\"2026-10-14\",\"destination\":\"viator_northern_lights_search\"}]"
+  },
+  {
+    "scenario": "homepage-en-light-375",
+    "check": "CTA is the last element in the module shell (hierarchy)",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "scenario": "homepage-en-light-375",
+    "check": "exact title text present",
+    "pass": true,
+    "detail": "Want to join a Northern Lights tour?"
+  },
+  {
+    "scenario": "homepage-en-light-375",
+    "check": "disclosure text present beneath the CTA",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "scenario": "homepage-en-light-375",
+    "check": "outbound href is the exact Viator URL",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "scenario": "homepage-en-light-375",
+    "check": "target=_blank, rel sponsored",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "scenario": "homepage-en-light-375",
+    "check": "no horizontal overflow",
+    "pass": true,
+    "detail": "overflowPx=0"
+  },
+  {
+    "scenario": "homepage-en-light-375",
+    "check": "real scroll-into-view produces exactly one affiliate_offer_viewed in dataLayer",
+    "pass": true,
+    "detail": "[\"event\",\"affiliate_offer_viewed\",{\"partner\":\"viator\",\"campaign\":\"northern_lights\",\"placement\":\"homepage_northern_lights\",\"business_model_experiment\":\"northern_lights_free_v1\",\"forecast_verdict\":\"good\",\"selected_night\":\"2026-10-14\"}]"
+  },
+  {
+    "scenario": "homepage-en-light-375",
+    "check": "CTA link shows a visible focus ring",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "scenario": "homepage-en-light-375",
+    "check": "click opened a new tab/popup request to the exact Viator URL (intercepted, not sent)",
+    "pass": true,
+    "detail": "https://www.viator.com/searchResults/all?text=Iceland+Tours%2C+northern+lights&pid=P00323211&mcid=42383&medium=link&campaign=Northern-lights"
+  },
+  {
+    "scenario": "homepage-en-light-375",
+    "check": "affiliate_clicked present in dataLayer with destination",
+    "pass": true,
+    "detail": "[\"event\",\"affiliate_clicked\",{\"partner\":\"viator\",\"campaign\":\"northern_lights\",\"placement\":\"homepage_northern_lights\",\"business_model_experiment\":\"northern_lights_free_v1\",\"forecast_verdict\":\"good\",\"selected_night\":\"2026-10-14\",\"destination\":\"viator_northern_lights_search\"}]"
+  },
+  {
+    "scenario": "homepage-poor-neutral-1280",
+    "check": "CTA is the last element in the module shell (hierarchy)",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "scenario": "homepage-poor-neutral-1280",
+    "check": "exact title text present",
+    "pass": true,
+    "detail": "Want to join a Northern Lights tour?"
+  },
+  {
+    "scenario": "homepage-poor-neutral-1280",
+    "check": "disclosure text present beneath the CTA",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "scenario": "homepage-poor-neutral-1280",
+    "check": "outbound href is the exact Viator URL",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "scenario": "homepage-poor-neutral-1280",
+    "check": "target=_blank, rel sponsored",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "scenario": "homepage-poor-neutral-1280",
+    "check": "no horizontal overflow",
+    "pass": true,
+    "detail": "overflowPx=0"
+  },
+  {
+    "scenario": "homepage-poor-neutral-1280",
+    "check": "real scroll-into-view produces exactly one affiliate_offer_viewed in dataLayer",
+    "pass": true,
+    "detail": "[\"event\",\"affiliate_offer_viewed\",{\"partner\":\"viator\",\"campaign\":\"northern_lights\",\"placement\":\"homepage_northern_lights\",\"business_model_experiment\":\"northern_lights_free_v1\",\"forecast_verdict\":\"very-poor\",\"selected_night\":\"2026-10-14\"}]"
+  },
+  {
+    "scenario": "homepage-poor-neutral-1280",
+    "check": "CTA link shows a visible focus ring",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "scenario": "homepage-poor-neutral-1280",
+    "check": "click opened a new tab/popup request to the exact Viator URL (intercepted, not sent)",
+    "pass": true,
+    "detail": "https://www.viator.com/searchResults/all?text=Iceland+Tours%2C+northern+lights&pid=P00323211&mcid=42383&medium=link&campaign=Northern-lights"
+  },
+  {
+    "scenario": "homepage-poor-neutral-1280",
+    "check": "affiliate_clicked present in dataLayer with destination",
+    "pass": true,
+    "detail": "[\"event\",\"affiliate_clicked\",{\"partner\":\"viator\",\"campaign\":\"northern_lights\",\"placement\":\"homepage_northern_lights\",\"business_model_experiment\":\"northern_lights_free_v1\",\"forecast_verdict\":\"very-poor\",\"selected_night\":\"2026-10-14\",\"destination\":\"viator_northern_lights_search\"}]"
+  },
+  {
+    "scenario": "homepage-error-1280",
+    "check": "no CTA when the night is unavailable",
+    "pass": true,
+    "detail": "count=0"
+  },
+  {
+    "scenario": "landing-en-light-1280",
+    "check": "landing CTA href exact",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "scenario": "landing-en-light-1280",
+    "check": "landing copy is EN regardless of saved lang",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "scenario": "landing-en-light-1280",
+    "check": "no horizontal overflow (landing)",
+    "pass": true,
+    "detail": "overflowPx=0"
+  },
+  {
+    "scenario": "landing-en-light-1280",
+    "check": "landing placement reported as northern_lights_forecast in dataLayer",
+    "pass": true,
+    "detail": "[\"event\",\"affiliate_offer_viewed\",{\"partner\":\"viator\",\"campaign\":\"northern_lights\",\"placement\":\"northern_lights_forecast\",\"business_model_experiment\":\"northern_lights_free_v1\",\"forecast_verdict\":\"good\",\"selected_night\":\"2026-10-14\"}]"
+  },
+  {
+    "scenario": "landing-en-dark-375",
+    "check": "landing CTA href exact",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "scenario": "landing-en-dark-375",
+    "check": "landing copy is EN regardless of saved lang",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "scenario": "landing-en-dark-375",
+    "check": "no horizontal overflow (landing)",
+    "pass": true,
+    "detail": "overflowPx=0"
+  },
+  {
+    "scenario": "landing-en-dark-375",
+    "check": "landing placement reported as northern_lights_forecast in dataLayer",
+    "pass": true,
+    "detail": "[\"event\",\"affiliate_offer_viewed\",{\"partner\":\"viator\",\"campaign\":\"northern_lights\",\"placement\":\"northern_lights_forecast\",\"business_model_experiment\":\"northern_lights_free_v1\",\"forecast_verdict\":\"good\",\"selected_night\":\"2026-10-14\"}]"
+  },
+  {
+    "scenario": "changing-night-no-duplicate",
+    "check": "changing the selected night does not fire a second impression (already consumed this visit)",
+    "pass": true,
+    "detail": "count=1"
+  }
+]

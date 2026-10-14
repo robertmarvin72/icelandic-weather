@@ -1,0 +1,7 @@
+1. The `affiliateTryConsume` callback in `App.jsx` is memoized without including `affiliateHolderRef.current`, which could lead to stale closure issues if the holder instance changes between renders.
+
+2. The `affiliateImpressionHolder` object is memoized based on `affiliateVisitRef.current.id`, but this ID is derived from a ref that's updated during render — this could cause incorrect dependency tracking in the memoization.
+
+3. In `NorthernLightsThreeNight.jsx`, the `affiliateDisplayedSlot` lookup uses `selectedSlot.date` which may not be stable across re-renders if `selectedSlot` itself is recreated, potentially causing stale data usage.
+
+4. The logic for determining `affiliateEligible` relies on `affiliateDisplayedSlot?.usable === true`, but if `usable` is a boolean that can change asynchronously (e.g., due to network fetches), there's a risk of using outdated values before the update completes.

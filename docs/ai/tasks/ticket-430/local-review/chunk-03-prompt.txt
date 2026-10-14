@@ -1,0 +1,68 @@
+You are reviewing a git diff for a React/Vite web app (source-level correctness review). Focus on correctness bugs: race conditions, stale closures, incorrect conditionals, wrong event semantics, missing cleanup, off-by-one logic. Be concise: at most 4 findings as a numbered list, each one or two sentences, or reply exactly NONE if you find nothing. Do not restate the whole diff.
+
+--- chunk nonce: 0bsusnzw ---
+
++    inst = FakeIntersectionObserver.instances[FakeIntersectionObserver.instances.length - 1];
++    inst.trigger([{ isIntersecting: true, intersectionRatio: 1 }]);
++
++    // The holder (owned above the gate) survived the remount: still exactly one impression.
++    expect(impressionCalls()).toHaveLength(1);
++  });
++
++  it("campsites error -> recovered also does not duplicate the impression", async () => {
++    const { rerender } = render(<App />);
++    await waitFor(() => expect(screen.getAllByTestId("affiliate-nl-cta").length).toBeGreaterThan(0));
++    let inst = FakeIntersectionObserver.instances[FakeIntersectionObserver.instances.length - 1];
++    inst.trigger([{ isIntersecting: true, intersectionRatio: 1 }]);
++    expect(impressionCalls()).toHaveLength(1);
++
++    useCampsites.mockReturnValue({ campsites: [], loading: false, error: new Error("boom") });
++    rerender(<App />);
++    expect(screen.queryByTestId("affiliate-nl-cta")).toBeNull();
++
++    useCampsites.mockReturnValue(loadedCampsites());
++    rerender(<App />);
++    await waitFor(() => expect(screen.getAllByTestId("affiliate-nl-cta").length).toBeGreaterThan(0));
++    inst = FakeIntersectionObserver.instances[FakeIntersectionObserver.instances.length - 1];
++    inst.trigger([{ isIntersecting: true, intersectionRatio: 1 }]);
++
++    expect(impressionCalls()).toHaveLength(1);
++  });
++
++  it("StrictMode double effect invocation does not duplicate the impression", async () => {
++    render(
++      <React.StrictMode>
++        <App />
++      </React.StrictMode>
++    );
++    await waitFor(() => expect(screen.getAllByTestId("affiliate-nl-cta").length).toBeGreaterThan(0));
++    const inst = FakeIntersectionObserver.instances[FakeIntersectionObserver.instances.length - 1];
++    inst.trigger([{ isIntersecting: true, intersectionRatio: 1 }]);
++
++    expect(impressionCalls()).toHaveLength(1);
++  });
++});
++
++describe("App — a genuine navigation away from / and back yields a new opportunity", () => {
++  it("/ -> /about -> / : each fresh mount at / gets its own impression opportunity", async () => {
++    // First visit to /.
++    const first = await mountAtHomeAndGetLatestCtaObserver();
++    first.inst.trigger([{ isIntersecting: true, intersectionRatio: 1 }]);
++    expect(impressionCalls()).toHaveLength(1);
++    first.unmount();
++
++    // Navigate to /about (this app's real home<->about navigation is a full
++    // page load — see file header — modeled here as a fresh mount).
++    window.history.pushState({}, "", "/about");
++    const about = render(<App />);
++    expect(screen.queryByTestId("affiliate-nl-cta")).toBeNull(); // About page, no NL module
++    about.unmount();
++
++    // Back to / — a genuinely new visit.
++    window.history.pushState({}, "", "/");
++    const second = await mountAtHomeAndGetLatestCtaObserver();
++    second.inst.trigger([{ isIntersecting: true, intersectionRatio: 1 }]);
++
++    expect(impressionCalls()).toHaveLength(2); // one per visit, never summed/blocked across visits
++  });
++});

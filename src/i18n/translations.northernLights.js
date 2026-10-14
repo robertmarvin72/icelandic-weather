@@ -212,6 +212,13 @@ export const northernLightsTranslations = {
     // #425: homepage link to the existing English detail page.
     nlHomeDetailsLink: "See full details for this night",
 
+    // #430 — secondary Viator affiliate CTA, exact issue copy.
+    nlAffiliateTitle: "Want to join a Northern Lights tour?",
+    nlAffiliateBody: "Prefer to go with a local guide? Compare Northern Lights tours and find an option that works for you.",
+    nlAffiliateCta: "Compare Northern Lights tours",
+    nlAffiliateDisclosure: "Partner link · We may earn a commission if you book.",
+    nlAffiliateNewTabSuffix: "(opens in a new tab)",
+
     // #426 — homepage-only Free conversion block, replacing nlMultiFreeHint/
     // nlUpgradeCta on that surface (landing's LockedValue is unchanged).
     // Exact issue strings, verbatim.
@@ -377,6 +384,13 @@ export const northernLightsTranslations = {
     nlCompExactTieScoped: "Skilyrðin eru jöfn meðal tiltækra nátta: {dates}",
 
     nlHomeDetailsLink: "Sjá nánar á ensku síðunni",
+
+    // #430 — secondary Viator affiliate CTA, exact issue copy.
+    nlAffiliateTitle: "Viltu fara í norðurljósaferð með leiðsögumanni?",
+    nlAffiliateBody: "Skoðaðu skipulagðar norðurljósaferðir og finndu ferð sem hentar þér.",
+    nlAffiliateCta: "Skoða norðurljósaferðir",
+    nlAffiliateDisclosure: "Samstarfstengill · Við gætum fengið þóknun ef þú bókar ferð.",
+    nlAffiliateNewTabSuffix: "(opnast í nýjum flipa)",
 
     nlMultiFreeValueHeading: "Hvar eru aðstæður bestar?",
     nlMultiFreeValueBody: "Með Pro sérðu hvaða staðir koma best út, aðra valkosti og kort.",

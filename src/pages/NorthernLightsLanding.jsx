@@ -38,6 +38,7 @@ import { useMe } from "../hooks/useMe";
 import { trackEvent } from "../lib/analytics";
 import { NL_FREE_EXPERIMENT_ID } from "../config/features";
 import { parseNightQueryDate, withNightQueryDate, AURORA_NIGHT_QUERY_PARAM } from "../lib/auroraNightQuery";
+import { createAffiliateImpressionHolder } from "../lib/affiliateImpressionHolder";
 
 const CANONICAL_PATH = "/en/northern-lights";
 // Matches the established production-origin convention already used by
@@ -78,6 +79,28 @@ export default function NorthernLightsLanding() {
       setSearchParams(withNightQueryDate(current, date), { replace: true });
     },
     [setSearchParams],
+  );
+
+  // Ticket #430 — this route's own affiliate impression holder. This
+  // component mounts fresh on every genuine route entry (a real navigation
+  // to /en/northern-lights), so a visit id minted once per mount is already
+  // "once per placement per route visit" — it is NOT re-minted by the
+  // selected-night ?date query replace below (that only changes
+  // searchParams, it does not remount this component).
+  const affiliateHolderRef = useRef(null);
+  if (!affiliateHolderRef.current) affiliateHolderRef.current = createAffiliateImpressionHolder();
+  const affiliateVisitIdRef = useRef(null);
+  if (!affiliateVisitIdRef.current) {
+    affiliateVisitIdRef.current = `landing#${Date.now().toString(36)}#${Math.random().toString(36).slice(2, 8)}`;
+    affiliateHolderRef.current.startVisit(affiliateVisitIdRef.current);
+  }
+  const affiliateTryConsume = useCallback(
+    (visitId, placement) => affiliateHolderRef.current.tryConsume(visitId, placement),
+    []
+  );
+  const affiliateImpressionHolder = useMemo(
+    () => ({ visitId: affiliateVisitIdRef.current, tryConsume: affiliateTryConsume }),
+    [affiliateTryConsume]
   );
 
   const { me, loadingMe } = useMe();
@@ -159,6 +182,7 @@ export default function NorthernLightsLanding() {
             surface="landing"
             requestedDate={requestedDate}
             onSelectedDateChange={handleSelectedDateChange}
+            affiliateImpressionHolder={affiliateImpressionHolder}
           />
         </section>
 

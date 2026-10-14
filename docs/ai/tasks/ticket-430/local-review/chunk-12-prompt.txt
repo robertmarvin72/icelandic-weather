@@ -1,0 +1,178 @@
+You are reviewing a git diff for a React/Vite web app (source-level correctness review). Focus on correctness bugs: race conditions, stale closures, incorrect conditionals, wrong event semantics, missing cleanup, off-by-one logic. Be concise: at most 4 findings as a numbered list, each one or two sentences, or reply exactly NONE if you find nothing. Do not restate the whole diff.
+
+--- chunk nonce: x29rd5hb ---
+
+diff --git a/src/lib/affiliateImpressionHolder.test.js b/src/lib/affiliateImpressionHolder.test.js
+new file mode 100644
+index 00000000..480a8f71
+--- /dev/null
++++ b/src/lib/affiliateImpressionHolder.test.js
+@@ -0,0 +1,68 @@
++import { describe, it, expect } from "vitest";
++import { createAffiliateImpressionHolder } from "./affiliateImpressionHolder";
++
++describe("createAffiliateImpressionHolder", () => {
++  it("consumes exactly once for a given visit+placement pair", () => {
++    const holder = createAffiliateImpressionHolder();
++    holder.startVisit("v1");
++    expect(holder.tryConsume("v1", "homepage_northern_lights")).toBe(true);
++    expect(holder.tryConsume("v1", "homepage_northern_lights")).toBe(false);
++  });
++
++  it("tracks placements independently within the same visit", () => {
++    const holder = createAffiliateImpressionHolder();
++    holder.startVisit("v1");
++    expect(holder.tryConsume("v1", "homepage_northern_lights")).toBe(true);
++    expect(holder.tryConsume("v1", "northern_lights_forecast")).toBe(true);
++    expect(holder.tryConsume("v1", "homepage_northern_lights")).toBe(false);
++    expect(holder.tryConsume("v1", "northern_lights_forecast")).toBe(false);
++  });
++
++  it("rejects a stale visitId captured before startVisit moved on", () => {
++    const holder = createAffiliateImpressionHolder();
++    holder.startVisit("v1");
++    holder.startVisit("v2");
++    // v1 was never consumed, but it is no longer the current visit.
++    expect(holder.tryConsume("v1", "homepage_northern_lights")).toBe(false);
++    expect(holder.tryConsume("v2", "homepage_northern_lights")).toBe(true);
++  });
++
++  it("a new visit opens a fresh opportunity for the same placement", () => {
++    const holder = createAffiliateImpressionHolder();
++    holder.startVisit("v1");
++    expect(holder.tryConsume("v1", "homepage_northern_lights")).toBe(true);
++    holder.startVisit("v2");
++    expect(holder.tryConsume("v2", "homepage_northern_lights")).toBe(true);
++  });
++
++  it("startVisit with the same id is a no-op (does not reopen a consumed opportunity)", () => {
++    const holder = createAffiliateImpressionHolder();
++    holder.startVisit("v1");
++    expect(holder.tryConsume("v1", "homepage_northern_lights")).toBe(true);
++    holder.startVisit("v1");
++    expect(holder.tryConsume("v1", "homepage_northern_lights")).toBe(false);
++  });
++
++  it("rejects null/undefined visitId and before any startVisit call", () => {
++    const holder = createAffiliateImpressionHolder();
++    expect(holder.tryConsume(null, "homepage_northern_lights")).toBe(false);
++    expect(holder.tryConsume(undefined, "homepage_northern_lights")).toBe(false);
++    expect(holder.currentVisit()).toBe(null);
++  });
++
++  it("two overlapping callers for the same visit+placement: only the first wins (synchronous guard)", () => {
++    const holder = createAffiliateImpressionHolder();
++    holder.startVisit("v1");
++    const results = [holder.tryConsume("v1", "homepage_northern_lights"), holder.tryConsume("v1", "homepage_northern_lights")];
++    expect(results).toEqual([true, false]);
++  });
++
++  it("currentVisit() reports the visit most recently started", () => {
++    const holder = createAffiliateImpressionHolder();
++    expect(holder.currentVisit()).toBe(null);
++    holder.startVisit("v1");
++    expect(holder.currentVisit()).toBe("v1");
++    holder.startVisit("v2");
++    expect(holder.currentVisit()).toBe("v2");
++  });
++});
+
+diff --git a/src/lib/analytics.affiliateGA.test.js b/src/lib/analytics.affiliateGA.test.js
+new file mode 100644
+index 00000000..09973958
+--- /dev/null
++++ b/src/lib/analytics.affiliateGA.test.js
+@@ -0,0 +1,93 @@
++// Ticket #430 — F3: equivalent controlled GA validation. This exercises the
++// REAL src/lib/analytics.js (not a call-site mock of trackEvent), with
++// react-ga4 mocked only at the package boundary. VITE_GA_MEASUREMENT_ID is
++// stubbed BEFORE vi.resetModules() + a dynamic import, because analytics.js
++// reads the id once at module load (`const gaId = import.meta.env...`) — a
++// plain re-import without resetModules would reuse the already-cached
++// module and its already-decided gaId. This proves event names/payload/
++// timing/dedup through the real abstraction; it is NOT live GA4 ingestion.
++import { describe, it, expect, vi, afterEach } from "vitest";
++
++vi.mock("react-ga4", () => ({
++  default: { initialize: vi.fn(), send: vi.fn(), event: vi.fn() },
++}));
++
++afterEach(() => {
++  vi.unstubAllEnvs();
++  vi.resetModules();
++  // The react-ga4 mock factory runs once and its vi.fn()s are cached
++  // independently of resetModules — clear their call history explicitly.
++  vi.clearAllMocks();
++});
++
++async function loadWithGaId(id) {
++  vi.stubEnv("VITE_GA_MEASUREMENT_ID", id);
++  vi.resetModules();
++  const { trackEvent } = await import("./analytics");
++  const ReactGA = (await import("react-ga4")).default;
++  return { trackEvent, ReactGA };
++}
++
++describe("analytics.js (real module) — affiliate events through react-ga4 (F3 equivalent GA validation)", () => {
++  it("with a GA id: affiliate_offer_viewed reaches ReactGA.event with the exact name and metadata, exactly once", async () => {
++    const { trackEvent, ReactGA } = await loadWithGaId("G-TEST430");
++
++    trackEvent("affiliate_offer_viewed", {
++      partner: "viator",
++      campaign: "northern_lights",
++      placement: "homepage_northern_lights",
++      business_model_experiment: "northern_lights_free_v1",
++      forecast_verdict: "good",
++      selected_night: "2026-09-25",
++    });
++
++    expect(ReactGA.event).toHaveBeenCalledTimes(1);
++    expect(ReactGA.event).toHaveBeenCalledWith("affiliate_offer_viewed", {
++      partner: "viator",
++      campaign: "northern_lights",
++      placement: "homepage_northern_lights",
++      business_model_experiment: "northern_lights_free_v1",
++      forecast_verdict: "good",
++      selected_night: "2026-09-25",
++    });
++  });
++
++  it("with a GA id: affiliate_clicked reaches ReactGA.event with destination present, synchronously (no await needed)", async () => {
++    const { trackEvent, ReactGA } = await loadWithGaId("G-TEST430");
++
++    trackEvent("affiliate_clicked", {
++      partner: "viator",
++      campaign: "northern_lights",
++      placement: "northern_lights_forecast",
++      destination: "viator_northern_lights_search",
++      business_model_experiment: "northern_lights_free_v1",
++    });
++
++    // Synchronous: the call already landed before this line runs — no await.
++    expect(ReactGA.event).toHaveBeenCalledTimes(1);
++    const [name, data] = ReactGA.event.mock.calls[0];
++    expect(name).toBe("affiliate_clicked");
++    expect(data.destination).toBe("viator_northern_lights_search");
++  });
++
++  it("repeated calls are not deduped by analytics.js itself — dedup is the holder's job, not this transport", async () => {
++    const { trackEvent, ReactGA } = await loadWithGaId("G-TEST430");
++    trackEvent("affiliate_clicked", { partner: "viator" });
++    trackEvent("affiliate_clicked", { partner: "viator" });
++    expect(ReactGA.event).toHaveBeenCalledTimes(2);
++  });
++
++  it("no GA id configured: trackEvent never calls ReactGA.event for an affiliate event", async () => {
++    const { trackEvent, ReactGA } = await loadWithGaId("");
++    trackEvent("affiliate_offer_viewed", { partner: "viator" });
++    expect(ReactGA.event).not.toHaveBeenCalled();
++  });
++
++  it("is equivalent controlled validation, not live ingestion: asserts only the mocked SDK call, never a real network request", async () => {
++    const fetchSpy = vi.spyOn(global, "fetch");
++    const { trackEvent } = await loadWithGaId("G-TEST430");
++    trackEvent("affiliate_clicked", { partner: "viator" });
++    expect(fetchSpy).not.toHaveBeenCalled();
++    fetchSpy.mockRestore();
++  });
++});

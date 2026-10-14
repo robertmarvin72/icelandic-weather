@@ -1,0 +1,7 @@
+1. The `affiliateTryConsume` callback in `NorthernLightsLanding.jsx` is memoized without including `affiliateHolderRef.current`, which could lead to stale closure issues if the holder instance changes between renders.
+
+2. The `affiliateImpressionHolder` object is recreated on every render due to `affiliateTryConsume` being passed as a dependency, even though it's wrapped in `useCallback` — this can cause unnecessary re-renders or broken dependencies in downstream components.
+
+3. The logic for creating `affiliateVisitIdRef.current` only runs once on mount but relies on `Date.now()` and `Math.random()`, which may not be sufficient for generating globally unique IDs across multiple concurrent visits or browser tabs.
+
+4. There's no explicit cleanup of the affiliate impression holder's visit in the component's unmount effect, potentially leading to resource leaks or incorrect tracking if the component is remounted multiple times.

@@ -1,0 +1,7 @@
+1. The `tryConsume` function in `affiliateImpressionHolder.js` uses a null check with `==` instead of strict equality (`===`), which could lead to unexpected behavior if `visitId` is `undefined` rather than `null`.
+
+2. In the test file, the assertion `expect(northernLightsTranslations.en[key]).not.toBe(northernLightsTranslations.is[key])` compares references rather than content; this may incorrectly pass if both values are identical string references.
+
+3. The comment in `affiliateImpressionHolder.js` states that `consumedKeys` are intentionally not cleared, but the implementation does not prevent potential memory leaks from accumulating keys over many visits without cleanup.
+
+4. The test suite doesn't validate that the `startVisit` method properly resets state or handles concurrent calls, which could lead to race conditions in multi-threaded environments or during rapid route transitions.

@@ -1,0 +1,86 @@
+You are reviewing a git diff for a React/Vite web app (source-level correctness review). Focus on correctness bugs: race conditions, stale closures, incorrect conditionals, wrong event semantics, missing cleanup, off-by-one logic. Be concise: at most 4 findings as a numbered list, each one or two sentences, or reply exactly NONE if you find nothing. Do not restate the whole diff.
+
+--- chunk nonce: 8dof23l4 ---
+
+diff --git a/src/i18n/translations.northernLights.js b/src/i18n/translations.northernLights.js
+index 1950d9f0..82bebc1a 100644
+--- a/src/i18n/translations.northernLights.js
++++ b/src/i18n/translations.northernLights.js
+@@ -212,6 +212,13 @@ export const northernLightsTranslations = {
+     // #425: homepage link to the existing English detail page.
+     nlHomeDetailsLink: "See full details for this night",
+ 
++    // #430 — secondary Viator affiliate CTA, exact issue copy.
++    nlAffiliateTitle: "Want to join a Northern Lights tour?",
++    nlAffiliateBody: "Prefer to go with a local guide? Compare Northern Lights tours and find an option that works for you.",
++    nlAffiliateCta: "Compare Northern Lights tours",
++    nlAffiliateDisclosure: "Partner link · We may earn a commission if you book.",
++    nlAffiliateNewTabSuffix: "(opens in a new tab)",
++
+     // #426 — homepage-only Free conversion block, replacing nlMultiFreeHint/
+     // nlUpgradeCta on that surface (landing's LockedValue is unchanged).
+     // Exact issue strings, verbatim.
+@@ -378,6 +385,13 @@ export const northernLightsTranslations = {
+ 
+     nlHomeDetailsLink: "Sjá nánar á ensku síðunni",
+ 
++    // #430 — secondary Viator affiliate CTA, exact issue copy.
++    nlAffiliateTitle: "Viltu fara í norðurljósaferð með leiðsögumanni?",
++    nlAffiliateBody: "Skoðaðu skipulagðar norðurljósaferðir og finndu ferð sem hentar þér.",
++    nlAffiliateCta: "Skoða norðurljósaferðir",
++    nlAffiliateDisclosure: "Samstarfstengill · Við gætum fengið þóknun ef þú bókar ferð.",
++    nlAffiliateNewTabSuffix: "(opnast í nýjum flipa)",
++
+     nlMultiFreeValueHeading: "Hvar eru aðstæður bestar?",
+     nlMultiFreeValueBody: "Með Pro sérðu hvaða staðir koma best út, aðra valkosti og kort.",
+     nlMultiFreeValueCta: "Sjá bestu staðina með Pro",
+
+diff --git a/src/pages/NorthernLightsLanding.jsx b/src/pages/NorthernLightsLanding.jsx
+index 27f1571e..64b30d85 100644
+--- a/src/pages/NorthernLightsLanding.jsx
++++ b/src/pages/NorthernLightsLanding.jsx
+@@ -38,6 +38,7 @@ import { useMe } from "../hooks/useMe";
+ import { trackEvent } from "../lib/analytics";
+ import { NL_FREE_EXPERIMENT_ID } from "../config/features";
+ import { parseNightQueryDate, withNightQueryDate, AURORA_NIGHT_QUERY_PARAM } from "../lib/auroraNightQuery";
++import { createAffiliateImpressionHolder } from "../lib/affiliateImpressionHolder";
+ 
+ const CANONICAL_PATH = "/en/northern-lights";
+ // Matches the established production-origin convention already used by
+@@ -80,6 +81,28 @@ export default function NorthernLightsLanding() {
+     [setSearchParams],
+   );
+ 
++  // Ticket #430 — this route's own affiliate impression holder. This
++  // component mounts fresh on every genuine route entry (a real navigation
++  // to /en/northern-lights), so a visit id minted once per mount is already
++  // "once per placement per route visit" — it is NOT re-minted by the
++  // selected-night ?date query replace below (that only changes
++  // searchParams, it does not remount this component).
++  const affiliateHolderRef = useRef(null);
++  if (!affiliateHolderRef.current) affiliateHolderRef.current = createAffiliateImpressionHolder();
++  const affiliateVisitIdRef = useRef(null);
++  if (!affiliateVisitIdRef.current) {
++    affiliateVisitIdRef.current = `landing#${Date.now().toString(36)}#${Math.random().toString(36).slice(2, 8)}`;
++    affiliateHolderRef.current.startVisit(affiliateVisitIdRef.current);
++  }
++  const affiliateTryConsume = useCallback(
++    (visitId, placement) => affiliateHolderRef.current.tryConsume(visitId, placement),
++    []
++  );
++  const affiliateImpressionHolder = useMemo(
++    () => ({ visitId: affiliateVisitIdRef.current, tryConsume: affiliateTryConsume }),
++    [affiliateTryConsume]
++  );
++
+   const { me, loadingMe } = useMe();
+ 
+   const entitlements = useMemo(
+@@ -159,6 +182,7 @@ export default function NorthernLightsLanding() {
+             surface="landing"
+             requestedDate={requestedDate}
+             onSelectedDateChange={handleSelectedDateChange}
++            affiliateImpressionHolder={affiliateImpressionHolder}
+           />
+         </section>
+ 

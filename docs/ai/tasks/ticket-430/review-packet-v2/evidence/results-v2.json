@@ -1,0 +1,692 @@
+[
+  {
+    "scenario": "homepage-en-320-light",
+    "check": "title: font-size px",
+    "pass": null,
+    "value": 12,
+    "detail": ""
+  },
+  {
+    "scenario": "homepage-en-320-light",
+    "check": "title: min contrast >= 4.5:1 (worst sampled background pixel)",
+    "pass": true,
+    "detail": "min=12.73 max=15.89 samples=1292 worstBg=rgb(41,38,86)"
+  },
+  {
+    "scenario": "homepage-en-320-light",
+    "check": "body: font-size px",
+    "pass": null,
+    "value": 12,
+    "detail": ""
+  },
+  {
+    "scenario": "homepage-en-320-light",
+    "check": "body: min contrast >= 4.5:1 (worst sampled background pixel)",
+    "pass": true,
+    "detail": "min=9.38 max=11.96 samples=3724 worstBg=rgb(41,38,86)"
+  },
+  {
+    "scenario": "homepage-en-320-light",
+    "check": "disclosure: font-size px",
+    "pass": null,
+    "value": 12,
+    "detail": ""
+  },
+  {
+    "scenario": "homepage-en-320-light",
+    "check": "disclosure: min contrast >= 4.5:1 (worst sampled background pixel)",
+    "pass": true,
+    "detail": "min=5.36 max=6.91 samples=2584 worstBg=rgb(41,37,85)"
+  },
+  {
+    "scenario": "homepage-en-320-light",
+    "check": "disclosure font-size >= 12px",
+    "pass": true,
+    "detail": "12px"
+  },
+  {
+    "scenario": "homepage-en-320-light",
+    "check": "button label: font-size px",
+    "pass": null,
+    "value": 12,
+    "detail": ""
+  },
+  {
+    "scenario": "homepage-en-320-light",
+    "check": "button label: min contrast >= 4.5:1 (worst sampled background pixel)",
+    "pass": true,
+    "detail": "min=5.07 max=17.41 samples=1885 worstBg=rgb(92,89,240)"
+  },
+  {
+    "scenario": "homepage-en-320-light",
+    "check": "button label (hover, informational): font-size px",
+    "pass": null,
+    "value": 12,
+    "detail": ""
+  },
+  {
+    "scenario": "homepage-en-320-light",
+    "check": "button label (hover, informational): min contrast >= 4.5:1 (worst sampled background pixel)",
+    "pass": null,
+    "detail": "min=4.58 max=17.41 samples=1885 worstBg=rgb(97,95,255)"
+  },
+  {
+    "scenario": "homepage-en-320-light",
+    "check": "button hover min ratio (informational, not gating)",
+    "pass": null,
+    "value": 4.58,
+    "detail": ""
+  },
+  {
+    "scenario": "homepage-en-320-light",
+    "check": "CTA container right edge within viewport",
+    "pass": true,
+    "detail": "pageOverflowPx=0"
+  },
+  {
+    "scenario": "homepage-en-320-light",
+    "check": "CTA container scrollWidth <= clientWidth (no internal overflow)",
+    "pass": true,
+    "detail": "252 <= 252"
+  },
+  {
+    "scenario": "homepage-en-320-dark",
+    "check": "title: font-size px",
+    "pass": null,
+    "value": 12,
+    "detail": ""
+  },
+  {
+    "scenario": "homepage-en-320-dark",
+    "check": "title: min contrast >= 4.5:1 (worst sampled background pixel)",
+    "pass": true,
+    "detail": "min=12.73 max=15.89 samples=1292 worstBg=rgb(41,38,86)"
+  },
+  {
+    "scenario": "homepage-en-320-dark",
+    "check": "body: font-size px",
+    "pass": null,
+    "value": 12,
+    "detail": ""
+  },
+  {
+    "scenario": "homepage-en-320-dark",
+    "check": "body: min contrast >= 4.5:1 (worst sampled background pixel)",
+    "pass": true,
+    "detail": "min=9.38 max=11.96 samples=3724 worstBg=rgb(41,38,86)"
+  },
+  {
+    "scenario": "homepage-en-320-dark",
+    "check": "disclosure: font-size px",
+    "pass": null,
+    "value": 12,
+    "detail": ""
+  },
+  {
+    "scenario": "homepage-en-320-dark",
+    "check": "disclosure: min contrast >= 4.5:1 (worst sampled background pixel)",
+    "pass": true,
+    "detail": "min=5.36 max=6.91 samples=2584 worstBg=rgb(41,37,85)"
+  },
+  {
+    "scenario": "homepage-en-320-dark",
+    "check": "disclosure font-size >= 12px",
+    "pass": true,
+    "detail": "12px"
+  },
+  {
+    "scenario": "homepage-en-320-dark",
+    "check": "button label: font-size px",
+    "pass": null,
+    "value": 12,
+    "detail": ""
+  },
+  {
+    "scenario": "homepage-en-320-dark",
+    "check": "button label: min contrast >= 4.5:1 (worst sampled background pixel)",
+    "pass": true,
+    "detail": "min=5.07 max=17.41 samples=1885 worstBg=rgb(92,89,240)"
+  },
+  {
+    "scenario": "homepage-en-320-dark",
+    "check": "button label (hover, informational): font-size px",
+    "pass": null,
+    "value": 12,
+    "detail": ""
+  },
+  {
+    "scenario": "homepage-en-320-dark",
+    "check": "button label (hover, informational): min contrast >= 4.5:1 (worst sampled background pixel)",
+    "pass": null,
+    "detail": "min=4.58 max=17.41 samples=1885 worstBg=rgb(97,95,255)"
+  },
+  {
+    "scenario": "homepage-en-320-dark",
+    "check": "button hover min ratio (informational, not gating)",
+    "pass": null,
+    "value": 4.58,
+    "detail": ""
+  },
+  {
+    "scenario": "homepage-en-320-dark",
+    "check": "CTA container right edge within viewport",
+    "pass": true,
+    "detail": "pageOverflowPx=0"
+  },
+  {
+    "scenario": "homepage-en-320-dark",
+    "check": "CTA container scrollWidth <= clientWidth (no internal overflow)",
+    "pass": true,
+    "detail": "252 <= 252"
+  },
+  {
+    "scenario": "homepage-en-1280-light",
+    "check": "title: font-size px",
+    "pass": null,
+    "value": 12,
+    "detail": ""
+  },
+  {
+    "scenario": "homepage-en-1280-light",
+    "check": "title: min contrast >= 4.5:1 (worst sampled background pixel)",
+    "pass": true,
+    "detail": "min=12.73 max=16.25 samples=1071 worstBg=rgb(41,38,86)"
+  },
+  {
+    "scenario": "homepage-en-1280-light",
+    "check": "body: font-size px",
+    "pass": null,
+    "value": 12,
+    "detail": ""
+  },
+  {
+    "scenario": "homepage-en-1280-light",
+    "check": "body: min contrast >= 4.5:1 (worst sampled background pixel)",
+    "pass": true,
+    "detail": "min=9.38 max=12.1 samples=1071 worstBg=rgb(41,38,86)"
+  },
+  {
+    "scenario": "homepage-en-1280-light",
+    "check": "disclosure: font-size px",
+    "pass": null,
+    "value": 12,
+    "detail": ""
+  },
+  {
+    "scenario": "homepage-en-1280-light",
+    "check": "disclosure: min contrast >= 4.5:1 (worst sampled background pixel)",
+    "pass": true,
+    "detail": "min=5.3 max=6.99 samples=1071 worstBg=rgb(41,38,86)"
+  },
+  {
+    "scenario": "homepage-en-1280-light",
+    "check": "disclosure font-size >= 12px",
+    "pass": true,
+    "detail": "12px"
+  },
+  {
+    "scenario": "homepage-en-1280-light",
+    "check": "button label: font-size px",
+    "pass": null,
+    "value": 12,
+    "detail": ""
+  },
+  {
+    "scenario": "homepage-en-1280-light",
+    "check": "button label: min contrast >= 4.5:1 (worst sampled background pixel)",
+    "pass": true,
+    "detail": "min=5.07 max=14.64 samples=1885 worstBg=rgb(92,89,240)"
+  },
+  {
+    "scenario": "homepage-en-1280-light",
+    "check": "button label (hover, informational): font-size px",
+    "pass": null,
+    "value": 12,
+    "detail": ""
+  },
+  {
+    "scenario": "homepage-en-1280-light",
+    "check": "button label (hover, informational): min contrast >= 4.5:1 (worst sampled background pixel)",
+    "pass": null,
+    "detail": "min=4.58 max=14.64 samples=1885 worstBg=rgb(97,95,255)"
+  },
+  {
+    "scenario": "homepage-en-1280-light",
+    "check": "button hover min ratio (informational, not gating)",
+    "pass": null,
+    "value": 4.58,
+    "detail": ""
+  },
+  {
+    "scenario": "homepage-en-1280-light",
+    "check": "CTA container right edge within viewport",
+    "pass": true,
+    "detail": "pageOverflowPx=0"
+  },
+  {
+    "scenario": "homepage-en-1280-light",
+    "check": "CTA container scrollWidth <= clientWidth (no internal overflow)",
+    "pass": true,
+    "detail": "1084 <= 1084"
+  },
+  {
+    "scenario": "homepage-en-1280-dark",
+    "check": "title: font-size px",
+    "pass": null,
+    "value": 12,
+    "detail": ""
+  },
+  {
+    "scenario": "homepage-en-1280-dark",
+    "check": "title: min contrast >= 4.5:1 (worst sampled background pixel)",
+    "pass": true,
+    "detail": "min=12.73 max=16.25 samples=1071 worstBg=rgb(41,38,86)"
+  },
+  {
+    "scenario": "homepage-en-1280-dark",
+    "check": "body: font-size px",
+    "pass": null,
+    "value": 12,
+    "detail": ""
+  },
+  {
+    "scenario": "homepage-en-1280-dark",
+    "check": "body: min contrast >= 4.5:1 (worst sampled background pixel)",
+    "pass": true,
+    "detail": "min=9.38 max=12.1 samples=1071 worstBg=rgb(41,38,86)"
+  },
+  {
+    "scenario": "homepage-en-1280-dark",
+    "check": "disclosure: font-size px",
+    "pass": null,
+    "value": 12,
+    "detail": ""
+  },
+  {
+    "scenario": "homepage-en-1280-dark",
+    "check": "disclosure: min contrast >= 4.5:1 (worst sampled background pixel)",
+    "pass": true,
+    "detail": "min=5.3 max=6.99 samples=1071 worstBg=rgb(41,38,86)"
+  },
+  {
+    "scenario": "homepage-en-1280-dark",
+    "check": "disclosure font-size >= 12px",
+    "pass": true,
+    "detail": "12px"
+  },
+  {
+    "scenario": "homepage-en-1280-dark",
+    "check": "button label: font-size px",
+    "pass": null,
+    "value": 12,
+    "detail": ""
+  },
+  {
+    "scenario": "homepage-en-1280-dark",
+    "check": "button label: min contrast >= 4.5:1 (worst sampled background pixel)",
+    "pass": true,
+    "detail": "min=5.07 max=14.64 samples=1885 worstBg=rgb(92,89,240)"
+  },
+  {
+    "scenario": "homepage-en-1280-dark",
+    "check": "button label (hover, informational): font-size px",
+    "pass": null,
+    "value": 12,
+    "detail": ""
+  },
+  {
+    "scenario": "homepage-en-1280-dark",
+    "check": "button label (hover, informational): min contrast >= 4.5:1 (worst sampled background pixel)",
+    "pass": null,
+    "detail": "min=4.58 max=14.64 samples=1885 worstBg=rgb(97,95,255)"
+  },
+  {
+    "scenario": "homepage-en-1280-dark",
+    "check": "button hover min ratio (informational, not gating)",
+    "pass": null,
+    "value": 4.58,
+    "detail": ""
+  },
+  {
+    "scenario": "homepage-en-1280-dark",
+    "check": "CTA container right edge within viewport",
+    "pass": true,
+    "detail": "pageOverflowPx=0"
+  },
+  {
+    "scenario": "homepage-en-1280-dark",
+    "check": "CTA container scrollWidth <= clientWidth (no internal overflow)",
+    "pass": true,
+    "detail": "1084 <= 1084"
+  },
+  {
+    "scenario": "homepage-is-320-light",
+    "check": "title: font-size px",
+    "pass": null,
+    "value": 12,
+    "detail": ""
+  },
+  {
+    "scenario": "homepage-is-320-light",
+    "check": "title: min contrast >= 4.5:1 (worst sampled background pixel)",
+    "pass": true,
+    "detail": "min=12.73 max=16 samples=2508 worstBg=rgb(41,38,86)"
+  },
+  {
+    "scenario": "homepage-is-320-light",
+    "check": "body: font-size px",
+    "pass": null,
+    "value": 12,
+    "detail": ""
+  },
+  {
+    "scenario": "homepage-is-320-light",
+    "check": "body: min contrast >= 4.5:1 (worst sampled background pixel)",
+    "pass": true,
+    "detail": "min=9.38 max=11.96 samples=2508 worstBg=rgb(41,38,86)"
+  },
+  {
+    "scenario": "homepage-is-320-light",
+    "check": "disclosure: font-size px",
+    "pass": null,
+    "value": 12,
+    "detail": ""
+  },
+  {
+    "scenario": "homepage-is-320-light",
+    "check": "disclosure: min contrast >= 4.5:1 (worst sampled background pixel)",
+    "pass": true,
+    "detail": "min=5.36 max=6.92 samples=2584 worstBg=rgb(41,37,85)"
+  },
+  {
+    "scenario": "homepage-is-320-light",
+    "check": "disclosure font-size >= 12px",
+    "pass": true,
+    "detail": "12px"
+  },
+  {
+    "scenario": "homepage-is-320-light",
+    "check": "button label: font-size px",
+    "pass": null,
+    "value": 12,
+    "detail": ""
+  },
+  {
+    "scenario": "homepage-is-320-light",
+    "check": "button label: min contrast >= 4.5:1 (worst sampled background pixel)",
+    "pass": true,
+    "detail": "min=5.07 max=16.7 samples=2204 worstBg=rgb(92,89,240)"
+  },
+  {
+    "scenario": "homepage-is-320-light",
+    "check": "button label (hover, informational): font-size px",
+    "pass": null,
+    "value": 12,
+    "detail": ""
+  },
+  {
+    "scenario": "homepage-is-320-light",
+    "check": "button label (hover, informational): min contrast >= 4.5:1 (worst sampled background pixel)",
+    "pass": null,
+    "detail": "min=4.58 max=16.7 samples=2204 worstBg=rgb(97,95,255)"
+  },
+  {
+    "scenario": "homepage-is-320-light",
+    "check": "button hover min ratio (informational, not gating)",
+    "pass": null,
+    "value": 4.58,
+    "detail": ""
+  },
+  {
+    "scenario": "homepage-is-320-light",
+    "check": "CTA container right edge within viewport",
+    "pass": true,
+    "detail": "pageOverflowPx=0"
+  },
+  {
+    "scenario": "homepage-is-320-light",
+    "check": "CTA container scrollWidth <= clientWidth (no internal overflow)",
+    "pass": true,
+    "detail": "252 <= 252"
+  },
+  {
+    "scenario": "landing-en-320-dark",
+    "check": "title: font-size px",
+    "pass": null,
+    "value": 12,
+    "detail": ""
+  },
+  {
+    "scenario": "landing-en-320-dark",
+    "check": "title: min contrast >= 4.5:1 (worst sampled background pixel)",
+    "pass": true,
+    "detail": "min=12.73 max=15.84 samples=1207 worstBg=rgb(41,38,86)"
+  },
+  {
+    "scenario": "landing-en-320-dark",
+    "check": "body: font-size px",
+    "pass": null,
+    "value": 12,
+    "detail": ""
+  },
+  {
+    "scenario": "landing-en-320-dark",
+    "check": "body: min contrast >= 4.5:1 (worst sampled background pixel)",
+    "pass": true,
+    "detail": "min=9.38 max=11.84 samples=3479 worstBg=rgb(41,38,86)"
+  },
+  {
+    "scenario": "landing-en-320-dark",
+    "check": "disclosure: font-size px",
+    "pass": null,
+    "value": 12,
+    "detail": ""
+  },
+  {
+    "scenario": "landing-en-320-dark",
+    "check": "disclosure: min contrast >= 4.5:1 (worst sampled background pixel)",
+    "pass": true,
+    "detail": "min=5.36 max=6.91 samples=2414 worstBg=rgb(41,37,85)"
+  },
+  {
+    "scenario": "landing-en-320-dark",
+    "check": "disclosure font-size >= 12px",
+    "pass": true,
+    "detail": "12px"
+  },
+  {
+    "scenario": "landing-en-320-dark",
+    "check": "button label: font-size px",
+    "pass": null,
+    "value": 12,
+    "detail": ""
+  },
+  {
+    "scenario": "landing-en-320-dark",
+    "check": "button label: min contrast >= 4.5:1 (worst sampled background pixel)",
+    "pass": true,
+    "detail": "min=5.07 max=17.6 samples=1885 worstBg=rgb(92,89,240)"
+  },
+  {
+    "scenario": "landing-en-320-dark",
+    "check": "button label (hover, informational): font-size px",
+    "pass": null,
+    "value": 12,
+    "detail": ""
+  },
+  {
+    "scenario": "landing-en-320-dark",
+    "check": "button label (hover, informational): min contrast >= 4.5:1 (worst sampled background pixel)",
+    "pass": null,
+    "detail": "min=4.58 max=17.6 samples=1885 worstBg=rgb(97,95,255)"
+  },
+  {
+    "scenario": "landing-en-320-dark",
+    "check": "button hover min ratio (informational, not gating)",
+    "pass": null,
+    "value": 4.58,
+    "detail": ""
+  },
+  {
+    "scenario": "landing-en-320-dark",
+    "check": "CTA container right edge within viewport",
+    "pass": true,
+    "detail": "pageOverflowPx=0"
+  },
+  {
+    "scenario": "landing-en-320-dark",
+    "check": "CTA container scrollWidth <= clientWidth (no internal overflow)",
+    "pass": true,
+    "detail": "236 <= 236"
+  },
+  {
+    "scenario": "landing-en-1280-light",
+    "check": "title: font-size px",
+    "pass": null,
+    "value": 12,
+    "detail": ""
+  },
+  {
+    "scenario": "landing-en-1280-light",
+    "check": "title: min contrast >= 4.5:1 (worst sampled background pixel)",
+    "pass": true,
+    "detail": "min=12.73 max=16.07 samples=960 worstBg=rgb(41,38,86)"
+  },
+  {
+    "scenario": "landing-en-1280-light",
+    "check": "body: font-size px",
+    "pass": null,
+    "value": 12,
+    "detail": ""
+  },
+  {
+    "scenario": "landing-en-1280-light",
+    "check": "body: min contrast >= 4.5:1 (worst sampled background pixel)",
+    "pass": true,
+    "detail": "min=9.38 max=11.97 samples=960 worstBg=rgb(41,38,86)"
+  },
+  {
+    "scenario": "landing-en-1280-light",
+    "check": "disclosure: font-size px",
+    "pass": null,
+    "value": 12,
+    "detail": ""
+  },
+  {
+    "scenario": "landing-en-1280-light",
+    "check": "disclosure: min contrast >= 4.5:1 (worst sampled background pixel)",
+    "pass": true,
+    "detail": "min=5.3 max=6.98 samples=1020 worstBg=rgb(41,38,86)"
+  },
+  {
+    "scenario": "landing-en-1280-light",
+    "check": "disclosure font-size >= 12px",
+    "pass": true,
+    "detail": "12px"
+  },
+  {
+    "scenario": "landing-en-1280-light",
+    "check": "button label: font-size px",
+    "pass": null,
+    "value": 12,
+    "detail": ""
+  },
+  {
+    "scenario": "landing-en-1280-light",
+    "check": "button label: min contrast >= 4.5:1 (worst sampled background pixel)",
+    "pass": true,
+    "detail": "min=5.07 max=15.29 samples=1820 worstBg=rgb(92,89,240)"
+  },
+  {
+    "scenario": "landing-en-1280-light",
+    "check": "button label (hover, informational): font-size px",
+    "pass": null,
+    "value": 12,
+    "detail": ""
+  },
+  {
+    "scenario": "landing-en-1280-light",
+    "check": "button label (hover, informational): min contrast >= 4.5:1 (worst sampled background pixel)",
+    "pass": null,
+    "detail": "min=4.58 max=15.29 samples=1820 worstBg=rgb(97,95,255)"
+  },
+  {
+    "scenario": "landing-en-1280-light",
+    "check": "button hover min ratio (informational, not gating)",
+    "pass": null,
+    "value": 4.58,
+    "detail": ""
+  },
+  {
+    "scenario": "landing-en-1280-light",
+    "check": "CTA container right edge within viewport",
+    "pass": true,
+    "detail": "pageOverflowPx=0"
+  },
+  {
+    "scenario": "landing-en-1280-light",
+    "check": "CTA container scrollWidth <= clientWidth (no internal overflow)",
+    "pass": true,
+    "detail": "684 <= 684"
+  },
+  {
+    "scenario": "threshold-real-below-then-above",
+    "check": "harness observer delivered before the below-threshold assertion",
+    "pass": true,
+    "detail": "ratio=0.037344399839639664"
+  },
+  {
+    "scenario": "threshold-real-below-then-above",
+    "check": "below fold: harness-measured ratio < 0.5",
+    "pass": true,
+    "detail": "ratio=0.037344399839639664"
+  },
+  {
+    "scenario": "threshold-real-below-then-above",
+    "check": "below fold: affiliate_offer_viewed count === 0",
+    "pass": true,
+    "detail": "count=0"
+  },
+  {
+    "scenario": "threshold-real-below-then-above",
+    "check": "after scroll: harness-measured ratio >= 0.5",
+    "pass": true,
+    "detail": "ratio=1"
+  },
+  {
+    "scenario": "threshold-real-below-then-above",
+    "check": "after scroll: affiliate_offer_viewed count === 1 (exactly)",
+    "pass": true,
+    "detail": "count=1"
+  },
+  {
+    "scenario": "changing-night-no-scroll-into-view",
+    "check": "pre-night-change: ratio < 0.5 and count === 0",
+    "pass": true,
+    "detail": "ratio=0.037344399839639664 count=0"
+  },
+  {
+    "scenario": "changing-night-no-scroll-into-view",
+    "check": "night tab activated via dispatched click (no locator.click)",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "scenario": "changing-night-no-scroll-into-view",
+    "check": "activating the tab did not scroll the page",
+    "pass": true,
+    "detail": "before=0 after=0"
+  },
+  {
+    "scenario": "changing-night-no-scroll-into-view",
+    "check": "after night change, still not scrolled into view: ratio < 0.5 and count === 0",
+    "pass": true,
+    "detail": "ratio=0.037344399839639664 count=0"
+  },
+  {
+    "scenario": "changing-night-no-scroll-into-view",
+    "check": "exactly one impression after real scroll, with latest night's metadata",
+    "pass": true,
+    "detail": "[\"event\",\"affiliate_offer_viewed\",{\"partner\":\"viator\",\"campaign\":\"northern_lights\",\"placement\":\"homepage_northern_lights\",\"business_model_experiment\":\"northern_lights_free_v1\",\"forecast_verdict\":\"good\",\"selected_night\":\"2026-10-15\"}]"
+  }
+]

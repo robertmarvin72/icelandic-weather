@@ -65,7 +65,9 @@ import { auroraNightOverview } from "../lib/auroraNightIndicator";
 import { selectAuroraDisplay } from "../lib/auroraDisplaySelection";
 import { buildNightDetailPath } from "../lib/auroraNightQuery";
 import AuroraNightOutlook from "./AuroraNightOutlook";
+import AffiliateCta from "./AffiliateCta";
 import { CARD_SHELL_CLASS } from "./NorthernLightsCard";
+import { AFFILIATE_PLACEMENT_BY_SURFACE } from "../config/affiliateOffers";
 
 // Intentional per-surface preference keys: the homepage keeps the key the
 // retired homepage card used (so an existing preference survives), the
@@ -165,6 +167,13 @@ export default function NorthernLightsThreeNight({
   surface = "landing",
   requestedDate = null,
   onSelectedDateChange,
+  // Ticket #430 — the affiliate impression dedup holder, owned ABOVE this
+  // module (App.jsx / NorthernLightsLanding.jsx), passed through as a narrow
+  // `{ visitId, tryConsume }` prop. Optional: existing tests that mount this
+  // module standalone pass none, and must keep working (see AffiliateCta's
+  // own "holder absent" contract) — no component-local fallback is created
+  // here if it is missing.
+  affiliateImpressionHolder = null,
 }) {
   const isHomepage = surface === "homepage";
   const detailsKey = isHomepage ? DETAILS_KEYS.homepage : DETAILS_KEYS.landing;
@@ -316,6 +325,20 @@ export default function NorthernLightsThreeNight({
     configuredLocationIds: AURORA_CANDIDATE_LOCATION_IDS,
   });
 
+  // Ticket #430 — F1/C1: eligibility for the affiliate CTA, keyed on the
+  // slot ACTUALLY DISPLAYED (`selectedSlot.date`, which already falls back
+  // to slots[0] when selectedDate is outside the window), never on the raw
+  // `selectedDate` directly. No new helper, no re-scoring: `usable` is the
+  // same per-slot fact classifyMultiNightComparison already computes
+  // (success/partial, known band, finite score) — a stale-but-usable result
+  // is eligible (freshness and expiry are already folded into `usable` via
+  // applyClientFreshness turning an expired result into domain_unavailable
+  // upstream); loading/error/no-darkness/contract-defect/unavailable are
+  // not. Good and poor/very-poor are equally eligible.
+  const affiliateDisplayedSlot = multiNight.slots.find((s) => s.date === selectedSlot.date) ?? null;
+  const affiliateEligible = affiliateDisplayedSlot?.usable === true;
+  const affiliatePlacement = AFFILIATE_PLACEMENT_BY_SURFACE[surface] ?? AFFILIATE_PLACEMENT_BY_SURFACE.landing;
+
   // Fires only once per genuinely new best-night identity actually
   // displayed, resolved truthfully after entitlement loading (never a
   // premature "free" guess), never for pending/tie/unavailable/sole/
@@ -409,6 +432,21 @@ export default function NorthernLightsThreeNight({
           >
             {t("nlHomeDetailsLink")}
           </Link>
+        )}
+
+        {/* Ticket #430 — secondary, compact next step. Deliberately LAST in
+            the module shell (after the status region and the EN homepage
+            details link above), outside the role="status" live region: a
+            visibility/click event on this card must never fire inside, or
+            be announced as part of, the forecast's own live region. */}
+        {affiliateEligible && (
+          <AffiliateCta
+            t={t}
+            placement={affiliatePlacement}
+            band={affiliateDisplayedSlot?.best?.band ?? null}
+            selectedNight={selectedSlot.date}
+            holder={affiliateImpressionHolder}
+          />
         )}
       </div>
     </div>

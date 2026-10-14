@@ -1,0 +1,4 @@
+1. The test mocks `useCampsites` but doesn't verify that the mock return values are actually used in the component, which could lead to incorrect assumptions about data flow.
+2. The `FakeIntersectionObserver` is shared across tests and not properly reset between test runs, potentially causing interference or stale state in assertions.
+3. The `impressionCalls()` helper function filters track events by name, but doesn't validate that the event data matches expected values, risking missed assertion failures.
+4. The test relies on `rerender(<App />)` to simulate a remount without full navigation; however, it does not assert that the component's state is properly reset or cleaned up between re-renders, which could cause stale closures or incorrect behavior in real usage.
