@@ -1,0 +1,137 @@
+[
+  {
+    "key": "N1",
+    "number": 436,
+    "url": "https://github.com/robertmarvin72/icelandic-weather/issues/436",
+    "title": "Aðgreina eigin veðurathugasemdir frá opinberum viðvörunum",
+    "priority": "P0",
+    "status": "Todo",
+    "itemId": "PVTI_lAHOBOOf0s4BG3k1zhAzTc4"
+  },
+  {
+    "key": "N2",
+    "number": 437,
+    "url": "https://github.com/robertmarvin72/icelandic-weather/issues/437",
+    "title": "Rannsaka vindorð og flokkun með hliðsjón af Veðurstofunni",
+    "priority": "P1",
+    "status": "Todo",
+    "itemId": "PVTI_lAHOBOOf0s4BG3k1zhAzTg0"
+  },
+  {
+    "key": "N3",
+    "number": 438,
+    "url": "https://github.com/robertmarvin72/icelandic-weather/issues/438",
+    "title": "Rannsaka vetrarbyrjun 15. september og aðgreina árstíðareglur",
+    "priority": "P1",
+    "status": "Todo",
+    "itemId": "PVTI_lAHOBOOf0s4BG3k1zhAzTmw"
+  },
+  {
+    "key": "N4",
+    "number": 439,
+    "url": "https://github.com/robertmarvin72/icelandic-weather/issues/439",
+    "title": "Skýra mat, stig, lágmarksbætingu og skjól í samhengi notanda",
+    "priority": "P1",
+    "status": "Todo",
+    "itemId": "PVTI_lAHOBOOf0s4BG3k1zhAzTsg"
+  },
+  {
+    "key": "N5",
+    "number": 440,
+    "url": "https://github.com/robertmarvin72/icelandic-weather/issues/440",
+    "title": "Laga skroll í nánari upplýsingum Ferðaráðgjafa",
+    "priority": "P0",
+    "status": "Todo",
+    "itemId": "PVTI_lAHOBOOf0s4BG3k1zhAzTzk"
+  },
+  {
+    "key": "N6",
+    "number": 441,
+    "url": "https://github.com/robertmarvin72/icelandic-weather/issues/441",
+    "title": "Rannsaka mótsögn „betri aðstæður“ og lakara mat",
+    "priority": "P0",
+    "status": "Todo",
+    "itemId": "PVTI_lAHOBOOf0s4BG3k1zhAzT5E"
+  },
+  {
+    "key": "N7",
+    "number": 442,
+    "url": "https://github.com/robertmarvin72/icelandic-weather/issues/442",
+    "title": "Sýna staðasamanburð myndrænt með raungildum og skýru úrkomuorðalagi",
+    "priority": "P1",
+    "status": "Todo",
+    "itemId": "PVTI_lAHOBOOf0s4BG3k1zhAzT_s"
+  },
+  {
+    "key": "N8",
+    "number": 443,
+    "url": "https://github.com/robertmarvin72/icelandic-weather/issues/443",
+    "title": "Samræma tölusnið og bil við hitamælieiningar í IS/EN",
+    "priority": "P1",
+    "status": "Todo",
+    "itemId": "PVTI_lAHOBOOf0s4BG3k1zhAzUGA"
+  },
+  {
+    "key": "N9",
+    "number": 444,
+    "url": "https://github.com/robertmarvin72/icelandic-weather/issues/444",
+    "title": "Skýra hitatölur: lægsti/hæsti hiti og rétt skilgreindur meðalhiti",
+    "priority": "P1",
+    "status": "Todo",
+    "itemId": "PVTI_lAHOBOOf0s4BG3k1zhAzULk"
+  },
+  {
+    "key": "N10",
+    "number": 445,
+    "url": "https://github.com/robertmarvin72/icelandic-weather/issues/445",
+    "title": "Rannsaka úrkomutegundir og samræma úrkoma/regn orðalag",
+    "priority": "P1",
+    "status": "Todo",
+    "itemId": "PVTI_lAHOBOOf0s4BG3k1zhAzURI"
+  },
+  {
+    "key": "N11",
+    "number": 446,
+    "url": "https://github.com/robertmarvin72/icelandic-weather/issues/446",
+    "title": "Snúa sjónrænum Top 5 kvarða frá slæmu upp í frábært",
+    "priority": "P2",
+    "status": "Todo",
+    "itemId": "PVTI_lAHOBOOf0s4BG3k1zhAzUVc"
+  },
+  {
+    "key": "N12",
+    "number": 447,
+    "url": "https://github.com/robertmarvin72/icelandic-weather/issues/447",
+    "title": "Þysja og fókusa kort á valið tjaldsvæði",
+    "priority": "P1",
+    "status": "Todo",
+    "itemId": "PVTI_lAHOBOOf0s4BG3k1zhAzUb0"
+  },
+  {
+    "key": "N13",
+    "number": 448,
+    "url": "https://github.com/robertmarvin72/icelandic-weather/issues/448",
+    "title": "Bæta læsileika veðurgilda í listum",
+    "priority": "P2",
+    "status": "Todo",
+    "itemId": "PVTI_lAHOBOOf0s4BG3k1zhAzUh0"
+  },
+  {
+    "key": "N14",
+    "number": 449,
+    "url": "https://github.com/robertmarvin72/icelandic-weather/issues/449",
+    "title": "Samræma tákn fyrir hita, úrkomu, vind og hviður",
+    "priority": "P2",
+    "status": "Todo",
+    "itemId": "PVTI_lAHOBOOf0s4BG3k1zhAzUn0"
+  },
+  {
+    "key": "N15",
+    "number": 450,
+    "url": "https://github.com/robertmarvin72/icelandic-weather/issues/450",
+    "title": "Rannsókn: Open-Meteo, DMI/IG, íslensk veðurlíkön og athuganir fyrir allt Eltum Veðrið",
+    "priority": "P1",
+    "status": "Todo",
+    "itemId": "PVTI_lAHOBOOf0s4BG3k1zhAzUuA"
+  }
+]

@@ -1,0 +1,200 @@
+[
+  {
+    "number": 436,
+    "title": "Aðgreina eigin veðurathugasemdir frá opinberum viðvörunum",
+    "url": "https://github.com/robertmarvin72/icelandic-weather/issues/436",
+    "priority": "P0",
+    "status": "Todo",
+    "labels": [
+      "expert-support",
+      "vedurstofan-2026-10-14"
+    ]
+  },
+  {
+    "number": 437,
+    "title": "Rannsaka vindorð og flokkun með hliðsjón af Veðurstofunni",
+    "url": "https://github.com/robertmarvin72/icelandic-weather/issues/437",
+    "priority": "P1",
+    "status": "Todo",
+    "labels": [
+      "expert-support",
+      "vedurstofan-2026-10-14"
+    ]
+  },
+  {
+    "number": 438,
+    "title": "Rannsaka vetrarbyrjun 15. september og aðgreina árstíðareglur",
+    "url": "https://github.com/robertmarvin72/icelandic-weather/issues/438",
+    "priority": "P1",
+    "status": "Todo",
+    "labels": [
+      "expert-support",
+      "vedurstofan-2026-10-14"
+    ]
+  },
+  {
+    "number": 439,
+    "title": "Skýra mat, stig, lágmarksbætingu og skjól í samhengi notanda",
+    "url": "https://github.com/robertmarvin72/icelandic-weather/issues/439",
+    "priority": "P1",
+    "status": "Todo",
+    "labels": [
+      "expert-support",
+      "vedurstofan-2026-10-14"
+    ]
+  },
+  {
+    "number": 440,
+    "title": "Laga skroll í nánari upplýsingum Ferðaráðgjafa",
+    "url": "https://github.com/robertmarvin72/icelandic-weather/issues/440",
+    "priority": "P0",
+    "status": "Todo",
+    "labels": [
+      "expert-support",
+      "vedurstofan-2026-10-14"
+    ]
+  },
+  {
+    "number": 441,
+    "title": "Rannsaka mótsögn „betri aðstæður“ og lakara mat",
+    "url": "https://github.com/robertmarvin72/icelandic-weather/issues/441",
+    "priority": "P0",
+    "status": "Todo",
+    "labels": [
+      "expert-support",
+      "vedurstofan-2026-10-14"
+    ]
+  },
+  {
+    "number": 442,
+    "title": "Sýna staðasamanburð myndrænt með raungildum og skýru úrkomuorðalagi",
+    "url": "https://github.com/robertmarvin72/icelandic-weather/issues/442",
+    "priority": "P1",
+    "status": "Todo",
+    "labels": [
+      "expert-support",
+      "vedurstofan-2026-10-14"
+    ]
+  },
+  {
+    "number": 443,
+    "title": "Samræma tölusnið og bil við hitamælieiningar í IS/EN",
+    "url": "https://github.com/robertmarvin72/icelandic-weather/issues/443",
+    "priority": "P1",
+    "status": "Todo",
+    "labels": [
+      "expert-support",
+      "vedurstofan-2026-10-14"
+    ]
+  },
+  {
+    "number": 444,
+    "title": "Skýra hitatölur: lægsti/hæsti hiti og rétt skilgreindur meðalhiti",
+    "url": "https://github.com/robertmarvin72/icelandic-weather/issues/444",
+    "priority": "P1",
+    "status": "Todo",
+    "labels": [
+      "expert-support",
+      "vedurstofan-2026-10-14"
+    ]
+  },
+  {
+    "number": 445,
+    "title": "Rannsaka úrkomutegundir og samræma úrkoma/regn orðalag",
+    "url": "https://github.com/robertmarvin72/icelandic-weather/issues/445",
+    "priority": "P1",
+    "status": "Todo",
+    "labels": [
+      "expert-support",
+      "vedurstofan-2026-10-14"
+    ]
+  },
+  {
+    "number": 446,
+    "title": "Snúa sjónrænum Top 5 kvarða frá slæmu upp í frábært",
+    "url": "https://github.com/robertmarvin72/icelandic-weather/issues/446",
+    "priority": "P2",
+    "status": "Todo",
+    "labels": [
+      "expert-support",
+      "vedurstofan-2026-10-14"
+    ]
+  },
+  {
+    "number": 447,
+    "title": "Þysja og fókusa kort á valið tjaldsvæði",
+    "url": "https://github.com/robertmarvin72/icelandic-weather/issues/447",
+    "priority": "P1",
+    "status": "Todo",
+    "labels": [
+      "expert-support",
+      "vedurstofan-2026-10-14"
+    ]
+  },
+  {
+    "number": 448,
+    "title": "Bæta læsileika veðurgilda í listum",
+    "url": "https://github.com/robertmarvin72/icelandic-weather/issues/448",
+    "priority": "P2",
+    "status": "Todo",
+    "labels": [
+      "expert-support",
+      "vedurstofan-2026-10-14"
+    ]
+  },
+  {
+    "number": 449,
+    "title": "Samræma tákn fyrir hita, úrkomu, vind og hviður",
+    "url": "https://github.com/robertmarvin72/icelandic-weather/issues/449",
+    "priority": "P2",
+    "status": "Todo",
+    "labels": [
+      "expert-support",
+      "vedurstofan-2026-10-14"
+    ]
+  },
+  {
+    "number": 450,
+    "title": "Rannsókn: Open-Meteo, DMI/IG, íslensk veðurlíkön og athuganir fyrir allt Eltum Veðrið",
+    "url": "https://github.com/robertmarvin72/icelandic-weather/issues/450",
+    "priority": "P1",
+    "status": "Todo",
+    "labels": [
+      "expert-support",
+      "vedurstofan-2026-10-14"
+    ]
+  },
+  {
+    "number": 429,
+    "title": "Winter Route Advisor: Kanna gagnaveitur og skilgreina MVP",
+    "url": "https://github.com/robertmarvin72/icelandic-weather/issues/429",
+    "priority": "P0",
+    "status": "In Progress",
+    "labels": [
+      "expert-support",
+      "vedurstofan-2026-10-14"
+    ]
+  },
+  {
+    "number": 419,
+    "title": "Nýr miði: Ski Weather discovery",
+    "url": "https://github.com/robertmarvin72/icelandic-weather/issues/419",
+    "priority": "P2",
+    "status": "Todo",
+    "labels": [
+      "expert-support",
+      "vedurstofan-2026-10-14"
+    ]
+  },
+  {
+    "number": 329,
+    "title": "Blog generator: calibrate trace rain, daily clarity and natural Icelandic",
+    "url": "https://github.com/robertmarvin72/icelandic-weather/issues/329",
+    "priority": "P2",
+    "status": "Todo",
+    "labels": [
+      "expert-support",
+      "vedurstofan-2026-10-14"
+    ]
+  }
+]
