@@ -180,7 +180,9 @@ export function getWarningBadges(warnings, t) {
     return {
       key: `${warning.type}_${idx}`,
       label,
-      icon: warning.level === "high" ? "🚨" : "⚠️",
+      // Ticket #436: level (not an emoji) — the caller picks the Lucide
+      // CircleAlert/TriangleAlert icon for this level; no 🚨/⚠️ here.
+      level: warning.level,
       className:
         warning.level === "high"
           ? "bg-rose-100 text-rose-800 dark:bg-rose-950/40 dark:text-rose-200"

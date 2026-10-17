@@ -1,10 +1,14 @@
 // src/components/RoutePlannerCard.jsx
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useId, useMemo, useState } from "react";
+import { Car, CircleAlert, TriangleAlert } from "lucide-react";
 
 import { trackEvent } from "../lib/analytics";
 import { getRouteVerdictMeta } from "../lib/routeVerdictMeta";
 import RoutePlannerDetailsModal from "./RoutePlannerDetailsModal";
 import AnimatedPill from "./AnimatedPill";
+import HazardSourceNote from "./HazardSourceNote";
+import { getWarningTypeLabel } from "./routePlannerDetailsHelpers";
+import { cautionLevelLabel } from "../lib/cautionLabel";
 import { isFeatureAvailable } from "../config/features";
 import { useRoutePlanner } from "../hooks/useRoutePlanner";
 import { useFreeRecommendation } from "../hooks/useFreeRecommendation";
@@ -15,6 +19,42 @@ import {
   getHazardWindowNarrative,
   getRoughWeatherWindowText,
 } from "../lib/routePlannerNarrative";
+
+// Ticket #436 D3 — same per-day `warnings` the engine already attached to
+// each candidate's windowDays (relocationEngine.js's pickExplainDay), the
+// SAME array hasHighWarning/hasWarning were computed from. No extra/
+// different slicing, no recomputation with different thresholds. If the
+// flag is set but no per-day warnings carry that level (shouldn't happen
+// given the shared source, but defensive), returns no types — callers show
+// severity only, never an invented cause.
+function siteCautionReasonTypes(candidateRow, level) {
+  const days = Array.isArray(candidateRow?.windowDays) ? candidateRow.windowDays : [];
+  const types = new Set();
+  for (const d of days) {
+    if (!Array.isArray(d?.warnings)) continue;
+    for (const w of d.warnings) {
+      if (w?.level === level && w?.type) types.add(w.type);
+    }
+  }
+  return [...types];
+}
+
+// Ticket #436 correction v2 (F-D): the route-risk badges only showed the
+// bare level word ("High"/"Moderate"), ambiguous out of context next to a
+// site name and a (possibly also-rendered) site caution badge. This
+// combines the existing routeRiskLabel ("Route risk"/"Áhætta á leið") with
+// the existing level word so all four call sites (preview/full × HIGH/MED)
+// share one label expression instead of risking divergence.
+function routeRiskBadgeLabel(level, t) {
+  const prefix = t("routeRiskLabel") || "Route risk";
+  const word =
+    level === "HIGH"
+      ? t("routeRiskHigh") || "High"
+      : level === "MED"
+        ? t("routeRiskMed") || "Moderate"
+        : t("routeRiskLow") || "Low";
+  return `${prefix}: ${word}`;
+}
 
 // Map reason type -> FLAT translation key
 function reasonTypeToKey(type) {
@@ -159,6 +199,14 @@ export default function RoutePlannerCard({
   const [detailsOpen, setDetailsOpen] = useState(false);
   const [detailsCandidate, setDetailsCandidate] = useState(null);
   const [advancedOpen, setAdvancedOpen] = useState(false);
+
+  // Ticket #436 D2 — one per-instance id base (card and the details modal's
+  // portal note can be mounted at once; several rows each carry an expand
+  // control, so static ids would collide). D1/D10 — a single composite key
+  // ("risk:<siteId>" / "site:<siteId>") tracks which one inline reason
+  // disclosure is open, instead of one useState per row.
+  const cardInstanceId = useId();
+  const [expandedCautionKey, setExpandedCautionKey] = useState(null);
 
   // UX Miði — supporting-detail disclosure. RoutePlannerCard's own verdict
   // presentation and Upgrade CTAs are downgraded to supporting detail behind
@@ -710,6 +758,56 @@ export default function RoutePlannerCard({
     return null;
   }
 
+  // Ticket #436 F8/F10 — compact own-indicator badge with a keyboard/touch
+  // reachable reason disclosure (never title-only, never a tooltip/popover/
+  // portal — content stays in normal document flow, pushing layout). A
+  // plain function returning JSX (not a nested component used as a JSX
+  // tag), so it is never treated as a new component type across renders.
+  // Shares the card's single `expandedCautionKey` instead of one useState
+  // per row, and derives its id from the one per-card `cardInstanceId` (D2).
+  function renderInlineCautionBadge({ keyNs, siteId, level, label, reasons, tone }) {
+    const compositeKey = `${keyNs}:${siteId}`;
+    const expanded = expandedCautionKey === compositeKey;
+    const panelId = `${cardInstanceId}-${keyNs}-${siteId}`;
+    const Icon = level === "high" ? TriangleAlert : level === "warn" ? CircleAlert : Car;
+    const badgeClassName = `inline-flex items-center gap-1 rounded-full px-1.5 py-0.5 text-[10px] font-semibold ${tone}`;
+
+    // Ticket #436 correction v2 (F-E): a badge with no reasons to disclose
+    // must not be a focusable control whose click does nothing — render the
+    // same visual badge as a non-interactive span instead (D3's defensive
+    // "flag true, no matching per-day data" case lands here).
+    if (reasons.length === 0) {
+      return (
+        <span className="inline-flex flex-col items-start">
+          <span className={badgeClassName}>
+            <Icon aria-hidden="true" size={11} />
+            {label}
+          </span>
+        </span>
+      );
+    }
+
+    return (
+      <span className="inline-flex flex-col items-start">
+        <button
+          type="button"
+          onClick={() => setExpandedCautionKey((k) => (k === compositeKey ? null : compositeKey))}
+          aria-expanded={expanded}
+          aria-controls={panelId}
+          className={badgeClassName}
+        >
+          <Icon aria-hidden="true" size={11} />
+          {label}
+        </button>
+        {expanded && (
+          <span id={panelId} className="mt-0.5 text-[10px] text-slate-600 dark:text-slate-300">
+            {reasons.join(", ")}
+          </span>
+        )}
+      </span>
+    );
+  }
+
   const showDecisionReasons =
     !isPreview &&
     ["move", "consider"].includes(String(displayDecisionLower)) &&
@@ -883,6 +981,27 @@ export default function RoutePlannerCard({
       ? "text-rose-700 dark:text-rose-300"
       : "text-amber-700 dark:text-amber-300";
 
+  // Ticket #436 D1 — exactly one source note if ANY own site or routeRisk
+  // indicator is rendered anywhere in the card: adjacent to the
+  // alternatives section when THAT section renders one, otherwise adjacent
+  // to the routeRisk verdict-block lines (🚧/🚐, now Car-icon lines) above.
+  const altSectionHasIndicator = isPreview
+    ? displayDecisionLower !== "stay" &&
+      top3.length > 0 &&
+      !!best &&
+      (routeRiskData?.routeRisk === "HIGH" || routeRiskData?.routeRisk === "MED")
+    : top3.some(
+        (x) =>
+          (x === best &&
+            (routeRiskData?.routeRisk === "HIGH" || routeRiskData?.routeRisk === "MED")) ||
+          x?.hasHighWarning ||
+          x?.hasWarning
+      );
+  const verdictBlockHasIndicator =
+    routeRiskData?.routeRisk === "HIGH" || (!isPreview && !!routeRiskData && routeRiskData.routeRisk !== "LOW");
+  const showNoteNearVerdict = !altSectionHasIndicator && verdictBlockHasIndicator;
+  const showNoteNearAlternatives = altSectionHasIndicator;
+
   return (
     <div className="relative rounded-2xl border border-slate-200 dark:border-slate-700 p-5 shadow-sm bg-white dark:bg-slate-900">
       <div className="flex items-start justify-between gap-3 mb-3">
@@ -1051,8 +1170,8 @@ export default function RoutePlannerCard({
             )}
 
             {routeRiskData?.routeRisk === "HIGH" && (
-              <div className="mt-2 text-xs font-medium text-rose-700 dark:text-rose-300">
-                🚧{" "}
+              <div className="mt-2 flex items-start gap-1 text-xs font-medium text-rose-700 dark:text-rose-300">
+                <Car aria-hidden="true" size={13} className="mt-0.5 shrink-0" />
                 {t("routeRiskAffectsDecision") ||
                   "Driving conditions may affect this recommendation."}
               </div>
@@ -1063,13 +1182,20 @@ export default function RoutePlannerCard({
             )}
 
             {!isPreview && routeRiskData && routeRiskData.routeRisk !== "LOW" && (
-              <div className="mt-2 text-xs font-medium text-amber-700 dark:text-amber-300">
-                🚐 {t("routeRiskLabel") || "Route risk"}:{" "}
+              <div className="mt-2 flex items-start gap-1 text-xs font-medium text-amber-700 dark:text-amber-300">
+                <Car aria-hidden="true" size={13} className="mt-0.5 shrink-0" />
+                {t("routeRiskLabel") || "Route risk"}:{" "}
                 {routeRiskData.routeRisk === "HIGH"
                   ? t("routeRiskHigh") || "High"
                   : routeRiskData.routeRisk === "MED"
                     ? t("routeRiskMed") || "Moderate"
                     : t("routeRiskLow") || "Low"}
+              </div>
+            )}
+
+            {showNoteNearVerdict && (
+              <div className="mt-2">
+                <HazardSourceNote t={t} />
               </div>
             )}
 
@@ -1192,44 +1318,38 @@ export default function RoutePlannerCard({
                     return (
                       <li key={x.siteId}>
                         <div className="font-semibold flex items-center gap-2 flex-wrap">
-                          <span className="flex items-center gap-1.5">
+                          <span className="flex items-center gap-1.5 flex-wrap">
                             <span>
                               {hideDestinationForFree ? t("nearbyCampsite") : (x.siteName ?? x.siteId)}
                             </span>
 
-                            {x === best && routeRiskData?.routeRisk === "HIGH" && (
-                              <span
-                                className="inline-flex items-center rounded-full px-1.5 py-0.5 text-[10px] font-semibold
-                                  bg-rose-100 text-rose-800 dark:bg-rose-950/40 dark:text-rose-200"
-                                title={
+                            {x === best &&
+                              routeRiskData?.routeRisk === "HIGH" &&
+                              renderInlineCautionBadge({
+                                keyNs: "risk-preview",
+                                siteId: x.siteId,
+                                level: "route-high",
+                                label: routeRiskBadgeLabel("HIGH", t),
+                                reasons: [
                                   t("routeRiskHighTooltip") ||
-                                  "Difficult driving conditions along the route"
-                                }
-                                aria-label={
-                                  t("routeRiskHighTooltip") ||
-                                  "Difficult driving conditions along the route"
-                                }
-                              >
-                                🚨
-                              </span>
-                            )}
+                                    "Difficult driving conditions along the route",
+                                ],
+                                tone: "bg-rose-100 text-rose-800 dark:bg-rose-950/40 dark:text-rose-200",
+                              })}
 
-                            {x === best && routeRiskData?.routeRisk === "MED" && (
-                              <span
-                                className="inline-flex items-center rounded-full px-1.5 py-0.5 text-[10px] font-semibold
-                                  bg-amber-100 text-amber-800 dark:bg-amber-950/40 dark:text-amber-200"
-                                title={
+                            {x === best &&
+                              routeRiskData?.routeRisk === "MED" &&
+                              renderInlineCautionBadge({
+                                keyNs: "risk-preview",
+                                siteId: x.siteId,
+                                level: "route-med",
+                                label: routeRiskBadgeLabel("MED", t),
+                                reasons: [
                                   t("routeRiskMedTooltip") ||
-                                  "Some wind-related driving risk along the route"
-                                }
-                                aria-label={
-                                  t("routeRiskMedTooltip") ||
-                                  "Some wind-related driving risk along the route"
-                                }
-                              >
-                                ⚠️
-                              </span>
-                            )}
+                                    "Some wind-related driving risk along the route",
+                                ],
+                                tone: "bg-amber-100 text-amber-800 dark:bg-amber-950/40 dark:text-amber-200",
+                              })}
                           </span>
 
                           {!hideDestinationForFree && Number.isFinite(x?.distanceKm) && (
@@ -1308,7 +1428,7 @@ export default function RoutePlannerCard({
                   return (
                     <li key={x.siteId}>
                       <div className="font-semibold flex items-center gap-2 flex-wrap">
-                        <span className="inline-flex items-center gap-1.5">
+                        <span className="inline-flex items-center gap-1.5 flex-wrap">
                           {typeof onSelectSite === "function" ? (
                             <button
                               type="button"
@@ -1321,59 +1441,57 @@ export default function RoutePlannerCard({
                             <span>{x.siteName ?? x.siteId}</span>
                           )}
 
-                          {x === best && routeRiskData?.routeRisk === "HIGH" && (
-                            <span
-                              className="inline-flex items-center rounded-full px-1.5 py-0.5 text-[10px] font-semibold
-                                bg-rose-100 text-rose-800 dark:bg-rose-950/40 dark:text-rose-200"
-                              title={
+                          {x === best &&
+                            routeRiskData?.routeRisk === "HIGH" &&
+                            renderInlineCautionBadge({
+                              keyNs: "risk",
+                              siteId: x.siteId,
+                              level: "route-high",
+                              label: routeRiskBadgeLabel("HIGH", t),
+                              reasons: [
                                 t("routeRiskHighTooltip") ||
-                                "Difficult driving conditions along the route"
-                              }
-                              aria-label={
-                                t("routeRiskHighTooltip") ||
-                                "Difficult driving conditions along the route"
-                              }
-                            >
-                              🚨
-                            </span>
-                          )}
+                                  "Difficult driving conditions along the route",
+                              ],
+                              tone: "bg-rose-100 text-rose-800 dark:bg-rose-950/40 dark:text-rose-200",
+                            })}
 
-                          {x === best && routeRiskData?.routeRisk === "MED" && (
-                            <span
-                              className="inline-flex items-center rounded-full px-1.5 py-0.5 text-[10px] font-semibold
-                                bg-amber-100 text-amber-800 dark:bg-amber-950/40 dark:text-amber-200"
-                              title={
+                          {x === best &&
+                            routeRiskData?.routeRisk === "MED" &&
+                            renderInlineCautionBadge({
+                              keyNs: "risk",
+                              siteId: x.siteId,
+                              level: "route-med",
+                              label: routeRiskBadgeLabel("MED", t),
+                              reasons: [
                                 t("routeRiskMedTooltip") ||
-                                "Some wind-related driving risk along the route"
-                              }
-                              aria-label={
-                                t("routeRiskMedTooltip") ||
-                                "Some wind-related driving risk along the route"
-                              }
-                            >
-                              ⚠️
-                            </span>
-                          )}
+                                  "Some wind-related driving risk along the route",
+                              ],
+                              tone: "bg-amber-100 text-amber-800 dark:bg-amber-950/40 dark:text-amber-200",
+                            })}
 
-                          {x?.hasHighWarning ? (
-                            <span
-                              className="inline-flex items-center rounded-full px-1.5 py-0.5 text-[10px] font-semibold
-                                bg-rose-100 text-rose-800 dark:bg-rose-950/40 dark:text-rose-200"
-                              title={t("routeWarningHigh") || "Hættuveður"}
-                              aria-label={t("routeWarningHigh") || "Hættuveður"}
-                            >
-                              🚨
-                            </span>
-                          ) : x?.hasWarning ? (
-                            <span
-                              className="inline-flex items-center rounded-full px-1.5 py-0.5 text-[10px] font-semibold
-                                bg-amber-100 text-amber-800 dark:bg-amber-950/40 dark:text-amber-200"
-                              title={t("routeWarning") || "Viðvörun"}
-                              aria-label={t("routeWarning") || "Viðvörun"}
-                            >
-                              ⚠️
-                            </span>
-                          ) : null}
+                          {x?.hasHighWarning
+                            ? renderInlineCautionBadge({
+                                keyNs: "site",
+                                siteId: x.siteId,
+                                level: "high",
+                                label: cautionLevelLabel("high", t),
+                                reasons: siteCautionReasonTypes(x, "high").map((ty) =>
+                                  getWarningTypeLabel(ty, t)
+                                ),
+                                tone: "bg-rose-100 text-rose-800 dark:bg-rose-950/40 dark:text-rose-200",
+                              })
+                            : x?.hasWarning
+                              ? renderInlineCautionBadge({
+                                  keyNs: "site",
+                                  siteId: x.siteId,
+                                  level: "warn",
+                                  label: cautionLevelLabel("warn", t),
+                                  reasons: siteCautionReasonTypes(x, "warn").map((ty) =>
+                                    getWarningTypeLabel(ty, t)
+                                  ),
+                                  tone: "bg-amber-100 text-amber-800 dark:bg-amber-950/40 dark:text-amber-200",
+                                })
+                              : null}
                         </span>
 
                         {Number.isFinite(x?.distanceKm) && (
@@ -1413,6 +1531,12 @@ export default function RoutePlannerCard({
             ) : (
               <div className="text-xs text-slate-600 dark:text-slate-300">
                 {t("routePlannerNoAlternatives")}
+              </div>
+            )}
+
+            {showNoteNearAlternatives && (
+              <div className="mt-3">
+                <HazardSourceNote t={t} />
               </div>
             )}
 

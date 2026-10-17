@@ -1,6 +1,8 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { createPortal } from "react-dom";
+import { Car, CircleAlert, TriangleAlert } from "lucide-react";
 import RouteCompareTable from "./RouteCompareTable";
+import HazardSourceNote from "./HazardSourceNote";
 import {
   buildVerdictRows,
   fmt,
@@ -277,7 +279,7 @@ export default function RoutePlannerDetailsModal({
             {routeRiskSummary ? (
               <div className="mt-3 rounded-lg border border-amber-200 bg-amber-50/70 px-3 py-2 dark:border-amber-800/50 dark:bg-amber-900/20">
                 <div className="text-xs font-semibold text-amber-800 dark:text-amber-200">
-                  <span className="mr-1 text-sm">🚐</span>{" "}
+                  <Car aria-hidden="true" size={14} className="mr-1 inline -mt-0.5" />
                   {t?.("routeRiskLabel") || "Áhætta á leið"}: {routeRiskSummary.level}
                 </div>
 
@@ -331,7 +333,11 @@ export default function RoutePlannerDetailsModal({
               {t?.("routeDetailsDayByDay") || "Dag-fyrir-dag"}
             </div>
 
+            {/* #436 F2: one note for the whole modal (day-by-day table plus
+                the advanced table below, if opened) — RouteCompareTable is
+                told not to render its own, so there is never a duplicate. */}
             <div className="mt-3">
+              <HazardSourceNote t={t} className="mb-3" />
               <RouteCompareTable
                 t={t}
                 lang={lang}
@@ -345,6 +351,7 @@ export default function RoutePlannerDetailsModal({
                 windowDays={candidate?.windowDays || []}
                 windowDaysCount={windowDaysCount}
                 showScoreDelta={false}
+                hostProvidesNote
               />
             </div>
 
@@ -436,15 +443,19 @@ export default function RoutePlannerDetailsModal({
                             <td className="px-3 py-2">
                               {warningBadges.length > 0 ? (
                                 <div className="flex flex-wrap gap-1">
-                                  {warningBadges.map((badge) => (
-                                    <span
-                                      key={badge.key}
-                                      className={`inline-flex items-center rounded-full px-2 py-0.5 text-[11px] font-semibold ${badge.className}`}
-                                      title={badge.title}
-                                    >
-                                      {badge.icon} {badge.label}
-                                    </span>
-                                  ))}
+                                  {warningBadges.map((badge) => {
+                                    const BadgeIcon = badge.level === "high" ? TriangleAlert : CircleAlert;
+                                    return (
+                                      <span
+                                        key={badge.key}
+                                        className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[11px] font-semibold ${badge.className}`}
+                                        title={badge.title}
+                                      >
+                                        <BadgeIcon aria-hidden="true" size={11} />
+                                        {badge.label}
+                                      </span>
+                                    );
+                                  })}
                                 </div>
                               ) : (
                                 <span className="text-slate-400">—</span>

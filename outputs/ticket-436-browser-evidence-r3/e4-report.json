@@ -1,0 +1,156 @@
+[
+  {
+    "tag": "en-light-full",
+    "overflow": {
+      "docWidth": 320,
+      "scrollWidth": 320
+    },
+    "badgeInfo": [
+      {
+        "text": "Varmá Campsite, MosfellsbærRoute risk: Moderate",
+        "tag": "SPAN",
+        "right": 283,
+        "width": 230,
+        "whiteSpace": "normal",
+        "scrollWidthGtClientWidth": false
+      },
+      {
+        "text": "Route risk: Moderate",
+        "tag": "SPAN",
+        "right": 175,
+        "width": 122,
+        "whiteSpace": "normal",
+        "scrollWidthGtClientWidth": false
+      },
+      {
+        "text": "Route risk: Moderate",
+        "tag": "BUTTON",
+        "right": 175,
+        "width": 122,
+        "whiteSpace": "normal",
+        "scrollWidthGtClientWidth": false
+      }
+    ],
+    "shot": "C:\\Users\\Notandi\\forritun\\icelandic-weather\\outputs\\ticket-436-browser-evidence-r3\\e4-en-light-full-320.png"
+  },
+  {
+    "tag": "en-dark-full",
+    "overflow": {
+      "docWidth": 320,
+      "scrollWidth": 320
+    },
+    "badgeInfo": [
+      {
+        "text": "Varmá Campsite, MosfellsbærRoute risk: Moderate",
+        "tag": "SPAN",
+        "right": 283,
+        "width": 230,
+        "whiteSpace": "normal",
+        "scrollWidthGtClientWidth": false
+      },
+      {
+        "text": "Route risk: Moderate",
+        "tag": "SPAN",
+        "right": 175,
+        "width": 122,
+        "whiteSpace": "normal",
+        "scrollWidthGtClientWidth": false
+      },
+      {
+        "text": "Route risk: Moderate",
+        "tag": "BUTTON",
+        "right": 175,
+        "width": 122,
+        "whiteSpace": "normal",
+        "scrollWidthGtClientWidth": false
+      }
+    ],
+    "shot": "C:\\Users\\Notandi\\forritun\\icelandic-weather\\outputs\\ticket-436-browser-evidence-r3\\e4-en-dark-full-320.png"
+  },
+  {
+    "tag": "is-light-full",
+    "overflow": {
+      "docWidth": 320,
+      "scrollWidth": 320
+    },
+    "badgeInfo": [
+      {
+        "text": "Varmá Campsite, MosfellsbærÁhætta á leið: Miðlungs",
+        "tag": "SPAN",
+        "right": 283,
+        "width": 230,
+        "whiteSpace": "normal",
+        "scrollWidthGtClientWidth": false
+      },
+      {
+        "text": "Áhætta á leið: Miðlungs",
+        "tag": "SPAN",
+        "right": 188,
+        "width": 135,
+        "whiteSpace": "normal",
+        "scrollWidthGtClientWidth": false
+      },
+      {
+        "text": "Áhætta á leið: Miðlungs",
+        "tag": "BUTTON",
+        "right": 188,
+        "width": 135,
+        "whiteSpace": "normal",
+        "scrollWidthGtClientWidth": false
+      }
+    ],
+    "shot": "C:\\Users\\Notandi\\forritun\\icelandic-weather\\outputs\\ticket-436-browser-evidence-r3\\e4-is-light-full-320.png"
+  },
+  {
+    "tag": "is-dark-full",
+    "overflow": {
+      "docWidth": 320,
+      "scrollWidth": 320
+    },
+    "badgeInfo": [
+      {
+        "text": "Varmá Campsite, MosfellsbærÁhætta á leið: Miðlungs",
+        "tag": "SPAN",
+        "right": 283,
+        "width": 230,
+        "whiteSpace": "normal",
+        "scrollWidthGtClientWidth": false
+      },
+      {
+        "text": "Áhætta á leið: Miðlungs",
+        "tag": "SPAN",
+        "right": 188,
+        "width": 135,
+        "whiteSpace": "normal",
+        "scrollWidthGtClientWidth": false
+      },
+      {
+        "text": "Áhætta á leið: Miðlungs",
+        "tag": "BUTTON",
+        "right": 188,
+        "width": 135,
+        "whiteSpace": "normal",
+        "scrollWidthGtClientWidth": false
+      }
+    ],
+    "shot": "C:\\Users\\Notandi\\forritun\\icelandic-weather\\outputs\\ticket-436-browser-evidence-r3\\e4-is-dark-full-320.png"
+  },
+  {
+    "tag": "en-light-preview",
+    "overflow": {
+      "docWidth": 320,
+      "scrollWidth": 320
+    },
+    "badgeInfo": [],
+    "shot": "C:\\Users\\Notandi\\forritun\\icelandic-weather\\outputs\\ticket-436-browser-evidence-r3\\e4-en-light-preview-320.png"
+  },
+  {
+    "tag": "is-light-preview",
+    "overflow": {
+      "docWidth": 320,
+      "scrollWidth": 320
+    },
+    "badgeInfo": [],
+    "shot": "C:\\Users\\Notandi\\forritun\\icelandic-weather\\outputs\\ticket-436-browser-evidence-r3\\e4-is-light-preview-320.png"
+  }
+]

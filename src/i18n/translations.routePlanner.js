@@ -139,21 +139,30 @@ export const routePlannerTranslations = {
     routeAdaptiveNoBetterWithin: "No better option found within {used} km (max {max} km).",
     routeAdaptiveUsedShort: "Searched up to",
 
-    routeWarningHigh: "Dangerous weather",
-    routeWarning: "Weather alert",
-    routeDetailsWarnings: "Warnings",
+    routeWarningHigh: "Challenging weather conditions",
+    routeWarning: "Weather caution",
+    routeDetailsWarnings: "Caution",
+
+    // #436 — visible source note, exact issue copy. The "vedur.is" token
+    // inside the body is split out and wrapped in a native anchor by
+    // HazardSourceNote.jsx; do not change this sentence except together
+    // with that component's split logic.
+    hazardSourceNoteHeading: "About this weather assessment:",
+    hazardSourceNoteBody:
+      "Caution indicators are calculated by Eltum Veðrið and are not official weather warnings. Check official warnings at vedur.is.",
+    hazardSourceNoteNewTab: "Opens in a new tab",
 
     routeCompareDay: "Day",
     routeCompareBase: "Current",
     routeCompareCandidate: "Option",
     routeCompareDiff: "Difference",
     routeCompareWhy: "Why",
-    routeCompareNoWarnings: "No warnings",
+    routeCompareNoWarnings: "No caution indicators in this assessment",
     routeCompareReasonLessSevere: "Less severe weather",
-    routeCompareReasonClearer: "Fewer warnings",
+    routeCompareReasonClearer: "Fewer caution indicators",
     routeCompareReasonStillBad: "Still rough",
-    routeCompareReasonSimilar: "Similar warnings",
-    routeCompareReasonWorse: "More warnings",
+    routeCompareReasonSimilar: "Similar caution indicators",
+    routeCompareReasonWorse: "More caution indicators",
     routeCompareReasonGeneral: "Better conditions",
 
     routeWarnTypeWind: "Wind",
@@ -162,9 +171,9 @@ export const routePlannerTranslations = {
     routeWarnTypeTempLow: "Cold",
     routeWarnTypeTempHigh: "Heat",
 
-    routeCompareReasonHighHazard: "Dangerous weather",
-    routeCompareReasonWarnHazard: "Weather warning",
-    routeCompareReasonNoHazards: "No warnings",
+    routeCompareReasonHighHazard: "Challenging weather conditions",
+    routeCompareReasonWarnHazard: "Weather caution",
+    routeCompareReasonNoHazards: "No caution indicators in this assessment",
 
     routeCompareDiffNA: "—",
     routeCompareBaseNoDataTip: "Warnings for the current campsite are not available yet.",
@@ -176,7 +185,7 @@ export const routePlannerTranslations = {
     routeImproveSlightWorse: "Slightly worse",
     routeDetailsRawHint:
       "Scores shown as 0.0 can still hide a real difference when both values appear as 0 or 10.",
-    routeCompareReasonBetterDespiteWarning: "Better conditions despite a warning",
+    routeCompareReasonBetterDespiteWarning: "Better conditions despite a caution indicator",
 
     routeHazardBlockerStay: "A high-risk weather day blocks a move recommendation.",
     routeHazardBlockerConsider: "A rough-weather day weakens this recommendation.",
@@ -305,7 +314,7 @@ export const routePlannerTranslations = {
     routeStateStay: "Stay",
     routeStateConsider: "Consider moving",
     routeStateBetterNearby: "Better weather nearby",
-    routeStateFewerWarningsNearby: "Fewer warnings nearby",
+    routeStateFewerWarningsNearby: "Fewer caution indicators nearby",
 
     routeStateMoveDescription: "A nearby campsite looks better for the selected days.",
     routeStateStayDescription: "This campsite is still one of the better options nearby.",
@@ -318,7 +327,7 @@ export const routePlannerTranslations = {
     routeStateConsiderDescription:
       "Weather may be a little better nearby, but not enough to recommend moving.",
     routeStateBetterNearbyDescription: "Nearby conditions look calmer or drier for part of your stay.",
-    routeStateFewerWarningsNearbyDescription: "Nearby campsites show fewer rough weather warnings.",
+    routeStateFewerWarningsNearbyDescription: "Nearby campsites show fewer own rough-weather caution indicators.",
 
     routePainMoveHeadline: "Why this matters",
     routePainMoveBody: "Moving could help you avoid the worst of the weather.",
@@ -485,22 +494,28 @@ export const routePlannerTranslations = {
     routeAdaptiveNoBetterWithin: "Enginn betri kostur fannst innan {used} km (max {max} km).",
     routeAdaptiveUsedShort: "Leitað út í",
 
-    routeWarningHigh: "Hættuveður",
-    routeWarning: "Veðurviðvörun",
+    routeWarningHigh: "Erfiðar veðuraðstæður",
+    routeWarning: "Varúð vegna veðurs",
 
-    routeDetailsWarnings: "Viðvaranir",
+    routeDetailsWarnings: "Varúð",
+
+    // #436 — visible source note, exact issue copy. See EN block comment.
+    hazardSourceNoteHeading: "Um veðurmatið:",
+    hazardSourceNoteBody:
+      "Varúðarmerkingar eru reiknað mat Eltum Veðrið, ekki opinberar veðurviðvaranir. Skoðaðu opinberar viðvaranir á vedur.is.",
+    hazardSourceNoteNewTab: "Opnast í nýjum flipa",
 
     routeCompareDay: "Dagur",
     routeCompareBase: "Núverandi",
     routeCompareCandidate: "Valkostur",
     routeCompareDiff: "Munur",
     routeCompareWhy: "Af hverju",
-    routeCompareNoWarnings: "Engar viðvaranir",
+    routeCompareNoWarnings: "Engar varúðarmerkingar í þessu mati",
     routeCompareReasonLessSevere: "Minni hætta",
-    routeCompareReasonClearer: "Færri viðvaranir",
+    routeCompareReasonClearer: "Færri varúðarmerkingar",
     routeCompareReasonStillBad: "Enn slæmt veður",
-    routeCompareReasonSimilar: "Svipaðar viðvaranir",
-    routeCompareReasonWorse: "Fleiri viðvaranir",
+    routeCompareReasonSimilar: "Svipaðar varúðarmerkingar",
+    routeCompareReasonWorse: "Fleiri varúðarmerkingar",
     routeCompareReasonGeneral: "Betri aðstæður",
 
     routeWarnTypeWind: "Vindur",
@@ -509,9 +524,9 @@ export const routePlannerTranslations = {
     routeWarnTypeTempLow: "Kuldi",
     routeWarnTypeTempHigh: "Hiti",
 
-    routeCompareReasonHighHazard: "Hættuveður",
-    routeCompareReasonWarnHazard: "Veðurviðvörun",
-    routeCompareReasonNoHazards: "Engar viðvaranir",
+    routeCompareReasonHighHazard: "Erfiðar veðuraðstæður",
+    routeCompareReasonWarnHazard: "Varúð vegna veðurs",
+    routeCompareReasonNoHazards: "Engar varúðarmerkingar í þessu mati",
     routeCompareDiffNA: "—",
     routeCompareBaseNoDataTip: "Viðvaranir fyrir núverandi tjaldsvæði eru ekki tiltækar ennþá.",
     routeAggregateSlight: "Örlítið betra veður",
@@ -521,7 +536,7 @@ export const routePlannerTranslations = {
     routeImproveSlightWorse: "Örlítið lakara",
     routeDetailsRawHint:
       "0.0 stig geta samt falið raunverulegan mun þegar bæði gildi birtast sem 0 eða 10.",
-    routeCompareReasonBetterDespiteWarning: "Betri aðstæður þrátt fyrir viðvörun",
+    routeCompareReasonBetterDespiteWarning: "Betri aðstæður þrátt fyrir varúðarmerkingu",
 
     routeHazardBlockerStay: "Dagur með slæmu veðri kemur í veg fyrir flutningsráðleggingu.",
     routeHazardBlockerConsider: "Dagur með slæmu veðri veikir þessa ráðleggingu.",
@@ -636,14 +651,14 @@ export const routePlannerTranslations = {
     routeStateStay: "Vera áfram",
     routeStateConsider: "Íhuga að færa sig",
     routeStateBetterNearby: "Betra veður í nágrenninu",
-    routeStateFewerWarningsNearby: "Færri veðurviðvaranir í nágrenninu",
+    routeStateFewerWarningsNearby: "Færri varúðarmerkingar í nágrenninu",
 
     routeStateMoveDescription: "Nálægt tjaldsvæði lítur betur út fyrir valda daga.",
     routeStateStayDescription: "Þetta tjaldsvæði er enn einn betri kosturinn í nágrenninu.",
     routeStateConsiderDescription:
       "Veðrið gæti verið aðeins betra í nágrenninu, en ekki nóg til að mæla með að færa sig.",
     routeStateBetterNearbyDescription: "Veðrið í nágrenninu virðist rólegra eða þurrara hluta dvalarinnar.",
-    routeStateFewerWarningsNearbyDescription: "Nálæg tjaldsvæði sýna færri erfiðar veðurviðvaranir.",
+    routeStateFewerWarningsNearbyDescription: "Nálæg tjaldsvæði sýna færri eigin varúðarmerkingar vegna veðurs.",
 
     routePainMoveHeadline: "Af hverju skiptir þetta máli",
     routePainMoveBody: "Að færa sig gæti hjálpað þér að forðast versta veðrið.",

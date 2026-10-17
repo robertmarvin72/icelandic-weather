@@ -1,5 +1,7 @@
 // src/components/RouteCompareTable.jsx
 import React, { useMemo } from "react";
+import { CircleAlert, TriangleAlert } from "lucide-react";
+import HazardSourceNote from "./HazardSourceNote";
 
 // ---------- helpers ----------
 function fmtDateShort(dateISO, lang) {
@@ -142,24 +144,20 @@ function pillClassByKey(k) {
   return "bg-slate-50 text-slate-800 border-slate-200 dark:bg-slate-900/40 dark:text-slate-200 dark:border-slate-700";
 }
 
-function severityIcon(level) {
-  if (level === "high") return "🚨";
-  if (level === "warn") return "⚠️";
-  return null; // ✅ no "•"
-}
-
 function SeverityBadge({ level, title }) {
-  const icon = severityIcon(level);
-  if (!icon) return null; // ✅ show nothing when no warnings
+  if (level !== "high" && level !== "warn") return null; // show nothing when no caution
 
   const isHigh = level === "high";
+  const Icon = isHigh ? TriangleAlert : CircleAlert;
 
   return (
     <span
+      role="img"
       title={title}
+      aria-label={title}
       className={[
         "inline-flex items-center justify-center rounded-full leading-none select-none",
-        isHigh ? "w-[20px] h-[20px] text-[12px]" : "w-[18px] h-[18px] text-[12px]",
+        isHigh ? "w-[20px] h-[20px]" : "w-[18px] h-[18px]",
         "bg-white/95 dark:bg-slate-50/90",
         isHigh
           ? "ring-2 ring-rose-500 dark:ring-rose-400"
@@ -168,15 +166,15 @@ function SeverityBadge({ level, title }) {
           ? "shadow-sm drop-shadow-[0_0_10px_rgba(244,63,94,0.50)]"
           : "shadow-sm drop-shadow-[0_0_2px_rgba(245,158,11,0.14)]",
       ].join(" ")}
-      aria-label={title}
     >
-      {icon}
+      <Icon aria-hidden="true" size={isHigh ? 13 : 11} className={isHigh ? "text-rose-600 dark:text-rose-500" : "text-amber-600 dark:text-amber-500"} />
     </span>
   );
 }
 
 function WarningChip({ level, label }) {
   const isHigh = level === "high";
+  const Icon = isHigh ? TriangleAlert : CircleAlert;
 
   const cls = isHigh
     ? "bg-rose-50 text-rose-900 border-rose-200 dark:bg-rose-950/35 dark:text-rose-100 dark:border-rose-900/40"
@@ -188,9 +186,8 @@ function WarningChip({ level, label }) {
         "inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-[11px] font-semibold",
         cls,
       ].join(" ")}
-      title={label}
     >
-      <span aria-hidden>{isHigh ? "🚨" : "⚠️"}</span>
+      <Icon aria-hidden="true" size={11} />
       <span className="opacity-90">{label}</span>
     </span>
   );
@@ -221,6 +218,11 @@ export default function RouteCompareTable({
   windowDays = [],
   windowDaysCount = 3,
   showScoreDelta = true,
+  // #436 F2: when a host (currently RoutePlannerDetailsModal) already
+  // renders one HazardSourceNote for this table, it passes this to skip
+  // the table's own — standalone usage (e.g. the modal's Brochure demo, or
+  // any future direct mount) keeps rendering its own single note.
+  hostProvidesNote = false,
 }) {
   const rows = useMemo(() => {
     const days = Array.isArray(windowDays) ? windowDays.slice(0, windowDaysCount) : [];
@@ -298,10 +300,17 @@ export default function RouteCompareTable({
     });
   }, [windowDays, windowDaysCount, lang, t]);
 
-  const noWarnLabel = t("routeCompareNoWarnings") || "No warnings";
+  const noWarnLabel = t("routeCompareNoWarnings") || "No caution indicators in this assessment";
 
   return (
-    <div className="overflow-hidden rounded-xl border border-slate-200 dark:border-slate-700">
+    <div>
+      {/* #436 F2: standalone usage always renders its own single note
+          (including the empty/no-caution state, which the note's wording
+          helps explain); a host that already renders one for this table
+          passes hostProvidesNote to avoid a duplicate. */}
+      {!hostProvidesNote && <HazardSourceNote t={t} className="mb-3" />}
+
+      <div className="overflow-hidden rounded-xl border border-slate-200 dark:border-slate-700">
       <div className="overflow-x-auto">
         <table className="w-full text-left text-sm">
           <thead className="bg-slate-50 dark:bg-slate-900/70">
@@ -336,38 +345,24 @@ export default function RouteCompareTable({
                       level={r.baseLevel}
                       title={
                         r.baseLevel === "high"
-                          ? t("routeWarningHigh") || "Dangerous weather"
+                          ? t("routeWarningHigh") || "Challenging weather conditions"
                           : r.baseLevel === "warn"
-                            ? t("routeWarning") || "Weather warning"
+                            ? t("routeWarning") || "Weather caution"
                             : ""
                       }
                     />
 
-                    {/* ✅ if base has warnings -> chips, else show grey "No warnings" chip */}
+                    {/* #436 F8/F10: render ALL chips, wrapping normally —
+                        no "+N" title-only overflow widget. */}
                     {r.baseChips.length > 0 ? (
                       <div className="flex flex-wrap items-center gap-1">
-                        {r.baseChips.slice(0, 2).map((c, idx) => (
+                        {r.baseChips.map((c, idx) => (
                           <WarningChip
                             key={`${r.dateISO}:base:${idx}:${c.label}`}
                             level={c.level}
                             label={c.label}
                           />
                         ))}
-                        {r.baseChips.length > 2 ? (
-                          <span
-                            className="
-                              inline-flex items-center rounded-full
-                              border border-slate-200 dark:border-slate-700
-                              bg-slate-50 text-slate-700 dark:bg-slate-900/40 dark:text-slate-200
-                              px-2 py-0.5 text-[11px] font-semibold
-                            "
-                            title={r.baseChips
-                              .map((x) => `${x.level === "high" ? "🚨" : "⚠️"} ${x.label}`)
-                              .join("\n")}
-                          >
-                            +{r.baseChips.length - 2}
-                          </span>
-                        ) : null}
                       </div>
                     ) : (
                       <NoWarningsChip label={noWarnLabel} />
@@ -389,50 +384,22 @@ export default function RouteCompareTable({
                       level={r.candLevel}
                       title={
                         r.candLevel === "high"
-                          ? t("routeWarningHigh") || "Dangerous weather"
+                          ? t("routeWarningHigh") || "Challenging weather conditions"
                           : r.candLevel === "warn"
-                            ? t("routeWarning") || "Weather warning"
+                            ? t("routeWarning") || "Weather caution"
                             : ""
                       }
                     />
 
                     {r.candChips.length > 0 ? (
                       <div className="ml-1 flex flex-wrap items-center gap-1">
-                        {(() => {
-                          const shown = r.candChips.slice(0, 2);
-                          const more = r.candChips.length - shown.length;
-
-                          const tooltip = r.candChips
-                            .map((x) => `${x.level === "high" ? "🚨" : "⚠️"} ${x.label}`)
-                            .join("\n");
-
-                          return (
-                            <>
-                              {shown.map((c, idx) => (
-                                <WarningChip
-                                  key={`${r.dateISO}:cand:${idx}:${c.label}`}
-                                  level={c.level}
-                                  label={c.label}
-                                />
-                              ))}
-
-                              {more > 0 ? (
-                                <span
-                                  className="
-                                    inline-flex items-center rounded-full
-                                    border border-slate-200 dark:border-slate-700
-                                    bg-slate-50 text-slate-700 dark:bg-slate-900/40 dark:text-slate-200
-                                    px-2 py-0.5 text-[11px] font-semibold
-                                  "
-                                  title={tooltip}
-                                  aria-label={tooltip}
-                                >
-                                  +{more}
-                                </span>
-                              ) : null}
-                            </>
-                          );
-                        })()}
+                        {r.candChips.map((c, idx) => (
+                          <WarningChip
+                            key={`${r.dateISO}:cand:${idx}:${c.label}`}
+                            level={c.level}
+                            label={c.label}
+                          />
+                        ))}
                       </div>
                     ) : (
                       <NoWarningsChip label={noWarnLabel} />
@@ -484,6 +451,7 @@ export default function RouteCompareTable({
             ))}
           </tbody>
         </table>
+      </div>
       </div>
     </div>
   );

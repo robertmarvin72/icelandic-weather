@@ -1,11 +1,16 @@
 import React, { useEffect, useMemo, useState } from "react";
+import { CircleAlert, TriangleAlert } from "lucide-react";
 import LoadingShimmer from "./LoadingShimmer";
 import { WeatherIcon } from "./WeatherIcon";
 import { resolveWeatherPresentation, WEATHER_FAMILIES } from "../lib/weatherPresentation";
 import ScoreExplanation from "./ScoreExplanation";
+import CautionIndicator from "./CautionIndicator";
+import HazardSourceNote from "./HazardSourceNote";
 import { getSiteAvailability } from "../config/availability";
 import { HAZARDS_V1 } from "../config/hazards";
 import { getPrecipitationLabel } from "../utils/precipitation";
+import { cautionLevelLabel } from "../lib/cautionLabel";
+import { getWarningTypeLabel } from "./routePlannerDetailsHelpers";
 
 import {
   convertTemp,
@@ -72,6 +77,22 @@ function rowHasWarning(warnings) {
   return Array.isArray(warnings) && warnings.some((w) => w?.level === "warn");
 }
 
+// Ticket #436 F1/D3: same warnings array that decided hasHigh/hasWarn above
+// — label and reasons can never disagree. High wins exactly as before;
+// reasons are the unique warning TYPE labels at that same level, never raw
+// values/units, never a fabricated cause when none exist.
+function rowCautionLevelAndReasons(warnings) {
+  if (!Array.isArray(warnings) || warnings.length === 0) return { level: null, types: [] };
+  const level = warnings.some((w) => w?.level === "high")
+    ? "high"
+    : warnings.some((w) => w?.level === "warn")
+      ? "warn"
+      : null;
+  if (!level) return { level: null, types: [] };
+  const types = [...new Set(warnings.filter((w) => w?.level === level).map((w) => w.type))];
+  return { level, types };
+}
+
 export default function ForecastTable({
   site,
   userLoc,
@@ -136,6 +157,14 @@ export default function ForecastTable({
     const tt = setTimeout(() => setAnimateHighHazards(false), 6000);
     return () => clearTimeout(tt);
   }, [site?.id]);
+
+  // Ticket #436 F2: the source note shows once inside the opened details
+  // panel, only when at least one DISPLAYED row actually has a caution —
+  // never a floating note while loading/error/collapsed/no indicators.
+  const anyRowHasCaution = useMemo(
+    () => Array.isArray(rows) && rows.some((r) => computeWarningsFromRow(r).length > 0),
+    [rows]
+  );
 
   // UX Miði #376 — supporting-detail disclosure. Presentation-only: every hook
   // above this line runs unconditionally, same as before this change, so
@@ -288,6 +317,19 @@ export default function ForecastTable({
                   const warnings = computeWarningsFromRow(r);
                   const hasHigh = rowHasHighWarning(warnings);
                   const hasWarn = rowHasWarning(warnings);
+                  // Ticket #436 D3: same `warnings` array hasHigh/hasWarn
+                  // already used — label and reasons can never disagree.
+                  const { level: cautionLevel, types: cautionTypes } =
+                    rowCautionLevelAndReasons(warnings);
+                  const cautionReasonLabels = cautionTypes.map((ty) => getWarningTypeLabel(ty, t));
+                  // D5: the prefix below is byte-identical to the original
+                  // for a row with no caution (empty suffix) — existing
+                  // tests match /^day Day \d/ and /^day/i against it.
+                  const ariaLabelSuffix = cautionLevel
+                    ? ` · ${cautionLevelLabel(cautionLevel, t)}${
+                        cautionReasonLabels.length ? `: ${cautionReasonLabels.join(", ")}` : ""
+                      }`
+                    : "";
 
                   return (
                     <tr
@@ -301,7 +343,7 @@ export default function ForecastTable({
                       }}
                       tabIndex={0}
                       role="button"
-                      aria-label={`${t?.("day") ?? "Day"} ${r.dayLabel}`}
+                      aria-label={`${t?.("day") ?? "Day"} ${r.dayLabel}${ariaLabelSuffix}`}
                       className={`
                         border-b last:border-0 border-slate-100 dark:border-slate-800
                         hover:bg-sky-50/50 dark:hover:bg-slate-800/60
@@ -395,18 +437,15 @@ export default function ForecastTable({
                                 }
                                 ${hasHigh && animateHighHazards ? "hazard-glow" : ""}
                               `}
-                              title={
-                                hasHigh
-                                  ? t?.("routeWarningHigh") || "Dangerous weather"
-                                  : t?.("routeWarning") || "Weather warning"
-                              }
-                              aria-label={
-                                hasHigh
-                                  ? t?.("routeWarningHigh") || "Dangerous weather"
-                                  : t?.("routeWarning") || "Weather warning"
-                              }
                             >
-                              {hasHigh ? "🚨" : "⚠️"}
+                              {/* #436 F1: decorative — the row's aria-label
+                                  and the visible reason line below already
+                                  carry the accessible text, never title-only. */}
+                              {hasHigh ? (
+                                <TriangleAlert aria-hidden="true" size={11} className="text-rose-600 dark:text-rose-500" />
+                              ) : (
+                                <CircleAlert aria-hidden="true" size={11} className="text-amber-600 dark:text-amber-500" />
+                              )}
                             </span>
                           )}
                         </span>
@@ -448,6 +487,23 @@ export default function ForecastTable({
 
                           return label || base;
                         })()}
+
+                        {/* Ticket #436 F1/D5: a separate element AFTER the
+                            summary IIFE above — summaryTextKey early return
+                            and the precipitation caption logic are
+                            untouched. Visible short line: severity label
+                            plus the available reason TYPE labels, no raw
+                            values/units. */}
+                        {cautionLevel && (
+                          <div className="mt-0.5">
+                            <CautionIndicator
+                              level={cautionLevel}
+                              t={t}
+                              reasons={cautionReasonLabels}
+                              className="text-[11px]"
+                            />
+                          </div>
+                        )}
                       </td>
 
                       <td className="py-2 pr-3 whitespace-nowrap font-medium">{r.dayLabel}</td>
@@ -499,6 +555,15 @@ export default function ForecastTable({
 
           {/* Map slot */}
           {mapSlot}
+        </div>
+      )}
+
+      {/* Ticket #436 F2: once inside the opened panel, only when the
+          rendered table actually has at least one row with a caution —
+          never while loading/error/no indicators. */}
+      {!loading && !error && anyRowHasCaution && (
+        <div className="mt-3">
+          <HazardSourceNote t={t} />
         </div>
       )}
 

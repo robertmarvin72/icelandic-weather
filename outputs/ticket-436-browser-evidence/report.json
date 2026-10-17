@@ -1,0 +1,402 @@
+[
+  {
+    "tag": "en-light-1280",
+    "shots": [
+      "en-light-1280-01-forecasttable-collapsed.png",
+      "en-light-1280-02-forecasttable-open.png",
+      "en-light-1280-03-routeplannercard-expanded.png",
+      "en-light-1280-04-routeplannercard-reason-open.png",
+      "en-light-1280-05-detailsmodal-advanced.png"
+    ],
+    "checks": {
+      "noteAbsentCollapsed": true,
+      "forecastNoteCount": 1,
+      "forecastHighIconCount": 2,
+      "forecastWarnIconCount": 8,
+      "vedurLinkCount": 1,
+      "vedurLinkTarget": "_blank",
+      "vedurLinkRel": "noopener noreferrer",
+      "vedurLinkHref": "https://www.vedur.is/",
+      "vedurLinkContrast": {
+        "color": "oklch(0.5 0.134 242.749)",
+        "backgroundColor": "oklab(0.984 -0.00113071 -0.00277876 / 0.7)",
+        "fontSize": "12px",
+        "ratio": 5.562432059405164
+      },
+      "overflowAfterForecastOpen": {
+        "docWidth": 1280,
+        "scrollWidth": 1280
+      },
+      "rpcNoteCount": 2,
+      "inlineBadgeCount": 13,
+      "modalOpened": true,
+      "openDetailsBtnCount": 1,
+      "modalNoteCount": 3,
+      "modalCarIconCount": 4,
+      "modalNoteCountAfterAdvancedOpen": 3,
+      "modalAdvancedHighIconCount": 10,
+      "overflowFinal": {
+        "docWidth": 1280,
+        "scrollWidth": 1280
+      },
+      "nestedInteractive": {
+        "violations": 0,
+        "offenders": []
+      }
+    },
+    "consoleErrors": [
+      "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "Failed to load resource: the server responded with a status of 404 (Not Found)"
+    ]
+  },
+  {
+    "tag": "en-dark-1280",
+    "shots": [
+      "en-dark-1280-01-forecasttable-collapsed.png",
+      "en-dark-1280-02-forecasttable-open.png",
+      "en-dark-1280-03-routeplannercard-expanded.png",
+      "en-dark-1280-04-routeplannercard-reason-open.png",
+      "en-dark-1280-05-detailsmodal-advanced.png"
+    ],
+    "checks": {
+      "noteAbsentCollapsed": true,
+      "forecastNoteCount": 1,
+      "forecastHighIconCount": 2,
+      "forecastWarnIconCount": 8,
+      "vedurLinkCount": 1,
+      "vedurLinkTarget": "_blank",
+      "vedurLinkRel": "noopener noreferrer",
+      "vedurLinkHref": "https://www.vedur.is/",
+      "vedurLinkContrast": {
+        "color": "oklch(0.828 0.111 230.318)",
+        "backgroundColor": "oklab(0.208 -0.00310889 -0.0418848 / 0.4)",
+        "fontSize": "12px",
+        "ratio": 10.786391969999183
+      },
+      "overflowAfterForecastOpen": {
+        "docWidth": 1280,
+        "scrollWidth": 1280
+      },
+      "rpcNoteCount": 2,
+      "inlineBadgeCount": 13,
+      "modalOpened": true,
+      "openDetailsBtnCount": 1,
+      "modalNoteCount": 3,
+      "modalCarIconCount": 4,
+      "modalNoteCountAfterAdvancedOpen": 3,
+      "modalAdvancedHighIconCount": 10,
+      "overflowFinal": {
+        "docWidth": 1280,
+        "scrollWidth": 1280
+      },
+      "nestedInteractive": {
+        "violations": 0,
+        "offenders": []
+      }
+    },
+    "consoleErrors": [
+      "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "Failed to load resource: the server responded with a status of 404 (Not Found)"
+    ]
+  },
+  {
+    "tag": "is-light-1280",
+    "shots": [
+      "is-light-1280-01-forecasttable-collapsed.png",
+      "is-light-1280-02-forecasttable-open.png",
+      "is-light-1280-03-routeplannercard-expanded.png",
+      "is-light-1280-04-routeplannercard-reason-open.png",
+      "is-light-1280-05-detailsmodal-advanced.png"
+    ],
+    "checks": {
+      "noteAbsentCollapsed": true,
+      "forecastNoteCount": 1,
+      "forecastHighIconCount": 2,
+      "forecastWarnIconCount": 8,
+      "vedurLinkCount": 1,
+      "vedurLinkTarget": "_blank",
+      "vedurLinkRel": "noopener noreferrer",
+      "vedurLinkHref": "https://www.vedur.is/",
+      "vedurLinkContrast": {
+        "color": "oklch(0.5 0.134 242.749)",
+        "backgroundColor": "oklab(0.984 -0.00113071 -0.00277876 / 0.7)",
+        "fontSize": "12px",
+        "ratio": 5.562432059405164
+      },
+      "overflowAfterForecastOpen": {
+        "docWidth": 1280,
+        "scrollWidth": 1280
+      },
+      "rpcNoteCount": 2,
+      "inlineBadgeCount": 13,
+      "modalOpened": true,
+      "openDetailsBtnCount": 1,
+      "modalNoteCount": 3,
+      "modalCarIconCount": 4,
+      "modalNoteCountAfterAdvancedOpen": 3,
+      "modalAdvancedHighIconCount": 10,
+      "overflowFinal": {
+        "docWidth": 1280,
+        "scrollWidth": 1280
+      },
+      "nestedInteractive": {
+        "violations": 0,
+        "offenders": []
+      }
+    },
+    "consoleErrors": [
+      "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "Failed to load resource: the server responded with a status of 404 (Not Found)"
+    ]
+  },
+  {
+    "tag": "is-dark-1280",
+    "shots": [
+      "is-dark-1280-01-forecasttable-collapsed.png",
+      "is-dark-1280-02-forecasttable-open.png",
+      "is-dark-1280-03-routeplannercard-expanded.png",
+      "is-dark-1280-04-routeplannercard-reason-open.png",
+      "is-dark-1280-05-detailsmodal-advanced.png"
+    ],
+    "checks": {
+      "noteAbsentCollapsed": true,
+      "forecastNoteCount": 1,
+      "forecastHighIconCount": 2,
+      "forecastWarnIconCount": 8,
+      "vedurLinkCount": 1,
+      "vedurLinkTarget": "_blank",
+      "vedurLinkRel": "noopener noreferrer",
+      "vedurLinkHref": "https://www.vedur.is/",
+      "vedurLinkContrast": {
+        "color": "oklch(0.828 0.111 230.318)",
+        "backgroundColor": "oklab(0.208 -0.00310889 -0.0418848 / 0.4)",
+        "fontSize": "12px",
+        "ratio": 10.786391969999183
+      },
+      "overflowAfterForecastOpen": {
+        "docWidth": 1280,
+        "scrollWidth": 1280
+      },
+      "rpcNoteCount": 2,
+      "inlineBadgeCount": 13,
+      "modalOpened": true,
+      "openDetailsBtnCount": 1,
+      "modalNoteCount": 3,
+      "modalCarIconCount": 4,
+      "modalNoteCountAfterAdvancedOpen": 3,
+      "modalAdvancedHighIconCount": 10,
+      "overflowFinal": {
+        "docWidth": 1280,
+        "scrollWidth": 1280
+      },
+      "nestedInteractive": {
+        "violations": 0,
+        "offenders": []
+      }
+    },
+    "consoleErrors": [
+      "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "Failed to load resource: the server responded with a status of 404 (Not Found)"
+    ]
+  },
+  {
+    "tag": "en-light-320",
+    "shots": [
+      "en-light-320-01-forecasttable-collapsed.png",
+      "en-light-320-02-forecasttable-open.png",
+      "en-light-320-03-routeplannercard-expanded.png",
+      "en-light-320-04-routeplannercard-reason-open.png",
+      "en-light-320-05-detailsmodal-advanced.png"
+    ],
+    "checks": {
+      "noteAbsentCollapsed": true,
+      "forecastNoteCount": 1,
+      "forecastHighIconCount": 2,
+      "forecastWarnIconCount": 8,
+      "vedurLinkCount": 1,
+      "vedurLinkTarget": "_blank",
+      "vedurLinkRel": "noopener noreferrer",
+      "vedurLinkHref": "https://www.vedur.is/",
+      "vedurLinkContrast": {
+        "color": "oklch(0.5 0.134 242.749)",
+        "backgroundColor": "oklab(0.984 -0.00113071 -0.00277876 / 0.7)",
+        "fontSize": "12px",
+        "ratio": 5.562432059405164
+      },
+      "overflowAfterForecastOpen": {
+        "docWidth": 320,
+        "scrollWidth": 527
+      },
+      "rpcNoteCount": 2,
+      "inlineBadgeCount": 13,
+      "modalOpened": true,
+      "openDetailsBtnCount": 1,
+      "modalNoteCount": 3,
+      "modalCarIconCount": 4,
+      "modalNoteCountAfterAdvancedOpen": 3,
+      "modalAdvancedHighIconCount": 10,
+      "overflowFinal": {
+        "docWidth": 320,
+        "scrollWidth": 527
+      },
+      "nestedInteractive": {
+        "violations": 0,
+        "offenders": []
+      }
+    },
+    "consoleErrors": [
+      "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "Failed to load resource: the server responded with a status of 404 (Not Found)"
+    ]
+  },
+  {
+    "tag": "en-dark-320",
+    "shots": [
+      "en-dark-320-01-forecasttable-collapsed.png",
+      "en-dark-320-02-forecasttable-open.png",
+      "en-dark-320-03-routeplannercard-expanded.png",
+      "en-dark-320-04-routeplannercard-reason-open.png",
+      "en-dark-320-05-detailsmodal-advanced.png"
+    ],
+    "checks": {
+      "noteAbsentCollapsed": true,
+      "forecastNoteCount": 1,
+      "forecastHighIconCount": 2,
+      "forecastWarnIconCount": 8,
+      "vedurLinkCount": 1,
+      "vedurLinkTarget": "_blank",
+      "vedurLinkRel": "noopener noreferrer",
+      "vedurLinkHref": "https://www.vedur.is/",
+      "vedurLinkContrast": {
+        "color": "oklch(0.828 0.111 230.318)",
+        "backgroundColor": "oklab(0.208 -0.00310889 -0.0418848 / 0.4)",
+        "fontSize": "12px",
+        "ratio": 10.786391969999183
+      },
+      "overflowAfterForecastOpen": {
+        "docWidth": 320,
+        "scrollWidth": 527
+      },
+      "rpcNoteCount": 2,
+      "inlineBadgeCount": 13,
+      "modalOpened": true,
+      "openDetailsBtnCount": 1,
+      "modalNoteCount": 3,
+      "modalCarIconCount": 4,
+      "modalNoteCountAfterAdvancedOpen": 3,
+      "modalAdvancedHighIconCount": 10,
+      "overflowFinal": {
+        "docWidth": 320,
+        "scrollWidth": 527
+      },
+      "nestedInteractive": {
+        "violations": 0,
+        "offenders": []
+      }
+    },
+    "consoleErrors": [
+      "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "Failed to load resource: the server responded with a status of 404 (Not Found)"
+    ]
+  },
+  {
+    "tag": "is-light-320",
+    "shots": [
+      "is-light-320-01-forecasttable-collapsed.png",
+      "is-light-320-02-forecasttable-open.png",
+      "is-light-320-03-routeplannercard-expanded.png",
+      "is-light-320-04-routeplannercard-reason-open.png",
+      "is-light-320-05-detailsmodal-advanced.png"
+    ],
+    "checks": {
+      "noteAbsentCollapsed": true,
+      "forecastNoteCount": 1,
+      "forecastHighIconCount": 2,
+      "forecastWarnIconCount": 8,
+      "vedurLinkCount": 1,
+      "vedurLinkTarget": "_blank",
+      "vedurLinkRel": "noopener noreferrer",
+      "vedurLinkHref": "https://www.vedur.is/",
+      "vedurLinkContrast": {
+        "color": "oklch(0.5 0.134 242.749)",
+        "backgroundColor": "oklab(0.984 -0.00113071 -0.00277876 / 0.7)",
+        "fontSize": "12px",
+        "ratio": 5.562432059405164
+      },
+      "overflowAfterForecastOpen": {
+        "docWidth": 320,
+        "scrollWidth": 578
+      },
+      "rpcNoteCount": 2,
+      "inlineBadgeCount": 13,
+      "modalOpened": true,
+      "openDetailsBtnCount": 1,
+      "modalNoteCount": 3,
+      "modalCarIconCount": 4,
+      "modalNoteCountAfterAdvancedOpen": 3,
+      "modalAdvancedHighIconCount": 10,
+      "overflowFinal": {
+        "docWidth": 320,
+        "scrollWidth": 578
+      },
+      "nestedInteractive": {
+        "violations": 0,
+        "offenders": []
+      }
+    },
+    "consoleErrors": [
+      "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "Failed to load resource: the server responded with a status of 404 (Not Found)"
+    ]
+  },
+  {
+    "tag": "is-dark-320",
+    "shots": [
+      "is-dark-320-01-forecasttable-collapsed.png",
+      "is-dark-320-02-forecasttable-open.png",
+      "is-dark-320-03-routeplannercard-expanded.png",
+      "is-dark-320-04-routeplannercard-reason-open.png",
+      "is-dark-320-05-detailsmodal-advanced.png"
+    ],
+    "checks": {
+      "noteAbsentCollapsed": true,
+      "forecastNoteCount": 1,
+      "forecastHighIconCount": 2,
+      "forecastWarnIconCount": 8,
+      "vedurLinkCount": 1,
+      "vedurLinkTarget": "_blank",
+      "vedurLinkRel": "noopener noreferrer",
+      "vedurLinkHref": "https://www.vedur.is/",
+      "vedurLinkContrast": {
+        "color": "oklch(0.828 0.111 230.318)",
+        "backgroundColor": "oklab(0.208 -0.00310889 -0.0418848 / 0.4)",
+        "fontSize": "12px",
+        "ratio": 10.786391969999183
+      },
+      "overflowAfterForecastOpen": {
+        "docWidth": 320,
+        "scrollWidth": 578
+      },
+      "rpcNoteCount": 2,
+      "inlineBadgeCount": 13,
+      "modalOpened": true,
+      "openDetailsBtnCount": 1,
+      "modalNoteCount": 3,
+      "modalCarIconCount": 4,
+      "modalNoteCountAfterAdvancedOpen": 3,
+      "modalAdvancedHighIconCount": 10,
+      "overflowFinal": {
+        "docWidth": 320,
+        "scrollWidth": 578
+      },
+      "nestedInteractive": {
+        "violations": 0,
+        "offenders": []
+      }
+    },
+    "consoleErrors": [
+      "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "Failed to load resource: the server responded with a status of 404 (Not Found)"
+    ]
+  }
+]

@@ -1,20 +1,21 @@
+// Ticket #436 F4 — narrow exception: only the 🚨/⚠️ emoji prefixes are
+// removed below (own-assessment text must not look like an official alert).
+// Branches, interpolation and the translated sentence text are unchanged.
 export function getHazardBlockText(candidateRow, t) {
   if (!candidateRow?.hazardBlocked) return null;
 
   if (candidateRow?.hazardBlockMode === "stay") {
-    return `🚨 ${
+    return (
       t("routeHazardBlockerStay") ||
       "Veðuráhætta á einum degi kemur í veg fyrir flutningsráðleggingu."
-    }`;
+    );
   }
 
   if (candidateRow?.hazardBlockMode === "consider") {
-    return `⚠️ ${
-      t("routeHazardBlockerConsider") || "Veðuráhætta á einum degi dregur úr ráðleggingu."
-    }`;
+    return t("routeHazardBlockerConsider") || "Veðuráhætta á einum degi dregur úr ráðleggingu.";
   }
 
-  return `⚠️ ${t("routeHazardBlockerShort") || "Hazard dagur veikti niðurstöðu."}`;
+  return t("routeHazardBlockerShort") || "Hazard dagur veikti niðurstöðu.";
 }
 
 export function getStayReasonText(candidateRow, decisionLower, t) {
