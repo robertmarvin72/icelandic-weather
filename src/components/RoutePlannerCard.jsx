@@ -845,10 +845,17 @@ export default function RoutePlannerCard({
     }
   }
 
-  // toneLower defaults to the raw engine verdict (used by the details modal,
-  // which is Pro-only and shows a specific candidate's own detail regardless
-  // of the card-level tone). The main verdict block passes displayDecisionLower
-  // explicitly so the escape suggestion never contradicts the headline tone.
+  // Ticket #441: both callers (the main verdict block and the details
+  // modal) now pass displayDecisionLower explicitly, so the escape
+  // suggestion's eligibility always follows the same canonical card-level
+  // gate the headline uses — it can no longer urge relocation while the
+  // headline reads "stay". This is a shared gate, not a per-candidate
+  // recommendation: candidateRow's own fields (destination, warning ranks,
+  // delta qualification, weather window) still describe whichever
+  // candidate's details are open, even when that candidate isn't `best`.
+  // toneLower's default stays the raw engine verdict only as a fallback for
+  // a future caller that forgets to pass it explicitly — any new call site
+  // must pass displayDecisionLower, not rely on this default.
   function getEscapeSuggestion(candidateRow, toneLower = decisionLower) {
     if (!candidateRow) return null;
     if (!["move", "consider"].includes(toneLower)) return null;
@@ -1618,7 +1625,9 @@ export default function RoutePlannerCard({
         windowDaysCount={effectiveWindowDays}
         adaptiveUsedKm={adaptiveUsedKm}
         adaptiveMaxKm={adaptiveMaxKm}
-        escapeSuggestion={detailsCandidate ? getEscapeSuggestion(detailsCandidate) : null}
+        escapeSuggestion={
+          detailsCandidate ? getEscapeSuggestion(detailsCandidate, displayDecisionLower) : null
+        }
         routeRiskData={routeRiskData}
         showRouteRisk={isDetailsBestCandidate}
       />
