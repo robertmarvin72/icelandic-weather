@@ -116,4 +116,37 @@ describe("useAuroraDecision — retry", () => {
     act(() => result.current.retry());
     await waitFor(() => expect(fetchImpl).toHaveBeenCalledTimes(2));
   });
+
+  // Ticket #452 (N6) — a mocked "old" (over-flagged, pre-fix-equivalent)
+  // decision resolved first and bound to this hook's state; an explicit
+  // retry must bypass the module-level cache (not merely wait out the TTL)
+  // and surface the corrected body. Never fabricates a "calm" result —
+  // the component actually receives the different, corrected payload.
+  it("surfaces a corrected decision after explicit retry, replacing a previously-cached over-flagged one", async () => {
+    const oldBody = {
+      ok: true,
+      status: "success",
+      best: { locationId: "a", name: "A", score: 70, band: "good", reasons: [], flags: ["high_wind"] },
+    };
+    const correctedBody = {
+      ok: true,
+      status: "success",
+      best: { locationId: "a", name: "A", score: 70, band: "good", reasons: [], flags: [] },
+    };
+    const fetchImpl = vi
+      .fn()
+      .mockResolvedValueOnce(jsonResponse(oldBody))
+      .mockResolvedValueOnce(jsonResponse(correctedBody));
+
+    const { result } = renderHook(() =>
+      useAuroraDecision({ enabled: true, evening: "2026-09-01", locationIds: ["a"], fetchImpl }),
+    );
+    await waitFor(() => expect(result.current.status).toBe("resolved"));
+    expect(result.current.outcome.body.best.flags).toContain("high_wind");
+
+    act(() => result.current.retry());
+    await waitFor(() => expect(fetchImpl).toHaveBeenCalledTimes(2));
+    await waitFor(() => expect(result.current.outcome.body.best.flags).not.toContain("high_wind"));
+    expect(result.current.outcome.body.best.score).toBe(70); // score/band unaffected by the correction
+  });
 });

@@ -1,0 +1,8 @@
+HTTP/1.1 200 OK
+Content-Type: application/json
+Date: Mon, 19 Oct 2026 18:10:46 GMT
+Vary: Accept-Encoding
+Via: 2.0 Caddy
+X-Request-Id: f112b19f-0d20-4947-91c2-f3bb4bc71d0f
+Transfer-Encoding: chunked
+

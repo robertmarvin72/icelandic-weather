@@ -1,0 +1,24 @@
+Total stations in catalogue: 778
+Active (ending=null) stations: 343
+
+Keflavíkurflugvöllur (sea level/coast) (63.9828987122, -22.6005191803)
+  nearest active station: Keflavíkurflugvöllur (IMO 1350, type=sj, ele=50.9000015259m, start=2008) at (63.9828987122, -22.6005191803)
+  haversine distance: 0.00 km
+  elevation difference (point has no cited source elevation for 3 of 4 points -- see J5): station ele=50.9000015259m
+
+Ísafjörður (narrow fjord) (66.075, -23.12)
+  nearest active station: Ísafjörður - vindur (IMO 2642, type=sj, ele=2.2000000477m, start=1998) at (66.0596313477, -23.1699295044)
+  haversine distance: 2.83 km
+  elevation difference (point has no cited source elevation for 3 of 4 points -- see J5): station ele=2.2000000477m
+
+Hveravellir (highland) (64.8667, -19.5667)
+  nearest active station: Hveravellir (IMO 6935, type=sj, ele=641m, start=1996) at (64.8667526245, -19.5622196198)
+  haversine distance: 0.21 km
+  elevation difference (point has no cited source elevation for 3 of 4 points -- see J5): station ele=641m
+
+Egilsstaðir (distinct region) (65.2669, -14.3948)
+  nearest active station: Egilsstaðaflugvöllur (IMO 4271, type=sj, ele=23.5m, start=1998) at (65.2761764526, -14.4046001434)
+  haversine distance: 1.13 km
+  elevation difference (point has no cited source elevation for 3 of 4 points -- see J5): station ele=23.5m
+
+Method: haversine (great-circle) distance on a spherical Earth, R=6371.0088 km. This ignores road/terrain distance and elevation difference in the horizontal distance figure. Representativeness limits: nearest-by-straight-line-distance does not account for sheltering terrain, fjord-wall effects, elevation difference, or instrument siting (unknown for both the station and the research point) -- see research-report.md J4 disposition for the full caveat.

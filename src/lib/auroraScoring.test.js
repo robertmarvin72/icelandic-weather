@@ -334,6 +334,62 @@ describe("high wind", () => {
     expect(highWind.flags).toContain("high_wind");
     expect(calmWind.flags).not.toContain("high_wind");
   });
+
+  // Ticket #452 (N4) — exact HIGH_WIND_MS_THRESHOLD boundary, scorer unchanged.
+  it("flags at exactly the 12 m/s threshold and just above, not just below", () => {
+    function scoreAtWind(windSpeed) {
+      return scoreAuroraVisibility({
+        night: baseNight({ auroraActivity: 9 }),
+        hourlyRows: baseHourlyRows({ cloudTotal: 40, windSpeed }),
+        viewingWindow: WIDE_VIEWING_WINDOW,
+      });
+    }
+    const below = scoreAtWind(11.9);
+    const at = scoreAtWind(12);
+    const above = scoreAtWind(12.1);
+
+    expect(below.flags).not.toContain("high_wind");
+    expect(at.flags).toContain("high_wind");
+    expect(above.flags).toContain("high_wind");
+
+    // Identical non-wind inputs (cloud/activity) -> identical score/band at every boundary point.
+    expect(at.score).toBe(below.score);
+    expect(above.score).toBe(below.score);
+    expect(at.band).toBe(below.band);
+    expect(above.band).toBe(below.band);
+  });
+
+  it("flags from the MAXIMUM wind in the window, even if only one hour is high", () => {
+    const rows = WINDOW_HOURS.map((hhmm, i) => ({
+      time: rowTimeIso(hhmm),
+      cloudTotal: 40,
+      precipitation: 0,
+      windSpeed: i === 3 ? 12 : 1, // one single hour at exactly the threshold, rest calm
+      visibility: 10000,
+    }));
+    const result = scoreAuroraVisibility({
+      night: baseNight({ auroraActivity: 9 }),
+      hourlyRows: rows,
+      viewingWindow: WIDE_VIEWING_WINDOW,
+    });
+    expect(result.flags).toContain("high_wind");
+  });
+
+  it("ignores null wind rows when computing the max — a mix of null and sub-threshold values never flags", () => {
+    const rows = WINDOW_HOURS.map((hhmm, i) => ({
+      time: rowTimeIso(hhmm),
+      cloudTotal: 40,
+      precipitation: 0,
+      windSpeed: i % 2 === 0 ? null : 5,
+      visibility: 10000,
+    }));
+    const result = scoreAuroraVisibility({
+      night: baseNight({ auroraActivity: 9 }),
+      hourlyRows: rows,
+      viewingWindow: WIDE_VIEWING_WINDOW,
+    });
+    expect(result.flags).not.toContain("high_wind");
+  });
 });
 
 // ── 12. unknown/missing secondary fields -> defensive, no crash/invented

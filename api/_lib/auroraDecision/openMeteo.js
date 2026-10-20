@@ -26,6 +26,13 @@ const HOURLY_FIELDS = [
   "visibility",
 ];
 
+// Ticket #452: Open-Meteo's own documented default for this endpoint is
+// windspeed_10m in km/h, not m/s (https://open-meteo.com/en/docs, read
+// 2026-10-20); HIGH_WIND_MS_THRESHOLD in src/lib/auroraScoring.js is an m/s
+// comparator, so without this explicit, canonical parameter the comparison
+// was silently comparing km/h values against an m/s threshold.
+const WIND_SPEED_UNIT = "ms";
+
 export function buildOpenMeteoUrl({ lat, lon, startDate, endDate }) {
   const url = new URL("https://api.open-meteo.com/v1/forecast");
   url.searchParams.set("latitude", lat.toFixed(4));
@@ -34,6 +41,7 @@ export function buildOpenMeteoUrl({ lat, lon, startDate, endDate }) {
   url.searchParams.set("start_date", startDate);
   url.searchParams.set("end_date", endDate);
   url.searchParams.set("timezone", "UTC");
+  url.searchParams.set("wind_speed_unit", WIND_SPEED_UNIT);
   return url.toString();
 }
 
@@ -54,6 +62,20 @@ function numOrNull(value) {
   return typeof value === "number" && Number.isFinite(value) ? value : null;
 }
 
+// Ticket #452 (N2): a defensive runtime check on the provider's OWN reported
+// unit, not a converter. If hourly_units.windspeed_10m is present and is not
+// exactly "m/s", the request/response contract disagrees with what we asked
+// for (WIND_SPEED_UNIT above) — rather than silently scoring a wrong-unit
+// value against auroraScoring.js's m/s threshold, every row's windSpeed is
+// nulled (flag lost, never a fabricated conversion, never a thrown error).
+// Missing unit metadata (hourly_units absent, or absent on this one field)
+// is NOT treated as suspect — existing fixtures that omit hourly_units
+// entirely (e.g. api/aurora-decision.test.js) must keep passing unchanged.
+function windUnitIsSuspect(payload) {
+  const unit = payload?.hourly_units?.windspeed_10m;
+  return unit !== undefined && unit !== "m/s";
+}
+
 /**
  * Maps Open-Meteo's parallel-array hourly response into the row shape
  * src/lib/auroraScoring.js expects. Rows with an unparsable timestamp are
@@ -64,6 +86,8 @@ export function normalizeOpenMeteoHourly(payload) {
   const hourly = payload?.hourly;
   if (!hourly || !Array.isArray(hourly.time)) return [];
 
+  const windSuspect = windUnitIsSuspect(payload);
+
   return hourly.time
     .map((rawTime, i) => ({
       time: toIsoUtc(rawTime),
@@ -72,7 +96,7 @@ export function normalizeOpenMeteoHourly(payload) {
       cloudMid: numOrNull(hourly.cloudcover_mid?.[i]),
       cloudHigh: numOrNull(hourly.cloudcover_high?.[i]),
       precipitation: numOrNull(hourly.precipitation?.[i]),
-      windSpeed: numOrNull(hourly.windspeed_10m?.[i]),
+      windSpeed: windSuspect ? null : numOrNull(hourly.windspeed_10m?.[i]),
       visibility: numOrNull(hourly.visibility?.[i]),
     }))
     .filter((row) => row.time != null);

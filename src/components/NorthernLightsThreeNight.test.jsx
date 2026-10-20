@@ -6,6 +6,7 @@ import { trackEvent } from "../lib/analytics";
 import { clearAuroraDecisionCache } from "../lib/auroraDecisionCache";
 import { AURORA_CANDIDATE_LOCATION_IDS } from "../config/auroraCandidates";
 import { NL_FREE_EXPERIMENT_ID } from "../config/features";
+import { translations } from "../i18n/translations";
 
 vi.mock("../lib/analytics", () => ({ trackEvent: vi.fn() }));
 
@@ -17,8 +18,8 @@ const t = (k) => (k === "nlMultiBestOn" ? "nlMultiBestOn:{when}:{name}" : k);
 const IN_SEASON_NOW = () => new Date("2026-09-25T20:00:00.000Z");
 const OUT_OF_SEASON_NOW = () => new Date("2026-06-01T20:00:00.000Z");
 
-function loc(id, score, band, name = id) {
-  return { locationId: id, name, lat: 64, lon: -20, score, band, reasons: ["meaningful_activity", "clear_sky"], flags: [] };
+function loc(id, score, band, name = id, flags = []) {
+  return { locationId: id, name, lat: 64, lon: -20, score, band, reasons: ["meaningful_activity", "clear_sky"], flags };
 }
 
 function successBody(evening, entries, overrides = {}) {
@@ -294,6 +295,90 @@ describe("NorthernLightsThreeNight — analytics", () => {
 
     await waitFor(() => expect(trackEvent).toHaveBeenCalledWith("northern_lights_ranking_viewed", { lang: "en", tier: "free", business_model_experiment: NL_FREE_EXPERIMENT_ID }));
     expect(trackEvent).toHaveBeenCalledWith("northern_lights_map_viewed", { lang: "en", tier: "free", business_model_experiment: NL_FREE_EXPERIMENT_ID });
+  });
+});
+
+describe("Ticket #452 — high-wind note, real EN/IS dictionary, selected qualifying best only", () => {
+  function realT(lang) {
+    return (key) => translations[lang]?.[key] ?? key;
+  }
+
+  it("EN: the note is present for a flagged (>=12 m/s) qualifying best and absent for an unflagged (corrected, 5 m/s) one", async () => {
+    const { unmount } = renderModule({
+      t: realT("en"),
+      lang: "en",
+      fetchImpl: routedFetchImpl({
+        "2026-09-25": successBody("2026-09-25", [loc(AURORA_CANDIDATE_LOCATION_IDS[0], 90, "excellent", "Windy Place", ["high_wind"])]),
+        "2026-09-26": unavailableBody("2026-09-26"),
+        "2026-09-27": unavailableBody("2026-09-27"),
+      }),
+    });
+    await waitFor(() => expect(screen.getByTestId("nl3-result")).toBeInTheDocument());
+    expect(screen.getByText(translations.en.nlHighWindNote)).toBeInTheDocument();
+    unmount();
+
+    clearAuroraDecisionCache();
+    renderModule({
+      t: realT("en"),
+      lang: "en",
+      fetchImpl: routedFetchImpl({
+        "2026-09-25": successBody("2026-09-25", [loc(AURORA_CANDIDATE_LOCATION_IDS[0], 90, "excellent", "Calm Place", [])]), // corrected: physically ~5 m/s, no flag
+        "2026-09-26": unavailableBody("2026-09-26"),
+        "2026-09-27": unavailableBody("2026-09-27"),
+      }),
+    });
+    await waitFor(() => expect(screen.getByTestId("nl3-result")).toBeInTheDocument());
+    expect(screen.queryByText(translations.en.nlHighWindNote)).toBeNull();
+  });
+
+  it("IS: same behavior with the real Icelandic dictionary string", async () => {
+    renderModule({
+      t: realT("is"),
+      lang: "is",
+      fetchImpl: routedFetchImpl({
+        "2026-09-25": successBody("2026-09-25", [loc(AURORA_CANDIDATE_LOCATION_IDS[0], 90, "excellent", "Windy Place", ["high_wind"])]),
+        "2026-09-26": unavailableBody("2026-09-26"),
+        "2026-09-27": unavailableBody("2026-09-27"),
+      }),
+    });
+    await waitFor(() => expect(screen.getByTestId("nl3-result")).toBeInTheDocument());
+    expect(screen.getByText(translations.is.nlHighWindNote)).toBeInTheDocument();
+  });
+
+  it("a lower-ranked flagged alternative never leaks the note onto the displayed unflagged best", async () => {
+    renderModule({
+      entitlements: { isPro: true },
+      t: realT("en"),
+      lang: "en",
+      fetchImpl: routedFetchImpl({
+        "2026-09-25": successBody("2026-09-25", [
+          loc(AURORA_CANDIDATE_LOCATION_IDS[0], 90, "excellent", "Best Calm Place", []),
+          loc(AURORA_CANDIDATE_LOCATION_IDS[1], 70, "good", "Second Windy Place", ["high_wind"]),
+        ]),
+        "2026-09-26": unavailableBody("2026-09-26"),
+        "2026-09-27": unavailableBody("2026-09-27"),
+      }),
+    });
+    await waitFor(() => expect(screen.getByTestId("nl3-result")).toBeInTheDocument());
+    expect(screen.queryByText(translations.en.nlHighWindNote)).toBeNull();
+  });
+
+  it("the all-poor branch never shows the note even when the only available location is flagged", async () => {
+    renderModule({
+      entitlements: { isPro: true },
+      t: realT("en"),
+      lang: "en",
+      fetchImpl: routedFetchImpl({
+        "2026-09-25": successBody("2026-09-25", [loc(AURORA_CANDIDATE_LOCATION_IDS[0], 20, "very-poor", "Bad Windy Place", ["high_wind"])]),
+        "2026-09-26": unavailableBody("2026-09-26"),
+        "2026-09-27": unavailableBody("2026-09-27"),
+      }),
+    });
+    await waitFor(() => expect(screen.getByTestId("nl3-all-poor")).toBeInTheDocument());
+    expect(screen.queryByText(translations.en.nlHighWindNote)).toBeNull();
+    // Opening details (Pro) still must not surface the note — existing all-poor behavior, not redesigned here.
+    fireEvent.click(screen.getByText(translations.en.nlDetailsShow));
+    expect(screen.queryByText(translations.en.nlHighWindNote)).toBeNull();
   });
 });
 

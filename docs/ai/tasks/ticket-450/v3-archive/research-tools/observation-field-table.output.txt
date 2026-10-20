@@ -1,0 +1,71 @@
+Rows read: 24
+Key set identical across all 24 rows: true
+Keys per row: 50
+
+## Per-key table (50 keys, 24 rows each)
+key | non-null | null | missing | description
+---|---|---|---|---
+station | 24 | 0 | 0 | Station number (IMO-numbers)
+name | 24 | 0 | 0 | Station name
+time | 24 | 0 | 0 | Timestamp of observation (YYYY-MM-DD hh:00:00)
+year | 24 | 0 | 0 | Year of observation
+month | 24 | 0 | 0 | Month of observation
+day | 24 | 0 | 0 | Day of observation
+hour | 24 | 0 | 0 | Hour of observation
+t | 24 | 0 | 0 | Air temperature (1-min average on the hour), °C
+tx | 24 | 0 | 0 | Maximum temperature (highest 1-min average during past hour), °C
+tn | 24 | 0 | 0 | Minimum temperature (lowest 1-min average during past hour), °C
+rh | 24 | 0 | 0 | Humidity (1-min average on the hour), %
+vp | 24 | 0 | 0 | Vapour pressure (1-min average on the hour), hPa
+td | 24 | 0 | 0 | Dew point (1-min average on the hour), °C
+f | 24 | 0 | 0 | Wind speed (10-min average on the hour), m/s
+fx | 24 | 0 | 0 | Maximum wind speed (highest 10-min average during past hour), m/s
+fg | 24 | 0 | 0 | Wind gust (highest 3-sec value during past hour), m/s
+fgfx | 24 | 0 | 0 | Gust factor (fg/fx)
+d | 24 | 0 | 0 | Wind direction (10-min average on the hour) - 360 = North, 90 = East, 180 = South, 270 = West, degrees
+d_txt | 24 | 0 | 0 | (no description in retained parameters file)
+dsdev | 24 | 0 | 0 | Standard deviation of wind direction (over 10-min on the hour), degrees
+ps | 24 | 0 | 0 | Atmospheric pressure (1-min average at station level on the hour), hPa
+p | 24 | 0 | 0 | Atmospheric pressure (1-min average at sea level on the hour), hPa
+r | 0 | 24 | 0 | Precipitation (1-hr total) quality-checked and corrected, mm
+tg | 0 | 24 | 0 | Average temperature at ground level (1-min average on the hour), °C
+tgn | 0 | 24 | 0 | Minimum temperature at ground level (lowest 1-min average during past hour), °C
+t0 | 0 | 24 | 0 | Road temperature (1-min average on the hour), °C
+t0x | 0 | 24 | 0 | Maximum road temperature (highest 1-min average during past hour), °C
+t0n | 0 | 24 | 0 | Minimum road temperature (lowest 1-min average during past hour), °C
+tug5 | 0 | 24 | 0 | Soil temperature at 5 cm depth (1-min average on the hour), °C
+tug10 | 0 | 24 | 0 | Soil temperature at 10 cm depth (1-min average on the hour), °C
+tug15 | 0 | 24 | 0 | Soil temperature at 15 cm depth (1-min average on the hour), °C
+tug20 | 0 | 24 | 0 | Soil temperature at 20 cm depth (1-min average on the hour), °C
+tug50 | 0 | 24 | 0 | Soil temperature at 50 cm depth (1-min average on the hour), °C
+tug100 | 0 | 24 | 0 | Soil temperature at 100 cm depth (1-min average on the hour), °C
+radgl | 0 | 24 | 0 | Global solar radiation, W/m²
+radglx | 0 | 24 | 0 | Maximum global solar radiation (over past 1 hour), W/m²
+radsc | 0 | 24 | 0 | Diffuse solar radiation, W/m²
+radscx | 0 | 24 | 0 | Maximum diffuse solar radiation (over past 1 hour), W/m²
+radsws | 0 | 24 | 0 | Upward solar radiation, W/m²
+radswsx | 0 | 24 | 0 | Maximum upward solar radiation (over past 1 hour), W/m²
+radlwi | 0 | 24 | 0 | Downward longwave radiation, W/m²
+radlwix | 0 | 24 | 0 | Maximum downward longwave radiation (over past 1 hour), W/m²
+radlws | 0 | 24 | 0 | Upward longwave radiation, W/m²
+radlwsx | 0 | 24 | 0 | Maximum upward longwave radiation (over past 1 hour), W/m²
+raduv | 0 | 24 | 0 | Ultraviolet radiation, W/m²
+raduvx | 0 | 24 | 0 | Maximum ultraviolet radiation (over past 1 hour), W/m²
+rsun | 0 | 24 | 0 | Sunshine (fraction over 1 hour), hr
+ts | 0 | 24 | 0 | Water/sea temperature (1-min average on the hour), °C
+sal | 0 | 24 | 0 | Ocean salinity (1-min average on the hour), ?
+count_measurements | 24 | 0 | 0 | Number of measurements during past hour
+
+## Summary (denominator = 24 rows per key; two different key-set denominators reported below)
+Total keys per row: 50
+All-null keys (27): r, tg, tgn, t0, t0x, t0n, tug5, tug10, tug15, tug20, tug50, tug100, radgl, radglx, radsc, radscx, radsws, radswsx, radlwi, radlwix, radlws, radlwsx, raduv, raduvx, rsun, ts, sal
+All-non-null keys (23): station, name, time, year, month, day, hour, t, tx, tn, rh, vp, td, f, fx, fg, fgfx, d, d_txt, dsdev, ps, p, count_measurements
+Partially-null keys (0): (none)
+Keys with any 'missing' (absent from a row, distinct from null) (0): (none)
+
+Denominator A -- all 50 keys (incl. identifiers station/name/time): 23 all-non-null + 27 all-null = 50 of 50
+Denominator B -- 47 data fields (excl. station/name/time): 20 all-non-null + 27 all-null = 47 of 47
+
+'r' (precipitation) specifically: non-null=0 null=24 missing=0 (expected 24/24 null)
+
+'All-null' is reported as an observed count only -- it is NOT read as 'no rain'/'zero', as 'sensor absent', or as a general provider missing-data policy (one day, one station).

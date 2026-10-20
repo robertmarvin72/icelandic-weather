@@ -1,0 +1,44 @@
+# Baseline (Keflavík) vs dmi_seamless experiment — comparison output
+
+## Point identity check
+baseline:   lat=63.99095 lon=-22.606262 elevation=50 timezone=Atlantic/Reykjavik utc_offset_seconds=0
+experiment: lat=63.99095 lon=-22.606262 elevation=50 timezone=Atlantic/Reykjavik utc_offset_seconds=0
+lat equal: true; lon equal: true; elevation equal: true
+baseline hourly_units: {"time":"iso8601","temperature_2m":"°C","weathercode":"wmo code","precipitation":"mm","precipitation_probability":"%","windspeed_10m":"m/s","windgusts_10m":"m/s","cloudcover":"%","cloudcover_low":"%","cloudcover_mid":"%","cloudcover_high":"%","visibility":"m"}
+experiment hourly_units: {"time":"iso8601","temperature_2m":"°C","windspeed_10m":"m/s"}
+temperature_2m unit equal: true; windspeed_10m unit equal: true
+
+## temperature_2m
+{
+  "variable": "temperature_2m",
+  "totalBaselineSteps": 168,
+  "totalExperimentSteps": 168,
+  "compared": 168,
+  "matching": 168,
+  "mismatching": 0,
+  "missingInBaseline": 0,
+  "missingInExperiment": 0,
+  "mismatches": "(none)"
+}
+
+## windspeed_10m
+{
+  "variable": "windspeed_10m",
+  "totalBaselineSteps": 168,
+  "totalExperimentSteps": 168,
+  "compared": 168,
+  "matching": 168,
+  "mismatching": 0,
+  "missingInBaseline": 0,
+  "missingInExperiment": 0,
+  "mismatches": "(none)"
+}
+
+## Segments relative to the ACTUAL retrieval instant (timestamp-based, v3/K4 correction; baseline series only)
+retrieval instant: 2026-10-19T17:47:22.000Z (server response time)
+first step at/after retrieval instant: index 18 (time=2026-10-19T18:00); total steps: 168
+segment A (strictly before retrieval instant): 18 steps, 2026-10-19T00:00 .. 2026-10-19T17:00
+segment B (72 steps from the first step at/after retrieval instant): 72 steps, 2026-10-19T18:00 .. 2026-10-22T17:00
+segment C (remaining): 78 steps, 2026-10-22T18:00 .. 2026-10-25T23:00
+
+Note: this 72-step window is counted from the RETRIEVAL instant, not from any forecast model RUN time (which is unknown/UNK — see provider-matrix.csv). It must not be described as '0-72h of the forecast'.

@@ -1,0 +1,41 @@
+# Baseline (Keflavík) vs dmi_seamless experiment — comparison output
+
+## Point identity check
+baseline:   lat=63.99095 lon=-22.606262 elevation=50 timezone=Atlantic/Reykjavik utc_offset_seconds=0
+experiment: lat=63.99095 lon=-22.606262 elevation=50 timezone=Atlantic/Reykjavik utc_offset_seconds=0
+lat equal: true; lon equal: true; elevation equal: true
+baseline hourly_units: {"time":"iso8601","temperature_2m":"°C","weathercode":"wmo code","precipitation":"mm","precipitation_probability":"%","windspeed_10m":"m/s","windgusts_10m":"m/s","cloudcover":"%","cloudcover_low":"%","cloudcover_mid":"%","cloudcover_high":"%","visibility":"m"}
+experiment hourly_units: {"time":"iso8601","temperature_2m":"°C","windspeed_10m":"m/s"}
+temperature_2m unit equal: true; windspeed_10m unit equal: true
+
+## temperature_2m
+{
+  "variable": "temperature_2m",
+  "totalBaselineSteps": 168,
+  "totalExperimentSteps": 168,
+  "compared": 168,
+  "matching": 168,
+  "mismatching": 0,
+  "missingInBaseline": 0,
+  "missingInExperiment": 0,
+  "mismatches": "(none)"
+}
+
+## windspeed_10m
+{
+  "variable": "windspeed_10m",
+  "totalBaselineSteps": 168,
+  "totalExperimentSteps": 168,
+  "compared": 168,
+  "matching": 168,
+  "mismatching": 0,
+  "missingInBaseline": 0,
+  "missingInExperiment": 0,
+  "mismatches": "(none)"
+}
+
+## Segments relative to retrieval hour (baseline series only; see J3.2 wording in the report for interpretation)
+retrieval hour step found at index: 17 (time=2026-10-19T17:00); total steps: 168
+segment A (before retrieval hour): 17 steps, 2026-10-19T00:00 .. 2026-10-19T16:00
+segment B (72 steps from first step on/after retrieval hour): 72 steps, 2026-10-19T17:00 .. 2026-10-22T16:00
+segment C (remaining): 79 steps, 2026-10-22T17:00 .. 2026-10-25T23:00
