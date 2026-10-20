@@ -1,4 +1,6 @@
 // api/forecast.js
+import { resolveOpenMeteoAuth } from "./_lib/openMeteoAuth.js";
+
 export default async function handler(req, res) {
   try {
     // Basic CORS (not strictly needed for same-origin, but harmless)
@@ -35,13 +37,18 @@ export default async function handler(req, res) {
     const windspeed_unit = q.get("windspeed_unit");
     const precipitation_unit = q.get("precipitation_unit");
 
-    const API_KEY = process.env.OPEN_METEO_API_KEY;
+    // Ticket #453 (Q1/Q3): shared host/key selection; a missing/blank key
+    // fails closed only in Production (defence in depth — Production is
+    // owner-confirmed keyed), never silently falls back there, and never
+    // retries on the public host after any keyed-request failure.
+    const auth = resolveOpenMeteoAuth();
+    if (auth.failClosed) {
+      console.error("open-meteo: api key missing; failing closed for forecast proxy (environment: production)");
+      res.setHeader("Cache-Control", "no-store");
+      return res.status(502).json({ error: "forecast_error" });
+    }
 
-    const upstream = new URL(
-      API_KEY
-        ? "https://customer-api.open-meteo.com/v1/forecast"
-        : "https://api.open-meteo.com/v1/forecast"
-    );
+    const upstream = new URL(`${auth.host}/v1/forecast`);
 
     upstream.searchParams.set("latitude", latRounded);
     upstream.searchParams.set("longitude", lonRounded);
@@ -90,8 +97,8 @@ export default async function handler(req, res) {
     if (windspeed_unit) upstream.searchParams.set("windspeed_unit", windspeed_unit);
     if (precipitation_unit) upstream.searchParams.set("precipitation_unit", precipitation_unit);
 
-    if (API_KEY) {
-      upstream.searchParams.set("apikey", API_KEY);
+    if (auth.apiKey) {
+      upstream.searchParams.set("apikey", auth.apiKey);
     }
 
     const controller = new AbortController();
@@ -107,7 +114,10 @@ export default async function handler(req, res) {
     res.setHeader("Cache-Control", "no-store");
 
     if (!r.ok) {
-      console.error("Forecast upstream failed:", r.status, text);
+      // Ticket #453 (Q5): status code only — the upstream body is never
+      // logged (a keyed URL/apikey could appear inside an upstream error
+      // message or echoed text).
+      console.error("Forecast upstream failed", { status: r.status });
 
       return res.status(502).json({
         error: "forecast_failed",
@@ -118,8 +128,11 @@ export default async function handler(req, res) {
     let data;
     try {
       data = JSON.parse(text);
-    } catch (parseErr) {
-      console.error("Forecast upstream returned invalid JSON:", parseErr);
+    } catch {
+      // Ticket #453 v2 (D1): static message + status only — never the raw
+      // parse error or the unparsed upstream text, which could itself
+      // contain an echoed keyed URL.
+      console.error("Forecast upstream returned invalid JSON", { status: r.status });
 
       return res.status(502).json({ error: "forecast_invalid_json" });
     }
@@ -137,7 +150,13 @@ export default async function handler(req, res) {
       return res.status(502).json({ error: "forecast_timeout" });
     }
 
-    console.error("Forecast proxy error:", err);
+    // Ticket #453 v2 (D2, Ripley's stricter decision): a fixed, fully
+    // static diagnostic only — not even `err.name`, since a thrown value is
+    // caller-controlled and could set `name` to anything (including a
+    // sentinel/credential-bearing string); never the raw error object,
+    // message, or stack, which for a fetch failure can include the request
+    // URL (and therefore a keyed apikey) in some runtimes.
+    console.error("Forecast proxy error");
     return res.status(502).json({ error: "forecast_error" });
   }
 }

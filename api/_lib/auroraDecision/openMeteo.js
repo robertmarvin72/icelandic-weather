@@ -15,6 +15,7 @@
 // throughout Ticket 1/2/3 — never locale/host-timezone dependent.
 
 import { WEATHER_FETCH_TIMEOUT_MS } from "./constants.js";
+import { resolveOpenMeteoAuth, OPEN_METEO_PUBLIC_HOST } from "../openMeteoAuth.js";
 
 const HOURLY_FIELDS = [
   "cloudcover",
@@ -33,8 +34,12 @@ const HOURLY_FIELDS = [
 // was silently comparing km/h values against an m/s threshold.
 const WIND_SPEED_UNIT = "ms";
 
-export function buildOpenMeteoUrl({ lat, lon, startDate, endDate }) {
-  const url = new URL("https://api.open-meteo.com/v1/forecast");
+// Ticket #453: `host`/`apiKey` are optional so every existing caller/test
+// that omits them keeps building the exact same public, keyless URL as
+// before (backward-compatible signature, per Q4) — only `fetchLocationWeather`
+// passes a resolved host/apiKey, from `resolveOpenMeteoAuth`.
+export function buildOpenMeteoUrl({ lat, lon, startDate, endDate, host = OPEN_METEO_PUBLIC_HOST, apiKey = null }) {
+  const url = new URL(`${host}/v1/forecast`);
   url.searchParams.set("latitude", lat.toFixed(4));
   url.searchParams.set("longitude", lon.toFixed(4));
   url.searchParams.set("hourly", HOURLY_FIELDS.join(","));
@@ -42,6 +47,7 @@ export function buildOpenMeteoUrl({ lat, lon, startDate, endDate }) {
   url.searchParams.set("end_date", endDate);
   url.searchParams.set("timezone", "UTC");
   url.searchParams.set("wind_speed_unit", WIND_SPEED_UNIT);
+  if (apiKey) url.searchParams.set("apikey", apiKey);
   return url.toString();
 }
 
@@ -108,13 +114,26 @@ export function normalizeOpenMeteoHourly(payload) {
  * timeout/network error/malformed payload never propagates to others.
  */
 export async function fetchLocationWeather({ lat, lon, startDate, endDate, fetchImpl }) {
-  const url = buildOpenMeteoUrl({ lat, lon, startDate, endDate });
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), WEATHER_FETCH_TIMEOUT_MS);
 
   try {
+    // Ticket #453 (Q3): resolved and checked INSIDE the try block — unlike
+    // the old URL build, which ran before this block — so a config failure
+    // is a structured per-location result, never an exception escaping
+    // fanout. `resolveOpenMeteoAuth` itself never throws.
+    const auth = resolveOpenMeteoAuth();
+    if (auth.failClosed) {
+      console.error("open-meteo: api key missing; failing closed for aurora weather fetch (environment: production)");
+      return { ok: false, reason: "weather_fetch_failed" };
+    }
+
+    const url = buildOpenMeteoUrl({ lat, lon, startDate, endDate, host: auth.host, apiKey: auth.apiKey });
     const res = await fetchImpl(url, { signal: controller.signal });
     if (!res.ok) {
+      // Ticket #453 (Q5): status code only, never the body/URL — lets an
+      // operator tell 401/403/429 (keyed host) apart from any other failure.
+      console.error("open-meteo: aurora weather fetch failed", { status: res.status });
       return { ok: false, reason: "weather_fetch_failed" };
     }
 

@@ -1,6 +1,14 @@
-import { describe, it, expect, vi } from "vitest";
+import { describe, it, expect, vi, afterEach } from "vitest";
+import { format } from "node:util";
 import { normalizeOpenMeteoHourly, fetchLocationWeather, buildOpenMeteoUrl } from "./openMeteo.js";
 import { scoreAuroraVisibility } from "../../../src/lib/auroraScoring.js";
+
+// Ticket #453 v2 (T1): captures console.* arguments through `util.format`,
+// not `JSON.stringify` — see api/forecast.test.js's own copy of this helper
+// for the full rationale (JSON.stringify(someError) renders as `{}`).
+function formatConsoleCalls(spy) {
+  return spy.mock.calls.map((call) => format(...call)).join(" ");
+}
 
 describe("buildOpenMeteoUrl", () => {
   it("requests UTC timezone explicitly and the fixed hourly field set", () => {
@@ -27,6 +35,30 @@ describe("buildOpenMeteoUrl", () => {
     expect(url.searchParams.get("hourly")).toBe(
       "cloudcover,cloudcover_low,cloudcover_mid,cloudcover_high,precipitation,windspeed_10m,visibility",
     );
+  });
+
+  // Ticket #453 — optional host/apiKey, backward-compatible (Q4): every call
+  // above (no host/apiKey given) keeps producing the exact same public,
+  // keyless URL as before this ticket.
+  it("accepts an optional host/apiKey (Ticket #453) and still defaults to the public, keyless URL when omitted", () => {
+    const defaultUrl = new URL(buildOpenMeteoUrl({ lat: 64.1, lon: -21.9, startDate: "2026-08-24", endDate: "2026-08-25" }));
+    expect(defaultUrl.origin).toBe("https://api.open-meteo.com");
+    expect(defaultUrl.searchParams.has("apikey")).toBe(false);
+
+    const customerUrl = new URL(
+      buildOpenMeteoUrl({
+        lat: 64.1,
+        lon: -21.9,
+        startDate: "2026-08-24",
+        endDate: "2026-08-25",
+        host: "https://customer-api.open-meteo.com",
+        apiKey: "sentinel-fake-key",
+      }),
+    );
+    expect(customerUrl.origin).toBe("https://customer-api.open-meteo.com");
+    expect(customerUrl.searchParams.getAll("apikey")).toEqual(["sentinel-fake-key"]);
+    // wind_speed_unit=ms (#452) and every other param stay present regardless of host/key.
+    expect(customerUrl.searchParams.get("wind_speed_unit")).toBe("ms");
   });
 });
 
@@ -319,5 +351,157 @@ describe("real-pipeline wind-unit equivalence (Ticket #452, simulated provider c
     expect(result.hourlyRows.every((r) => r.windSpeed === null)).toBe(true);
     const scored = scoreAuroraVisibility({ night, hourlyRows: result.hourlyRows, viewingWindow });
     expect(scored.flags).not.toContain("high_wind");
+  });
+});
+
+// Ticket #453 — shared Open-Meteo host/key selection, exercised through the
+// real fetchLocationWeather (not the helper's own unit tests in
+// api/_lib/openMeteoAuth.test.js).
+describe("fetchLocationWeather — Ticket #453: host/key selection and no-fallback behavior", () => {
+  const args = { lat: 64.1, lon: -21.9, startDate: "2026-08-24", endDate: "2026-08-25" };
+  const ORIGINAL_KEY = process.env.OPEN_METEO_API_KEY;
+  const ORIGINAL_VERCEL_ENV = process.env.VERCEL_ENV;
+
+  afterEach(() => {
+    if (ORIGINAL_KEY === undefined) delete process.env.OPEN_METEO_API_KEY;
+    else process.env.OPEN_METEO_API_KEY = ORIGINAL_KEY;
+    if (ORIGINAL_VERCEL_ENV === undefined) delete process.env.VERCEL_ENV;
+    else process.env.VERCEL_ENV = ORIGINAL_VERCEL_ENV;
+  });
+
+  function emptyHourlyPayload() {
+    return { hourly: { time: ["2026-08-24T22:00"], windspeed_10m: [5] }, hourly_units: { windspeed_10m: "m/s" } };
+  }
+
+  it("with a configured (fake) key: requests the customer host with exactly one apikey, #452's wind_speed_unit=ms still present", async () => {
+    process.env.OPEN_METEO_API_KEY = "sentinel-fake-key";
+    delete process.env.VERCEL_ENV;
+    const fetchImpl = vi.fn(async () => ({ ok: true, json: async () => emptyHourlyPayload() }));
+
+    const result = await fetchLocationWeather({ ...args, fetchImpl });
+
+    expect(result.ok).toBe(true);
+    const requestedUrl = new URL(fetchImpl.mock.calls[0][0]);
+    expect(requestedUrl.origin).toBe("https://customer-api.open-meteo.com");
+    expect(requestedUrl.searchParams.getAll("apikey")).toEqual(["sentinel-fake-key"]);
+    expect(requestedUrl.searchParams.get("wind_speed_unit")).toBe("ms");
+  });
+
+  it("without a key, VERCEL_ENV undefined: requests the public host, no apikey param (unchanged from before #453)", async () => {
+    delete process.env.OPEN_METEO_API_KEY;
+    delete process.env.VERCEL_ENV;
+    const fetchImpl = vi.fn(async () => ({ ok: true, json: async () => emptyHourlyPayload() }));
+
+    const result = await fetchLocationWeather({ ...args, fetchImpl });
+
+    expect(result.ok).toBe(true);
+    const requestedUrl = new URL(fetchImpl.mock.calls[0][0]);
+    expect(requestedUrl.origin).toBe("https://api.open-meteo.com");
+    expect(requestedUrl.searchParams.has("apikey")).toBe(false);
+  });
+
+  it("without a key, VERCEL_ENV='production': fails closed as a structured per-location result — NOT an exception, fetchImpl never called", async () => {
+    delete process.env.OPEN_METEO_API_KEY;
+    process.env.VERCEL_ENV = "production";
+    const fetchImpl = vi.fn();
+
+    const result = await fetchLocationWeather({ ...args, fetchImpl });
+
+    expect(fetchImpl).not.toHaveBeenCalled();
+    expect(result).toEqual({ ok: false, reason: "weather_fetch_failed" }); // existing reason, per Q3 — not a new string
+  });
+
+  it("the production fail-closed path never throws, so it never escapes a Promise.all fan-out", async () => {
+    delete process.env.OPEN_METEO_API_KEY;
+    process.env.VERCEL_ENV = "production";
+    const fetchImpl = vi.fn();
+
+    await expect(fetchLocationWeather({ ...args, fetchImpl })).resolves.toEqual({ ok: false, reason: "weather_fetch_failed" });
+  });
+
+  it("a 401 from the keyed host is NOT retried on the public host (no fallback after a keyed-request failure)", async () => {
+    process.env.OPEN_METEO_API_KEY = "sentinel-fake-key";
+    delete process.env.VERCEL_ENV;
+    const fetchImpl = vi.fn(async () => ({ ok: false, status: 401 }));
+
+    const result = await fetchLocationWeather({ ...args, fetchImpl });
+
+    expect(fetchImpl).toHaveBeenCalledOnce(); // never a second, fallback request
+    expect(result).toEqual({ ok: false, reason: "weather_fetch_failed" });
+  });
+
+  it("Q5: logs only the status code for a non-ok keyed response — never the body or the request URL", async () => {
+    process.env.OPEN_METEO_API_KEY = "sentinel-fake-key";
+    delete process.env.VERCEL_ENV;
+    const errorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
+    const fetchImpl = vi.fn(async () => ({ ok: false, status: 401 }));
+
+    await fetchLocationWeather({ ...args, fetchImpl });
+
+    const allLoggedText = formatConsoleCalls(errorSpy);
+    expect(allLoggedText).not.toContain("sentinel-fake-key");
+    expect(allLoggedText).not.toMatch(/https?:\/\//);
+    expect(allLoggedText).toContain("401");
+    errorSpy.mockRestore();
+  });
+
+  it("Q3: the production fail-closed path logs a static, nonsecret diagnostic naming the environment, never the key", async () => {
+    delete process.env.OPEN_METEO_API_KEY;
+    process.env.VERCEL_ENV = "production";
+    const errorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
+    const fetchImpl = vi.fn();
+
+    await fetchLocationWeather({ ...args, fetchImpl });
+
+    const allLoggedText = formatConsoleCalls(errorSpy);
+    expect(allLoggedText).toContain("production");
+    expect(allLoggedText).not.toMatch(/https?:\/\//);
+    errorSpy.mockRestore();
+  });
+
+  // Ticket #453 v2 (T1): strengthened with util.format (see formatConsoleCalls
+  // below) instead of JSON.stringify — JSON.stringify(someError) renders as
+  // `{}`, so a test built on it would pass even if the implementation logged
+  // a raw Error. Extended to cover name/stack too, not just message.
+  it("Q5/T1: a thrown fetch error whose message, name, AND stack all embed the keyed URL/sentinel never reaches console output", async () => {
+    process.env.OPEN_METEO_API_KEY = "sentinel-fake-key";
+    delete process.env.VERCEL_ENV;
+    const errorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
+    const keyedUrlError = new Error("fetch failed: https://customer-api.open-meteo.com/v1/forecast?apikey=sentinel-fake-key");
+    keyedUrlError.name = "sentinel-fake-key-in-name";
+    keyedUrlError.stack = "sentinel-fake-key-in-stack\n" + keyedUrlError.stack;
+    const fetchImpl = vi.fn().mockRejectedValue(keyedUrlError);
+
+    const result = await fetchLocationWeather({ ...args, fetchImpl });
+
+    expect(formatConsoleCalls(errorSpy)).not.toContain("sentinel-fake-key");
+    expect(result).toEqual({ ok: false, reason: "weather_fetch_failed" });
+    errorSpy.mockRestore();
+  });
+
+  // Ticket #453 v2 (D2-equivalent for the aurora path): a thrown value need
+  // not even be an Error — its properties are entirely caller-controlled.
+  it("Q5/D2: a thrown plain object (not an Error) with an attacker-controlled name/message is never logged", async () => {
+    process.env.OPEN_METEO_API_KEY = "sentinel-fake-key";
+    delete process.env.VERCEL_ENV;
+    const errorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
+    const thrownObject = { name: "sentinel-fake-key-name", message: "sentinel-fake-key-message", stack: "sentinel-fake-key-stack" };
+    const fetchImpl = vi.fn().mockRejectedValue(thrownObject);
+
+    const result = await fetchLocationWeather({ ...args, fetchImpl });
+
+    expect(formatConsoleCalls(errorSpy)).not.toContain("sentinel-fake-key");
+    expect(result).toEqual({ ok: false, reason: "weather_fetch_failed" });
+    errorSpy.mockRestore();
+  });
+
+  // Ticket #453 v2 (T1): proves the capture method itself is sound.
+  it("capture formatter sanity check: util.format exposes a sentinel embedded in a raw Error, where JSON.stringify would hide it", () => {
+    const err = new Error("boom containing sentinel-fake-key");
+    const viaJsonStringify = JSON.stringify(["label", err]);
+    const viaUtilFormat = format("label", err);
+
+    expect(viaJsonStringify).not.toContain("sentinel-fake-key"); // demonstrates why JSON.stringify was inadequate (T1)
+    expect(viaUtilFormat).toContain("sentinel-fake-key"); // demonstrates the strengthened formatter actually catches it
   });
 });
