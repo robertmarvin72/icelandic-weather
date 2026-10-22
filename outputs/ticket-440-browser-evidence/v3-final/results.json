@@ -1,0 +1,482 @@
+[
+  {
+    "name": "mobile320-keyboard-scroll-immediately-after-open",
+    "ok": true,
+    "note": "{\"activeElAtOpen\":{\"tag\":\"DIV\",\"testid\":\"route-details-scroll-region\"},\"scrollTopBeforeKeys\":0,\"scrollTopAfterKeys\":205,\"moved\":true}"
+  },
+  {
+    "name": "mobile320-advanced-toggle-real-expansion",
+    "ok": true,
+    "note": "{\"found\":true,\"labelFlipped\":true,\"contentGrew\":true,\"labelBefore\":\"Show scoring details\",\"labelAfter\":\"Hide scoring details\"}"
+  },
+  {
+    "name": "mobile320-advanced-table-overflows-horizontally",
+    "ok": true,
+    "note": "{\"tableVisible\":true,\"containerScrollWidth\":980,\"containerClientWidth\":260,\"containerScrollLeftBefore\":0}"
+  },
+  {
+    "name": "mobile320-advanced-table-horizontal-scroll-moves",
+    "ok": true,
+    "note": "scrollLeftAfterDrag=150"
+  },
+  {
+    "name": "mobile320-tab-forward-collapsed-reaches-advanced-toggle",
+    "ok": true,
+    "note": "atStep=3 sequence=[\"Overall result for the selected daysBetter(next 3 days)Overa\",\"vedur.is\",\"DayGrunnstaður TestBetri Staður Langheiti sem er nokkuð lang\",\"Show scoring details\",\"Close\",\"✕\",\"vedur.is\",\"DayGrunnstaður TestBetri Staður Langheiti sem er nokkuð lang\",\"Show scoring details\",\"Close\",\"✕\",\"vedur.is\",\"DayGrunnstaður TestBetri Staður Langheiti sem er nokkuð lang\",\"Show scoring details\",\"Close\",\"✕\",\"vedur.is\",\"DayGrunnstaður TestBetri Staður Langheiti sem er nokkuð lang\",\"Show scoring details\",\"Close\"]"
+  },
+  {
+    "name": "mobile320-tab-forward-collapsed-reaches-footer-close",
+    "ok": true,
+    "note": "atStep=4"
+  },
+  {
+    "name": "mobile320-tab-forward-collapsed-reaches-targets-in-dom-order",
+    "ok": true,
+    "note": "toggleAt=3 footerAt=4"
+  },
+  {
+    "name": "mobile320-tab-forward-collapsed-wraps-to-first-after-footer-close",
+    "ok": true,
+    "note": "footerAt=4"
+  },
+  {
+    "name": "mobile320-tab-forward-collapsed-stays-in-dialog",
+    "ok": true,
+    "note": ""
+  },
+  {
+    "name": "mobile320-tab-reverse-collapsed-reaches-advanced-toggle",
+    "ok": true,
+    "note": "atStep=3 sequence=[\"Overall result for the selected daysBetter(next 3 days)Overa\",\"✕\",\"Close\",\"Show scoring details\",\"DayGrunnstaður TestBetri Staður Langheiti sem er nokkuð lang\",\"vedur.is\",\"✕\",\"Close\",\"Show scoring details\",\"DayGrunnstaður TestBetri Staður Langheiti sem er nokkuð lang\",\"vedur.is\",\"✕\",\"Close\",\"Show scoring details\",\"DayGrunnstaður TestBetri Staður Langheiti sem er nokkuð lang\",\"vedur.is\",\"✕\",\"Close\",\"Show scoring details\",\"DayGrunnstaður TestBetri Staður Langheiti sem er nokkuð lang\"]"
+  },
+  {
+    "name": "mobile320-tab-reverse-collapsed-reaches-footer-close",
+    "ok": true,
+    "note": "atStep=2"
+  },
+  {
+    "name": "mobile320-tab-reverse-collapsed-reaches-targets-in-dom-order",
+    "ok": true,
+    "note": "toggleAt=3 footerAt=2"
+  },
+  {
+    "name": "mobile320-tab-reverse-collapsed-stays-in-dialog",
+    "ok": true,
+    "note": ""
+  },
+  {
+    "name": "mobile320-tab-forward-expanded-reaches-advanced-toggle",
+    "ok": true,
+    "note": "atStep=3 sequence=[\"Overall result for the selected daysBetter(next 3 days)Overa\",\"vedur.is\",\"DayGrunnstaður TestBetri Staður Langheiti sem er nokkuð lang\",\"Hide scoring details\",\"DateBase ptsOption ptsDifferenceWind penaltyGust penaltyRain\",\"Close\",\"✕\",\"vedur.is\",\"DayGrunnstaður TestBetri Staður Langheiti sem er nokkuð lang\",\"Hide scoring details\",\"DateBase ptsOption ptsDifferenceWind penaltyGust penaltyRain\",\"Close\",\"✕\",\"vedur.is\",\"DayGrunnstaður TestBetri Staður Langheiti sem er nokkuð lang\",\"Hide scoring details\",\"DateBase ptsOption ptsDifferenceWind penaltyGust penaltyRain\",\"Close\",\"✕\",\"vedur.is\",\"DayGrunnstaður TestBetri Staður Langheiti sem er nokkuð lang\",\"Hide scoring details\",\"DateBase ptsOption ptsDifferenceWind penaltyGust penaltyRain\",\"Close\"]"
+  },
+  {
+    "name": "mobile320-tab-forward-expanded-reaches-footer-close",
+    "ok": true,
+    "note": "atStep=5"
+  },
+  {
+    "name": "mobile320-tab-forward-expanded-reaches-targets-in-dom-order",
+    "ok": true,
+    "note": "toggleAt=3 footerAt=5"
+  },
+  {
+    "name": "mobile320-tab-forward-expanded-wraps-to-first-after-footer-close",
+    "ok": true,
+    "note": "footerAt=5"
+  },
+  {
+    "name": "mobile320-tab-forward-expanded-stays-in-dialog",
+    "ok": true,
+    "note": ""
+  },
+  {
+    "name": "mobile320-tab-reverse-expanded-reaches-advanced-toggle",
+    "ok": true,
+    "note": "atStep=4 sequence=[\"Overall result for the selected daysBetter(next 3 days)Overa\",\"✕\",\"Close\",\"DateBase ptsOption ptsDifferenceWind penaltyGust penaltyRain\",\"Hide scoring details\",\"DayGrunnstaður TestBetri Staður Langheiti sem er nokkuð lang\",\"vedur.is\",\"✕\",\"Close\",\"DateBase ptsOption ptsDifferenceWind penaltyGust penaltyRain\",\"Hide scoring details\",\"DayGrunnstaður TestBetri Staður Langheiti sem er nokkuð lang\",\"vedur.is\",\"✕\",\"Close\",\"DateBase ptsOption ptsDifferenceWind penaltyGust penaltyRain\",\"Hide scoring details\",\"DayGrunnstaður TestBetri Staður Langheiti sem er nokkuð lang\",\"vedur.is\",\"✕\",\"Close\",\"DateBase ptsOption ptsDifferenceWind penaltyGust penaltyRain\",\"Hide scoring details\",\"DayGrunnstaður TestBetri Staður Langheiti sem er nokkuð lang\"]"
+  },
+  {
+    "name": "mobile320-tab-reverse-expanded-reaches-footer-close",
+    "ok": true,
+    "note": "atStep=2"
+  },
+  {
+    "name": "mobile320-tab-reverse-expanded-reaches-targets-in-dom-order",
+    "ok": true,
+    "note": "toggleAt=4 footerAt=2"
+  },
+  {
+    "name": "mobile320-tab-reverse-expanded-stays-in-dialog",
+    "ok": true,
+    "note": ""
+  },
+  {
+    "name": "mobile320-panel-click-stays-open",
+    "ok": true,
+    "note": ""
+  },
+  {
+    "name": "mobile320-escape-closes",
+    "ok": true,
+    "note": "bodyOverflowAfter="
+  },
+  {
+    "name": "mobile320-header-close-button-closes",
+    "ok": true,
+    "note": ""
+  },
+  {
+    "name": "mobile320-footer-close-button-closes",
+    "ok": true,
+    "note": ""
+  },
+  {
+    "name": "mobile320-backdrop-click-closes",
+    "ok": true,
+    "note": ""
+  },
+  {
+    "name": "mobile320-focus-returns-to-opener",
+    "ok": true,
+    "note": "{\"returnedToOpener\":true,\"scrollYBeforeFinalOpen\":2144,\"scrollYAfterFinalClose\":2144,\"scrollYUnchanged\":true}"
+  },
+  {
+    "name": "mobile320-scrollY-unchanged-after-close",
+    "ok": true,
+    "note": "{\"returnedToOpener\":true,\"scrollYBeforeFinalOpen\":2144,\"scrollYAfterFinalClose\":2144,\"scrollYUnchanged\":true}"
+  },
+  {
+    "name": "mobile320-lock-wheel-over-content-held",
+    "ok": true,
+    "note": "{\"baseline\":2144,\"wheelResults\":{\"top\":2144,\"middle\":2144,\"bottom\":2144}}"
+  },
+  {
+    "name": "mobile320-lock-wheel-over-backdrop-held",
+    "ok": true,
+    "note": "baseline=2144 backdropScrollY=2144"
+  },
+  {
+    "name": "mobile320-lock-computed-overflow-hidden",
+    "ok": true,
+    "note": "{\"html\":\"visible\",\"body\":\"hidden\",\"bodyInline\":\"hidden\"}"
+  },
+  {
+    "name": "mobile320-lock-touch-swipe-page-held",
+    "ok": true,
+    "note": "{\"ok\":true,\"contentScrollTopAfterTouch\":1010,\"pageScrollYAfterTouch\":2144,\"mechanism\":\"CDP Input.dispatchTouchEvent (Chromium automation, not a real device)\"}"
+  },
+  {
+    "name": "shortLandscape-keyboard-scroll-immediately-after-open",
+    "ok": true,
+    "note": "{\"activeElAtOpen\":{\"tag\":\"DIV\",\"testid\":\"route-details-scroll-region\"},\"scrollTopBeforeKeys\":0,\"scrollTopAfterKeys\":95,\"moved\":true}"
+  },
+  {
+    "name": "shortLandscape-advanced-toggle-real-expansion",
+    "ok": true,
+    "note": "{\"found\":true,\"labelFlipped\":true,\"contentGrew\":true,\"labelBefore\":\"Show scoring details\",\"labelAfter\":\"Hide scoring details\"}"
+  },
+  {
+    "name": "shortLandscape-advanced-table-overflows-horizontally",
+    "ok": true,
+    "note": "{\"tableVisible\":true,\"containerScrollWidth\":980,\"containerClientWidth\":607,\"containerScrollLeftBefore\":0}"
+  },
+  {
+    "name": "shortLandscape-advanced-table-horizontal-scroll-moves",
+    "ok": true,
+    "note": "scrollLeftAfterDrag=150"
+  },
+  {
+    "name": "shortLandscape-tab-forward-collapsed-reaches-advanced-toggle",
+    "ok": true,
+    "note": "atStep=2 sequence=[\"Overall result for the selected daysBetter(next 3 days)Overa\",\"vedur.is\",\"Show scoring details\",\"Close\",\"✕\",\"vedur.is\",\"Show scoring details\",\"Close\",\"✕\",\"vedur.is\",\"Show scoring details\",\"Close\",\"✕\",\"vedur.is\",\"Show scoring details\",\"Close\",\"✕\",\"vedur.is\",\"Show scoring details\",\"Close\"]"
+  },
+  {
+    "name": "shortLandscape-tab-forward-collapsed-reaches-footer-close",
+    "ok": true,
+    "note": "atStep=3"
+  },
+  {
+    "name": "shortLandscape-tab-forward-collapsed-reaches-targets-in-dom-order",
+    "ok": true,
+    "note": "toggleAt=2 footerAt=3"
+  },
+  {
+    "name": "shortLandscape-tab-forward-collapsed-wraps-to-first-after-footer-close",
+    "ok": true,
+    "note": "footerAt=3"
+  },
+  {
+    "name": "shortLandscape-tab-forward-collapsed-stays-in-dialog",
+    "ok": true,
+    "note": ""
+  },
+  {
+    "name": "shortLandscape-tab-reverse-collapsed-reaches-advanced-toggle",
+    "ok": true,
+    "note": "atStep=3 sequence=[\"Overall result for the selected daysBetter(next 3 days)Overa\",\"✕\",\"Close\",\"Show scoring details\",\"vedur.is\",\"✕\",\"Close\",\"Show scoring details\",\"vedur.is\",\"✕\",\"Close\",\"Show scoring details\",\"vedur.is\",\"✕\",\"Close\",\"Show scoring details\",\"vedur.is\",\"✕\",\"Close\",\"Show scoring details\"]"
+  },
+  {
+    "name": "shortLandscape-tab-reverse-collapsed-reaches-footer-close",
+    "ok": true,
+    "note": "atStep=2"
+  },
+  {
+    "name": "shortLandscape-tab-reverse-collapsed-reaches-targets-in-dom-order",
+    "ok": true,
+    "note": "toggleAt=3 footerAt=2"
+  },
+  {
+    "name": "shortLandscape-tab-reverse-collapsed-stays-in-dialog",
+    "ok": true,
+    "note": ""
+  },
+  {
+    "name": "shortLandscape-tab-forward-expanded-reaches-advanced-toggle",
+    "ok": true,
+    "note": "atStep=2 sequence=[\"Overall result for the selected daysBetter(next 3 days)Overa\",\"vedur.is\",\"Hide scoring details\",\"DateBase ptsOption ptsDifferenceWind penaltyGust penaltyRain\",\"Close\",\"✕\",\"vedur.is\",\"Hide scoring details\",\"DateBase ptsOption ptsDifferenceWind penaltyGust penaltyRain\",\"Close\",\"✕\",\"vedur.is\",\"Hide scoring details\",\"DateBase ptsOption ptsDifferenceWind penaltyGust penaltyRain\",\"Close\",\"✕\",\"vedur.is\",\"Hide scoring details\",\"DateBase ptsOption ptsDifferenceWind penaltyGust penaltyRain\",\"Close\",\"✕\",\"vedur.is\",\"Hide scoring details\",\"DateBase ptsOption ptsDifferenceWind penaltyGust penaltyRain\"]"
+  },
+  {
+    "name": "shortLandscape-tab-forward-expanded-reaches-footer-close",
+    "ok": true,
+    "note": "atStep=4"
+  },
+  {
+    "name": "shortLandscape-tab-forward-expanded-reaches-targets-in-dom-order",
+    "ok": true,
+    "note": "toggleAt=2 footerAt=4"
+  },
+  {
+    "name": "shortLandscape-tab-forward-expanded-wraps-to-first-after-footer-close",
+    "ok": true,
+    "note": "footerAt=4"
+  },
+  {
+    "name": "shortLandscape-tab-forward-expanded-stays-in-dialog",
+    "ok": true,
+    "note": ""
+  },
+  {
+    "name": "shortLandscape-tab-reverse-expanded-reaches-advanced-toggle",
+    "ok": true,
+    "note": "atStep=4 sequence=[\"Overall result for the selected daysBetter(next 3 days)Overa\",\"✕\",\"Close\",\"DateBase ptsOption ptsDifferenceWind penaltyGust penaltyRain\",\"Hide scoring details\",\"vedur.is\",\"✕\",\"Close\",\"DateBase ptsOption ptsDifferenceWind penaltyGust penaltyRain\",\"Hide scoring details\",\"vedur.is\",\"✕\",\"Close\",\"DateBase ptsOption ptsDifferenceWind penaltyGust penaltyRain\",\"Hide scoring details\",\"vedur.is\",\"✕\",\"Close\",\"DateBase ptsOption ptsDifferenceWind penaltyGust penaltyRain\",\"Hide scoring details\",\"vedur.is\",\"✕\",\"Close\",\"DateBase ptsOption ptsDifferenceWind penaltyGust penaltyRain\"]"
+  },
+  {
+    "name": "shortLandscape-tab-reverse-expanded-reaches-footer-close",
+    "ok": true,
+    "note": "atStep=2"
+  },
+  {
+    "name": "shortLandscape-tab-reverse-expanded-reaches-targets-in-dom-order",
+    "ok": true,
+    "note": "toggleAt=4 footerAt=2"
+  },
+  {
+    "name": "shortLandscape-tab-reverse-expanded-stays-in-dialog",
+    "ok": true,
+    "note": ""
+  },
+  {
+    "name": "shortLandscape-panel-click-stays-open",
+    "ok": true,
+    "note": ""
+  },
+  {
+    "name": "shortLandscape-escape-closes",
+    "ok": true,
+    "note": "bodyOverflowAfter="
+  },
+  {
+    "name": "shortLandscape-header-close-button-closes",
+    "ok": true,
+    "note": ""
+  },
+  {
+    "name": "shortLandscape-footer-close-button-closes",
+    "ok": true,
+    "note": ""
+  },
+  {
+    "name": "shortLandscape-backdrop-click-closes",
+    "ok": true,
+    "note": ""
+  },
+  {
+    "name": "shortLandscape-focus-returns-to-opener",
+    "ok": true,
+    "note": "{\"returnedToOpener\":true,\"scrollYBeforeFinalOpen\":1458,\"scrollYAfterFinalClose\":1458,\"scrollYUnchanged\":true}"
+  },
+  {
+    "name": "shortLandscape-scrollY-unchanged-after-close",
+    "ok": true,
+    "note": "{\"returnedToOpener\":true,\"scrollYBeforeFinalOpen\":1458,\"scrollYAfterFinalClose\":1458,\"scrollYUnchanged\":true}"
+  },
+  {
+    "name": "shortLandscape-lock-wheel-over-content-held",
+    "ok": true,
+    "note": "{\"baseline\":1458,\"wheelResults\":{\"top\":1458,\"middle\":1458,\"bottom\":1458}}"
+  },
+  {
+    "name": "shortLandscape-lock-wheel-over-backdrop-held",
+    "ok": true,
+    "note": "baseline=1458 backdropScrollY=1458"
+  },
+  {
+    "name": "shortLandscape-lock-computed-overflow-hidden",
+    "ok": true,
+    "note": "{\"html\":\"visible\",\"body\":\"hidden\",\"bodyInline\":\"hidden\"}"
+  },
+  {
+    "name": "shortLandscape-lock-touch-swipe-page-held",
+    "ok": true,
+    "note": "{\"ok\":true,\"contentScrollTopAfterTouch\":870,\"pageScrollYAfterTouch\":1458,\"mechanism\":\"CDP Input.dispatchTouchEvent (Chromium automation, not a real device)\"}"
+  },
+  {
+    "name": "mobile320-en-light-collapsed-footer-reachable",
+    "ok": true,
+    "note": "footerRect={\"x\":13,\"y\":455.390625,\"width\":294,\"height\":69,\"top\":455.390625,\"right\":307,\"bottom\":524.390625,\"left\":13} viewportHeight=568"
+  },
+  {
+    "name": "mobile320-en-light-collapsed-content-overflows-or-fits",
+    "ok": true,
+    "note": "{\"clientHeight\":279,\"scrollHeight\":1289,\"scrollTop\":0}"
+  },
+  {
+    "name": "mobile320-en-light-collapsed-wheel-scroll-moves-content",
+    "ok": true,
+    "note": "scrollTopAfterWheel=600"
+  },
+  {
+    "name": "mobile320-en-light-advanced-footer-reachable",
+    "ok": true,
+    "note": "footerRect={\"x\":13,\"y\":455.390625,\"width\":294,\"height\":69,\"top\":455.390625,\"right\":307,\"bottom\":524.390625,\"left\":13} viewportHeight=568"
+  },
+  {
+    "name": "mobile320-en-light-advanced-content-overflows-or-fits",
+    "ok": true,
+    "note": "{\"clientHeight\":279,\"scrollHeight\":1586,\"scrollTop\":1010}"
+  },
+  {
+    "name": "mobile320-en-light-advanced-wheel-scroll-moves-content",
+    "ok": true,
+    "note": "scrollTopAfterWheel=1307"
+  },
+  {
+    "name": "shortLandscape-en-light-collapsed-footer-reachable",
+    "ok": true,
+    "note": "footerRect={\"x\":13,\"y\":226,\"width\":641,\"height\":69,\"top\":226,\"right\":654,\"bottom\":295,\"left\":13} viewportHeight=320"
+  },
+  {
+    "name": "shortLandscape-en-light-collapsed-content-overflows-or-fits",
+    "ok": true,
+    "note": "{\"clientHeight\":116,\"scrollHeight\":986,\"scrollTop\":0}"
+  },
+  {
+    "name": "shortLandscape-en-light-collapsed-wheel-scroll-moves-content",
+    "ok": true,
+    "note": "scrollTopAfterWheel=600"
+  },
+  {
+    "name": "shortLandscape-en-light-advanced-footer-reachable",
+    "ok": true,
+    "note": "footerRect={\"x\":13,\"y\":226,\"width\":641,\"height\":69,\"top\":226,\"right\":654,\"bottom\":295,\"left\":13} viewportHeight=320"
+  },
+  {
+    "name": "shortLandscape-en-light-advanced-content-overflows-or-fits",
+    "ok": true,
+    "note": "{\"clientHeight\":116,\"scrollHeight\":1251,\"scrollTop\":870}"
+  },
+  {
+    "name": "shortLandscape-en-light-advanced-wheel-scroll-moves-content",
+    "ok": true,
+    "note": "scrollTopAfterWheel=1135"
+  },
+  {
+    "name": "shortLandscape-is-dark-collapsed-footer-reachable",
+    "ok": true,
+    "note": "footerRect={\"x\":13,\"y\":226,\"width\":641,\"height\":69,\"top\":226,\"right\":654,\"bottom\":295,\"left\":13} viewportHeight=320"
+  },
+  {
+    "name": "shortLandscape-is-dark-collapsed-content-overflows-or-fits",
+    "ok": true,
+    "note": "{\"clientHeight\":116,\"scrollHeight\":986,\"scrollTop\":0}"
+  },
+  {
+    "name": "shortLandscape-is-dark-collapsed-wheel-scroll-moves-content",
+    "ok": true,
+    "note": "scrollTopAfterWheel=600"
+  },
+  {
+    "name": "shortLandscape-is-dark-advanced-footer-reachable",
+    "ok": true,
+    "note": "footerRect={\"x\":13,\"y\":226,\"width\":641,\"height\":69,\"top\":226,\"right\":654,\"bottom\":295,\"left\":13} viewportHeight=320"
+  },
+  {
+    "name": "shortLandscape-is-dark-advanced-content-overflows-or-fits",
+    "ok": true,
+    "note": "{\"clientHeight\":116,\"scrollHeight\":1271,\"scrollTop\":870}"
+  },
+  {
+    "name": "shortLandscape-is-dark-advanced-wheel-scroll-moves-content",
+    "ok": true,
+    "note": "scrollTopAfterWheel=1155"
+  },
+  {
+    "name": "desktop-en-light-collapsed-footer-reachable",
+    "ok": true,
+    "note": "footerRect={\"x\":257,\"y\":762.5,\"width\":766,\"height\":69,\"top\":762.5,\"right\":1023,\"bottom\":831.5,\"left\":257} viewportHeight=900"
+  },
+  {
+    "name": "desktop-en-light-collapsed-content-overflows-or-fits",
+    "ok": true,
+    "note": "{\"clientHeight\":609,\"scrollHeight\":986,\"scrollTop\":0}"
+  },
+  {
+    "name": "desktop-en-light-collapsed-wheel-scroll-moves-content",
+    "ok": true,
+    "note": "scrollTopAfterWheel=377"
+  },
+  {
+    "name": "desktop-en-light-advanced-footer-reachable",
+    "ok": true,
+    "note": "footerRect={\"x\":257,\"y\":762.5,\"width\":766,\"height\":69,\"top\":762.5,\"right\":1023,\"bottom\":831.5,\"left\":257} viewportHeight=900"
+  },
+  {
+    "name": "desktop-en-light-advanced-content-overflows-or-fits",
+    "ok": true,
+    "note": "{\"clientHeight\":609,\"scrollHeight\":1251,\"scrollTop\":377}"
+  },
+  {
+    "name": "desktop-en-light-advanced-wheel-scroll-moves-content",
+    "ok": true,
+    "note": "scrollTopAfterWheel=642"
+  },
+  {
+    "name": "desktop-is-dark-collapsed-footer-reachable",
+    "ok": true,
+    "note": "footerRect={\"x\":257,\"y\":762.5,\"width\":766,\"height\":69,\"top\":762.5,\"right\":1023,\"bottom\":831.5,\"left\":257} viewportHeight=900"
+  },
+  {
+    "name": "desktop-is-dark-collapsed-content-overflows-or-fits",
+    "ok": true,
+    "note": "{\"clientHeight\":609,\"scrollHeight\":986,\"scrollTop\":0}"
+  },
+  {
+    "name": "desktop-is-dark-collapsed-wheel-scroll-moves-content",
+    "ok": true,
+    "note": "scrollTopAfterWheel=377"
+  },
+  {
+    "name": "mobile320-is-dark-collapsed-footer-reachable",
+    "ok": true,
+    "note": "footerRect={\"x\":13,\"y\":455.390625,\"width\":294,\"height\":69,\"top\":455.390625,\"right\":307,\"bottom\":524.390625,\"left\":13} viewportHeight=568"
+  },
+  {
+    "name": "mobile320-is-dark-collapsed-content-overflows-or-fits",
+    "ok": true,
+    "note": "{\"clientHeight\":279,\"scrollHeight\":1162,\"scrollTop\":0}"
+  },
+  {
+    "name": "mobile320-is-dark-collapsed-wheel-scroll-moves-content",
+    "ok": true,
+    "note": "scrollTopAfterWheel=600"
+  }
+]

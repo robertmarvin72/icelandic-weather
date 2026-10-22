@@ -1,0 +1,13 @@
+{
+  "sourceFile": "src/components/RoutePlannerDetailsModal.jsx",
+  "sourceSha256": "f8fd78e684e6fd167af65064156430dfbfa48f6de525cf038b0fe2d2518129a2",
+  "buildStartedUtc": "2026-10-22T18:10:57Z",
+  "buildFinishedUtc": "2026-10-22T18:11:05Z",
+  "distJsSha256": "5548bab28252afcb07c1980c4eb1aeb012440209fd97f3cb9caa20855ab1db2b",
+  "distCssSha256": "140f1bd0f015df3d9936d5343e1df37a3756a74224a9c963cb18bdfd638bea3c",
+  "distJsFile": "dist/assets/index-B-2SRZkt.js",
+  "distCssFile": "dist/assets/index-D8g6RLK6.css",
+  "previewServer": "vite preview --port 4440, restarted immediately after this build, confirmed via curl that the served index.html referenced these exact asset filenames before capture ran",
+  "captureCommand": "node outputs/ticket-440-browser-evidence/capture-v2.mjs outputs/ticket-440-browser-evidence/v2-final",
+  "note": "This build was produced from the source hash above with no edits afterward; the capture run below this file was started after confirming the preview server served this exact build, closing the #440-v1-review B5 gap (after-evidence predating the last source edit)."
+}

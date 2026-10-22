@@ -1,0 +1,2314 @@
+{
+  "mobile320-en-light-full": {
+    "scrollY": {
+      "scrollYBeforeOpen": 1075,
+      "scrollYAfterOpenSettled": 2144
+    },
+    "keyboardScroll": {
+      "activeElAtOpen": {
+        "tag": "DIV",
+        "testid": "route-details-scroll-region"
+      },
+      "scrollTopBeforeKeys": 0,
+      "scrollTopAfterKeys": 149,
+      "moved": true
+    },
+    "panelOverflowCulprit": {
+      "panelClientHeight": 481,
+      "panelScrollHeight": 966,
+      "worst": {
+        "tag": "DIV",
+        "cls": "mt-5",
+        "rect": {
+          "x": 29,
+          "y": 660.59375,
+          "width": 262,
+          "height": 578.9375,
+          "top": 660.59375,
+          "right": 291,
+          "bottom": 1239.53125,
+          "left": 29
+        },
+        "overflowAmount": 715.9375,
+        "position": "static",
+        "display": "block",
+        "visibility": "visible",
+        "hasVisibleBox": true,
+        "focusable": false,
+        "text": "Day by dayAbout this weather assessment: Caution i"
+      }
+    },
+    "lock": {
+      "baseline": 2144,
+      "computedOverflow": {
+        "html": "visible",
+        "body": "hidden",
+        "bodyInline": "hidden"
+      },
+      "wheelResults": {
+        "top": 2144,
+        "middle": 2144,
+        "bottom": 2144
+      },
+      "backdropScrollY": 2144,
+      "touchResult": {
+        "ok": true,
+        "contentScrollTopAfterTouch": 1010,
+        "pageScrollYAfterTouch": 2144,
+        "mechanism": "CDP Input.dispatchTouchEvent (Chromium automation, not a real device)"
+      }
+    },
+    "tabOrderCollapsed": {
+      "forward": [
+        {
+          "tag": "DIV",
+          "role": null,
+          "testid": "route-details-scroll-region",
+          "ariaLabel": null,
+          "text": "Overall result for the selected daysBetter(next 3 days)Overa",
+          "tabIndex": -1,
+          "inDialog": true
+        },
+        {
+          "tag": "BUTTON",
+          "role": null,
+          "testid": null,
+          "ariaLabel": "Close modal",
+          "text": "✕",
+          "tabIndex": 0,
+          "inDialog": true
+        },
+        {
+          "tag": "A",
+          "role": null,
+          "testid": null,
+          "ariaLabel": null,
+          "text": "vedur.is",
+          "tabIndex": 0,
+          "inDialog": true
+        },
+        {
+          "tag": "DIV",
+          "role": null,
+          "testid": null,
+          "ariaLabel": null,
+          "text": "DayGrunnstaður TestBetri Staður Langheiti sem er nokkuð lang",
+          "tabIndex": -1,
+          "inDialog": true
+        },
+        {
+          "tag": "BUTTON",
+          "role": null,
+          "testid": null,
+          "ariaLabel": "Close modal",
+          "text": "✕",
+          "tabIndex": 0,
+          "inDialog": true
+        },
+        {
+          "tag": "A",
+          "role": null,
+          "testid": null,
+          "ariaLabel": null,
+          "text": "vedur.is",
+          "tabIndex": 0,
+          "inDialog": true
+        },
+        {
+          "tag": "DIV",
+          "role": null,
+          "testid": null,
+          "ariaLabel": null,
+          "text": "DayGrunnstaður TestBetri Staður Langheiti sem er nokkuð lang",
+          "tabIndex": -1,
+          "inDialog": true
+        },
+        {
+          "tag": "BUTTON",
+          "role": null,
+          "testid": null,
+          "ariaLabel": "Close modal",
+          "text": "✕",
+          "tabIndex": 0,
+          "inDialog": true
+        },
+        {
+          "tag": "A",
+          "role": null,
+          "testid": null,
+          "ariaLabel": null,
+          "text": "vedur.is",
+          "tabIndex": 0,
+          "inDialog": true
+        },
+        {
+          "tag": "DIV",
+          "role": null,
+          "testid": null,
+          "ariaLabel": null,
+          "text": "DayGrunnstaður TestBetri Staður Langheiti sem er nokkuð lang",
+          "tabIndex": -1,
+          "inDialog": true
+        },
+        {
+          "tag": "BUTTON",
+          "role": null,
+          "testid": null,
+          "ariaLabel": "Close modal",
+          "text": "✕",
+          "tabIndex": 0,
+          "inDialog": true
+        },
+        {
+          "tag": "A",
+          "role": null,
+          "testid": null,
+          "ariaLabel": null,
+          "text": "vedur.is",
+          "tabIndex": 0,
+          "inDialog": true
+        },
+        {
+          "tag": "DIV",
+          "role": null,
+          "testid": null,
+          "ariaLabel": null,
+          "text": "DayGrunnstaður TestBetri Staður Langheiti sem er nokkuð lang",
+          "tabIndex": -1,
+          "inDialog": true
+        },
+        {
+          "tag": "BUTTON",
+          "role": null,
+          "testid": null,
+          "ariaLabel": "Close modal",
+          "text": "✕",
+          "tabIndex": 0,
+          "inDialog": true
+        },
+        {
+          "tag": "A",
+          "role": null,
+          "testid": null,
+          "ariaLabel": null,
+          "text": "vedur.is",
+          "tabIndex": 0,
+          "inDialog": true
+        },
+        {
+          "tag": "DIV",
+          "role": null,
+          "testid": null,
+          "ariaLabel": null,
+          "text": "DayGrunnstaður TestBetri Staður Langheiti sem er nokkuð lang",
+          "tabIndex": -1,
+          "inDialog": true
+        },
+        {
+          "tag": "BUTTON",
+          "role": null,
+          "testid": null,
+          "ariaLabel": "Close modal",
+          "text": "✕",
+          "tabIndex": 0,
+          "inDialog": true
+        },
+        {
+          "tag": "A",
+          "role": null,
+          "testid": null,
+          "ariaLabel": null,
+          "text": "vedur.is",
+          "tabIndex": 0,
+          "inDialog": true
+        },
+        {
+          "tag": "DIV",
+          "role": null,
+          "testid": null,
+          "ariaLabel": null,
+          "text": "DayGrunnstaður TestBetri Staður Langheiti sem er nokkuð lang",
+          "tabIndex": -1,
+          "inDialog": true
+        },
+        {
+          "tag": "BUTTON",
+          "role": null,
+          "testid": null,
+          "ariaLabel": "Close modal",
+          "text": "✕",
+          "tabIndex": 0,
+          "inDialog": true
+        }
+      ],
+      "reverse": [
+        {
+          "tag": "DIV",
+          "role": null,
+          "testid": "route-details-scroll-region",
+          "ariaLabel": null,
+          "text": "Overall result for the selected daysBetter(next 3 days)Overa",
+          "tabIndex": -1,
+          "inDialog": true
+        },
+        {
+          "tag": "BUTTON",
+          "role": null,
+          "testid": null,
+          "ariaLabel": null,
+          "text": "Close",
+          "tabIndex": 0,
+          "inDialog": true
+        },
+        {
+          "tag": "BUTTON",
+          "role": null,
+          "testid": null,
+          "ariaLabel": null,
+          "text": "Show scoring details",
+          "tabIndex": 0,
+          "inDialog": true
+        },
+        {
+          "tag": "DIV",
+          "role": null,
+          "testid": null,
+          "ariaLabel": null,
+          "text": "DayGrunnstaður TestBetri Staður Langheiti sem er nokkuð lang",
+          "tabIndex": -1,
+          "inDialog": true
+        },
+        {
+          "tag": "BUTTON",
+          "role": null,
+          "testid": null,
+          "ariaLabel": null,
+          "text": "Close",
+          "tabIndex": 0,
+          "inDialog": true
+        },
+        {
+          "tag": "BUTTON",
+          "role": null,
+          "testid": null,
+          "ariaLabel": null,
+          "text": "Show scoring details",
+          "tabIndex": 0,
+          "inDialog": true
+        },
+        {
+          "tag": "DIV",
+          "role": null,
+          "testid": null,
+          "ariaLabel": null,
+          "text": "DayGrunnstaður TestBetri Staður Langheiti sem er nokkuð lang",
+          "tabIndex": -1,
+          "inDialog": true
+        },
+        {
+          "tag": "BUTTON",
+          "role": null,
+          "testid": null,
+          "ariaLabel": null,
+          "text": "Close",
+          "tabIndex": 0,
+          "inDialog": true
+        },
+        {
+          "tag": "BUTTON",
+          "role": null,
+          "testid": null,
+          "ariaLabel": null,
+          "text": "Show scoring details",
+          "tabIndex": 0,
+          "inDialog": true
+        },
+        {
+          "tag": "DIV",
+          "role": null,
+          "testid": null,
+          "ariaLabel": null,
+          "text": "DayGrunnstaður TestBetri Staður Langheiti sem er nokkuð lang",
+          "tabIndex": -1,
+          "inDialog": true
+        },
+        {
+          "tag": "BUTTON",
+          "role": null,
+          "testid": null,
+          "ariaLabel": null,
+          "text": "Close",
+          "tabIndex": 0,
+          "inDialog": true
+        },
+        {
+          "tag": "BUTTON",
+          "role": null,
+          "testid": null,
+          "ariaLabel": null,
+          "text": "Show scoring details",
+          "tabIndex": 0,
+          "inDialog": true
+        },
+        {
+          "tag": "DIV",
+          "role": null,
+          "testid": null,
+          "ariaLabel": null,
+          "text": "DayGrunnstaður TestBetri Staður Langheiti sem er nokkuð lang",
+          "tabIndex": -1,
+          "inDialog": true
+        },
+        {
+          "tag": "BUTTON",
+          "role": null,
+          "testid": null,
+          "ariaLabel": null,
+          "text": "Close",
+          "tabIndex": 0,
+          "inDialog": true
+        },
+        {
+          "tag": "BUTTON",
+          "role": null,
+          "testid": null,
+          "ariaLabel": null,
+          "text": "Show scoring details",
+          "tabIndex": 0,
+          "inDialog": true
+        },
+        {
+          "tag": "DIV",
+          "role": null,
+          "testid": null,
+          "ariaLabel": null,
+          "text": "DayGrunnstaður TestBetri Staður Langheiti sem er nokkuð lang",
+          "tabIndex": -1,
+          "inDialog": true
+        },
+        {
+          "tag": "BUTTON",
+          "role": null,
+          "testid": null,
+          "ariaLabel": null,
+          "text": "Close",
+          "tabIndex": 0,
+          "inDialog": true
+        },
+        {
+          "tag": "BUTTON",
+          "role": null,
+          "testid": null,
+          "ariaLabel": null,
+          "text": "Show scoring details",
+          "tabIndex": 0,
+          "inDialog": true
+        },
+        {
+          "tag": "DIV",
+          "role": null,
+          "testid": null,
+          "ariaLabel": null,
+          "text": "DayGrunnstaður TestBetri Staður Langheiti sem er nokkuð lang",
+          "tabIndex": -1,
+          "inDialog": true
+        },
+        {
+          "tag": "BUTTON",
+          "role": null,
+          "testid": null,
+          "ariaLabel": null,
+          "text": "Close",
+          "tabIndex": 0,
+          "inDialog": true
+        }
+      ]
+    },
+    "advanced": {
+      "found": true,
+      "labelBefore": "Show scoring details",
+      "labelAfter": "Hide scoring details",
+      "labelFlipped": true,
+      "scrollRegionBefore": {
+        "scrollHeight": 1289,
+        "clientHeight": 279
+      },
+      "scrollRegionAfter": {
+        "scrollHeight": 1586,
+        "clientHeight": 279
+      },
+      "contentGrew": true,
+      "tableInfo": {
+        "tableVisible": true,
+        "containerScrollWidth": 980,
+        "containerClientWidth": 260,
+        "containerScrollLeftBefore": 0
+      },
+      "scrollLeftAfterDrag": 150,
+      "horizontalScrollWorks": true
+    },
+    "tabOrderExpanded": {
+      "forward": [
+        {
+          "tag": "DIV",
+          "role": null,
+          "testid": "route-details-scroll-region",
+          "ariaLabel": null,
+          "text": "Overall result for the selected daysBetter(next 3 days)Overa",
+          "tabIndex": -1,
+          "inDialog": true
+        },
+        {
+          "tag": "BUTTON",
+          "role": null,
+          "testid": null,
+          "ariaLabel": "Close modal",
+          "text": "✕",
+          "tabIndex": 0,
+          "inDialog": true
+        },
+        {
+          "tag": "A",
+          "role": null,
+          "testid": null,
+          "ariaLabel": null,
+          "text": "vedur.is",
+          "tabIndex": 0,
+          "inDialog": true
+        },
+        {
+          "tag": "DIV",
+          "role": null,
+          "testid": null,
+          "ariaLabel": null,
+          "text": "DayGrunnstaður TestBetri Staður Langheiti sem er nokkuð lang",
+          "tabIndex": -1,
+          "inDialog": true
+        },
+        {
+          "tag": "BUTTON",
+          "role": null,
+          "testid": null,
+          "ariaLabel": "Close modal",
+          "text": "✕",
+          "tabIndex": 0,
+          "inDialog": true
+        },
+        {
+          "tag": "A",
+          "role": null,
+          "testid": null,
+          "ariaLabel": null,
+          "text": "vedur.is",
+          "tabIndex": 0,
+          "inDialog": true
+        },
+        {
+          "tag": "DIV",
+          "role": null,
+          "testid": null,
+          "ariaLabel": null,
+          "text": "DayGrunnstaður TestBetri Staður Langheiti sem er nokkuð lang",
+          "tabIndex": -1,
+          "inDialog": true
+        },
+        {
+          "tag": "BUTTON",
+          "role": null,
+          "testid": null,
+          "ariaLabel": "Close modal",
+          "text": "✕",
+          "tabIndex": 0,
+          "inDialog": true
+        },
+        {
+          "tag": "A",
+          "role": null,
+          "testid": null,
+          "ariaLabel": null,
+          "text": "vedur.is",
+          "tabIndex": 0,
+          "inDialog": true
+        },
+        {
+          "tag": "DIV",
+          "role": null,
+          "testid": null,
+          "ariaLabel": null,
+          "text": "DayGrunnstaður TestBetri Staður Langheiti sem er nokkuð lang",
+          "tabIndex": -1,
+          "inDialog": true
+        },
+        {
+          "tag": "BUTTON",
+          "role": null,
+          "testid": null,
+          "ariaLabel": "Close modal",
+          "text": "✕",
+          "tabIndex": 0,
+          "inDialog": true
+        },
+        {
+          "tag": "A",
+          "role": null,
+          "testid": null,
+          "ariaLabel": null,
+          "text": "vedur.is",
+          "tabIndex": 0,
+          "inDialog": true
+        },
+        {
+          "tag": "DIV",
+          "role": null,
+          "testid": null,
+          "ariaLabel": null,
+          "text": "DayGrunnstaður TestBetri Staður Langheiti sem er nokkuð lang",
+          "tabIndex": -1,
+          "inDialog": true
+        },
+        {
+          "tag": "BUTTON",
+          "role": null,
+          "testid": null,
+          "ariaLabel": "Close modal",
+          "text": "✕",
+          "tabIndex": 0,
+          "inDialog": true
+        },
+        {
+          "tag": "A",
+          "role": null,
+          "testid": null,
+          "ariaLabel": null,
+          "text": "vedur.is",
+          "tabIndex": 0,
+          "inDialog": true
+        },
+        {
+          "tag": "DIV",
+          "role": null,
+          "testid": null,
+          "ariaLabel": null,
+          "text": "DayGrunnstaður TestBetri Staður Langheiti sem er nokkuð lang",
+          "tabIndex": -1,
+          "inDialog": true
+        },
+        {
+          "tag": "BUTTON",
+          "role": null,
+          "testid": null,
+          "ariaLabel": "Close modal",
+          "text": "✕",
+          "tabIndex": 0,
+          "inDialog": true
+        },
+        {
+          "tag": "A",
+          "role": null,
+          "testid": null,
+          "ariaLabel": null,
+          "text": "vedur.is",
+          "tabIndex": 0,
+          "inDialog": true
+        },
+        {
+          "tag": "DIV",
+          "role": null,
+          "testid": null,
+          "ariaLabel": null,
+          "text": "DayGrunnstaður TestBetri Staður Langheiti sem er nokkuð lang",
+          "tabIndex": -1,
+          "inDialog": true
+        },
+        {
+          "tag": "BUTTON",
+          "role": null,
+          "testid": null,
+          "ariaLabel": "Close modal",
+          "text": "✕",
+          "tabIndex": 0,
+          "inDialog": true
+        },
+        {
+          "tag": "A",
+          "role": null,
+          "testid": null,
+          "ariaLabel": null,
+          "text": "vedur.is",
+          "tabIndex": 0,
+          "inDialog": true
+        },
+        {
+          "tag": "DIV",
+          "role": null,
+          "testid": null,
+          "ariaLabel": null,
+          "text": "DayGrunnstaður TestBetri Staður Langheiti sem er nokkuð lang",
+          "tabIndex": -1,
+          "inDialog": true
+        },
+        {
+          "tag": "BUTTON",
+          "role": null,
+          "testid": null,
+          "ariaLabel": "Close modal",
+          "text": "✕",
+          "tabIndex": 0,
+          "inDialog": true
+        },
+        {
+          "tag": "A",
+          "role": null,
+          "testid": null,
+          "ariaLabel": null,
+          "text": "vedur.is",
+          "tabIndex": 0,
+          "inDialog": true
+        }
+      ],
+      "reverse": [
+        {
+          "tag": "DIV",
+          "role": null,
+          "testid": "route-details-scroll-region",
+          "ariaLabel": null,
+          "text": "Overall result for the selected daysBetter(next 3 days)Overa",
+          "tabIndex": -1,
+          "inDialog": true
+        },
+        {
+          "tag": "BUTTON",
+          "role": null,
+          "testid": null,
+          "ariaLabel": null,
+          "text": "Close",
+          "tabIndex": 0,
+          "inDialog": true
+        },
+        {
+          "tag": "DIV",
+          "role": null,
+          "testid": null,
+          "ariaLabel": null,
+          "text": "DateBase ptsOption ptsDifferenceWind penaltyGust penaltyRain",
+          "tabIndex": -1,
+          "inDialog": true
+        },
+        {
+          "tag": "BUTTON",
+          "role": null,
+          "testid": null,
+          "ariaLabel": null,
+          "text": "Close",
+          "tabIndex": 0,
+          "inDialog": true
+        },
+        {
+          "tag": "DIV",
+          "role": null,
+          "testid": null,
+          "ariaLabel": null,
+          "text": "DateBase ptsOption ptsDifferenceWind penaltyGust penaltyRain",
+          "tabIndex": -1,
+          "inDialog": true
+        },
+        {
+          "tag": "BUTTON",
+          "role": null,
+          "testid": null,
+          "ariaLabel": null,
+          "text": "Close",
+          "tabIndex": 0,
+          "inDialog": true
+        },
+        {
+          "tag": "DIV",
+          "role": null,
+          "testid": null,
+          "ariaLabel": null,
+          "text": "DateBase ptsOption ptsDifferenceWind penaltyGust penaltyRain",
+          "tabIndex": -1,
+          "inDialog": true
+        },
+        {
+          "tag": "BUTTON",
+          "role": null,
+          "testid": null,
+          "ariaLabel": null,
+          "text": "Close",
+          "tabIndex": 0,
+          "inDialog": true
+        },
+        {
+          "tag": "DIV",
+          "role": null,
+          "testid": null,
+          "ariaLabel": null,
+          "text": "DateBase ptsOption ptsDifferenceWind penaltyGust penaltyRain",
+          "tabIndex": -1,
+          "inDialog": true
+        },
+        {
+          "tag": "BUTTON",
+          "role": null,
+          "testid": null,
+          "ariaLabel": null,
+          "text": "Close",
+          "tabIndex": 0,
+          "inDialog": true
+        },
+        {
+          "tag": "DIV",
+          "role": null,
+          "testid": null,
+          "ariaLabel": null,
+          "text": "DateBase ptsOption ptsDifferenceWind penaltyGust penaltyRain",
+          "tabIndex": -1,
+          "inDialog": true
+        },
+        {
+          "tag": "BUTTON",
+          "role": null,
+          "testid": null,
+          "ariaLabel": null,
+          "text": "Close",
+          "tabIndex": 0,
+          "inDialog": true
+        },
+        {
+          "tag": "DIV",
+          "role": null,
+          "testid": null,
+          "ariaLabel": null,
+          "text": "DateBase ptsOption ptsDifferenceWind penaltyGust penaltyRain",
+          "tabIndex": -1,
+          "inDialog": true
+        },
+        {
+          "tag": "BUTTON",
+          "role": null,
+          "testid": null,
+          "ariaLabel": null,
+          "text": "Close",
+          "tabIndex": 0,
+          "inDialog": true
+        },
+        {
+          "tag": "DIV",
+          "role": null,
+          "testid": null,
+          "ariaLabel": null,
+          "text": "DateBase ptsOption ptsDifferenceWind penaltyGust penaltyRain",
+          "tabIndex": -1,
+          "inDialog": true
+        },
+        {
+          "tag": "BUTTON",
+          "role": null,
+          "testid": null,
+          "ariaLabel": null,
+          "text": "Close",
+          "tabIndex": 0,
+          "inDialog": true
+        },
+        {
+          "tag": "DIV",
+          "role": null,
+          "testid": null,
+          "ariaLabel": null,
+          "text": "DateBase ptsOption ptsDifferenceWind penaltyGust penaltyRain",
+          "tabIndex": -1,
+          "inDialog": true
+        },
+        {
+          "tag": "BUTTON",
+          "role": null,
+          "testid": null,
+          "ariaLabel": null,
+          "text": "Close",
+          "tabIndex": 0,
+          "inDialog": true
+        },
+        {
+          "tag": "DIV",
+          "role": null,
+          "testid": null,
+          "ariaLabel": null,
+          "text": "DateBase ptsOption ptsDifferenceWind penaltyGust penaltyRain",
+          "tabIndex": -1,
+          "inDialog": true
+        },
+        {
+          "tag": "BUTTON",
+          "role": null,
+          "testid": null,
+          "ariaLabel": null,
+          "text": "Close",
+          "tabIndex": 0,
+          "inDialog": true
+        },
+        {
+          "tag": "DIV",
+          "role": null,
+          "testid": null,
+          "ariaLabel": null,
+          "text": "DateBase ptsOption ptsDifferenceWind penaltyGust penaltyRain",
+          "tabIndex": -1,
+          "inDialog": true
+        },
+        {
+          "tag": "BUTTON",
+          "role": null,
+          "testid": null,
+          "ariaLabel": null,
+          "text": "Close",
+          "tabIndex": 0,
+          "inDialog": true
+        },
+        {
+          "tag": "DIV",
+          "role": null,
+          "testid": null,
+          "ariaLabel": null,
+          "text": "DateBase ptsOption ptsDifferenceWind penaltyGust penaltyRain",
+          "tabIndex": -1,
+          "inDialog": true
+        },
+        {
+          "tag": "BUTTON",
+          "role": null,
+          "testid": null,
+          "ariaLabel": null,
+          "text": "Close",
+          "tabIndex": 0,
+          "inDialog": true
+        }
+      ]
+    },
+    "staysOpenAfterPanelClick": true,
+    "closedByEscape": true,
+    "bodyOverflowAfterEscapeClose": "",
+    "scrollYAfterEscapeClose": 2144,
+    "focusAfterEscapeClose": "Less severe weather. Open details",
+    "closedByHeaderButton": true,
+    "closedByFooterButton": true,
+    "closedByBackdropClick": true,
+    "focusReturn": {
+      "returnedToOpener": true,
+      "scrollYBeforeFinalOpen": 2144,
+      "scrollYAfterFinalClose": 2144,
+      "scrollYUnchanged": true
+    }
+  },
+  "shortLandscape-en-light-full": {
+    "scrollY": {
+      "scrollYBeforeOpen": 826,
+      "scrollYAfterOpenSettled": 1458
+    },
+    "keyboardScroll": {
+      "activeElAtOpen": {
+        "tag": "DIV",
+        "testid": "route-details-scroll-region"
+      },
+      "scrollTopBeforeKeys": 0,
+      "scrollTopAfterKeys": 123,
+      "moved": true
+    },
+    "panelOverflowCulprit": {
+      "panelClientHeight": 270,
+      "panelScrollHeight": 739,
+      "worst": {
+        "tag": "DIV",
+        "cls": "mt-5",
+        "rect": {
+          "x": 29,
+          "y": 561,
+          "width": 609,
+          "height": 396.21875,
+          "top": 561,
+          "right": 638,
+          "bottom": 957.21875,
+          "left": 29
+        },
+        "overflowAmount": 663.21875,
+        "position": "static",
+        "display": "block",
+        "visibility": "visible",
+        "hasVisibleBox": true,
+        "focusable": false,
+        "text": "Day by dayAbout this weather assessment: Caution i"
+      }
+    },
+    "lock": {
+      "baseline": 1458,
+      "computedOverflow": {
+        "html": "visible",
+        "body": "hidden",
+        "bodyInline": "hidden"
+      },
+      "wheelResults": {
+        "top": 1458,
+        "middle": 1458,
+        "bottom": 1458
+      },
+      "backdropScrollY": 1458,
+      "touchResult": {
+        "ok": true,
+        "contentScrollTopAfterTouch": 870,
+        "pageScrollYAfterTouch": 1458,
+        "mechanism": "CDP Input.dispatchTouchEvent (Chromium automation, not a real device)"
+      }
+    },
+    "tabOrderCollapsed": {
+      "forward": [
+        {
+          "tag": "DIV",
+          "role": null,
+          "testid": "route-details-scroll-region",
+          "ariaLabel": null,
+          "text": "Overall result for the selected daysBetter(next 3 days)Overa",
+          "tabIndex": -1,
+          "inDialog": true
+        },
+        {
+          "tag": "BUTTON",
+          "role": null,
+          "testid": null,
+          "ariaLabel": "Close modal",
+          "text": "✕",
+          "tabIndex": 0,
+          "inDialog": true
+        },
+        {
+          "tag": "A",
+          "role": null,
+          "testid": null,
+          "ariaLabel": null,
+          "text": "vedur.is",
+          "tabIndex": 0,
+          "inDialog": true
+        },
+        {
+          "tag": "BUTTON",
+          "role": null,
+          "testid": null,
+          "ariaLabel": null,
+          "text": "Show scoring details",
+          "tabIndex": 0,
+          "inDialog": true
+        },
+        {
+          "tag": "BUTTON",
+          "role": null,
+          "testid": null,
+          "ariaLabel": null,
+          "text": "Close",
+          "tabIndex": 0,
+          "inDialog": true
+        },
+        {
+          "tag": "BUTTON",
+          "role": null,
+          "testid": null,
+          "ariaLabel": "Close modal",
+          "text": "✕",
+          "tabIndex": 0,
+          "inDialog": true
+        },
+        {
+          "tag": "A",
+          "role": null,
+          "testid": null,
+          "ariaLabel": null,
+          "text": "vedur.is",
+          "tabIndex": 0,
+          "inDialog": true
+        },
+        {
+          "tag": "BUTTON",
+          "role": null,
+          "testid": null,
+          "ariaLabel": null,
+          "text": "Show scoring details",
+          "tabIndex": 0,
+          "inDialog": true
+        },
+        {
+          "tag": "BUTTON",
+          "role": null,
+          "testid": null,
+          "ariaLabel": null,
+          "text": "Close",
+          "tabIndex": 0,
+          "inDialog": true
+        },
+        {
+          "tag": "BUTTON",
+          "role": null,
+          "testid": null,
+          "ariaLabel": "Close modal",
+          "text": "✕",
+          "tabIndex": 0,
+          "inDialog": true
+        },
+        {
+          "tag": "A",
+          "role": null,
+          "testid": null,
+          "ariaLabel": null,
+          "text": "vedur.is",
+          "tabIndex": 0,
+          "inDialog": true
+        },
+        {
+          "tag": "BUTTON",
+          "role": null,
+          "testid": null,
+          "ariaLabel": null,
+          "text": "Show scoring details",
+          "tabIndex": 0,
+          "inDialog": true
+        },
+        {
+          "tag": "BUTTON",
+          "role": null,
+          "testid": null,
+          "ariaLabel": null,
+          "text": "Close",
+          "tabIndex": 0,
+          "inDialog": true
+        },
+        {
+          "tag": "BUTTON",
+          "role": null,
+          "testid": null,
+          "ariaLabel": "Close modal",
+          "text": "✕",
+          "tabIndex": 0,
+          "inDialog": true
+        },
+        {
+          "tag": "A",
+          "role": null,
+          "testid": null,
+          "ariaLabel": null,
+          "text": "vedur.is",
+          "tabIndex": 0,
+          "inDialog": true
+        },
+        {
+          "tag": "BUTTON",
+          "role": null,
+          "testid": null,
+          "ariaLabel": null,
+          "text": "Show scoring details",
+          "tabIndex": 0,
+          "inDialog": true
+        },
+        {
+          "tag": "BUTTON",
+          "role": null,
+          "testid": null,
+          "ariaLabel": null,
+          "text": "Close",
+          "tabIndex": 0,
+          "inDialog": true
+        },
+        {
+          "tag": "BUTTON",
+          "role": null,
+          "testid": null,
+          "ariaLabel": "Close modal",
+          "text": "✕",
+          "tabIndex": 0,
+          "inDialog": true
+        },
+        {
+          "tag": "A",
+          "role": null,
+          "testid": null,
+          "ariaLabel": null,
+          "text": "vedur.is",
+          "tabIndex": 0,
+          "inDialog": true
+        },
+        {
+          "tag": "BUTTON",
+          "role": null,
+          "testid": null,
+          "ariaLabel": null,
+          "text": "Show scoring details",
+          "tabIndex": 0,
+          "inDialog": true
+        }
+      ],
+      "reverse": [
+        {
+          "tag": "DIV",
+          "role": null,
+          "testid": "route-details-scroll-region",
+          "ariaLabel": null,
+          "text": "Overall result for the selected daysBetter(next 3 days)Overa",
+          "tabIndex": -1,
+          "inDialog": true
+        },
+        {
+          "tag": "BUTTON",
+          "role": null,
+          "testid": null,
+          "ariaLabel": null,
+          "text": "Close",
+          "tabIndex": 0,
+          "inDialog": true
+        },
+        {
+          "tag": "BUTTON",
+          "role": null,
+          "testid": null,
+          "ariaLabel": null,
+          "text": "Show scoring details",
+          "tabIndex": 0,
+          "inDialog": true
+        },
+        {
+          "tag": "A",
+          "role": null,
+          "testid": null,
+          "ariaLabel": null,
+          "text": "vedur.is",
+          "tabIndex": 0,
+          "inDialog": true
+        },
+        {
+          "tag": "BUTTON",
+          "role": null,
+          "testid": null,
+          "ariaLabel": "Close modal",
+          "text": "✕",
+          "tabIndex": 0,
+          "inDialog": true
+        },
+        {
+          "tag": "BUTTON",
+          "role": null,
+          "testid": null,
+          "ariaLabel": null,
+          "text": "Close",
+          "tabIndex": 0,
+          "inDialog": true
+        },
+        {
+          "tag": "BUTTON",
+          "role": null,
+          "testid": null,
+          "ariaLabel": null,
+          "text": "Show scoring details",
+          "tabIndex": 0,
+          "inDialog": true
+        },
+        {
+          "tag": "A",
+          "role": null,
+          "testid": null,
+          "ariaLabel": null,
+          "text": "vedur.is",
+          "tabIndex": 0,
+          "inDialog": true
+        },
+        {
+          "tag": "BUTTON",
+          "role": null,
+          "testid": null,
+          "ariaLabel": "Close modal",
+          "text": "✕",
+          "tabIndex": 0,
+          "inDialog": true
+        },
+        {
+          "tag": "BUTTON",
+          "role": null,
+          "testid": null,
+          "ariaLabel": null,
+          "text": "Close",
+          "tabIndex": 0,
+          "inDialog": true
+        },
+        {
+          "tag": "BUTTON",
+          "role": null,
+          "testid": null,
+          "ariaLabel": null,
+          "text": "Show scoring details",
+          "tabIndex": 0,
+          "inDialog": true
+        },
+        {
+          "tag": "A",
+          "role": null,
+          "testid": null,
+          "ariaLabel": null,
+          "text": "vedur.is",
+          "tabIndex": 0,
+          "inDialog": true
+        },
+        {
+          "tag": "BUTTON",
+          "role": null,
+          "testid": null,
+          "ariaLabel": "Close modal",
+          "text": "✕",
+          "tabIndex": 0,
+          "inDialog": true
+        },
+        {
+          "tag": "BUTTON",
+          "role": null,
+          "testid": null,
+          "ariaLabel": null,
+          "text": "Close",
+          "tabIndex": 0,
+          "inDialog": true
+        },
+        {
+          "tag": "BUTTON",
+          "role": null,
+          "testid": null,
+          "ariaLabel": null,
+          "text": "Show scoring details",
+          "tabIndex": 0,
+          "inDialog": true
+        },
+        {
+          "tag": "A",
+          "role": null,
+          "testid": null,
+          "ariaLabel": null,
+          "text": "vedur.is",
+          "tabIndex": 0,
+          "inDialog": true
+        },
+        {
+          "tag": "BUTTON",
+          "role": null,
+          "testid": null,
+          "ariaLabel": "Close modal",
+          "text": "✕",
+          "tabIndex": 0,
+          "inDialog": true
+        },
+        {
+          "tag": "BUTTON",
+          "role": null,
+          "testid": null,
+          "ariaLabel": null,
+          "text": "Close",
+          "tabIndex": 0,
+          "inDialog": true
+        },
+        {
+          "tag": "BUTTON",
+          "role": null,
+          "testid": null,
+          "ariaLabel": null,
+          "text": "Show scoring details",
+          "tabIndex": 0,
+          "inDialog": true
+        },
+        {
+          "tag": "A",
+          "role": null,
+          "testid": null,
+          "ariaLabel": null,
+          "text": "vedur.is",
+          "tabIndex": 0,
+          "inDialog": true
+        }
+      ]
+    },
+    "advanced": {
+      "found": true,
+      "labelBefore": "Show scoring details",
+      "labelAfter": "Hide scoring details",
+      "labelFlipped": true,
+      "scrollRegionBefore": {
+        "scrollHeight": 986,
+        "clientHeight": 116
+      },
+      "scrollRegionAfter": {
+        "scrollHeight": 1251,
+        "clientHeight": 116
+      },
+      "contentGrew": true,
+      "tableInfo": {
+        "tableVisible": true,
+        "containerScrollWidth": 980,
+        "containerClientWidth": 607,
+        "containerScrollLeftBefore": 0
+      },
+      "scrollLeftAfterDrag": 150,
+      "horizontalScrollWorks": true
+    },
+    "tabOrderExpanded": {
+      "forward": [
+        {
+          "tag": "DIV",
+          "role": null,
+          "testid": "route-details-scroll-region",
+          "ariaLabel": null,
+          "text": "Overall result for the selected daysBetter(next 3 days)Overa",
+          "tabIndex": -1,
+          "inDialog": true
+        },
+        {
+          "tag": "BUTTON",
+          "role": null,
+          "testid": null,
+          "ariaLabel": "Close modal",
+          "text": "✕",
+          "tabIndex": 0,
+          "inDialog": true
+        },
+        {
+          "tag": "A",
+          "role": null,
+          "testid": null,
+          "ariaLabel": null,
+          "text": "vedur.is",
+          "tabIndex": 0,
+          "inDialog": true
+        },
+        {
+          "tag": "BUTTON",
+          "role": null,
+          "testid": null,
+          "ariaLabel": null,
+          "text": "Hide scoring details",
+          "tabIndex": 0,
+          "inDialog": true
+        },
+        {
+          "tag": "DIV",
+          "role": null,
+          "testid": null,
+          "ariaLabel": null,
+          "text": "DateBase ptsOption ptsDifferenceWind penaltyGust penaltyRain",
+          "tabIndex": -1,
+          "inDialog": true
+        },
+        {
+          "tag": "BUTTON",
+          "role": null,
+          "testid": null,
+          "ariaLabel": "Close modal",
+          "text": "✕",
+          "tabIndex": 0,
+          "inDialog": true
+        },
+        {
+          "tag": "A",
+          "role": null,
+          "testid": null,
+          "ariaLabel": null,
+          "text": "vedur.is",
+          "tabIndex": 0,
+          "inDialog": true
+        },
+        {
+          "tag": "BUTTON",
+          "role": null,
+          "testid": null,
+          "ariaLabel": null,
+          "text": "Hide scoring details",
+          "tabIndex": 0,
+          "inDialog": true
+        },
+        {
+          "tag": "DIV",
+          "role": null,
+          "testid": null,
+          "ariaLabel": null,
+          "text": "DateBase ptsOption ptsDifferenceWind penaltyGust penaltyRain",
+          "tabIndex": -1,
+          "inDialog": true
+        },
+        {
+          "tag": "BUTTON",
+          "role": null,
+          "testid": null,
+          "ariaLabel": "Close modal",
+          "text": "✕",
+          "tabIndex": 0,
+          "inDialog": true
+        },
+        {
+          "tag": "A",
+          "role": null,
+          "testid": null,
+          "ariaLabel": null,
+          "text": "vedur.is",
+          "tabIndex": 0,
+          "inDialog": true
+        },
+        {
+          "tag": "BUTTON",
+          "role": null,
+          "testid": null,
+          "ariaLabel": null,
+          "text": "Hide scoring details",
+          "tabIndex": 0,
+          "inDialog": true
+        },
+        {
+          "tag": "DIV",
+          "role": null,
+          "testid": null,
+          "ariaLabel": null,
+          "text": "DateBase ptsOption ptsDifferenceWind penaltyGust penaltyRain",
+          "tabIndex": -1,
+          "inDialog": true
+        },
+        {
+          "tag": "BUTTON",
+          "role": null,
+          "testid": null,
+          "ariaLabel": "Close modal",
+          "text": "✕",
+          "tabIndex": 0,
+          "inDialog": true
+        },
+        {
+          "tag": "A",
+          "role": null,
+          "testid": null,
+          "ariaLabel": null,
+          "text": "vedur.is",
+          "tabIndex": 0,
+          "inDialog": true
+        },
+        {
+          "tag": "BUTTON",
+          "role": null,
+          "testid": null,
+          "ariaLabel": null,
+          "text": "Hide scoring details",
+          "tabIndex": 0,
+          "inDialog": true
+        },
+        {
+          "tag": "DIV",
+          "role": null,
+          "testid": null,
+          "ariaLabel": null,
+          "text": "DateBase ptsOption ptsDifferenceWind penaltyGust penaltyRain",
+          "tabIndex": -1,
+          "inDialog": true
+        },
+        {
+          "tag": "BUTTON",
+          "role": null,
+          "testid": null,
+          "ariaLabel": "Close modal",
+          "text": "✕",
+          "tabIndex": 0,
+          "inDialog": true
+        },
+        {
+          "tag": "A",
+          "role": null,
+          "testid": null,
+          "ariaLabel": null,
+          "text": "vedur.is",
+          "tabIndex": 0,
+          "inDialog": true
+        },
+        {
+          "tag": "BUTTON",
+          "role": null,
+          "testid": null,
+          "ariaLabel": null,
+          "text": "Hide scoring details",
+          "tabIndex": 0,
+          "inDialog": true
+        },
+        {
+          "tag": "DIV",
+          "role": null,
+          "testid": null,
+          "ariaLabel": null,
+          "text": "DateBase ptsOption ptsDifferenceWind penaltyGust penaltyRain",
+          "tabIndex": -1,
+          "inDialog": true
+        },
+        {
+          "tag": "BUTTON",
+          "role": null,
+          "testid": null,
+          "ariaLabel": "Close modal",
+          "text": "✕",
+          "tabIndex": 0,
+          "inDialog": true
+        },
+        {
+          "tag": "A",
+          "role": null,
+          "testid": null,
+          "ariaLabel": null,
+          "text": "vedur.is",
+          "tabIndex": 0,
+          "inDialog": true
+        },
+        {
+          "tag": "BUTTON",
+          "role": null,
+          "testid": null,
+          "ariaLabel": null,
+          "text": "Hide scoring details",
+          "tabIndex": 0,
+          "inDialog": true
+        }
+      ],
+      "reverse": [
+        {
+          "tag": "DIV",
+          "role": null,
+          "testid": "route-details-scroll-region",
+          "ariaLabel": null,
+          "text": "Overall result for the selected daysBetter(next 3 days)Overa",
+          "tabIndex": -1,
+          "inDialog": true
+        },
+        {
+          "tag": "BUTTON",
+          "role": null,
+          "testid": null,
+          "ariaLabel": null,
+          "text": "Close",
+          "tabIndex": 0,
+          "inDialog": true
+        },
+        {
+          "tag": "DIV",
+          "role": null,
+          "testid": null,
+          "ariaLabel": null,
+          "text": "DateBase ptsOption ptsDifferenceWind penaltyGust penaltyRain",
+          "tabIndex": -1,
+          "inDialog": true
+        },
+        {
+          "tag": "BUTTON",
+          "role": null,
+          "testid": null,
+          "ariaLabel": null,
+          "text": "Close",
+          "tabIndex": 0,
+          "inDialog": true
+        },
+        {
+          "tag": "DIV",
+          "role": null,
+          "testid": null,
+          "ariaLabel": null,
+          "text": "DateBase ptsOption ptsDifferenceWind penaltyGust penaltyRain",
+          "tabIndex": -1,
+          "inDialog": true
+        },
+        {
+          "tag": "BUTTON",
+          "role": null,
+          "testid": null,
+          "ariaLabel": null,
+          "text": "Close",
+          "tabIndex": 0,
+          "inDialog": true
+        },
+        {
+          "tag": "DIV",
+          "role": null,
+          "testid": null,
+          "ariaLabel": null,
+          "text": "DateBase ptsOption ptsDifferenceWind penaltyGust penaltyRain",
+          "tabIndex": -1,
+          "inDialog": true
+        },
+        {
+          "tag": "BUTTON",
+          "role": null,
+          "testid": null,
+          "ariaLabel": null,
+          "text": "Close",
+          "tabIndex": 0,
+          "inDialog": true
+        },
+        {
+          "tag": "DIV",
+          "role": null,
+          "testid": null,
+          "ariaLabel": null,
+          "text": "DateBase ptsOption ptsDifferenceWind penaltyGust penaltyRain",
+          "tabIndex": -1,
+          "inDialog": true
+        },
+        {
+          "tag": "BUTTON",
+          "role": null,
+          "testid": null,
+          "ariaLabel": null,
+          "text": "Close",
+          "tabIndex": 0,
+          "inDialog": true
+        },
+        {
+          "tag": "DIV",
+          "role": null,
+          "testid": null,
+          "ariaLabel": null,
+          "text": "DateBase ptsOption ptsDifferenceWind penaltyGust penaltyRain",
+          "tabIndex": -1,
+          "inDialog": true
+        },
+        {
+          "tag": "BUTTON",
+          "role": null,
+          "testid": null,
+          "ariaLabel": null,
+          "text": "Close",
+          "tabIndex": 0,
+          "inDialog": true
+        },
+        {
+          "tag": "DIV",
+          "role": null,
+          "testid": null,
+          "ariaLabel": null,
+          "text": "DateBase ptsOption ptsDifferenceWind penaltyGust penaltyRain",
+          "tabIndex": -1,
+          "inDialog": true
+        },
+        {
+          "tag": "BUTTON",
+          "role": null,
+          "testid": null,
+          "ariaLabel": null,
+          "text": "Close",
+          "tabIndex": 0,
+          "inDialog": true
+        },
+        {
+          "tag": "DIV",
+          "role": null,
+          "testid": null,
+          "ariaLabel": null,
+          "text": "DateBase ptsOption ptsDifferenceWind penaltyGust penaltyRain",
+          "tabIndex": -1,
+          "inDialog": true
+        },
+        {
+          "tag": "BUTTON",
+          "role": null,
+          "testid": null,
+          "ariaLabel": null,
+          "text": "Close",
+          "tabIndex": 0,
+          "inDialog": true
+        },
+        {
+          "tag": "DIV",
+          "role": null,
+          "testid": null,
+          "ariaLabel": null,
+          "text": "DateBase ptsOption ptsDifferenceWind penaltyGust penaltyRain",
+          "tabIndex": -1,
+          "inDialog": true
+        },
+        {
+          "tag": "BUTTON",
+          "role": null,
+          "testid": null,
+          "ariaLabel": null,
+          "text": "Close",
+          "tabIndex": 0,
+          "inDialog": true
+        },
+        {
+          "tag": "DIV",
+          "role": null,
+          "testid": null,
+          "ariaLabel": null,
+          "text": "DateBase ptsOption ptsDifferenceWind penaltyGust penaltyRain",
+          "tabIndex": -1,
+          "inDialog": true
+        },
+        {
+          "tag": "BUTTON",
+          "role": null,
+          "testid": null,
+          "ariaLabel": null,
+          "text": "Close",
+          "tabIndex": 0,
+          "inDialog": true
+        },
+        {
+          "tag": "DIV",
+          "role": null,
+          "testid": null,
+          "ariaLabel": null,
+          "text": "DateBase ptsOption ptsDifferenceWind penaltyGust penaltyRain",
+          "tabIndex": -1,
+          "inDialog": true
+        },
+        {
+          "tag": "BUTTON",
+          "role": null,
+          "testid": null,
+          "ariaLabel": null,
+          "text": "Close",
+          "tabIndex": 0,
+          "inDialog": true
+        },
+        {
+          "tag": "DIV",
+          "role": null,
+          "testid": null,
+          "ariaLabel": null,
+          "text": "DateBase ptsOption ptsDifferenceWind penaltyGust penaltyRain",
+          "tabIndex": -1,
+          "inDialog": true
+        },
+        {
+          "tag": "BUTTON",
+          "role": null,
+          "testid": null,
+          "ariaLabel": null,
+          "text": "Close",
+          "tabIndex": 0,
+          "inDialog": true
+        }
+      ]
+    },
+    "staysOpenAfterPanelClick": true,
+    "closedByEscape": true,
+    "bodyOverflowAfterEscapeClose": "",
+    "scrollYAfterEscapeClose": 1458,
+    "focusAfterEscapeClose": "Less severe weather. Open details",
+    "closedByHeaderButton": true,
+    "closedByFooterButton": true,
+    "closedByBackdropClick": true,
+    "focusReturn": {
+      "returnedToOpener": true,
+      "scrollYBeforeFinalOpen": 1458,
+      "scrollYAfterFinalClose": 1458,
+      "scrollYUnchanged": true
+    }
+  },
+  "mobile320-en-light-collapsed": {
+    "measurements": {
+      "panel": {
+        "clientHeight": 481,
+        "scrollHeight": 966
+      },
+      "scrollRegion": {
+        "clientHeight": 279,
+        "scrollHeight": 1289,
+        "scrollTop": 0
+      },
+      "footerRect": {
+        "x": 13,
+        "y": 455.390625,
+        "width": 294,
+        "height": 69,
+        "top": 455.390625,
+        "right": 307,
+        "bottom": 524.390625,
+        "left": 13
+      },
+      "viewportHeight": 568
+    },
+    "scrollTopAfterWheel": 600,
+    "footerReachable": true
+  },
+  "mobile320-en-light-collapsed-panelOverflowCulprit": {
+    "panelClientHeight": 481,
+    "panelScrollHeight": 966,
+    "worst": {
+      "tag": "SPAN",
+      "cls": "sr-only",
+      "rect": {
+        "x": 63,
+        "y": 1008.09375,
+        "width": 1,
+        "height": 1,
+        "top": 1008.09375,
+        "right": 64,
+        "bottom": 1009.09375,
+        "left": 63
+      },
+      "overflowAmount": 485.5,
+      "position": "absolute",
+      "display": "block",
+      "visibility": "visible",
+      "hasVisibleBox": true,
+      "focusable": false,
+      "text": "Opens in a new tab"
+    }
+  },
+  "mobile320-en-light-advanced": {
+    "measurements": {
+      "panel": {
+        "clientHeight": 481,
+        "scrollHeight": 966
+      },
+      "scrollRegion": {
+        "clientHeight": 279,
+        "scrollHeight": 1586,
+        "scrollTop": 1010
+      },
+      "footerRect": {
+        "x": 13,
+        "y": 455.390625,
+        "width": 294,
+        "height": 69,
+        "top": 455.390625,
+        "right": 307,
+        "bottom": 524.390625,
+        "left": 13
+      },
+      "viewportHeight": 568
+    },
+    "scrollTopAfterWheel": 1307,
+    "footerReachable": true
+  },
+  "mobile320-en-light-advanced-panelOverflowCulprit": {
+    "panelClientHeight": 481,
+    "panelScrollHeight": 966,
+    "worst": {
+      "tag": "SPAN",
+      "cls": "sr-only",
+      "rect": {
+        "x": 63,
+        "y": 1008.09375,
+        "width": 1,
+        "height": 1,
+        "top": 1008.09375,
+        "right": 64,
+        "bottom": 1009.09375,
+        "left": 63
+      },
+      "overflowAmount": 485.5,
+      "position": "absolute",
+      "display": "block",
+      "visibility": "visible",
+      "hasVisibleBox": true,
+      "focusable": false,
+      "text": "Opens in a new tab"
+    }
+  },
+  "shortLandscape-en-light-collapsed": {
+    "measurements": {
+      "panel": {
+        "clientHeight": 270,
+        "scrollHeight": 739
+      },
+      "scrollRegion": {
+        "clientHeight": 116,
+        "scrollHeight": 986,
+        "scrollTop": 0
+      },
+      "footerRect": {
+        "x": 13,
+        "y": 226,
+        "width": 641,
+        "height": 69,
+        "top": 226,
+        "right": 654,
+        "bottom": 295,
+        "left": 13
+      },
+      "viewportHeight": 320
+    },
+    "scrollTopAfterWheel": 600,
+    "footerReachable": true
+  },
+  "shortLandscape-en-light-collapsed-panelOverflowCulprit": {
+    "panelClientHeight": 270,
+    "panelScrollHeight": 739,
+    "worst": {
+      "tag": "SPAN",
+      "cls": "sr-only",
+      "rect": {
+        "x": 63,
+        "y": 763,
+        "width": 1,
+        "height": 1,
+        "top": 763,
+        "right": 64,
+        "bottom": 764,
+        "left": 63
+      },
+      "overflowAmount": 470,
+      "position": "absolute",
+      "display": "block",
+      "visibility": "visible",
+      "hasVisibleBox": true,
+      "focusable": false,
+      "text": "Opens in a new tab"
+    }
+  },
+  "shortLandscape-en-light-advanced": {
+    "measurements": {
+      "panel": {
+        "clientHeight": 270,
+        "scrollHeight": 739
+      },
+      "scrollRegion": {
+        "clientHeight": 116,
+        "scrollHeight": 1251,
+        "scrollTop": 870
+      },
+      "footerRect": {
+        "x": 13,
+        "y": 226,
+        "width": 641,
+        "height": 69,
+        "top": 226,
+        "right": 654,
+        "bottom": 295,
+        "left": 13
+      },
+      "viewportHeight": 320
+    },
+    "scrollTopAfterWheel": 1135,
+    "footerReachable": true
+  },
+  "shortLandscape-en-light-advanced-panelOverflowCulprit": {
+    "panelClientHeight": 270,
+    "panelScrollHeight": 739,
+    "worst": {
+      "tag": "SPAN",
+      "cls": "sr-only",
+      "rect": {
+        "x": 63,
+        "y": 763,
+        "width": 1,
+        "height": 1,
+        "top": 763,
+        "right": 64,
+        "bottom": 764,
+        "left": 63
+      },
+      "overflowAmount": 470,
+      "position": "absolute",
+      "display": "block",
+      "visibility": "visible",
+      "hasVisibleBox": true,
+      "focusable": false,
+      "text": "Opens in a new tab"
+    }
+  },
+  "shortLandscape-is-dark-collapsed": {
+    "measurements": {
+      "panel": {
+        "clientHeight": 270,
+        "scrollHeight": 739
+      },
+      "scrollRegion": {
+        "clientHeight": 116,
+        "scrollHeight": 986,
+        "scrollTop": 0
+      },
+      "footerRect": {
+        "x": 13,
+        "y": 226,
+        "width": 641,
+        "height": 69,
+        "top": 226,
+        "right": 654,
+        "bottom": 295,
+        "left": 13
+      },
+      "viewportHeight": 320
+    },
+    "scrollTopAfterWheel": 600,
+    "footerReachable": true
+  },
+  "shortLandscape-is-dark-collapsed-panelOverflowCulprit": {
+    "panelClientHeight": 270,
+    "panelScrollHeight": 739,
+    "worst": {
+      "tag": "SPAN",
+      "cls": "sr-only",
+      "rect": {
+        "x": 63,
+        "y": 763,
+        "width": 1,
+        "height": 1,
+        "top": 763,
+        "right": 64,
+        "bottom": 764,
+        "left": 63
+      },
+      "overflowAmount": 470,
+      "position": "absolute",
+      "display": "block",
+      "visibility": "visible",
+      "hasVisibleBox": true,
+      "focusable": false,
+      "text": "Opnast í nýjum flipa"
+    }
+  },
+  "shortLandscape-is-dark-advanced": {
+    "measurements": {
+      "panel": {
+        "clientHeight": 270,
+        "scrollHeight": 739
+      },
+      "scrollRegion": {
+        "clientHeight": 116,
+        "scrollHeight": 1271,
+        "scrollTop": 870
+      },
+      "footerRect": {
+        "x": 13,
+        "y": 226,
+        "width": 641,
+        "height": 69,
+        "top": 226,
+        "right": 654,
+        "bottom": 295,
+        "left": 13
+      },
+      "viewportHeight": 320
+    },
+    "scrollTopAfterWheel": 1155,
+    "footerReachable": true
+  },
+  "shortLandscape-is-dark-advanced-panelOverflowCulprit": {
+    "panelClientHeight": 270,
+    "panelScrollHeight": 739,
+    "worst": {
+      "tag": "SPAN",
+      "cls": "sr-only",
+      "rect": {
+        "x": 63,
+        "y": 763,
+        "width": 1,
+        "height": 1,
+        "top": 763,
+        "right": 64,
+        "bottom": 764,
+        "left": 63
+      },
+      "overflowAmount": 470,
+      "position": "absolute",
+      "display": "block",
+      "visibility": "visible",
+      "hasVisibleBox": true,
+      "focusable": false,
+      "text": "Opnast í nýjum flipa"
+    }
+  },
+  "desktop-en-light-collapsed": {
+    "measurements": {
+      "panel": {
+        "clientHeight": 763,
+        "scrollHeight": 763
+      },
+      "scrollRegion": {
+        "clientHeight": 609,
+        "scrollHeight": 986,
+        "scrollTop": 0
+      },
+      "footerRect": {
+        "x": 257,
+        "y": 762.5,
+        "width": 766,
+        "height": 69,
+        "top": 762.5,
+        "right": 1023,
+        "bottom": 831.5,
+        "left": 257
+      },
+      "viewportHeight": 900
+    },
+    "scrollTopAfterWheel": 377,
+    "footerReachable": true
+  },
+  "desktop-en-light-collapsed-panelOverflowCulprit": {
+    "panelClientHeight": 763,
+    "panelScrollHeight": 763,
+    "worst": {
+      "tag": "DIV",
+      "cls": "flex shrink-0 justify-end gap-2 p-4 border-t border-slate-200 dark:border-slate-800",
+      "rect": {
+        "x": 257,
+        "y": 762.5,
+        "width": 766,
+        "height": 69,
+        "top": 762.5,
+        "right": 1023,
+        "bottom": 831.5,
+        "left": 257
+      },
+      "overflowAmount": 1,
+      "position": "static",
+      "display": "flex",
+      "visibility": "visible",
+      "hasVisibleBox": true,
+      "focusable": false,
+      "text": "Close"
+    }
+  },
+  "desktop-en-light-advanced": {
+    "measurements": {
+      "panel": {
+        "clientHeight": 763,
+        "scrollHeight": 763
+      },
+      "scrollRegion": {
+        "clientHeight": 609,
+        "scrollHeight": 1251,
+        "scrollTop": 377
+      },
+      "footerRect": {
+        "x": 257,
+        "y": 762.5,
+        "width": 766,
+        "height": 69,
+        "top": 762.5,
+        "right": 1023,
+        "bottom": 831.5,
+        "left": 257
+      },
+      "viewportHeight": 900
+    },
+    "scrollTopAfterWheel": 642,
+    "footerReachable": true
+  },
+  "desktop-en-light-advanced-panelOverflowCulprit": {
+    "panelClientHeight": 763,
+    "panelScrollHeight": 763,
+    "worst": {
+      "tag": "DIV",
+      "cls": "flex shrink-0 justify-end gap-2 p-4 border-t border-slate-200 dark:border-slate-800",
+      "rect": {
+        "x": 257,
+        "y": 762.5,
+        "width": 766,
+        "height": 69,
+        "top": 762.5,
+        "right": 1023,
+        "bottom": 831.5,
+        "left": 257
+      },
+      "overflowAmount": 1,
+      "position": "static",
+      "display": "flex",
+      "visibility": "visible",
+      "hasVisibleBox": true,
+      "focusable": false,
+      "text": "Close"
+    }
+  },
+  "desktop-is-dark-collapsed": {
+    "measurements": {
+      "panel": {
+        "clientHeight": 763,
+        "scrollHeight": 763
+      },
+      "scrollRegion": {
+        "clientHeight": 609,
+        "scrollHeight": 986,
+        "scrollTop": 0
+      },
+      "footerRect": {
+        "x": 257,
+        "y": 762.5,
+        "width": 766,
+        "height": 69,
+        "top": 762.5,
+        "right": 1023,
+        "bottom": 831.5,
+        "left": 257
+      },
+      "viewportHeight": 900
+    },
+    "scrollTopAfterWheel": 377,
+    "footerReachable": true
+  },
+  "desktop-is-dark-collapsed-panelOverflowCulprit": {
+    "panelClientHeight": 763,
+    "panelScrollHeight": 763,
+    "worst": {
+      "tag": "DIV",
+      "cls": "flex shrink-0 justify-end gap-2 p-4 border-t border-slate-200 dark:border-slate-800",
+      "rect": {
+        "x": 257,
+        "y": 762.5,
+        "width": 766,
+        "height": 69,
+        "top": 762.5,
+        "right": 1023,
+        "bottom": 831.5,
+        "left": 257
+      },
+      "overflowAmount": 1,
+      "position": "static",
+      "display": "flex",
+      "visibility": "visible",
+      "hasVisibleBox": true,
+      "focusable": false,
+      "text": "Loka"
+    }
+  },
+  "mobile320-is-dark-collapsed": {
+    "measurements": {
+      "panel": {
+        "clientHeight": 481,
+        "scrollHeight": 926
+      },
+      "scrollRegion": {
+        "clientHeight": 279,
+        "scrollHeight": 1162,
+        "scrollTop": 0
+      },
+      "footerRect": {
+        "x": 13,
+        "y": 455.390625,
+        "width": 294,
+        "height": 69,
+        "top": 455.390625,
+        "right": 307,
+        "bottom": 524.390625,
+        "left": 13
+      },
+      "viewportHeight": 568
+    },
+    "scrollTopAfterWheel": 600,
+    "footerReachable": true
+  },
+  "mobile320-is-dark-collapsed-panelOverflowCulprit": {
+    "panelClientHeight": 481,
+    "panelScrollHeight": 926,
+    "worst": {
+      "tag": "SPAN",
+      "cls": "sr-only",
+      "rect": {
+        "x": 63,
+        "y": 968.59375,
+        "width": 1,
+        "height": 1,
+        "top": 968.59375,
+        "right": 64,
+        "bottom": 969.59375,
+        "left": 63
+      },
+      "overflowAmount": 446,
+      "position": "absolute",
+      "display": "block",
+      "visibility": "visible",
+      "hasVisibleBox": true,
+      "focusable": false,
+      "text": "Opnast í nýjum flipa"
+    }
+  }
+}

@@ -1,0 +1,97 @@
+[
+  {
+    "name": "mobile320-collapsed-footer-reachable",
+    "ok": true,
+    "note": "footerRect={\"x\":13,\"y\":455.390625,\"width\":294,\"height\":69,\"top\":455.390625,\"right\":307,\"bottom\":524.390625,\"left\":13} viewportHeight=568"
+  },
+  {
+    "name": "mobile320-collapsed-content-actually-overflows",
+    "ok": true,
+    "note": "scrollRegion={\"clientHeight\":279,\"scrollHeight\":1289,\"scrollTop\":0}"
+  },
+  {
+    "name": "mobile320-collapsed-wheel-scroll-moves-content",
+    "ok": true,
+    "note": "scrollTopAfterWheel=600"
+  },
+  {
+    "name": "mobile320-collapsed-page-behind-stays-locked",
+    "ok": false,
+    "note": "before=1075 whileOpen=2144"
+  },
+  {
+    "name": "mobile320-advanced-footer-reachable",
+    "ok": true,
+    "note": "footerRect={\"x\":13,\"y\":455.390625,\"width\":294,\"height\":69,\"top\":455.390625,\"right\":307,\"bottom\":524.390625,\"left\":13} viewportHeight=568"
+  },
+  {
+    "name": "mobile320-advanced-content-actually-overflows",
+    "ok": true,
+    "note": "scrollRegion={\"clientHeight\":279,\"scrollHeight\":1289,\"scrollTop\":0}"
+  },
+  {
+    "name": "mobile320-advanced-wheel-scroll-moves-content",
+    "ok": true,
+    "note": "scrollTopAfterWheel=600"
+  },
+  {
+    "name": "mobile320-advanced-page-behind-stays-locked",
+    "ok": false,
+    "note": "before=1075 whileOpen=2144"
+  },
+  {
+    "name": "shortLandscape-collapsed-footer-reachable",
+    "ok": true,
+    "note": "footerRect={\"x\":13,\"y\":226,\"width\":641,\"height\":69,\"top\":226,\"right\":654,\"bottom\":295,\"left\":13} viewportHeight=320"
+  },
+  {
+    "name": "shortLandscape-collapsed-content-actually-overflows",
+    "ok": true,
+    "note": "scrollRegion={\"clientHeight\":116,\"scrollHeight\":986,\"scrollTop\":0}"
+  },
+  {
+    "name": "shortLandscape-collapsed-wheel-scroll-moves-content",
+    "ok": true,
+    "note": "scrollTopAfterWheel=600"
+  },
+  {
+    "name": "shortLandscape-collapsed-page-behind-stays-locked",
+    "ok": false,
+    "note": "before=826 whileOpen=1458"
+  },
+  {
+    "name": "shortLandscape-advanced-footer-reachable",
+    "ok": true,
+    "note": "footerRect={\"x\":13,\"y\":226,\"width\":641,\"height\":69,\"top\":226,\"right\":654,\"bottom\":295,\"left\":13} viewportHeight=320"
+  },
+  {
+    "name": "shortLandscape-advanced-content-actually-overflows",
+    "ok": true,
+    "note": "scrollRegion={\"clientHeight\":116,\"scrollHeight\":986,\"scrollTop\":0}"
+  },
+  {
+    "name": "shortLandscape-advanced-wheel-scroll-moves-content",
+    "ok": true,
+    "note": "scrollTopAfterWheel=600"
+  },
+  {
+    "name": "shortLandscape-advanced-page-behind-stays-locked",
+    "ok": false,
+    "note": "before=826 whileOpen=1458"
+  },
+  {
+    "name": "desktop-en-light-opened",
+    "ok": true,
+    "note": "panelBox={\"x\":256,\"y\":67.5,\"width\":768,\"height\":765}"
+  },
+  {
+    "name": "desktop-is-dark-opened",
+    "ok": true,
+    "note": "panelBox={\"x\":256,\"y\":67.5,\"width\":768,\"height\":765}"
+  },
+  {
+    "name": "mobile320-is-dark-opened",
+    "ok": true,
+    "note": "panelBox={\"x\":12,\"y\":42.59375,\"width\":296,\"height\":482.796875}"
+  }
+]

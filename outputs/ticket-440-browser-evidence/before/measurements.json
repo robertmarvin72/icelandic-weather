@@ -1,0 +1,345 @@
+[
+  {
+    "viewportLabel": "mobile320",
+    "lang": "en",
+    "theme": "light",
+    "expandAdvanced": false,
+    "panelBox": {
+      "x": 12,
+      "y": 42.59375,
+      "width": 296,
+      "height": 482.796875
+    },
+    "measurements": {
+      "panel": {
+        "clientHeight": 481,
+        "scrollHeight": 1491
+      },
+      "scrollRegion": {
+        "clientHeight": 1289,
+        "scrollHeight": 1289,
+        "scrollTop": 0
+      },
+      "footerRect": {
+        "x": 13,
+        "y": 1465.53125,
+        "width": 294,
+        "height": 69,
+        "top": 1465.53125,
+        "right": 307,
+        "bottom": 1534.53125,
+        "left": 13
+      },
+      "lastContentRect": {
+        "x": 29,
+        "y": 870.59375,
+        "width": 262,
+        "height": 578.9375,
+        "top": 870.59375,
+        "right": 291,
+        "bottom": 1449.53125,
+        "left": 29
+      },
+      "viewportHeight": 568
+    },
+    "scrollTopAfterWheel": 0,
+    "pageScrollYBeforeOpen": 1075,
+    "pageScrollYWhileOpen": 2144,
+    "footerReachable": false,
+    "screenshotPath": "outputs/ticket-440-browser-evidence/before/mobile320-en-light-collapsed.png"
+  },
+  {
+    "viewportLabel": "mobile320",
+    "lang": "en",
+    "theme": "light",
+    "expandAdvanced": true,
+    "panelBox": {
+      "x": 12,
+      "y": 42.59375,
+      "width": 296,
+      "height": 482.796875
+    },
+    "measurements": {
+      "panel": {
+        "clientHeight": 481,
+        "scrollHeight": 1491
+      },
+      "scrollRegion": {
+        "clientHeight": 1289,
+        "scrollHeight": 1289,
+        "scrollTop": 0
+      },
+      "footerRect": {
+        "x": 13,
+        "y": 1465.53125,
+        "width": 294,
+        "height": 69,
+        "top": 1465.53125,
+        "right": 307,
+        "bottom": 1534.53125,
+        "left": 13
+      },
+      "lastContentRect": {
+        "x": 29,
+        "y": 870.59375,
+        "width": 262,
+        "height": 578.9375,
+        "top": 870.59375,
+        "right": 291,
+        "bottom": 1449.53125,
+        "left": 29
+      },
+      "viewportHeight": 568
+    },
+    "scrollTopAfterWheel": 0,
+    "pageScrollYBeforeOpen": 1075,
+    "pageScrollYWhileOpen": 2144,
+    "footerReachable": false,
+    "screenshotPath": "outputs/ticket-440-browser-evidence/before/mobile320-en-light-advanced.png"
+  },
+  {
+    "viewportLabel": "shortLandscape",
+    "lang": "en",
+    "theme": "light",
+    "expandAdvanced": false,
+    "panelBox": {
+      "x": 12,
+      "y": 24,
+      "width": 643,
+      "height": 272
+    },
+    "measurements": {
+      "panel": {
+        "clientHeight": 270,
+        "scrollHeight": 1140
+      },
+      "scrollRegion": {
+        "clientHeight": 986,
+        "scrollHeight": 986,
+        "scrollTop": 0
+      },
+      "footerRect": {
+        "x": 13,
+        "y": 1096.21875,
+        "width": 641,
+        "height": 69,
+        "top": 1096.21875,
+        "right": 654,
+        "bottom": 1165.21875,
+        "left": 13
+      },
+      "lastContentRect": {
+        "x": 29,
+        "y": 684,
+        "width": 609,
+        "height": 396.21875,
+        "top": 684,
+        "right": 638,
+        "bottom": 1080.21875,
+        "left": 29
+      },
+      "viewportHeight": 320
+    },
+    "scrollTopAfterWheel": 0,
+    "pageScrollYBeforeOpen": 826,
+    "pageScrollYWhileOpen": 1458,
+    "footerReachable": false,
+    "screenshotPath": "outputs/ticket-440-browser-evidence/before/shortLandscape-en-light-collapsed.png"
+  },
+  {
+    "viewportLabel": "shortLandscape",
+    "lang": "en",
+    "theme": "light",
+    "expandAdvanced": true,
+    "panelBox": {
+      "x": 12,
+      "y": 24,
+      "width": 643,
+      "height": 272
+    },
+    "measurements": {
+      "panel": {
+        "clientHeight": 270,
+        "scrollHeight": 1140
+      },
+      "scrollRegion": {
+        "clientHeight": 986,
+        "scrollHeight": 986,
+        "scrollTop": 0
+      },
+      "footerRect": {
+        "x": 13,
+        "y": 1096.21875,
+        "width": 641,
+        "height": 69,
+        "top": 1096.21875,
+        "right": 654,
+        "bottom": 1165.21875,
+        "left": 13
+      },
+      "lastContentRect": {
+        "x": 29,
+        "y": 684,
+        "width": 609,
+        "height": 396.21875,
+        "top": 684,
+        "right": 638,
+        "bottom": 1080.21875,
+        "left": 29
+      },
+      "viewportHeight": 320
+    },
+    "scrollTopAfterWheel": 0,
+    "pageScrollYBeforeOpen": 826,
+    "pageScrollYWhileOpen": 1458,
+    "footerReachable": false,
+    "screenshotPath": "outputs/ticket-440-browser-evidence/before/shortLandscape-en-light-advanced.png"
+  },
+  {
+    "viewportLabel": "desktop",
+    "lang": "en",
+    "theme": "light",
+    "expandAdvanced": false,
+    "panelBox": {
+      "x": 256,
+      "y": 67.5,
+      "width": 768,
+      "height": 765
+    },
+    "measurements": {
+      "panel": {
+        "clientHeight": 763,
+        "scrollHeight": 1140
+      },
+      "scrollRegion": {
+        "clientHeight": 986,
+        "scrollHeight": 986,
+        "scrollTop": 0
+      },
+      "footerRect": {
+        "x": 257,
+        "y": 1139.71875,
+        "width": 766,
+        "height": 69,
+        "top": 1139.71875,
+        "right": 1023,
+        "bottom": 1208.71875,
+        "left": 257
+      },
+      "lastContentRect": {
+        "x": 273,
+        "y": 727.5,
+        "width": 734,
+        "height": 396.21875,
+        "top": 727.5,
+        "right": 1007,
+        "bottom": 1123.71875,
+        "left": 273
+      },
+      "viewportHeight": 900
+    },
+    "scrollTopAfterWheel": 0,
+    "pageScrollYBeforeOpen": 501,
+    "pageScrollYWhileOpen": 1133,
+    "footerReachable": false,
+    "screenshotPath": "outputs/ticket-440-browser-evidence/before/desktop-en-light-collapsed.png"
+  },
+  {
+    "viewportLabel": "desktop",
+    "lang": "is",
+    "theme": "dark",
+    "expandAdvanced": false,
+    "panelBox": {
+      "x": 256,
+      "y": 67.5,
+      "width": 768,
+      "height": 765
+    },
+    "measurements": {
+      "panel": {
+        "clientHeight": 763,
+        "scrollHeight": 1140
+      },
+      "scrollRegion": {
+        "clientHeight": 986,
+        "scrollHeight": 986,
+        "scrollTop": 0
+      },
+      "footerRect": {
+        "x": 257,
+        "y": 1139.71875,
+        "width": 766,
+        "height": 69,
+        "top": 1139.71875,
+        "right": 1023,
+        "bottom": 1208.71875,
+        "left": 257
+      },
+      "lastContentRect": {
+        "x": 273,
+        "y": 727.5,
+        "width": 734,
+        "height": 396.21875,
+        "top": 727.5,
+        "right": 1007,
+        "bottom": 1123.71875,
+        "left": 273
+      },
+      "viewportHeight": 900
+    },
+    "scrollTopAfterWheel": 0,
+    "pageScrollYBeforeOpen": 17,
+    "pageScrollYWhileOpen": 1082,
+    "footerReachable": false,
+    "screenshotPath": "outputs/ticket-440-browser-evidence/before/desktop-is-dark-collapsed.png"
+  },
+  {
+    "viewportLabel": "mobile320",
+    "lang": "is",
+    "theme": "dark",
+    "expandAdvanced": false,
+    "panelBox": {
+      "x": 12,
+      "y": 42.59375,
+      "width": 296,
+      "height": 482.796875
+    },
+    "measurements": {
+      "panel": {
+        "clientHeight": 481,
+        "scrollHeight": 1364
+      },
+      "scrollRegion": {
+        "clientHeight": 1162,
+        "scrollHeight": 1162,
+        "scrollTop": 0
+      },
+      "footerRect": {
+        "x": 13,
+        "y": 1338.921875,
+        "width": 294,
+        "height": 69,
+        "top": 1338.921875,
+        "right": 307,
+        "bottom": 1407.921875,
+        "left": 13
+      },
+      "lastContentRect": {
+        "x": 29,
+        "y": 850.59375,
+        "width": 262,
+        "height": 472.328125,
+        "top": 850.59375,
+        "right": 291,
+        "bottom": 1322.921875,
+        "left": 29
+      },
+      "viewportHeight": 568
+    },
+    "scrollTopAfterWheel": 0,
+    "pageScrollYBeforeOpen": 994,
+    "pageScrollYWhileOpen": 2031,
+    "footerReachable": false,
+    "screenshotPath": "outputs/ticket-440-browser-evidence/before/mobile320-is-dark-collapsed.png"
+  }
+]

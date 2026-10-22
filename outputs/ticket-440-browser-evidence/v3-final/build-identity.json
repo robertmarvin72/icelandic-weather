@@ -1,0 +1,21 @@
+{
+  "sourceFile": "src/components/RoutePlannerDetailsModal.jsx",
+  "sourceSha256": "ba8b6fcba5a67dc60a1d6cb1208568b18058c3cbfe362ab25a41e3cfca49ee5f",
+  "sourceChange": "K1 Tab-handler fix only: distinguish focus genuinely outside the panel (document re-entry at first/last) from focus inside the panel but absent from FOCUSABLE_SELECTOR (native scroll-container stops, left to native Tab/Shift+Tab traversal). No other change since v2 (v2 hash f8fd78e6...18129a2).",
+  "buildStartedUtc": "2026-10-22T18:27:35Z",
+  "buildFinishedUtc": "2026-10-22T18:27:42Z",
+  "distJsSha256": "9797a4c6de9ae7a10e01239695b141cd08406d50fcbb1663f8ec7cf518fdf37a",
+  "distCssSha256": "140f1bd0f015df3d9936d5343e1df37a3756a74224a9c963cb18bdfd638bea3c",
+  "distJsFile": "dist/assets/index-BRBBgwlK.js",
+  "distCssFile": "dist/assets/index-D8g6RLK6.css",
+  "previewServer": "vite preview --port 4440, restarted immediately after this build; served index.html asset filenames confirmed via curl before capture ran",
+  "captureCommand": "node outputs/ticket-440-browser-evidence/capture-v2.mjs outputs/ticket-440-browser-evidence/v3-final",
+  "expectedRedRun": {
+    "note": "Same harness, same named K1 checks, run against the PRE-FIX v2 build (dist hash 5548bab2...855ab1db2b, still live on :4440 at the time) BEFORE this build/rebuild. 15 named checks failed meaningfully (toggle/footer-Close unreachable, DOM-order checks failed) at mobile320 forward collapsed+expanded, mobile320 reverse expanded, shortLandscape forward expanded, shortLandscape reverse expanded -- exactly matching Jonesy's K1 description. 81/96 passed on that run.",
+    "resultsPath": "outputs/ticket-440-browser-evidence/v3-expected-red/results.json"
+  },
+  "finalRun": {
+    "note": "Same harness, same named checks, against this build. 96/96 passed.",
+    "resultsPath": "outputs/ticket-440-browser-evidence/v3-final/results.json"
+  }
+}
