@@ -1,0 +1,222 @@
+(node:11448) ExperimentalWarning: `--experimental-loader` may be removed in the future; instead use `register()`:
+--import 'data:text/javascript,import { register } from "node:module"; import { pathToFileURL } from "node:url"; register("./docs/ai/tasks/ticket-437/esm-ext-loader.mjs", pathToFileURL("./"));'
+(Use `node --trace-warnings ...` to show where the warning was created)
+# classifyRouteRisk(hazards=HAZARDS_V1) — app thresholds 14/18/20/24
+{"windWarn":14,"windHigh":18,"gustWarn":20,"gustHigh":24,"rainWarn":12,"rainHigh":20,"tempLowWarn":-8,"tempLowHigh":-15,"tempHighWarn":24,"tempHighHigh":28}
+
+=== classifyRouteRisk maxWind=0 maxGust=0 ===
+"LOW"
+
+=== classifyRouteRisk maxWind=13.9 maxGust=0 ===
+"LOW"
+
+=== classifyRouteRisk maxWind=14 maxGust=0 ===
+"MED"
+
+=== classifyRouteRisk maxWind=17.9 maxGust=0 ===
+"MED"
+
+=== classifyRouteRisk maxWind=18 maxGust=0 ===
+"HIGH"
+
+=== classifyRouteRisk maxWind=20.7 maxGust=0 ===
+"HIGH"
+
+=== classifyRouteRisk maxWind=NaN maxGust=0 ===
+"LOW"
+
+=== classifyRouteRisk maxWind=-5 maxGust=0 ===
+"LOW"
+
+=== classifyRouteRisk maxWind=null maxGust=0 ===
+"LOW"
+
+=== classifyRouteRisk maxWind=undefined maxGust=0 ===
+"LOW"
+
+=== classifyRouteRisk maxWind=0 maxGust=19.9 ===
+"LOW"
+
+=== classifyRouteRisk maxWind=0 maxGust=20 ===
+"MED"
+
+=== classifyRouteRisk maxWind=0 maxGust=23.9 ===
+"MED"
+
+=== classifyRouteRisk maxWind=0 maxGust=24 ===
+"HIGH"
+
+=== classifyRouteRisk maxWind=0 maxGust=null ===
+"LOW"
+
+=== classifyRouteRisk (official/Beaufort boundary) maxWind=4.99 ===
+"LOW"
+
+=== classifyRouteRisk (official/Beaufort boundary) maxWind=5 ===
+"LOW"
+
+=== classifyRouteRisk (official/Beaufort boundary) maxWind=9.99 ===
+"LOW"
+
+=== classifyRouteRisk (official/Beaufort boundary) maxWind=10 ===
+"LOW"
+
+=== classifyRouteRisk (official/Beaufort boundary) maxWind=19.99 ===
+"HIGH"
+
+=== classifyRouteRisk (official/Beaufort boundary) maxWind=20 ===
+"HIGH"
+
+=== classifyRouteRisk (official/Beaufort boundary) maxWind=29.99 ===
+"HIGH"
+
+=== classifyRouteRisk (official/Beaufort boundary) maxWind=30 ===
+"HIGH"
+
+=== classifyRouteRisk (official/Beaufort boundary) maxWind=20.8 ===
+"HIGH"
+
+=== classifyRouteRisk (official/Beaufort boundary) maxWind=24.5 ===
+"HIGH"
+
+=== classifyRouteRisk (official/Beaufort boundary) maxWind=28.5 ===
+"HIGH"
+
+=== classifyRouteRisk (official/Beaufort boundary) maxWind=32.7 ===
+"HIGH"
+
+=== detectHazardWindow: 6 consecutive hours at wind=14 (app windWarn, NOT Beaufort Stormur 20.8) ===
+{
+  "type": "stormyPeriod",
+  "hours": 6,
+  "factor": 1.6,
+  "startTime": "2026-11-01T00:00",
+  "endTime": "2026-11-01T05:00"
+}
+
+=== detectHazardWindow: 6 consecutive hours of rain=12 ONLY, wind=0, gust=0 (rain-only 'storm' label) ===
+{
+  "type": "stormyPeriod",
+  "hours": 6,
+  "factor": 1.6,
+  "startTime": "2026-11-01T00:00",
+  "endTime": "2026-11-01T05:00"
+}
+
+=== detectHazardWindow: 2 consecutive hours at wind=20.8 (Beaufort Stormur magnitude, short duration) ===
+{
+  "type": "passingStorm",
+  "hours": 2,
+  "factor": 1.1,
+  "startTime": "2026-11-01T00:00",
+  "endTime": "2026-11-01T01:00"
+}
+
+=== detectHazardWindow: hourly windspeed_10m contains non-numbers (missing-data pattern) ===
+null
+
+=== scoreAuroraVisibility windSpeed=11.9 (scored-branch fixture) ===
+{
+  "reachedScoredBranch": true,
+  "status": "scored",
+  "score": 100,
+  "flags": [
+    "national_reference_times"
+  ],
+  "hasHighWindFlag": false
+}
+
+=== scoreAuroraVisibility windSpeed=12 (scored-branch fixture) ===
+{
+  "reachedScoredBranch": true,
+  "status": "scored",
+  "score": 100,
+  "flags": [
+    "national_reference_times",
+    "high_wind"
+  ],
+  "hasHighWindFlag": true
+}
+
+=== scoreAuroraVisibility windSpeed=null (scored-branch fixture) ===
+{
+  "reachedScoredBranch": true,
+  "status": "scored",
+  "score": 100,
+  "flags": [
+    "national_reference_times"
+  ],
+  "hasHighWindFlag": false
+}
+
+
+# === Same 18 m/s value: daily-max vs hourly-raw vs time-weighted ===
+
+=== routeRisk (daily-max basis, always raw, any hour): maxWind=18 ===
+"HIGH"
+
+=== hazardWindow (hourly-raw basis, unweighted): single hour wind=18 at 14:00 ===
+{
+  "type": "passingStorm",
+  "hours": 1,
+  "factor": 1.1,
+  "startTime": "2026-11-01T14:00",
+  "endTime": "2026-11-01T14:00"
+}
+
+=== hazardWindow (hourly-raw basis, unweighted): single hour wind=18 at 02:00 (same tier as daytime) ===
+{
+  "type": "passingStorm",
+  "hours": 1,
+  "factor": 1.1,
+  "startTime": "2026-11-01T02:00",
+  "endTime": "2026-11-01T02:00"
+}
+
+=== forecastNormalize time-weighted windMax: raw 18 m/s peak at 14:00 (daytime, weight 1.0) ===
+{
+  "windMax": 18
+}
+
+=== forecastNormalize time-weighted windMax: raw 18 m/s peak at 02:00 (nighttime, weight 0.45) ===
+{
+  "windMax": 8.1
+}
+
+=== weatherVoiceEngine on the DAYTIME time-weighted windMax (same raw 18 m/s event) ===
+{
+  "show": true,
+  "condition": "extreme_wind",
+  "mood": "wrecked",
+  "severity": 3,
+  "voiceLevel": "serious"
+}
+
+=== weatherVoiceEngine on the NIGHTTIME time-weighted windMax (same raw 18 m/s event, different hour) ===
+{
+  "show": true,
+  "condition": "sun_wind",
+  "mood": "suspicious",
+  "severity": 1,
+  "voiceLevel": "sarcastic"
+}
+
+=== weatherVoiceEngine on the NO-HOURLY-DATA fallback (raw unweighted daily max = 18, same as routeRisk sees) ===
+{
+  "windMaxUsed": 18,
+  "result": {
+    "show": true,
+    "condition": "extreme_wind",
+    "mood": "wrecked",
+    "severity": 3,
+    "voiceLevel": "serious"
+  }
+}
+
+=== estimateRouteRisk: every sampled point's forecast fetch returns null (all-failed path) ===
+{
+  "routeRisk": "LOW",
+  "maxWind": 0,
+  "maxGust": 0,
+  "rainMax": 0
+}

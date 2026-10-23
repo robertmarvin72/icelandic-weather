@@ -1,0 +1,25 @@
+# #437 — Approved research correction prompt v2
+
+2026-10-23. Jonesy B1–B3/R1–R7 correction. V1 immutable. Research/documentation only. Execute only on owner Prompt approved with CURRENT READY_FOR_CC referencing this file. No source/test/config/copy/threshold/provider changes or live probes. No delegation/subagents authorized for this correction.
+
+## Required corrections
+
+B1: re-read retained #450 public-host sample and provenance manifest/headers, plus #452 review. Re-grade F-01: parameter-name inconsistency and missing main-path runtime units guard; legacy windspeed_unit=ms VERIFIED SAMPLE honoured on public host at the retained date. Keyed-host/current behavior remains UNKNOWN. Remove speculative systemic 3.6x bug as headline/rank and reframe O-1/O-6/owner priorities around actual evidence. No API request needed. A future owner observation of existing app Network responses may be recommended but is not performed/authorized here. Correct review slip: #453 has NO public-host retry after keyed failure; do not inherit the contrary phrase in B1. Sample proves point-in-time behavior, not universal current contract.
+
+B2: add full 13-row Beaufort reference table with source decimal notation/citation and averaging caveats to source-register. Assess safety.js Hvassviðri/Mjög hvassviðri copy next to actual >10/>15 triggers, weighted/raw fallback input semantics and traced homepage exposure. Hvassviðri is row8 (17.2–20.7), not a term-free phrase. Correct INV-F03, F findings and O-2 premise. Describe defined-term/colloquial ambiguity, not unsupported error verdict; everyday-sense evidence for another term does not prove this term's usage. No adopted/proposed new numeric cut-offs.
+
+B3: complete per-surface matrix with stable IDs, IS/EN copy/key, quantity/unit/aggregation, current comparator/threshold, source hash+line, active/retired/public exposure and evidence grade. Include shelterUtils WIND_REF15 on mean(daily maxima); trace weatherFinderAvgWind/meðalvindur to actual number and display; marketing translations.landing.js incl stormaskeið demo and20/10m/s gust mocks; aurora nlHighWindNote/12m/s flag; forecast table/recommendation, routeWarning*/routeRiskMedTooltip, routeEscapeStorm*. Follow indirect translation consumers, not literal-only component grep. Explicit UNKNOWN for unsampled surfaces, no false zero-match claim. Update threshold register/hashes and crosslinks.
+
+R1–R7: fix IS/EN line attribution; describe WebFetch as processed extraction rather than unprocessed direct proof; reconcile actual research-fork counts/provenance honestly (no new subagents); repair RC-18 with an existing scored-branch fixture read-only and cases11.9/12/null, explicitly assert scored branch before flag conclusions; correct severity1 to mild sarcastic tone, hourly weighting only when hourly present; keep individual attribution once in SRC-05; per-term counts or exact groups plus explicit omissions. Consider retained #450 observation-parameter sample f/fx/fg for mean/hour-max/3s distinction, with provenance. Trim unsupported direction-of-gust-bias speculation; add explicit #436 own-assessment constraints to options. Prioritize reproduced findings over unverified contract risks; include no-change option and decisions/evidence needs.
+
+Preserve stable finding IDs when revising, mark superseded claims visibly and update current recommendations so old false claims are not operative. Add dated v2 correction section/change log and B/R disposition. Use existing authoritative sources/retained evidence; new primary documentation reads only if needed, no provider/data/account/credential request. Do not frame all time-basis differences as incompatible: an hourly maximum of short-duration gust samples differs from gust duration, which must be analysed separately from sampling/aggregation window.
+
+## Validation/deliverables
+
+Edit only research files/scripts/output under docs/ai/tasks/ticket-437 and required CURRENT lifecycle. Re-read baseline HEAD/branch/status, hash newly cited source files and verify file:line links. Retained sample check plus updated reference-case script/output and source/threshold/per-surface crosslinks must be reproducible; read-only script may import real code but never modify it. Inspect script for writes/network first. Record exact commands and fresh outcomes in cc-report.md, separate synthetic observed outputs from actual UI exposure and live behavior. git status/diff --check and no-source-change verification required. No full suite/lint/build needed for research-only correction.
+
+STOP on source/config/test/threshold/copy/provider change, new library, live probe/account/secret inspection or broader implementation. Unknowns remain findings, not guesses. No commit, push, deploy or GitHub mutation.
+
+## Lifecycle
+
+Verify CURRENT READY_FOR_CC points here, set CC_IN_PROGRESS, execute only correction, update docs/ai/tasks/ticket-437/cc-report.md, populate path and set CC_COMPLETE. Jonesy narrow review and Ripley final assessment follow. Status research reviewed, no app change/official endorsement.
