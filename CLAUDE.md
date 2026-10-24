@@ -71,11 +71,11 @@ icelandic-weather/
 
 ### Weather Scoring (`src/lib/scoring.js`)
 
-Each campsite gets a numeric score from: temperature, wind penalty, rain penalty, season weighting. Used by `useLeaderboardScores` to rank the Top 5 sites.
+Each campsite gets a numeric score from: temperature, wind penalty, rain penalty, season weighting. Full score computation is tier-independent; `useLeaderboardScores` ranks all scored sites, but the Top-sites *display* is limited to 3 for Free / 5 for Pro (see `topSitesCount` in `src/config/features.js`).
 
 ### Feature Gating (`src/config/features.js`)
 
-Centralized free/pro feature definitions. `RequireFeature` component wraps gated UI. Pro features: wind direction, shelter index, advanced route planning, full campsite list.
+Centralized free/pro feature definitions. `RequireFeature` component wraps gated UI. Pro features include wind direction, shelter index, advanced route planning, and campsite comparison (see `src/config/features.js` for the current full list, including Free/Pro limits such as Top-sites count and Weather Finder results; the separate free/pro campsite *list length* — "full campsite list" — is covered under "Campsite Tiers" above, not a `FEATURES` entry).
 
 ### Free/Pro Gating — Forecast Data Rule (design rule, not current behavior)
 
@@ -111,7 +111,7 @@ Surfaces that show a stay/move/consider recommendation must read the canonical *
 
 ### Authentication
 
-- Email-only login → `/api/login` creates user + session
+- Email-only login → `/api/login-email` creates user + session
 - Session token (SHA256 hash) stored in `cc_session` cookie (30-day)
 - Tables: `app_user`, `user_session`, `user_subscription`
 
@@ -137,6 +137,12 @@ Surfaces that show a stay/move/consider recommendation must read the canonical *
 - Core logic in `src/lib/relocationEngine.js` and `relocationService.js`
 - Narrative generation in `routePlannerNarrative.js`
 - On the homepage, `RoutePlannerCard` is a supporting-detail surface, not a second primary verdict/conversion surface — it must not show a competing stay/move/consider verdict or Upgrade CTA by default alongside `HomeDecisionCard`. Full verdict/paywall detail is behind a user-opened "Sjá nánar" (see details) disclosure, default collapsed. Internal Route Planner logic (`useRoutePlanner`, `deriveRoutePlannerSummary`, radius/window, entitlement, Free preview, candidate/scoring) is unaffected by this — it's a presentation-only change.
+
+### Weather Voice & Own Assessment
+
+Weather Voice policy: see `CONDITION_VOICE_LEVELS` / `voiceLevelForCondition` in `src/lib/weatherVoiceRules.js` (#432). Safety-tier copy in `src/i18n/weatherVoice/safety.js` is separate from the joke library and must never be used as a punchline.
+
+Own weather assessments must not read as official warnings (#436); see `src/components/HazardSourceNote.jsx` for the source distinction and official-source link.
 
 ---
 
@@ -324,19 +330,27 @@ Post language determines UI chrome language, not global localStorage lang alone.
 
 ## API Routes
 
-| Route                 | Method   | Auth           | Purpose                         |
-| --------------------- | -------- | -------------- | ------------------------------- |
-| `/api/forecast`       | GET      | —              | 7-day weather from Open-Meteo   |
-| `/api/campsites`      | GET      | session cookie | Site list (tier-filtered)       |
-| `/api/login`          | POST     | —              | Create/find user, issue session |
-| `/api/logout`         | POST     | session cookie | Revoke session                  |
-| `/api/me`             | GET      | session cookie | Current user profile            |
-| `/api/checkout`       | POST     | session cookie | Initiate Paddle payment         |
-| `/api/billing-portal` | GET      | session cookie | Paddle customer portal link     |
-| `/api/paddle-webhook` | POST     | signature      | Payment event handler           |
-| `/api/users`          | GET      | admin email    | List users (admin)              |
-| `/api/db-health`      | GET      | —              | Database health check           |
-| `/api/admin`          | GET/POST | admin email    | Admin operations                |
+Not necessarily exhaustive — see `api/` for the current handler list. `/api/admin` dispatches by `?action=`/body `action`; auth varies by action, split into rows below.
+
+| Route                                    | Method | Auth                                  | Purpose                                                              |
+| ----------------------------------------- | ------ | --------------------------------------- | ----------------------------------------------------------------------- |
+| `/api/forecast`                          | GET    | —                                      | 7-day weather from Open-Meteo                                        |
+| `/api/campsites`                         | GET    | session cookie                        | Site list (tier-filtered)                                            |
+| `/api/login-email`                       | POST   | —                                      | Create/find user, issue session                                      |
+| `/api/logout`                            | POST   | session cookie                        | Revoke session                                                       |
+| `/api/me`                                | GET    | session cookie                        | Current user profile                                                 |
+| `/api/checkout`                          | POST   | session cookie                        | Initiate Paddle payment                                              |
+| `/api/billing-portal`                    | GET    | session cookie                        | Paddle customer portal link                                          |
+| `/api/paddle-webhook`                    | POST   | signature                             | Payment event handler                                                |
+| `/api/admin` (no/unrecognized `action`)  | GET    | admin email                           | Admin summary — users/pro/revenue (default GET branch)              |
+| `/api/admin?action=listBlogPosts`        | GET    | admin email                           | Admin's own blog post list                                           |
+| `/api/admin?action=getPublishedBlogPosts\|getPublishedBlogPostBySlug` | GET | public (admin-only with `&preview=draft`) | Published-blog reads                                                 |
+| `/api/admin` (`generateDraft`/`createBlogPost`/`createBlogMedia`/`updateBlogPost`/`publishBlogPost`/`deleteBlogPost`) | POST | admin email | Blog admin writes |
+| `/api/aurora-decision`                   | POST   | —                                      | Northern Lights visibility decision                                  |
+| `/api/blog-meta`                         | GET    | —                                      | OG meta injection for blog posts                                     |
+| `/api/blog-upload`                       | POST   | admin email                           | Blog media upload                                                    |
+| `/api/cron/generate-blog-draft`          | —      | `Bearer CRON_SECRET` (handler does not check the inbound HTTP method; Vercel Cron's actual method is a platform fact, not verified here) | Weekly automated blog draft |
+| `/api/cron/refresh-aurora`               | —      | `Bearer CRON_SECRET` (same method caveat as above) | Scheduled aurora cache refresh |
 
 ---
 
@@ -355,10 +369,20 @@ No ORM — all queries use tagged template literals via the `postgres` package.
 
 ## Environment Variables
 
+Representative, not exhaustive — see `.env.example` for the full current list.
+
 ```bash
-# Database (Neon)
-DATABASE_URL=postgresql://...
-DATABASE_URL_UNPOOLED=postgresql://...
+# Database (Neon) — application code reads POSTGRES_URL (every handler in
+# api/ that touches the DB uses this name). DATABASE_URL/DATABASE_URL_UNPOOLED
+# may still be platform-provisioned by the Neon/Vercel integration even
+# though no handler reads them directly — this documents what the code
+# consumes, not an instruction to remove any platform-side setting.
+POSTGRES_URL=postgresql://...
+
+# Open-Meteo host/key selection, production fail-closed behavior, and the
+# VERCEL_ENV exposure caveat: see docs/open-meteo-auth.md (canonical; do
+# not restate its operational status here)
+OPEN_METEO_API_KEY=...
 
 # Paddle
 PADDLE_API_KEY=sk_...
@@ -376,6 +400,18 @@ ADMIN_EMAILS=robert@...
 VITE_SENTRY_DSN=https://...
 VITE_SENTRY_TRACES_SAMPLE_RATE=0.05
 
+# Google Analytics 4 (frontend, must be prefixed VITE_)
+VITE_GA_MEASUREMENT_ID=G-XXXXXXXXXX
+
+# Multi-domain support
+ALLOWED_ORIGINS=https://campcast.is,https://www.campcast.is,https://eltumvedrid.is,https://www.eltumvedrid.is
+
+# Blob storage (blog media uploads)
+BLOB_READ_WRITE_TOKEN=...
+
+# Cron auth (scheduled jobs)
+CRON_SECRET=...
+
 # OpenAI (blog generation)
 OPENAI_API_KEY=sk-proj-...
 ```
@@ -386,13 +422,15 @@ OPENAI_API_KEY=sk-proj-...
 
 ```bash
 npm install
-npm run dev       # Vite dev server + Vercel dev (API proxy)
+npm run dev       # Vite only — see docs/open-meteo-auth.md for the dev-only /api/forecast proxy exception and what else needs to be running for other /api/* calls
 npm test          # Vitest (watch mode)
 npm run build     # Production build to dist/
 npm run lint      # ESLint
 ```
 
-Unit tests live alongside their modules as `*.test.js` files (e.g. `src/lib/scoring.test.js`). Test coverage is configured for `src/utils/**/*.js`.
+Non-watch scripts also exist: `test:run`, `test:ci`, `test:coverage` (CI uses `test:coverage` after `lint`, Node 20).
+
+Unit tests live alongside their modules as `*.test.js`/`*.test.jsx` files (e.g. `src/lib/scoring.test.js`). Test coverage is configured for `src/utils/**/*.js`.
 
 Vite proxies `/api/forecast` → Open-Meteo and `/api/*` → Vercel dev server during development.
 
@@ -407,7 +445,7 @@ Deployment is via Vercel Git integration — push to `main` deploys automaticall
 - Feature gating always through `RequireFeature` / `features.js`
 - Translations always in `i18n/` — never hardcode text in components
 - Before implementing: ask 'does the user have a UI entrypoint to reach this feature?'
-- If a bug fix reveals an adjacent UX gap, fix it in the same commit if < 25 lines — note it in the commit message
+- If a bug fix reveals an adjacent UX gap, report it. A small adjacent change (< 25 lines) may be included only if it is inside the approved task scope, and must be documented in the diff/report; otherwise stop and ask. A small adjacent change does not authorize work outside the approved scope.
 - Cross-reference related issue numbers in commit messages when two fixes address the same root cause
 
 ---
@@ -417,18 +455,19 @@ Deployment is via Vercel Git integration — push to `main` deploys automaticall
 - Leaflet map is lazy-loaded — do not import directly
 - Tailwind v4 dark mode requires `.dark` class on `<html>` — not `prefers-color-scheme`
 - Webhook endpoint must be public (no session auth)
-- `campsites.full.json` is large — do not import directly in frontend
+- `api/campsites.js` serves `server_data/campsites.limited.json` to Free and `server_data/campsites.full.json` to Pro. Do not import `server_data/*.json` directly into the frontend bundle; use the existing `/api/campsites` flow.
 - When writing Playwright stubs, match the hook's response parsing contract — not the raw endpoint shape. Check the hook source before stubbing.
+- For modal focus/scroll-lock work, see `src/components/RoutePlannerDetailsModal.jsx` (#440): lifecycle tied to actual rendered state, latest callback kept stable, cleanup/focus return, and genuinely outside-panel focus distinguished from unlisted native in-panel tab stops. This is a local example, not a mandated shared component; validate in a real browser because jsdom does not reproduce native scroll-container tab stops. The retained #440 evidence covers Chromium only; other engines and real devices remain unverified.
 
 ---
 
 ## Project Rules
 
-- This project uses .jsx not .tsx — never create .tsx files
-- Never use TypeScript type annotations in any file
-- Never use explicit file extensions in imports
+- This project uses .jsx not .tsx — never create .tsx files. Existing exception: the legacy `.tsx`/`.ts` weather-icon files (`src/components/WeatherIcon.tsx`, `src/components/icons/weather/*.tsx`, `index.ts`, `src/utils/WeatherIconMapping.ts`) predate this rule and are not being migrated; this does not authorize creating new `.tsx`/`.ts` files.
+- Never use TypeScript type annotations in any file — same existing exception as above.
+- Never use explicit file extensions in imports. Existing exception: `api/**` and some test/script files use explicit `.js`/`.mjs` extensions because they run under plain Node ESM (`"type": "module"`), not Vite's bundler — this does not authorize adding extensions to `src/` component imports.
 - Routes must be registered in AppRoutes.jsx when adding a new page
-- Keep everything client-side, no backend, no new libraries
+- A backend exists (`api/` serverless handlers, Postgres, Paddle, Open-Meteo proxy). Stay within the approved task scope: no unsolicited backend or architecture expansion, and no new dependencies without explicit owner approval.
 - Follow existing file and component patterns before introducing anything new
 
 ---
@@ -458,10 +497,11 @@ Git workflow:
 - Use descriptive commit messages referencing issue number
 - Never run git push — the user always pushes manually
 - Show changes as diffs only, I manage git myself
+- Agents must not commit unless the owner explicitly authorizes it. See `docs/ai/README.md` for the canonical git and handoff workflow.
 
 Subagent git ops:
 
-- `claude --model haiku` git commits require a TTY — does not work non-interactively. Run `git add` + `git commit` manually or inside an active Claude Code session.
+- This section grants no permission to delegate or perform git operations. The git defaults and explicit owner authorization in `docs/ai/README.md` apply to every agent.
 
 ---
 

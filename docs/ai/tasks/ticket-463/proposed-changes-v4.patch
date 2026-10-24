@@ -1,0 +1,22 @@
+--- a/CLAUDE.md
++++ b/CLAUDE.md
+@@ -455,7 +455,7 @@
+ - Leaflet map is lazy-loaded — do not import directly
+ - Tailwind v4 dark mode requires `.dark` class on `<html>` — not `prefers-color-scheme`
+ - Webhook endpoint must be public (no session auth)
+-- `campsites.full.json` (`server_data/`) must not be imported directly in frontend code — the real reason is Free/Pro tier gating (Free must never receive the Pro-only full list), not the file's raw size (currently ~28 KB)
++- `api/campsites.js` serves `server_data/campsites.limited.json` to Free and `server_data/campsites.full.json` to Pro. Do not import `server_data/*.json` directly into the frontend bundle; use the existing `/api/campsites` flow.
+ - When writing Playwright stubs, match the hook's response parsing contract — not the raw endpoint shape. Check the hook source before stubbing.
+ - For modal focus/scroll-lock work, see `src/components/RoutePlannerDetailsModal.jsx` (#440): lifecycle tied to actual rendered state, latest callback kept stable, cleanup/focus return, and genuinely outside-panel focus distinguished from unlisted native in-panel tab stops. This is a local example, not a mandated shared component; validate in a real browser because jsdom does not reproduce native scroll-container tab stops. The retained #440 evidence covers Chromium only; other engines and real devices remain unverified.
+ 
+--- a/AGENTS.md
++++ b/AGENTS.md
+@@ -328,7 +328,7 @@
+ - Leaflet map is lazy-loaded — do not import directly
+ - Tailwind v4 dark mode requires `.dark` class on `<html>` — not `prefers-color-scheme`
+ - Webhook endpoint must be public (no session auth)
+-- `campsites.full.json` (`server_data/`) must not be imported directly in frontend code — the real reason is Free/Pro tier gating (Free must never receive the Pro-only full list), not the file's raw size (currently ~28 KB)
++- `api/campsites.js` serves `server_data/campsites.limited.json` to Free and `server_data/campsites.full.json` to Pro. Do not import `server_data/*.json` directly into the frontend bundle; use the existing `/api/campsites` flow.
+ - When writing Playwright stubs, match the hook's response parsing contract — not the raw endpoint shape. Check the hook source before stubbing.
+ - For modal focus/scroll-lock work, see `src/components/RoutePlannerDetailsModal.jsx` (#440): lifecycle tied to actual rendered state, latest callback kept stable, cleanup/focus return, and genuinely outside-panel focus distinguished from unlisted native in-panel tab stops. This is a local example, not a mandated shared component; validate in a real browser because jsdom does not reproduce native scroll-container tab stops. The retained #440 evidence covers Chromium only; other engines and real devices remain unverified.
+ 
