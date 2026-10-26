@@ -1,0 +1,86 @@
+
+==== Contract item 4 — Oct-27 and Oct-28 synthetic breakdown (owner-reported rounded values; weatherCode is UNKNOWN, tried as mainly-clear=1 per 'að mestu heiðskírt') ====
+
+-- Oct-27 (owner-reported: Fair/Sæm, wind 4.8 m/s, rain 0.2mm, tmax 6.7) --
+input row: {"date":"2026-10-27","tmax":6.7,"tmin":2.9,"windMax":4.8,"windGust":null,"rain":0.2,"weatherCode":null,"shelter":0}
+season: winter
+basePointsFromTemp(tmax,season) raw: 2 -> scoreSiteDay basePts: 4
+windPenaltyPoints(windMax,season) raw: 0 -> scoreSiteDay windPen: 0
+rainPenaltyPoints(rain) raw: 0 -> scoreSiteDay rainPen: 0
+gustPenaltyPoints(windGust,windMax,season): 0 (== scoreSiteDay gustPen: 0 )
+getSkyComfortModifier(weatherCode): 0
+getColdWindPenalty(tmax,windMax): 0
+getWintryPrecipPenalty(weatherCode,tmax): 0
+getPleasantnessModifier -> sky-coldWind-wintry: 0 (== components.pleasantness: 0 )
+pointsRaw (basePts-windPen-rainPen-gustPen-rainStreakPen(0)+shelterBonus+pleasantness): 4 / totalRaw: 4
+points (clamped 0..10): 4 / total: 4
+finalClass: Ok <- pointsToClass( 4 ) = Ok
+components: {"temp":4,"wind":0,"rain":0,"gust":0,"rainStreak":0,"shelter":0,"pleasantness":0}
+
+-- Oct-28 (owner-reported: Bad/Slæmt, wind 5.1 m/s, rain 0.0mm, tmax 5.8, 'mostly clear') --
+input row: {"date":"2026-10-28","tmax":5.8,"tmin":2.6,"windMax":5.1,"windGust":null,"rain":0,"weatherCode":1,"shelter":0}
+season: winter
+basePointsFromTemp(tmax,season) raw: 0 -> scoreSiteDay basePts: 4
+windPenaltyPoints(windMax,season) raw: 2 -> scoreSiteDay windPen: 2
+rainPenaltyPoints(rain) raw: 0 -> scoreSiteDay rainPen: 0
+gustPenaltyPoints(windGust,windMax,season): 0 (== scoreSiteDay gustPen: 0 )
+getSkyComfortModifier(weatherCode): 1
+getColdWindPenalty(tmax,windMax): 0
+getWintryPrecipPenalty(weatherCode,tmax): 0
+getPleasantnessModifier -> sky-coldWind-wintry: 1 (== components.pleasantness: 1 )
+pointsRaw (basePts-windPen-rainPen-gustPen-rainStreakPen(0)+shelterBonus+pleasantness): 3 / totalRaw: 3
+points (clamped 0..10): 3 / total: 3
+finalClass: Fair <- pointsToClass( 3 ) = Fair
+components: {"temp":4,"wind":-2,"rain":0,"gust":0,"rainStreak":0,"shelter":0,"pleasantness":1}
+
+==== J3 — hidden-input (gust) feasibility sweep for Oct-28, weatherCode=1 (mainly clear), shelter=0 ====
+gust= null  diff(gust-windMax)=n/a  gustPen=0  points=3  class=Fair
+gust=    5  diff(gust-windMax)=-0.1  gustPen=0  points=3  class=Fair
+gust=    8  diff(gust-windMax)=2.9  gustPen=2  points=1  class=Fair
+gust=   10  diff(gust-windMax)=4.9  gustPen=2  points=1  class=Fair
+gust=   11  diff(gust-windMax)=5.9  gustPen=2  points=1  class=Fair
+gust= 11.1  diff(gust-windMax)=6.0  gustPen=3  points=0  class=Bad
+gust=   12  diff(gust-windMax)=6.9  gustPen=3  points=0  class=Bad
+gust=   13  diff(gust-windMax)=7.9  gustPen=3  points=0  class=Bad
+gust=   14  diff(gust-windMax)=8.9  gustPen=3  points=0  class=Bad
+gust= 14.9  diff(gust-windMax)=9.8  gustPen=3  points=0  class=Bad
+gust=   15  diff(gust-windMax)=9.9  gustPen=3  points=0  class=Bad
+gust=   16  diff(gust-windMax)=10.9  gustPen=5  points=0  class=Bad
+gust=   20  diff(gust-windMax)=14.9  gustPen=5  points=0  class=Bad
+
+==== J3 — same sweep but with weatherCode=3 (overcast, sky=-1) instead of clear, to show class without any gust at all under worse sky ====
+weatherCode=0  pleasantness=1  points=3  class=Fair
+weatherCode=1  pleasantness=1  points=3  class=Fair
+weatherCode=3  pleasantness=-1  points=1  class=Fair
+weatherCode=45  pleasantness=-1  points=1  class=Fair
+
+==== Contract item 5 — counterfactuals around exact winter wind boundary (<=5 vs >5..10) ====
+windMax=4.9  windPenaltyPoints=0  windPen=0  points=5  class=Ok
+windMax=5  windPenaltyPoints=0  windPen=0  points=5  class=Ok
+windMax=5.0001  windPenaltyPoints=2  windPen=0  points=5  class=Ok
+windMax=5.1  windPenaltyPoints=2  windPen=2  points=3  class=Fair
+windMax=10  windPenaltyPoints=2  windPen=2  points=3  class=Fair
+windMax=10.1  windPenaltyPoints=5  windPen=5  points=0  class=Bad
+
+==== Contract item 5 — legitimate zero/negative and missing/non-finite/type-mismatched inputs fed to scoreSiteDay ====
+all nulls                                season=winter  basePts=4  points=4  class=Ok  totalRaw=4
+negative wind/rain                       season=winter  basePts=4  points=5  class=Ok  totalRaw=5
+NaN tmax/wind/rain                       season=winter  basePts=4  points=0  class=Bad  totalRaw=-5
+Infinity wind                            season=winter  basePts=4  points=0  class=Bad  totalRaw=-6
+numeric-string wind ('5.1')              season=winter  basePts=4  points=3  class=Fair  totalRaw=3
+missing date (season defaults to summer) season=summer  basePts=3  points=4  class=Ok  totalRaw=4
+
+==== J6 — getSeasonForDate UTC-parse vs local getMonth(), secondary counterfactual (date-only string ambiguity near month boundaries) ====
+process.env.TZ at script start: undefined  Intl default TZ: Atlantic/Reykjavik
+getSeasonForDate(2026-10-01) with current process TZ -> winter
+getSeasonForDate(2026-05-01) with current process TZ -> summer
+getSeasonForDate(2026-10-27) with current process TZ -> winter
+getSeasonForDate(2026-10-28) with current process TZ -> winter
+
+==== normalizeDailyToScoreInput — confirm daily windMax/windGust/rain are time-weighted hourly maxima/sum, not raw provider daily fields, when hourly is present ====
+provider daily windspeed_10m_max: 9  windgusts_10m_max: 20
+normalizeDailyToScoreInput output row (fed into scoreSiteDay): {"date":"2026-10-28","tmax":5.8,"tmin":2.6,"rain":0,"windMax":11,"windGust":14,"windDir":180,"code":1,"precipStartHour":null,"precipEndHour":null,"precipDurationHours":0,"precipActiveHours":0,"precipTimingBucket":null,"precipType":null}
+note: hour 13 raw wind=11 at weight 1.0 (9<=13<22) -> weighted 11.0 is the max across the day, so normalized windMax == 11.0, NOT the provider's own daily windspeed_10m_max (9.0) and NOT the modal's 3-hourly-sampled rows (which never include hour 13 at all).
+scoreSiteDay on that normalized row: Bad 0 {"temp":4,"wind":-5,"rain":0,"gust":-2,"rainStreak":0,"shelter":0,"pleasantness":1}
+
+==== done ====

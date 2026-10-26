@@ -1,0 +1,36 @@
+﻿######## TZ=Atlantic/Reykjavik ########
+process.env.TZ=Atlantic/Reykjavik  Intl resolved TZ=Atlantic/Reykjavik  node=v24.11.0
+  2026-10-28T00:00  en-GB=00:00  is-IS=00:00
+  2026-10-28T21:00  en-GB=21:00  is-IS=21:00
+  DST-gap counterfactual 2026-03-08T02:00 (only meaningful under an America/* TZ):
+    en-GB=02:00  is-IS=02:00
+  getSeasonForDate (real, retained scoring.js):
+    2026-10-01 -> winter  (new Date("2026-10-01").getMonth()+1 = 10)
+    2026-05-01 -> summer  (new Date("2026-05-01").getMonth()+1 = 5)
+    2026-10-27 -> winter  (new Date("2026-10-27").getMonth()+1 = 10)
+    2026-10-28 -> winter  (new Date("2026-10-28").getMonth()+1 = 10)
+
+######## TZ=America/New_York ########
+process.env.TZ=America/New_York  Intl resolved TZ=America/New_York  node=v24.11.0
+  2026-10-28T00:00  en-GB=00:00  is-IS=00:00
+  2026-10-28T21:00  en-GB=21:00  is-IS=21:00
+  DST-gap counterfactual 2026-03-08T02:00 (only meaningful under an America/* TZ):
+    en-GB=03:00  is-IS=03:00
+  getSeasonForDate (real, retained scoring.js):
+    2026-10-01 -> summer  (new Date("2026-10-01").getMonth()+1 = 9)
+    2026-05-01 -> winter  (new Date("2026-05-01").getMonth()+1 = 4)
+    2026-10-27 -> winter  (new Date("2026-10-27").getMonth()+1 = 10)
+    2026-10-28 -> winter  (new Date("2026-10-28").getMonth()+1 = 10)
+
+######## TZ=Asia/Tokyo ########
+process.env.TZ=Asia/Tokyo  Intl resolved TZ=Asia/Tokyo  node=v24.11.0
+  2026-10-28T00:00  en-GB=00:00  is-IS=00:00
+  2026-10-28T21:00  en-GB=21:00  is-IS=21:00
+  DST-gap counterfactual 2026-03-08T02:00 (only meaningful under an America/* TZ):
+    en-GB=02:00  is-IS=02:00
+  getSeasonForDate (real, retained scoring.js):
+    2026-10-01 -> winter  (new Date("2026-10-01").getMonth()+1 = 10)
+    2026-05-01 -> summer  (new Date("2026-05-01").getMonth()+1 = 5)
+    2026-10-27 -> winter  (new Date("2026-10-27").getMonth()+1 = 10)
+    2026-10-28 -> winter  (new Date("2026-10-28").getMonth()+1 = 10)
+

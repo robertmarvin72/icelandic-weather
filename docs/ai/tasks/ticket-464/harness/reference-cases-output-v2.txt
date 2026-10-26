@@ -1,0 +1,51 @@
+
+==== R1 — raw daily.weathercode sweep, Oct-28 baseline (tmax5.8, windMax5.1, rain0, winter), NO gust ====
+code=null  sky=0  coldWind=0  wintry=0  pleasantness=0  points=2  class=Fair
+code=   0  sky=1  coldWind=0  wintry=0  pleasantness=1  points=3  class=Fair
+code=   1  sky=1  coldWind=0  wintry=0  pleasantness=1  points=3  class=Fair
+code=   2  sky=0  coldWind=0  wintry=0  pleasantness=0  points=2  class=Fair
+code=   3  sky=-1  coldWind=0  wintry=0  pleasantness=-1  points=1  class=Fair
+code=  45  sky=-1  coldWind=0  wintry=0  pleasantness=-1  points=1  class=Fair
+code=  51  sky=0  coldWind=0  wintry=0  pleasantness=0  points=2  class=Fair
+code=  61  sky=0  coldWind=0  wintry=0  pleasantness=0  points=2  class=Fair
+code=  95  sky=0  coldWind=0  wintry=0  pleasantness=0  points=2  class=Fair
+code=  66  sky=0  coldWind=0  wintry=2  pleasantness=-2  points=0  class=Bad
+code=  67  sky=0  coldWind=0  wintry=2  pleasantness=-2  points=0  class=Bad
+code=  71  sky=0  coldWind=0  wintry=2  pleasantness=-2  points=0  class=Bad
+code=  77  sky=0  coldWind=0  wintry=2  pleasantness=-2  points=0  class=Bad
+code=  85  sky=0  coldWind=0  wintry=2  pleasantness=-2  points=0  class=Bad
+
+==== R1 — for each code above, sweep gust to find the FIRST gust value that reaches 'Bad' (step 0.1 m/s, 0..20) ====
+code=null  no-gust class=Fair (points=2)  first Bad gust=8
+code=   0  no-gust class=Fair (points=3)  first Bad gust=11.1
+code=   1  no-gust class=Fair (points=3)  first Bad gust=11.1
+code=   2  no-gust class=Fair (points=2)  first Bad gust=8
+code=   3  no-gust class=Fair (points=1)  first Bad gust=8
+code=  45  no-gust class=Fair (points=1)  first Bad gust=8
+code=  51  no-gust class=Fair (points=2)  first Bad gust=8
+code=  61  no-gust class=Fair (points=2)  first Bad gust=8
+code=  95  no-gust class=Fair (points=2)  first Bad gust=8
+code=  66  already "Bad" with NO gust at all (points=0)
+code=  67  already "Bad" with NO gust at all (points=0)
+code=  71  already "Bad" with NO gust at all (points=0)
+code=  77  already "Bad" with NO gust at all (points=0)
+code=  85  already "Bad" with NO gust at all (points=0)
+
+==== R1 — explicit no-gust vs gust-equal-to-windMax comparison (code=1, clear) ====
+windGust=null   -> gustPen=0  points=3  class=Fair  (gustPenaltyPoints short-circuits on g==null, scoring.js:131)
+windGust=5.1 (==windMax) -> gustPen=0  points=3  class=Fair  (diff=0, short-circuits on diff<=0, scoring.js:134)
+Not materially different for this input: both reach gustPen=0 via two different early-return branches of gustPenaltyPoints.
+
+==== R1 — Oct-27 overcast raw code=3, owner-reported rounded baseline (tmax6.7, windMax4.8, rain0.2), NO gust ====
+input: tmax=6.7 windMax=4.8 rain=0.2 weatherCode=3 (overcast) windGust=null shelter=0
+components: {"temp":4,"wind":0,"rain":0,"gust":0,"rainStreak":0,"shelter":0,"pleasantness":-1}
+points=3  class=Fair  <-- owner reported "Fair/Sæm"
+
+==== R1 — sky-penalty comparison, code=3 (overcast, sky=-1) vs code=45 (fog, sky=-1) vs wintry codes (66/71/85) ====
+code=3  sky=-1  wintry=0  pleasantness(sky-coldWind-wintry)=-1
+code=45  sky=-1  wintry=0  pleasantness(sky-coldWind-wintry)=-1
+code=66  sky=0  wintry=2  pleasantness(sky-coldWind-wintry)=-2
+code=71  sky=0  wintry=2  pleasantness(sky-coldWind-wintry)=-2
+code=85  sky=0  wintry=2  pleasantness(sky-coldWind-wintry)=-2
+
+==== done ====

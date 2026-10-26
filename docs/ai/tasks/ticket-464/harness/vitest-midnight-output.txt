@@ -1,0 +1,32 @@
+
+ RUN  v4.1.10 C:/Users/Notandi/forritun/icelandic-weather
+
+stdout | docs/ai/tasks/ticket-464/harness/HourlyForecastModal.ticket464.spec.jsx > #464 J5 — formatHourLabel midnight rendering (real Intl.DateTimeFormat via the real component, not a model) > renders the midnight hour label under en (en-GB, hour12:false) and records the exact engine output
+MIDNIGHT_LABEL_EN= "00:00"
+
+stdout | docs/ai/tasks/ticket-464/harness/HourlyForecastModal.ticket464.spec.jsx > #464 J5 — formatHourLabel midnight rendering (real Intl.DateTimeFormat via the real component, not a model) > renders the midnight hour label under is (is-IS, hour12:false) and records the exact engine output
+MIDNIGHT_LABEL_IS= "00:00"
+
+ ↓ docs/ai/tasks/ticket-464/harness/HourlyForecastModal.ticket464.spec.jsx > #464 J1/contract-item-1&4 — real render, Oct-28 owner scenario (all 00..21 sampled hours reported 'Good time') > renders 8 cards (00,03,...,21), all badged Good, with a single best window 00-21, from synthetic all-calm hourly input
+ ↓ docs/ai/tasks/ticket-464/harness/HourlyForecastModal.ticket464.spec.jsx > #464 J4 — daily-state vs modal-refetch asymmetry (two synthetic payloads behind the same getForecast mock) > the modal shows whatever its OWN getForecast call resolves to, independent of any daily-row data the caller already held — demonstrating the mechanism only, not evidence about the real screenshots
+ ↓ docs/ai/tasks/ticket-464/harness/HourlyForecastModal.ticket464.spec.jsx > #464 J5 — hourly predicate edge semantics (getWindowState, via real rendered badges) > all four fields null/absent is vacuously Good (AND of null-or-threshold clauses, no OR clause fires)
+ ↓ docs/ai/tasks/ticket-464/harness/HourlyForecastModal.ticket464.spec.jsx > #464 J5 — hourly predicate edge semantics (getWindowState, via real rendered badges) > NaN wind is neither Good nor Rough (typeof NaN === 'number' so it is not treated as absent, but it fails every <= and >= comparison) -> no badge rendered
+ ↓ docs/ai/tasks/ticket-464/harness/HourlyForecastModal.ticket464.spec.jsx > #464 J5 — hourly predicate edge semantics (getWindowState, via real rendered badges) > Infinity wind is Rough (wind >= 15 is true for Infinity)
+ ↓ docs/ai/tasks/ticket-464/harness/HourlyForecastModal.ticket464.spec.jsx > #464 J5 — hourly predicate edge semantics (getWindowState, via real rendered badges) > a numeric string wind ('5') is treated as absent (typeof !== 'number'), so it never blocks Good and never triggers Rough, even at a value that would be Rough as a real number
+ ↓ docs/ai/tasks/ticket-464/harness/HourlyForecastModal.ticket464.spec.jsx > #464 J5 — hourly predicate edge semantics (getWindowState, via real rendered badges) > zero and negative wind/rain are Good (no lower bound in the predicate)
+ ↓ docs/ai/tasks/ticket-464/harness/HourlyForecastModal.ticket464.spec.jsx > #464 J5 — hourly predicate edge semantics (getWindowState, via real rendered badges) > missing precipitation_probability array entirely -> pop is null for every row -> does not block Good
+ ↓ docs/ai/tasks/ticket-464/harness/HourlyForecastModal.ticket464.spec.jsx > #464 J5 — hourly predicate edge semantics (getWindowState, via real rendered badges) > an unsampled peak between 3-hourly samples never appears as a card or affects the badges/best window shown
+ ↓ docs/ai/tasks/ticket-464/harness/HourlyForecastModal.ticket464.spec.jsx > #464 J5 — hourly predicate edge semantics (getWindowState, via real rendered badges) > a mixed good/rough run breaks the best-window streak at the first rough sample and restarts after it
+ ↓ docs/ai/tasks/ticket-464/harness/HourlyForecastModal.ticket464.spec.jsx > #464 J5 — hourly predicate edge semantics (getWindowState, via real rendered badges) > a tie between two equal-length good runs keeps the FIRST run (strict greater-than, not greater-or-equal)
+ ↓ docs/ai/tasks/ticket-464/harness/HourlyForecastModal.ticket464.spec.jsx > #464 J5 — hourly predicate edge semantics (getWindowState, via real rendered badges) > duplicate timestamps for the same hour are both kept as separate cards (no de-duplication) and both feed the best-window scan as if continuous
+ ↓ docs/ai/tasks/ticket-464/harness/HourlyForecastModal.ticket464.spec.jsx > #464 J5 — hourly predicate edge semantics (getWindowState, via real rendered badges) > out-of-order source timestamps are not re-sorted; the best-window scan runs over array order, not chronological order
+ ↓ docs/ai/tasks/ticket-464/harness/HourlyForecastModal.ticket464.spec.jsx > #464 J5 — hourly predicate edge semantics (getWindowState, via real rendered badges) > only this day's own date-prefixed rows are included; an adjacent day's hours in the same payload are filtered out
+ ✓ docs/ai/tasks/ticket-464/harness/HourlyForecastModal.ticket464.spec.jsx > #464 J5 — formatHourLabel midnight rendering (real Intl.DateTimeFormat via the real component, not a model) > renders the midnight hour label under en (en-GB, hour12:false) and records the exact engine output 45ms
+ ✓ docs/ai/tasks/ticket-464/harness/HourlyForecastModal.ticket464.spec.jsx > #464 J5 — formatHourLabel midnight rendering (real Intl.DateTimeFormat via the real component, not a model) > renders the midnight hour label under is (is-IS, hour12:false) and records the exact engine output 13ms
+ ↓ docs/ai/tasks/ticket-464/harness/HourlyForecastModal.ticket464.spec.jsx > #464 contract item 2 — modal's own independent getForecast call (not the already-fetched daily data) > is invoked with the site's lat/lon on open, once per (site, date) mount, regardless of what the caller's own daily rows contain
+
+ Test Files  1 passed (1)
+      Tests  2 passed | 15 skipped (17)
+   Start at  19:37:35
+   Duration  1.01s (transform 111ms, setup 83ms, import 190ms, tests 60ms, environment 561ms)
+

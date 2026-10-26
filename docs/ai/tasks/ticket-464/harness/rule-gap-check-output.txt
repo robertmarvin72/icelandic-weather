@@ -1,0 +1,3 @@
+wind=5, gust=8 -> diff = 3 (hourly Good: wind<=10 and gust<=15, both true)
+gustPenaltyPoints(8,5,'winter') = 2 (diff=3.0 >= 2.9, so NOT zero)
+full scoreSiteDay on a winter day with these exact wind/gust values: {"temp":4,"wind":0,"rain":0,"gust":-2,"rainStreak":0,"shelter":0,"pleasantness":1} points= 3 class= Fair
