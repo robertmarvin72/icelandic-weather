@@ -77,7 +77,7 @@ function MetricRow({ icon, value, unit }) {
   );
 }
 
-function SiteCard({ label, name, metrics, distanceText, muted, highlight, deltaText }) {
+function SiteCard({ label, name, metrics, distanceText, muted, highlight, deltaText, t }) {
   const windFmt = fmt(metrics?.avgWind);
   const rainFmt = fmt(metrics?.totalRain);
   const tempFmt = fmt(metrics?.avgHighTemp);
@@ -106,6 +106,16 @@ function SiteCard({ label, name, metrics, distanceText, muted, highlight, deltaT
         <MetricRow icon="💨" value={windFmt} unit="m/s" />
         <MetricRow icon="🌧" value={rainFmt} unit="mm" />
         <MetricRow icon="🌡" value={tempFmt} unit="°C" />
+        {/* Ticket #444 — clarifies this is a mean of available daily highs
+            (up to 3 days, missing excluded), not a full-period observed
+            mean; omitted together with the row above when there's no
+            temperature metric to show (calcMetrics's own exclude-missing
+            behavior is unchanged). */}
+        {tempFmt != null && (
+          <div className="pl-5 text-[10px] text-slate-400 dark:text-slate-500">
+            {t?.("icTempQualifier") || "Average daily high, up to 3 days"}
+          </div>
+        )}
       </div>
       {deltaText && (
         <div className="mt-1.5 text-xs font-semibold text-emerald-600 dark:text-emerald-400">
@@ -363,6 +373,7 @@ export default function InstantComparison({
           name={site?.name}
           metrics={currentMetrics}
           muted
+          t={t}
         />
 
         <div className="flex shrink-0 items-center justify-center gap-1.5 sm:flex-col">
@@ -379,6 +390,7 @@ export default function InstantComparison({
           distanceText={nearbyDistanceText}
           highlight={isStrongOrDecent}
           deltaText={deltaText}
+          t={t}
         />
       </div>
 

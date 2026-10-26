@@ -1,0 +1,17 @@
+
+Running 12 tests using 1 worker
+
+  ok  1 [chromium] › tests\e2e\temperature-display-ticket-444.spec.js:224:7 › Ticket #444 correction v4 — Weather Finder complete/incomplete matrix (320/375/desktop x EN/IS) › 320px, EN: complete site shows the honest label; incomplete shows 'Insufficient data'; both names stay readable (1.8s)
+  ok  2 [chromium] › tests\e2e\temperature-display-ticket-444.spec.js:224:7 › Ticket #444 correction v4 — Weather Finder complete/incomplete matrix (320/375/desktop x EN/IS) › 320px, IS: complete site shows the honest label; incomplete shows 'Ófullnægjandi gögn'; both names stay readable (1.8s)
+  ok  3 [chromium] › tests\e2e\temperature-display-ticket-444.spec.js:224:7 › Ticket #444 correction v4 — Weather Finder complete/incomplete matrix (320/375/desktop x EN/IS) › 375px, EN: complete site shows the honest label; incomplete shows 'Insufficient data'; both names stay readable (1.8s)
+  ok  4 [chromium] › tests\e2e\temperature-display-ticket-444.spec.js:224:7 › Ticket #444 correction v4 — Weather Finder complete/incomplete matrix (320/375/desktop x EN/IS) › 375px, IS: complete site shows the honest label; incomplete shows 'Ófullnægjandi gögn'; both names stay readable (1.8s)
+  ok  5 [chromium] › tests\e2e\temperature-display-ticket-444.spec.js:224:7 › Ticket #444 correction v4 — Weather Finder complete/incomplete matrix (320/375/desktop x EN/IS) › desktoppx, EN: complete site shows the honest label; incomplete shows 'Insufficient data'; both names stay readable (1.9s)
+  ok  6 [chromium] › tests\e2e\temperature-display-ticket-444.spec.js:224:7 › Ticket #444 correction v4 — Weather Finder complete/incomplete matrix (320/375/desktop x EN/IS) › desktoppx, IS: complete site shows the honest label; incomplete shows 'Ófullnægjandi gögn'; both names stay readable (1.9s)
+  ok  7 [chromium] › tests\e2e\temperature-display-ticket-444.spec.js:284:3 › Ticket #444 correction v4 — Free, Pro window switch, imperial, long-name › Free, EN, 375px: forced 3-day period, no Pro day-count controls, names still readable (1.8s)
+  ok  8 [chromium] › tests\e2e\temperature-display-ticket-444.spec.js:305:3 › Ticket #444 correction v4 — Free, Pro window switch, imperial, long-name › Pro, IS, desktop: 3 -> 5 -> 7 window switch over real 7-row fixtures; incomplete site stays incomplete at every size (1.9s)
+  ok  9 [chromium] › tests\e2e\temperature-display-ticket-444.spec.js:333:3 › Ticket #444 correction v4 — Free, Pro window switch, imperial, long-name › imperial, EN, desktop: real Fahrenheit conversion for the complete site; incomplete site never shows a number (7.2s)
+  ok 10 [chromium] › tests\e2e\temperature-display-ticket-444.spec.js:364:3 › Ticket #444 correction v4 — Free, Pro window switch, imperial, long-name › long (but realistic) campsite name: no horizontal page overflow at 375px; documented ellipsis is acceptable for this fixture only (1.8s)
+  ok 11 [chromium] › tests\e2e\temperature-display-ticket-444.spec.js:394:3 › Ticket #444 correction v4 — Brochure and comparison, re-verified › Brochure (EN + IS, static demo data, no network mocking needed): temperature qualifier visible under both site cards (8.4s)
+  ok 12 [chromium] › tests\e2e\temperature-display-ticket-444.spec.js:416:3 › Ticket #444 correction v4 — Brochure and comparison, re-verified › Campsite comparison (Pro, EN, desktop): temperature factor row reads 'High temperature', never bare 'Temp' (1.8s)
+
+  12 passed (36.2s)

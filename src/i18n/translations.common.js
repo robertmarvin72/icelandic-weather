@@ -458,7 +458,14 @@ export const commonTranslations = {
     weatherFinderUnlimited: "Unlimited",
     weatherFinderUpgradeForMore: "Upgrade to Pro to see all results",
     weatherFinderAvgWind: "avg wind",
-    weatherFinderAvgTemp: "avg temp",
+    // Ticket #444 — replaces the retired weatherFinderAvgTemp key (which
+    // literally claimed an "avg temp" that was actually a mean of daily
+    // highs with missing days coerced to 0°C). weatherFinderWarmestLabel
+    // only ever renders alongside a verified-complete window; an incomplete
+    // window shows weatherFinderInsufficientData instead, never a number.
+    weatherFinderWarmestLabel: "Average daily high",
+    weatherFinderInsufficientData: "Insufficient data",
+    weatherFinderPeriodLine: "First {n} forecast days, including today",
     weatherFinderRainDays: "rain days",
     weatherFinderRainDay: "rain day",
     weatherFinderRadius: "Radius",
@@ -486,6 +493,9 @@ export const commonTranslations = {
     icRainDelta: "{diff} mm less rain",
     icTempDelta: "{diff}°C warmer",
     icDistanceLabel: "~{km} km as the crow flies",
+    // Ticket #444 — clarifies the icon-only temperature row's own numeric
+    // value (Brochure-only; the homepage canonical card never shows it).
+    icTempQualifier: "Average daily high, up to 3 days",
     // Weather Voice card eyebrow label (standalone card, not the verdict card).
     weatherVoiceLabel: "TJALDUR SAYS",
     // Ticket 408 (#408) — Weather Voice optional CTA labels. All five map
@@ -580,7 +590,7 @@ export const commonTranslations = {
     comparisonFactorWind: "Wind",
     comparisonFactorGusts: "Gusts",
     comparisonFactorRain: "Rain",
-    comparisonFactorTemp: "Temp",
+    comparisonFactorTemp: "High temperature", // Ticket #444 — was bare "Temp"; this row is always the day's own temperature_2m_max, never an average
     comparisonLockedHeadline: "You've used your free comparison",
     comparisonLockedBody:
       "With Pro, you can compare campsites as often as you like and see day-by-day and hourly differences.",
@@ -1051,7 +1061,9 @@ export const commonTranslations = {
     weatherFinderUnlimited: "Ótakmarkað",
     weatherFinderUpgradeForMore: "Uppfærðu í Pro til að sjá fleiri niðurstöður",
     weatherFinderAvgWind: "meðalvindur",
-    weatherFinderAvgTemp: "meðalhiti",
+    weatherFinderWarmestLabel: "Meðaltal hámarkshita",
+    weatherFinderInsufficientData: "Ófullnægjandi gögn",
+    weatherFinderPeriodLine: "Fyrstu {n} spádagar, dagurinn í dag meðtalinn",
     weatherFinderRainDays: "regnsdagar",
     weatherFinderRainDay: "regnsdagur",
     weatherFinderRadius: "Radíus",
@@ -1079,6 +1091,7 @@ export const commonTranslations = {
     icRainDelta: "{diff} mm minna regn",
     icTempDelta: "{diff}°C hlýrra",
     icDistanceLabel: "~{km} km í beinni línu",
+    icTempQualifier: "Meðaltal hámarkshita, allt að 3 dagar",
     // Weather Voice card eyebrow label (standalone card, not the verdict card).
     weatherVoiceLabel: "TJALDUR SEGIR",
     // Ticket 408 (#408) — Weather Voice optional CTA labels. See the EN
@@ -1160,7 +1173,7 @@ export const commonTranslations = {
     comparisonFactorWind: "Vindur",
     comparisonFactorGusts: "Hviður",
     comparisonFactorRain: "Úrkoma",
-    comparisonFactorTemp: "Hiti",
+    comparisonFactorTemp: "Hámarkshiti", // Ticket #444 — var "Hiti"; þessi lína er alltaf temperature_2m_max dagsins, ekki meðaltal
     comparisonLockedHeadline: "Þú hefur notað ókeypis samanburðinn",
     comparisonLockedBody:
       "Með Pro geturðu borið saman tjaldsvæði eins oft og þú vilt og séð dag- og klukkutímamun.",

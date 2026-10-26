@@ -1,0 +1,126 @@
+
+--- RC-01 asymmetric [2,2,2,10] over 4 forecast days ---
+{
+  "inputs_tmax": [
+    2,
+    2,
+    2,
+    10
+  ],
+  "computeMetrics_avgTemp_via_rankWarmest": 4,
+  "midpointOfExtrema_handComputed_NOT_in_codebase": 6,
+  "note": "mean (4.0) and midpoint-of-extrema (6.0) genuinely differ for this input — exactly the Expert Support paraphrase's point. Mode is not computed by any surface either."
+}
+
+--- RC-02 partial series [10, null, 10] — same rows, two real policies ---
+{
+  "inputs_tmax": [
+    10,
+    null,
+    10
+  ],
+  "weatherFinderRanking_avgTemp_missingToZero": 6.666666666666667,
+  "comparisonUtils_avgHighTemp_missingExcluded": 10
+}
+
+--- RC-03 all-null tmax for a site ---
+{
+  "inputs_tmax": [
+    null,
+    null,
+    null
+  ],
+  "weatherFinderRanking_avgTemp": 0,
+  "comparisonUtils_avgHighTemp": null,
+  "note": "finder would rank/label this site as exactly 0.0°C average; comparisonUtils correctly returns null (no data) since ALL three values were excluded."
+}
+
+--- RC-04 no data (empty forecast array) ---
+{
+  "weatherFinderRanking_result_length": 0,
+  "note_finder": "computeMetrics returns null for an empty slice; filterSites already excludes sites with forecast.length===0, so this site never even reaches rankWarmest's output array.",
+  "comparisonUtils_calcMetrics_result": null
+}
+
+--- RC-05 legitimate 0/negative vs scoring.js's own missing-data sentinels ---
+{
+  "basePointsFromTemp(0)": 1,
+  "basePointsFromTemp(-5)": 0,
+  "basePointsFromTemp(null) [missing -> internal -999 sentinel]": 0,
+  "getColdWindPenalty(0, windMax=10)": 3,
+  "getColdWindPenalty(undefined, windMax=10) [missing -> internal 10 sentinel]": 0,
+  "getWintryPrecipPenalty(code=71/snow, tmax=0)": 3,
+  "getWintryPrecipPenalty(code=71/snow, tmax=undefined) [missing -> internal 10 sentinel]": 2,
+  "note": "0 and -5 are both treated as real, finite temperatures throughout scoring.js — no collision with the -999/10 sentinels, which are far outside any realistic Icelandic air temperature."
+}
+
+--- RC-06 scoreSiteDay — same complete/missing-tmax pair, run on 3 real dates (season dependence) ---
+{
+  "2026-06-15": {
+    "season": "summer",
+    "tempWeight": 1,
+    "complete_day_points": 8,
+    "complete_day_class": "Good",
+    "complete_day_basePts": 8,
+    "missing_tmax_day_points": 0,
+    "missing_tmax_day_class": "Bad",
+    "missing_tmax_day_basePts": 0,
+    "points_differ": true
+  },
+  "2026-10-27": {
+    "season": "winter",
+    "tempWeight": 0.35,
+    "complete_day_points": 3,
+    "complete_day_class": "Fair",
+    "complete_day_basePts": 4,
+    "missing_tmax_day_points": 3,
+    "missing_tmax_day_class": "Fair",
+    "missing_tmax_day_basePts": 4,
+    "points_differ": false
+  },
+  "2027-01-10": {
+    "season": "winter",
+    "tempWeight": 0.35,
+    "complete_day_points": 3,
+    "complete_day_class": "Fair",
+    "complete_day_basePts": 4,
+    "missing_tmax_day_points": 3,
+    "missing_tmax_day_class": "Fair",
+    "missing_tmax_day_basePts": 4,
+    "points_differ": false
+  }
+}
+
+--- RC-08 rankWarmest A[10,null,10] vs B[8,8,8] — hypothetical, no rain/wind ---
+{
+  "rankWarmest_order_by_id": [
+    "B",
+    "A"
+  ],
+  "rankWarmest_avgTemp_A": 6.666666666666667,
+  "rankWarmest_avgTemp_B": 8,
+  "calcMetrics_avgHighTemp_A_missingExcluded": 10,
+  "calcMetrics_avgHighTemp_B": 8,
+  "note": "if calcMetrics's exclude-missing policy were used instead, A (10.0) would be warmer than B (8.0); rankWarmest's 0-coercion policy instead scores A at 6.67, making B (8.0) rank warmest. This is a hypothetical 3-day example, not a claim about production frequency."
+}
+
+--- RC-07 tmax through forecastNormalize — no hourly coverage at all vs. partial (day 1 has none, day 2 has some) ---
+{
+  "tmax_withoutHourly": [
+    12,
+    14
+  ],
+  "tmax_withPartialHourly": [
+    12,
+    14
+  ],
+  "windMax_withoutHourly_fallsBackToRawDaily": [
+    5,
+    6
+  ],
+  "windMax_day1_noHourlyForThatDate_fallsBackToRawDaily": 5,
+  "windMax_day2_hasHourly_isTimeWeighted": 4,
+  "note": "tmax is identical in both runs (12, 14) — it never depends on hourly presence/completeness. windMax DOES change: day 1 (no hourly rows for its date) falls back to the raw daily max (5); day 2 (has hourly rows) uses the time-weighted max instead (6 * weight, weight depends on each row's hour-of-day)."
+}
+
+(script complete — no files written, no network/localStorage touched)

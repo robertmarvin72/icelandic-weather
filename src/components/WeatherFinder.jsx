@@ -3,6 +3,7 @@ import { useEffect, useMemo, useState } from "react";
 import { trackEvent } from "../lib/analytics";
 import { getFeatureLimit } from "../config/features";
 import { rankCalmest, rankDriest, rankWarmest } from "../lib/weatherFinderRanking";
+import { getTmaxWindowCompleteness } from "../lib/weatherFinderDisplay";
 import { distanceKm } from "../utils/distance";
 import WeatherFinderCard from "./WeatherFinderCard";
 
@@ -70,6 +71,19 @@ export default function WeatherFinder({ siteList, scoresById, userLoc, entitleme
     const rankFn = mode === "calmest" ? rankCalmest : mode === "warmest" ? rankWarmest : rankDriest;
     return rankFn(sites, options).slice(0, resultsLimit);
   }, [mode, sites, options, resultsLimit]);
+
+  // Ticket #444 (J5) — built from the SAME `sites`/`options.days` ranking
+  // itself uses, keyed by stable site id (never by position in `ranked`,
+  // which is sorted/sliced and so cannot be used to recover each site's own
+  // forecast rows). Presentation-only: never touches `ranked`'s own order,
+  // score, or metrics.
+  const warmestCompletenessById = useMemo(() => {
+    const map = {};
+    for (const site of sites) {
+      map[site.id] = getTmaxWindowCompleteness(site.forecast, options.days);
+    }
+    return map;
+  }, [sites, options.days]);
 
   const visibleResults = showAll ? ranked : ranked.slice(0, INITIAL_VISIBLE_COUNT);
   const hasMore = ranked.length > INITIAL_VISIBLE_COUNT;
@@ -217,6 +231,7 @@ export default function WeatherFinder({ siteList, scoresById, userLoc, entitleme
                 units={units}
                 t={t}
                 onSelect={typeof onSelectSite === "function" ? handleSelectResult : undefined}
+                completeness={mode === "warmest" ? warmestCompletenessById[result.id] : undefined}
               />
             ))}
           </div>
