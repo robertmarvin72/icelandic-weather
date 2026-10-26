@@ -129,6 +129,37 @@ describe("RoutePlannerCard — D1 note placement", () => {
     expect(screen.queryByText(translations.en.hazardSourceNoteHeading)).toBeNull();
   });
 
+  // Ticket #460 J3 — UNKNOWN must be neutral: no #436 source note, no amber
+  // caution styling, and its wording must never equal the LOW word (the
+  // exact bug the old `!== "LOW"` ternary fallback produced).
+  it("UNKNOWN route risk, no other indicator: no source note", () => {
+    const c = candidate({ hasHighWarning: false, hasWarning: false });
+    setUp({ top3: [c], best: c, decisionLower: "move", routeRiskData: { routeRisk: "UNKNOWN" } });
+    expandVerdict();
+    expect(screen.queryByText(translations.en.hazardSourceNoteHeading)).toBeNull();
+  });
+
+  it("UNKNOWN route risk shows the neutral unknown message, never the Low word", () => {
+    const c = candidate({ hasHighWarning: false, hasWarning: false });
+    setUp({ top3: [c], best: c, decisionLower: "move", routeRiskData: { routeRisk: "UNKNOWN" } });
+    expandVerdict();
+    expect(screen.getByText(translations.en.routeRiskUnknownDetail)).toBeInTheDocument();
+    expect(screen.queryByText(translations.en.routeRiskLow, { exact: false })).toBeNull();
+  });
+
+  it("partial-coverage HIGH still shows the caution box with a partial-data qualifier and the source note", () => {
+    const c = candidate({ hasHighWarning: false, hasWarning: false });
+    setUp({
+      top3: [c],
+      best: c,
+      decisionLower: "move",
+      routeRiskData: { routeRisk: "HIGH", coverage: { status: "partial" } },
+    });
+    expandVerdict();
+    expect(screen.getByText(translations.en.routeRiskPartialQualifier, { exact: false })).toBeInTheDocument();
+    expect(screen.getAllByText(translations.en.hazardSourceNoteHeading)).toHaveLength(1);
+  });
+
   it("full branch: a site caution indicator in the alternatives list produces exactly one note", () => {
     const c = candidate({
       hasHighWarning: true,

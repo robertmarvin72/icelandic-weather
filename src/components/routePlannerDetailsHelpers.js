@@ -210,22 +210,45 @@ export function getHazardBlockInfo(candidate, t) {
   return { text, className };
 }
 
+// Ticket #460 — this used to fall through any routeRisk value other than
+// "HIGH"/"MED" to the "Low" label/no-tooltip branch, so a future UNKNOWN
+// value would have rendered as reassuring "Lág"/"Low". Every branch of the
+// closed {LOW, MED, HIGH, UNKNOWN} set now has its own explicit `===` check
+// (correction v2, R1): the v1 "MED" branch was an unconditional fallthrough
+// rather than a real check, so `undefined`/`null`/a malformed string on a
+// non-null `routeRiskData` silently rendered as MED. Anything that isn't
+// one of the four known values now returns the same neutral unknown shape
+// as a real "UNKNOWN" — never MED or LOW wording for data CC doesn't
+// recognise.
 export function getRouteRiskSummary(routeRiskData, t) {
-  if (!routeRiskData || routeRiskData.routeRisk === "LOW") return null;
+  const risk = routeRiskData?.routeRisk;
+  if (!routeRiskData || risk === "LOW") return null;
 
-  const level =
-    routeRiskData.routeRisk === "HIGH"
-      ? t?.("routeRiskHigh") || "Mikil"
-      : routeRiskData.routeRisk === "MED"
-        ? t?.("routeRiskMed") || "Miðlungs"
-        : t?.("routeRiskLow") || "Lág";
+  if (risk === "HIGH") {
+    return {
+      level: t?.("routeRiskHigh") || "Mikil",
+      tooltip: t?.("routeRiskHighTooltip") || "Difficult driving conditions along the route",
+      unknown: false,
+      partial: routeRiskData.coverage?.status === "partial",
+    };
+  }
 
-  const tooltip =
-    routeRiskData.routeRisk === "HIGH"
-      ? t?.("routeRiskHighTooltip") || "Difficult driving conditions along the route"
-      : routeRiskData.routeRisk === "MED"
-        ? t?.("routeRiskMedTooltip") || "Some wind-related driving risk along the route"
-        : null;
+  if (risk === "MED") {
+    return {
+      level: t?.("routeRiskMed") || "Miðlungs",
+      tooltip: t?.("routeRiskMedTooltip") || "Some wind-related driving risk along the route",
+      unknown: false,
+      partial: routeRiskData.coverage?.status === "partial",
+    };
+  }
 
-  return { level, tooltip };
+  // risk === "UNKNOWN", or any unrecognised/missing/null value on a
+  // non-null routeRiskData — all treated identically: neutral, not a
+  // caution, never the Low or MED wording.
+  return {
+    level: t?.("routeRiskUnknown") || "Óþekkt",
+    tooltip: null,
+    unknown: true,
+    partial: false,
+  };
 }

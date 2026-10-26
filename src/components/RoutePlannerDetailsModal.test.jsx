@@ -132,6 +132,73 @@ describe("RoutePlannerDetailsModal — routeRisk uses the Car icon, never a site
     );
     expect(screen.queryByText(t("routeRiskLabel"), { exact: false })).toBeNull();
   });
+
+  // Ticket #460 — UNKNOWN must render its own neutral block, never the
+  // amber/Car-icon caution box, and never the Low word (the old
+  // getRouteRiskSummary fell through to "Lág"/"Low" for anything that
+  // wasn't HIGH/MED).
+  it("UNKNOWN route risk: neutral block, no Car icon, label is not the Low word", () => {
+    const { baseElement } = render(
+      <RoutePlannerDetailsModal
+        open
+        candidate={candidate()}
+        t={t}
+        lang="en"
+        onClose={vi.fn()}
+        showRouteRisk
+        routeRiskData={{ routeRisk: "UNKNOWN" }}
+      />
+    );
+    expect(screen.getByText(t("routeRiskUnknownDetail"))).toBeInTheDocument();
+    expect(screen.queryByText(t("routeRiskLow"), { exact: false })).toBeNull();
+    expect(baseElement.querySelectorAll("svg.lucide-car").length).toBe(0);
+  });
+
+  it("partial-coverage HIGH: Car icon still renders, plus the partial-data qualifier", () => {
+    const { baseElement } = render(
+      <RoutePlannerDetailsModal
+        open
+        candidate={candidate()}
+        t={t}
+        lang="en"
+        onClose={vi.fn()}
+        showRouteRisk
+        routeRiskData={{ routeRisk: "HIGH", coverage: { status: "partial" } }}
+      />
+    );
+    expect(screen.getByText(t("routeRiskHigh"), { exact: false })).toBeInTheDocument();
+    expect(screen.getByText(t("routeRiskPartialQualifier"), { exact: false })).toBeInTheDocument();
+    expect(baseElement.querySelectorAll("svg.lucide-car").length).toBeGreaterThan(0);
+  });
+
+  it("dateVerifiedTomorrow renders the reused routeRiskTomorrow heading; otherwise it's omitted", () => {
+    const withDate = render(
+      <RoutePlannerDetailsModal
+        open
+        candidate={candidate()}
+        t={t}
+        lang="en"
+        onClose={vi.fn()}
+        showRouteRisk
+        routeRiskData={{ routeRisk: "HIGH", dateVerifiedTomorrow: true }}
+      />
+    );
+    expect(withDate.getByText(t("routeRiskTomorrow"))).toBeInTheDocument();
+    withDate.unmount();
+
+    const withoutDate = render(
+      <RoutePlannerDetailsModal
+        open
+        candidate={candidate()}
+        t={t}
+        lang="en"
+        onClose={vi.fn()}
+        showRouteRisk
+        routeRiskData={{ routeRisk: "HIGH", dateVerifiedTomorrow: false }}
+      />
+    );
+    expect(withoutDate.queryByText(t("routeRiskTomorrow"))).toBeNull();
+  });
 });
 
 describe("RoutePlannerDetailsModal — advanced table badges use badge.level, not an emoji icon key", () => {

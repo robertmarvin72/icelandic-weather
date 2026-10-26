@@ -45,6 +45,10 @@ function siteCautionReasonTypes(candidateRow, level) {
 // combines the existing routeRiskLabel ("Route risk"/"Áhætta á leið") with
 // the existing level word so all four call sites (preview/full × HIGH/MED)
 // share one label expression instead of risking divergence.
+// Ticket #460 — all four call sites below only ever pass the literal
+// "HIGH"/"MED" strings today, but this helper must not silently relabel any
+// other value as "Low": that's the exact class of bug this ticket fixes
+// elsewhere (getRouteRiskSummary, the verdict-block ternary).
 function routeRiskBadgeLabel(level, t) {
   const prefix = t("routeRiskLabel") || "Route risk";
   const word =
@@ -52,7 +56,9 @@ function routeRiskBadgeLabel(level, t) {
       ? t("routeRiskHigh") || "High"
       : level === "MED"
         ? t("routeRiskMed") || "Moderate"
-        : t("routeRiskLow") || "Low";
+        : level === "LOW"
+          ? t("routeRiskLow") || "Low"
+          : t("routeRiskUnknown") || "Unknown";
   return `${prefix}: ${word}`;
 }
 
@@ -1004,8 +1010,12 @@ export default function RoutePlannerCard({
           x?.hasHighWarning ||
           x?.hasWarning
       );
+  // Ticket #460 J3 — UNKNOWN is neutral information, not a caution; it must
+  // not trigger the #436 source note. Only HIGH (any mode) or MED
+  // (non-preview) count as an indicator here, same truth table as before
+  // for HIGH/LOW, but UNKNOWN no longer silently counts as "!== LOW".
   const verdictBlockHasIndicator =
-    routeRiskData?.routeRisk === "HIGH" || (!isPreview && !!routeRiskData && routeRiskData.routeRisk !== "LOW");
+    routeRiskData?.routeRisk === "HIGH" || (!isPreview && routeRiskData?.routeRisk === "MED");
   const showNoteNearVerdict = !altSectionHasIndicator && verdictBlockHasIndicator;
   const showNoteNearAlternatives = altSectionHasIndicator;
 
@@ -1188,15 +1198,33 @@ export default function RoutePlannerCard({
               <div className="mt-2 text-xs text-slate-500 dark:text-slate-400">{t("loading")}…</div>
             )}
 
-            {!isPreview && routeRiskData && routeRiskData.routeRisk !== "LOW" && (
-              <div className="mt-2 flex items-start gap-1 text-xs font-medium text-amber-700 dark:text-amber-300">
-                <Car aria-hidden="true" size={13} className="mt-0.5 shrink-0" />
-                {t("routeRiskLabel") || "Route risk"}:{" "}
-                {routeRiskData.routeRisk === "HIGH"
-                  ? t("routeRiskHigh") || "High"
-                  : routeRiskData.routeRisk === "MED"
-                    ? t("routeRiskMed") || "Moderate"
-                    : t("routeRiskLow") || "Low"}
+            {!isPreview &&
+              routeRiskData &&
+              (routeRiskData.routeRisk === "HIGH" || routeRiskData.routeRisk === "MED") && (
+                <div className="mt-2 flex items-start gap-1 text-xs font-medium text-amber-700 dark:text-amber-300">
+                  <Car aria-hidden="true" size={13} className="mt-0.5 shrink-0" />
+                  <span>
+                    {t("routeRiskLabel") || "Route risk"}:{" "}
+                    {routeRiskData.routeRisk === "HIGH"
+                      ? t("routeRiskHigh") || "High"
+                      : t("routeRiskMed") || "Moderate"}
+                    {routeRiskData.coverage?.status === "partial" && (
+                      <>
+                        {" "}
+                        ({t("routeRiskPartialQualifier") || "based on partial route data"})
+                      </>
+                    )}
+                  </span>
+                </div>
+              )}
+
+            {/* Ticket #460 — UNKNOWN is a neutral information line: no Car
+                icon, no amber/caution styling, no #436 source note (see
+                verdictBlockHasIndicator above). It must never read as LOW. */}
+            {!isPreview && routeRiskData && routeRiskData.routeRisk === "UNKNOWN" && (
+              <div className="mt-2 text-xs text-slate-500 dark:text-slate-400">
+                {t("routeRiskUnknownDetail") ||
+                  "Route-weather data was insufficient to evaluate driving conditions on this route."}
               </div>
             )}
 

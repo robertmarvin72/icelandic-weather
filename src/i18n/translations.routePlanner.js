@@ -217,6 +217,14 @@ export const routePlannerTranslations = {
     routeRiskLow: "Low",
     routeRiskMed: "Moderate",
     routeRiskHigh: "High",
+    routeRiskUnknown: "Unknown",
+
+    // Ticket #460 — shown instead of any Low/High/Moderate wording when
+    // route-weather data is missing or invalid; must never say "low", "safe"
+    // or "fine", and must not name an official body (#436).
+    routeRiskUnknownDetail:
+      "Route-weather data was insufficient to evaluate driving conditions on this route.",
+    routeRiskPartialQualifier: "based on partial route data",
 
     routeRiskTomorrow: "Weather on the route tomorrow",
 
@@ -569,6 +577,11 @@ export const routePlannerTranslations = {
     routeRiskLow: "Lág",
     routeRiskMed: "Miðlungs",
     routeRiskHigh: "Há",
+    routeRiskUnknown: "Óþekkt",
+
+    routeRiskUnknownDetail:
+      "Veðurgögn á leiðinni voru ófullnægjandi til að meta akstursaðstæður.",
+    routeRiskPartialQualifier: "byggt á ófullkomnum gögnum af leiðinni",
 
     routeRiskTomorrow: "Veður á leiðinni á morgun",
 

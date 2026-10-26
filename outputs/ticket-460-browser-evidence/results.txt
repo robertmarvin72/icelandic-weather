@@ -1,0 +1,12 @@
+
+Running 7 tests using 1 worker
+
+  ok 1 [chromium] › tests\e2e\route-risk-ticket-460.spec.js:252:3 › Ticket #460 — route risk uncertainty, real app wiring, production build › complete-calm — EN desktop: full coverage, LOW, no Route risk block at all (3.3s)
+  ok 2 [chromium] › tests\e2e\route-risk-ticket-460.spec.js:275:3 › Ticket #460 — route risk uncertainty, real app wiring, production build › severe-partial-unknown — EN desktop: 5/7 points fail, UNKNOWN shown, never 'Low' (3.3s)
+  ok 3 [chromium] › tests\e2e\route-risk-ticket-460.spec.js:306:3 › Ticket #460 — route risk uncertainty, real app wiring, production build › partial-high — EN desktop: 5/7 points fail but 2 known-HIGH readings still caution (lower bound) (3.3s)
+  ok 4 [chromium] › tests\e2e\route-risk-ticket-460.spec.js:330:3 › Ticket #460 — route risk uncertainty, real app wiring, production build › severe-partial-unknown — IS desktop: same scenario, Icelandic copy, never 'Lág' (3.3s)
+  ok 5 [chromium] › tests\e2e\route-risk-ticket-460.spec.js:354:3 › Ticket #460 — route risk uncertainty, real app wiring, production build › partial-high — IS desktop: Icelandic 'Há' caution with partial qualifier (3.3s)
+  ok 6 [chromium] › tests\e2e\route-risk-ticket-460.spec.js:375:3 › Ticket #460 — route risk uncertainty, real app wiring, production build › severe-partial-unknown — EN mobile 320: unknown message stays within viewport, no overflow (3.2s)
+  ok 7 [chromium] › tests\e2e\route-risk-ticket-460.spec.js:402:3 › Ticket #460 — route risk uncertainty, real app wiring, production build › severe-partial-unknown — EN desktop: opening the details modal shows the same neutral message (3.2s)
+
+  7 passed (25.1s)

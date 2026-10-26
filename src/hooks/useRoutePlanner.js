@@ -65,6 +65,12 @@ export function useRoutePlanner({
 
   const [routeRiskData, setRouteRiskData] = useState(null);
   const [routeRiskLoading, setRouteRiskLoading] = useState(false);
+  // Ticket #460 J5 — optional, additive status: undefined means
+  // "not-requested" (old mocks that omit this field behave identically to
+  // before). "failed" is the estimator-threw case; it renders the same
+  // visible unknown message as "unknown" (coverage.status "unavailable"),
+  // never the old silent `routeRiskData === null`.
+  const [routeRiskStatus, setRouteRiskStatus] = useState(undefined);
 
   // ─────────────────────────────────────────────
   // MAIN FETCH (relocation)
@@ -140,6 +146,7 @@ export function useRoutePlanner({
     async function loadRouteRisk() {
       setRouteRiskData(null);
       setRouteRiskLoading(false);
+      setRouteRiskStatus(undefined);
 
       if (!result) return;
       if (!baseSite) return;
@@ -199,13 +206,49 @@ export function useRoutePlanner({
         });
 
         if (!cancelled) {
-          setRouteRiskData(risk);
+          // Ticket #460 J9 — only ever call it "tomorrow" in the UI when the
+          // estimator's own recorded date matches the real calendar
+          // tomorrow; otherwise the UI must show the date (or omit the
+          // claim), never assume.
+          const dateVerifiedTomorrow = !!(
+            risk?.dateVerified &&
+            risk?.routeDate &&
+            risk.routeDate === tomorrowISODate()
+          );
+
+          setRouteRiskData({ ...risk, dateVerifiedTomorrow });
+          setRouteRiskStatus(
+            risk?.coverage?.status === "complete"
+              ? "complete"
+              : risk?.coverage?.status === "partial"
+                ? "partial"
+                : "unknown"
+          );
         }
       } catch (err) {
         console.error("Route risk failed", err);
 
         if (!cancelled) {
-          setRouteRiskData(null);
+          // Ticket #460 J2/J5 — a thrown estimator must produce the same
+          // visible "unknown" state as missing/invalid data, never the old
+          // silent `null` (which rendered nothing and looked indistinguishable
+          // from "no route risk to show").
+          setRouteRiskData({
+            routeRisk: "UNKNOWN",
+            maxWind: null,
+            maxGust: null,
+            rainMax: null,
+            coverage: {
+              status: "unavailable",
+              wind: { requested: 0, returned: 0, valid: 0 },
+              gust: { requested: 0, returned: 0, valid: 0 },
+              rain: { requested: 0, returned: 0, valid: 0 },
+            },
+            routeDate: null,
+            dateVerified: false,
+            dateVerifiedTomorrow: false,
+          });
+          setRouteRiskStatus("failed");
         }
       } finally {
         if (!cancelled) {
@@ -227,5 +270,6 @@ export function useRoutePlanner({
     result,
     routeRiskData,
     routeRiskLoading,
+    routeRiskStatus,
   };
 }

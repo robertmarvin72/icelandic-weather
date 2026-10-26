@@ -404,11 +404,17 @@ export default function RoutePlannerDetailsModal({
               {t?.("routeDaysSame") || "svipaðir"}, {worseCount} {t?.("routeDaysWorse") || "verri"}.
             </div>
 
-            {routeRiskSummary ? (
+            {routeRiskSummary && !routeRiskSummary.unknown ? (
               <div className="mt-3 rounded-lg border border-amber-200 bg-amber-50/70 px-3 py-2 dark:border-amber-800/50 dark:bg-amber-900/20">
                 <div className="text-xs font-semibold text-amber-800 dark:text-amber-200">
                   <Car aria-hidden="true" size={14} className="mr-1 inline -mt-0.5" />
                   {t?.("routeRiskLabel") || "Áhætta á leið"}: {routeRiskSummary.level}
+                  {routeRiskSummary.partial && (
+                    <span className="font-normal">
+                      {" "}
+                      ({t?.("routeRiskPartialQualifier") || "based on partial route data"})
+                    </span>
+                  )}
                 </div>
 
                 {routeRiskSummary.tooltip ? (
@@ -416,6 +422,28 @@ export default function RoutePlannerDetailsModal({
                     {routeRiskSummary.tooltip}
                   </div>
                 ) : null}
+
+                {routeRiskData?.dateVerifiedTomorrow ? (
+                  <div className="mt-1 text-[11px] text-amber-600 dark:text-amber-400">
+                    {t?.("routeRiskTomorrow")}
+                  </div>
+                ) : null}
+
+                <div className="mt-1 text-[11px] text-amber-600/80 dark:text-amber-400/80">
+                  {t?.("routeRiskBasedOn")}
+                </div>
+              </div>
+            ) : routeRiskSummary?.unknown ? (
+              // Ticket #460 J3 — UNKNOWN is a neutral information line: no
+              // amber/caution styling, no Car icon, no #436 source note.
+              <div className="mt-3 rounded-lg border border-slate-200 bg-slate-50/70 px-3 py-2 dark:border-slate-700 dark:bg-slate-900/40">
+                <div className="text-xs font-semibold text-slate-600 dark:text-slate-300">
+                  {t?.("routeRiskLabel") || "Áhætta á leið"}: {routeRiskSummary.level}
+                </div>
+                <div className="mt-1 text-xs text-slate-500 dark:text-slate-400">
+                  {t?.("routeRiskUnknownDetail") ||
+                    "Route-weather data was insufficient to evaluate driving conditions on this route."}
+                </div>
               </div>
             ) : null}
           </div>
