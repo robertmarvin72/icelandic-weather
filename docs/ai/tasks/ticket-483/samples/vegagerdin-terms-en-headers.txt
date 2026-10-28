@@ -1,0 +1,25 @@
+REQUEST_TIME_UTC: 2026-10-28T19:00:44Z
+URL: https://www.vegagerdin.is/vegagerdin/gagnasafn/vefthjonustur/terms-and-conditions-for-data-services
+HTTP/1.1 404 Not Found
+Server: nginx/1.20.1
+Date: Wed, 28 Oct 2026 19:00:43 GMT
+Content-Type: text/html; charset=utf-8
+Content-Length: 46440
+Connection: keep-alive
+x-middleware-rewrite: /is/vegagerdin/gagnasafn/vefthjonustur/terms-and-conditions-for-data-services
+Vary: rsc,next-router-state-tree,next-router-prefetch,next-router-segment-prefetch,Accept-Encoding
+x-nextjs-cache: MISS
+x-nextjs-prerender: 1
+x-nextjs-stale-time: 300
+Cache-Control: s-maxage=60, stale-while-revalidate=31535940
+ETag: "brrgey62zuzgy"
+Strict-Transport-Security: max-age=63072000; includeSubDomains; preload
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-XSS-Protection: 1; mode=block
+Referrer-Policy: no-referrer-when-downgrade
+
+
+FINAL_URL:https://www.vegagerdin.is/vegagerdin/gagnasafn/vefthjonustur/terms-and-conditions-for-data-services
+HTTP_CODE:404
+CURL_EXIT=0

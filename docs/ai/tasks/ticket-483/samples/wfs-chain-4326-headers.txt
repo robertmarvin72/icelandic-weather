@@ -1,0 +1,12 @@
+REQUEST_TIME_UTC: 2026-10-28T18:54:30Z
+URL: https://gagnaveita.vegagerdin.is/geoserver/gis/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=gis:faerdferlar2017_1&CQL_FILTER=IDBUTUR%20IN%20(1410010037,903010037,253020037,252090037,902030037,902040037,901130037,901230037,901220037,901210037,901050037,901040037,801100037)&outputFormat=application/json&srsName=EPSG:4326&maxFeatures=300
+HTTP/1.1 200 OK
+Server: nginx/1.20.1
+Date: Wed, 28 Oct 2026 18:54:29 GMT
+Content-Type: application/json;charset=utf-8
+Transfer-Encoding: chunked
+Connection: keep-alive
+X-Frame-Options: SAMEORIGIN
+Content-Disposition: inline; filename=faerdferlar2017_1.json
+
+CURL_EXIT=0

@@ -1,0 +1,83 @@
+REQUEST_TIME_UTC: 2026-10-28T18:59:25Z
+URL: https://www.vegagerdin.is/upplysingar-og-utgafa/gagnaveita-vegagerdarinnar/
+HTTP/1.1 308 Permanent Redirect
+Server: nginx/1.20.1
+Date: Wed, 28 Oct 2026 18:59:24 GMT
+Transfer-Encoding: chunked
+Connection: keep-alive
+location: /upplysingar-og-utgafa/gagnaveita-vegagerdarinnar
+Refresh: 0;url=/upplysingar-og-utgafa/gagnaveita-vegagerdarinnar
+X-Frame-Options: SAMEORIGIN
+X-XSS-Protection: 1; mode=block
+X-Content-Type-Options: nosniff
+X-Cache: MISS
+Strict-Transport-Security: max-age=63072000; includeSubDomains; preload
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-XSS-Protection: 1; mode=block
+Referrer-Policy: no-referrer-when-downgrade
+
+
+FINAL_URL:https://www.vegagerdin.is/upplysingar-og-utgafa/gagnaveita-vegagerdarinnar/
+HTTP_CODE:308
+CURL_EXIT=0
+HTTP/1.1 308 Permanent Redirect
+Server: nginx/1.20.1
+Date: Wed, 28 Oct 2026 18:59:37 GMT
+Transfer-Encoding: chunked
+Connection: keep-alive
+location: /upplysingar-og-utgafa/gagnaveita-vegagerdarinnar
+Refresh: 0;url=/upplysingar-og-utgafa/gagnaveita-vegagerdarinnar
+X-Frame-Options: SAMEORIGIN
+X-XSS-Protection: 1; mode=block
+X-Content-Type-Options: nosniff
+X-Cache: MISS
+Strict-Transport-Security: max-age=63072000; includeSubDomains; preload
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-XSS-Protection: 1; mode=block
+Referrer-Policy: no-referrer-when-downgrade
+
+HTTP/1.1 307 Temporary Redirect
+Server: nginx/1.20.1
+Date: Wed, 28 Oct 2026 18:59:37 GMT
+Transfer-Encoding: chunked
+Connection: keep-alive
+location: /vegagerdin/gagnasafn/vefthjonustur
+X-Frame-Options: SAMEORIGIN
+X-XSS-Protection: 1; mode=block
+X-Content-Type-Options: nosniff
+X-Cache: MISS
+Strict-Transport-Security: max-age=63072000; includeSubDomains; preload
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-XSS-Protection: 1; mode=block
+Referrer-Policy: no-referrer-when-downgrade
+
+HTTP/1.1 200 OK
+Server: nginx/1.20.1
+Date: Wed, 28 Oct 2026 18:59:37 GMT
+Content-Type: text/html; charset=utf-8
+Content-Length: 156273
+Connection: keep-alive
+x-middleware-rewrite: /is/vegagerdin/gagnasafn/vefthjonustur
+Vary: rsc,next-router-state-tree,next-router-prefetch,next-router-segment-prefetch,Accept-Encoding
+x-nextjs-cache: STALE
+x-nextjs-prerender: 1
+x-nextjs-stale-time: 300
+ETag: "dcl29mbe7e3bwy"
+X-Frame-Options: SAMEORIGIN
+X-XSS-Protection: 1; mode=block
+X-Content-Type-Options: nosniff
+X-Cache: EXPIRED
+Strict-Transport-Security: max-age=63072000; includeSubDomains; preload
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-XSS-Protection: 1; mode=block
+Referrer-Policy: no-referrer-when-downgrade
+
+
+FINAL_URL:https://www.vegagerdin.is/vegagerdin/gagnasafn/vefthjonustur
+HTTP_CODE:200
+NUM_REDIRECTS:2
+CURL_EXIT=0

@@ -1,0 +1,11 @@
+REQUEST_TIME_UTC: 2026-10-28T18:56:39Z
+URL: https://api.vedur.is/weather/observations/aws/hour?station_id=31392&parameters=all&format=json&day_from=2026-10-27&day_to=2026-10-27
+HTTP/1.1 200 OK
+Content-Type: application/json
+Date: Wed, 28 Oct 2026 18:56:37 GMT
+Vary: Accept-Encoding
+Via: 2.0 Caddy
+X-Request-Id: 1b231132-416e-42b3-8f9a-37abef048bc4
+Transfer-Encoding: chunked
+
+CURL_EXIT=0

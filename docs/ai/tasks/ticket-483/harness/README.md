@@ -1,0 +1,13 @@
+# #483 — reproducible analysis scripts
+
+All scripts are pure-stdlib Python 3, read-only, no network, no application-code imports. Run with `python -B <script>.py > <script>-output.txt` from this directory. **Correction round v3 (N1–N8): fixed real methodological bugs in the v2 scripts, not just their printed text.**
+
+| Script | Covers | v3 correction |
+|---|---|---|
+| `01_chain_geometry_check.py` | Chain adjacency, decoy/local-road exclusions | **N6**: actually applies the frozen nearest-Reykjavík-anchor rule using a RETAINED anchor (Vedurstofa station 1, from #450) instead of asserting both extension IDs are "part of the route" — finds the rule is blocked locally (no WGS84 geometry for the extension IDs, no verified transform) and reports it as UNKNOWN, not resolved by assumption |
+| `02_srs_validation_and_length.py` | SRS validation, chain length | **N8**: presents length as a RANGE (174.95–175.64 km, without/with full roundabout rings) instead of a single 175.64 km figure |
+| `03_roadstate_and_stations_check.py` | Closures, point-incidents, station distance | **N1 (the main fix)**: replaced nearest-VERTEX distance with point-to-POLYLINE (clamped segment projection) distance, in native ISN93 metres for point-incidents and a declared local tangent-plane metric for stations. This reverses v2's wrong "67862 is 310m away, unreconciled discrepancy" finding — the correct distance is 0.138m, well within the association bound; **both VEGAVINNA notices are on the chain**. Also adds **N3** (export/acquisition lag, full-ID suffix check, a proposed stale/expiry display rule) and **N7** (removes the v2 within-3km percentage figures, which used a mislabelled coarse method; keeps nearest-line distance only, whole-span coverage left UNKNOWN) |
+| `04_forecast_eta_check.py` | Forecast point→segment→span mapping | **N2**: the mapping is now DERIVED from the retained request URL and point-to-polyline distance, not a hand-typed `zip`. Reports ties explicitly — found that P5 sits exactly on the shared boundary of span 4 and span 5. Corrected framing: span 4 has no INTERIOR point (not "no point at all") |
+| `05_coverage_consistency_check.py` | Single source of truth for `coverage.csv`/`route-segments.csv` | **N6**: adapted to a 7-row `coverage.csv` (added "span 0", the unresolved Reykjavík approach) instead of assuming exactly 6 spans; separates "PASS for every resolved span (1–6)" from span 0's explicit UNKNOWN |
+
+Every script prints its own input filenames and SHA256 before any finding. **Zero new network requests were made in either the v2 or v3 correction rounds** — every fix is a re-analysis of samples retained from the original v1 round.

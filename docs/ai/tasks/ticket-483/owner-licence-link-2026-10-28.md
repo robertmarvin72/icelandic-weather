@@ -1,0 +1,3 @@
+# Additional owner source — licence-link lead
+
+2026-10-28 Ripley: owner supplied gagnaveita_vegirinatturuislands_2022_1.pdf, fully read; retained at docs/planning/nature-roads-source-2026-10-28/ with source-note/hash. Page1 explicitly links free-data licence to https://www.vegagerdin.is/upplysingar-og-utgafa/gagnaveita-vegagerdarinnar/ . This is a documentary link lead for483 existing terms research, not verified current licence text nor proof legacy faerd/DATEX use covered. No network request, new budget, frozen-plan/execution-prompt/CURRENT change. Roads-in-nature layer itself excludes national roads and is NOT a substitute Route1 geometry source; do not expand483 into it.

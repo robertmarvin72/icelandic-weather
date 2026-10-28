@@ -1,0 +1,12 @@
+REQUEST_TIME_UTC: 2026-10-28T18:48:02Z
+URL: https://gagnaveita.vegagerdin.is/geoserver/gis/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=gis:faerdferlar2017_1&CQL_FILTER=VEGNR='1'&resultType=hits
+HTTP/1.1 200 OK
+Server: nginx/1.20.1
+Date: Wed, 28 Oct 2026 18:48:01 GMT
+Content-Type: text/xml
+Transfer-Encoding: chunked
+Connection: keep-alive
+X-Frame-Options: SAMEORIGIN
+Content-Disposition: inline; filename=geoserver-GetFeature.text
+
+CURL_EXIT=0

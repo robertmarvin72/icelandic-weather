@@ -1,0 +1,14 @@
+idbutur,order,short_name,full_name,physical_subpieces,length_km_vegnr1_tier0,roundabout_km,lat,lon,astand,dagsskrad,dagsskrad_age_h,dagskeyrtut,adjacency_to_prev_m
+1410010037,1,Rauðavatn - Nesjavallaleið,Hringvegur: Rauðavatn - Nesjavallaleið,1,2.55,0.0,64.09249,-21.71205,GREIDFAERT,2026-10-28T02:55:01Z,16.0,2026-10-28T18:51:00Z,
+903010037,2,Nesjavallaleið - Geirland,Hringvegur: Nesjavallaleið- Geirland,1,1.89,0.0,64.08375,-21.67874,GREIDFAERT,2026-10-28T02:55:00Z,16.0,2026-10-28T18:51:00Z,0.0
+253020037,3,Fossvellir-Þrengslavegur,Hringvegur: Fossvellir - Þrengslavegur,2,12.29,0.0,64.08375,-21.67875,GREIDFAERT,2026-10-28T02:55:00Z,16.0,2026-10-28T18:51:00Z,0.2
+252090037,4,Hellisheiði til austurs,Hringvegur um Hellisheiði: Þrengslavegur - Þorlákshafnarvegur,1,16.5,0.0,64.03877,-21.45519,GREIDFAERT,2026-10-28T12:17:13Z,6.6,2026-10-28T18:51:00Z,0.0
+902030037,5,Selfoss-Hveragerði,Hringvegur: Selfoss - Hveragerði,5,12.63,0.35,63.95231,-21.02049,GREIDFAERT,2026-10-28T02:55:00Z,16.0,2026-10-28T18:51:00Z,34.7
+902040037,6,Þjórsá-Selfoss,"Hringvegur : Þjórsá - Selfoss, Laugardælavegur",6,18.51,0.23,63.93741,-21.00331,GREIDFAERT,2026-10-28T02:58:26Z,15.9,2026-10-28T18:51:00Z,30.1
+901130037,7,Hella-Þjórsá,Hringvegur: Hella - Þjórsá,5,17.64,0.11,63.87921,-20.50197,GREIDFAERT,2026-10-28T11:23:57Z,7.5,2026-10-28T18:51:00Z,0.0
+901230037,8,Hvolsvöllur-Hella,Hringvegur: Hvolsvöllur - Hella,3,12.81,0.0,63.80496,-20.32974,GREIDFAERT,2026-10-28T11:26:19Z,7.5,2026-10-28T18:51:00Z,5.2
+901220037,9,Hvolsvöllur-Markarfljót,Hringvegur: Markarfljót - Hvolsvöllur,3,21.96,0.0,63.67512,-20.14411,GREIDFAERT,2026-10-28T11:26:19Z,7.5,2026-10-28T18:51:00Z,0.0
+901210037,10,Markarfljót-Steinar,Hringvegur: Steinar - Markarfljót,3,17.38,0.0,63.57312,-19.87964,GREIDFAERT,2026-10-28T02:58:27Z,15.9,2026-10-28T18:51:00Z,0.0
+901050037,11,Dyrhólavegur-Steinar,Hringvegur: Dyrhólavegur - Steinar,3,28.08,0.0,63.43149,-19.18067,GREIDFAERT,2026-10-28T05:17:33Z,13.6,2026-10-28T18:51:00Z,0.0
+901040037,12,Reynisfjall,Hringvegur um Reynisfjall,1,12.06,0.0,63.42128,-19.01217,GREIDFAERT,2026-10-28T10:34:52Z,8.3,2026-10-28T18:51:00Z,0.0
+801100037,13,Vík,Vík,2,1.34,0.0,63.41789,-18.98807,GREIDFAERT,2026-10-28T05:18:25Z,13.6,2026-10-28T18:51:00Z,0.0

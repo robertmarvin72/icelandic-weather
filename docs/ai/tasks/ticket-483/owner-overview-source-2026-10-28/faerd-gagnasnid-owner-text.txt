@@ -1,0 +1,270 @@
+Færð - gagnasnið
+Snjómokstursleiðir eru fyrirfram skilgreindar leiðir á milli ákveðinna staða. Vegagerðin gefur út upplýsingar um færð á þessum leiðum. Hver leið hefur ákveðið þjónustustig og snjómokstursreglu.
+
+Hægt er að skoða nánari upplýsingar um vetrarþjónustu hér 
+
+Hægt er að fá upplýsingar um færð á einstökum leiðum/bútum á vegakerfinu. Lengd leiðanna er yfirleitt á bilinu nokkrir km til fáeinir tugir km. Upplýsingarnar fást með þessari fyrirspurn:
+gagnaveita.vegagerdin.is/api/faerd2017_1
+
+Upplýsingar um mjög staðbundnar aðstæður (punkta) er hægt að fá með eftirfarandi fyrirspurn:
+gagnaveita.vegagerdin.is/api/faerdpunktar2017_1
+
+Hnit leiða fást t.d. með eftirfarandi fyrirspurn (nánari leiðbeiningar um hnit leiða eru í öðru skjali):
+gagnaveita.vegagerdin.is/geoserver/gis/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=gis:faerdferlar2017_1
+
+Í upplýsingum um færð á einstökum leiðum/bútum er vegakerfinu skipt upp í marga mislanga búta.
+Bútarnir eru auðkenndir með dálkinum IdButur sem er einkvæmur. Hver bútur er með eina eða fleiri
+skráningu á ástandi sem gilda fyrir allan þann bút.
+
+Á hverjum bút geta verið þrennskonar skráningar á ástandi:
+
+(1) Upplýsingar í Astand dálkunum tengjast yfirborði vegar (hvort það er t.d. hált, hvort þar er
+snjór eða hvort vegurinn er greiðfær) og svo veðri o.þ.h. Upplýsingarnar um yfirborðið eru
+einu upplýsingarnar um bútinn sem örugglega eru alltaf til staðar (eru aldrei NULL).
+Upplýsingar um veður o.fl. (t.d. skafrenningur, éljagangur o.s.frv.) eru í AstandVidbotaruppl.
+
+(2) Upplýsingar um framkvæmdir (birtast á kortum á vef Vegagerðarinnar sem vegavinnuskilti).
+Þessar upplýsingar eru undir Frkv í gögnunum.
+
+(3) Upplýsingar um takmarkanir á ásþunga. Þessar upplýsingar eru undir Asthungi í gögnunum.
+
+ 
+
+Upplýsingar um dálka í gögnunum eru í eftirfarandi töflu.
+
+Heiti
+Tag
+Lýsing
+Dæmi
+Null?
+IdButur
+int
+Nr. leiðar á vegakerfi.
+904180010
+N
+DagsSkrad 
+string 
+Hvenær færðarástand var skráð (áISO 8601 formi).
+2019-02-18T12:10:59Z
+N
+StuttNafnButs 
+string 
+Stutt/skammstafað nafn leiðar
+Þingv.-Uxahryggir
+N
+FulltNafnButs
+string 
+Fullt nafn leiðar. 
+Kaldadalsvegur: Þingvellir -Uxahryggir
+N
+DagsButurBreyttist
+string 
+Gefur til kynna hvenær leiðinbreyttist (á ISO 8601 formi). Geristt.d ef lega vegar eða lengd breytist.Gerist sjaldan.
+2009-09-14T10:49:55Z
+N
+AstandYfirbord 
+string 
+Ástand vegar.
+HALKUBLETTIR
+N
+AstandVidbotaruppl 
+string 
+Lýsing á veðri o.fl.
+ELJAGANGUR
+J
+AstandLysing
+string 
+Lýsing á ástandi.
+Hálkublettir/éljagangur
+N
+AstandLysingEn
+string 
+Lýsing á ástandi (enska). 
+Spots of ice/snowshowers 
+N
+FrkvAudkenni 
+string 
+Framkvæmdir/vegavinna á leið.
+VEGAVINNA 
+J
+FrkvLysing 
+string 
+Lýsing á framkvæmdum
+Vegavinna 
+J
+FrkvLysingEn
+string 
+Lýsing á framkvæmdum (enska).
+Road repairs 
+J
+AsthungiAudkenni 
+string 
+Takmarkanir á ásþunga á leið.
+7TONN 
+J
+AsthungiLysing
+string 
+Lýsing á ásþunga. 
+Ásþungi 7 tonn
+J
+AsthungiLysingEn 
+string 
+Lýsing á ásþunga (enska).
+Axle weight limit 7 tons 
+J
+Snjomokstursregla
+string 
+Upplýsingar um hversu oft leið ermokuð.
+6X
+N
+DagsKeyrtUt 
+string 
+Hvenær upplýsingar voru útbúnar (á ISO 8601 formi).
+2019-02-18T12:30:31Z 
+N
+Þarna birtast alltaf allar leiðir á vegakerfinu þar sem er þjónusta á vegum Vegagerðarinnar í tengslum við færð. Ef einhver leið sem áður hefur birst þarna hættir að birtast þýðir það að sú leið er ekki lengur til, að hún er ekki lengur þjónustuð eða að hún hefur breyst umtalsvert. Á sama hátt geta bæst við nýjar leiðir. Ef leið breytist verulega (lega hennar breytist t.d. eða lengd hennar breytist) fær hún nýtt númer (dálkur IdButur). Það jafngildir því í raun að leiðin hætti að vera til og önnur sambærileg komi í staðinn. Svona breytingar er hægt að vakta ef þörf krefur með því að fylgjast með hvaða gildi koma fyrir á IdButur og sækja hnit leiðanna einungis þegar breytingar verða. Með því er hægt að minnka mikið það gagnamagn sem þarf að sækja því yfirleitt verða svona breytingar einungis nokkrum sinnum á ári. Það á því alls ekki að sækja hnit leiðanna mörgum sinnum á sólarhring (eða jafnvel í hvert sinn sem upplýsingar um færð eru sóttar). Þess má svo geta að fjórir öftustu stafirnir í IdButur eru e.k. óformlegt útgáfunúmer leiðarinnar. Þegar einhverjar leiðir breytast er útgáfunúmer allra leiða yfirleitt hækkað í stað þess að hækka bara útgáfunúmer leiðanna sem breyttust. Með þessu eru allar leiðir alltaf með sama útgáfunúmer.
+
+Það er mjög breytilegt eftir árstíma og veðri hvað þessar upplýsingar breytast ört (sjá dálkinn DagsSkrad). Það gerist þó minnst einu sinni á sólarhring fyrir hvern bút fyrir sig. Upplýsingar eru hinsvegar keyrðar út og/eða uppfærðar með nokkurra mínútna millibili óháð breytingum á færð. Því á dagsetningin í dálkinum DagsKeyrtUt aldrei að verða mikið eldri en 10 mínútur.
+
+Dálkarnir AstandYfirbord, AstandVidbotaruppl, FrkvAudkenni og AsthungiAudkenni innihalda föst, fyrirframskilgreind gildi og eru í hástöfum. Þessir dálkar geta innihaldið eftirfarandi:
+
+AstandYfirbord:
+EKKI_I_THJONUSTU
+FAERT_FJALLABILUM
+FLUGHALT
+GREIDFAERT
+HALKA
+HALKUBLETTIR
+KRAP
+LOKAD
+OFAERT_ANNAD
+OFAERT_VEDUR
+OTHEKKT
+SNJOTHEKJA
+THAEFINGUR
+THUNGFAERT
+
+AstandVidbotaruppl:
+ALLUR_AKSTUR_BANN
+ELJAGANGUR
+FAERT_FJALLABILUM
+MOKSTUR
+OSLETTUR_VEGUR
+OTHEKKT
+OVEDUR
+SANDBYLUR
+SKAFRENNINGUR
+SNJOKOMA
+STEINKAST
+STORHRID
+THOKA
+
+FrkvAudkenni:
+VEGAVINNA
+
+AsthungiAudkenni:
+2TONN
+5TONN
+7TONN
+10TONN
+
+Upplýsingar um hversu oft leiðin er mokuð eru í dálkinum Snjomokstursregla. Þar geta eftirfarandi gildi komið fyrir. Í vissum tilvikum geta tvö gildi komið fyrir með semikommu á milli, dæmi er „2X;TILFALLANDI“. Í því tilviki eru tveir fastir mokstursdagar en að auki getur viðkomandi sveitarfélag bætt
+við mokstursdegi:
+
+EKKI_MOKAD : Engin vetrarþjónusta
+2X : Þjónusta 2 daga í viku
+3X : Þjónusta 3 daga í viku
+4X : Þjónusta 4 daga í viku
+5X : Þjónusta 5 daga í viku
+6X : Þjónusta 6 daga í viku
+7X : Þjónusta 7 daga í viku
+VOR_HAUST : Mokstur vor og haust
+TILFALLANDI : Tilfallandi mokstur skv. ákvörðun viðkomandi sveitarfélags
+FLUGMOKSTUR : Mokstur í tengslum við áætlunarflug
+
+Einnig geta vissar upplýsingar um færð verið skráðar í einstökum punktum ef þær gilda á mjög stuttum kafla á vegakerfinu. Punkskráningar gerast bara við vissar aðstæður og eru því ekki jafn margbrotnar eins og skráningar á búta í vegakerfinu.
+
+Upplýsingar um punktgögnin eru í eftirfarandi töflu:
+
+Heiti
+Tag
+Lýsing
+Dæmi
+Null?
+IdPunktur 
+int
+Einkvæmt auðkenni punkts
+18544 
+N
+Austur
+decimal
+X-hnit punkts (ISN93) 
+353540
+N
+Nordur 
+decimal
+Y-hnit punkts (ISN93) 
+397646
+N
+Breidd
+decimal 
+Breiddargráða staðsetningar
+64.050696
+N
+Lengd 
+decimal
+Lengdargráða staðsetningar 
+-21.999556 
+N
+Astand
+string 
+Ástand í punktinum
+VEGAVINNA
+N
+Lysing
+string 
+Lýsing á ástandi í punktinum
+Vegavinna
+N
+LysingEn
+string 
+Lýsing á ástandi í punktinum (enska) 
+Road repairs 
+N
+Aths
+string 
+Athugasemd eða nánari skýring
+Reykjanesbraut,vegamót við Krýsuvík
+J
+AthsEn
+string 
+Athugasemd eða nánari skýring (enska)
+J
+IdButur
+int 
+Nr. þeirrar leiðar á vegakerfi sempunkturinn er á.
+903140010
+N
+DagsSkrad 
+date
+Hvenær ástand var skráð (á ISO 8601 formi)
+2019-02-18T16:36:48Z 
+N
+GildirTil 
+date
+Dagur sem ástand í punkti gildir til (ISO 8601 form)
+2019-02-20T00:00:00Z
+N
+DagsKeyrtUt 
+date
+Hvenær upplýsingar voru útbúnar (á ISO 8601 formi)
+2019-02-18T16:37:24Z 
+N
+Dálkurinn Astand inniheldur föst, fyrirframskilgreind gildi og er í hástöfum. Dálkurinn getur innihaldið
+eftirfarandi:
+VEGAVINNA
+ALLUR_AKSTUR_BANN
+VATNASKEMMDIR
+STEINKAST
+OSLETTUR_VEGUR
+ANNAD

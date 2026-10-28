@@ -1,0 +1,262 @@
+PAGE 1
+Slóð á vefþjónustu Vegagerðarinnar er https://gagnaveita.vegagerdin.is/geoserver/gis/ows. Hægt er 
+að tengjast vefþjóni með forritum eins og ArcGIS eða QGIS, en einnig er hægt að sækja gögnin beint. 
+Hægt að er að kalla eftir gögnum á mismunandi sniði. Á heimasíðu Geoserver 
+(https://geoserver.org/) má finna ítarlegar upplýsingar um hvernig kallað er á vefþjónustur með 
+breytum. Um gögnin gildir leyfi fyrir gjaldfrjáls gögn frá Vegagerðinni 
+(https://www.vegagerdin.is/upplysingar-og-utgafa/gagnaveita-vegagerdarinnar/). 
+ 
+ 
+Vegir í náttúru Íslands 
+Þjónustan inniheldur upplýsingar og staðsetningar á vegum í náttúru Íslands, öðrum en þjóðvegum, 
+þar sem umferð vélknúinna ökutækja er heimil. Sveitarfélög gera tillögu að skrá um vegi í náttúru 
+Íslands við gerð aðalskipulags eða breytingar á aðalskipulagi. Skipulagsstofnun sér til þess að 
+upplýsingar um skrána í viðkomandi sveitarfélagi berist Vegagerðinni til skráningar og birtingar. 
+Vegagerðin veitir almenningi aðgang að skránni í gegnum vefþjónustu bæði til skoðunar og til 
+niðurhals. Vegagerðin tekur við gögnunum eins og þau koma frá Skipulagsstofnun. Eingöngu 
+minniháttar lagfæringar eru gerðar á gögnum t.d. að samræma hnit vega m.v. þjóðvegakerfið, 
+reiknuð út lengd veg o.fl. Ábyrgð á því hvaða vegir eru eða eru ekki í þessari þjónustu er hjá 
+viðkomandi sveitarfélagi. 
+ 
+Nánari upplýsingar um vegi náttúru Íslands má finna í lögum nr. 60/2013 um náttúruvernd 
+(https://www.althingi.is/lagas/nuna/2013060.html), í reglugerð nr. 260/2018 um vegi í náttúru 
+Íslands (https://island.is/reglugerdir/nr/0260-2018) og í leiðbeiningum Skiplagsstofnunar „Vegir í 
+náttúru Ísland - um gerð vegaskráar og högun og skil á gögnun“ 
+(https://www.skipulag.is/media/vegir-i-natturu-islands/vegirinatturuislands_v4.pdf). 
+ 
+Hvernig er hægt að nálgast skrána? 
+Dæmi um hvernig má kalla á þjónustuna gis:vegirinatturuislands_2022_1 fyrir vegi í náttúru Íslands. 
+Sjálfgefið snið á þjónustunni er GML2 og hnitakerfið er ÍSN93: 
+https://gagnaveita.vegagerdin.is/geoserver/gis/ows?service=WFS&version=1.0.0&request=GetFeatu
+re&typeName=gis:vegirinatturuislands_2022_1 
+Hægt er að bæta við breytum eins og t.d.: 
+Hnitakerfi 
+srsName=EPSG:3057 (ÍSN93) 
+srsName= EPSG:4326 (WGS84) 
+ 
+Skilyrði, t.d. 
+cql_filter=NRSVEITARFELAG= 8720 
+ 
+Gagnasnið 
+outputFormat=GML2   WFS 1.0.0 
+outputFormat=GML3   WFS 1.1.0 
+outputFormat=shape-zip  Þjöppuð shape skrá (ZIP) 
+outputFormat=application/json  json 
+outputFormat=text/javascript 
+outputFormat=csv   Comma Separated Values 
+ 
+  
+
+PAGE 2
+Dæmi um kall í vefþjónustuna þar sem beðið er um alla vegi þar sem númer sveitarfélags er 8720 
+(cql_filter=NRSVEITARFELAG=8720), hnitakerfi er WGS84 (srsName= EPSG:4326) og gögnin eru á json 
+sniði (outputFormat=application/json): 
+https://gagnaveita.vegagerdin.is/geoserver/gis/ows?service=WFS&version=1.0.0&request=GetFeatu
+re&typeName=gis:vegirinatturuislands_2022_1&cql_filter=NRSVEITARFELAG=8720&srsName=EPSG:
+4326&outputFormat=application/json 
+ 
+Eigindi fyrir vegi í náttúru Íslands (gis:vegirinatturuislands_2022_1) 
+Gagnahögunin á þjónustunni tekur mið af forsniði fyrir skráningu gagna um vegi í náttúru Íslands sem 
+er að finna á heimasíðu Skipulagsstofnunar (https://www.skipulag.is/media/vegir-i-natturu-
+islands/ASK_vegirInatturuIslands_forsnid.zip). Eigindin byggja á aflögðum staðli ÍST120:2012 Skráning 
+og flokkun landupplýsinga-Uppbygging fitjuskráa auk annarra fitjuskráa. Staðallinn var lagður af 
+1. júní 2021 en hann ásamt fitjuskránum er aðgengilegur á heimasíðu Landmælinga Íslands 
+(https://www.lmi.is/is/landupplysingar/kortagogn/islenskar-fitjuskrar) en einnig hefur verið bætt 
+nokkrum eigindum til frekari upplýsinga. 
+ 
+Heiti Tag Tilvísun Lýsing Dæmi (json) 
+FITJUFLOKKUR INT 1) Vegakerfi 301 
+IDVEGUR INT 
+ 
+Einkvæmt númer fyrir veg 63 
+NAFNFITJU STRING 2) Heiti vegar null 
+LENGD INT 2) Lengd vegar 653 
+VEGFLOKKUN INT 2) Vegflokkun skv. fitjuskrá  5 
+VEGFLOKKUNSVEITAFELAGA INT 2) Vegflokkun sveitafélaga, á 
+ekki við þetta gagnasafn 
+null 
+VEGTEGUND STRING 3) Gerð vegtegundar skv. 
+leiðbeiningum 
+Skipulagstofnunar og 
+reglugerðar nr. 60/2013 
+"F3" 
+SLITLAG INT 2) Gerð slitlags á vegi 20 
+BREIDD DECIMAL 2) Breidd vegar 3 
+HRADI INT 2) Leyfilegur hámarkshraði null 
+AKSTURSSTEFNA INT 2) Akstursstefna 2 
+EININGVEGAKERFIS INT 2) Fitjueigindin er notuð til að 
+greina á milli fyrirbæra í 
+vegakerfi landsins 
+1 
+UPPHAFNOTKUNAR DATE 4) Dagsetning þegar vegur var 
+tekinn í notkun 
+null 
+ENDIRNOTKUNAR DATE 4) Dagsetning þegar vegur var 
+tekinn úr notkun 
+null 
+HEIMILD STRING 1) Heimildaskráning t.d. 
+númer loftmynda, skýrslur 
+GPS mælinga o.fl. 
+"GPS-mæling" 
+DAGSHEIMILDAR DATE 1) Hvenær heimild varð til, t.d. 
+útgáfudagsetning korts, 
+aldur loftmynda eða 
+hvernær innmæling fór 
+fram 
+"2019-12-24T00:00:00Z" 
+DAGSINNSETNINGAR DATE 1) Hvenær fitjan var færð í 
+gagnasafnið 
+"2020-04-20T00:00:00Z" 
+DAGSLEIDRETTINGAR DATE 1) Hvenær gögn voru síðast 
+breytt eða leiðrétt 
+"2020-04-20T00:00:00Z" 
+
+PAGE 3
+VINNSLUFERLIFITJU INT 1) Vinnsluferli sem notað var 
+við að koma fitjunni í 
+gagnasafnið 
+null 
+NAKVAEMNIXY DECIMAL 1) Nákvæmni staðsetningar í 
+fleti. Tilgreind í metrum 
+5 
+GAGNAEIGANDI STRING 1) Eigandi sem á gögnin og sér 
+um viðhald á þeim 
+"Skeiða- og Gnúpverjahreppur" 
+EIGANDIFYRIRBAERIS STRING 4) Eigandi vegar null 
+OPIDFRA STRING 3) Frá og með hvaða degi 
+(dags./mán.) umferð er 
+heimil um veginn 
+"21.06." 
+OPIDTIL STRING 3) Til og með hvaða degi 
+(dags./mán.) umferð er 
+heimil um veginn 
+"30.04." 
+ATHS STRING 3) Athugasemdir "Umferð um og í nálægð við 
+varplönd heiðagæsa er bönnuð frá 
+1. maí til 20. júní." 
+NRSVEITARFELAG STRING 
+ 
+Númer sveitarfélags "8720" 
+HEITISVEITARFELAG STRING 
+ 
+Heiti sveitarfélags "Skeiða- og Gnúpverjahreppur" 
+DAGSSTJORNARTIDINDI DATE 
+ 
+Hvenær auglýsing um 
+tiltekin veg í náttúru Íslands 
+birtist í B-deild 
+stjórnartíðinda 
+null 
+NRUTGAFA STRING 
+ 
+Útgáfunúmer í B-deild 
+Stjórnartíðinda 
+null 
+SHAPE LINESTRING 
+ 
+Hnitastrengur (WGS84 í 
+þessu tilviki) 
+[-22.88374598,65.98340946,0], 
+[-22.88372921,65.98343365,0], 
+... 
+1) Fitjuskrá: Sameiginlegar fitjueigindir sem var skylda að skrá 
+(https://www.lmi.is/static/files/grunngerd/fitjuskrar/skyldueigindir_1utg2021.pdf) 
+2) 300 Samgöngur 
+(https://www.lmi.is/static/files/grunngerd/fitjuskrar/300samgongur_1_2utg2017.pdf) 
+3) Leiðbeiningar Skipulagsstofnunar Vegir í náttúru Íslands – um gerð vegaskráar og högun og skil á 
+gögnum 
+(https://www.skipulag.is/media/vegir-i-natturu-islands/vegirinatturuislands_v4.pdf) 
+4) Fitjuskrá: Sameiginlegar fitjueigindir-valkvæmar 
+(https://www.lmi.is/static/files/grunngerd/fitjuskrar/valfrjalsar_eigindir_1.2_utg2013.pdf) 
+ 
+  
+
+PAGE 4
+Eigindin VEGFLOKKUN, VEGTEGUND, SLITLAG, AKSTURSSTEFNA, EININGARVEGAKERFIS og 
+VINNSLUFERLIFITJU eru með fyrirfram skilgreindum gildum:  
+ 
+VEGFLOKKUN 
+Kóði Nafn Skilgreining 
+5 Almennir vegir Vegir sem ekki teljast þjóðvegir en eru í eigu opinberra aðila og eru 
+ætlaðir almenningi til frjálsrar umferðar, t.d. hálendisvegir. 
+12 Einkavegir Einkavegir eru vegir sem hvorki teljast þjóðvegir né 
+sveitarfélagsvegir og eru í eigu einstaklinga, fyrirtækja eða 
+opinberra aðila. Vegur sem er 50 metrar eða styttri að sveitabæ 
+flokkast sem einkavegur. Vegir heim að eyðibýlum og sumarhúsum 
+teljast einnig til einkavega. Einnig eru vegir í landbúnaðarlandi s.s. 
+vegir sem hafa orðið til vegna landnýtingar, ræktunar eða beitar, 
+vegir milli túna, beitarhólfa o.fl., einkavegir. 
+ 
+VEGTEGUND 
+Kóði Nafn Skilgreining 
+F0 Greiðfær vegur Greiðfærir vegir, færir allri almennri umferð að sumarlagi. Oft 
+lokaðir á veturna vegna snjóa og vegna aurbleytu á þáatíð. 
+F1 Seinfær vegur Seinfærir vegir, færir allri almennri umferð að sumarlagi. Oftar en 
+ekki lægri en landið til beggja hliða. Breidd um 4 m. Stórir lækir og 
+ár brúaðar. Oft lokaðir á veturna vegna snjóa og vegna aurbleytu á 
+þáatíð. 
+F2 Lakfær vegur Lakfærir vegir, færir fjórhjóladrifnum bílum, mjög öflugum 
+fólksbílum, jepplingum og vélhjólum. Oftar en ekki lægri en landið 
+til beggja hliða. Breidd um 4 m. Lækir og smáár óbrúaðar. Oft 
+lokaðir á veturna vegna snjóa og aurbleytu á þáatíð. 
+F3 Torfær vegur Torfærir vegir, einungis færir stórum og vel búnum 
+fjórhjóladrifnum bílum, ofurjeppum og vélhjólum. Oftar en ekki 
+lægri en landið til beggja hliða. Geta verið ójafnir, grýttir og með 
+bleytuíhlaupum. Breidd um 4 m. Oft lokaðir á veturna vegna snjóa 
+og aurbleytu á þáatíð. 
+ 
+SLITLAG 
+Kóði Nafn Skilgreining 
+10 Bundið  
+13 Klæðing  
+14 Malbik  
+15 Steypa  
+17 Hellur / Steinar  
+18 Timburgólf  
+20 Óbundið  
+21 Möl  
+22 Mold  
+23 Kurl  
+24 Gras  
+  
+
+PAGE 5
+AKSTURSSTEFNA 
+Kóði Nafn Skilgreining 
+-1 Einstefna á móti stefnu línu Stefna línu sýnir hvernig hún er teiknuð. 
+0 Óþekkt  
+1 Einstefna með stefnu línu Stefna línu sýnir hvernig hún er teiknuð. 
+2 Tvístefna  
+ 
+EININGVEGAKERFIS 
+Kóði Nafn Skilgreining 
+1 Vegur  
+2 Brú Mannvirki til að tengja saman tvo staði yfir vatnsfall 
+(gil, skurð), veg, umferðaræðar eða aðra torfæru. 
+Lengd milli stöpla þarf að vera 4 metrar eða meira. 
+3 Vað  
+4 Göng Göng eru yfirbyggður vegur, leið, slóði, grafin 
+neðarjarðar eða í gegnum fjall ætluð til dæmis fyrir 
+umferð farartækja eða gangandi vegfaraenda. 
+6 Vegskáli/forskáli Vegskáli er yfirbygging yfir veg, til varnar grjóthruni og 
+snjóflóðum.Forskáli er steyptur vegskáli fyrir framan 
+veggöng. 
+7 Ferja  
+ 
+VINNSLUFERLIFITJU 
+Kóði Nafn Skilgreining 
+1 Hönnunargögn Gögn sem verða til við útreikninga eða skv. forsendum 
+hönnuða. 
+2 Fjarkönnun Fjarkönnun er stafræn greining á gögnum fengnum af 
+gervitunglamyndum. 
+3 Skönnuð gögn og vigrun Vigrun á t.d. skannaðri filmu / teikningu / mynd (mælt 
+vélrænt). 
+4 Skjáhnitun / borðhnitun Skjáhnitað / borðhnitað t.d. af korti / loft- eða 
+gervitunglamynd. 
+5 Landmæling Mæling lands með þar til gerðum tækjum, s.s. GPS-
+tæki, málbandi, hallamæli o.s.frv. 
+6 Myndmæling Lega og form hluta teiknuð t.d. eftir loftmyndum, með 
+til þess gerðum búnaði. 
+7 Annað Ef annað en það sem talið er upp hér að ofan, þá skal 
+það tekið fram. T.d. riss. 
+ 

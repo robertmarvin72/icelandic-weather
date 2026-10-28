@@ -1,0 +1,9 @@
+REQUEST_TIME_UTC: 2026-10-28T18:57:30Z
+URL: https://api.open-meteo.com/v1/forecast?latitude=64.09249225,64.02203542,63.99538228,63.93021332,63.74919708,63.41782798&longitude=-21.71204873,-21.30237752,-21.19270972,-20.6655215,-20.23236739,-19.00028197&timezone=Atlantic%2FReykjavik&forecast_days=3&hourly=temperature_2m,weathercode,precipitation,snowfall,windspeed_10m,windgusts_10m,visibility&daily=weathercode,temperature_2m_max,temperature_2m_min,precipitation_sum,snowfall_sum,windspeed_10m_max,windgusts_10m_max
+HTTP/1.1 200 OK
+Date: Wed, 28 Oct 2026 18:57:30 GMT
+Content-Type: application/json; charset=utf-8
+Transfer-Encoding: chunked
+Connection: keep-alive
+
+CURL_EXIT=0

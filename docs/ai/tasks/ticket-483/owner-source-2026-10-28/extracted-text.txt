@@ -1,0 +1,209 @@
+PAGE 1
+Útgefið 4. mars 2019 
+ 
+Hluti af vefþjónustum í Gagnaveitu Vegagerðarinnar eru á Geoserver 
+(http://gagnaveita.vegagerdin.is/geoserver/gis/ows?). Hægt er að tengjast vefþjóni með forritum 
+eins og ArcGIS eða QGIS, en einnig er hægt að sækja gögnin beint á vefþjóninn. Hægt að er að kalla 
+eftir þeim á mismunandi sniði. Á heimasíðu Geoserver (http://geoserver.org/) má finna ítarlegar 
+upplýsingar um hvernig kallað er á vefþjónustur með parametrum. 
+ 
+Snjómokstursleiðir - hnitaferlar 
+Í þessari þjónustu eru hnitaðar snjómokstursleiðir sem hægt er að tengja við færðarupplýsingar með 
+eigindinni IDBUTUR. Til að hægt sé að tengja saman færð og snjómokstursleiðir þarf alltaf að vera 
+með nýjustu útgáfuna af snjómokstursleiðum. Hægt er að athuga aldur leiðar með því að skoða 
+útgáfudagsetningu. Snjómokstursleiðir eru uppfærðar að jafnaði 4-6 sinnum á ári. Í þjónustunni eru 
+einnig upplýsingar um þjónustustig og snjómokstursreglur.  
+ 
+Hér er dæmi um hvernig má kalla vefþjónustu fyrir snjómokstursleiðir. Sjálfgefið snið á þjónustunni 
+er GML2: 
+http://gagnaveita.vegagerdin.is/geoserver/gis/ows?service=WFS&version=1.0.0&request=GetFeatur
+e&typeName=gis:faerdferlar2017_1 
+Hægt er að bæta við parametrum: 
+Hnitakerfi 
+srsName=EPGS:3057 (ISN93) 
+srsName= EPGS:4326 (WGS84) 
+Skilyrði 
+cql_filter=NAKVAEMNIFERLIS=0 
+Gagnasnið 
+outputFormat=GML2: WFS 1.0.0 
+outputFormat=GML3: WFS 1.1.0 
+outputFormat=shape-zip: Þjöppuð shape skrá (ZIP) 
+outputFormat=application/json: json 
+outputFormat=text/javascript 
+outputFormat=csv: Comma Separated Values 
+ 
+Dæmi um vefþjónustu fyrir snjómokstursleiðir í vörpun WGS84 (srsName= EPGS:4326), í mestu 
+nákvæmni (cql_filter=NAKVAEMNIFERLIS=0) og á json formati: 
+http://gagnaveita.vegagerdin.is/geoserver/gis/ows?service=WFS&version=1.0.0&request=GetFeatur
+e&typeName=gis:faerdferlar2017_1&srsName=EPSG:4326&cql_filter=NAKVAEMNIFERLIS=0&output
+Format=application/json 
+ 
+  
+
+PAGE 2
+Eigindi fyrir færðarferla (gis:faerdferlar2017_1) 
+Heiti Tag Lýsing Dæmi (json) 
+OBJECTID INT Einkvæmt númer fyrir feril 3996 
+STUTTNAFNLEIDAR STRING Stutt heiti á snjómokstursleið 
+sambærilegt við heiti í textavarpi 
+Reynishverfisvegur 
+STADARLYSING STRING Nánari lýsing á einstaka hluta 
+snjómokstursleiðar 
+Reynishverfisvegur 
+IDFERILL INT Númer á ferli, hver ferill getur komið 
+fyrir 3 sinnum eftir þynningu gagna. Sjá 
+skýringar við NAKVAEMNIFERILS 
+2848 
+IDBUTUR INT Númer leiðar á vegakerfi sem tengist 
+færðarupplýsingum í gagnaveitunni 
+901100010 
+VEGNR STRING Vegnúmer 215 
+KAFLANR STRING Kaflanúmer 02 
+VEGHLUTI INT Lýsing á gerð miðlínu.  1 
+SUNNUDAGUR INT Er mokað á viðkomandi degi? 1 
+MANUDAGUR INT Er mokað á viðkomandi degi? 1 
+THRIDJUDAGUR INT Er mokað á viðkomandi degi? 0 
+MIDVIKUDAGUR INT Er mokað á viðkomandi degi? 1 
+FIMMTUDAGUR INT Er mokað á viðkomandi degi? 1 
+FOSTUDAGUR INT Er mokað á viðkomandi degi? 1 
+LAUGARDAGUR INT Er mokað á viðkomandi degi? 0 
+SNJOMOKSTURSREGLA STRING Upplýsingar um hversu oft í viku leiðin 
+er mokuð 
+5X 
+VIRKURDAGUROPIDFRA DATE Klukkan hvað þjónusta hefst á virkum 
+degi 
+08:00 
+VIRKURDAGUROPIDTIL DATE Klukkan hvað þjónustu lýkur á virkum 
+degi 
+17:00 
+HELGIOPIDFRA DATE Klukkan hvað þjónusta hefst um helgar 08:00 
+HELGIOPIDTIL DATE Klukkan hvað þjónustu lýkur um helgar 16:00 
+HELMINGAMOKSTUR INT Helmingamokstursregla 0 
+THJONUSTUFLOKKUR INT Þjónustuflokkur vetrarþjónustu 3 
+NAKVAEMNIFERILS INT Gagnasafnið kemur í þremur útgáfum 
+eftir því hve hnit ferlanna eru þynnt 
+mikið. Það er hugsað fyrir birtingu í 
+mismuandi mælikvörðum 
+0 
+DAGSFERILS DATE Útgáfudagsetning (ISO 8601) 2018-12-21T00:00:00Z 
+SHAPE LINESTRI
+NG 
+Hnit ferilsins x,y,z. Ef z er 0 þýðir það í 
+flestum tilvikum að upplýsingar um hæð 
+viðkomandi punkts vantar. Hægt er að fá 
+ferlana í mismunandi hnitakerfum eins 
+og ISN93 og WGS84. 
+[-19.0480236,63.415419,0],[-
+19.04793777,63.41418381,0],... 
+ 
+ 
+  
+
+PAGE 3
+ 
+Hér er lýst helstu eigindum og gildum í vefþjónustunni. Nánari skilgreiningar á 
+SNJOMOKSTURSREGLA, HELMINGAMOKSTUR og THJONUSTUFLOKKUR má finna á heimasíðu 
+Vegagerðarinnar. 
+ 
+Dálkurinn VEGHLUTI innheldur föst gildi: 
+0: Miðlína vegar 
+3: Miðlína aðreinar 
+4: Miðlína fráreinar 
+5: Hringtorg 
+6: Akbraut með kaflastefnu 
+7: Akbraut á móti kaflastefnu 
+ 
+Dálkurinn SNJOMOKSTURSREGLA inniheldur föst gildi. Um mokstursdagana gildir að: „Vegagerðin 
+getur frestað mokstri ef veður er óhagstætt, eins og í snjókomu eða skafrenningi, eða þegar slíkt 
+veður er fyrirsjáanlegt. Er þá mokað næsta dag sem veður leyfir“. 
+EKKI_MOKAD : Engin vetrarþjónusta 
+2X : F-REGLA, þjónusta 2 daga í viku 
+3X : E-REGLA, þjónusta 3 daga í viku 
+4X : D-REGLA, þjónusta 4 daga í viku  
+5X : C-REGLA. þjónusta 5 daga í viku 
+6X : B-REGLA, þjónusta 6 daga í viku 
+7X : A-REGLA, þjónusta 7 daga í viku 
+VOR_HAUST: G-REGLA, Heimilt er að moka 2 sinnum í viku vor og haust á meðan „snjólétt“ er. 
+Hausttímabilið er skilgreint til 1. nóvember og vortímabil frá 20. mars. 
+TILFALLANDI : Tilfallandi mokstur skv. ákvörðun viðkomandi sveitarfélags 
+FLUGMOKSTUR : Mokstur í tengslum við áætlunarflug 
+ 
+HELMINGAMOKSTUR 
+0: Ekki er um helmingamokstur að ræða 
+1: Um snjómokstursleiðina gildir regla um helmingamokstur 
+ 
+THJONUSTUFLOKKUR lýsir þjónustustigi á viðkomandi snjómokstursleið. 
+1: Þjónustuflokkur 1 
+2: Þjónustuflokkur 2 
+3: Þjónustuflokkur 3 
+4: Þjónustuflokkur 4 
+ 
+Boðið er upp á þrjár útgáfur af ferlum. Ferlarnir eru mismikið þynntir fyrir mismunandi mælikvarða. 
+Dálkurinn NAKVAEMNIFERILS inniheldur föst gildi: 
+0: lítið þynnt 
+1: miðlungs þynnt 
+2: mikið þynnt 
+ 
+SUNNUDAGUR-LAUGARDAGUR segir til um hvort vegur sé í þjónustaður á viðkomandi degi. 
+0: Ekki mokað 
+1. Mokað 
+9: Jarðgöng, mokstur óþarfur 
+Null: á ekki við. Vegurinn er ekki í vetrarþjónustu eða þegar um tilfallandi mokstur er að ræða. 
+ 
+  
+
+PAGE 4
+VIRKURDAGUROPIDFRA og VIRKURDAGUROPIDTIL segir til um hvenær dags vegurinn er þjónustaður 
+á virkum degi t.d.: 
+VIRKURDAGUROPIDFRA: 07:30, VIRKURDAGUROPIDTIL: 19:30: Þjónustað milli 7:30 og 19:30 
+VIRKURDAGUROPIDFRA: 00:00, VIRKURDAGUROPIDTIL: 00:00: Þjónustað allan sólarhringinn 
+ 
+HELGIOPIDFRA og HELGIOPIDTIL segit til um hvænær dags vegurinn er þjónustaður um helgi t.d.: 
+HELGIOPIDFRA: 09:00, HELGIOPIDTIL 19:00: Þjónustað milli 9:00 og 19:00 
+HELGIOPIDFRA: 00:00, HELGIOPIDTIL: 00:00: Þjónustað allan sólarhringinn 
+ 
+ 
+ 
+Punktskráningar 
+Innhalda upplýsingar um staðbundið ástand á vegum.  
+Eigindi fyrir punktskráningar á færð (gis:faerdpunktar2017_1) 
+Heiti Tag Lýsing Dæmi(json) 
+IDPUNKTUR INT Einkvæmt auðkenni punkts 19860 
+ASTAND STRING Ástand í punkti VEGAVINNA 
+LYSING STRING Lýsing á ástandi í punktinum Vegavinna 
+LYSINGEN STRING Lýsing á ástandi í punktinum (enska) Road repairs 
+ATHS STRING Athugasemd eða nánari skýring Vegavinna, nýbygging á 3,8 km. kafla frá 
+Borgarfjarðarbraut að Gröf. 
+ATHSEN STRING Athugasemd eða nánari skýring 
+(enska) 
+ 
+IDBUTUR INT Nr. þeirrar leiðar á vegakerfi sem 
+punkturinn er á. 
+904160006 
+DAGSKEYRTUT DATE Hvenær upplýsingar voru útbúnar (ISO 
+8601 form) 
+2018-03-08T15:39:24Z 
+DAGSSKRAD DATE Hvenær ástand var skráð (ISO 8601 
+form) 
+2018-01-19T11:09:41Z 
+GILDIRTIL DATE Dagur sem ástand í punkti gildir til (ISO 
+8601 form) 
+2018-08-31T12:00:00Z 
+SHAPE POINT Hnit punkts. Hægt er að fá hnit í 
+mismunandi hnitakerfum eins og 
+ISN93 og WGS84. 
+[377079,454473] 
+ 
+ 
+Dálkurinn Astand inniheldur föst, fyrirframskilgreind gildi og er í hástöfum. Dálkurinn getur innihaldið 
+eftirfarandi: 
+VEGAVINNA: Vegavinna 
+ALLUR_AKSTUR_BANN: Allur akstur bannaður 
+VATNASKEMMDIR: Vatnaskemmdir 
+STEINKAST: Steinkast 
+OSLETTUR_VEGUR: Ósléttur vegur 
+ANNAD: Annað 
+ 
+Punktgögn sótt sem json í hnitakerfi wgs84: 
+http://gagnaveita.vegagerdin.is/geoserver/gis/ows?service=WFS&version=1.0.0&request=GetFeatur
+e&typeName=gis:faerdpunktar2017_1&srsName=EPSG:4326&outputFormat=application/json 

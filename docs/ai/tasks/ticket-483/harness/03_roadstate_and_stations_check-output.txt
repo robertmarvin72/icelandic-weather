@@ -1,0 +1,78 @@
+SELF-CHECK (SYNTHETIC, not live coverage): point (7,50) vs line (0,0)-(0,100): line_distance=7.000000 (expected 7.0), nearest_vertex_distance=50.488 (a nearest-VERTEX implementation would wrongly return this). PASS
+
+## Input manifest (read-only, no network)
+- legacy-faerd-fresh.json  sha256=592d052e2c861de34d264421b944dfefae44a0f054bfd0b8c594f2b143d90a54  bytes=360767
+- legacy-faerdpunktar.json  sha256=156f1136521faebe8d9e882f229930b2ab1e505be181981c7c3969d7f66ffb42  bytes=21352
+- wfs-vegnr1-all.json  sha256=305f60d6f1f17918c058cbd047735681e56d6f9aad99f9e16f50de9419d6983a  bytes=1242779
+- wfs-chain-4326.json  sha256=966848554f0ce205c919625c3e6209da1fe05bcc50e7e8084ae96840ad519af4  bytes=178153
+
+fresh nationwide legacy records: 708
+AstandYfirbord distribution: {'GREIDFAERT': 465, 'EKKI_I_THJONUSTU': 90, 'OFAERT_ANNAD': 62, 'OTHEKKT': 56, 'HALKUBLETTIR': 19, 'LOKAD': 2, 'KRAP': 1, 'FAERT_FJALLABILUM': 6, 'THUNGFAERT': 1, 'OFAERT_VEDUR': 6}
+LOKAD records (fresh, nationwide): 2
+  IdButur=907090037 'Skjaldfönn-Unaðsdalur'
+  IdButur=903270037 'Nesjavallaleið'
+
+N3/A1 -- distinct last-4-digit IdButur suffixes nationwide: ['0037'] (2019 document's own examples end in 0010/0006 -- a different version generation)
+
+Fetch (acquisition) time for legacy-faerd-fresh.json: 2026-10-28T18:55:12+00:00
+DagsKeyrtUt (export time) values present: {'2026-10-28T18:51:00Z'}
+N3 -- export-to-acquisition lag (fetch time minus DagsKeyrtUt): 0:04:12
+
+Chain segment fresh road-state AND assessment age vs BOTH reference timestamps (C2/N3 -- acquisition=fetch time, export=DagsKeyrtUt; not an SLA claim):
+  1410010037: GREIDFAERT  DagsSkrad(registration)=2026-10-28T02:55:01Z  age_vs_acquisition=16:00:11  age_vs_export=15:55:59
+  903010037: GREIDFAERT  DagsSkrad(registration)=2026-10-28T02:55:00Z  age_vs_acquisition=16:00:12  age_vs_export=15:56:00
+  253020037: GREIDFAERT  DagsSkrad(registration)=2026-10-28T02:55:00Z  age_vs_acquisition=16:00:12  age_vs_export=15:56:00
+  252090037: GREIDFAERT  DagsSkrad(registration)=2026-10-28T12:17:13Z  age_vs_acquisition=6:37:59  age_vs_export=6:33:47
+  902030037: GREIDFAERT  DagsSkrad(registration)=2026-10-28T02:55:00Z  age_vs_acquisition=16:00:12  age_vs_export=15:56:00
+  902040037: GREIDFAERT  DagsSkrad(registration)=2026-10-28T02:58:26Z  age_vs_acquisition=15:56:46  age_vs_export=15:52:34
+  901130037: GREIDFAERT  DagsSkrad(registration)=2026-10-28T11:23:57Z  age_vs_acquisition=7:31:15  age_vs_export=7:27:03
+  901230037: GREIDFAERT  DagsSkrad(registration)=2026-10-28T11:26:19Z  age_vs_acquisition=7:28:53  age_vs_export=7:24:41
+  901220037: GREIDFAERT  DagsSkrad(registration)=2026-10-28T11:26:19Z  age_vs_acquisition=7:28:53  age_vs_export=7:24:41
+  901210037: GREIDFAERT  DagsSkrad(registration)=2026-10-28T02:58:27Z  age_vs_acquisition=15:56:45  age_vs_export=15:52:33
+  901050037: GREIDFAERT  DagsSkrad(registration)=2026-10-28T05:17:33Z  age_vs_acquisition=13:37:39  age_vs_export=13:33:27
+  901040037: GREIDFAERT  DagsSkrad(registration)=2026-10-28T10:34:52Z  age_vs_acquisition=8:20:20  age_vs_export=8:16:08
+  801100037: GREIDFAERT  DagsSkrad(registration)=2026-10-28T05:18:25Z  age_vs_acquisition=13:36:47  age_vs_export=13:32:35
+
+Segments with assessment age > 15h (the 02:55-02:58Z cluster): 6 of 13
+Age range across all 13 segments (vs acquisition): 6:37:59 to 16:00:12
+Documented expectation (A6): state changes at least once per 24h -- a ~16h age is within that expectation, not a breach; it is an age to DISPLAY. Cause of the 02:55Z cluster remains UNKNOWN.
+
+QUALITY FINDINGS (segments): NONE FOUND -- no missing/unparseable/negative/inconsistent timestamp detected among the 13 chain segments
+
+PROPOSED DISPLAY/STALE/EXPIRY RULE (N3 -- a labelled product/engineering proposal, NOT a meteorological safety threshold or a documented SLA):
+  1. Always surface each source's own timestamp(s) and the computed age next to it.
+  2. An unknown/missing timestamp means UNKNOWN freshness -- never silently treated as fresh.
+  3. An expired point-incident (past its GildirTil) is not active for that valid-time context, but this is NOT proof the road is clear -- absence of an active notice is not evidence of safety.
+  4. A known closure (LOKAD / ALLUR_AKSTUR_BANN) is never cancelled by a favourable forecast -- closure data always takes precedence for display purposes.
+  5. Missing, conflicting, or over-age REQUIRED source data yields 'unavailable' or 'limited' output for that segment -- never a silent fallback to 'open'/'clear'.
+  6. Any numeric age cutoff used for a 'stale' flag is an explicit, labelled product choice (e.g. 'flag if assessment age > 20h') -- never presented as an official or safety-derived threshold.
+  GildirTil values reaching into 2029 describe long-running roadworks permits -- they are NOT a guarantee that the work is ongoing at any particular future ETA, nor proof of a recent re-assessment; they should be displayed with their own registration date.
+
+faerdpunktar2017_1 nationwide point-incidents: 43
+Astand distribution (9 distinct values): {'VEGAVINNA': 23, 'ANNAD': 2, 'OSLETTUR_VEGUR': 5, 'STEINKAST': 1, 'TONN_ALLS': 4, 'HOLUR_I_VEGI': 4, 'VATNASKEMMDIR': 1, 'GRJOTHRUN': 1, 'ALLUR_AKSTUR_BANN': 2}
+Astand values NOT in the owner-documented set: ['GRJOTHRUN', 'HOLUR_I_VEGI', 'TONN_ALLS'] (next-task AC: pass through as 'unrecognised condition, shown with source text', never dropped or mapped to clear)
+
+N3 -- faerdpunktar export-to-acquisition lag: 0:00:16
+
+N1 -- point-incident association, CORRECTED to point-to-POLYLINE (line) distance in native ISN93 metres (own IdButur's own tier-0 geometry), not nearest-vertex:
+  IdPunktur=67861 Astand='VEGAVINNA' own_IdButur=902030037 line_distance=0.089m ASSOCIATED(<50m): True GildirTil=2029-03-09T23:45:00Z
+  IdPunktur=67862 Astand='VEGAVINNA' own_IdButur=902040037 line_distance=0.138m ASSOCIATED(<50m): True GildirTil=2029-03-09T13:27:00Z
+  Nearby events on a DIFFERENT IdButur (proximity alone, NOT associated by this rule):
+    IdPunktur=73801 Astand='STEINKAST' own_IdButur=901330037 nearest_chain_segment=901130037 line_distance=262.5m -- NOT associated (different IdButur; proximity alone is not membership)
+
+Association rule: own IdButur is a chain ID AND line-distance to that ID's own tier-0 geometry < 50m. 2 point(s) meet both.
+
+CORRECTION, WITHDRAWING v2's claim: v2 reported IdPunktur 67862 as ~310m from the chain geometry (an 'unreconciled discrepancy' with a reviewer lead) using NEAREST-VERTEX distance. That was a method artefact, not a real discrepancy: the correct point-to-LINE distance (above) is 0.138m, well inside the 50m bound -- 67862 IS associated, matching 67861 (0.089m). Both VEGAVINNA notices ARE on the chain. The v2 'unreconciled discrepancy' text is withdrawn; so is the reviewer's own earlier 1m/15m addendum figures (also not reproducible, per the reviewer's own follow-up). 73801 remains NOT associated: different IdButur (901330037, not on the chain), nearest chain-segment line-distance 262.5m.
+
+C2 -- point-EVENT ages (registration age vs both reference times, separate from GildirTil-based status-at-ETA) and inconsistency checks, for the 3 events already under examination:
+  IdPunktur=67861: DagsSkrad(registration)=2026-03-09T12:26:15Z  age_vs_acquisition=233 days, 6:30:01  age_vs_export=233 days, 6:29:45  GildirTil=2029-03-09T23:45:00Z
+  IdPunktur=67862: DagsSkrad(registration)=2026-03-09T12:27:47Z  age_vs_acquisition=233 days, 6:28:29  age_vs_export=233 days, 6:28:13  GildirTil=2029-03-09T13:27:00Z
+  IdPunktur=73801: DagsSkrad(registration)=2026-10-28T15:29:58Z  age_vs_acquisition=3:26:18  age_vs_export=3:26:02  GildirTil=2026-11-05T09:13:00Z
+  QUALITY FINDINGS (point events): NONE FOUND -- no missing/negative/inconsistent timestamp detected among these 3 events
+  Note: a long registration age (e.g. these events registered 2026-03-09, ~7.5 months before this fetch) does NOT by itself mean stale or inactive -- GildirTil governs status-at-ETA, registration age is a separate, purely descriptive quality signal.
+
+N1 -- station-to-segment distance, CORRECTED to point-to-POLYLINE distance. No retained station ISN93 coordinate and no verified WGS84->ISN93 transform exists locally, so a declared LOCAL TANGENT-PLANE metre approximation is used on the WGS84 chain geometry instead (stated limitation: valid only for short, few-km distances; not a geodetic transform; no unretained projection parameters imported):
+  Hellisheidi (31392) -> segment 252090037: 22.7 m  WITHIN 3km BOUND: True
+  Sandskeid (31488) -> segment 253020037: 81.3 m  WITHIN 3km BOUND: True
+
+N7 -- 'within 3km' is NEAREST-LINE distance to the station's single closest point on the segment, NOT a measured share of the segment's length. The v2 percentage figures (33%/49%) used a coarse midpoint-sampling method mislabelled 'vertex-by-vertex' and are REMOVED, not restated with a caveat -- the simpler, honestly-bounded statement is: nearest-line distance is within 3km for these two station/segment pairs; coverage of the REST of each segment's length, and of all 11 other segments, is UNKNOWN.

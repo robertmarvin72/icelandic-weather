@@ -1,0 +1,39 @@
+## Input manifest (read-only, no network)
+- wfs-vegnr1-all.json  sha256=305f60d6f1f17918c058cbd047735681e56d6f9aad99f9e16f50de9419d6983a  bytes=1242779
+
+totalFeatures (server-reported): 996  features in file: 996
+unique IDBUTUR with VEGNR=1 nationwide: 74
+
+#429 East-Iceland decoy (Hellisheidi eystri): IDBUTUR=910330037 present in VEGNR=1 nationwide set: False
+#429 Skogar local-road ID (VEGNR 2420/2440): IDBUTUR=124200037 present in VEGNR=1 nationwide set: False
+Threngslavegur branch (902340037): IDBUTUR=902340037 present in VEGNR=1 nationwide set: True
+
+all 13 chain IDBUTUR values present in VEGNR=1 set: True (missing: [])
+
+Pairwise adjacency along the chain, ISN93 planar metres (endpoint-to-endpoint, min over all fragment endpoints of each pair):
+  1410010037 -> 903010037: 0.0 m
+  903010037 -> 253020037: 0.2 m
+  253020037 -> 252090037: 0.0 m
+  252090037 -> 902030037: 34.7 m
+  902030037 -> 902040037: 30.1 m
+  902040037 -> 901130037: 0.0 m
+  901130037 -> 901230037: 5.2 m
+  901230037 -> 901220037: 0.0 m
+  901220037 -> 901210037: 0.0 m
+  901210037 -> 901050037: 0.0 m
+  901050037 -> 901040037: 0.0 m
+  901040037 -> 801100037: 0.0 m
+
+All consecutive pairs under 100m: True (this is the geometric-continuity evidence; a name match alone would not be enough)
+
+R2 correction (Jonesy): the chain's Reykjavik-side start (1410010037, 'Raudavatn') is NOT the nearest-Reykjavik-anchor endpoint required by the frozen plan -- Route 1 (VEGNR=1) continues further toward Reykjavik. Checking that extension:
+  1410010037 -> 914020037: 1.3 m
+  914020037 -> 903020037: 10.8 m
+  903020037 -> 903030037 ('Kjalarnes', the OTHER route's/Route-B direction): 20.9 m
+  Interpretation: 914020037 ('Sudurlandsv. um Hadegismoa') and 903020037 ('Vesturlandsvegur') are real, connected VEGNR=1 continuations toward Reykjavik -- confirmed, not a rename to 'Raudavatn-Vik'. 903020037 is also adjacent to 903030037 ('Kjalarnes'), i.e. this is the junction area where the Reykjavik-Vik corridor and the separate Reykjavik-Akureyri route meet near the city -- not further progress toward Vik. Both extension IDs are multi-role interchange features (ramps VEGHLUTI 3/4, roundabout 5, both carriageway directions 6/7, plus undocumented 1/8) with no single, locally-justifiable through-carriageway length -- reported as connectivity CONFIRMED, length NOT COMPUTED this round (see research-report.md Sec.1).
+
+N6 (correction v3) -- applying the frozen nearest-Reykjavik-anchor SELECTION rule explicitly, not just asserting both extension IDs are 'part of the route' because they are adjacent:
+  Anchor used: Vedurstofa station 1 'Reykjavik' (RETAINED, from #450's own catalog, NOT an imported public-knowledge coordinate): lat=64.1288833618, lon=-21.9081897736
+  Candidate VEGNR=1 features to rank by distance from this anchor: 1410010037, 914020037, 903020037.
+  BLOCKER: 914020037 and 903020037 have NO retained WGS84 geometry (they are not in the 13-ID wfs-chain-4326.json sample, which was fetched for the ORIGINAL 13 IDs only). Their only retained geometry is native ISN93 (wfs-vegnr1-all.json). Comparing a WGS84 anchor point's distance to ISN93-only geometry would require a WGS84<->ISN93 transform -- and no verified transform is available locally this round (zero new requests allowed; hand-rolling an LCC projection with unretained parameters, as the reviewer's own illustration did, is explicitly what this round must NOT do).
+  THEREFORE: the nearest-anchor feature among {1410010037, 914020037, 903020037} is UNKNOWN this round, not resolved by assumption. What IS established: all three are really connected (adjacency distances above), and none can be excluded from consideration just because connectivity alone does not prove which one is the official rule's actual answer. See research-report.md Sec.1 / coverage.csv 'span 0' row for how this is carried forward as an explicit unresolved critical span.

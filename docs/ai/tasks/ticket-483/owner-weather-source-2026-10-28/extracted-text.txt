@@ -1,0 +1,37 @@
+vedur – útgáfa 2014_1 
+Þjónustan skilar færslum með veðurupplýsingum. 
+Gagnasnið: 
+ 
+Mögulegar fyrirspurnir: 
+1) http://gagnaveita.vegagerdin.is/api/vedur2014_1 
+Skilar öllum  færslum 
+Heiti Tag Lýsing Dæmi 
+Nr int Nr. veðurstöðvar hjá Vegagerðinni 95 
+Nr_Vedurstofa int Nr. veðurstöðvar hjá Veðurstofunni 31591 
+Nafn string Nafn veðurstöðvar Mosfellsheiði 
+Breidd decimal Breiddargráða staðsetningar 64.214033 
+Lengd decimal Lengdargráða staðsetningar -21.344767 
+Haed decimal Hæð yfir sjávarmáli í metrum 270.0 
+Dags string Dags. og tími mælingar 04.03.2019 15:10:00 
+Vindatt int Vindátt í °, 0=N, 90=A 61 
+VindattAsc string Vindátt í bókstöfum ANA 
+VindattAscEng string Vindátt í bókstöfum (enska) ENE 
+Vindhradi decimal Vindhraði í m/s 3.979 
+Vindhvida decimal Mesta vindhviða sl. 10 mín. í m/s 5.292 
+Hiti decimal Lofthiti í 2 m hæð (°C) -1.202 
+Veghiti decimal Hiti í yfirborði vegar (°C) 0.727 
+Umf10Min int Umferð síðustu 10 mín. 19 
+UmfSum int Umferð frá miðnætti sl. 1196 
+Raki decimal Loftraki í 2 m hæð í % 60.45 
+Daggarmark decimal Daggarmark í 2 m hæð -7.889 
+VindattStDev decimal Staðalfrávik vindáttar 6.155 
+Loftthrystingur decimal Loftþrýstingur í hPa; bara á fáeinum 
+stöðvum. Oftast NULL 
+ 
+Sjavarhaed decimal Sjávarhæð; bara á örfáum stöðvum. Oftast 
+NULL 
+ 
+PntX decimal Austurhnit í ISN93 386170.067 
+PntY decimal Norðurhnit í ISN93 414491.204 
+IdButur1 int Númer leiðarbúts sem veðurstöð er við 903050010 
+IdButur2 int Númer leiðarbúts sem veðurstöð er við 903050010 

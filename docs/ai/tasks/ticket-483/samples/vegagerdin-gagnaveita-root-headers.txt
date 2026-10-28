@@ -1,0 +1,14 @@
+REQUEST_TIME_UTC: 2026-10-28T18:59:10Z
+URL: https://gagnaveita.vegagerdin.is/
+HTTP/1.1 302 Moved Temporarily
+Server: nginx/1.20.1
+Date: Wed, 28 Oct 2026 18:59:09 GMT
+Content-Type: text/html
+Content-Length: 145
+Connection: keep-alive
+Location: https://www.vegagerdin.is/upplysingar-og-utgafa/gagnaveita-vegagerdarinnar/
+
+
+FINAL_URL:https://gagnaveita.vegagerdin.is/
+HTTP_CODE:302
+CURL_EXIT=0

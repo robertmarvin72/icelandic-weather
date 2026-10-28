@@ -1,0 +1,28 @@
+REQUEST_TIME_UTC: 2026-10-28T18:59:57Z
+URL: https://www.vegagerdin.is/vegagerdin/gagnasafn/vefthjonustur/skilmalar-vefthjonustur
+HTTP/1.1 200 OK
+Server: nginx/1.20.1
+Date: Wed, 28 Oct 2026 18:59:56 GMT
+Content-Type: text/html; charset=utf-8
+Content-Length: 160405
+Connection: keep-alive
+x-middleware-rewrite: /is/vegagerdin/gagnasafn/vefthjonustur/skilmalar-vefthjonustur
+Vary: rsc,next-router-state-tree,next-router-prefetch,next-router-segment-prefetch,Accept-Encoding
+x-nextjs-cache: STALE
+x-nextjs-prerender: 1
+x-nextjs-stale-time: 300
+ETag: "12uvsikepv93ehy"
+X-Frame-Options: SAMEORIGIN
+X-XSS-Protection: 1; mode=block
+X-Content-Type-Options: nosniff
+X-Cache: EXPIRED
+Strict-Transport-Security: max-age=63072000; includeSubDomains; preload
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-XSS-Protection: 1; mode=block
+Referrer-Policy: no-referrer-when-downgrade
+
+
+FINAL_URL:https://www.vegagerdin.is/vegagerdin/gagnasafn/vefthjonustur/skilmalar-vefthjonustur
+HTTP_CODE:200
+CURL_EXIT=0

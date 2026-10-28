@@ -1,0 +1,45 @@
+## Input manifest (read-only, no network)
+- wfs-srstest-4326.json  sha256=364b49d08c425703703c79a9f9c30d15ccc27d275da2a88e7f4eb7c04d2fc3fb  bytes=11976
+- wfs-chain-4326.json  sha256=966848554f0ce205c919625c3e6209da1fe05bcc50e7e8084ae96840ad519af4  bytes=178153
+- wfs-vegnr1-all.json  sha256=305f60d6f1f17918c058cbd047735681e56d6f9aad99f9e16f50de9419d6983a  bytes=1242779
+
+SRS control check: nearest distance from reprojected Hellisheidi geometry to the independent DATEX control point: 61.9 m (within ~2000m tolerance: True)
+Note (Jonesy R3): this 61.9m figure shows the reprojection is not grossly wrong at one point -- it is NOT a same-object projection-accuracy bound for lengths.
+
+VEGNR distribution in wfs-chain-4326.json (the length sample): {'1': 144, '33': 4, '261': 8}
+CONFIRMED: this sample is NOT VEGNR=1-pure -- it was fetched by IDBUTUR only. All totals below filter VEGNR='1' explicitly before use.
+
+VEGHLUTI values present after VEGNR=1 filter: [1, 5, 7] (0=centreline,3=on-ramp,4=off-ramp,5=roundabout,6=carriageway-with-direction,7=carriageway-against-direction documented; 1 and 8 are undocumented per Jonesy's owner-source reading -- 1's meaning is INFERRED as the default/undivided-carriageway tag since it is what most non-divided chain segments carry)
+No VEGHLUTI 3/4 (ramps) present in this sample -- no ramp exclusion needed here. No VEGHLUTI 6 present because only the eastbound-tagged divided segments (252090037 'til austurs', 253020037) were selected for this chain, not their westbound counterparts (902020037, 902010037) -- travel direction: eastbound, Reykjavik -> Vik, stated explicitly, not implying westbound coverage.
+
+Per-segment VEGNR=1-only length (tier 0, roundabout pieces isolated):
+  1410010037: physical_subpieces=1 length_km=2.55 (of which roundabout=0.00)
+  903010037: physical_subpieces=1 length_km=1.89 (of which roundabout=0.00)
+  253020037: physical_subpieces=2 length_km=12.29 (of which roundabout=0.00)
+  252090037: physical_subpieces=1 length_km=16.50 (of which roundabout=0.00)
+  902030037: physical_subpieces=5 length_km=12.63 (of which roundabout=0.35)
+  902040037: physical_subpieces=6 length_km=18.51 (of which roundabout=0.23)
+  901130037: physical_subpieces=5 length_km=17.64 (of which roundabout=0.11)
+  901230037: physical_subpieces=3 length_km=12.81 (of which roundabout=0.00)
+  901220037: physical_subpieces=3 length_km=21.96 (of which roundabout=0.00)
+  901210037: physical_subpieces=3 length_km=17.38 (of which roundabout=0.00)
+  901050037: physical_subpieces=3 length_km=28.08 (of which roundabout=0.00)
+  901040037: physical_subpieces=1 length_km=12.06 (of which roundabout=0.00)
+  801100037: physical_subpieces=2 length_km=1.34 (of which roundabout=0.00)
+
+N8 (correction v3) -- length presented as a RANGE (geometry-inclusion sensitivity), not a single figure: the actual traversed arc through each roundabout is unresolved (not every vehicle drives the full ring), so the honest statement is a range between excluding and including the full ring geometry -- not a proven bound on the actual driven distance, and NOT the complete Reykjavik-Vik route length (the Reykjavik-ward extension in harness/01's N6 section is separately unresolved and not included here).
+TOTAL VEGNR=1-only chain length (these 13 retained IDs only), tier 0: 174.95-175.64 km (without / with full roundabout rings)
+  of which roundabout (VEGHLUTI=5) full-ring pieces: 0.69 km
+TOTAL excluding roundabout rings entirely: 174.95 km
+
+Tier sensitivity (VEGNR=1 only, same grouping, each tier reported separately -- not a single 'best' number):
+  tier -1 (UNDOCUMENTED, meaning unknown): 175.78 km
+  tier 0 (documented): 175.64 km
+  tier 1 (documented): 175.06 km
+  tier 2 (documented): 173.40 km
+
+ISN93 native planar length (EPSG:3057, no reprojection), same 13 IDs/VEGNR=1/tier0: 176.26 km
+Spherical (haversine, WGS84 via srsName=4326) for comparison: 175.64 km
+These are TWO DIFFERENT METHODS -- never added together. The ~0.3-0.4% difference is consistent with the documented ISN93 Lambert Conformal Conic scale factor (<=1.0003 on this corridor, per Jonesy's sandbox arithmetic, not independently re-derived here). Neither is an ellipsoidal geodesic.
+
+R2/extension note: the Reykjavik-ward extension (914020037, 903020037) is NOT included in any total above -- see harness/01's R2 section for why its length is reported as NOT COMPUTED (connectivity confirmed, VEGHLUTI role selection at that multi-ramp/roundabout interchange is not locally resolvable this round).

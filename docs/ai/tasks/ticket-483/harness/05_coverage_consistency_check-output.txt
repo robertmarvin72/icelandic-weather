@@ -1,0 +1,34 @@
+- coverage.csv  sha256=341366dcaaec711a5ef5b00b6c287df3fa69f339f984803970b9aaaf0dc0547c  bytes=5634
+- route-segments.csv  sha256=5f0b18b7549fa7bfa9024c2c2535976cacf5b0b486c9145be0323a85e86e0f57  bytes=2284
+
+C3 (v4) -- length labelled with its geometry-inclusion sensitivity explicitly, not printed as one bare number beside harness/02's range:
+route-segments.csv: 13 segments, total VEGNR=1-only tier-0 length 174.95 km WITHOUT full roundabout rings, 175.64 km WITH full roundabout rings (of which 0.69 km is the roundabout contribution) -- a range (geometry-inclusion sensitivity), not a single proven driven distance (see harness/02 for the full tier-sensitivity table and the separate ISN93 planar cross-check, never summed with this spherical figure)
+all segments GREIDFAERT at fresh fetch: True
+DagsSkrad age range: 6.6h to 16.0h; 6 of 13 segments older than 15h
+
+coverage.csv: 7 spans
+  geometry_cap: {'UNKNOWN': 1, 'PASS': 6}
+  road_state_cap: {'UNKNOWN': 1, 'PASS': 6}
+  observation_cap: {'UNKNOWN': 6, 'PARTIAL': 1}
+  forecast_cap: {'UNAVAILABLE': 3, 'PASS': 4}
+  freshness_cap: {'UNKNOWN': 1, 'PASS': 6}
+  access_cap: {'UNKNOWN': 1, 'PARTIAL': 6}
+
+N6 (v3): span 0 (Reykjavik approach) is a SEPARATE, explicitly UNRESOLVED critical span -- not counted toward the 'every span reaches PASS' claims below, which apply to the 6 retained, locally-resolved spans (1-6) only.
+Capability 1 (geometry) PASS for every RESOLVED span (1-6): True
+Capability 2 (road-state) PASS for every RESOLVED span (1-6): True
+Capability 6 (access/reuse/HTTPS) PASS for every span (0-6): False
+Spans with capability 4 (forecast) UNAVAILABLE (no interior point): ['0', '4', '5']
+Span 0 itself: geometry/road-state/observation/freshness all UNKNOWN (not PASS, not FAIL) -- the Reykjavik-Vik corridor as a WHOLE (including the approach) is not fully graded; the 13-segment Raudavatn-Vik portion is.
+
+R1 correction (v2): approved-prompt-v1's own frozen rule says 'unresolved reuse permission or plain-HTTP-only required feed caps route at PARTIAL and overall at PARTIAL at most'. cap.6 is PARTIAL here (Open-Meteo production rights unresolved per #453; Vedurstofa terms only reused from #450, not re-verified this round; Vegagerdin terms applicability to each specific service is INFERRED, not explicit). Per that rule: ROUTE = PARTIAL, OVERALL = PARTIAL (at most) -- regardless of cap.1/cap.2 both reaching PASS for every span. The v1 round's PASS/GO conflicted with this frozen rule and is superseded, not current advice. This script does not itself assert the final grade text -- that is written in research-report.md, citing these counts.
+
+C1 (v4) -- cross-checking coverage.csv's forecast_cap column against the SAME geometry-derived span status harness/04 computes (not a second, possibly-divergent calculation -- the identical shared function):
+  span 1: geometry-derived status='interior' -> expected forecast_cap=PASS, coverage.csv says PASS  OK
+  span 2: geometry-derived status='interior' -> expected forecast_cap=PASS, coverage.csv says PASS  OK
+  span 3: geometry-derived status='interior' -> expected forecast_cap=PASS, coverage.csv says PASS  OK
+  span 4: geometry-derived status='boundary_only' -> expected forecast_cap=UNAVAILABLE, coverage.csv says UNAVAILABLE  OK
+  span 5: geometry-derived status='boundary_only' -> expected forecast_cap=UNAVAILABLE, coverage.csv says UNAVAILABLE  OK
+  span 6: geometry-derived status='interior' -> expected forecast_cap=PASS, coverage.csv says PASS  OK
+
+No mismatches -- coverage.csv's forecast_cap column agrees with harness/04's geometry-derived span status for every resolved span.

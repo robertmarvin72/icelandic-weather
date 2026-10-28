@@ -1,0 +1,32 @@
+## Input manifest (read-only, no network)
+- openmeteo-chain.json  sha256=f1f0fa440552bb7747101bea6b6ad7760d440cf84bcf5d115044c898ff3ddc8a  bytes=29395
+- wfs-chain-4326.json  sha256=966848554f0ce205c919625c3e6209da1fe05bcc50e7e8084ae96840ad519af4  bytes=178153
+
+Retained request URL: URL: https://api.open-meteo.com/v1/forecast?latitude=64.09249225,64.02203542,63.99538228,63.93021332,63.74919708,63.41782798&longitude=-21.71204873,-21.30237752,-21.19270972,-20.6655215,-20.23236739,-19.00028197&timezone=Atlantic%2FReykjavik&forecast_days=3&hourly=temperature_2m,weathercode,precipitation,snowfall,windspeed_10m,windgusts_10m,visibility&daily=weathercode,temperature_2m_max,temperature_2m_min,precipitation_sum,snowfall_sum,windspeed_10m_max,windgusts_10m_max
+'wind_speed_unit' parameter present: False (S1: absence explains the km/h label)
+
+Geometry-derived point -> segment mapping (point-to-polyline distance, local tangent-plane metres, same method/limitation as harness/03's N1 fix):
+  P1 (req 64.09249225,-21.71204873): nearest=1410010037, ties=[1410010037, 903010037]  (tie within span 1, no ambiguity for span assignment)
+  P2 (req 64.02203542,-21.30237752): nearest=252090037, ties=[252090037]
+  P3 (req 63.99538228,-21.19270972): nearest=902030037, ties=[902030037]
+  P4 (req 63.93021332,-20.6655215): nearest=902040037, ties=[902040037, 901130037]  (tie within span 3, no ambiguity for span assignment)
+  P5 (req 63.74919708,-20.23236739): nearest=901230037, ties=[901230037, 901220037]  ** CROSS-SPAN TIE: spans [4, 5] **
+  P6 (req 63.41782798,-19.00028197): nearest=801100037, ties=[801100037]
+
+Per-span status (a cross-span tie counts toward BOTH spans, as a boundary point, not duplicated as interior coverage of either):
+  span 1: has an interior point
+  span 2: has an interior point
+  span 3: has an interior point
+  span 4: NO INTERIOR point; BOUNDARY point only -- interior forecast UNSAMPLED/UNAVAILABLE
+  span 5: NO INTERIOR point; BOUNDARY point only -- interior forecast UNSAMPLED/UNAVAILABLE
+  span 6: has an interior point
+
+this round's hourly_units: {'time': 'iso8601', 'temperature_2m': '°C', 'weathercode': 'wmo code', 'precipitation': 'mm', 'snowfall': 'cm', 'windspeed_10m': 'km/h', 'windgusts_10m': 'km/h', 'visibility': 'm'}
+
+Value at each point's stated (assumed, per J8) ETA, with grid-snap/elevation:
+  P1 (segment 1410010037, span(s) [1]) 2026-10-29T08:00: {'temperature_2m': 7.7, 'windspeed_10m': 34.6, 'windgusts_10m': 69.8, 'precipitation': 2.7, 'snowfall': 0.0, 'weathercode': 63} grid_snap=605m grid_elevation=93.0m
+  P2 (segment 252090037, span(s) [1]) 2026-10-29T09:00: {'temperature_2m': 7.3, 'windspeed_10m': 55.1, 'windgusts_10m': 78.5, 'precipitation': 3.1, 'snowfall': 0.0, 'weathercode': 63} grid_snap=660m grid_elevation=347.0m
+  P3 (segment 902030037, span(s) [2]) 2026-10-29T09:00: {'temperature_2m': 9.5, 'windspeed_10m': 44.3, 'windgusts_10m': 73.4, 'precipitation': 1.7, 'snowfall': 0.0, 'weathercode': 61} grid_snap=777m grid_elevation=34.0m
+  P4 (segment 902040037, span(s) [3]) 2026-10-29T10:00: {'temperature_2m': 8.7, 'windspeed_10m': 20.9, 'windgusts_10m': 67.3, 'precipitation': 0.8, 'snowfall': 0.0, 'weathercode': 53} grid_snap=919m grid_elevation=43.0m
+  P5 (segment 901230037, span(s) [4, 5]) 2026-10-29T11:00: {'temperature_2m': 8.4, 'windspeed_10m': 15.1, 'windgusts_10m': 32.8, 'precipitation': 0.7, 'snowfall': 0.0, 'weathercode': 53} grid_snap=772m grid_elevation=32.0m
+  P6 (segment 801100037, span(s) [6]) 2026-10-29T12:00: {'temperature_2m': 8.9, 'windspeed_10m': 23.4, 'windgusts_10m': 32.0, 'precipitation': 0.0, 'snowfall': 0.0, 'weathercode': 3} grid_snap=2138m grid_elevation=4.0m
