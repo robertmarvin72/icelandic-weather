@@ -1,0 +1,30 @@
+## Method: for each file, compute (a) `git hash-object <path>` (no -w; read-only, does not write a git object) and (b) stdlib SHA256 of the raw file bytes, then compare both against the 64-hex value cc-report.md's table currently labels 'Blob SHA-1 (git hash-object)'.
+
+repo root: C:/Users/Notandi/forritun/icelandic-weather
+
+src/lib/routeRisk.js:
+  git hash-object (SHA-1, 40 hex chars): ba9a8a16233c4717dabb9cd00318bbedaf0c88ca
+  stdlib SHA256 of raw bytes (64 hex chars): 0b7c9c1a9f03eb68153797c543bdd4adc689c8be673b9ae4ca001f8fa67a1b79
+  cc-report.md's claimed value: 0b7c9c1a9f03eb68153797c543bdd4adc689c8be673b9ae4ca001f8fa67a1b79
+  claimed == git hash-object (SHA-1)?  False
+  claimed == raw-byte SHA256?          True
+
+api/forecast.js:
+  git hash-object (SHA-1, 40 hex chars): d0307cf7f80befc4c613b91e13e5d57166a599b0
+  stdlib SHA256 of raw bytes (64 hex chars): 1c81af478fec1b34a2e97b26fc3cec1e1d1911d699c30a23a720a9e439b508fe
+  cc-report.md's claimed value: 1c81af478fec1b34a2e97b26fc3cec1e1d1911d699c30a23a720a9e439b508fe
+  claimed == git hash-object (SHA-1)?  False
+  claimed == raw-byte SHA256?          True
+
+docs/open-meteo-auth.md:
+  git hash-object (SHA-1, 40 hex chars): f16a62ae2a566631930e175fd7140225729b8025
+  stdlib SHA256 of raw bytes (64 hex chars): 106ce6d3b635baba5489935c91dcbe647d3c3d21393e68ff4629186ca351ca9d
+  cc-report.md's claimed value: 106ce6d3b635baba5489935c91dcbe647d3c3d21393e68ff4629186ca351ca9d
+  claimed == git hash-object (SHA-1)?  False
+  claimed == raw-byte SHA256?          True
+
+## R8 (second part) -- pre-sample-plan.md freeze timestamp vs file metadata
+pre-sample-plan.md filesystem mtime (UTC): 2026-10-27T19:06:21.372103+00:00
+cc-report.md's claimed freeze time: 2026-10-27T19:05:26Z
+manifest.md's first logged new-request time: 2026-10-27T19:06:35Z
+Finding: the filesystem mtime (19:06:21Z) does not equal the claimed freeze time (19:05:26Z) -- a ~55s discrepancy whose cause is unknown (editor save behaviour, clock source used when the claim was written, or similar is possible but UNTESTED). Both the mtime and the claimed time are still earlier than the first new request (19:06:35Z), so the ordering property R5/J2 requires (plan frozen before any new request) holds either way. The SHA256 of the plan file matches the value recorded at the time, which is unaffected by which clock reading is used. Treat 19:06:21Z (filesystem mtime, directly measured by this script) as the more defensible figure going forward; do not re-assert 19:05:26Z as a measured fact.

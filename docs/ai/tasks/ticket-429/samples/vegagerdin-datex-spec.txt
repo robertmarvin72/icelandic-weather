@@ -1,0 +1,358 @@
+DATEX II 3.1 Specification
+
+IRCA Datex II Specification DATEX II v. 3.1
+
+Page: 2(11) Version: 2021-10-01
+
+DATEX II v. 3.1
+
+Content
+
+DATEX II ..................................................................................................................................................... 3
+
+Services................................................................................................................................................................. 3 Transport/Communication .............................................................................................................................. 3 Delivery modes ................................................................................................................................................ 3 Delivery format ................................................................................................................................................ 3 Publication types ............................................................................................................................................. 3 Base URL for the test environment ................................................................................................................. 3 Base URL for the production environment...................................................................................................... 3
+
+HTTP Get............................................................................................................................................................... 3 HTTP request headers...................................................................................................................................... 4 HTTP response headers ................................................................................................................................... 4
+
+PredefinedLocation service .................................................................................................................................. 4 SOAP URL..................................................................................................................................................... 4 WSDL ........................................................................................................................................................... 4 HTTP Get URL .............................................................................................................................................. 4 Schema URL's .............................................................................................................................................. 5
+
+MeasurementSite service ..................................................................................................................................... 5 SOAP URL..................................................................................................................................................... 5 WSDL ........................................................................................................................................................... 5 HTTP Get URL .............................................................................................................................................. 6 Schema URL's .............................................................................................................................................. 6
+
+MeasuredData service ......................................................................................................................................... 6 Measurement values................................................................................................................................... 6 SOAP URL..................................................................................................................................................... 6 WSDL ........................................................................................................................................................... 7 HTTP Get URL .............................................................................................................................................. 7 Schema URL's .............................................................................................................................................. 7
+
+Situation service ................................................................................................................................................... 7
+
+Point located incidents .................................................................................................................................... 7
+
+Incident types .............................................................................................................................................. 7
+
+SOAP URL..................................................................................................................................................... 8
+
+WSDL ........................................................................................................................................................... 8
+
+HTTP Get URL .............................................................................................................................................. 8
+
+Schema URL's .............................................................................................................................................. 8
+
+Road conditions ............................................................................................................................................... 9
+
+SOAP URL..................................................................................................................................................... 9
+
+WSDL ......................................................................................................................................................... 10
+
+HTTP Get URL ............................................................................................................................................ 10
+
+Schema URL's ............................................................................................................................................ 10
+
+Situation id's and versioning.......................................................................................................................... 10
+
+IRCA_datex_ii_ver_3_1_Specification.docx
+
+Version 3.1
+
+2021-10-06
+
+IRCA Datex II Specification DATEX II v. 3.1
+
+Page: 3(11) Version: 2021-10-01
+
+Situation and situationRecord id's ............................................................................................................ 10 Situation and situationRecord versioning ................................................................................................. 10
+References .......................................................................................................................................................... 11
+
+DATEX II
+This document gives short information in English of the DATEX II 3.1 feeds from The Icelandic Road And Coastal Administration (IRCA).
+Services
+All services support both SOAP and HTTP Get.
+Transport/Communication For communication web services according to the regular DATEX II profile is used. URL's to services, WSDL and schemas are listed for each service in this document.
+Delivery modes Only pull services are available which publishes all active situations, sections and weather stations.
+Delivery format HTTP Get returns data in XML.
+Publication types The following publications from the DATEX II standard are used:
+· SituationPublication · MeasuredDataPublication · PredefinedLocationsPublication · MeasurementSiteTablePublication
+
+Base URL for the test environment https://testdatex.vegagerdin.is
+
+Base URL for the production environment https://datex.vegagerdin.is/
+
+HTTP Get
+Here follows a brief description about the headers supported by the services, for more information see the References section in this document.
+
+IRCA_datex_ii_ver_3_1_Specification.docx
+
+Version 3.1
+
+2021-10-06
+
+IRCA Datex II Specification DATEX II v. 3.1
+
+Page: 4(11) Version: 2021-10-01
+
+HTTP request headers Some of the services supports the use of the request header If-Modified-Since. The value can be left out or set to a date returned in an earlier response (See Last-Modified under HTTP response headers).
+
+If the header is left out, all available data is returned in the response. If the header is set the service checks if there exists newer data, in that case a response with all
+available data is returned.
+
+If no newer data exist an empty response with status code 304 (Not Modified) is returned.
+
+Header If-Modified-Since
+
+Example value Wed, 20 Jan 2021 07:16:01 GMT
+
+HTTP response headers Services that support the If-Modified-Since header also supports the response header Last-Modified.
+
+For all responses containing data (i.e. all responses except the 304 ­ Not Modified response) the Last-Modified header is set to the publicationTime of the returned publication data. The value of the header shall be used in the If-Modified-Since header in the next request.
+
+Header Last-Modified
+
+Example value Wed, 20 Jan 2021 07:16:01 GMT
+
+PredefinedLocation service
+Service for metadata information about road segments and their location. For location referencing system GML Linestring and OpenLR Linear is used. Uses DATEX II PredefinedLocationPublication.
+SOAP URL https://datex.vegagerdin.is/predefinedlocationspublication3_1/PredefinedLocationsPublicationServi ce
+WSDL https://datex.vegagerdin.is/predefinedlocationspublication3_1/PredefinedLocationsPublicationServi ce?wsdl
+HTTP Get URL https://datex.vegagerdin.is/predefinedlocationspublication3_1/PredefinedLocationsPublicationServi ce/pullsnapshotdata
+
+IRCA_datex_ii_ver_3_1_Specification.docx
+
+Version 3.1
+
+2021-10-06
+
+IRCA Datex II Specification DATEX II v. 3.1
+
+Page: 5(11) Version: 2021-10-01
+
+HTTP Request headers The service supports the following request header
+
+Header If-Modified-Since
+HTTP Response headers The service sets the following response header
+
+Example value Wed, 20 Jan 2021 07:16:01 GMT
+
+Header Last-Modified
+
+Example value Wed, 20 Jan 2021 07:16:01 GMT
+
+Schema URL's https://datex.vegagerdin.is/predefinedlocationspublication3_1/PredefinedLocationsPublicationServi ce?xsd&name=DATEXII_3_MessageContainer.xsd
+
+https://datex.vegagerdin.is/predefinedlocationspublication3_1/PredefinedLocationsPublicationServi ce?xsd&name=DATEXII_3_D2Payload.xsd
+
+https://datex.vegagerdin.is/predefinedlocationspublication3_1/PredefinedLocationsPublicationServi ce?xsd&name=DATEXII_3_Common.xsd
+
+https://datex.vegagerdin.is/predefinedlocationspublication3_1/PredefinedLocationsPublicationServi ce?xsd&name=DATEXII_3_ExchangeInformation.xsd
+
+MeasurementSite service
+Service for metadata information about automatic weather stations. The service provides information about the stations position and which measurement values each station support. For location referencing system point by coordinates and OpenLR Point is used.
+Uses DATEX II MeasurementSiteTablePublication.
+This service uses LevelB/extensions (trafficFlow, index 9 and 10). <q1:specificMeasurementValueType>trafficFlow</q1:specificMeasurementValueType>
+
+SOAP URL https://datex.vegagerdin.is/measurementsitetablepublication3_1/MeasurementSiteTablePublication Service
+
+WSDL https://datex.vegagerdin.is/measurementsitetablepublication3_1/MeasurementSiteTablePublication Service?wsdl
+
+IRCA_datex_ii_ver_3_1_Specification.docx
+
+Version 3.1
+
+2021-10-06
+
+IRCA Datex II Specification DATEX II v. 3.1
+
+Page: 6(11) Version: 2021-10-01
+
+HTTP Get URL https://datex.vegagerdin.is/measurementsitetablepublication3_1/MeasurementSiteTablePublication Service/pullsnapshotdata
+Schema URL's https://datex.vegagerdin.is/measurementsitetablepublication3_1/MeasurementSiteTablePublication Service?xsd&name=DATEXII_3_MessageContainer.xsd
+https://datex.vegagerdin.is/measurementsitetablepublication3_1/MeasurementSiteTablePublication Service?xsd&name=DATEXII_3_D2Payload.xsd
+https://datex.vegagerdin.is/measurementsitetablepublication3_1/MeasurementSiteTablePublication Service?xsd&name=DATEXII_3_Common.xsd
+https://datex.vegagerdin.is/measurementsitetablepublication3_1/MeasurementSiteTablePublication Service?xsd&name=DATEXII_3_ExchangeInformation.xsd
+
+MeasuredData service
+Information about the weather situation along the roads based on reports from automatic weather stations. Locations references the measurement sites published in MeasurementSiteTable service. Uses DATEX II MeasuredDataPublication.
+Measurement values The service delivers the following measurement values.
+
+Index 1 2 3 4 5 6 7 8 9 10
+
+specificMeasurementValueType windInformation windInformation windInformation temperatureInformation roadSurfaceConditionInformation temperatureInformation pressureInformation humidityInformation trafficFlow trafficFlow
+
+Value windDirectionBearing/windDirectionCompass windSpeed maximumWindSpeed airTemperature roadSurfaceTemperature dewPointTemperature pressureValue relativeHumidity vehicleFlowRate/vehicleFlowPer10Minute vehicleFlowPerDay
+
+If a measurement site does not support a specific measurement value type, that index is excluded in the result. When a site delivers faulty or unreliable measurement values from any of its sensors a PhysicalQuantityFault is returned for that specific index.
+
+SOAP URL https://datex.vegagerdin.is/measureddatapublication3_1/MeasureDataService
+
+IRCA_datex_ii_ver_3_1_Specification.docx
+
+Version 3.1
+
+2021-10-06
+
+IRCA Datex II Specification DATEX II v. 3.1
+
+Page: 7(11) Version: 2021-10-01
+
+WSDL https://datex.vegagerdin.is/measureddatapublication3_1/MeasureDataService?wsdl
+
+HTTP Get URL https://datex.vegagerdin.is/measureddatapublication3_1/MeasureDataService/pullsnapshotdata
+
+HTTP Request headers The service supports the following request header
+
+Header If-Modified-Since
+HTTP Response headers The service sets the following response header
+
+Example value Wed, 20 Jan 2021 07:16:01 GMT
+
+Header Last-Modified
+
+Example value Wed, 20 Jan 2021 07:16:01 GMT
+
+Schema URL's https://datex.vegagerdin.is/measureddatapublication3_1/MeasureDataService?xsd&name=DATEXII_ 3_MessageContainer.xsd
+https://datex.vegagerdin.is/measureddatapublication3_1/MeasureDataService?xsd&name=DATEXII_ 3_D2Payload.xsd
+https://datex.vegagerdin.is/measureddatapublication3_1/MeasureDataService?xsd&name=DATEXII_ 3_Common.xsd
+https://datex.vegagerdin.is/measureddatapublication3_1/MeasureDataService?xsd&name=DATEXII_ 3_ExchangeInformation.xsd
+
+Situation service
+Point located incidents Incidents and other point located traffic information. For location referencing system point by coordinates and OpenLR Point is used.
+Uses DATEX II SituationPublication
+
+Incident types The service supports the following point incident types
+
+Type MaintenanceWorksmaintenanceType
+
+Attribute maintenanceType
+
+IRCA_datex_ii_ver_3_1_Specification.docx
+
+Version 3.1
+
+Enum value roadworks
+
+2021-10-06
+
+IRCA Datex II Specification DATEX II v. 3.1
+
+Page: 8(11) Version: 2021-10-01
+
+RoadOrCarriagewayOrLaneManagement NonWeatherRelatedRoadCondition NonWeatherRelatedRoadCondition NonWeatherRelatedRoadCondition GeneralObstruction Accident EnvironmentalObstruction GeneralObstruction EnvironmentalObstruction EnvironmentalObstruction AnimalPresenceObstruction PoorEnvironmentConditions
+
+roadOrCarriagewayOrLaneManagementType nonWeatherRelatedRoadConditionType nonWeatherRelatedRoadConditionType nonWeatherRelatedRoadConditionType obstructionType accidentType environmentalObstructionType obstructionType environmentalObstructionType environmentalObstructionType animalPresenceType poorEnvironmentType
+
+roadClosed roadSurfaceInPoorCondition looseChippings roadSurfaceInPoorCondition other accident flooding obstructionOnThe Road avalanches rockfalls animalsOnThe Road strongWinds
+
+SOAP URL https://datex.vegagerdin.is/situationpublication3_1/SituationService
+
+WSDL https://datex.vegagerdin.is/situationpublication3_1/SituationService?wsdl
+
+HTTP Get URL https://datex.vegagerdin.is/situationpublication3_1/SituationService/pullsnapshotdata
+
+HTTP Request headers The service supports the following request header
+
+Header If-Modified-Since
+
+Example value Wed, 20 Jan 2021 07:16:01 GMT
+
+HTTP Response headers The service sets the following response header
+
+Header Last-Modified
+
+Example value Wed, 20 Jan 2021 07:16:01 GMT
+
+Schema URL's https://datex.vegagerdin.is/situationpublication3_1/SituationService?xsd&name=DATEXII_3_Messag eContainer.xsd
+
+https://datex.vegagerdin.is/situationpublication3_1/SituationService?xsd&name=DATEXII_3_D2Payl oad.xsd
+
+https://datex.vegagerdin.is/situationpublication3_1/SituationService?xsd&name=DATEXII_3_Commo
+
+n.xsd
+
+IRCA_datex_ii_ver_3_1_Specification.docx
+
+Version 3.1
+
+2021-10-06
+
+IRCA Datex II Specification DATEX II v. 3.1
+
+Page: 9(11) Version: 2021-10-01
+
+https://datex.vegagerdin.is/situationpublication3_1/SituationService?xsd&name=DATEXII_3_Exchan geInformation.xsd
+
+Road conditions
+Road condition information. Locations references the sections published in the PredefinedLocation service. Uses DATEX II SituationPublication
+
+The following types are used.
+
+Type Conditions WeatherRelatedRoadConditions Conditions WeatherRelatedRoadConditions WeatherRelatedRoadConditions RoadOrCarrigewayOrLaneManagement RoadOrCarrigewayOrLaneManagement RoadOrCarrigewayOrLaneManagement WeatherRelatedRoadConditions Conditions Conditions WeatherRelatedRoadConditions RoadOrCarrigewayOrLaneManagement
+
+Attribute drivningConditionType weatherRelatedRoadConditionType drivningConditionType weatherRelatedRoadConditionType weatherRelatedRoadConditionType roadOrCarrigewayOrLaneManagementType roadOrCarrigewayOrLaneManagementType roadOrCarrigewayOrLaneManagementType weatherRelatedRoadConditionType drivningConditionType drivningConditionType weatherRelatedRoadConditionType roadOrCarrigewayOrLaneManagementType
+
+Enum value unkown slippery normal icyPatches slippery roadClosed roadClosed roadClosed snow hazardous passableWithCare slushOnRoad roadClosed
+
+RoadOrCarrigewayOrLaneManagement PoorEnvironmentCondition MaintenanceWorksmaintenanceType NonWeatherRelatedRoadCondition PoorEnvironmentCondition PoorEnvironmentCondition PoorEnvironmentCondition PoorEnvironmentCondition NonWeatherRelatedRoadCondition PoorEnvironmentCondition PoorEnvironmentCondition PoorEnvironmentCondition
+
+roadOrCarrigewayOrLaneManagementType poorEnvironmentConditionType maintenanceType nonWeatherRelatedRoadConditionType poorEnvironmentConditionType poorEnvironmentConditionType poorEnvironmentConditionType poorEnvironmentConditionType nonWeatherRelatedRoadConditionType poorEnvironmentConditionType poorEnvironmentConditionType poorEnvironmentConditionType
+
+closedPermanentlyForWinter snowfall snowploughsInUse roadSurfaceInPoorCondition badWeather blowingDust blowingSnow snowfall looseChippings blizzard fog badWeather
+
+SOAP URL
+
+IRCA_datex_ii_ver_3_1_Specification.docx
+
+Version 3.1
+
+2021-10-06
+
+IRCA Datex II Specification DATEX II v. 3.1
+
+Page: 10(11) Version: 2021-10-01
+
+https://datex.vegagerdin.is/situationpublication3_1/RoadConditionService
+
+WSDL https://datex.vegagerdin.is/situationpublication3_1/RoadConditionService?wsdl
+
+HTTP Get URL https://datex.vegagerdin.is/situationpublication3_1/RoadConditionService/pullsnapshotdata
+
+HTTP Request headers The service supports the following request header
+
+Header If-Modified-Since
+HTTP Response headers The service sets the following response header
+
+Example value Wed, 20 Jan 2021 07:16:01 GMT
+
+Header Last-Modified
+
+Example value Wed, 20 Jan 2021 07:16:01 GMT
+
+Schema URL's https://datex.vegagerdin.is/situationpublication3_1/RoadConditionService?xsd&name=DATEXII_3_ MessageContainer.xsd
+
+https://datex.vegagerdin.is/situationpublication3_1/RoadConditionService?xsd&name=DATEXII_3_D 2Payload.xsd
+
+https://datex.vegagerdin.is/situationpublication3_1/RoadConditionService?xsd&name=DATEXII_3_C ommon.xsd
+
+https://datex.vegagerdin.is/situationpublication3_1/RoadConditionService?xsd&name=DATEXII_3_E xchangeInformation.xsd
+
+Situation id's and versioning
+Situation and situationRecord id's Each situation has a unique id which is set as an attribute to the situation Ex: <q1:situation id="IRCA_31243.0">
+Each situationRecord in the situation has a unique id which is set as an attribute to the situation record. Ex: <q1:situationRecord xsi:type="q1:EnvironmentalObstruction" id="IRCA_31243.0_1" version="0">
+
+Situation and situationRecord versioning If a situationRecord has an <overallEndTime> and that time has passed, one can interpret it so that the event/situation record has expired (can be removed or not shown).
+
+IRCA_datex_ii_ver_3_1_Specification.docx
+
+Version 3.1
+
+2021-10-06
+
+IRCA Datex II Specification DATEX II v. 3.1
+
+Page: 11(11) Version: 2021-10-01
+
+If there is no <overallEndTime> the situationRecord shall be interpreted as "valid until further notice". To determine which message is the latest (i.e. most recent) it is recommended that you look at the <situationRecordVersionTime>.
+References
+www.road.is - The Icelandic Road and Coastal Administration www.datex2.eu - Official DATEX II web site https://tools.ietf.org/html/rfc7232#section-3.3 ­ RFC7232, section 3.3, If-Modified-Since https://tools.ietf.org/html/rfc7232#section-2.2 ­ RFC7232, section 2.2, Last-Modified https://tools.ietf.org/html/rfc7232#section-4.1 ­ RFC7232, section 4.1, 304 Not Modified
+
+IRCA_datex_ii_ver_3_1_Specification.docx
+
+Version 3.1
+
+2021-10-06
+
+

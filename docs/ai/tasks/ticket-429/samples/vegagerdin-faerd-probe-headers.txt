@@ -1,0 +1,13 @@
+HTTP/1.1 405 Method Not Allowed
+Server: nginx/1.20.1
+Date: Tue, 27 Oct 2026 19:08:18 GMT
+Content-Type: application/json; charset=utf-8
+Content-Length: 73
+Connection: keep-alive
+Cache-Control: no-cache
+Pragma: no-cache
+Allow: GET,POST
+Expires: -1
+X-AspNet-Version: 4.0.30319
+X-Powered-By: ASP.NET
+

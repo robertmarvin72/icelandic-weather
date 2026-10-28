@@ -1,0 +1,53 @@
+## Input manifest
+- coverage.csv  sha256=c2454ef197dfc2499545919063804fc3563e8e8c9ae495f0649b217fdfa25f17  bytes=15828
+- vegagerdin-wfs-routeA-geometry.json  sha256=9b8403a2498648c3c0025e1f881c313d16bec0992f318f2ccc51a6f9bdeba997  bytes=133921  (unique IDBUTUR in this sample: [124200037, 252090037, 801100037, 901130037, 901220037, 901230037, 902020037, 902030037, 910330037])
+
+total data rows: 21
+  A (Reykjavik-Vik): 9 rows
+  B (Reykjavik-Akureyri): 9 rows
+  C (Reykjavik-Borgarnes): 3 rows
+
+unique checkpoint identities (by name, across all routes): 20
+names appearing on more than one route (shared checkpoint, not double-counted as distinct locations): ['Hvalfjardargong']
+
+Per-route capability counts (each computed directly from the named column; see coverage.csv for the exact per-row values):
+
+route                         rows   coord=VERIFIED SAMPLE   road_state matched  geometry_join VERIFIED SAMPLE  has measured value  forecast fetched
+A (Reykjavik-Vik)                9                       5                    6                              6                   4                 4
+B (Reykjavik-Akureyri)           9                       6                    9                              0                   6                 6
+C (Reykjavik-Borgarnes)          3                       2                    3                              0                   2                 2
+TOTAL (sum of rows, duplicates counted once per route)    21                      13                   18                              6                  12                12
+
+rows with coord_grade VERIFIED SAMPLE (any route): 13
+unique checkpoint NAMES among those rows: 13 -> ['Akureyri (destination)', 'Blonduos', 'Borgarnes', 'Borgarnes (destination)', 'Hella', 'Hellisheidi', 'Holtavorduheidi', 'Kjalarnes', 'Oxnadalsheidi', 'Reykjavik (origin)', 'Selfoss', 'Vatnsskard', 'Vik']
+
+Corridor IdButur values referenced in coverage.csv, with their legacy AstandYfirbord at fetch time and whether a DATEX RoadConditionService situation exists for that ID in the retained sample:
+  IdButur=902020037  checkpoint-row='Hellisheidi' (A (Reykjavik-Vik))  AstandYfirbord=GREIDFAERT  DATEX RoadCondition situation present: False
+  IdButur=252090037  checkpoint-row='Hellisheidi' (A (Reykjavik-Vik))  AstandYfirbord=GREIDFAERT  DATEX RoadCondition situation present: False
+  IdButur=910330037  checkpoint-row='Hellisheidi' (A (Reykjavik-Vik))  AstandYfirbord=THUNGFAERT  DATEX RoadCondition situation present: True [MENTIONED ONLY TO DOCUMENT EXCLUSION -- not an actually-used segment]
+  IdButur=902030037  checkpoint-row='Selfoss' (A (Reykjavik-Vik))  AstandYfirbord=GREIDFAERT  DATEX RoadCondition situation present: False
+  IdButur=901130037  checkpoint-row='Hella' (A (Reykjavik-Vik))  AstandYfirbord=GREIDFAERT  DATEX RoadCondition situation present: False
+  IdButur=901230037  checkpoint-row='Hvolsvollur' (A (Reykjavik-Vik))  AstandYfirbord=GREIDFAERT  DATEX RoadCondition situation present: False
+  IdButur=124200037  checkpoint-row='Skogar' (A (Reykjavik-Vik))  AstandYfirbord=GREIDFAERT  DATEX RoadCondition situation present: False
+  IdButur=801100037  checkpoint-row='Vik' (A (Reykjavik-Vik))  AstandYfirbord=GREIDFAERT  DATEX RoadCondition situation present: False
+  IdButur=904690037  checkpoint-row='Hvalfjardargong' (B (Reykjavik-Akureyri))  AstandYfirbord=GREIDFAERT  DATEX RoadCondition situation present: False
+  IdButur=904000037  checkpoint-row='Hvalfjardargong' (B (Reykjavik-Akureyri))  AstandYfirbord=GREIDFAERT  DATEX RoadCondition situation present: False
+  IdButur=904260037  checkpoint-row='Borgarnes' (B (Reykjavik-Akureyri))  AstandYfirbord=GREIDFAERT  DATEX RoadCondition situation present: False
+  IdButur=904040037  checkpoint-row='Bifrost / Baulan' (B (Reykjavik-Akureyri))  AstandYfirbord=GREIDFAERT  DATEX RoadCondition situation present: False
+  IdButur=904050037  checkpoint-row='Bifrost / Baulan' (B (Reykjavik-Akureyri))  AstandYfirbord=GREIDFAERT  DATEX RoadCondition situation present: False
+  IdButur=904060037  checkpoint-row='Holtavorduheidi' (B (Reykjavik-Akureyri))  AstandYfirbord=GREIDFAERT  DATEX RoadCondition situation present: False
+  IdButur=907210037  checkpoint-row='Blonduos' (B (Reykjavik-Akureyri))  AstandYfirbord=GREIDFAERT  DATEX RoadCondition situation present: False
+  IdButur=908050037  checkpoint-row='Varmahlid' (B (Reykjavik-Akureyri))  AstandYfirbord=GREIDFAERT  DATEX RoadCondition situation present: False
+  IdButur=908030037  checkpoint-row='Varmahlid' (B (Reykjavik-Akureyri))  AstandYfirbord=GREIDFAERT  DATEX RoadCondition situation present: False
+  IdButur=908070037  checkpoint-row='Varmahlid' (B (Reykjavik-Akureyri))  AstandYfirbord=GREIDFAERT  DATEX RoadCondition situation present: False
+  IdButur=908020037  checkpoint-row='Vatnsskard' (B (Reykjavik-Akureyri))  AstandYfirbord=GREIDFAERT  DATEX RoadCondition situation present: False
+  IdButur=909010037  checkpoint-row='Oxnadalsheidi' (B (Reykjavik-Akureyri))  AstandYfirbord=GREIDFAERT  DATEX RoadCondition situation present: False
+  IdButur=909350037  checkpoint-row='Akureyri (destination)' (B (Reykjavik-Akureyri))  AstandYfirbord=GREIDFAERT  DATEX RoadCondition situation present: False
+  IdButur=909360037  checkpoint-row='Akureyri (destination)' (B (Reykjavik-Akureyri))  AstandYfirbord=GREIDFAERT  DATEX RoadCondition situation present: False
+  IdButur=903030037  checkpoint-row='Kjalarnes' (C (Reykjavik-Borgarnes))  AstandYfirbord=GREIDFAERT  DATEX RoadCondition situation present: False
+
+IdButur values actually used (excluding the documented-exclusion decoy): 22
+IdButur values mentioned only to document an exclusion: [910330037]
+Of the 22 actually-used IDs, with a DATEX RoadConditionService situation record in the retained sample: 0
+  (side note: excluded decoy IdButur=910330037 itself has AstandYfirbord=THUNGFAERT and DATEX situation present: True -- irrelevant to any corridor, since it is a different real-world location; kept only as a side observation.)
+(An absent DATEX record must not be read as 'open' or 'checked' -- it means no situation was published for that ID at this snapshot, nothing more.)

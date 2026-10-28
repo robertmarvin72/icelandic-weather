@@ -1,0 +1,15 @@
+5994824f83994c2eb497ad69d772271c3939d2a9fe7f8c021c836ea8f3ef6e11 *docs/ai/tasks/ticket-429/samples/openmeteo-routeA.json
+509c195f503fa394112f1d516051c04b9b8d0acae74057b2689ea02174ae9011 *docs/ai/tasks/ticket-429/samples/openmeteo-routeB.json
+82a3c3d91852a9a0784fe95b65bdedb95b7a9b78d117a16a0900726ab31e77b8 *docs/ai/tasks/ticket-429/samples/openmeteo-routeC.json
+839d6c91f7365edae655541fe79e07328f6de755755581d7c0f644a8153c1169 *docs/ai/tasks/ticket-429/samples/vedur-obs-31392-hellisheidi.json
+a3134394ce378a5b413f89784ba2642c6520b1fcb6a9237db389ac97ff789bbb *docs/ai/tasks/ticket-429/samples/vegagerdin-faerd2017-1.json
+9b8403a2498648c3c0025e1f881c313d16bec0992f318f2ccc51a6f9bdeba997 *docs/ai/tasks/ticket-429/samples/vegagerdin-wfs-routeA-geometry.json
+5bdb28a864c93353502ee8edfe58a389590ece113b51360538d82afce8c4a860 *docs/ai/tasks/ticket-429/samples/datex-measureddata.xml
+3840b2e0cdb6bbf96bf57f15f90d372a537cc072e9fa684f581d02239d9e0923 *docs/ai/tasks/ticket-429/samples/datex-measurementsites.xml
+4d20e82dde8e189cde600411e85e388d167e5303f0696134f97b39e408981bfe *docs/ai/tasks/ticket-429/samples/datex-roadcondition.xml
+3cf532e4b973cf13b0841a04331620e7ef42808679b2154024a228a17bf97e1b *docs/ai/tasks/ticket-429/samples/vegagerdin-wfs-capabilities.xml
+43b3e98407e9a9ed7cb30c395fde5882001f685451808d832606308d190b7b98 *docs/ai/tasks/ticket-429/samples/vegagerdin-wfs-describe-faerdferlar.xml
+b8da0dda1197061bbde52fc57be30c33cb34d882cb1381b910af6f7b84b0a3d6 *docs/ai/tasks/ticket-429/samples/vegagerdin-datexii-2.html
+79e03f7c4f54c2efabbb409d279489e45c0160d9800464688844805fa6ff1b23 *docs/ai/tasks/ticket-429/samples/vegagerdin-faerd-gagnasnid.html
+edbb3b2db6f499399b2771cba45e764264ba361725f186f9412e468474e46f23 *docs/ai/tasks/ticket-429/samples/vegagerdin-vefthjonustur.html
+d850e620c496ff00dae10d5ba593e6b86a07d3a781862e9bcd625c53fc035d0b *docs/ai/tasks/ticket-429/samples/vegagerdin-datex-spec.pdf

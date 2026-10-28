@@ -1,0 +1,53 @@
+## Input manifest (this script's only inputs; read-only, no network)
+- vegagerdin-faerd2017-1.json  sha256=a3134394ce378a5b413f89784ba2642c6520b1fcb6a9237db389ac97ff789bbb  bytes=360322
+- vegagerdin-faerd2017-headers.txt  sha256=fbeb03988e0e2f032346deb4a0f38efc6c3ff2d88e39a122457ca0c2c4ae3efb  bytes=281
+
+total records: 708
+IdButur values with non-zero fractional part: 0 (expect 0)
+unique IdButur: 708
+
+AstandYfirbord distribution (verbatim counts):
+  GREIDFAERT: 443
+  EKKI_I_THJONUSTU: 89
+  OFAERT_ANNAD: 63
+  OTHEKKT: 49
+  HALKUBLETTIR: 21
+  HALKA: 20
+  SNJOTHEKJA: 8
+  FAERT_FJALLABILUM: 6
+  OFAERT_VEDUR: 6
+  THUNGFAERT: 2
+  LOKAD: 1
+
+AstandVidbotaruppl distribution (verbatim counts, None = field absent/null):
+  None: 648
+  OTHEKKT: 49
+  FAERT_FJALLABILUM: 6
+  OVEDUR: 3
+  ALLUR_AKSTUR_BANN: 1
+  ELJAGANGUR: 1
+
+LOKAD records: 1
+  IdButur=903270037 StuttNafnButs='Nesjavallaleið' AstandVidbotaruppl=ALLUR_AKSTUR_BANN Snjomokstursregla=EKKI_MOKAD AsthungiLysingEn=Axle weight limit 7 tons DagsSkrad=2026-10-27T02:55:00Z DagsKeyrtUt=2026-10-27T19:05:51Z
+
+OTHEKKT in AstandYfirbord: 49
+OTHEKKT in AstandVidbotaruppl: 49
+same record set for both OTHEKKT counts: True
+
+distinct DagsSkrad timestamp values: 208
+DagsSkrad min: 2026-10-27T02:55:00Z  max: 2026-10-27T18:19:41Z
+records with DagsSkrad == 2026-10-27T02:55:00Z or 02:55:01Z: 340 of 708 (48.0%)
+top 5 DagsSkrad values by frequency:
+  2026-10-27T02:55:01Z: 172
+  2026-10-27T02:55:00Z: 168
+  2026-10-27T03:30:48Z: 23
+  2026-10-27T05:21:31Z: 11
+  2026-10-27T05:25:06Z: 11
+
+distinct DagsKeyrtUt (export-generation) values: 1 -> {'2026-10-27T19:05:51Z': 708}
+retained response Date header: Date: Tue, 27 Oct 2026 19:08:28 GMT
+  DagsKeyrtUt age at fetch: 0:02:37
+  oldest DagsSkrad (02:55:00Z cohort) age at fetch: 16:13:28
+  NOTE: whether the 02:55Z cohort reflects a nightly batch/reset job is UNKNOWN -- this script only establishes the timestamp fact and its age, not the cause.
+
+(Corridor-specific segment lookup is done in 05_coverage_consistency_check.py, which reads the IdButur values directly out of coverage.csv so there is only one place that list is maintained.)

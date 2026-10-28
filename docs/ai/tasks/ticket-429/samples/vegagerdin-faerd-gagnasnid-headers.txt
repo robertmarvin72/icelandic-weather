@@ -1,0 +1,22 @@
+HTTP/1.1 200 OK
+Server: nginx/1.20.1
+Date: Tue, 27 Oct 2026 19:06:35 GMT
+Content-Type: text/html; charset=utf-8
+Content-Length: 170810
+Connection: keep-alive
+x-middleware-rewrite: /is/vegagerdin/gagnasafn/faerd-gagnasnid
+Vary: rsc,next-router-state-tree,next-router-prefetch,next-router-segment-prefetch,Accept-Encoding
+x-nextjs-cache: STALE
+x-nextjs-prerender: 1
+x-nextjs-stale-time: 300
+ETag: "791vvwjwng3m9x"
+X-Frame-Options: SAMEORIGIN
+X-XSS-Protection: 1; mode=block
+X-Content-Type-Options: nosniff
+X-Cache: EXPIRED
+Strict-Transport-Security: max-age=63072000; includeSubDomains; preload
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-XSS-Protection: 1; mode=block
+Referrer-Policy: no-referrer-when-downgrade
+

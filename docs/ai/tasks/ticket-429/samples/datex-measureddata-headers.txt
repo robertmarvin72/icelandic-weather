@@ -1,0 +1,10 @@
+HTTP/1.1 200 OK
+Content-Length: 653991
+Content-Type: application/xml; charset=utf-8
+Date: Tue, 27 Oct 2026 19:13:55 GMT
+Server: Kestrel
+Last-Modified: Tue, 27 Oct 2026 19:13:53 GMT
+Set-Cookie: ARRAffinity=a336ec9b83a69aa4ad5ed93f9be52633723c0fd491db05456c76225e0072173c;Path=/;HttpOnly;Secure;Domain=datex.vegagerdin.is
+Set-Cookie: ARRAffinitySameSite=a336ec9b83a69aa4ad5ed93f9be52633723c0fd491db05456c76225e0072173c;Path=/;HttpOnly;SameSite=None;Secure;Domain=datex.vegagerdin.is
+X-Powered-By: ASP.NET
+

@@ -1,0 +1,40 @@
+## Input manifest (this script's only inputs; read-only, no network)
+- datex-roadcondition.xml  sha256=4d20e82dde8e189cde600411e85e388d167e5303f0696134f97b39e408981bfe  bytes=422216
+- datex-roadcondition-headers.txt  sha256=d8ce5344f45a55db1c662510cbfe69cd1a3e143d9fbe223a97f52712f8baf4df  bytes=514
+- vegagerdin-faerd2017-1.json  sha256=a3134394ce378a5b413f89784ba2642c6520b1fcb6a9237db389ac97ff789bbb  bytes=360322
+
+situation elements: 271  unique: 271
+situationRecord elements: 273
+situationRecord xsi:type distribution: {'WeatherRelatedRoadConditions': 49, 'RoadOrCarriagewayOrLaneManagement': 169, 'Conditions': 51, 'PoorEnvironmentConditions': 4}
+
+roadOrCarriagewayOrLaneManagementType distribution: {'roadClosed': 80, 'closedPermanentlyForTheWinter': 89}
+sum of management-type values (169) == RoadOrCarriagewayOrLaneManagement record count (169): True
+
+weatherRelatedRoadConditionType distribution: {'snow': 8, 'slippery': 20, 'icyPatches': 21}
+sum of weather-type values (49) == WeatherRelatedRoadConditions record count (49): True
+
+English generalPublicComment value distribution (most common first):
+  'Not known': 139
+  'Impassable': 69
+  'Spots of ice': 21
+  'Slippery': 20
+  'Snow': 8
+  'Mountain vehicles': 6
+  'Axle weight limit 7 tons': 5
+  'Storm conditions': 3
+  'Easily passable': 2
+  'Difficult road conditions': 2
+  'Closed': 2
+  'Axle weight limit 5 tons': 1
+  'Snowshowers': 1
+
+predefinedLocationReference elements: 273  unique suffixes: 271
+situation-id suffix set == predefinedLocationReference suffix set: True
+
+legacy faerd2017_1 unique IdButur count: 708
+DATEX situation-id suffixes subset of legacy IdButur: True  (missing: [])
+DATEX predefinedLocationReference suffixes subset of legacy IdButur: True  (missing: [])
+
+INFERENCE LEVEL (per R7, stated explicitly, not upgraded): this is a sample-level numeric-suffix set-membership check only. It shows every observed DATEX RoadConditionService situation/location-reference suffix in this sample is also a legacy IdButur value -- it does NOT prove the two systems' IDs are the same semantic entity (same segment boundaries, same direction), because the DATEX PredefinedLocationsPublicationService (the service that would give the DATEX-native segment geometry to compare against the legacy segment) could not be reached in the prior round (2 timeouts) and was not retried in this round (R5: no new requests).
+
+Corridor cross-check: none of the research/report's named corridor segments were found to carry a DATEX RoadConditionService record in this sample -- see 05_coverage_consistency_check.py, which performs this check directly against the same corridor IdButur list read out of coverage.csv.

@@ -1,0 +1,46 @@
+## Input manifest (this script's only inputs; read-only, no network)
+- datex-measurementsites.xml  sha256=3840b2e0cdb6bbf96bf57f15f90d372a537cc072e9fa684f581d02239d9e0923  bytes=739625
+- datex-measurementsites-headers.txt  sha256=0a02ea0e8daa0502f8ff7ab90360f1f5b3b01fe3b8760d0b559a5e0e2cc30857  bytes=468
+- datex-measureddata.xml  sha256=5bdb28a864c93353502ee8edfe58a389590ece113b51360538d82afce8c4a860  bytes=653991
+- datex-measureddata-headers.txt  sha256=5f02f16d64e221b599b7f27c6567fdc8c8cd28832f3934157ae7f14f9dbd12e4  bytes=514
+
+external read-only reference (not modified, already retained by #450): vedur-stations-all-v2.json  sha256=d8404ec4a7dc84ba57adf6a03674e4ca0417d8bb79a1cbd44586ab9faf7e27f4
+
+measurementSite records parsed: 205
+siteMeasurements blocks parsed: 206
+sites with a non-empty measurementSiteIdentification: 148
+
+#450 Vedurstofa station catalog: 778 rows, 778 distinct station numbers
+DATEX sites whose measurementSiteIdentification matches a #450 station number: 147 of 148 identified sites
+
+Sites of interest (named in Jonesy's R3 review) -- verified directly from the retained samples, coordinate- and ID-based, not name search:
+  IRCA_MP_1  name='Hellisheiði'  lat=64.019035  lon=-21.34235  measurementSiteIdentification=31392  matches #450 station number: yes
+      measured values in retained sample: {'windSpeed': 6.229, 'maximumWindSpeed': 9.02, 'airTemperature': 2.012, 'roadSurfaceTemperature': 1.076, 'dewPointTemperature': 2.012, 'relativeHumidity': 100.0}
+  IRCA_MP_4  name='Öxnadalsheiði'  lat=65.46765  lon=-18.698816  measurementSiteIdentification=33357  matches #450 station number: yes
+      measured values in retained sample: {'windSpeed': 2.604, 'maximumWindSpeed': 4.802, 'airTemperature': 0.62, 'roadSurfaceTemperature': -0.087, 'dewPointTemperature': 0.62, 'relativeHumidity': 100.0}
+  IRCA_MP_38  name='Blönduós'  lat=65.66675  lon=-20.23825  measurementSiteIdentification=33419  matches #450 station number: yes
+      measured values in retained sample: {'windSpeed': 9.36, 'maximumWindSpeed': 13.43, 'airTemperature': 5.207, 'roadSurfaceTemperature': 2.585, 'dewPointTemperature': 4.105, 'relativeHumidity': 92.6}
+  IRCA_MP_36  name='Kjalarnes'  lat=64.21066  lon=-21.76662  measurementSiteIdentification=31579  matches #450 station number: yes
+      measured values in retained sample: {'windSpeed': 4.001, 'maximumWindSpeed': 7.056, 'airTemperature': 6.085, 'roadSurfaceTemperature': 4.149, 'dewPointTemperature': 2.005, 'relativeHumidity': 75.12}
+  IRCA_MP_142  name='Hella'  lat=63.825684  lon=-20.365383  measurementSiteIdentification=None  matches #450 station number: no (identification empty)
+      measured values in retained sample: {'windSpeed': 1.51, 'maximumWindSpeed': 2.156, 'airTemperature': 3.75, 'roadSurfaceTemperature': 1.206, 'dewPointTemperature': 2.26, 'relativeHumidity': 90.0}
+  IRCA_MP_1181  name='Borgarnes'  lat=64.534  lon=-21.932  measurementSiteIdentification=None  matches #450 station number: no (identification empty)
+      measured values in retained sample: {'windSpeed': 1.908, 'maximumWindSpeed': 2.744, 'airTemperature': 4.965}
+  IRCA_MP_2190  name='Selfoss'  lat=63.935467  lon=-20.970667  measurementSiteIdentification=6300  matches #450 station number: yes
+      measured values in retained sample: {'windSpeed': 0.5, 'maximumWindSpeed': 1.31, 'airTemperature': 4.79, 'dewPointTemperature': 2.314, 'relativeHumidity': 84.0}
+  IRCA_MP_2191  name='Akureyri - Krossanesbraut'  lat=65.69611  lon=-18.111317  measurementSiteIdentification=3471  matches #450 station number: yes
+      measured values in retained sample: {'windSpeed': 5.53, 'maximumWindSpeed': 8.13, 'airTemperature': 4.12, 'dewPointTemperature': 2.468, 'relativeHumidity': 89.0}
+  IRCA_MP_17  name='Sandskeið'  lat=64.06243  lon=-21.557644  measurementSiteIdentification=31488  matches #450 station number: yes
+      measured values in retained sample: {'windSpeed': 2.402, 'maximumWindSpeed': 3.822, 'airTemperature': 3.576, 'roadSurfaceTemperature': 1.38, 'dewPointTemperature': 2.909, 'relativeHumidity': 95.4}
+  IRCA_MP_3  name='Holtavörðuheiði'  lat=64.99037  lon=-21.058508  measurementSiteIdentification=32097  matches #450 station number: yes
+      measured values in retained sample: {'windSpeed': 9.88, 'maximumWindSpeed': 14.01, 'airTemperature': 1.747, 'roadSurfaceTemperature': 0.488, 'dewPointTemperature': 1.747, 'relativeHumidity': 106.2}
+  IRCA_MP_24  name='Vatnsskarð'  lat=65.50903  lon=-19.695124  measurementSiteIdentification=33431  matches #450 station number: yes
+      measured values in retained sample: {'windSpeed': 7.51, 'maximumWindSpeed': 10.68, 'airTemperature': 2.117, 'roadSurfaceTemperature': 0.263, 'dewPointTemperature': 1.618, 'relativeHumidity': 96.5}
+  IRCA_MP_6  name='Mýrdalssandur'  lat=63.463676  lon=-18.609566  measurementSiteIdentification=36156  matches #450 station number: yes
+      measured values in retained sample: {'windSpeed': 1.94, 'maximumWindSpeed': 4.116, 'airTemperature': 5.865, 'roadSurfaceTemperature': 3.622, 'dewPointTemperature': 3.668, 'relativeHumidity': 85.8}
+  IRCA_MP_29  name='Steinar undir Eyjafjöllum'  lat=63.5428  lon=-19.6906  measurementSiteIdentification=36132  matches #450 station number: yes
+      measured values in retained sample: {'windSpeed': 5.721, 'maximumWindSpeed': 12.64, 'airTemperature': 7.869, 'roadSurfaceTemperature': 4.579, 'dewPointTemperature': 1.684, 'relativeHumidity': 64.97}
+  IRCA_MP_53  name='Hvammur undir Eyjafjöllum'  lat=63.578365  lon=-19.901684  measurementSiteIdentification=36127  matches #450 station number: yes
+      measured values in retained sample: {'windSpeed': 5.597, 'maximumWindSpeed': 9.31, 'airTemperature': 6.612, 'roadSurfaceTemperature': 3.918, 'dewPointTemperature': 1.067, 'relativeHumidity': 67.74}
+
+NOTE: a site having measured wind/temperature values in this retained sample does not by itself establish representativeness for a specific checkpoint's road conditions -- that remains a product judgement, not computed here.
