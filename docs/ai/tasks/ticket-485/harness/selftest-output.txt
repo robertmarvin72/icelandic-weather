@@ -1,0 +1,41 @@
+----------------------------------------
+Exception occurred during processing of request from ('127.0.0.1', 57024)
+Traceback (most recent call last):
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.3824.0_x64__qbz5n2kfra8p0\Lib\socketserver.py", line 318, in _handle_request_noblock
+    self.process_request(request, client_address)
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.3824.0_x64__qbz5n2kfra8p0\Lib\socketserver.py", line 349, in process_request
+    self.finish_request(request, client_address)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.3824.0_x64__qbz5n2kfra8p0\Lib\socketserver.py", line 362, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.3824.0_x64__qbz5n2kfra8p0\Lib\socketserver.py", line 766, in __init__
+    self.handle()
+    ~~~~~~~~~~~^^
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.3824.0_x64__qbz5n2kfra8p0\Lib\http\server.py", line 447, in handle
+    self.handle_one_request()
+    ~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.3824.0_x64__qbz5n2kfra8p0\Lib\http\server.py", line 435, in handle_one_request
+    method()
+    ~~~~~~^^
+  File "C:\Users\Notandi\forritun\icelandic-weather\docs\ai\tasks\ticket-485\harness\selftest.py", line 57, in do_GET
+    self.wfile.write(b"too late")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.3824.0_x64__qbz5n2kfra8p0\Lib\socketserver.py", line 845, in write
+    self._sock.sendall(b)
+    ~~~~~~~~~~~~~~~~~~^^^
+ConnectionAbortedError: [WinError 10053] An established connection was aborted by the software in your host machine
+----------------------------------------
+=== #485 bounded-wrapper self-test (SYNTHETIC/LOCAL LOOPBACK ONLY, never touches the real provider ledger) ===
+scratch dir: C:\Users\Notandi\AppData\Local\Temp\ticket485-selftest-3misai56
+
+[1] redirect-not-auto-followed ... PASS (302 caught, Location='http://127.0.0.1:57018/target' logged, not auto-followed)
+[2] over-limit decoded body is truncated, not silently accepted ... PASS (10000B body cut to 100B truncated=True; small body passed through whole)
+[3] timeout is recorded as a failed attempt, not a hang/crash ... PASS (timeout after 1.02s, 1 failed attempt durably recorded, budget consumed)
+[4] exhausted exchange-count budget blocks further attempts ... PASS (3rd attempt refused pre-flight; counter stayed at cap, not incremented further)
+[5] TLS failure (untrusted self-signed cert) is NOT bypassed; green restored with an explicitly-trusted test CA ... 
+    RED  PASS: untrusted self-signed cert correctly REJECTED (HTTPSConnectionPool(host='127.0.0.1', port=57028): Max retries exceeded with url: /small ()
+    GREEN PASS: same request succeeds (200) once given the test cert as a trusted CA (real cryptographic validation against a real root, not a disabled check)
+
+ALL SELF-TESTS PASS. The wrapper may now be used for real, bounded provider requests.

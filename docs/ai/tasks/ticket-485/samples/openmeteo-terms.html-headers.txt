@@ -1,0 +1,28 @@
+URL: https://open-meteo.com/en/terms
+REQUEST_TIME_UTC: 2026-11-02T13:20:42Z
+STATUS: 200
+FINAL_URL: https://open-meteo.com/en/terms
+REDIRECT_LOCATION: None
+BYTES_DECODED_RETAINED: 38671
+TRUNCATED: False
+ELAPSED_S: 0.135
+SHA256: 771b6832feb8d3ac9b2a29e8a04e468bb7911e59684d1ee1691f24041d928ce8
+RESPONSE_HEADERS:
+  Date: Mon, 02 Nov 2026 13:20:42 GMT
+  Content-Type: text/html; charset=utf-8
+  Transfer-Encoding: chunked
+  Connection: keep-alive
+  x-content-type-options: nosniff
+  Report-To: {"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=kc94v4SdZiGyIYK6S0ySXv%2FE1HaWxLC%2FILq216y7CkADzQF8QKF7JxRhUxEvUozNao0rrJH2y46k%2Bx9K4HYPgPz%2FFDprG%2FLjM4%2BsvUfnX7ebuGiFf99srx1tpo2Et5vFcA%3D%3D"}]}
+  Nel: {"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}
+  Access-Control-Allow-Origin: *
+  Cache-Control: public, max-age=14400, must-revalidate
+  referrer-policy: strict-origin-when-cross-origin
+  Link: </_app/immutable/entry/start.1InKuMp6.js>; rel="modulepreload", </_app/immutable/entry/payload.DSmR2FwN.js>; rel="modulepreload", </_app/immutable/chunks/CRzLMJPS.js>; rel="modulepreload", </_app/immutable/chunks/CKh9AcT7.js>; rel="modulepreload", </_app/immutable/chunks/BAfWzFWr.js>; rel="modulepreload", </_app/immutable/chunks/ClhvqFxl.js>; rel="modulepreload", </_app/immutable/chunks/maonVDc2.js>; rel="modulepreload", </_app/immutable/chunks/DUhB3PK9.js>; rel="modulepreload", </_app/immutable/chunks/PKGtCPZq.js>; rel="modulepreload", </_app/immutable/entry/app.AYSC21q2.js>; rel="modulepreload", </_app/immutable/nodes/0.C_ZZsM_T.js>; rel="modulepreload", </_app/immutable/chunks/hePW80VL.js>; rel="modulepreload", </_app/immutable/chunks/3krDrCB5.js>; rel="modulepreload", </_app/immutable/chunks/BDnTZsuC.js>; rel="modulepreload", </_app/immutable/chunks/B2ru4CLS.js>; rel="modulepreload", </_app/immutable/chunks/DTClPC7f.js>; rel="modulepreload", </_app/immutable/chunks/D0Kk9_G4.js>; rel="modulepreload", </_app/immutable/chunks/DuasYgGd.js>; rel="modulepreload", </_app/immutable/chunks/B_EPudCS.js>; rel="modulepreload", </_app/immutable/chunks/BI-qKLcD.js>; rel="modulepreload", </_app/immutable/chunks/m6PQWbmB.js>; rel="modulepreload", </_app/immutable/chunks/tXvYCV-C.js>; rel="modulepreload", </_app/immutable/chunks/kS3TDdL4.js>; rel="modulepreload", </_app/immutable/chunks/DR4WvN8D.js>; rel="modulepreload", </_app/immutable/chunks/DYMzkzUt.js>; rel="modulepreload", </_app/immutable/chunks/C6hoxHOV.js>; rel="modulepreload", </_app/immutable/chunks/BhkYwroN.js>; rel="modulepreload", </_app/immutable/chunks/BC_6Oy1l.js>; rel="modulepreload", </_app/immutable/chunks/CZnOYn4D.js>; rel="modulepreload", </_app/immutable/chunks/zppyAoka.js>; rel="modulepreload", </_app/immutable/chunks/DK9GUuYV.js>; rel="modulepreload", </_app/immutable/chunks/DyOOqYpX.js>; rel="modulepreload", </_app/immutable/nodes/41.DTJ4gWUv.js>; rel="modulepreload", </_app/immutable/chunks/BpCyboGw.js>; rel="modulepreload", </_app/immutable/chunks/CuO8G1Hc.js>; rel="modulepreload", </_app/immutable/nodes/83.D3jjNZ7Q.js>; rel="modulepreload"
+  vary: accept-encoding
+  Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
+  Server: cloudflare
+  last-modified: Mon, 02 Nov 2026 13:20:42 GMT
+  cf-cache-status: EXPIRED
+  Content-Encoding: gzip
+  CF-RAY: a543702ad8894939-DUB

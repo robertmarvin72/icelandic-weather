@@ -1,0 +1,20 @@
+URL: https://gagnaveita.vegagerdin.is/api/faerdpunktar2017_1
+REQUEST_TIME_UTC: 2026-11-02T13:21:15Z
+STATUS: 200
+FINAL_URL: https://gagnaveita.vegagerdin.is/api/faerdpunktar2017_1
+REDIRECT_LOCATION: None
+BYTES_DECODED_RETAINED: 13012
+TRUNCATED: False
+ELAPSED_S: 0.034
+SHA256: 788c712aa9e1a5ef8059f77444e868d52a29ca3e981d163fdd54dc8d94db325c
+RESPONSE_HEADERS:
+  Server: nginx/1.20.1
+  Date: Mon, 02 Nov 2026 13:21:14 GMT
+  Content-Type: application/json; charset=utf-8
+  Content-Length: 13012
+  Connection: keep-alive
+  Cache-Control: no-cache
+  Pragma: no-cache
+  Expires: -1
+  X-AspNet-Version: 4.0.30319
+  X-Powered-By: ASP.NET

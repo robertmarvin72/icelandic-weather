@@ -1,0 +1,55 @@
+==============================================================================
+R1(a) -- ANCHOR-DISTANCE RANKING, role-set sensitivity table
+==============================================================================
+Anchor (retained #450 catalog, Vedurstofa station 1 'Reykjavik'): lat=64.1288833618, lon=-21.9081897736
+Metric: haversine great-circle distance on WGS84 lon/lat from the retained srsName=EPSG:4326 WFS response (service-side reprojection, no local transform library used). Filter: VEGNR='1', NAKVAEMNIFERLIS=0 (documented tier 0) on all candidates. Role set is varied below -- it was NOT justified/fixed in the frozen plan, so sensitivity across plausible role sets is shown instead of one number.
+
+-- role set: {1,6,7} (original v1 choice -- includes opposing-direction carriageway 6) --
+    rank 1: IDBUTUR=903020037 IDFERILL=9924 VEGHLUTI=7 distance=5924.6m
+    rank 2: IDBUTUR=914020037 IDFERILL=49926 VEGHLUTI=1 distance=5931.6m
+    rank 3: IDBUTUR=1410010037 IDFERILL=1436 VEGHLUTI=1 distance=7851.6m
+    winner/runner-up margin: 7.0m
+
+-- role set: {1,7} (through + same-direction only, excludes opposing carriageway 6) --
+    rank 1: IDBUTUR=903020037 IDFERILL=9924 VEGHLUTI=7 distance=5924.6m
+    rank 2: IDBUTUR=914020037 IDFERILL=49926 VEGHLUTI=1 distance=5931.6m
+    rank 3: IDBUTUR=1410010037 IDFERILL=1436 VEGHLUTI=1 distance=7851.6m
+    winner/runner-up margin: 7.0m
+
+-- role set: {7} only (strictly the directional through-carriageway tag) --
+    rank 1: IDBUTUR=903020037 IDFERILL=9924 VEGHLUTI=7 distance=5924.6m
+    rank 2: IDBUTUR=914020037 IDFERILL=42244 VEGHLUTI=7 distance=6024.5m
+    rank 3: IDBUTUR=1410010037 IDFERILL=1436 VEGHLUTI=1 distance=7851.6m
+    winner/runner-up margin: 99.9m
+
+==============================================================================
+R1(b) -- UNCERTAINTY BOUND E: UNSUPPORTED, not 61.9m
+==============================================================================
+The #483 DATEX-proximity figure (61.9m, harness/02) was computed at Hellisheidi, a DIFFERENT location from this anchor/junction, and #483's OWN output states: "this 61.9m figure shows the reprojection is not grossly wrong at one point -- it is NOT a same-object projection-accuracy bound for lengths" (02_srs_validation_and_length-output.txt line 7, Jonesy R3 note, reused unchanged). It is not a 'service-provided paired same-object coordinate residual' for THIS anchor-to-road comparison -- that was a mis-citation in pre-sample-plan.md s5, corrected here, not silently kept.
+No other retained source supplies a supported E for this specific comparison (anchor point vs. reprojected road geometry at a different location). Per the frozen approved-prompt-v1.md rule ('if uncertainty unsupported ... ranking tied/inadmissible ... span0 remains UNKNOWN, axis1 cannot PASS'): since E is UNSUPPORTED, the ranking cannot be certified admissible at ANY observed margin -- this holds independently of whether the raw margin is 7m or 100m. The correct status is 'E unsupported => inadmissible => UNKNOWN', not 'E=65m, margin 7m below 230m'. The near-tie margin above is reported as a DESCRIPTIVE geometric observation only (useful color: the candidates sit close together under every role-set tried), never as a newly-supported E and never as a basis to regrade span 0.
+
+==============================================================================
+R1(c) -- ordered path from the anchor-nearest candidate toward the retained chain,
+          examining Jonesy's leads (IDFERILL 9924/49926/42244/1431/54723) as LEADS,
+          not assumed connectors -- every hop's gap is computed, not assumed.
+==============================================================================
+  piece IDBUTUR=903020037 IDFERILL=9924 VEGHLUTI=7 (through/undivided role) length=2149.8m start=[-21.75877695, 64.13893552] end=[-21.78642791, 64.1249322]
+  piece IDBUTUR=914020037 IDFERILL=49926 VEGHLUTI=1 (through/undivided role) length=182.5m start=[-21.78470739, 64.12336394] end=[-21.78629778, 64.12485129]
+  piece IDBUTUR=914020037 IDFERILL=42244 VEGHLUTI=7 (through/undivided role) length=1259.3m start=[-21.78468658, 64.12334499] end=[-21.7805193, 64.11232582]
+  piece IDBUTUR=914020037 IDFERILL=1431 VEGHLUTI=1 (through/undivided role) length=909.9m start=[-21.77457782, 64.1049791] end=[-21.78050761, 64.11235768]
+  piece IDBUTUR=914020037 IDFERILL=54723 VEGHLUTI=7 (through/undivided role) length=787.7m start=[-21.77438277, 64.10460915] end=[-21.7597541, 64.10169368]
+  chain-entry piece IDBUTUR=1410010037 IDFERILL=1436 VEGHLUTI=1 length=2549.4m start=[-21.71204873, 64.09249225] end=[-21.75906405, 64.10152894]
+
+  Endpoint-to-endpoint gaps along the traced sequence (haversine, all 4 endpoint combinations per hop, minimum reported -- same adjacency method as #483 harness/01, which used a <100m 'all consecutive pairs under 100m' continuity bound):
+    IDFERILL 9924 (IDBUTUR 903020037) -> IDFERILL 49926 (IDBUTUR 914020037): gap=11.0m  within bound
+    IDFERILL 49926 (IDBUTUR 914020037) -> IDFERILL 42244 (IDBUTUR 914020037): gap=2.3m  within bound
+    IDFERILL 42244 (IDBUTUR 914020037) -> IDFERILL 1431 (IDBUTUR 914020037): gap=3.6m  within bound
+    IDFERILL 1431 (IDBUTUR 914020037) -> IDFERILL 54723 (IDBUTUR 914020037): gap=42.2m  within bound
+    IDFERILL 54723 (IDBUTUR 914020037) -> IDFERILL 1436 (IDBUTUR 1410010037): gap=38.2m  within bound
+
+  Total length of the traced candidate pieces (connector + 914020037 segments + chain-entry fragment, NOT the full through-road, tier0 only): 7838.7m
+  All hops within the 100.0m adjacency bound: True
+
+  CONCLUSION: this specific candidate sequence IS topologically adjacent end-to-end under the same adjacency test #483 used for the retained 13-chain -- but adjacency alone does NOT establish a directionally-traversable, officially-designated through-route (VEGHLUTI role meanings for 1/8 remain UNDOCUMENTED/INFERRED, per #483; no owner/Vegagerdin confirmation of travel direction at this junction exists in retained evidence). This is a GEOMETRY OBSERVATION for a later owner/Ripley decision, not a resolved endpoint and not a new grading threshold. Span 0 stays UNKNOWN for the reason given in R1(b) above (E unsupported), independent of this connectivity finding.
+
+No claim is made here that 'only Vegagerdin can answer' or that 'further research cannot resolve this' -- those statements (research-report.md s1(c), blocker-rights-register.md) are WITHDRAWN as unsupported overclaims; this script shows exactly what retained geometry does and does not establish, and the real limiting factor found this round is the unsupported E (R1(b)), not an inherent unresolvability of the connectivity question.

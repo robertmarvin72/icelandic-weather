@@ -1,0 +1,11 @@
+[1] synthetic midpoint self-check (point_to_segment_dist) ... PASS (line_distance=7.000000, nearest_vertex=50.488)
+[2] real-data point-to-line association (fresh #485 point coords, reused #483 chain geometry) ... 
+    67861 own_IdButur=902030037 line_distance=0.089m -- PASS (own-ID AND distance<50m both hold)
+    67862 own_IdButur=902040037 line_distance=0.138m -- PASS (own-ID AND distance<50m both hold)
+    73801: own_IdButur not in chain -- correctly NOT associated (proximity alone insufficient)
+[3] full-ID presence / no missing / no duplicate chain segment ... PASS (13/13 present, no duplicates; non-GREIDFAERT this fetch: none)
+[4] coverage.csv cross-check -- expected-RED (corrupted copy) then GREEN (real file) ... 
+    RED  PASS: corrupted span-0 PASS value correctly rejected (span 0 axis1_geometry must never read PASS this round -- the anchor ranking is a documente)
+    GREEN PASS: the real coverage.csv passes every assertion cleanly
+
+ALL VALIDATION CHECKS PASS (exit 0). Any AssertionError above would have exited nonzero.

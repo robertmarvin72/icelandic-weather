@@ -1,0 +1,10 @@
+span,point_role,candidate_idbutur,candidate_name,veghluti_roles_used,anchor_distance_m,rank,margin_to_next_m_descriptive_only,e_status,verdict
+0,anchor-nearest-through-road,903020037,Vesturlandsvegur,"1,6,7 (tier0,VEGNR=1) -- see harness/span0_path_analysis.py for {1,7} and {7}-only sensitivity",5924.6,1,7.0,UNSUPPORTED,UNKNOWN_E_UNSUPPORTED
+0,anchor-nearest-through-road,914020037,Suðurlandsv. um Hádegismóa,"1,6,7 (tier0,VEGNR=1) -- see harness/span0_path_analysis.py for {1,7} and {7}-only sensitivity",5931.6,2,1920.0,UNSUPPORTED,UNKNOWN_E_UNSUPPORTED
+0,anchor-nearest-through-road,1410010037,Rauðavatn (reused #483 geometry),"1,6,7 (tier0,VEGNR=1, reused)",7851.6,3,,UNSUPPORTED,UNKNOWN_E_UNSUPPORTED
+1,sample-point,(not sampled this round),,,,,,NOT_TESTED_this_round_see_research-report.md_section1a
+2,sample-point,(not sampled this round),,,,,,NOT_TESTED_this_round_see_research-report.md_section1a
+3,sample-point,(not sampled this round),,,,,,NOT_TESTED_this_round_see_research-report.md_section1a
+4,sample-point,(not sampled this round),,,,,,NOT_TESTED_this_round_see_research-report.md_section1a
+5,sample-point,(not sampled this round),,,,,,NOT_TESTED_this_round_see_research-report.md_section1a
+6,sample-point,(not sampled this round),,,,,,NOT_TESTED_this_round_see_research-report.md_section1a

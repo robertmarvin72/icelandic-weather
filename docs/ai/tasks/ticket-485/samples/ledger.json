@@ -1,0 +1,265 @@
+{
+  "window_start_utc": "2026-11-02T13:20:22Z",
+  "window_start_monotonic": 148141.3875717,
+  "cumulative_wait_seconds": 0.5294996000593528,
+  "data": {
+    "count": 6,
+    "bytes": 835559
+  },
+  "doc": {
+    "count": 2,
+    "bytes": 87985
+  },
+  "attempts": [
+    {
+      "seq": 0,
+      "class": "doc",
+      "url": "https://open-meteo.com/en/pricing",
+      "planned_utc": "2026-11-02T13:20:22Z",
+      "planned_monotonic": 148141.3875756
+    },
+    {
+      "seq": 1,
+      "class": "doc",
+      "url": "https://open-meteo.com/en/terms",
+      "planned_utc": "2026-11-02T13:20:42Z",
+      "planned_monotonic": 148161.6914614
+    },
+    {
+      "seq": 2,
+      "class": "data",
+      "url": "https://gagnaveita.vegagerdin.is/api/faerdpunktar2017_1",
+      "planned_utc": "2026-11-02T13:21:15Z",
+      "planned_monotonic": 148194.4566872
+    },
+    {
+      "seq": 3,
+      "class": "data",
+      "url": "https://gagnaveita.vegagerdin.is/api/faerd2017_1",
+      "planned_utc": "2026-11-02T13:21:15Z",
+      "planned_monotonic": 148194.8711315
+    },
+    {
+      "seq": 4,
+      "class": "data",
+      "url": "https://gagnaveita.vegagerdin.is/geoserver/gis/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=gis:faerdferlar2017_1&CQL_FILTER=IDBUTUR%20IN%20(914020037,903020037)&outputFormat=application/json&maxFeatures=100",
+      "planned_utc": "2026-11-02T13:21:25Z",
+      "planned_monotonic": 148204.1170327
+    },
+    {
+      "seq": 5,
+      "class": "data",
+      "url": "https://gagnaveita.vegagerdin.is/geoserver/gis/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=gis:faerdferlar2017_1&CQL_FILTER=IDBUTUR%20IN%20(914020037,903020037)&outputFormat=application/json&srsName=EPSG:4326&maxFeatures=100",
+      "planned_utc": "2026-11-02T13:21:25Z",
+      "planned_monotonic": 148204.5324602
+    },
+    {
+      "seq": 6,
+      "class": "data",
+      "url": "https://gagnaveita.vegagerdin.is/geoserver/gis/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=gis:faerdferlar2017_1&CQL_FILTER=IDBUTUR%20IN%20(914020037,903020037)&outputFormat=application/json&maxFeatures=250",
+      "planned_utc": "2026-11-02T13:21:48Z",
+      "planned_monotonic": 148227.4141814
+    },
+    {
+      "seq": 7,
+      "class": "data",
+      "url": "https://gagnaveita.vegagerdin.is/geoserver/gis/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=gis:faerdferlar2017_1&CQL_FILTER=IDBUTUR%20IN%20(914020037,903020037)&outputFormat=application/json&srsName=EPSG:4326&maxFeatures=250",
+      "planned_utc": "2026-11-02T13:21:48Z",
+      "planned_monotonic": 148227.849828
+    }
+  ],
+  "outcomes": [
+    {
+      "status": 200,
+      "elapsed_s": 0.09933050000108778,
+      "bytes_decoded": 49314,
+      "truncated": false,
+      "final_url": "https://open-meteo.com/en/pricing",
+      "redirect_location": null,
+      "error": null,
+      "response_headers": {
+        "Date": "Mon, 02 Nov 2026 13:20:22 GMT",
+        "Content-Type": "text/html; charset=utf-8",
+        "Transfer-Encoding": "chunked",
+        "Connection": "keep-alive",
+        "x-content-type-options": "nosniff",
+        "Report-To": "{\"group\":\"cf-nel\",\"max_age\":604800,\"endpoints\":[{\"url\":\"https://a.nel.cloudflare.com/report/v4?s=w4yTPU4zawH2W3YNNisK4DHHpdEjlguGwk1KVXnzEI4pUt9vTOVM2mMiwotlo8XP%2B%2BNzhTY8QqxaSEMof%2BEmO%2B0RaPNBMhU%2FO7C4bGx%2BruQBNz8sACpOSgJ%2B4yskoXMecQ%3D%3D\"}]}",
+        "Nel": "{\"report_to\":\"cf-nel\",\"success_fraction\":0.0,\"max_age\":604800}",
+        "Access-Control-Allow-Origin": "*",
+        "Cache-Control": "public, max-age=14400, must-revalidate",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "Link": "</_app/immutable/entry/start.1InKuMp6.js>; rel=\"modulepreload\", </_app/immutable/entry/payload.DSmR2FwN.js>; rel=\"modulepreload\", </_app/immutable/chunks/CRzLMJPS.js>; rel=\"modulepreload\", </_app/immutable/chunks/CKh9AcT7.js>; rel=\"modulepreload\", </_app/immutable/chunks/BAfWzFWr.js>; rel=\"modulepreload\", </_app/immutable/chunks/ClhvqFxl.js>; rel=\"modulepreload\", </_app/immutable/chunks/maonVDc2.js>; rel=\"modulepreload\", </_app/immutable/chunks/DUhB3PK9.js>; rel=\"modulepreload\", </_app/immutable/chunks/PKGtCPZq.js>; rel=\"modulepreload\", </_app/immutable/entry/app.AYSC21q2.js>; rel=\"modulepreload\", </_app/immutable/nodes/0.C_ZZsM_T.js>; rel=\"modulepreload\", </_app/immutable/chunks/hePW80VL.js>; rel=\"modulepreload\", </_app/immutable/chunks/3krDrCB5.js>; rel=\"modulepreload\", </_app/immutable/chunks/BDnTZsuC.js>; rel=\"modulepreload\", </_app/immutable/chunks/B2ru4CLS.js>; rel=\"modulepreload\", </_app/immutable/chunks/DTClPC7f.js>; rel=\"modulepreload\", </_app/immutable/chunks/D0Kk9_G4.js>; rel=\"modulepreload\", </_app/immutable/chunks/DuasYgGd.js>; rel=\"modulepreload\", </_app/immutable/chunks/B_EPudCS.js>; rel=\"modulepreload\", </_app/immutable/chunks/BI-qKLcD.js>; rel=\"modulepreload\", </_app/immutable/chunks/m6PQWbmB.js>; rel=\"modulepreload\", </_app/immutable/chunks/tXvYCV-C.js>; rel=\"modulepreload\", </_app/immutable/chunks/kS3TDdL4.js>; rel=\"modulepreload\", </_app/immutable/chunks/DR4WvN8D.js>; rel=\"modulepreload\", </_app/immutable/chunks/DYMzkzUt.js>; rel=\"modulepreload\", </_app/immutable/chunks/C6hoxHOV.js>; rel=\"modulepreload\", </_app/immutable/chunks/BhkYwroN.js>; rel=\"modulepreload\", </_app/immutable/chunks/BC_6Oy1l.js>; rel=\"modulepreload\", </_app/immutable/chunks/CZnOYn4D.js>; rel=\"modulepreload\", </_app/immutable/chunks/zppyAoka.js>; rel=\"modulepreload\", </_app/immutable/chunks/DK9GUuYV.js>; rel=\"modulepreload\", </_app/immutable/chunks/DyOOqYpX.js>; rel=\"modulepreload\", </_app/immutable/nodes/40.DyPnvNX6.js>; rel=\"modulepreload\", </_app/immutable/chunks/CuO8G1Hc.js>; rel=\"modulepreload\", </_app/immutable/nodes/82.Fd7MvLuh.js>; rel=\"modulepreload\", </_app/immutable/chunks/BmfZiLxe.js>; rel=\"modulepreload\", </_app/immutable/chunks/sEw6K82p.js>; rel=\"modulepreload\", </_app/immutable/chunks/D8aFCT8b.js>; rel=\"modulepreload\"",
+        "vary": "accept-encoding",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "Server": "cloudflare",
+        "last-modified": "Mon, 02 Nov 2026 13:20:22 GMT",
+        "cf-cache-status": "EXPIRED",
+        "Content-Encoding": "gzip",
+        "CF-RAY": "a5436fabbe8a5cc1-KEF"
+      },
+      "seq": 0,
+      "done_utc": "2026-11-02T13:20:22Z"
+    },
+    {
+      "status": 200,
+      "elapsed_s": 0.13528720001340844,
+      "bytes_decoded": 38671,
+      "truncated": false,
+      "final_url": "https://open-meteo.com/en/terms",
+      "redirect_location": null,
+      "error": null,
+      "response_headers": {
+        "Date": "Mon, 02 Nov 2026 13:20:42 GMT",
+        "Content-Type": "text/html; charset=utf-8",
+        "Transfer-Encoding": "chunked",
+        "Connection": "keep-alive",
+        "x-content-type-options": "nosniff",
+        "Report-To": "{\"group\":\"cf-nel\",\"max_age\":604800,\"endpoints\":[{\"url\":\"https://a.nel.cloudflare.com/report/v4?s=kc94v4SdZiGyIYK6S0ySXv%2FE1HaWxLC%2FILq216y7CkADzQF8QKF7JxRhUxEvUozNao0rrJH2y46k%2Bx9K4HYPgPz%2FFDprG%2FLjM4%2BsvUfnX7ebuGiFf99srx1tpo2Et5vFcA%3D%3D\"}]}",
+        "Nel": "{\"report_to\":\"cf-nel\",\"success_fraction\":0.0,\"max_age\":604800}",
+        "Access-Control-Allow-Origin": "*",
+        "Cache-Control": "public, max-age=14400, must-revalidate",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "Link": "</_app/immutable/entry/start.1InKuMp6.js>; rel=\"modulepreload\", </_app/immutable/entry/payload.DSmR2FwN.js>; rel=\"modulepreload\", </_app/immutable/chunks/CRzLMJPS.js>; rel=\"modulepreload\", </_app/immutable/chunks/CKh9AcT7.js>; rel=\"modulepreload\", </_app/immutable/chunks/BAfWzFWr.js>; rel=\"modulepreload\", </_app/immutable/chunks/ClhvqFxl.js>; rel=\"modulepreload\", </_app/immutable/chunks/maonVDc2.js>; rel=\"modulepreload\", </_app/immutable/chunks/DUhB3PK9.js>; rel=\"modulepreload\", </_app/immutable/chunks/PKGtCPZq.js>; rel=\"modulepreload\", </_app/immutable/entry/app.AYSC21q2.js>; rel=\"modulepreload\", </_app/immutable/nodes/0.C_ZZsM_T.js>; rel=\"modulepreload\", </_app/immutable/chunks/hePW80VL.js>; rel=\"modulepreload\", </_app/immutable/chunks/3krDrCB5.js>; rel=\"modulepreload\", </_app/immutable/chunks/BDnTZsuC.js>; rel=\"modulepreload\", </_app/immutable/chunks/B2ru4CLS.js>; rel=\"modulepreload\", </_app/immutable/chunks/DTClPC7f.js>; rel=\"modulepreload\", </_app/immutable/chunks/D0Kk9_G4.js>; rel=\"modulepreload\", </_app/immutable/chunks/DuasYgGd.js>; rel=\"modulepreload\", </_app/immutable/chunks/B_EPudCS.js>; rel=\"modulepreload\", </_app/immutable/chunks/BI-qKLcD.js>; rel=\"modulepreload\", </_app/immutable/chunks/m6PQWbmB.js>; rel=\"modulepreload\", </_app/immutable/chunks/tXvYCV-C.js>; rel=\"modulepreload\", </_app/immutable/chunks/kS3TDdL4.js>; rel=\"modulepreload\", </_app/immutable/chunks/DR4WvN8D.js>; rel=\"modulepreload\", </_app/immutable/chunks/DYMzkzUt.js>; rel=\"modulepreload\", </_app/immutable/chunks/C6hoxHOV.js>; rel=\"modulepreload\", </_app/immutable/chunks/BhkYwroN.js>; rel=\"modulepreload\", </_app/immutable/chunks/BC_6Oy1l.js>; rel=\"modulepreload\", </_app/immutable/chunks/CZnOYn4D.js>; rel=\"modulepreload\", </_app/immutable/chunks/zppyAoka.js>; rel=\"modulepreload\", </_app/immutable/chunks/DK9GUuYV.js>; rel=\"modulepreload\", </_app/immutable/chunks/DyOOqYpX.js>; rel=\"modulepreload\", </_app/immutable/nodes/41.DTJ4gWUv.js>; rel=\"modulepreload\", </_app/immutable/chunks/BpCyboGw.js>; rel=\"modulepreload\", </_app/immutable/chunks/CuO8G1Hc.js>; rel=\"modulepreload\", </_app/immutable/nodes/83.D3jjNZ7Q.js>; rel=\"modulepreload\"",
+        "vary": "accept-encoding",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "Server": "cloudflare",
+        "last-modified": "Mon, 02 Nov 2026 13:20:42 GMT",
+        "cf-cache-status": "EXPIRED",
+        "Content-Encoding": "gzip",
+        "CF-RAY": "a543702ad8894939-DUB"
+      },
+      "seq": 1,
+      "done_utc": "2026-11-02T13:20:42Z"
+    },
+    {
+      "status": 200,
+      "elapsed_s": 0.03437930002110079,
+      "bytes_decoded": 13012,
+      "truncated": false,
+      "final_url": "https://gagnaveita.vegagerdin.is/api/faerdpunktar2017_1",
+      "redirect_location": null,
+      "error": null,
+      "response_headers": {
+        "Server": "nginx/1.20.1",
+        "Date": "Mon, 02 Nov 2026 13:21:14 GMT",
+        "Content-Type": "application/json; charset=utf-8",
+        "Content-Length": "13012",
+        "Connection": "keep-alive",
+        "Cache-Control": "no-cache",
+        "Pragma": "no-cache",
+        "Expires": "-1",
+        "X-AspNet-Version": "4.0.30319",
+        "X-Powered-By": "ASP.NET"
+      },
+      "seq": 2,
+      "done_utc": "2026-11-02T13:21:15Z"
+    },
+    {
+      "status": 200,
+      "elapsed_s": 0.03891140001360327,
+      "bytes_decoded": 360657,
+      "truncated": false,
+      "final_url": "https://gagnaveita.vegagerdin.is/api/faerd2017_1",
+      "redirect_location": null,
+      "error": null,
+      "response_headers": {
+        "Server": "nginx/1.20.1",
+        "Date": "Mon, 02 Nov 2026 13:21:14 GMT",
+        "Content-Type": "application/json; charset=utf-8",
+        "Content-Length": "360657",
+        "Connection": "keep-alive",
+        "Cache-Control": "no-cache",
+        "Pragma": "no-cache",
+        "Expires": "-1",
+        "X-AspNet-Version": "4.0.30319",
+        "X-Powered-By": "ASP.NET"
+      },
+      "seq": 3,
+      "done_utc": "2026-11-02T13:21:15Z"
+    },
+    {
+      "status": 200,
+      "elapsed_s": 0.03936230001272634,
+      "bytes_decoded": 78517,
+      "truncated": false,
+      "final_url": "https://gagnaveita.vegagerdin.is/geoserver/gis/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=gis:faerdferlar2017_1&CQL_FILTER=IDBUTUR%20IN%20(914020037,903020037)&outputFormat=application/json&maxFeatures=100",
+      "redirect_location": null,
+      "error": null,
+      "response_headers": {
+        "Server": "nginx/1.20.1",
+        "Date": "Mon, 02 Nov 2026 13:21:23 GMT",
+        "Content-Type": "application/json;charset=utf-8",
+        "Transfer-Encoding": "chunked",
+        "Connection": "keep-alive",
+        "X-Frame-Options": "SAMEORIGIN",
+        "Content-Disposition": "inline; filename=faerdferlar2017_1.json",
+        "Content-Encoding": "gzip"
+      },
+      "seq": 4,
+      "done_utc": "2026-11-02T13:21:25Z"
+    },
+    {
+      "status": 200,
+      "elapsed_s": 0.05918979999842122,
+      "bytes_decoded": 79750,
+      "truncated": false,
+      "final_url": "https://gagnaveita.vegagerdin.is/geoserver/gis/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=gis:faerdferlar2017_1&CQL_FILTER=IDBUTUR%20IN%20(914020037,903020037)&outputFormat=application/json&srsName=EPSG:4326&maxFeatures=100",
+      "redirect_location": null,
+      "error": null,
+      "response_headers": {
+        "Server": "nginx/1.20.1",
+        "Date": "Mon, 02 Nov 2026 13:21:24 GMT",
+        "Content-Type": "application/json;charset=utf-8",
+        "Transfer-Encoding": "chunked",
+        "Connection": "keep-alive",
+        "X-Frame-Options": "SAMEORIGIN",
+        "Content-Disposition": "inline; filename=faerdferlar2017_1.json",
+        "Content-Encoding": "gzip"
+      },
+      "seq": 5,
+      "done_utc": "2026-11-02T13:21:25Z"
+    },
+    {
+      "status": 200,
+      "elapsed_s": 0.05806059998576529,
+      "bytes_decoded": 149985,
+      "truncated": false,
+      "final_url": "https://gagnaveita.vegagerdin.is/geoserver/gis/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=gis:faerdferlar2017_1&CQL_FILTER=IDBUTUR%20IN%20(914020037,903020037)&outputFormat=application/json&maxFeatures=250",
+      "redirect_location": null,
+      "error": null,
+      "response_headers": {
+        "Server": "nginx/1.20.1",
+        "Date": "Mon, 02 Nov 2026 13:21:47 GMT",
+        "Content-Type": "application/json;charset=utf-8",
+        "Transfer-Encoding": "chunked",
+        "Connection": "keep-alive",
+        "X-Frame-Options": "SAMEORIGIN",
+        "Content-Disposition": "inline; filename=faerdferlar2017_1.json",
+        "Content-Encoding": "gzip"
+      },
+      "seq": 6,
+      "done_utc": "2026-11-02T13:21:48Z"
+    },
+    {
+      "status": 200,
+      "elapsed_s": 0.06497850001323968,
+      "bytes_decoded": 153638,
+      "truncated": false,
+      "final_url": "https://gagnaveita.vegagerdin.is/geoserver/gis/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=gis:faerdferlar2017_1&CQL_FILTER=IDBUTUR%20IN%20(914020037,903020037)&outputFormat=application/json&srsName=EPSG:4326&maxFeatures=250",
+      "redirect_location": null,
+      "error": null,
+      "response_headers": {
+        "Server": "nginx/1.20.1",
+        "Date": "Mon, 02 Nov 2026 13:21:47 GMT",
+        "Content-Type": "application/json;charset=utf-8",
+        "Transfer-Encoding": "chunked",
+        "Connection": "keep-alive",
+        "X-Frame-Options": "SAMEORIGIN",
+        "Content-Disposition": "inline; filename=faerdferlar2017_1.json",
+        "Content-Encoding": "gzip"
+      },
+      "seq": 7,
+      "done_utc": "2026-11-02T13:21:48Z"
+    }
+  ]
+}

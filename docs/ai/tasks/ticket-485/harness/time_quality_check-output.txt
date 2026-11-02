@@ -1,0 +1,38 @@
+Acquisition time (state feed, REQUEST_TIME_UTC): 2026-11-02T13:21:15+00:00
+Acquisition time (point feed, REQUEST_TIME_UTC): 2026-11-02T13:21:15+00:00
+DagsKeyrtUt (export time) distinct values nationwide: {'2026-11-02T13:21:00Z'}
+
+==============================================================================
+13 CHAIN SEGMENTS -- signed age vs acquisition and vs export
+==============================================================================
+  1410010037: DagsSkrad=2026-11-02T02:55:01Z  age_vs_acquisition=37574s  age_vs_export=37559s
+  903010037: DagsSkrad=2026-11-02T02:55:00Z  age_vs_acquisition=37575s  age_vs_export=37560s
+  253020037: DagsSkrad=2026-11-02T02:55:00Z  age_vs_acquisition=37575s  age_vs_export=37560s
+  252090037: DagsSkrad=2026-11-02T13:19:39Z  age_vs_acquisition=96s  age_vs_export=81s
+  902030037: DagsSkrad=2026-11-02T02:55:00Z  age_vs_acquisition=37575s  age_vs_export=37560s
+  902040037: DagsSkrad=2026-11-02T02:55:00Z  age_vs_acquisition=37575s  age_vs_export=37560s
+  901130037: DagsSkrad=2026-11-02T02:55:00Z  age_vs_acquisition=37575s  age_vs_export=37560s
+  901230037: DagsSkrad=2026-11-02T03:52:55Z  age_vs_acquisition=34100s  age_vs_export=34085s
+  901220037: DagsSkrad=2026-11-02T02:55:00Z  age_vs_acquisition=37575s  age_vs_export=37560s
+  901210037: DagsSkrad=2026-11-02T03:53:49Z  age_vs_acquisition=34046s  age_vs_export=34031s
+  901050037: DagsSkrad=2026-11-02T05:18:20Z  age_vs_acquisition=28975s  age_vs_export=28960s
+  901040037: DagsSkrad=2026-11-02T05:18:20Z  age_vs_acquisition=28975s  age_vs_export=28960s
+  801100037: DagsSkrad=2026-11-02T05:18:27Z  age_vs_acquisition=28968s  age_vs_export=28953s
+
+Signed-age distribution vs acquisition, all 13 retained chain segments (seconds): [96, 28968, 28975, 28975, 34046, 34100, 37574, 37575, 37575, 37575, 37575, 37575, 37575]
+  min=96s  max=37575s
+  12 of 13 segments are 7+ hours old (8.0-10.4h)
+  1 of 13 segments are under 7 hours old (96-96s)
+
+QUALITY FINDINGS (segments): NONE FOUND
+
+==============================================================================
+POINT EVENTS 67861 / 67862 / 73801 -- signed age + GildirTil consistency
+==============================================================================
+  67861: DagsSkrad=2026-03-09T12:26:15Z  age_vs_acquisition=20566500s (238.0d)  age_vs_export=20566485.0  GildirTil=2029-03-09T23:45:00Z
+  67862: DagsSkrad=2026-03-09T12:27:47Z  age_vs_acquisition=20566408s (238.0d)  age_vs_export=20566393.0  GildirTil=2029-03-09T13:27:00Z
+  73801: DagsSkrad=2026-10-28T15:29:58Z  age_vs_acquisition=424277s (4.9d)  age_vs_export=424262.0  GildirTil=2026-11-05T09:13:00Z
+
+QUALITY FINDINGS (point events): NONE FOUND
+
+Note: a long registration age is NOT itself a freshness guarantee or a fault; an expired/future GildirTil is NOT proof the road is clear or blocked outside its own stated validity window. These are descriptive quality facts, not safety verdicts.
