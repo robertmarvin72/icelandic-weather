@@ -1,0 +1,8 @@
+URL: https://gagnaveita.vegagerdin.is/vefthjonustur/faerd-gagnasnid
+STATUS: 302
+FINAL_URL: https://gagnaveita.vegagerdin.is/vefthjonustur/faerd-gagnasnid
+REDIRECT_LOCATION: https://www.vegagerdin.is/upplysingar-og-utgafa/gagnaveita-vegagerdarinnar/
+BYTES_DECODED_RETAINED: 145
+TRUNCATED: False
+ELAPSED_S: 0.034
+SHA256: 84c1fdfe0e68e2ed14b46fd867e91688936072ad51471ea9fa0c7616480ab912

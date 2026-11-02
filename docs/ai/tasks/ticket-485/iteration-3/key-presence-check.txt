@@ -1,0 +1,1 @@
+OPEN_METEO_API_KEY present (boolean only): False

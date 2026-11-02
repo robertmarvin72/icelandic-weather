@@ -1,0 +1,112 @@
+{
+  "window_start_utc": "2026-11-02T15:20:30Z",
+  "window_start_monotonic": 155349.5021303,
+  "cumulative_wait_seconds": 2.0874502999940887,
+  "data": {
+    "count": 0,
+    "bytes": 0
+  },
+  "doc": {
+    "count": 5,
+    "bytes": 653131
+  },
+  "attempts": [
+    {
+      "seq": 0,
+      "class": "doc",
+      "url": "https://open-meteo.com/en/docs",
+      "planned_utc": "2026-11-02T15:20:30Z",
+      "planned_monotonic": 155349.5021349
+    },
+    {
+      "seq": 1,
+      "class": "doc",
+      "url": "https://gagnaveita.vegagerdin.is/vefthjonustur/faerd-gagnasnid",
+      "planned_utc": "2026-11-02T15:20:37Z",
+      "planned_monotonic": 155356.4347996
+    },
+    {
+      "seq": 2,
+      "class": "doc",
+      "url": "https://www.vegagerdin.is/upplysingar-og-utgafa/gagnaveita-vegagerdarinnar/",
+      "planned_utc": "2026-11-02T15:20:56Z",
+      "planned_monotonic": 155375.8728029
+    },
+    {
+      "seq": 3,
+      "class": "doc",
+      "url": "https://epsg.org/crs_3057/ISN93-Lambert-1993.html",
+      "planned_utc": "2026-11-02T15:21:31Z",
+      "planned_monotonic": 155410.8016799
+    },
+    {
+      "seq": 4,
+      "class": "doc",
+      "url": "https://epsg.org/method_9802/Lambert-Conic-Conformal-2SP.html",
+      "planned_utc": "2026-11-02T15:21:38Z",
+      "planned_monotonic": 155417.3712856
+    }
+  ],
+  "outcomes": [
+    {
+      "status": 200,
+      "elapsed_s": 0.15962789999321103,
+      "bytes_decoded": 613407,
+      "truncated": false,
+      "final_url": "https://open-meteo.com/en/docs",
+      "redirect_location": null,
+      "error": null,
+      "never_redirect_honored": false,
+      "seq": 0,
+      "done_utc": "2026-11-02T15:20:30Z"
+    },
+    {
+      "status": 302,
+      "elapsed_s": 0.033648099983111024,
+      "bytes_decoded": 145,
+      "truncated": false,
+      "final_url": "https://gagnaveita.vegagerdin.is/vefthjonustur/faerd-gagnasnid",
+      "redirect_location": "https://www.vegagerdin.is/upplysingar-og-utgafa/gagnaveita-vegagerdarinnar/",
+      "error": null,
+      "never_redirect_honored": false,
+      "seq": 1,
+      "done_utc": "2026-11-02T15:20:37Z"
+    },
+    {
+      "status": 308,
+      "elapsed_s": 0.031267300015315413,
+      "bytes_decoded": 49,
+      "truncated": false,
+      "final_url": "https://www.vegagerdin.is/upplysingar-og-utgafa/gagnaveita-vegagerdarinnar/",
+      "redirect_location": null,
+      "error": null,
+      "never_redirect_honored": false,
+      "seq": 2,
+      "done_utc": "2026-11-02T15:20:56Z"
+    },
+    {
+      "status": 200,
+      "elapsed_s": 1.4834436000091955,
+      "bytes_decoded": 22572,
+      "truncated": false,
+      "final_url": "https://epsg.org/crs_3057/ISN93-Lambert-1993.html",
+      "redirect_location": null,
+      "error": null,
+      "never_redirect_honored": false,
+      "seq": 3,
+      "done_utc": "2026-11-02T15:21:33Z"
+    },
+    {
+      "status": 404,
+      "elapsed_s": 0.37946339999325573,
+      "bytes_decoded": 16958,
+      "truncated": false,
+      "final_url": "https://epsg.org/method_9802/Lambert-Conic-Conformal-2SP.html",
+      "redirect_location": null,
+      "error": null,
+      "never_redirect_honored": false,
+      "seq": 4,
+      "done_utc": "2026-11-02T15:21:38Z"
+    }
+  ]
+}

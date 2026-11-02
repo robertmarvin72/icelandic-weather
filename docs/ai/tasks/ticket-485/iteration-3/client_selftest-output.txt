@@ -1,0 +1,19 @@
+=== #485 iteration-3 client self-test (MANDATORY, before even the key-presence check) ===
+scratch dir: C:\Users\Notandi\AppData\Local\Temp\ticket485-iter3-selftest-3mu4dxni
+
+[1] slow drip beyond total deadline -> TOTAL_DEADLINE_EXCEEDED, not a hang ... PASS (1.53s, TOTAL_DEADLINE_EXCEEDED (1.5s))
+[2] stalled read (connects, never responds) -> deadline enforced ... PASS (1.51s)
+[3] oversized compressed-expanding body -> stopped at DECODED cap, not wire size ... PASS (decoded-stream cut at 1000B despite gzip wire framing)
+[4] fake-key redirect: not followed, query NEVER persisted in the ledger ... PASS (302 logged, Location redacted to 'http://127.0.0.1:59704/target', never auto-followed)
+[5] killed-worker-after-durable-attempt: restart still sees the slot consumed ... PASS (count=1 survives the simulated crash/restart; further doc attempts correctly refused)
+[6] fake-key leak scan: RED (leaking response rejected) then GREEN (clean response passes) ... 
+    RED  PASS: leaking body detected, STOP raised, nothing persisted containing the secret
+    GREEN PASS: the same scan mechanism lets a clean response through normally
+[7] keyed-client constructor refuses before secret append ... 
+    RED  PASS: missing key correctly refused
+    GREEN PASS: fixed keyed target is exactly 'https://customer-api.open-meteo.com:443/v1/forecast'; no base-URL parameter exists for a caller to redirect the key to HTTP/loopback/an alternate host/port/path
+[8] TLS test (separate from the mechanics above): real local cert tooling IS available here, so the trusted-test-CA adapter path is used, not the synthetic-SSL-failure fallback ... 
+    RED  PASS: untrusted self-signed cert rejected under default verification, classified TLS_FAILURE (no raw exception/URL persisted)
+    (No provider constructor in this client exposes a `verify=` override at all -- there is no insecure path to test a GREEN case against; this is by design, not an oversight: see client.py's `_do_get`, which hardcodes verify=True.)
+
+ALL MANDATORY SELF-TESTS PASS. The client may now be used for real, bounded, nonsecret doc/data requests. Keyed requests additionally require OPEN_METEO_API_KEY to be present in this process's environment (checked separately, boolean-only, never logged).

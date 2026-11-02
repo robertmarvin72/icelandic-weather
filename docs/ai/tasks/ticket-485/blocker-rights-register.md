@@ -1,5 +1,7 @@
 # #485 — Blocker / rights register and owner checklist
 
+**Owner clarification2026-11-02:** API Standard paid subscription is already OWNER-REPORTED in453 and reaffirmed by owner; historical Development/Production key configuration is recorded. Missing owner-attestation.md does NOT make those facts UNKNOWN; completing the form is NOT a research prerequisite. New technical items remain UNKNOWN individually. See [dated clarification and exact input needs](owner-clarification-2026-11-02.md). Older blanket checklist requirements below are superseded where conflicting. Research owns public terms/HTTPS/geometry/coverage; ask owner only for an exact unavailable input and name the conclusion it prevents.
+
 Research only. Nothing here authorizes implementation. "Owner action" rows are the only items that require Róbert (not CC, not Ripley, not Jonesy) to actually do something outside this workflow.
 
 **Correction v2 note:** this file's span-0 row and the "only Vegagerðin can answer" framing below were corrected per Jonesy's round-1 review (R1/R4). See `research-report.md` §1 and `harness/span0_path_analysis.py` for the full re-derivation. Superseded wording is struck through, not deleted.

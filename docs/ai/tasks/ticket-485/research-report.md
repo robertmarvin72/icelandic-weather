@@ -1,5 +1,7 @@
 # #485 — Research report: Reykjavík→Vík Route 1, source-labelled state/closures/observations/limited forecast
 
+**Dated owner clarification2026-11-02:** reuse the previously recorded OWNER-REPORTED API Standard subscription and453 configuration facts. Absence of the optional attestation file is not absence of subscription evidence and does not prevent research. Newly unverified technical items stay UNKNOWN separately. See [owner clarification](owner-clarification-2026-11-02.md) for exact missing inputs and the conclusions each prevents; this supersedes blanket-form wording below without altering frozen historical results. No implementation/publication approval or new technical verification is implied.
+
 2026-11-02. CC. Executed `approved-prompt-v1.md` (Ripley, Jonesy Round-2 APPROVED). Research only — no production code/API/UI/DB/config change, no accounts/keyed probes/secrets, no installs, no MVP proposal. Frozen plan: `pre-sample-plan.md`, SHA256 `4c05ce469d41fd8bd68f70d12e89718157789c3822fba764c39b1c57772a4a61` (as-of 2026-11-02T13:16:55Z, written 2026-11-02T13:19:52Z, both before the first provider request at 2026-11-02T13:20:22Z). Baseline HEAD `b1bc795244785197fc502f08289ac332c30fbbb2`, unchanged.
 
 Grading: **VERIFIED SAMPLE** (fetched this round), **VERIFIED DOCUMENT CONTENT** (official text, read this round), **OWNER-REPORTED**, **INFERRED**, **UNKNOWN/NOT TESTED**.

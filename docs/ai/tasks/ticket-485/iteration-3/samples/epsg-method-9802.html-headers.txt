@@ -1,0 +1,8 @@
+URL: https://epsg.org/method_9802/Lambert-Conic-Conformal-2SP.html
+STATUS: 404
+FINAL_URL: https://epsg.org/method_9802/Lambert-Conic-Conformal-2SP.html
+REDIRECT_LOCATION: None
+BYTES_DECODED_RETAINED: 16958
+TRUNCATED: False
+ELAPSED_S: 0.379
+SHA256: 751b4bf558c56038c585b3858e2c0decc606956831bee224df2b845095751b4c

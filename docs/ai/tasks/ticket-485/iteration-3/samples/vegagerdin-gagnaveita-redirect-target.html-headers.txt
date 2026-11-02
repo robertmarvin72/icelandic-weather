@@ -1,0 +1,8 @@
+URL: https://www.vegagerdin.is/upplysingar-og-utgafa/gagnaveita-vegagerdarinnar/
+STATUS: 308
+FINAL_URL: https://www.vegagerdin.is/upplysingar-og-utgafa/gagnaveita-vegagerdarinnar/
+REDIRECT_LOCATION: None
+BYTES_DECODED_RETAINED: 49
+TRUNCATED: False
+ELAPSED_S: 0.031
+SHA256: de0fdc30bf7a24bd034dad9a63730f5b7229c0314ea18368fd3f60ee55518ee4

@@ -1,0 +1,46 @@
+## Input manifest (read-only, NO new network -- all three files already retained)
+- C:\Users\Notandi\forritun\icelandic-weather\docs\ai\tasks\ticket-485\iteration-3\..\samples\wfs-extension-native3057.json  sha256=23c4225a8021cc33867ba38558c87c805c9b7e1a40ae3fdf5fabb56fd90aa34f  bytes=149985
+- C:\Users\Notandi\forritun\icelandic-weather\docs\ai\tasks\ticket-485\iteration-3\..\samples\wfs-extension-4326.json  sha256=84e560e3303f655779b09b1f43949032b238d5c18c4ad3679416161003b8222e  bytes=153638
+- C:\Users\Notandi\forritun\icelandic-weather\docs\ai\tasks\ticket-485\iteration-3\..\..\ticket-483\samples\wfs-chain-4326.json  sha256=966848554f0ce205c919625c3e6209da1fe05bcc50e7e8084ae96840ad519af4  bytes=178153
+
+==============================================================================
+ETA ZERO: IDFERILL 49926's own stored START vertex (published pair, with file hashes)
+==============================================================================
+Native EPSG:3057 (easting, northing[, z]): [364380.1477, 405259.4325, 0]  (source: wfs-extension-native3057.json, sha256 above)
+Reprojected EPSG:4326 (lon, lat[, z]):      [-21.78470739, 64.12336394, 0]  (source: wfs-extension-4326.json, sha256 above)
+This is a NAMED RESEARCH CONNECTION CONVENTION -- not an official cadastral endpoint or a city-street route; Vedurstofa station 1 is CONTEXT ONLY and plays no role in this definition (no nearest-anchor/8000m/E-ranking gate applies to this prospective convention).
+
+==============================================================================
+ORIENTED SPAN-0 PATH: verifying each lead's actual vertex match, not assuming it
+==============================================================================
+IDFERILL 1436 (IDBUTUR 1410010037) stored end (west boundary, entry point): [-21.75906405, 64.10152894, 0]
+
+  ETA-zero (49926 start) <-> 42244 start: residual=2.34m  WITHIN 5m bound -- direct link supported
+  42244 traveled FORWARD (stored start->end), length=1259.3m, VEGHLUTI=7
+
+  42244 end <-> 1431 end (1431 must be REVERSED to continue the travel direction): residual=3.59m  WITHIN 5m bound -- direct link supported
+  1431 traveled REVERSED (stored end->start), length=909.9m, VEGHLUTI=1
+
+  RING BRIDGE 1734 (IDBUTUR 914020037, VEGHLUTI=5, closed ring verified: first vertex == last vertex): entry vertex idx=2 (residual to 1431's reached start: 0.00m), exit vertex idx=5 (residual to 54723's start: 0.00m)
+  Ring 1734 total closed-ring length: 130.8m. Two possible arcs between entry/exit: 54.6m and 76.2m.
+  SHORTER arc (54.6m): used ONLY as a hypothetical numerical ETA scenario below -- NOT a proof of which way traffic actually circulates.
+  LONGER arc (76.2m): reported separately as a sensitivity figure, never summed with the shorter arc or substituted for it.
+
+  54723 traveled FORWARD (stored start->end), length=787.7m, VEGHLUTI=7
+
+  RING BRIDGE 8677 (IDBUTUR 914020037, VEGHLUTI=5, closed ring verified: first vertex == last vertex): entry vertex idx=3 (residual to 54723's end: 0.00m), exit vertex idx=0 (residual to 1436's end/chain boundary: 1.31m)
+  Ring 8677 total closed-ring length: 118.7m. Two possible arcs: 72.9m and 45.8m.
+  SHORTER arc (45.8m): hypothetical ETA scenario only. LONGER arc (72.9m): sensitivity, reported separately.
+
+------------------------------------------------------------------------------
+SPAN 0 oriented length, SHORTER-arc hypothetical scenario: 3057.4m (excludes IDFERILL 1436's own interior and all of 9924/49926's own length, per the frozen exclusion rule; includes 1.3m of reported sub-5m vertex residuals, not rounded to zero)
+SPAN 0 oriented length, LONGER-arc sensitivity: 3106.1m
+Neither figure is a proven driven distance: ring circulation direction is NOT established by geometry shape alone (axis 1 directional PASS requires cited role-5 meaning AND circulation evidence tied to this specific path -- see the role-documentation section below).
+
+==============================================================================
+ROLE DOCUMENTATION STATUS (cited evidence only, never blindly called undocumented)
+==============================================================================
+Role 5 (VEGHLUTI=5): the retained owner-source PDF from #483 (owner-source-2026-10-28/gagnaveita_faerd_ferlar_2017.pdf, page 3) documents VEGHLUTI 5 = 'hringtorg' (roundabout) -- cited, not assumed. Both IDFERILL 1734 and 8677 are independently confirmed CLOSED RINGS in the retained geometry (first vertex == last vertex, verified above by direct coordinate comparison, not merely by trusting the VEGHLUTI tag), consistent with that documented meaning.
+Roles 1 and 8: remain UNDOCUMENTED in every retained source checked this round (#483's PDF documents only 0/3/4/5/6/7). Whether a live official page documents them further is checked separately in docs-fetch-results.txt (this script makes no network request).
+
+CIRCULATION EVIDENCE: no retained or newly-fetched source in this round states which direction traffic may legally travel around ring 1734 or 8677, or confirms this specific 42244->1431->1734->54723->8677->1436 sequence is an authorised through-route (as opposed to merely a topologically-connected one). Per the frozen axis-1 rule: topology/availability progress is real and reported, but DIRECTIONAL axis1 PASS is not reached -- PARTIAL by design, not FAIL.

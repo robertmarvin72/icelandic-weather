@@ -1,0 +1,15 @@
+[1] coverage-iteration-3.csv span0 lengths match geometry_analysis-output.txt ... PASS (3.0574km == 3057.4m, 3.1061km == 3106.1m)
+[2] both bridge rings are independently confirmed closed (not just asserted) ... PASS (2/2 rings independently verified closed)
+[3] zero keyed exchanges in the real ledger (key was absent -- must not silently appear) ... PASS (0 keyed-host attempts, 5 doc / 0 data exchanges)
+[4] ledger stayed within the frozen 4 data / 6 doc, 30min/180s ceilings ... PASS (data 0/4, doc 5/6, wait 2.09/180s)
+[5] no literal fake-test-key VALUE leaked into any retained non-source artifact ... PASS (fake-key value absent from every retained data/output artifact and non-defining source file)
+[6] axis1/4/5/6 grade caps + ETA-status label, real file ... PASS (all 7 spans: axis1/5/6 never PASS, axis4=NOT_TESTED, eta_route_status=HYPOTHETICAL_NOT_ROUTE_VALID)
+[7] axis-grade cross-check -- expected-RED (corrupted copies) then GREEN (real file) ... 
+    RED  PASS: span 1 axis1_direction wrongly set to PASS correctly rejected (span 0 axis1_direction reads PASS -- correction v4 (R5): no span this round has )
+    RED  PASS: span 0 axis5_keyed_safety_contract wrongly set to PASS correctly rejected (span 0 axis5_keyed_safety_contract reads PASS -- correction v4 (R1/R2): the forw)
+    RED  PASS: span 0 eta_route_status wrongly claimed VERIFIED correctly rejected (span 0 eta_route_status is 'VERIFIED', expected HYPOTHETICAL_NOT_ROUTE_VALID -- )
+    RED  PASS: span 0 axis4_forecast wrongly set to PASS despite no key correctly rejected (span 0 axis4_forecast is 'PASS', expected NOT_TESTED (no key))
+    GREEN PASS: the real coverage-iteration-3.csv passes every grade-cap assertion cleanly
+[8] no 'secret handling proven' / 'executed in full' / client-readiness claim remains ... PASS (no forbidden readiness claim found in README/research-report/manifest)
+
+ALL ITERATION-3 VALIDATION CHECKS PASS (exit 0).

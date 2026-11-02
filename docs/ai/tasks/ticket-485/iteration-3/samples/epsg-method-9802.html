@@ -1,0 +1,417 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en,">
+<head>
+    <title></title>        <meta http-equiv="content-type" content="text/html;charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=11">
+    <META HTTP-EQUIV="EXPIRES" CONTENT="Mon, 22 Dec 2012 11:12:01 GMT">
+
+    <link rel="SHORTCUT ICON" href="/favicon.ico">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link rel="stylesheet" media="screen,projection" type="text/css" href="/css/basestyle.1781318423.css" />
+    <link rel="stylesheet" media="screen,projection" type="text/css" href="/template/IOGP/css/theme.1781318424.css" />
+    <link rel="stylesheet" media="screen,projection" type="text/css" href="/css/fontawesome7/all.1781318423.min.1781318423.css" />
+
+        
+    <link rel="stylesheet" media="screen,projection" type="text/css" href="/js/openlayers/6.1.0/css/ol.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.14.1/jquery-ui.min.js"></script>
+    <script src="https://code.jquery.com/jquery-migrate-1.4.1.js"></script>
+    <!-- This variable will passed the baseUrl to toggle.js file -->
+    <script>var baseUrl = '' </script>
+    <script type="text/javascript" src="/js/switcher.js"></script>
+    <script type="text/javascript" src="/js/toggle.js"></script>
+    <script type="text/javascript" src="/js/fontawesome7/all.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+
+    <script type="text/javascript" src="/js/openlayers/6.1.0/build/ol.js"></script>
+
+
+            <!-- <script type="text/javascript" src="/js/google-analytics.js"></script> -->
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-150476871-2"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+
+            function gtag() {
+                dataLayer.push(arguments);
+            }
+            gtag('js', new Date());
+
+            gtag('config', 'UA-150476871-2');
+        </script>
+    
+    
+    <style type="text/css">
+<!--
+    @import "/js/dijit/themes/tundra/tundra.css";
+-->
+</style>
+
+<script type="text/javascript" src="/js/dojo/dojo.js"></script>
+
+    
+    <!-- This file contains Dojo Components like dijit.Tooltip, etc. -->
+    <script type="text/javascript" src="/js/dojo/dojoComponents.js"></script>
+        
+    <script type="text/javascript" src="/js/grt-cookie-consent.js"></script>
+    <script type="text/javascript" src="/js/main.js?v=4"></script>
+    <script type="text/javascript" src="/js/modals.js"></script>
+    <style>
+        .navbar {
+            background: url("/template/IOGP/design/menu.png") 0 0 repeat-x;
+        }
+
+        .sidebar .row-map-search .worldmap {
+            background: url("/template/IOGP/img/world-map.png");
+            background-repeat: no-repeat;
+            background-size: contain;
+        }
+    </style>
+</head>
+
+<body class="tundra" >
+    <div id="main">
+        <!-- Tray -->
+        <!-- <div id="tray" class="box">
+            <p class="f-left box"> 
+                <span class="f-left" id="switcher">
+                    <a href="#" rel="1col" class="styleswitch ico-col1" title="Display one column"><img src="/template/IOGP/design/switcher-1col.gif" alt="1 Column" /></a>
+                    <a href="#" rel="2col" class="styleswitch ico-col2" title="Display two columns"><img src="/template/IOGP/design/switcher-2col.gif" alt="2 Columns" /></a>
+                </span>
+
+                <strong>GeoRepository</strong> 13.106             </p>
+            <p class='f-right'>You are currently not logged in <strong><a href='/user/login'>Log in</a></strong></p>
+        </div> -->
+        <!--  /tray -->
+
+        <!-- Top Navigation bar -->
+        
+<nav class="navbar navbar-expand">
+	<div class="container-fluid">
+		<div class="navbar-header">
+            <a href='\' class="navbar-brand text-white">
+                GeoRepository
+			</a>
+		</div>
+        <div class="container-fluid">            
+        <ul class="nav navbar-nav">
+            <li>
+				<a href="/">
+                    <i class="fa fa-home"></i> 
+                    <span>Home</span>
+				</a>
+			</li>
+			<li class="dropdown">
+				<a class="dropdown-toggle" data-bs-toggle="dropdown" href="#">
+                    <i class="fa fa-database"></i> 
+                    <span class="caret">EPSG Dataset</span></a>
+				<ul class="dropdown-menu">
+					<li>
+						<a href="/search/by-name">
+							<i class="fa fa-table"></i> Text Search
+						</a>
+					</li>
+					<li>
+						<a href="/search/map">
+							<i class="fa fa-map-marked-alt"></i> Map Search
+						</a>
+					</li>
+					<li>
+						<a href="/download-dataset.html">
+							<i class="fa fa-cloud-download-alt"></i> Download Dataset
+						</a>
+					</li>
+					<li>
+						<a href="/archives.html">
+							<i class="fa fa-archive"></i> Archive
+						</a>
+					</li>
+					<li>
+						<a href="/info-api.html">
+							<i class="fa fa-archive"></i> API
+						</a>
+					</li>
+				</ul>
+			</li>
+
+			<li class="dropdown">
+				<a class="dropdown-toggle" data-bs-toggle="dropdown" href="#">
+					<i class="fa fa-server" style="margin-right: 5px;"></i> 
+					<span class="caret"> Support Documentation</span></a>
+				<ul class="dropdown-menu">
+					<li style="margin-top: 10px;margin-bottom: 5px;"><span class="label-menu">EPSG</span></li>
+					<li class="divider"></li>
+					<li>
+						<a href="/guidance-notes.html">
+							<i class="fa fa-info-circle"></i> Guidance notes
+						</a>
+					</li>
+					<li>
+						<a href="/data-model.html">
+							<i class="fa fa-info-circle"></i> Data Model
+						</a>
+					</li>
+					<li>
+						<a href="/gml-schema.html">
+							<i class="fa fa-info-circle"></i> GML Schema
+						</a>
+					</li>
+ 
+
+					<li style="margin-top: 10px;margin-bottom: 5px;"><span class="label-menu">GeoRepository</span></li>
+					<li class="divider"></li>
+					<li>
+						<a href="/about.html">
+							<i class="fa fa-info-circle "></i> About GeoRepository
+						</a>
+					</li>
+					<li>
+						<a href="/features.html">
+							<i class="fa fa-star "></i> Features
+						</a>
+					</li>
+					<li>
+						<a href="/template/IOGP/downloads/user_manual.pdf" target="_blank">
+							<i class="fa fa-file-pdf"></i> Download Manual
+						</a>
+					</li>
+									</ul>
+			</li>
+
+			<li class="dropdown">
+				<a class="dropdown-toggle" data-bs-toggle="dropdown" href="#">
+					<i class="fa fa-info" style="margin-right: 5px;"></i> 
+					<span class="caret"> About Us</span></a>
+				<ul class="dropdown-menu">
+					<li>
+						<a href="https://www.iogp.org/about-us" target="_blank">
+							<i class="fa fa-star "></i> IOGP
+						</a>
+					</li>
+					<li>
+						<a href="https://geomaticsolutions.com" target="_blank">
+							<i class="fa fa-star "></i> Geomatic Solutions
+						</a>
+					</li>
+				</ul>
+			</li>
+
+			<li class="dropdown">
+				<a class="dropdown-toggle" data-bs-toggle="dropdown" href="#">
+					<i class="fa fa-address-card" style="margin-right: 5px;"></i> 
+					<span class="caret"> Contact</span></a>
+				<ul class="dropdown-menu">
+					<li>
+						<a href="/dataset-change-requests.html">
+							<i class="fa fa-edit"></i> EPSG data contact
+						</a>
+						</li>
+					<li>
+						<a href="/contact.html">
+							<i class="fa fa-address-card"></i> Other issue contact
+						</a>
+					</li>
+				</ul>
+			</li>
+			<li>
+				<a href="https://gigs.iogp.org/" target="_blank" rel="noopener noreferrer">
+					<img src="/template/IOGP/img/iogp/gigs_logo.png" alt="GIGS" width="21" height="22"> GIGS
+				</a>
+			</li>
+			<li>
+				<a href="https://www.iogp.org/geomatics" target="_blank" rel="noopener noreferrer">
+					<i style="color: #833177;" class="fa fa-home"></i> IOGP Geomatics
+				</a>
+			</li>
+			</ul>
+		</div>
+					<div class="login-register-btn">
+				<a href="/account/login/">Login</a>
+				<a href="/user/register/">/ Register</a>
+			</div>
+			</div>
+</nav>
+
+        <div class="content-wrapper">
+            <!-- Aside (Left Column) -->
+            <div class="sidebar">
+    <div class="row row-text-search">
+    <a href = "https://epsg.org"><img src='/template/IOGP/img/CorporateLogo.png' alt='Company Logo' style='margin-left: auto;margin-right: auto;display: block;margin-bottom:20px;width: 195px;' /></a>
+
+        <div class="version-info"><dl class="dd-inline"><dt>EPSG Dataset : </dt><dd>v13.106</dd></dl><div class="clearfix"></div></div>
+        <div class="col-md-12 col-text-search">
+            <!-- Search -->
+            <form action="/search/by-name/" method="get" id="sidebarFormTextSearch" class="text-center">
+                <label class="sr-only" for="query">Search</label>
+                <div class="input-group searchtextWrapper">
+                    <input type="text" class="form-control input-search" name="query" id="query" placeholder="Text Search">
+                    <i class="fa fa-info-circle information-icon" title="You may use wildcards search"></i>
+                    <input type="hidden" id="sessionkey" name="sessionkey" value="">
+                </div>
+
+                                    <div style="padding: 0px 22px 0 22px;width: auto;">
+                        <p style="margin-top:15px;"><i>Please <a href="/account/login/"> login</a> or <a href="/user/register/"> register</a> to include deprecated (invalid) items, search remarks and export results.
+                        </p></i>
+                    </div>
+                            </form>
+            <div id="sidebar_search_term_list" style="margin-top:10px;">
+            </div>
+        </div>
+    </div>
+    <div class="row row-map-search">
+        <div class="col-md-12 text-center">
+            <a href='/search/map' title='Map Search'>
+                <div class="map-vector-wrapper">
+                    <div class="worldmap"></div>
+                    <span class="btn-map-search">Map Search</span>
+                </div>
+            </a>
+        </div>
+    </div>
+    <nav class="navbar" role="navigation">
+        <div class="collapse navbar-collapse ">
+            <ul class="nav navbar-nav side-nav ms-auto">
+                            </ul>
+        </div>
+    </nav>
+    <a href='http://geomaticsolutions.com' class="brand-logo">
+        <img src='/img/GeomaticSolutionsLogo.png' alt='Geomatic Solutions Logo' />
+    </a>
+</div>
+
+
+            <!-- Content (Right Column) -->
+            <div class="layout-content">
+                <span id=msgBox>
+                                    </span>
+                  <h1>Oops, an error occurred</h1>
+  <div class="container">
+    <h2>Error Type: Page Not Found</h2>
+    <p>
+      The link is broken or the page has been removed. Please try again by using the navigation menu provided.    </p>
+    <img style='float: left;' src='/template/IOGP/img/error.jpg' alt='Error' />
+    <div style='font-size: 10em; color: #AAA;'>404</div>
+      </div>            </div>
+            <!-- /content -->
+
+            <div class="grt-cookie">
+                <div class="grt-cookies-msg">
+                    <p>
+                    We use cookies to ensure that we give you the best experience on our website. 
+                    By continue browsing our site, you consent to our use of cookies.
+                    </p>
+                </div>
+                <span class="grt-cookie-button">Accept</span>
+            </div>
+
+            <style>
+    #informationModal img {
+        display: block;
+        width: 80%;
+        max-width: 350px;
+        min-width: 200px;
+        margin-left: auto;
+        margin-right: auto;
+        margin-bottom: 10px;
+    }
+</style>
+
+<div id="informationModal" class="modal" role="dialog" style="display:none;">
+    <div class="modal-dialog modal-xl modal-fullscreen-xl-down">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Wildcard search</h4>
+                <button type="button" class="btn-close bg-transparent border-0" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <p><strong> Wildcards and filters in text searches</strong></p>
+                <p>Text searches search the Name and Alias fields, and also the Extent Description field.<br/>Strings which are entirely numeric will additionally search the object Code field.<br/>Users who are logged in may extend the search to also include the Remarks field.<br/>Text searches are case-insensitive.</p>
+                <p><strong> Wildcards</strong></p>
+                
+                <table class="table table-bordered">
+                    <tr>
+                        <td class="table-heading" width="100">Wildcard</td> 
+                        <td class="table-heading">Example</td>
+                    </tr>
+                    <tr>
+                        <td>% <i>or</i> *
+                            <br />
+                        </td>
+                        <td>Any wildcard characters </td>                         
+                    </tr>
+                    <tr>
+                        <td> ?
+                            <i>or</i>
+                            _
+                        </td>
+                        <td>One wildcard character</td>                        
+                    </tr>
+                    <tr>
+                        <td>[ - ]</td>
+                        <td>[ - ]	Range <br />
+                        e.g. N[a-c] will return all geodetic objects that contains a string starting with the letter 'N' or 'n' followed by any of the letters contained within the range specified within the square bracket, e.g. letters a, b and c. </td>
+                         
+                    </tr>
+                    <tr>
+                        <td>| </td>
+                        <td>Or <br />
+                        e.g.  E[a|e]M will return all geodetic objects that contains a string starting with the letter E(e), ends with the letter M(m) and also contain either the letter a or letter e.</td>
+                    </tr>
+                </table>
+
+                <p>The text string is automatically prefixed and suffixed by the % wildcard. These prefixes and suffixes are not applied to searches for object code.</p>                
+
+
+                <p><strong>Filters</strong></p>
+                <p><strong>[name]</strong> =xxx  There is no limit to the length of the text string that can be submitted to the search</p>
+                <p><strong>[code]</strong> =yyy [code]< yyy    [code] > yyy, where yyy is an integer and does not accept wildcards </p>
+                <p><strong>[type]</strong> =xxx applies a filter by subtype. It may be used to filter subtypes of CRS, CS, or datum.</p>
+                
+                <p> Wildcards and filters may be combined together. <br/>
+                See the Support Documentation / User Manual for more detailed information.</p> 
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>        </div>
+
+        <!-- Footer -->
+        <div id="footer" class="box">
+        <p class="float-start" style="font-weight:700">&copy; 2026 <a href="https://geomaticsolutions.com">Geomatic Solutions</a><br />All Rights Reserved &reg;</p>
+            <dl class="float-end dd-inline">
+                <dt>EPSG Dataset : </dt>
+                <dd>v13.106</dd>
+                <dt>GeoRepository : </dt>
+                <dd>v2.44.2</dd>
+            </dl>
+        </div>
+        <!-- /footer -->
+
+    </div> <!-- /main -->
+
+            <!-- <script type="text/javascript" src="/js/google-analytics.js"></script> -->
+        <script>
+            var _gaq = _gaq || [];
+            _gaq.push(['_setAccount', 'UA-150476871-2']);
+            _gaq.push(['_trackPageview']);
+
+            (function() {
+                var ga = document.createElement('script');
+                ga.type = 'text/javascript';
+                ga.async = true;
+                ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+                var s = document.getElementsByTagName('script')[0];
+                s.parentNode.insertBefore(ga, s);
+            })();
+        </script>
+         
+</body>
+
+</html>
