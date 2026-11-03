@@ -71,11 +71,11 @@ icelandic-weather/
 
 ### Weather Scoring (`src/lib/scoring.js`)
 
-Each campsite gets a numeric score from: temperature, wind penalty, rain penalty, season weighting. Full score computation is tier-independent; `useLeaderboardScores` ranks all scored sites, but the Top-sites *display* is limited to 3 for Free / 5 for Pro (see `topSitesCount` in `src/config/features.js`).
+Each campsite gets a numeric score from: temperature, wind penalty, rain penalty, season weighting. Full score computation is tier-independent; `useLeaderboardScores` ranks all scored sites, but the Top-sites _display_ is limited to 3 for Free / 5 for Pro (see `topSitesCount` in `src/config/features.js`).
 
 ### Feature Gating (`src/config/features.js`)
 
-Centralized free/pro feature definitions. `RequireFeature` component wraps gated UI. Pro features include wind direction, shelter index, advanced route planning, and campsite comparison (see `src/config/features.js` for the current full list, including Free/Pro limits such as Top-sites count and Weather Finder results; the separate free/pro campsite *list length* — "full campsite list" — is covered under "Campsite Tiers" above, not a `FEATURES` entry).
+Centralized free/pro feature definitions. `RequireFeature` component wraps gated UI. Pro features include wind direction, shelter index, advanced route planning, and campsite comparison (see `src/config/features.js` for the current full list, including Free/Pro limits such as Top-sites count and Weather Finder results; the separate free/pro campsite _list length_ — "full campsite list" — is covered under "Campsite Tiers" above, not a `FEATURES` entry).
 
 ### Free/Pro Gating — Forecast Data Rule (design rule, not current behavior)
 
@@ -91,15 +91,15 @@ Preferred Free/Pro gating patterns, in order of preference:
 
 — while keeping the underlying forecast/scoring input itself unclipped for whoever is allowed to run it.
 
-Core principle: *change how much / how often Free can access a feature, not how the forecast result is calculated.*
+Core principle: _change how much / how often Free can access a feature, not how the forecast result is calculated._
 
-**Exception:** This rule governs shared forecast/scoring *inputs* (raw daily/hourly data, normalization, candidate scoring) — not deliberately-scoped feature parameters that already have their own product decision (e.g. Route Planner's Free-preview search radius/window vs. Pro's wider settings). If it's unclear whether a parameter is "shared scoring input" or "approved feature parameter," stop and confirm before implementing.
+**Exception:** This rule governs shared forecast/scoring _inputs_ (raw daily/hourly data, normalization, candidate scoring) — not deliberately-scoped feature parameters that already have their own product decision (e.g. Route Planner's Free-preview search radius/window vs. Pro's wider settings). If it's unclear whether a parameter is "shared scoring input" or "approved feature parameter," stop and confirm before implementing.
 
 Context: this rule exists because two ideas were rejected at the investigation stage — (a) truncating the 7-day forecast for Free, (b) removing hourly forecast for Free — both would have altered the scoring/data pipeline itself and produced tier-dependent results for the same site.
 
 ### Canonical Decision Tone
 
-Surfaces that show a stay/move/consider recommendation must read the canonical *display* tone (raw engine verdict overridden by `comparisonState.direction` — e.g. `displayDecisionLower` in `RoutePlannerCard.jsx`, `model.tone` in `HomeDecisionCard.jsx`), never the raw engine verdict directly. This applies to CTA copy as well as body/title/color — a canonical override must not leave the CTA reading the raw verdict. `stay` must never imply a move was found; `consider` must never claim a better site was found outright.
+Surfaces that show a stay/move/consider recommendation must read the canonical _display_ tone (raw engine verdict overridden by `comparisonState.direction` — e.g. `displayDecisionLower` in `RoutePlannerCard.jsx`, `model.tone` in `HomeDecisionCard.jsx`), never the raw engine verdict directly. This applies to CTA copy as well as body/title/color — a canonical override must not leave the CTA reading the raw verdict. `stay` must never imply a move was found; `consider` must never claim a better site was found outright.
 
 ### Homepage Canonical Decision Surface
 
@@ -279,7 +279,7 @@ Primary homepage funnel:
 
 **Event semantics change — `travel_advisor_destination_locked`:** from production deployment **2026-08-17 19:02 UTC** (the GA4 cutover for before/after analysis), this event fires only when a Free user actually opens RoutePlannerCard's "Sjá nánar" details and the locked destination state is genuinely shown — not on data-load/computation alone as before that time. `stay_recommended`, `move_recommended`, and `travel_advisor_free_used` are unchanged — they keep mount/data-load semantics regardless of "Sjá nánar" state.
 
-**Raw engine events vs. canonical display exposure:** `recommendation_viewed`, `stay_recommended`, `move_recommended`, and `travel_advisor_free_used` are raw-engine-diagnostic events — their `recommendation_type`/verdict always reflects the *raw* `routePlannerSummary.verdict` (`decisionLower`), not what `HomeDecisionCard` actually renders. `comparisonState.direction` can override the displayed tone (e.g. raw `move` + `direction: "similar"` → canonical `stay` — see "Canonical Decision Tone" above), so these four events must not be used as a proxy for "which recommendation did the user see." `canonical_recommendation_viewed` (`HomeDecisionCard.jsx`, deduped on `model.tone`, not on raw verdict) is the event that represents actual rendered exposure — it carries `recommendation_type` (canonical), `raw_verdict`, and `tone_overridden` so engine/display divergence stays measurable without changing the raw events' own semantics. `better_location_upgrade_clicked` and `homepage_instant_comparison_cta_click` are already canonical-gated (via `model.locked`/`showCandidate`) and need no change.
+**Raw engine events vs. canonical display exposure:** `recommendation_viewed`, `stay_recommended`, `move_recommended`, and `travel_advisor_free_used` are raw-engine-diagnostic events — their `recommendation_type`/verdict always reflects the _raw_ `routePlannerSummary.verdict` (`decisionLower`), not what `HomeDecisionCard` actually renders. `comparisonState.direction` can override the displayed tone (e.g. raw `move` + `direction: "similar"` → canonical `stay` — see "Canonical Decision Tone" above), so these four events must not be used as a proxy for "which recommendation did the user see." `canonical_recommendation_viewed` (`HomeDecisionCard.jsx`, deduped on `model.tone`, not on raw verdict) is the event that represents actual rendered exposure — it carries `recommendation_type` (canonical), `raw_verdict`, and `tone_overridden` so engine/display divergence stays measurable without changing the raw events' own semantics. `better_location_upgrade_clicked` and `homepage_instant_comparison_cta_click` are already canonical-gated (via `model.locked`/`showCandidate`) and need no change.
 
 Primary monetization funnel:
 
@@ -332,25 +332,25 @@ Post language determines UI chrome language, not global localStorage lang alone.
 
 Not necessarily exhaustive — see `api/` for the current handler list. `/api/admin` dispatches by `?action=`/body `action`; auth varies by action, split into rows below.
 
-| Route                                    | Method | Auth                                  | Purpose                                                              |
-| ----------------------------------------- | ------ | --------------------------------------- | ----------------------------------------------------------------------- |
-| `/api/forecast`                          | GET    | —                                      | 7-day weather from Open-Meteo                                        |
-| `/api/campsites`                         | GET    | session cookie                        | Site list (tier-filtered)                                            |
-| `/api/login-email`                       | POST   | —                                      | Create/find user, issue session                                      |
-| `/api/logout`                            | POST   | session cookie                        | Revoke session                                                       |
-| `/api/me`                                | GET    | session cookie                        | Current user profile                                                 |
-| `/api/checkout`                          | POST   | session cookie                        | Initiate Paddle payment                                              |
-| `/api/billing-portal`                    | GET    | session cookie                        | Paddle customer portal link                                          |
-| `/api/paddle-webhook`                    | POST   | signature                             | Payment event handler                                                |
-| `/api/admin` (no/unrecognized `action`)  | GET    | admin email                           | Admin summary — users/pro/revenue (default GET branch)              |
-| `/api/admin?action=listBlogPosts`        | GET    | admin email                           | Admin's own blog post list                                           |
-| `/api/admin?action=getPublishedBlogPosts\|getPublishedBlogPostBySlug` | GET | public (admin-only with `&preview=draft`) | Published-blog reads                                                 |
-| `/api/admin` (`generateDraft`/`createBlogPost`/`createBlogMedia`/`updateBlogPost`/`publishBlogPost`/`deleteBlogPost`) | POST | admin email | Blog admin writes |
-| `/api/aurora-decision`                   | POST   | —                                      | Northern Lights visibility decision                                  |
-| `/api/blog-meta`                         | GET    | —                                      | OG meta injection for blog posts                                     |
-| `/api/blog-upload`                       | POST   | admin email                           | Blog media upload                                                    |
-| `/api/cron/generate-blog-draft`          | —      | `Bearer CRON_SECRET` (handler does not check the inbound HTTP method; Vercel Cron's actual method is a platform fact, not verified here) | Weekly automated blog draft |
-| `/api/cron/refresh-aurora`               | —      | `Bearer CRON_SECRET` (same method caveat as above) | Scheduled aurora cache refresh |
+| Route                                                                                                                 | Method | Auth                                                                                                                                     | Purpose                                                |
+| --------------------------------------------------------------------------------------------------------------------- | ------ | ---------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------ |
+| `/api/forecast`                                                                                                       | GET    | —                                                                                                                                        | 7-day weather from Open-Meteo                          |
+| `/api/campsites`                                                                                                      | GET    | session cookie                                                                                                                           | Site list (tier-filtered)                              |
+| `/api/login-email`                                                                                                    | POST   | —                                                                                                                                        | Create/find user, issue session                        |
+| `/api/logout`                                                                                                         | POST   | session cookie                                                                                                                           | Revoke session                                         |
+| `/api/me`                                                                                                             | GET    | session cookie                                                                                                                           | Current user profile                                   |
+| `/api/checkout`                                                                                                       | POST   | session cookie                                                                                                                           | Initiate Paddle payment                                |
+| `/api/billing-portal`                                                                                                 | GET    | session cookie                                                                                                                           | Paddle customer portal link                            |
+| `/api/paddle-webhook`                                                                                                 | POST   | signature                                                                                                                                | Payment event handler                                  |
+| `/api/admin` (no/unrecognized `action`)                                                                               | GET    | admin email                                                                                                                              | Admin summary — users/pro/revenue (default GET branch) |
+| `/api/admin?action=listBlogPosts`                                                                                     | GET    | admin email                                                                                                                              | Admin's own blog post list                             |
+| `/api/admin?action=getPublishedBlogPosts\|getPublishedBlogPostBySlug`                                                 | GET    | public (admin-only with `&preview=draft`)                                                                                                | Published-blog reads                                   |
+| `/api/admin` (`generateDraft`/`createBlogPost`/`createBlogMedia`/`updateBlogPost`/`publishBlogPost`/`deleteBlogPost`) | POST   | admin email                                                                                                                              | Blog admin writes                                      |
+| `/api/aurora-decision`                                                                                                | POST   | —                                                                                                                                        | Northern Lights visibility decision                    |
+| `/api/blog-meta`                                                                                                      | GET    | —                                                                                                                                        | OG meta injection for blog posts                       |
+| `/api/blog-upload`                                                                                                    | POST   | admin email                                                                                                                              | Blog media upload                                      |
+| `/api/cron/generate-blog-draft`                                                                                       | —      | `Bearer CRON_SECRET` (handler does not check the inbound HTTP method; Vercel Cron's actual method is a platform fact, not verified here) | Weekly automated blog draft                            |
+| `/api/cron/refresh-aurora`                                                                                            | —      | `Bearer CRON_SECRET` (same method caveat as above)                                                                                       | Scheduled aurora cache refresh                         |
 
 ---
 
@@ -561,3 +561,21 @@ Default language is "is". Stored in localStorage key "lang".
 - The "used" state lives in sessionStorage; per-tab semantics is an intentional product decision — this is a soft preview, not a security boundary.
 - The preview only counts as used once a comparison result has actually succeeded and rendered — never on site selection, fetch start, or fetch error.
 - Do not add a server-side counter unless a future product decision explicitly requires a harder limit.
+
+## Umfang og aukaverkefni
+
+- Fyrir hvert verkefni skal skilgreina vöruspurninguna,
+  nauðsynlega afhendingu og hvað telst nægileg sönnun.
+- Hvert nýtt verkþrep skal tengjast beint samþykkisskilyrði.
+  Annars er það utan umfangs.
+- Velja skal einföldustu aðferð sem svarar spurningunni.
+  Rannsóknartól þurfa ekki að verða framleiðsluhæf.
+- Ef hjálpartæki krefst annarrar leiðréttingarlotu skal stöðva
+  vinnu við það og endurmeta einfaldari aðferð áður en haldið er áfram.
+- Yfirferð má ekki bæta við nýjum kröfum án þess að skýra
+  hvaða samþykkisskilyrði þær styðja og hvers vegna þær eru nauðsynlegar.
+- Aðgreina skal galla í hjálpartæki frá hindrunum vörunnar.
+- Óleyst atriði skulu skráð með áhrifum sínum.
+  UNKNOWN kallar ekki sjálfkrafa á nýtt undirverkefni.
+- Umfangsaukning skal kynnt eiganda með ástæðu og áhrifum
+  áður en vinna við hana hefst.

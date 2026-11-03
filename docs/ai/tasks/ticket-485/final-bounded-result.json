@@ -1,0 +1,21 @@
+{
+  "started_utc": "2026-11-03T18:05:37.901522+00:00",
+  "plan_sha256": "7c5d61f8efe5ebc63be3a335552dac1e019c07529f66e64694cddb5dc6b1c9a2",
+  "endpoint": "https://customer-api.open-meteo.com/v1/forecast",
+  "parameters": {
+    "latitude": "64.01137995,63.96197548,63.90527541,63.82344501,63.54962230,63.41954011",
+    "longitude": "-21.25070175,-21.11948637,-20.59094600,-20.36083533,-19.76249937,-19.00662528",
+    "hourly": "temperature_2m,wind_speed_10m,wind_gusts_10m,precipitation,weather_code",
+    "temperature_unit": "celsius",
+    "wind_speed_unit": "ms",
+    "precipitation_unit": "mm",
+    "timezone": "UTC",
+    "start_hour": "2026-11-04T00:00",
+    "end_hour": "2026-11-04T23:00"
+  },
+  "attempts": 1,
+  "status": "FAIL",
+  "error_type": "URLError",
+  "cause": "Exception message omitted to avoid keyed URL disclosure; no retry.",
+  "finished_utc": "2026-11-03T18:05:37.932166+00:00"
+}
