@@ -1,0 +1,22 @@
+# #486 — afmörkuð lagfæring, approved prompt v2
+
+Ripley lokamat 2026-11-03: REVISE á v1 samkvæmt Jonesy R1–R4 og staðfestum kóðalestri. Þetta er viðgerð innan samþykktra skilyrða #486, ekki ný rannsókn eða umfang. Eigandi sendir CC „Prompt approved“ áður en keyrt er. V1 óbreytt söguleg útgáfa.
+
+Lestu docs/ai/README.md, CURRENT.md, approved-prompt-v1.md, cc-report.md og result-review.md. V1 mörk gilda áfram. Færðu CURRENT í CC_IN_PROGRESS; lagfærðu aðeins eftirfarandi og nauðsynleg próf/þýðingar. Engin ný dependency, provider-/lyklabeiðni, almenn endursmíði, git- eða GitHub-aðgerð.
+
+1. **R1, hlutabilun færðar:** Enginn jákvæður stíll þegar punktafeed er ótiltækt, úrelt eða án gilds DagsKeyrtUt. Sýndu sýnilega IS/EN-viðvörun um að lokunar-/vegavinnutilkynningar séu ótiltækar eða óstaðfestar og tengil á varðveitta opinbera heimild, án þess að fela gild yfirborðsgögn. Síðast þekkt/stale gögn fá aldur og villumerkingu. Ef segment-feed/færsla vantar en punktalokun lifir, leiða kaflaflokk af þekktum tilkynningum ásamt óþekktu ástandi með lokun í forgangi; ekki fela lokun undir föstum unknown-flokki. Prófa niðri/úrelt/ógildan tíma punktafeeds og missing segment + virk lokun, bæði backend og sjáanlegt UI.
+2. **R2, auðkenni/tvítekning:** normalizeIdButur samþykkir aðeins örugg heil tölugildi (number eða samsvarandi tölustreng, .0 heimilt), aldrei Math.round á brotatölum. Ólík/mótsagnakennd tvítekin færðarfærsla má ekki verða greiðfær eftir því hvor kemur fyrst. Varðveita allar þekktar lokanir í sameiningu; lokað í annarri línu verður áfram áberandi lokað, með merki um mótsagnakenndar upplýsingar. Annar tvíræðni án lokunar verður unknown og enginn jákvæður stíll. Ekki first-wins/last-wins. Prófa GREIDFAERT/LOKAD í báðum röðum, önnur mótsagnakennd gildi, .0 og brotatölur. Þessi ákvörðun verndar jafnframt v1-reglu um að þekkt lokun hverfi ekki.
+3. **R3, gömul spá:** Þegar forecast.stale er satt, sýna við spáhlutann IS/EN-línu um síðustu þekktu spá, aldur út frá cacheAgeMs og að ný sókn hafi brugðist/spá sé gömul. Ekki endurstimpla gögn. UI-próf sýni merkingu og að gild spágildi haldist sýnileg.
+4. **R4, hviður:** Merkja hviður sem hámark fyrri klukkustundar á IS/EN, með prófi. Úrkomutímabil og einingar áfram rétt.
+
+### Afstaða til N1–N5 (engin ný verkefni)
+
+- N1: Fjarlægja fast isDay:true. Nota núverandi isDaytimeHour á völdum UTC-klukkutíma, samkvæmt núverandi birtingarvenju, eða hlutlaust tákn ef sú venja hentar ekki; engin sólartíma-/stjarnfræðirannsókn eða ný veðurbreyta. Markvisst próf fyrir kl. 02/14 með núverandi mynstri. Ekki fullyrða að klukkutímavenja sanni raunverulega birtu.
+- N2: Útrunnin punktalokun á ekki að bera óskilyrt nútímaheiti „Lokað“ sem aðalmerkingu ef eina lokunarsönnunin er útrunnin. Sýna „Útrunnin lokunartilkynning — staðfestu hjá Vegagerðinni“ áberandi, aldrei greiðfært/grænt. Virk lokun úr öðrum reit ræður enn nútímamerkingu. Gagnalíkan þarf aðeins minnstu viðbót sem skilur þetta að; engin ný kóðaflokkafræði utan þess. Prófa útrunna eina lokun vs. útrunna + virka lokun.
+- N3: Ljúka þegar umbeðinni raunvafrayfirferð með tiltækum Playwright/Chromium og stubbuðu /api/winter-route; sími/skjáborð, ljós/dökkur hamur, lyklaborð og hlutabilun/stale. Engin raunveita eða ný dependency/uppsetning. Skrá skjámyndir/niðurstöður í verkefnisskýrslu. Ef raunvafri fæst ekki, skrá nákvæma ástæðu og hvað er óstaðfest; ekki kalla jsdom raunvafrasönnun eða búa til nýtt hjálparkerfi. Það er þá áfram ólokið samþykkisskilyrði, engin þögul undanþága.
+- N4: Samræma nýjan Helmet-titil við núgildandi IS/EN-vörumerki CLAUDE.md, með lítilli staðbundinni breytingu/prófi.
+- N5: Halda þegar afmarkaðri 5 mín. hlutabilunar-cache-lausn; ekki endurhanna cache. R1 gerir takmörkun hennar sýnilega.
+
+Keyra markviss backend/UI-próf fyrir nýju greinarnar, viðeigandi núverandi próf, lint og build. Ekki endurtaka fulla suite að óþörfu ef markviss próf/athuguð áhrif nægja. Skrá greinilega eigin niðurstöður og takmörk. Engin production/src-shared forecast/scoring/auth-reglubreyting, lykilnotkun, veitugagnarannsókn, commit/push/deploy.
+
+Bæta dagsettri viðbót við cc-report.md með diff-yfirliti, prófum og browser-sönnun (eða nákvæmri hindrun). Fyrri skýrsla og Jonesy-yfirferð varðveitt. CURRENT → CC_COMPLETE með skýrsluslóð. Eigandi → Jonesy „CC búinn“, síðan Ripley lokamat. Verkefni lýkur þegar samþykkt skilyrði standast; engin ný rannsókn sem lokakrafa.

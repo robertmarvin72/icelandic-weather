@@ -5,6 +5,7 @@ import { errorsTranslations } from "./translations.errors";
 import { landingTranslations } from "./translations.landing";
 import { researchQuizTranslations } from "./translations.researchQuiz";
 import { northernLightsTranslations } from "./translations.northernLights";
+import { winterRouteTranslations } from "./translations.winterRoute";
 
 export const translations = {
   en: {
@@ -15,6 +16,7 @@ export const translations = {
     ...errorsTranslations.en,
     ...researchQuizTranslations.en,
     ...northernLightsTranslations.en,
+    ...winterRouteTranslations.en,
   },
 
   // Icelandic (Íslenska) -------------------------------------------------------------------------------------------------------------------
@@ -26,5 +28,6 @@ export const translations = {
     ...landingTranslations.is,
     ...researchQuizTranslations.is,
     ...northernLightsTranslations.is,
+    ...winterRouteTranslations.is,
   },
 };

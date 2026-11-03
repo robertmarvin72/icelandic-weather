@@ -63,6 +63,15 @@ export default function Footer({ t }) {
           </Link>
 
           <span className="text-slate-400 dark:text-slate-600">·</span>
+
+          <Link
+            to="/winter-route"
+            className="text-sky-600 hover:text-sky-700 dark:text-sky-400 dark:hover:text-sky-300 underline-offset-4 hover:underline"
+          >
+            {t("footerWinterRoute")}
+          </Link>
+
+          <span className="text-slate-400 dark:text-slate-600">·</span>
           <a
             href="mailto:hello@eltumvedrid.is"
             className="text-sky-600 hover:text-sky-700 dark:text-sky-400 dark:hover:text-sky-300 underline-offset-4 hover:underline"

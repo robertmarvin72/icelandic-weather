@@ -34,3 +34,10 @@ describe("Footer — Miði #332: legal links and contact email", () => {
     expect(document.body.textContent).not.toContain("campcast.is");
   });
 });
+
+describe("Footer — Ticket #486: winter-route link", () => {
+  it("links to /winter-route", () => {
+    renderFooter();
+    expect(screen.getByText("footerWinterRoute").getAttribute("href")).toBe("/winter-route");
+  });
+});
