@@ -1,0 +1,47 @@
+[schema 0] a correctly-formed request passes ... PASS (latitude=64.0&longitude=-21.0&hourly=temperature_2m,wind_spe...)
+[schema 1] caller-supplied apikey in every case variant is rejected ... 
+  RED PASS -- caller-supplied 'apikey' correctly rejected
+  RED PASS -- caller-supplied 'APIKEY' correctly rejected
+  RED PASS -- caller-supplied 'ApiKey' correctly rejected
+  RED PASS -- caller-supplied 'aPiKeY' correctly rejected
+[schema 2] duplicate / case-variant parameter names rejected ... 
+  RED PASS -- duplicate 'latitude' correctly rejected
+  RED PASS -- case-variant 'Timezone' alongside 'timezone' correctly rejected
+  RED PASS -- unknown parameter name correctly rejected
+  RED PASS -- 'models' parameter correctly rejected
+[schema 3] '&apikey=' / '=' / '#' / '?' / '@' / CR-LF injected INTO a string value is rejected ... 
+  RED PASS -- wind_speed_unit='ms&apikey=evil' correctly rejected
+  RED PASS -- wind_speed_unit='ms=x' correctly rejected
+  RED PASS -- wind_speed_unit='ms#frag' correctly rejected
+  RED PASS -- wind_speed_unit='ms?x' correctly rejected
+  RED PASS -- wind_speed_unit='ms@host' correctly rejected
+  RED PASS -- wind_speed_unit='ms\r\nInjected: header' correctly rejected
+  RED PASS -- wind_speed_unit='ms\nInjected' correctly rejected
+  RED PASS -- percent-encoded injection attempt (contains literal '%') correctly rejected
+[schema 4] malformed / over-length / non-ASCII tokens rejected ... 
+  RED PASS -- over-length token (>64 chars) correctly rejected
+  RED PASS -- non-ASCII token correctly rejected
+  RED PASS -- forecast_days as a string instead of int correctly rejected
+  RED PASS -- forecast_days as a bool correctly rejected
+  RED PASS -- latitude=[NaN] correctly rejected
+  RED PASS -- latitude=[Infinity] correctly rejected
+  RED PASS -- latitude as a string-encoded number correctly rejected
+  RED PASS -- latitude=[True] (boolean) correctly rejected
+  RED PASS -- latitude out of range correctly rejected
+  RED PASS -- latitude empty array correctly rejected
+  RED PASS -- latitude array too long (>7) correctly rejected
+  RED PASS -- latitude/longitude length mismatch correctly rejected
+[schema 5] userinfo/port/path-bypass-shaped strings rejected as ordinary delimiter violations ... 
+  RED PASS -- wind_speed_unit='ms@evil.example' correctly rejected
+  RED PASS -- wind_speed_unit='ms:443' (fails the fixed-enum check) correctly rejected
+  RED PASS -- wind_speed_unit='ms/../../etc' (fails the fixed-enum check) correctly rejected
+  RED PASS -- wind_speed_unit='127.0.0.1:443' (fails the fixed-enum check) correctly rejected
+[schema 6] hourly variable set: missing required / unknown / duplicate all rejected ... 
+  RED PASS -- hourly missing a required variable correctly rejected
+  RED PASS -- hourly with an unknown (legacy-named) variable correctly rejected
+  RED PASS -- hourly with a duplicate variable correctly rejected
+  GREEN PASS -- required6+visibility accepted
+[schema 7] CORRECTION v6 (R5): a fake-key placed as a param VALUE never reaches the exception message/str(e) ... 
+  PASS -- fake key never appears in any SchemaViolation message across 3 injection points (timezone/wind_speed_unit/hourly[])
+
+ALL SCHEMA INJECTION/VALIDATION TESTS PASS (exit 0).

@@ -1,0 +1,7 @@
+[leak_scanner 1] malformed \x escape elsewhere does NOT hide a validly-escaped secret ... PASS
+[leak_scanner 2] a wholly-undecidable escape sequence (no secret present at all) still fails closed ... PASS (correctly refused as undecidable, even though no real secret is present)
+[leak_scanner 3] ordinary clean text with no malformed escapes and no secret: GREEN ... PASS
+[leak_scanner 4] raw / percent / double-percent / JSON-escaped forms all detected ... PASS
+[leak_scanner 5] StreamScanner (unused in v5, misleading) is REMOVED, not merely unused ... PASS
+
+ALL LEAK-SCANNER REGRESSION TESTS PASS (exit 0).

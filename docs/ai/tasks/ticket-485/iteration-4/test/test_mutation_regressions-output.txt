@@ -1,0 +1,15 @@
+[mutation 1] raw-request-URL ledger regression: RED on a mutated scratch copy, GREEN on the real code, real source hash unchanged ... 
+    RED confirmed: mutated reserve_attempt(raw_url=...) DID leak the fake secret into the ledger file (attempt 284ab0eb...) -- our safety assertion correctly fails against this exact historical defect
+    GREEN confirmed: the real, unmutated ledger.reserve_attempt() takes no such parameter and the ledger stays clean (attempt c509b728...)
+    source hash unchanged throughout: c140f86c6a23aa55b3c70970a560c73736b24aca288f3776298ddc76ad4be860
+[mutation 2] raw-exception-output regression: RED on a mutated scratch copy, GREEN on the real code, real source hash unchanged ... 
+    RED confirmed: mutated transport_core.py (str(e) folded into category) DID leak secret-shaped text into stdout, via the REAL unmodified child_worker.py -- our safety assertion correctly fails against this exact historical defect
+    GREEN confirmed: the real, unmutated transport_core.py stays clean
+    source hash unchanged throughout: b2cbd5e50500230555d16bfb034a001be942d82fe16befe3a5613d2c2838cb7f
+[mutation 3] sample-validator regression (v8 R1/R2): RED on a scratch copy reverted to the v7 allowlist/incompleteness behaviour, GREEN on the real v8 code, real source hash unchanged ... 
+    RED check 1 (documented fixture against the reverted allowlist): status=STRUCTURAL_FAILURE (expected NOT VALID) -- confirmed
+    RED check 2 ('{}' against the disabled incompleteness check): status=VALID (expected VALID, reproducing the old bug) -- confirmed
+    GREEN confirmed: the real, unmutated pipeline.py accepts the documented fixture (status=VALID) and correctly classifies '{}' as SAMPLE_INCOMPLETE, not VALID
+    source hash unchanged throughout: 8b0972fe28b9cb4e4f03f8af958a752f050cf2c279a311de53534809c51f2e2b
+
+ALL MUTATION REGRESSION TESTS PASS (exit 0).

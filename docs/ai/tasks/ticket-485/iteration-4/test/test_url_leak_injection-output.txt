@@ -1,0 +1,5 @@
+[url-leak 1] raw low-level OSError embeds a full URL+secret; REAL unmodified child_worker.py is run via it -- raw stdout/stderr checked directly ... 
+    PASS: category=CONNECT_FAILURE, neither the fake secret nor the fake URL text appears anywhere in raw stdout or stderr (stderr length=0)
+[url-leak 2] the same injection through pipeline's REAL dispatch function: outcome dict and the real ledger file both stay clean ... PASS (outcome={'category': 'CONNECT_FAILURE', 'status': None, 'bytes_decoded': 0, 'truncated': False}, ledger file clean of both the fake secret and the fake URL)
+
+ALL URL-LEAK INJECTION TESTS PASS (exit 0).

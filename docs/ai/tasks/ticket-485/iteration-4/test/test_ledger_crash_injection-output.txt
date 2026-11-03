@@ -1,0 +1,5 @@
+[crash-injection] a REAL process is REALLY killed after fsync() but before os.replace() on its ledger write; a second real process then recovers it ... 
+    worker (PID 49776) genuinely killed mid-write (returncode=1); .tmp exists, real path does not -- fault injected at the intended instant
+    PASS: second real process recovered the reservation (attempt f58d4820..., status=reserved), .tmp cleaned up, real ledger file now exists
+
+ALL CRASH-INJECTION TESTS PASS (exit 0).

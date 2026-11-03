@@ -1,0 +1,5 @@
+[import-isolation] no production module imports test/test_adapter or test_transport_child ... PASS (9 production modules checked, 0 import test code)
+[import-isolation] pipeline.run_request has no target-override parameter ... PASS (run_request(param_pairs, secret) has no target/verify override)
+[import-isolation] run_request()'s dispatch call passes the literal CHILD_WORKER_PATH name ... PASS (AST-verified: the 4th positional argument is the bare name CHILD_WORKER_PATH, not a parameter or computed expression)
+
+ALL IMPORT-ISOLATION CHECKS PASS (exit 0).

@@ -1,0 +1,7 @@
+[real-kill 1] a child genuinely stalled past the production TOTAL deadline is killed by the REAL, unmodified parent -- production TimeoutExpired branch, not a test-local kill ... 
+    result: {'ok': True, 'outcome': {'category': 'PARENT_ENFORCED_TOTAL_DEADLINE', 'status': None, 'bytes_decoded': 0, 'truncated': False}}, elapsed=20.1s
+    PASS: real parent-enforced kill, elapsed 20.1s (deadline-bounded incl. cleanup), server observed the connection close (child genuinely gone), ledger terminal=HARD_DEADLINE_KILL, restart correctly refused
+[real-kill 2] the PARENT itself (the real run_request() process) is killed right after the child acknowledges request receipt; recovery refuses the incomplete row (R2) ... 
+    PASS: parent genuinely killed right after the child's real request receipt; ledger left with 1 'reserved' (incomplete) attempt; a second real process is refused with LedgerIncomplete, not permitted to proceed
+
+ALL REAL-KILL TESTS PASS (exit 0).

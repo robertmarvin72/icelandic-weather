@@ -1,0 +1,18 @@
+[ledger 1] mark_terminal() durably blocks ALL future reserve_attempt() calls, across a fresh load (simulated restart) ... PASS (attempt b5a4750f... reserved, then terminal set, then blocked twice incl. after reload)
+[ledger 2] run-window start is wall-clock UTC; malformed/future values are rejected, not guessed ... 
+    PASS: run_window_start_utc is a real wall-clock timestamp, no monotonic field persisted
+    PASS: malformed run_window_start_utc correctly refused (LedgerAmbiguous)
+    PASS: future run_window_start_utc correctly refused (LedgerAmbiguous)
+[ledger 3] an unreadable (OSError) durable .tmp is NEVER deleted -- fails closed instead ... PASS (unreadable .tmp preserved untouched, LedgerAmbiguous correctly raised; attempt 376ea313... from before this simulated fault is still intact)
+[ledger 4] a CONFIRMED-corrupt (truncated JSON) .tmp -- which could never have returned an attempt ID to any caller -- is safely discarded on recovery ... PASS (corrupt tmp discarded, fresh empty ledger returned, no crash)
+[ledger 5] a VALID, fully-written .tmp that never got replace()'d is completed on recovery (the crash-recovery case this design exists for) ... PASS (2/2 attempts recovered: 7c57ceb9... and the simulated crashed one)
+[ledger 6] a non-OK-category attempt charges the FULL reserved cap, not the (possibly nonzero but irrelevant) bytes_decoded value -- category-based, correction v7 R4 ... PASS (non-OK attempt charged the full 12345-byte reserved cap despite 1,900,000 observed bytes; bytes_observed recorded honestly)
+[ledger 7] a clean 'OK'-category attempt charges the real, smaller byte count (reconciliation) ... PASS (verified 42 bytes charged, not the full reserved cap)
+[ledger 7b] reserved_decoded_cap is MIN(per-attempt cap, remaining global budget) -- correction v7 R4 real MIN, not an arithmetic-only invariant ... 
+    PASS: first attempt capped at the flat 1000, second attempt correctly capped at the remaining-global 200 (< per-attempt cap)
+[ledger 7c] an attempt left 'reserved' (never completed) blocks ANY future reservation -- correction v7 R2, LedgerIncomplete, distinct from the plain count cap ... PASS (attempt 983d585a... left 'reserved'; a further reservation correctly refused with LedgerIncomplete)
+[ledger 7d] finalize_attempt() sets the outcome AND the terminal flag in ONE atomic write -- correction v7 R2, never two separate lock cycles with a crash gap between them ... PASS (outcome complete AND terminal flag set together, from a single finalize_attempt() call)
+[ledger 8] a lock held by a LIVE process (this process's own PID) refuses a concurrent acquire ... PASS (LedgerBusy correctly raised against a live-owned lock)
+[ledger 9] a lock file with ANY readable PID content is ALWAYS refused (LedgerBusy) -- correction v7 R3: NO automatic reclaim, NO liveness probe (os.kill(pid, 0) is not a safe passive existence check on Windows) ... PASS (LedgerBusy correctly refused with no reclaim attempt; only manual removal of the lock file allowed the next reservation 56223b69... to succeed)
+
+ALL LEDGER REGRESSION TESTS PASS (exit 0).

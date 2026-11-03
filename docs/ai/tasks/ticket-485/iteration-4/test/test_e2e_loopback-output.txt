@@ -1,0 +1,15 @@
+[e2e 1] REAL copied-tree run_request() succeeds end-to-end against a real loopback server ... 
+    result: {'ok': True, 'outcome': {'category': 'OK', 'status': 200, 'bytes_decoded': 4481, 'truncated': False}}
+    PASS: real 200, 1 real server hit, unique sample forecast-sample-a1eb5de1...json written, ledger clean of the secret
+[e2e 2] a REJECTED (schema-invalid) input causes ZERO socket/transport calls ... PASS (refused as {'ok': False, 'exception_type': 'CandidateRefusal', 'exception_category': None}, server hit_count=0, no ledger file created)
+[e2e 3] a malformed secret (CRLF) is rejected BEFORE any socket call, real copied tree ... PASS (refused as {'ok': False, 'exception_type': 'CandidateRefusal', 'exception_category': None}, server never hit)
+[e2e 4] a 401 from a REAL server marks the ledger terminal; a SECOND, separate real process is then refused with zero new socket calls ... 
+    PASS: first real 401 -> terminal; second real process call refused (LedgerTerminal), server hit_count unchanged at 1
+[e2e 5] TWO clean successful attempts against the SAME ledger preserve 2 DISTINCT samples (R6: unique per-attempt filename, never overwritten) ... 
+    PASS: 2 attempts (c1bf6acd..., 14f5e379...), 2 distinct sample files, neither overwritten the other
+[e2e 6] a genuinely UNSAFE 200 (invalid type on a RECOGNISED stored field) leaves NO sample, is reclassified, and marks the ledger terminal (v8 R1) ... PASS (outcome category overridden to UNSAFE_SAMPLE_REJECTED, terminal=UNSAFE_SAMPLE, sample_written=False, no sample file on disk, restart correctly refused)
+[e2e 7] a REAL 200 with the fully-documented shape PLUS one additive unknown field -> OK, sample written, drop count recorded, ledger non-terminal (v8 R1) ... PASS (OK, sample written, sample_reason='OK_UNKNOWN_FIELDS_DROPPED:1', ledger not terminal)
+[e2e 8] a REAL 200 whose body is a top-level JSON list (documented multi-coordinate shape) -> non-terminal refusal, no sample, restart still allowed (v8 R1) ... PASS (non-terminal, no sample, sample_reason='SAMPLE_UNSUPPORTED_TOP_LEVEL_LIST', a second real request still proceeded)
+[e2e 9] a REAL 200 that is well-formed but has no usable forecast data -> SAMPLE_INCOMPLETE, non-terminal, restart still allowed (v8 R2) ... PASS (non-terminal, no sample, sample_reason='SAMPLE_INCOMPLETE', a second real request still proceeded)
+
+ALL E2E (real copied-tree, real loopback) TESTS PASS (exit 0).

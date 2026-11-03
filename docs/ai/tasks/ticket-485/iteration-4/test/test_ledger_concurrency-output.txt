@@ -1,0 +1,6 @@
+[ledger-concurrency] 6 real OS processes race reserve_attempt() against one ledger file ... 
+    outcomes: OK=1 EXCEEDED=0 BUSY=4 INCOMPLETE=1 ERROR=0
+    raw: ['OK 2c94a7ca5f5a4041b53429deece31386', 'BUSY', 'BUSY', 'INCOMPLETE', 'BUSY', 'BUSY']
+PASS: at most 1 reservation ever succeeds (1<=1, deterministic under R2), ledger valid, no duplicate/lost attempt IDs, 1 worker(s) correctly refused via LedgerIncomplete
+
+ALL LEDGER-CONCURRENCY TESTS PASS (exit 0).

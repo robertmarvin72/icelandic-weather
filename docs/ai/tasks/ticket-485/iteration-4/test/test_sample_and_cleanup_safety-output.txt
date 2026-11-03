@@ -1,0 +1,20 @@
+[cleanup-safety 1] a target OUTSIDE tmp/ is refused -- not deleted, returns False ... PASS (refused, C:\Users\Notandi\forritun\icelandic-weather\docs\ai\tasks\ticket-485\iteration-4\samples\_not_under_tmp_marker_dir\must_survive.txt still exists)
+[cleanup-safety 2] the tmp/ root ITSELF is refused (only things strictly inside it) ... PASS (refused; tmp/ root still exists)
+[cleanup-safety 3] a target genuinely INSIDE tmp/ is deleted, returns True ... PASS (deleted, returned True)
+[sample-safety 1] malformed JSON body -> SAMPLE_STRUCTURAL_FAILURE ... PASS
+[sample-safety 2] the realistic documented-shape fixture -> SAMPLE_VALID, 0 unknown fields (R1: documented utc_offset_seconds/timezone/timezone_abbreviation accepted) ... PASS
+[sample-safety 3] an ADDITIVE unknown top-level field is dropped (never stored) and counted, SAMPLE_VALID not terminal (R1) ... PASS (dropped, not stored, counted as 1)
+[sample-safety 4] the SAME unknown field, but containing the fake secret, is still terminal (additive-field tolerance never weakens the secret gate) ... PASS
+[sample-safety 5] a top-level JSON list (documented multi-coordinate shape) -> SAMPLE_UNSUPPORTED_TOP_LEVEL_LIST, non-terminal ... PASS
+[sample-safety 6] `{}` is SAMPLE_INCOMPLETE, never a valid forecast sample (R2) ... PASS
+[sample-safety 7] a documented payload missing any ONE of the six required hourly arrays -> SAMPLE_INCOMPLETE ... 
+    PASS (all 6 required-variable omissions correctly INCOMPLETE)
+[sample-safety 8] a documented payload missing a required hourly_units entry -> SAMPLE_INCOMPLETE (not a structural failure) ... PASS
+[sample-safety 9] an INVALID type for a stored, recognised field (not merely missing) -> SAMPLE_STRUCTURAL_FAILURE, never incompleteness ... PASS
+[sample-safety 10] hourly.time entries that are not strictly increasing/unique -> SAMPLE_STRUCTURAL_FAILURE ... PASS
+[sample-safety 11] an hourly array past the bounded length -> SAMPLE_STRUCTURAL_FAILURE ... PASS
+[sample-safety 12] the secret reflected inside an allowlisted field -> SAMPLE_STRUCTURAL_FAILURE ... PASS
+[sample-safety 13] a null hourly data point (legitimate missing-data marker) is preserved, still SAMPLE_VALID ... PASS
+[sample-safety 14] _write_unique_sample() writes to a filename unique to the attempt ID, never a fixed shared name ... PASS (two distinct attempt IDs -> two distinct, co-existing sample files)
+
+ALL SAMPLE/CLEANUP SAFETY TESTS PASS (exit 0).

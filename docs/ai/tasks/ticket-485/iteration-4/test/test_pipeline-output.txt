@@ -1,0 +1,28 @@
+=== #485 iteration-4 mandatory local real-socket + policy tests ===
+SYNTHETIC/LOCAL LOOPBACK AND FAKE-CREDENTIAL ONLY. No real network, no real key.
+
+[1] slow drip past TOTAL deadline + full stall -- both bounded, worker actually gone ... 
+    drip: PASS (bounded at 1.51s, category=PARENT_ENFORCED_TOTAL_DEADLINE)
+    stall: PASS (bounded at 1.51s, category=PARENT_ENFORCED_TOTAL_DEADLINE)
+    worker termination: PASS (child exit code 1, confirmed not alive)
+[2] oversized plain + compressed body stop at DECODED cap (incl. per-body > global remainder) ... 
+    plain 2MB body -> 1000B, truncated=True: PASS
+    gzip 3MB decoded body -> 1000B, truncated=True: PASS (decoded, not wire, size governs the cap)
+    global-remainder accounting: PASS (1400/1500 used, 100 remaining tracked correctly)
+[3] redirect carrying a fake key: not followed, target never hit, no Location retained ... PASS (302 observed, /target never hit, outcome={'category': 'OK', 'status': 302, 'bytes_decoded': 0, 'truncated': False})
+[4] crash after durable reservation; restart refuses with LedgerIncomplete, not merely exhausted-count (R2 correction v7) ... PASS (crashed attempt c2266225... left 'reserved'; further attempts refused with LedgerIncomplete, not merely once the plain count cap is reached)
+[4b] kill between temp-write and replace: recovery completes the durable intent, not discards it ... PASS (2/2 attempts recovered, including the one that never completed its replace())
+[5] pipeline.run_request() structurally cannot be pointed anywhere but the fixed target ... PASS (public signature (param_pairs, secret) carries no host/port/path/url/ledger-path/deadline/cap override parameter; test_import_isolation.py separately proves the test adapter is unreachable from it, and that run_request's own dispatch call passes the literal CHILD_WORKER_PATH constant)
+[6] leakage matrix: fake-key request URL, split-chunk body, encoded forms, red mutations ... 
+    (a) reserve_attempt() takes no URL param, and a real loopback dispatch leaves no trace of the key in the ledger: PASS (outcome={'category': 'OK', 'status': 200, 'bytes_decoded': 2, 'truncated': False})
+    (c) RED PASS -- raw key in response body correctly refused
+    (b) RED PASS -- key split exactly across a chunk boundary still caught
+    (d) GREEN PASS -- clean response passes normally ({'category': 'OK', 'status': 200, 'bytes_decoded': 2, 'truncated': False})
+    (e) percent/double-percent/JSON-escaped forms all detected: PASS
+[7] TLS: real local cert tooling available -> separate local TLS adapter proves default rejection ... 
+    PASS: untrusted self-signed cert rejected under default verification ({'category': 'TLS_FAILURE', 'status': None, 'bytes_decoded': 0, 'truncated': False})
+    No `verify=` or CA-override parameter exists anywhere in pipeline.py's public API or transport_core.request()'s TLS branch (it is hardcoded to ssl.create_default_context()) -- there is no insecure path to demonstrate a bypass against, by design.
+[8a] DNS-stall: patched resolver blocks past deadline; parent kills/joins, no leftover process ... PASS (bounded at 1.50s despite a 10s patched DNS stall, child confirmed terminated)
+[8b] dummy proxy/CA env vars set in parent process: child never receives or uses them ... PASS (child env has none of ['HTTPS_PROXY', 'HTTP_PROXY', 'NO_PROXY', 'REQUESTS_CA_BUNDLE', 'SSL_CERT_FILE']; direct loopback request still succeeded)
+
+ALL MANDATORY TESTS PASS (exit 0).

@@ -1,0 +1,6 @@
+[guard 1] a non-loopback hostname is refused BEFORE the real resolver is ever called ... PASS (NetworkGuardViolation raised, real getaddrinfo() call count: 0, guard.blocked_count=1)
+[guard 2] connect() to a non-loopback LITERAL IP address is refused ... PASS (NetworkGuardViolation raised, guard.blocked_count=1)
+[guard 3] a literal loopback target (127.0.0.1) is still allowed through ... PASS (loopback getaddrinfo() succeeded normally, guard.allowed_count=1)
+[guard 4] a genuinely separate OS child process installs the guard independently (never assumed to inherit a parent's monkeypatch) ... PASS (separate child process PID-distinct from this test, installed its own guard, and blocked a real external IP connect itself: 'BLOCKED')
+
+ALL NETWORK-GUARD TESTS PASS (exit 0).
