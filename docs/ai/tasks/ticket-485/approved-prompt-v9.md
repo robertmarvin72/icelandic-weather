@@ -1,0 +1,21 @@
+# #485 iteration4 — Outcome consistency correction v9
+
+> **WITHDRAWN — DO NOT EXECUTE (2026-11-03).** Owner and Ripley deliberately abandoned the custom research-client correction branch. This unexecuted prompt is retained as history only; its instructions below are no longer authorised. Do not send Prompt approved for it, continue client repairs, or use the client with a real key. Product #485 remains PARTIAL, paid forecast NOT_TESTED. A simpler research approach requires new scope/prompt review; no implementation/publication approval. CURRENT is CANCELLED for this branch, not CLOSED/PASS and not GitHub issue closure.
+
+2026-11-03. Ripley REVISE narrow Jonesy Round4 R1. Choose option(a): retain v8 non-OK/full-reserved-cap policy, no gate relaxation. Execute only owner Prompt approved/CURRENT READY_FOR_CC here; read README, immutablev8, latestreport/review; CC_IN_PROGRESS first. All prior fake/local-only boundaries remain. No realkey/presence/secret-env, externalDNS/network/provider, installs/accounts/subagents/app/API/UI/DB/config/GitHub/commit/push/deploy/MVP/publication. Only iteration4 pipeline/sample-outcome tests/docs, rootCCreport/CURRENT writes; preserve previous history/inputs/unrelated464file. Guard all loopbackparent/children before socket/resolver.
+
+## Exact change
+
+For SAMPLE_INCOMPLETE and SAMPLE_UNSUPPORTED_TOP_LEVEL_LIST set outcome.category to that precise non-OK safe category BEFORE atomic finalize. outcome also includes sample_written:false and sample_reason matchingclassification; terminal remains false. Returned run_request result exposes these fields and ok:false, never success-with-no-sample. HTTPstatus200 remains evidence of transport, not usableforecast. Atomically persisted outcome/ledger sample fields agree. No realbody/reason/key leakage. These non-OK outcomes charge FULL reservedcap by existing ledgerpolicy; one consumes2MiB underdefaultprofile, two exhaust4MiB/2attemptcap. Keep explicitnonterminal meaning: a secondattempt allowed only within remainingprofile, no automaticretry.
+
+Successful valid sample keeps categoryOK, sample_writtentrue/reasonOK or unknownfieldsdroppedcount, oktrue. Existing terminalunsafe/secret/malformed/auth/rate/deadline rules and sampleuniqueIDs unchanged. Sample-write failure also cannot be oktrue with a usable-sample implication: return safe SAMPLE_WRITE_FAILED/false with conservative non-OK charging, preserve prior terminalpolicy explicitly (no silent terminal gate change). Distinguish safe receivedtransport vs recordedforecast sample throughout caller/ledger. No need to change transport/locks/scanner/schema or broaden sampleformat.
+
+## Required targeted proof
+
+Update actualcopiedpipeline/e2e8/9 tests, not assertions matching oldcode. For top-levellist,{}, missingrequiredarray/unit: assert HTTP200, correctnonOKcategory, sample_writtenfalse/reason in RETURNEDoutcome AND ledger, okfalse, terminalfalse, observedbytes retained, chargedreservedcap, nosample. Secondvalidresponse allowed once; full/partial budgetcases documented; thirdrefused. Valid documented72hfixture stillOK/sample/oktrue, unknownharmlessfieldstillcountonly, unsafe/secretstillterminal. Expected-red scratchcopy restoring oldcategoryOK behavior must fail nonzero, restoreGREEN/finalhashunchanged. No realkeyorproviderfixture.
+
+## Documentation and handoff
+
+Correct comment claiming v8 allowed real-byte refusals and README/report 'retainedexactly' claim: v8execution deviated; v9 now implements originalpolicy. No retroactive prompt edit. Explain conservativecost and require futureliveprobe explicitlyaccept, no livepermissionhere. Expose sample status clearly in APIreturn/evidencetable; samplecapture stillnotprovider/routeGO.
+
+Run focusedguarded sample/e2e/ledger regression then existingguarded suite only if affected (<=180s), record exactcommands/output/nonzerored-green/currentOS/hashes. Existing fullyisolated13suite results remain attributed if notrepeated. Snapshot before/finalpipeline/tests and preservedinputs, no fakepre-freezereceipts. Update report mapping soleR1 and README/acceptanceplan, candidatefakelocalonly pendingJonesysourcereview. ProductPARTIAL/forecastNOT_TESTED unchanged. gitstatus/HEAD/diff--check, verifiedowncleanup; CC_COMPLETE -> ownerJonesy ->Ripley. Anyrealkey needs reviewedfinalhashes, separatelyreviewedliveprobe+ownerhandoff.

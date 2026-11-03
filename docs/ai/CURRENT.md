@@ -1,7 +1,7 @@
 # Current AI Task
 
 Task: ticket-485
-Stage: READY_FOR_CC
+Stage: CANCELLED
 
 Task directory:
 docs/ai/tasks/ticket-485/
@@ -10,7 +10,7 @@ Prompt review:
 docs/ai/tasks/ticket-485/prompt-review-iteration-4.md
 
 Approved prompt:
-docs/ai/tasks/ticket-485/approved-prompt-v9.md
+(none active — approved-prompt-v9.md withdrawn, retained as history only)
 
 CC report:
 docs/ai/tasks/ticket-485/cc-report-iteration-4.md
@@ -19,6 +19,8 @@ Result review:
 docs/ai/tasks/ticket-485/result-review-iteration-4.md
 
 ## Current handoff
+
+2026-11-03 (Ripley, owner-directed withdrawal): Custom research-client branch deliberately abandoned following owner's decision to preserve existing work and stop the detour. v9 was not executed and is now marked WITHDRAWN/DO NOT EXECUTE; all prior records retained. CANCELLED applies to this workflow branch, not all Winter Route research or GitHub485 closure. No further client corrections/keyed use authorised. Product PARTIAL, paid forecast NOT_TESTED and known client limitations remain; no PASS/GO invented. Next research approach must be re-scoped around the product question with fresh review. No code deletion, execution, commit/push/GitHub action or implementation/publication approval.
 
 2026-11-03 (Ripley): REVISE narrowly Round4R1. Source confirms list/incomplete samples keepcategoryOK and realbytes despite v8policy. Choose(a)nonOK+fullreservedcharge, returned sample_written/reason and okfalse; v9ready. Prior documentedsample/requiredarrayfixes accepted as reviewed. READY_FOR_CC -> owner Prompt approved. Fake/guardedlocalonly, no realkey/provider/liveGO.
 
