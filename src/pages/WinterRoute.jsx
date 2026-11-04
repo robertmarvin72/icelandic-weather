@@ -20,9 +20,11 @@ import {
   SEGMENT_CATEGORY_LABEL_KEY,
   formatDecimal,
   formatHourLabel,
+  formatInstantHHMM,
   formatTimestamp,
   hourOfDayFromHourString,
 } from "../lib/winterRoutePresentation";
+import { computeEta } from "../lib/winterRouteEta";
 
 const VEGAGERDIN_LINKS = {
   is: "https://www.vegagerdin.is/upplysingar-og-utgafa/gagnaveita-vegagerdarinnar/",
@@ -124,7 +126,7 @@ function SegmentRow({ segment, t, lang }) {
   );
 }
 
-function ForecastCard({ point, hourIndex, t, lang }) {
+function ForecastCard({ point, departureHour, t, lang }) {
   const label = lang === "en" ? point.labelEn : point.labelIs;
 
   if (!point.available) {
@@ -136,13 +138,24 @@ function ForecastCard({ point, hourIndex, t, lang }) {
     );
   }
 
-  const hasHour = hourIndex != null && hourIndex >= 0 && hourIndex < point.hours.length;
+  // ETA follow-up (#486): each point now resolves its OWN forecast hour
+  // from the shared departure time + its own approximate distance from
+  // the corridor start — no longer a single shared hourIndex across all
+  // six cards. `computeEta` returns nulls (never a guess) when the
+  // distance/departure cannot be resolved; a resolved forecastHour that
+  // isn't one of this point's already-fetched hours (outside the 24h
+  // window, or simply absent) is an equally explicit "not available",
+  // never a silent wrap to a different hour.
+  const { rawArrivalMs, forecastHour } = computeEta(departureHour, point.approxDistanceFromStartKm);
+  const hourIndex = forecastHour != null ? point.hours.indexOf(forecastHour) : -1;
+  const hasHour = hourIndex >= 0;
+
   const temp = hasHour ? point.series.temperature_2m[hourIndex] : null;
   const wind = hasHour ? point.series.wind_speed_10m[hourIndex] : null;
   const gust = hasHour ? point.series.wind_gusts_10m[hourIndex] : null;
   const precip = hasHour ? point.series.precipitation[hourIndex] : null;
   const code = hasHour ? point.series.weather_code[hourIndex] : null;
-  // N1: derive day/night from the selected UTC hour's own "HH" digits
+  // N1: derive day/night from the resolved UTC hour's own "HH" digits
   // (the fixed "YYYY-MM-DDTHH:00" string, never a Date/local-timezone
   // read) using the same isDaytimeHour() convention ForecastTable/
   // HourlyForecastModal already use — no new sunrise/sunset lookup.
@@ -160,19 +173,30 @@ function ForecastCard({ point, hourIndex, t, lang }) {
         )}
       </div>
 
+      {rawArrivalMs != null ? (
+        <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">
+          {t("winterRouteEstimatedArrival").replace("{time}", formatInstantHHMM(rawArrivalMs))}
+        </p>
+      ) : null}
+
       {!hasHour ? (
-        <p className="mt-2 text-sm text-slate-500 dark:text-slate-400">{t("winterRoutePointUnavailable")}</p>
+        <p className="mt-2 text-sm text-slate-500 dark:text-slate-400">{t("winterRouteForecastNotAvailableAtComputedTime")}</p>
       ) : (
-        <dl className="mt-2 grid grid-cols-2 gap-1 text-sm text-slate-700 dark:text-slate-200">
-          <dt className="text-slate-500 dark:text-slate-400">{t("winterRouteTemperature")}</dt>
-          <dd>{temp == null ? "—" : `${formatDecimal(temp, lang, 1)} °C`}</dd>
-          <dt className="text-slate-500 dark:text-slate-400">{t("winterRouteWind")}</dt>
-          <dd>{wind == null ? "—" : `${formatDecimal(wind, lang, 1)} m/s`}</dd>
-          <dt className="text-slate-500 dark:text-slate-400">{t("winterRouteGust")}</dt>
-          <dd>{gust == null ? "—" : `${formatDecimal(gust, lang, 1)} m/s`}</dd>
-          <dt className="text-slate-500 dark:text-slate-400">{t("winterRoutePrecip")}</dt>
-          <dd>{precip == null ? "—" : `${formatDecimal(precip, lang, 1)} mm`}</dd>
-        </dl>
+        <>
+          <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">
+            {t("winterRouteValidFor").replace("{time}", formatHourLabel(forecastHour))}
+          </p>
+          <dl className="mt-2 grid grid-cols-2 gap-1 text-sm text-slate-700 dark:text-slate-200">
+            <dt className="text-slate-500 dark:text-slate-400">{t("winterRouteTemperature")}</dt>
+            <dd>{temp == null ? "—" : `${formatDecimal(temp, lang, 1)} °C`}</dd>
+            <dt className="text-slate-500 dark:text-slate-400">{t("winterRouteWind")}</dt>
+            <dd>{wind == null ? "—" : `${formatDecimal(wind, lang, 1)} m/s`}</dd>
+            <dt className="text-slate-500 dark:text-slate-400">{t("winterRouteGust")}</dt>
+            <dd>{gust == null ? "—" : `${formatDecimal(gust, lang, 1)} m/s`}</dd>
+            <dt className="text-slate-500 dark:text-slate-400">{t("winterRoutePrecip")}</dt>
+            <dd>{precip == null ? "—" : `${formatDecimal(precip, lang, 1)} mm`}</dd>
+          </dl>
+        </>
       )}
 
       <p className="mt-2 text-xs italic text-slate-400 dark:text-slate-500">{t("winterRouteGridDisclaimer")}</p>
@@ -231,11 +255,6 @@ export default function WinterRoute() {
     }
   }, [availableHours, selectedHour]);
 
-  const hourIndex = useMemo(() => {
-    if (!selectedHour || !data?.forecast?.available) return null;
-    return data.forecast.window.expectedHours.indexOf(selectedHour);
-  }, [selectedHour, data]);
-
   return (
     <>
       <Helmet>
@@ -286,11 +305,6 @@ export default function WinterRoute() {
                         ))}
                       </select>
                     )}
-                    {selectedHour ? (
-                      <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">
-                        {t("winterRouteValidFor").replace("{time}", formatHourLabel(selectedHour))}
-                      </p>
-                    ) : null}
                   </div>
                 ) : (
                   <p className="mt-2 text-sm text-slate-500 dark:text-slate-400">{t("winterRouteForecastUnavailable")}</p>
@@ -308,7 +322,7 @@ export default function WinterRoute() {
                 {data.forecast.available ? (
                   <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-3">
                     {data.forecast.points.map((point) => (
-                      <ForecastCard key={point.id} point={point} hourIndex={hourIndex} t={t} lang={lang} />
+                      <ForecastCard key={point.id} point={point} departureHour={selectedHour} t={t} lang={lang} />
                     ))}
                   </div>
                 ) : null}

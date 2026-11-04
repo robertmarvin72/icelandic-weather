@@ -50,3 +50,18 @@ export function hourOfDayFromHourString(hourString) {
   const hour = Number(hourString.slice(11, 13));
   return Number.isInteger(hour) && hour >= 0 && hour <= 23 ? hour : null;
 }
+
+// ETA follow-up (#486): `ms` is a precise UTC instant (e.g. an estimated
+// arrival time, which generally falls between whole hours) — formatted
+// with explicit getUTC*() accessors, never the local-timezone-sensitive
+// getHours()/getMinutes(), for the same reason formatHourLabel() above
+// reads its fixed strings directly rather than through a Date.
+export function formatInstantHHMM(ms) {
+  if (typeof ms !== "number" || !Number.isFinite(ms)) return "—";
+  const d = new Date(ms);
+  const pad2 = (n) => String(n).padStart(2, "0");
+  const day = pad2(d.getUTCDate());
+  const month = pad2(d.getUTCMonth() + 1);
+  const time = `${pad2(d.getUTCHours())}:${pad2(d.getUTCMinutes())}`;
+  return `${day}.${month} ${time}`;
+}

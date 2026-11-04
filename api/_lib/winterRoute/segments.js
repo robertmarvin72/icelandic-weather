@@ -8,31 +8,65 @@
 // fastar skilgreiningar í kóða eru heimilar") — not derived from the live
 // feed, so an upstream name change can never desync this order (S5f).
 
+// `lengthKm` is `length_km_vegnr1_tier0` from the same retained CSV, in
+// the same fixed order — reused for the ETA follow-up's distance-from-
+// start approximation below (NOT a new geodata fetch: this column was
+// already in the retained file, just not previously carried into code).
 export const WINTER_ROUTE_SEGMENTS = [
-  { idButur: 1410010037, nameIs: "Rauðavatn – Nesjavallaleið", nameEn: "Rauðavatn – Nesjavallaleið" },
-  { idButur: 903010037, nameIs: "Nesjavallaleið – Geirland", nameEn: "Nesjavallaleið – Geirland" },
-  { idButur: 253020037, nameIs: "Fossvellir – Þrengslavegur", nameEn: "Fossvellir – Þrengslavegur" },
-  { idButur: 252090037, nameIs: "Hellisheiði (til austurs)", nameEn: "Hellisheiði (eastbound)" },
-  { idButur: 902030037, nameIs: "Selfoss – Hveragerði", nameEn: "Selfoss – Hveragerði" },
-  { idButur: 902040037, nameIs: "Þjórsá – Selfoss", nameEn: "Þjórsá – Selfoss" },
-  { idButur: 901130037, nameIs: "Hella – Þjórsá", nameEn: "Hella – Þjórsá" },
-  { idButur: 901230037, nameIs: "Hvolsvöllur – Hella", nameEn: "Hvolsvöllur – Hella" },
-  { idButur: 901220037, nameIs: "Hvolsvöllur – Markarfljót", nameEn: "Hvolsvöllur – Markarfljót" },
-  { idButur: 901210037, nameIs: "Markarfljót – Steinar", nameEn: "Markarfljót – Steinar" },
-  { idButur: 901050037, nameIs: "Dyrhólavegur – Steinar", nameEn: "Dyrhólavegur – Steinar" },
-  { idButur: 901040037, nameIs: "Reynisfjall", nameEn: "Reynisfjall" },
-  { idButur: 801100037, nameIs: "Vík", nameEn: "Vík" },
+  { idButur: 1410010037, nameIs: "Rauðavatn – Nesjavallaleið", nameEn: "Rauðavatn – Nesjavallaleið", lengthKm: 2.55 },
+  { idButur: 903010037, nameIs: "Nesjavallaleið – Geirland", nameEn: "Nesjavallaleið – Geirland", lengthKm: 1.89 },
+  { idButur: 253020037, nameIs: "Fossvellir – Þrengslavegur", nameEn: "Fossvellir – Þrengslavegur", lengthKm: 12.29 },
+  { idButur: 252090037, nameIs: "Hellisheiði (til austurs)", nameEn: "Hellisheiði (eastbound)", lengthKm: 16.5 },
+  { idButur: 902030037, nameIs: "Selfoss – Hveragerði", nameEn: "Selfoss – Hveragerði", lengthKm: 12.63 },
+  { idButur: 902040037, nameIs: "Þjórsá – Selfoss", nameEn: "Þjórsá – Selfoss", lengthKm: 18.51 },
+  { idButur: 901130037, nameIs: "Hella – Þjórsá", nameEn: "Hella – Þjórsá", lengthKm: 17.64 },
+  { idButur: 901230037, nameIs: "Hvolsvöllur – Hella", nameEn: "Hvolsvöllur – Hella", lengthKm: 12.81 },
+  { idButur: 901220037, nameIs: "Hvolsvöllur – Markarfljót", nameEn: "Hvolsvöllur – Markarfljót", lengthKm: 21.96 },
+  { idButur: 901210037, nameIs: "Markarfljót – Steinar", nameEn: "Markarfljót – Steinar", lengthKm: 17.38 },
+  { idButur: 901050037, nameIs: "Dyrhólavegur – Steinar", nameEn: "Dyrhólavegur – Steinar", lengthKm: 28.08 },
+  { idButur: 901040037, nameIs: "Reynisfjall", nameEn: "Reynisfjall", lengthKm: 12.06 },
+  { idButur: 801100037, nameIs: "Vík", nameEn: "Vík", lengthKm: 1.34 },
 ];
 
 export const WINTER_ROUTE_IDBUTUR_LIST = WINTER_ROUTE_SEGMENTS.map((s) => s.idButur);
 
+// ETA follow-up (#486): cumulative distance-from-start (Rauðavatn) at the
+// START of each segment, derived purely from the lengths above — no new
+// geometry/geodata. Used only to approximate each forecast point's own
+// distance below; never shown to the user directly.
+function cumulativeStartKm(idButur) {
+  let total = 0;
+  for (const seg of WINTER_ROUTE_SEGMENTS) {
+    if (seg.idButur === idButur) return total;
+    total += seg.lengthKm;
+  }
+  return null; // unreachable for a real idButur in the fixed list above
+}
+
+// No retained research gives an exact within-segment position for any of
+// the 6 forecast points (confirmed: route-segments.csv has only per-segment
+// totals; final-bounded-plan.md explicitly calls the points "research point
+// selection, not a claim of whole-section representativeness"; ticket-483's
+// own ETA harness used a flat per-position hour assumption, not a distance
+// computation). The segment's own MIDPOINT is therefore used as a clearly-
+// defined, honest approximation — never claimed as the point's precise
+// location — and every consumer of this value must present the resulting
+// ETA as approximate (see eta.js / WinterRoute.jsx).
+function approxDistanceFromStartKm(nearIdButur) {
+  const segment = WINTER_ROUTE_SEGMENTS.find((s) => s.idButur === nearIdButur);
+  if (!segment) return null;
+  const start = cumulativeStartKm(nearIdButur);
+  return start + segment.lengthKm / 2;
+}
+
 // Six frozen forecast points, reused verbatim from
 // docs/ai/tasks/ticket-485/final-bounded-plan.md (coordinates/order already
 // executed once in production research — ticket #485's RESEARCH GO).
-// `nearIdButur` is a display cross-reference only (which segment this point
-// represents for selection) — never used for forecast-response matching,
-// which goes purely by coordinate order/distance (see validateForecast.js).
-export const WINTER_ROUTE_FORECAST_POINTS = [
+// `nearIdButur` is a display cross-reference AND (ETA follow-up) the basis
+// for `approxDistanceFromStartKm` below — still never used for forecast-
+// response matching, which goes purely by coordinate order/distance (see
+// validateForecast.js).
+const FORECAST_POINT_DEFS = [
   {
     id: "P1",
     lat: 64.01137995,
@@ -82,3 +116,8 @@ export const WINTER_ROUTE_FORECAST_POINTS = [
     labelEn: "Skógar–Vík",
   },
 ];
+
+export const WINTER_ROUTE_FORECAST_POINTS = FORECAST_POINT_DEFS.map((p) => ({
+  ...p,
+  approxDistanceFromStartKm: approxDistanceFromStartKm(p.nearIdButur),
+}));

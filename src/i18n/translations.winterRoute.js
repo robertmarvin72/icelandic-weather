@@ -11,7 +11,7 @@ export const winterRouteTranslations = {
     winterRouteSubtitle: "Road conditions now and forecast along the route",
     winterRouteLatestStatusNote: "Latest available status, not a forecast of road conditions.",
 
-    winterRouteHourLabel: "Select a time",
+    winterRouteHourLabel: "Estimated departure time",
     winterRouteNoHoursAvailable: "No upcoming time is available right now.",
 
     winterRouteForecastSectionTitle: "Forecast at six points along the route",
@@ -40,6 +40,8 @@ export const winterRouteTranslations = {
     winterRouteForecastUnavailable: "Forecast unavailable.",
     winterRouteForecastStaleServed: "Showing the last known forecast ({minutes} min old).",
     winterRoutePointUnavailable: "No forecast data available for this point.",
+    winterRouteEstimatedArrival: "Estimated arrival: {time} UTC",
+    winterRouteForecastNotAvailableAtComputedTime: "Forecast not available",
     winterRouteGridDisclaimer: "A forecast grid point from a weather model — not a direct measurement on the road.",
     winterRouteValidFor: "Valid for {time} UTC",
     winterRouteTemperature: "Temperature",
@@ -67,7 +69,7 @@ export const winterRouteTranslations = {
     winterRouteSubtitle: "Færð núna og veðurspá á leiðinni",
     winterRouteLatestStatusNote: "Nýjasta tiltæka staða, ekki spáð færð.",
 
-    winterRouteHourLabel: "Veldu tíma",
+    winterRouteHourLabel: "Áætlaður brottfarartími",
     winterRouteNoHoursAvailable: "Engin framtíðartími er tiltækur núna.",
 
     winterRouteForecastSectionTitle: "Veðurspá á sex punktum á leiðinni",
@@ -96,6 +98,8 @@ export const winterRouteTranslations = {
     winterRouteForecastUnavailable: "Veðurspá er ekki tiltæk.",
     winterRouteForecastStaleServed: "Sýnir síðustu þekktu spá ({minutes} mín. gamla).",
     winterRoutePointUnavailable: "Engin spágögn tiltæk fyrir þennan punkt.",
+    winterRouteEstimatedArrival: "Áætluð koma: {time} UTC",
+    winterRouteForecastNotAvailableAtComputedTime: "Spá ekki tiltæk",
     winterRouteGridDisclaimer: "Punktspá úr veðurlíkani — ekki bein mæling á vegi.",
     winterRouteValidFor: "Gildir fyrir {time} UTC",
     winterRouteTemperature: "Hiti",

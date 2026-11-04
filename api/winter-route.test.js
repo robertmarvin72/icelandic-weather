@@ -2,7 +2,8 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import handler from "./winter-route.js";
 import { __resetWinterRouteCacheForTests } from "./_lib/winterRoute/cache.js";
-import { WINTER_ROUTE_IDBUTUR_LIST } from "./_lib/winterRoute/segments.js";
+import { WINTER_ROUTE_IDBUTUR_LIST, WINTER_ROUTE_FORECAST_POINTS } from "./_lib/winterRoute/segments.js";
+import { computeForecastWindow } from "./_lib/winterRoute/forecastFetch.js";
 
 function makeReq(method = "GET") {
   return { method, url: "/api/winter-route", headers: { host: "localhost:3000" } };
@@ -184,6 +185,55 @@ describe("GET /api/winter-route", () => {
     expect(segment.ambiguous).toBe(true);
     expect(segment.category).toBe("closed");
     expect(segment.positiveStyleEligible).toBe(false);
+  });
+
+  it("ETA follow-up: each available forecast point carries its own approxDistanceFromStartKm through to the response, matching the fixed segment data", async () => {
+    const window = computeForecastWindow();
+    const forecastResults = WINTER_ROUTE_FORECAST_POINTS.map((p, i) => ({
+      latitude: p.lat,
+      longitude: p.lon,
+      elevation: 1,
+      utc_offset_seconds: 0,
+      hourly_units: {
+        temperature_2m: "°C",
+        wind_speed_10m: "m/s",
+        wind_gusts_10m: "m/s",
+        precipitation: "mm",
+        weather_code: "wmo code",
+      },
+      hourly: {
+        time: window.expectedHours,
+        temperature_2m: window.expectedHours.map(() => i),
+        wind_speed_10m: window.expectedHours.map(() => 1),
+        wind_gusts_10m: window.expectedHours.map(() => 1),
+        precipitation: window.expectedHours.map(() => 0),
+        weather_code: window.expectedHours.map(() => 0),
+      },
+    }));
+
+    global.fetch = vi.fn().mockImplementation((url) => {
+      if (String(url).includes("faerdpunktar")) return Promise.resolve(okJsonResponse([]));
+      if (String(url).includes("faerd2017_1")) {
+        return Promise.resolve(okJsonResponse(WINTER_ROUTE_IDBUTUR_LIST.map(validSegmentRow)));
+      }
+      return Promise.resolve(okJsonResponse(forecastResults));
+    });
+    process.env.OPEN_METEO_API_KEY = "test-key";
+
+    const res = makeRes();
+    await handler(makeReq(), res);
+
+    expect(res.body.forecast.available).toBe(true);
+    expect(res.body.forecast.points).toHaveLength(6);
+    res.body.forecast.points.forEach((point, i) => {
+      expect(point.available).toBe(true);
+      expect(point.approxDistanceFromStartKm).toBeCloseTo(WINTER_ROUTE_FORECAST_POINTS[i].approxDistanceFromStartKm, 6);
+    });
+    // Strictly increasing P1..P6, matching the corridor order.
+    const distances = res.body.forecast.points.map((p) => p.approxDistanceFromStartKm);
+    for (let i = 1; i < distances.length; i++) {
+      expect(distances[i]).toBeGreaterThan(distances[i - 1]);
+    }
   });
 
   it("a closed segment's category is 'closed' regardless of other segments", async () => {

@@ -54,12 +54,27 @@ function makeSegment([idButur, nameIs], overrides = {}) {
   };
 }
 
+// Mirrors api/_lib/winterRoute/segments.js's own real, computed
+// approxDistanceFromStartKm values for P1..P6 (not re-imported here to
+// keep the e2e fixture self-contained, same convention as the rest of
+// this file) — real enough that the ETA follow-up's per-point arrival
+// times are authentic in this visual pass, not an arbitrary placeholder.
+const REAL_APPROX_DISTANCE_FROM_START_KM = {
+  P1: 24.98,
+  P2: 39.545,
+  P3: 73.19,
+  P4: 88.415,
+  P5: 125.47,
+  P6: 174.97,
+};
+
 function makeForecastPoint(id, label, overrides = {}) {
   return {
     id,
     labelIs: label,
     labelEn: label,
     nearIdButur: 252090037,
+    approxDistanceFromStartKm: REAL_APPROX_DISTANCE_FROM_START_KM[id],
     available: true,
     elevation: 100,
     hours: EXPECTED_HOURS,
@@ -135,7 +150,7 @@ test.describe("WinterRoute (/winter-route) — Ticket #486 Round 2 (N3) real-bro
     await gotoPage(page);
 
     await expect(page.getByText("Rauðavatn–Vík", { exact: true })).toBeVisible();
-    await expect(page.getByLabel("Veldu tíma")).toBeVisible();
+    await expect(page.getByLabel("Áætlaður brottfarartími")).toBeVisible();
     for (const [, nameIs] of SEGMENT_DEFS) {
       await expect(page.getByText(nameIs, { exact: true }).first()).toBeVisible();
     }
@@ -150,7 +165,7 @@ test.describe("WinterRoute (/winter-route) — Ticket #486 Round 2 (N3) real-bro
     await page.setViewportSize({ width: 375, height: 800 });
     await gotoPage(page);
 
-    await expect(page.getByLabel("Select a time")).toBeVisible();
+    await expect(page.getByLabel("Estimated departure time")).toBeVisible();
     await expect(page.locator("canvas, .leaflet-container")).toHaveCount(0);
     await page.screenshot({ path: "test-results/ticket-486/mobile-light-en.png", fullPage: true });
   });
@@ -179,7 +194,7 @@ test.describe("WinterRoute (/winter-route) — Ticket #486 Round 2 (N3) real-bro
     await page.setViewportSize({ width: 1280, height: 900 });
     await gotoPage(page);
 
-    const select = page.getByLabel("Veldu tíma");
+    const select = page.getByLabel("Áætlaður brottfarartími");
     await select.waitFor({ state: "visible" });
     await select.focus();
     await expect(select).toBeFocused();

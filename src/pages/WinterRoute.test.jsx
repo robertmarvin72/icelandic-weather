@@ -42,6 +42,12 @@ function futureHourString(offsetHours) {
 }
 const FUTURE_HOURS = [futureHourString(2), futureHourString(3)];
 
+// ETA follow-up (#486): distance 0 resolves (at departure = FUTURE_HOURS[0],
+// the auto-selected first available hour) to hour index 0 — i.e. the
+// "estimated arrival" lands exactly on the departure hour itself, the
+// simplest, most predictable default for tests that aren't specifically
+// about per-point ETA resolution. 70 km at the fixed 70 km/h assumption
+// resolves to exactly +1h -> hour index 1.
 function makeForecastPoint(id, overrides = {}) {
   const hours = FUTURE_HOURS;
   return {
@@ -49,6 +55,7 @@ function makeForecastPoint(id, overrides = {}) {
     labelIs: `Punktur ${id}`,
     labelEn: `Point ${id}`,
     nearIdButur: 252090037,
+    approxDistanceFromStartKm: 0,
     available: true,
     requestedLat: 64,
     requestedLon: -21,
@@ -160,38 +167,92 @@ describe("WinterRoute page", () => {
     expect(screen.queryByLabelText(translations.is.winterRouteHourLabel)).toBeNull();
   });
 
-  it("shows the same selected hour's data on all six forecast cards, and switching hours updates all six together", async () => {
+  it("ETA follow-up: each card resolves its OWN forecast hour from its own distance, not a single shared hour", async () => {
     const payload = makePayload();
-    // Distinct per-point values keyed by index, so a shared hourIndex is
-    // actually observable (not masked by identical fixture data).
+    // Distinct per-point values keyed by index, so each point's own
+    // resolved hour is independently observable. Even-indexed points get
+    // distance 0 (resolve to hour index 0 at the departure itself);
+    // odd-indexed points get 70 km (resolve to hour index 1, +1h at the
+    // fixed 70 km/h assumption) — deliberately NOT uniform, the opposite
+    // of #486's original "same hour on every card" design.
     payload.forecast.points.forEach((p, i) => {
+      p.approxDistanceFromStartKm = i % 2 === 0 ? 0 : 70;
       p.series.temperature_2m = [i, i + 100];
     });
     vi.stubGlobal("fetch", vi.fn().mockResolvedValue({ ok: true, json: async () => payload }));
     renderPage();
 
-    const select = await screen.findByLabelText(translations.is.winterRouteHourLabel);
-    // Hour index 0: each card's temperature equals its own point index.
-    // Waited together (not a bare synchronous assertion right after
-    // finding the label) — the label/select appear on the same render
-    // pass `data` itself arrives, one pass BEFORE the follow-up effect
-    // that resolves `selectedHour`/`hourIndex` and actually populates
-    // these per-hour values, so asserting immediately races that effect.
+    await screen.findByLabelText(translations.is.winterRouteHourLabel);
+    // Waited together, not asserted synchronously right after the label
+    // appears — the label/select appear on the same render pass `data`
+    // itself arrives, one pass BEFORE the follow-up effect that resolves
+    // `selectedHour` (the departure) and actually populates these values.
     await waitFor(() => {
       for (let i = 0; i < 6; i++) {
-        expect(screen.getByText(`${formatDecimal(i, "is", 1)} °C`)).toBeInTheDocument();
+        const expectedTemp = i % 2 === 0 ? i : i + 100;
+        expect(screen.getByText(`${formatDecimal(expectedTemp, "is", 1)} °C`)).toBeInTheDocument();
       }
     });
+  });
 
-    const { fireEvent } = await import("@testing-library/react");
-    fireEvent.change(select, { target: { value: FUTURE_HOURS[1] } });
+  it("ETA follow-up: a point whose computed arrival falls outside the fetched window shows 'forecast not available', never wraps or guesses", async () => {
+    const payload = makePayload();
+    // 24h * 70 km/h at departure = FUTURE_HOURS[0] lands far past
+    // FUTURE_HOURS[1], the last entry in this fixture's (deliberately
+    // short, 2-entry) hours array.
+    payload.forecast.points[0].approxDistanceFromStartKm = 24 * 70;
+    vi.stubGlobal("fetch", vi.fn().mockResolvedValue({ ok: true, json: async () => payload }));
+    renderPage();
 
-    // Hour index 1: every card moves to its +100 value together.
+    const dict = translations.is;
+    await waitFor(() =>
+      expect(screen.getByText(dict.winterRouteForecastNotAvailableAtComputedTime)).toBeInTheDocument()
+    );
+  });
+
+  it("ETA follow-up: a point with no derivable distance shows 'forecast not available' and no estimated-arrival line, never guessed", async () => {
+    const payload = makePayload();
+    payload.forecast.points[0].approxDistanceFromStartKm = null;
+    vi.stubGlobal("fetch", vi.fn().mockResolvedValue({ ok: true, json: async () => payload }));
+    renderPage();
+
+    const dict = translations.is;
+    await waitFor(() =>
+      expect(screen.getByText(dict.winterRouteForecastNotAvailableAtComputedTime)).toBeInTheDocument()
+    );
+    const card = screen.getByText("Punktur P1").closest(".rounded-xl");
+    expect(within(card).queryByText(/Áætluð koma/)).toBeNull();
+  });
+
+  it("ETA follow-up: shows both the estimated arrival time and the forecast's own valid time on a card", async () => {
+    const payload = makePayload();
+    // 35 km at 70 km/h = 30 min -> raw arrival is FUTURE_HOURS[0] + 30min
+    // (a real, off-the-hour instant), but the forecast shown is for the
+    // next whole hour, FUTURE_HOURS[1] — the two lines must show
+    // DIFFERENT values when this happens, which is the whole point of
+    // showing both.
+    payload.forecast.points[0].approxDistanceFromStartKm = 35;
+    vi.stubGlobal("fetch", vi.fn().mockResolvedValue({ ok: true, json: async () => payload }));
+    renderPage();
+
+    await screen.findByLabelText(translations.is.winterRouteHourLabel);
+    const expectedArrival = translations.is.winterRouteEstimatedArrival.replace(
+      "{time}",
+      `${FUTURE_HOURS[0].slice(8, 10)}.${FUTURE_HOURS[0].slice(5, 7)} ${FUTURE_HOURS[0].slice(11, 13)}:30`
+    );
+    const expectedValidFor = translations.is.winterRouteValidFor.replace(
+      "{time}",
+      `${FUTURE_HOURS[1].slice(8, 10)}.${FUTURE_HOURS[1].slice(5, 7)} ${FUTURE_HOURS[1].slice(11, 16)}`
+    );
     await waitFor(() => {
-      for (let i = 0; i < 6; i++) {
-        expect(screen.getByText(`${formatDecimal(i + 100, "is", 1)} °C`)).toBeInTheDocument();
-      }
+      expect(screen.getByText(expectedArrival)).toBeInTheDocument();
+      expect(screen.getByText(expectedValidFor)).toBeInTheDocument();
     });
+  });
+
+  it("the departure-time picker is labeled as a departure time, not a generic time", () => {
+    expect(translations.is.winterRouteHourLabel).toBe("Áætlaður brottfarartími");
+    expect(translations.en.winterRouteHourLabel).toBe("Estimated departure time");
   });
 
   it("Round 2 (R1b): shows a visible warning when the points feed is unavailable/stale, without hiding segment data", async () => {

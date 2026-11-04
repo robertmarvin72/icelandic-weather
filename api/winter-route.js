@@ -158,6 +158,7 @@ function buildForecastPayload(forecastResult) {
         labelIs: def.labelIs,
         labelEn: def.labelEn,
         nearIdButur: def.nearIdButur,
+        approxDistanceFromStartKm: def.approxDistanceFromStartKm,
         available: false,
         reason: validated?.reason ?? "missing_point",
       };
@@ -167,6 +168,7 @@ function buildForecastPayload(forecastResult) {
       labelIs: def.labelIs,
       labelEn: def.labelEn,
       nearIdButur: def.nearIdButur,
+      approxDistanceFromStartKm: def.approxDistanceFromStartKm,
       available: true,
       requestedLat: def.lat,
       requestedLon: def.lon,
