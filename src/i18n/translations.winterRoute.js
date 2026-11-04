@@ -50,6 +50,23 @@ export const winterRouteTranslations = {
     winterRoutePrecip: "Precipitation (previous hour)",
     winterRouteUnknownWeatherSymbol: "Unknown weather symbol",
 
+    // #489 — route-level summary (max gust/precip, min temp among the six
+    // points at their own already-resolved ETA hour; count of segments
+    // with a currently active point notice). Gust/precip wording
+    // deliberately repeats the same "(max, previous hour)"/"(previous
+    // hour)" period phrasing as winterRouteGust/winterRoutePrecip above.
+    winterRouteSummaryHeading: "Along the route now",
+    winterRouteSummaryGust: "Highest gusts (max, previous hour): {value} m/s — {point}, {time} UTC",
+    winterRouteSummaryGustMissing: "Highest gusts: data not available",
+    winterRouteSummaryPrecip: "Most precipitation (previous hour): {value} mm — {point}, {time} UTC",
+    winterRouteSummaryPrecipMissing: "Most precipitation: data not available",
+    winterRouteSummaryMinTemp: "Lowest temperature: {value} °C — {point}, {time} UTC",
+    winterRouteSummaryMinTempMissing: "Lowest temperature: data not available",
+    winterRouteSummaryPartialSuffix: " (based on {count} of 6 points)",
+    winterRouteSummaryNoticeCount: "Sections with valid notices: {count}",
+    winterRouteSummaryNoticeCountUnconfirmed: "The count of sections with valid notices is unconfirmed right now.",
+    winterRouteSummaryNoticeScope: "Not the overall road condition — see the road-condition list below.",
+
     winterRouteAttributionRoadLine:
       "Road-condition and closure data: Vegagerðin (the Icelandic Road Administration), CC BY 4.0.",
     winterRouteAttributionWeatherLine: "Weather forecast data: Open-Meteo.",
@@ -107,6 +124,19 @@ export const winterRouteTranslations = {
     winterRouteGust: "Hviður (hámark síðustu klukkustundar)",
     winterRoutePrecip: "Úrkoma (síðasta klukkustund)",
     winterRouteUnknownWeatherSymbol: "Óþekkt veðurtákn",
+
+    // #489 — sjá samsvarandi EN athugasemd að ofan.
+    winterRouteSummaryHeading: "Á leiðinni núna",
+    winterRouteSummaryGust: "Mestar hviður (hámark síðustu klukkustundar): {value} m/s — {point}, {time} UTC",
+    winterRouteSummaryGustMissing: "Mestar hviður: gögn ekki tiltæk",
+    winterRouteSummaryPrecip: "Mest úrkoma (síðasta klukkustund): {value} mm — {point}, {time} UTC",
+    winterRouteSummaryPrecipMissing: "Mest úrkoma: gögn ekki tiltæk",
+    winterRouteSummaryMinTemp: "Lægsti hiti: {value} °C — {point}, {time} UTC",
+    winterRouteSummaryMinTempMissing: "Lægsti hiti: gögn ekki tiltæk",
+    winterRouteSummaryPartialSuffix: " (byggt á {count} af 6 punktum)",
+    winterRouteSummaryNoticeCount: "Kaflar með gildar tilkynningar: {count}",
+    winterRouteSummaryNoticeCountUnconfirmed: "Fjöldi kafla með gildar tilkynningar er óstaðfestur núna.",
+    winterRouteSummaryNoticeScope: "Ekki heildarstaða færðar — sjá færðarlistann neðar.",
 
     winterRouteAttributionRoadLine: "Færðar- og lokanargögn: Vegagerðin, CC BY 4.0.",
     winterRouteAttributionWeatherLine: "Veðurspágögn: Open-Meteo.",

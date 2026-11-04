@@ -291,7 +291,10 @@ describe("WinterRoute page", () => {
     // asserting on the earlier-settling text alone raced the later one.
     await waitFor(() => expect(screen.getAllByText(`${formatDecimal(-1.2, "is", 1)} °C`)).toHaveLength(6));
     const expected = translations.is.winterRouteForecastStaleServed.replace("{minutes}", "20");
-    expect(screen.getByText(expected)).toBeInTheDocument();
+    // #489: the same stale-forecast line now appears twice by design — once
+    // in the new route-level summary, once in the original forecast
+    // section (the prompt explicitly keeps the existing warning in place).
+    expect(screen.getAllByText(expected)).toHaveLength(2);
   });
 
   it("does not show the stale-forecast line when forecast.stale is false", async () => {
@@ -391,5 +394,158 @@ describe("WinterRoute page", () => {
       "href",
       "https://www.vegagerdin.is/upplysingar-og-utgafa/gagnaveita-vegagerdarinnar/"
     );
+  });
+
+  describe("#489 — route-level summary", () => {
+    it("renders the three weather extrema with point label and resolved time, and the notice count with its fixed scope wording", async () => {
+      vi.stubGlobal("fetch", vi.fn().mockResolvedValue({ ok: true, json: async () => makePayload() }));
+      renderPage();
+
+      await screen.findByLabelText(translations.is.winterRouteHourLabel);
+
+      // All six points share identical fixture series/distance, so every
+      // metric's winner is P1 (first in route order) at the departure
+      // hour itself (distance 0 -> hour index 0). Asserted on the stable
+      // PARTS (value/point/unit) rather than the whole interpolated
+      // string, since the time portion depends on the real clock the
+      // suite happens to run at.
+      const gustLine = await screen.findByText((text) => text.startsWith("Mestar hviður"));
+      expect(gustLine.textContent).toContain(`${formatDecimal(7.1, "is", 1)} m/s`);
+      expect(gustLine.textContent).toContain("Punktur P1");
+
+      const precipLine = screen.getByText((text) => text.startsWith("Mest úrkoma"));
+      expect(precipLine.textContent).toContain(`${formatDecimal(0, "is", 1)} mm`);
+
+      const tempLine = screen.getByText((text) => text.startsWith("Lægsti hiti"));
+      expect(tempLine.textContent).toContain(`${formatDecimal(-1.2, "is", 1)} °C`);
+
+      expect(screen.getByText("Kaflar með gildar tilkynningar: 0")).toBeInTheDocument();
+      expect(screen.getByText(translations.is.winterRouteSummaryNoticeScope)).toBeInTheDocument();
+    });
+
+    it("S2: the summary's gust/precip lines reuse the exact same period wording as the cards", async () => {
+      expect(translations.is.winterRouteSummaryGust).toContain("hámark síðustu klukkustundar");
+      expect(translations.is.winterRouteSummaryPrecip).toContain("síðasta klukkustund");
+      expect(translations.en.winterRouteSummaryGust).toContain("max, previous hour");
+      expect(translations.en.winterRouteSummaryPrecip).toContain("previous hour");
+    });
+
+    it("S3: the summary shows the same generatedAt acquisition time as the attribution section, with the existing formatter/key", async () => {
+      vi.stubGlobal("fetch", vi.fn().mockResolvedValue({ ok: true, json: async () => makePayload() }));
+      renderPage();
+
+      const expected = translations.is.winterRouteAcquiredAt.replace("{time}", "2026-11-03 18:00");
+      // Appears twice by design — once in the new summary, once (unchanged)
+      // in the existing bottom attribution section.
+      await waitFor(() => expect(screen.getAllByText(expected)).toHaveLength(2));
+    });
+
+    it("changing the departure time updates the summary and the cards together, from the same already-fetched data (no extra fetch)", async () => {
+      const payload = makePayload();
+      // Distinct per-point values (same pattern as the existing ETA cards
+      // test) so each point's own resolved value is independently
+      // observable, rather than masked by identical fixture data.
+      payload.forecast.points.forEach((p, i) => {
+        p.series.temperature_2m = [i - 10, i - 10 + 100];
+      });
+      const fetchMock = vi.fn().mockResolvedValue({ ok: true, json: async () => payload });
+      vi.stubGlobal("fetch", fetchMock);
+      renderPage();
+
+      const select = await screen.findByLabelText(translations.is.winterRouteHourLabel);
+      await waitFor(() => expect(select.value).toBe(FUTURE_HOURS[0]));
+
+      // Hour index 0: min temp across identical-distance points is P1's -10
+      // (the lowest of -10, -9, -8, -7, -6, -5).
+      await waitFor(() => {
+        const tempLine = screen.getByText((text) => text.startsWith("Lægsti hiti"));
+        expect(tempLine.textContent).toContain(`${formatDecimal(-10, "is", 1)} °C`);
+        expect(tempLine.textContent).toContain("Punktur P1");
+      });
+
+      const { fireEvent } = await import("@testing-library/react");
+      fireEvent.change(select, { target: { value: FUTURE_HOURS[1] } });
+
+      // Hour index 1: every point's own temperature moves to its own +100
+      // value together — the summary's new winner is still P1 (90, the
+      // lowest of 90..95), and each of the six cards shows its own moved
+      // value (not a single shared value).
+      await waitFor(() => {
+        const tempLine = screen.getByText((text) => text.startsWith("Lægsti hiti"));
+        expect(tempLine.textContent).toContain(`${formatDecimal(90, "is", 1)} °C`);
+        expect(tempLine.textContent).toContain("Punktur P1");
+        for (let i = 0; i < 6; i++) {
+          expect(screen.getByText(`${formatDecimal(i - 10 + 100, "is", 1)} °C`)).toBeInTheDocument();
+        }
+      });
+
+      expect(fetchMock).toHaveBeenCalledTimes(1);
+    });
+
+    it("the notice count is independent of the selected departure time", async () => {
+      const payload = makePayload();
+      payload.segments[0].notices = [{ idPunktur: 1, astand: "VEGAVINNA", status: "active" }];
+      vi.stubGlobal("fetch", vi.fn().mockResolvedValue({ ok: true, json: async () => payload }));
+      renderPage();
+
+      const select = await screen.findByLabelText(translations.is.winterRouteHourLabel);
+      await waitFor(() => expect(screen.getByText("Kaflar með gildar tilkynningar: 1")).toBeInTheDocument());
+
+      const { fireEvent } = await import("@testing-library/react");
+      fireEvent.change(select, { target: { value: FUTURE_HOURS[1] } });
+
+      expect(screen.getByText("Kaflar með gildar tilkynningar: 1")).toBeInTheDocument();
+    });
+
+    it("two active notices on the same segment count once; the same notice on two segments counts twice", async () => {
+      const payload = makePayload();
+      payload.segments[0].notices = [
+        { idPunktur: 1, astand: "VEGAVINNA", status: "active" },
+        { idPunktur: 2, astand: "VEGAVINNA", status: "active" },
+      ];
+      payload.segments[1].notices = [{ idPunktur: 3, astand: "VEGAVINNA", status: "active" }];
+      vi.stubGlobal("fetch", vi.fn().mockResolvedValue({ ok: true, json: async () => payload }));
+      renderPage();
+
+      await waitFor(() => expect(screen.getByText("Kaflar með gildar tilkynningar: 2")).toBeInTheDocument());
+    });
+
+    it("expired/unknown-validity notices are excluded from the count, and a general LOKAD surface with no notices is 0 — but the scope wording and no positive style always show", async () => {
+      const payload = makePayload();
+      payload.segments[0].notices = [{ idPunktur: 1, astand: "ALLUR_AKSTUR_BANN", status: "expired" }];
+      payload.segments[1] = makeSegment(100000001, { category: "closed", positiveStyleEligible: false, notices: [] });
+      vi.stubGlobal("fetch", vi.fn().mockResolvedValue({ ok: true, json: async () => payload }));
+      renderPage();
+
+      const countLine = await screen.findByText("Kaflar með gildar tilkynningar: 0");
+      expect(countLine).toBeInTheDocument();
+      expect(countLine.className).not.toMatch(/emerald|green/);
+      expect(screen.getByText(translations.is.winterRouteSummaryNoticeScope)).toBeInTheDocument();
+    });
+
+    it("an unavailable/stale points feed shows an unconfirmed count, never an unconditional 0", async () => {
+      const payload = makePayload();
+      payload.roadMeta.pointsFeedUnavailableOrStale = true;
+      vi.stubGlobal("fetch", vi.fn().mockResolvedValue({ ok: true, json: async () => payload }));
+      renderPage();
+
+      await waitFor(() =>
+        expect(screen.getByText(translations.is.winterRouteSummaryNoticeCountUnconfirmed)).toBeInTheDocument()
+      );
+      expect(screen.queryByText(/Kaflar með gildar tilkynningar: 0/)).toBeNull();
+      expect(screen.getByText(translations.is.winterRouteSummaryNoticeScope)).toBeInTheDocument();
+    });
+
+    it("missing weather data for a metric shows the dedicated missing text, never a guessed 0", async () => {
+      const payload = makePayload({ forecast: { available: false, reason: "key_missing", points: [] } });
+      vi.stubGlobal("fetch", vi.fn().mockResolvedValue({ ok: true, json: async () => payload }));
+      renderPage();
+
+      await waitFor(() => {
+        expect(screen.getByText(translations.is.winterRouteSummaryGustMissing)).toBeInTheDocument();
+        expect(screen.getByText(translations.is.winterRouteSummaryPrecipMissing)).toBeInTheDocument();
+        expect(screen.getByText(translations.is.winterRouteSummaryMinTempMissing)).toBeInTheDocument();
+      });
+    });
   });
 });

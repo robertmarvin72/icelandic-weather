@@ -77,3 +77,23 @@ export function computeEta(departureHourString, distanceKm, speedKmh = ASSUMED_A
 
   return { rawArrivalMs, forecastHour };
 }
+
+/**
+ * #489 follow-up — the exact same per-point "which fetched hourly slot"
+ * resolution `ForecastCard` already does, pulled into one shared function
+ * so the new route-level summary reads the identical card/summary time
+ * for each point rather than a second parallel computation. `point` is one
+ * entry of the API response's `forecast.points[]` (so `point.available`,
+ * `point.hours`, `point.approxDistanceFromStartKm` are already present);
+ * an unavailable point or an unresolvable/out-of-window arrival both
+ * produce `hasHour: false` — the same "not available" outcome `ForecastCard`
+ * already renders, never a 0/guessed index.
+ */
+export function resolvePointAtDeparture(point, departureHourString) {
+  if (!point || !point.available) {
+    return { rawArrivalMs: null, forecastHour: null, hourIndex: -1, hasHour: false };
+  }
+  const { rawArrivalMs, forecastHour } = computeEta(departureHourString, point.approxDistanceFromStartKm);
+  const hourIndex = forecastHour != null ? point.hours.indexOf(forecastHour) : -1;
+  return { rawArrivalMs, forecastHour, hourIndex, hasHour: hourIndex >= 0 };
+}

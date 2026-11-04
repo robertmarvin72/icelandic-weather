@@ -1,0 +1,47 @@
+# #489 — CC report
+
+Executed `approved-prompt-v1.md` in full: a short route-level summary (max gust, max precipitation, min temperature among the six forecast points at their own already-resolved ETA hour, plus a count of road segments carrying a currently active point notice), positioned above the existing cards/list on `/winter-route`. No change to ETA math/distance/rounding/speed, no new upstream data, no new dependency, no commit/push/GitHub/deploy.
+
+## Read-only audit (before any code)
+
+Read `WinterRoute.jsx`, `winterRouteEta.js` + its tests, `winterRoutePresentation.js`, `translations.winterRoute.js`, `api/winter-route.js` and the current response shape (`forecast.stale`/`cacheAgeMs`, `roadMeta.stale`/`pointsAvailable`/`pointsFeedUnavailableOrStale`, `segments[].notices[].status`). Confirmed `computeEta`'s ceiling-to-next-hour/null-on-invalid behavior and exactly how `ForecastCard` turned `departureHour` + `point.approxDistanceFromStartKm` into `hourIndex` before changing anything, per the prompt's own instruction.
+
+## What changed
+
+- **`src/lib/winterRouteEta.js`** — added `resolvePointAtDeparture(point, departureHourString)`, the exact per-point "which fetched hourly slot" resolution `ForecastCard` already did inline, now shared so the summary reads the identical time a card shows (never a second ETA model). `ForecastCard` itself was refactored to call this instead of inlining the same four lines — behavior is unchanged (proven by every pre-existing ETA/#486/#489-adjacent `WinterRoute.test.jsx` case passing unmodified after the refactor, plus new direct tests on the extracted function).
+- **`src/lib/winterRouteSummary.js`** (new) — two pure, client-side-only functions:
+  - `computeWeatherExtremaSummary(points, departureHourString)` — iterates the six points in fixed route order, resolves each via `resolvePointAtDeparture`, and picks max `wind_gusts_10m` / max `precipitation` / min `temperature_2m` **independently per metric**. `null`/`undefined`/`NaN` and an unavailable/out-of-window point are real gaps (never 0); a tie keeps the first point in route order (only a strictly-better candidate replaces the current winner); the result always reports `validCount`/`isPartial`/`isMissing` so a partial sample is never presented as a full one.
+  - `computeActiveNoticeSegmentCount(segments, roadMeta)` — counts unique segments with at least one `notices[].status === "active"` entry (never general surface categories like `GREIDFAERT`/`HALKA`, never a raw notice count). Returns `{ count: null, confirmed: false }` whenever `roadMeta.pointsFeedUnavailableOrStale`, `!roadMeta.pointsAvailable`, or `roadMeta.stale` is true — an explicit "unconfirmed", never a silent `0`.
+- **`src/pages/WinterRoute.jsx`** — new `RouteSummary`/`SummaryMetricLine` components, rendered as the first section once `data` loads (above both the forecast-cards section and the road list). Shows the three weather lines (value + point label + resolved time, or a dedicated "data not available" string per metric), a `(based on N of 6 points)` suffix when partial, the existing `winterRouteForecastStaleServed` line (reused verbatim, S3) when the forecast itself is stale, the notice count **or** its unconfirmed variant, the fixed IS/EN scope disclaimer ("Not the overall road condition — see the road-condition list below") shown **unconditionally** regardless of the count's value (S1 — no green/positive styling anywhere on the count, including 0), and the existing `winterRouteAcquiredAt` line (reused verbatim, S3) for the fetch timestamp.
+- **`src/i18n/translations.winterRoute.js`** — new IS/EN keys only (`winterRouteSummary*`); the gust/precip lines deliberately repeat the exact same "(max, previous hour)"/"(previous hour)" period wording as the existing `winterRouteGust`/`winterRoutePrecip` card labels (S2).
+
+## Decisions taken inside the approved prompt's own stated options
+
+- **S1:** the fixed scope wording is rendered as its own line directly under the count, always, independent of count value — satisfies "no result may read as fine/positive" without adding a new surface-category rule to the counter itself.
+- **S2:** reused the literal period-wording substrings rather than nesting translation keys at runtime; a dedicated test asserts both language strings still contain the required substrings.
+- **S3:** the summary's time line reuses `winterRouteAcquiredAt`/`formatTimestamp` verbatim (now rendered in two places by design, same pattern already established for the existing stale-forecast line).
+
+## Tests run
+
+Scope matched the prompt's own "don't repeat the full suite without reason" instruction, except one full run performed anyway because a widely-imported file (`winterRouteEta.js`) was touched:
+
+- `src/lib/winterRouteSummary.test.js` (new, 17 cases): correct extrema across six points each at its own resolved hour; tie keeps the first point in route order; `null`/`undefined`/`NaN` vs a real `0` value; partial (<6 valid) vs fully-missing (0 valid); an ETA outside the point's fetched window excluded; a missing/null distance excluded; a UTC day-boundary case; no-departure-selected-yet resolves to the same missing state as the cards; notice-count dedup (two notices on one segment = 1, same notice on two segments = 2), expired/unknown excluded, a general surface closure with no notices = a legitimate confirmed 0, and the three unconfirmed-feed cases.
+- `src/lib/winterRouteEta.test.js` (+4 cases for the extracted `resolvePointAtDeparture`).
+- `src/pages/WinterRoute.test.jsx` (+10 cases, new `#489` describe block): summary renders with correct point/time-tagged values and the always-visible scope line; S2 period-wording reuse; S3 acquisition-time reuse; departure-time change updates the summary **and** all six cards together from the same fetch (`fetchMock` called exactly once); notice count is independent of departure time; notice-count dedup/exclusion cases; unconfirmed-count case; all-metrics-missing case when the forecast itself is unavailable. Two pre-existing tests needed a one-line update (`getAllByText(...).toHaveLength(2)` instead of `getByText`) because the now-duplicated stale-forecast/acquired-at lines are an intentional, documented design choice (S3), not a regression.
+- `npm run lint` — clean. `npm run build` — succeeds (same pre-existing >500kB chunk warning, unrelated).
+- One full `npx vitest run` — **204/204 test files, 3013/3013 tests pass**, clean on the first attempt (no pre-existing flake observed this round).
+- **Real-browser (Playwright/Chromium)**, reusing the existing `tests/e2e/winter-route-ticket-486.spec.js` (no new tooling): 3 new cases — desktop/light/IS summary with a real notice (screenshot reviewed, reads clearly, neutral styling), departure-time change moving the summary's chosen point/value together with the cards (round, predictable distances used for this one case to keep the expected arithmetic simple; zero extra network requests confirmed), and mobile/English fully-partial/stale state (all three "data not available" lines + unconfirmed count + scope line, screenshot reviewed). Two pre-existing e2e cases needed the same one-line duplicate-text fix as the unit tests (Playwright's `getByText` is a substring match by default, so the summary's own value lines legitimately also match a bare value/unit string already asserted elsewhere on the page). **9/9 e2e tests pass**; all screenshots visually reviewed.
+
+## Unchanged (confirmed, not touched)
+
+ETA constant/speed (70 km/h), `approxDistanceFromStartKm` values, hour-snapping (ceiling), departure-time semantics, backend response shape/cache/freshness fields, the six cards, the road list (closure priority, expired-notice wording, sources, points-feed warning + link), `api/winter-route.js` and every `api/_lib/winterRoute/*` module — none of these files were edited this round.
+
+## Production condition (#489)
+
+Per the approved prompt, this delivery is **local/stubbed only** — not a production confirmation. **NOT_TESTED**: whether `OPEN_METEO_API_KEY` is actually configured for Production and whether Vegagerðin is reachable from Vercel remain unknown from #486 (unchanged by this ticket); if the forecast is unavailable in production the summary will correctly show the three "data not available" lines and an honest partial/missing state rather than a false positive, consistent with the design above, but this has not been observed on a real deployment. Deployment and the owner-controlled production verification step (required before the GitHub issue can close) are explicitly not authorized or performed by this round.
+
+## Status
+
+- Baseline HEAD at start of this round: `4c76bb17` ("feat(winter-route): add arrival-time-based forecasts", already committed by the owner before this round started). HEAD at end: **unchanged** — no commit made by CC.
+- Modified: `src/lib/winterRouteEta.js`, `src/lib/winterRouteEta.test.js`, `src/pages/WinterRoute.jsx`, `src/pages/WinterRoute.test.jsx`, `tests/e2e/winter-route-ticket-486.spec.js`, `src/i18n/translations.winterRoute.js`, `docs/ai/CURRENT.md`. New: `src/lib/winterRouteSummary.js`, `src/lib/winterRouteSummary.test.js`, this report. No other file touched. No commit, no push, no GitHub action, no deploy.
+- Next: owner → Jonesy "CC búinn" (result review), then owner → Ripley "Jonesy búinn að reviewa CC" (final assessment). Production verification remains a separate, owner-controlled step required before GitHub issue closure.

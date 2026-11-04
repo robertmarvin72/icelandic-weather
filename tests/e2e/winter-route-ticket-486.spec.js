@@ -154,8 +154,11 @@ test.describe("WinterRoute (/winter-route) — Ticket #486 Round 2 (N3) real-bro
     for (const [, nameIs] of SEGMENT_DEFS) {
       await expect(page.getByText(nameIs, { exact: true }).first()).toBeVisible();
     }
-    // All six forecast cards show the same selected hour's temperature.
-    await expect(page.getByText("-2,3 °C")).toHaveCount(6);
+    // All six forecast cards show the same selected hour's temperature —
+    // plus one more match inside the #489 route summary's own "Lægsti
+    // hiti: -2,3 °C — ..." line (Playwright's getByText is a substring
+    // match by default, unlike RTL's exact-match default).
+    await expect(page.getByText("-2,3 °C")).toHaveCount(7);
     await page.screenshot({ path: "test-results/ticket-486/desktop-light-is.png", fullPage: true });
   });
 
@@ -219,7 +222,9 @@ test.describe("WinterRoute (/winter-route) — Ticket #486 Round 2 (N3) real-bro
     await expect(
       page.getByText("Tilkynningar um lokanir og vegavinnu eru ekki tiltækar núna", { exact: false }),
     ).toBeVisible();
-    await expect(page.getByText("Sýnir síðustu þekktu spá (25 mín. gamla).")).toBeVisible();
+    // Appears twice by design — once in the #489 route summary, once
+    // (unchanged) in the original forecast-section warning.
+    await expect(page.getByText("Sýnir síðustu þekktu spá (25 mín. gamla).").first()).toBeVisible();
     await expect(page.getByText(SEGMENT_DEFS[0][1], { exact: true }).first()).toBeVisible();
     // Round 3 (R5-2): the official source link inside the warning itself
     // (the same link text also appears in the page's bottom attribution
@@ -257,5 +262,96 @@ test.describe("WinterRoute (/winter-route) — Ticket #486 Round 2 (N3) real-bro
 
     await expect(page.getByText("Útrunnin lokunartilkynning — staðfestu hjá Vegagerðinni")).toBeVisible();
     await page.screenshot({ path: "test-results/ticket-486/expired-closure-prominent.png", fullPage: true });
+  });
+
+  // #489 — route-level summary (max gust/precip, min temp among the six
+  // points, count of segments with an active point notice). Real-browser
+  // coverage for the summary itself, departure-time sync with the cards,
+  // and the partial/stale-aware notice count — reusing this same spec
+  // file/stubbing setup, no new tooling.
+  test("#489 desktop, light, Icelandic: route summary shows weather extrema, point/time, and the notice count with its fixed scope wording", async ({
+    page,
+  }) => {
+    await primePageState(page, { lang: "is", theme: "light" });
+    const payload = basePayload();
+    payload.segments[4].notices = [{ idPunktur: 1, astand: "VEGAVINNA", status: "active" }];
+    await stubWinterRoute(page, payload);
+    await page.setViewportSize({ width: 1280, height: 900 });
+    await gotoPage(page);
+
+    await expect(page.getByText("Á leiðinni núna")).toBeVisible();
+    // All six points share identical fixture weather series, so the
+    // winner is always P1 (first in fixed route order).
+    await expect(
+      page.getByText(/Mestar hviður \(hámark síðustu klukkustundar\): 9,8 m\/s — Rauðavatn/),
+    ).toBeVisible();
+    await expect(page.getByText(/Mest úrkoma \(síðasta klukkustund\): 0,2 mm — Rauðavatn/)).toBeVisible();
+    await expect(page.getByText(/Lægsti hiti: -2,3 °C — Rauðavatn/)).toBeVisible();
+    await expect(page.getByText("Kaflar með gildar tilkynningar: 1")).toBeVisible();
+    await expect(page.getByText("Ekki heildarstaða færðar — sjá færðarlistann neðar.")).toBeVisible();
+    await page.screenshot({ path: "test-results/ticket-486/summary-desktop-light-is.png", fullPage: true });
+  });
+
+  test("#489: changing the departure time updates the summary together with the six cards, with no second network request", async ({
+    page,
+  }) => {
+    await primePageState(page, { lang: "is", theme: "light" });
+    const payload = basePayload();
+    // Round, predictable distances (0/70/140/...) so each point's own
+    // resolved hour index is exact arithmetic, not the base fixture's real
+    // (decimal) distances — keeps this specific test's expected values
+    // simple and robust. Distinct per-point/per-hour temperatures so a
+    // real departure-time change is independently observable.
+    payload.forecast.points.forEach((p, i) => {
+      p.approxDistanceFromStartKm = i * 70; // P1=0 -> +0h, P2=70 -> +1h, ...
+      p.series.temperature_2m = EXPECTED_HOURS.map((_, h) => -2.3 + i + h * 0.01);
+    });
+    let requestCount = 0;
+    await page.route("**/api/winter-route**", (route) => {
+      requestCount += 1;
+      route.fulfill({ status: 200, contentType: "application/json", body: JSON.stringify(payload) });
+    });
+    await page.setViewportSize({ width: 1280, height: 900 });
+    await gotoPage(page);
+
+    const select = page.getByLabel("Áætlaður brottfarartími");
+    await select.waitFor({ state: "visible" });
+    // Departure = EXPECTED_HOURS[0] -> P1 (distance 0) resolves to hour
+    // index 0 -> -2.3 + 0 + 0*0.01 = -2.3, the lowest of the six points.
+    await expect(page.getByText(/Lægsti hiti: -2,3 °C — Rauðavatn/)).toBeVisible();
+
+    await select.selectOption({ index: 1 });
+    // Departure = EXPECTED_HOURS[1] -> P1 still resolves to +0h -> hour
+    // index 1 -> -2.3 + 0 + 1*0.01 = -2.29, which rounds to -2,3 °C — move
+    // to a later departure option so the shown value genuinely changes.
+    await select.selectOption({ index: 10 });
+    // Departure = EXPECTED_HOURS[10] -> P1 resolves to hour index 10 ->
+    // -2.3 + 0 + 10*0.01 = -2.2.
+    await expect(page.getByText(/Lægsti hiti: -2,2 °C — Rauðavatn/)).toBeVisible();
+
+    expect(requestCount).toBe(1);
+  });
+
+  test("#489 mobile, English: partial/stale state shows an unconfirmed notice count and 'data not available' weather lines, never a guessed 0", async ({
+    page,
+  }) => {
+    await primePageState(page, { lang: "en", theme: "light" });
+    const payload = basePayload();
+    payload.roadMeta.pointsFeedUnavailableOrStale = true;
+    payload.forecast.available = false;
+    payload.forecast.reason = "key_missing";
+    payload.forecast.points = [];
+    await stubWinterRoute(page, payload);
+    await page.setViewportSize({ width: 375, height: 800 });
+    await gotoPage(page);
+
+    await expect(page.getByText("Along the route now")).toBeVisible();
+    await expect(page.getByText("Highest gusts: data not available")).toBeVisible();
+    await expect(page.getByText("Most precipitation: data not available")).toBeVisible();
+    await expect(page.getByText("Lowest temperature: data not available")).toBeVisible();
+    await expect(page.getByText("The count of sections with valid notices is unconfirmed right now.")).toBeVisible();
+    await expect(page.getByText("Not the overall road condition — see the road-condition list below.")).toBeVisible();
+    await expect(page.getByText(/^Sections with valid notices: \d/)).toHaveCount(0);
+    await page.screenshot({ path: "test-results/ticket-486/summary-mobile-partial-stale-en.png", fullPage: true });
   });
 });

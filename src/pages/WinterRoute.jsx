@@ -24,7 +24,8 @@ import {
   formatTimestamp,
   hourOfDayFromHourString,
 } from "../lib/winterRoutePresentation";
-import { computeEta } from "../lib/winterRouteEta";
+import { resolvePointAtDeparture } from "../lib/winterRouteEta";
+import { computeWeatherExtremaSummary, computeActiveNoticeSegmentCount } from "../lib/winterRouteSummary";
 
 const VEGAGERDIN_LINKS = {
   is: "https://www.vegagerdin.is/upplysingar-og-utgafa/gagnaveita-vegagerdarinnar/",
@@ -141,14 +142,12 @@ function ForecastCard({ point, departureHour, t, lang }) {
   // ETA follow-up (#486): each point now resolves its OWN forecast hour
   // from the shared departure time + its own approximate distance from
   // the corridor start — no longer a single shared hourIndex across all
-  // six cards. `computeEta` returns nulls (never a guess) when the
-  // distance/departure cannot be resolved; a resolved forecastHour that
-  // isn't one of this point's already-fetched hours (outside the 24h
-  // window, or simply absent) is an equally explicit "not available",
-  // never a silent wrap to a different hour.
-  const { rawArrivalMs, forecastHour } = computeEta(departureHour, point.approxDistanceFromStartKm);
-  const hourIndex = forecastHour != null ? point.hours.indexOf(forecastHour) : -1;
-  const hasHour = hourIndex >= 0;
+  // six cards. #489: resolution itself now lives in the shared
+  // resolvePointAtDeparture() so the route-level summary reads the exact
+  // same per-point time as this card — never a second parallel
+  // computation. An unresolvable/out-of-window arrival is still an
+  // explicit "not available" (hasHour: false), never a silent wrap.
+  const { rawArrivalMs, forecastHour, hourIndex, hasHour } = resolvePointAtDeparture(point, departureHour);
 
   const temp = hasHour ? point.series.temperature_2m[hourIndex] : null;
   const wind = hasHour ? point.series.wind_speed_10m[hourIndex] : null;
@@ -201,6 +200,97 @@ function ForecastCard({ point, departureHour, t, lang }) {
 
       <p className="mt-2 text-xs italic text-slate-400 dark:text-slate-500">{t("winterRouteGridDisclaimer")}</p>
     </div>
+  );
+}
+
+// #489 — one metric line in the route-level summary. `metric` is one entry
+// from computeWeatherExtremaSummary()'s result (value/point/hourString/
+// isMissing/isPartial/validCount). Null/missing is its own dedicated
+// string, never a "0" or a silently-dropped line.
+function SummaryMetricLine({ t, lang, metric, valueKey, missingKey }) {
+  if (metric.isMissing) {
+    return <p className="text-sm text-slate-600 dark:text-slate-300">{t(missingKey)}</p>;
+  }
+
+  const pointLabel = lang === "en" ? metric.point.labelEn : metric.point.labelIs;
+  let line = t(valueKey)
+    .replace("{value}", formatDecimal(metric.value, lang, 1))
+    .replace("{point}", pointLabel)
+    .replace("{time}", formatHourLabel(metric.hourString));
+
+  if (metric.isPartial) {
+    line += t("winterRouteSummaryPartialSuffix").replace("{count}", String(metric.validCount));
+  }
+
+  return <p className="text-sm text-slate-600 dark:text-slate-300">{line}</p>;
+}
+
+// #489 — route-level summary, positioned above the six cards and the road
+// list. Weather extrema reuse the exact same per-point ETA resolution the
+// cards use (resolvePointAtDeparture, via computeWeatherExtremaSummary —
+// never a second ETA model); the notice count is independent of the
+// selected departure time entirely (point-notice status is computed
+// server-side from "now"). No positive styling anywhere here (S1) — the
+// notice count never reads as a green/safe indicator, including when it is
+// 0, and the fixed scope disclaimer is always shown regardless of the
+// count's value.
+function RouteSummary({ data, selectedHour, t, lang }) {
+  const weatherSummary = useMemo(() => {
+    const points = data.forecast?.available ? data.forecast.points : [];
+    return computeWeatherExtremaSummary(points, selectedHour);
+  }, [data.forecast, selectedHour]);
+  const noticeSummary = computeActiveNoticeSegmentCount(data.segments, data.roadMeta);
+
+  return (
+    <section className="mb-6 rounded-xl border border-slate-200/70 bg-white/70 px-4 py-3 dark:border-slate-800/70 dark:bg-slate-900/70">
+      <h2 className="text-sm font-semibold text-slate-700 dark:text-slate-200">{t("winterRouteSummaryHeading")}</h2>
+
+      <div className="mt-2 space-y-1">
+        <SummaryMetricLine
+          t={t}
+          lang={lang}
+          metric={weatherSummary.maxGust}
+          valueKey="winterRouteSummaryGust"
+          missingKey="winterRouteSummaryGustMissing"
+        />
+        <SummaryMetricLine
+          t={t}
+          lang={lang}
+          metric={weatherSummary.maxPrecip}
+          valueKey="winterRouteSummaryPrecip"
+          missingKey="winterRouteSummaryPrecipMissing"
+        />
+        <SummaryMetricLine
+          t={t}
+          lang={lang}
+          metric={weatherSummary.minTemp}
+          valueKey="winterRouteSummaryMinTemp"
+          missingKey="winterRouteSummaryMinTempMissing"
+        />
+      </div>
+
+      {data.forecast?.available && data.forecast.stale ? (
+        <p className="mt-1 text-xs text-amber-600 dark:text-amber-300">
+          {t("winterRouteForecastStaleServed").replace(
+            "{minutes}",
+            String(Math.round((data.forecast.cacheAgeMs || 0) / 60000))
+          )}
+        </p>
+      ) : null}
+
+      <div className="mt-3 border-t border-slate-200/60 pt-2 dark:border-slate-800/60">
+        <p className="text-sm text-slate-600 dark:text-slate-300">
+          {noticeSummary.confirmed
+            ? t("winterRouteSummaryNoticeCount").replace("{count}", String(noticeSummary.count))
+            : t("winterRouteSummaryNoticeCountUnconfirmed")}
+        </p>
+        <p className="text-xs text-slate-500 dark:text-slate-400">{t("winterRouteSummaryNoticeScope")}</p>
+      </div>
+
+      <p className="mt-2 text-xs text-slate-400 dark:text-slate-500">
+        {t("winterRouteAcquiredAt").replace("{time}", formatTimestamp(data.generatedAt))}
+      </p>
+    </section>
   );
 }
 
@@ -281,6 +371,8 @@ export default function WinterRoute() {
 
           {data ? (
             <>
+              <RouteSummary data={data} selectedHour={selectedHour} t={t} lang={lang} />
+
               <section className="mt-6">
                 <h2 className="text-lg font-semibold">{t("winterRouteForecastSectionTitle")}</h2>
 

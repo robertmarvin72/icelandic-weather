@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { computeEta, ASSUMED_AVERAGE_SPEED_KMH } from "./winterRouteEta.js";
+import { computeEta, resolvePointAtDeparture, ASSUMED_AVERAGE_SPEED_KMH } from "./winterRouteEta.js";
 
 describe("computeEta", () => {
   it("computes a correct raw arrival instant from distance and the assumed speed", () => {
@@ -50,5 +50,43 @@ describe("computeEta", () => {
   it("returns nulls for an invalid speed", () => {
     expect(computeEta("2026-11-04T08:00", 70, 0)).toEqual({ rawArrivalMs: null, forecastHour: null });
     expect(computeEta("2026-11-04T08:00", 70, -10)).toEqual({ rawArrivalMs: null, forecastHour: null });
+  });
+});
+
+// #489 — resolvePointAtDeparture() is the exact logic ForecastCard already
+// used inline before #489 factored it out so the new route summary reuses
+// it; these tests pin the behavior ForecastCard's own tests already
+// exercise indirectly through the rendered UI.
+describe("resolvePointAtDeparture", () => {
+  const hours = ["2026-11-04T08:00", "2026-11-04T09:00", "2026-11-04T10:00"];
+
+  it("resolves hourIndex/hasHour for an available point with a valid distance", () => {
+    const point = { available: true, hours, approxDistanceFromStartKm: 70 };
+    const result = resolvePointAtDeparture(point, "2026-11-04T08:00");
+    expect(result.hasHour).toBe(true);
+    expect(result.forecastHour).toBe("2026-11-04T09:00");
+    expect(result.hourIndex).toBe(1);
+  });
+
+  it("an unavailable point never attempts a resolution", () => {
+    const point = { available: false, hours, approxDistanceFromStartKm: 70 };
+    const result = resolvePointAtDeparture(point, "2026-11-04T08:00");
+    expect(result).toEqual({ rawArrivalMs: null, forecastHour: null, hourIndex: -1, hasHour: false });
+  });
+
+  it("a resolved hour outside point.hours is hasHour:false, not a wrapped/guessed index", () => {
+    const point = { available: true, hours, approxDistanceFromStartKm: 24 * 70 };
+    const result = resolvePointAtDeparture(point, "2026-11-04T08:00");
+    expect(result.hasHour).toBe(false);
+    expect(result.hourIndex).toBe(-1);
+  });
+
+  it("handles a null point gracefully", () => {
+    expect(resolvePointAtDeparture(null, "2026-11-04T08:00")).toEqual({
+      rawArrivalMs: null,
+      forecastHour: null,
+      hourIndex: -1,
+      hasHour: false,
+    });
   });
 });
