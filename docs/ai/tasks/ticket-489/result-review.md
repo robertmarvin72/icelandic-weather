@@ -55,3 +55,21 @@ Reyndi sjálfstætt `npx vitest run src/lib/winterRouteEta.test.js src/lib/winte
 N1–N5 samþykktar sem athugasemdir án nýrrar lagfæringarlotu. Fyrirsögnin „Á leiðinni núna“ gæti verið hlutlausari en hver mæling hefur skýran framtíðargildistíma og samantektin fylgir kortunum; ekki ný lokakrafa. Ekki breytt kóða eða þýðingum í lokamati.
 
 CURRENT → CLOSED fyrir yfirfarna staðbundna innleiðingarafhendingu. **GitHub #489 er áfram opinn og má ekki loka fyrr en eigandastýrð production-staðfesting eftir samþykkta birtingu liggur fyrir**, samkvæmt miða og v1. Þetta er ekki undanþága frá því skilyrði. Eigandi getur nú commitað/pushað; það getur birt breytingu með núverandi Vercel Git-integration og er áfram eigandastýrt. Eftir birtingu þarf samþykkt skref sem skráir raunútgáfu/dagsetningu, samantekt, tímaval og sýnileg gildi eða vöntun; engin slík athugun eða birting framkvæmd hér. Engin ný rannsókn, raunlykill, veitubeiðni, commit/push eða GitHub-aðgerð.
+
+## Production-athugun Ripley — 2026-11-04
+
+Eigandi tilkynnir að breyting sé komin á production. Read-only athugun í nýjum in-app browser tab á https://eltumvedrid.is/winter-route sem vísaði á https://www.eltumvedrid.is/winter-route, síðan ein endurhleðsla og lestur eftir gagnasókn. Engin stubbuð gögn eða lykilaðgangur.
+
+**PARTIAL / #489 production ekki staðfest:** Raunveruleg síða sýnir sex spákort, komutíma/gildistíma, brottfararval og 13 færðarkafla með tilkynningum. Fyrsta val 04.11 16:00: P1 8,1 m/s hviður/4,8°C, P6 5,5 m/s/4,1°C, gildistímar 17:00–19:00; sóknartími sýnilegur 2026-11-04 15:59 UTC. Hins vegar sést ENGIN #489-samantekt fyrir kortum eða annars staðar í fullu accessibility-tré eftir endurhleðslu: engin fyrirsögn „Á leiðinni núna“, extrema-línur, talning eða umfangsorð samantektar. Því ekki hægt að staðfesta samstillingu hennar við tímaval. Hvort orsök sé birt útgáfa, lén eða skyndiminni er UNKNOWN; engin greining/viðgerð/birting hafin sjálfkrafa. Ekki álykta key/host úr UI-gildum.
+
+Innleiðingar-PASS óbreytt, GitHub #489 verður áfram opinn þar til rétta samantektin sést og production-lokaskref er staðfest. Engin GitHub-lokun eða kóðabreyting.
+
+## Endurtekin production-staðfesting — 2026-11-04, eftir eigandaleiðréttingu
+
+**PASS fyrir afmarkað production-lokaskref #489.** Nýr vafraflipi á https://www.eltumvedrid.is/winter-route sýnir nú #489-samantekt eftir gagnasókn; fyrri athugun lýsti eldri birtingu og gildir ekki sem núverandi staða. Ekki staðfest hvort orsök fyrri mismunar var cache eða birtingartími.
+
+Óstubbuð raunframsetning með sóknartíma 2026-11-04 16:01 UTC: brottför 17:00 sýnir hámarkshviður 9,1 m/s við Hvolsvöll–Skóga kl. 19:00, lágmarkshita 4,5°C við P1 kl. 18:00 og úrkomu 0,0 mm við P1 kl. 18:00. Öll gildi/kaflar/gildistímar stemma við sex sýnileg kort (hviður 7,9/7,7/8,2/7,2/9,1/6,6 og hiti 4,5/6,7/5,9/5,9/6,4/5,0). Talning 4 stemmir við fjóra kafla með gildar punkttilkynningar (Selfoss–Hveragerði, Þjórsá–Selfoss, Hvolsvöllur–Hella, Markarfljót–Steinar). Umfangsorð og sóknartími sýnileg.
+
+Val breytt í gegnum raunverulegt merkt select úr 17:00 í 18:00: samantekt uppfærðist í 10,7 m/s við Hvolsvöll–Skóga kl. 20:00, 4,4°C við P1 kl. 19:00 og 0,0 mm við P1 kl. 19:00. Öll sex kort uppfærðust samhljóða; hviður 9,2/9,3/8,1/5,8/10,7/8,5 og hiti 4,4/6,4/4,6/5,2/6,9/5,5. Talning 4 og færðarlisti óbreytt. Engin bilun/vöntun birtist við þessa athugun; villumerking er studd fyrri stubbuðum prófum, ekki þvinguð á production. Enginn lykill lesinn né bein veitubeiðni eða stillingabreyting gerð. Birt commit/útgáfuauðkenni ekki sýnilegt í UI og því óstaðfest.
+
+Samþykkt Jonesy-review + production-staðfesting liggja nú fyrir. GitHub #489 má loka eftir skýrum eigandafyrirmælum; ekki lokað sjálfkrafa. Engin kóðabreyting/commit/push/deploy hér.

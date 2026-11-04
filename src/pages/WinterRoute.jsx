@@ -26,6 +26,14 @@ import {
 } from "../lib/winterRoutePresentation";
 import { resolvePointAtDeparture } from "../lib/winterRouteEta";
 import { computeWeatherExtremaSummary, computeActiveNoticeSegmentCount } from "../lib/winterRouteSummary";
+import { computeDepartureOptionSet, COMPARISON_UNAVAILABLE_REASON } from "../lib/winterRouteComparison";
+
+const COMPARISON_REASON_KEY = {
+  [COMPARISON_UNAVAILABLE_REASON.NOT_UPCOMING]: "winterRouteComparisonReasonNotUpcoming",
+  [COMPARISON_UNAVAILABLE_REASON.ARRIVAL_OUTSIDE_WINDOW]: "winterRouteComparisonReasonArrivalOutsideWindow",
+  [COMPARISON_UNAVAILABLE_REASON.POINT_UNAVAILABLE]: "winterRouteComparisonReasonPointUnavailable",
+  [COMPARISON_UNAVAILABLE_REASON.METRIC_GAP]: "winterRouteComparisonReasonMetricGap",
+};
 
 const VEGAGERDIN_LINKS = {
   is: "https://www.vegagerdin.is/upplysingar-og-utgafa/gagnaveita-vegagerdarinnar/",
@@ -294,6 +302,147 @@ function RouteSummary({ data, selectedHour, t, lang }) {
   );
 }
 
+// #490 — one of the three departure options (−2h / selected / +2h). The
+// baseline (`isBaseline`) is never a button (selecting the already-selected
+// time is a no-op) — it is the stable, programmatically-focusable node
+// (`tabIndex={-1}`) S3 requires after a user-driven selection. An
+// unavailable option is still a real `<button disabled>` (not a plain
+// `<div>`) with its reason rendered as visible text, never only a `title`
+// attribute — satisfies S3's keyboard/screen-reader requirement directly.
+function DepartureOptionCard({ option, label, isBaseline, baselineRef, onSelect, t, lang }) {
+  const timeLabel = option.departureHour ? formatHourLabel(option.departureHour) : "—";
+  const reasonKey = option.reason ? COMPARISON_REASON_KEY[option.reason] : null;
+
+  const body = (
+    <>
+      <div className="flex items-center justify-between gap-2">
+        <span className="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
+          {label}
+        </span>
+        {isBaseline ? (
+          <span className="rounded-full bg-sky-100 px-2 py-0.5 text-xs font-semibold text-sky-800 dark:bg-sky-900/40 dark:text-sky-200">
+            {t("winterRouteComparisonSelectedBadge")}
+          </span>
+        ) : null}
+      </div>
+      <p className="mt-1 text-sm font-medium text-slate-800 dark:text-slate-100">{timeLabel} UTC</p>
+
+      {!option.available ? (
+        <p className="mt-2 text-xs text-slate-500 dark:text-slate-400">{reasonKey ? t(reasonKey) : null}</p>
+      ) : (
+        <div className="mt-2 space-y-1">
+          <SummaryMetricLine
+            t={t}
+            lang={lang}
+            metric={option.summary.maxGust}
+            valueKey="winterRouteSummaryGust"
+            missingKey="winterRouteSummaryGustMissing"
+          />
+          <SummaryMetricLine
+            t={t}
+            lang={lang}
+            metric={option.summary.maxPrecip}
+            valueKey="winterRouteSummaryPrecip"
+            missingKey="winterRouteSummaryPrecipMissing"
+          />
+          <SummaryMetricLine
+            t={t}
+            lang={lang}
+            metric={option.summary.minTemp}
+            valueKey="winterRouteSummaryMinTemp"
+            missingKey="winterRouteSummaryMinTempMissing"
+          />
+        </div>
+      )}
+    </>
+  );
+
+  const sharedClass =
+    "rounded-xl border border-slate-200/70 bg-white/70 p-3 text-left dark:border-slate-800/70 dark:bg-slate-900/70";
+
+  if (isBaseline) {
+    return (
+      <div ref={baselineRef} tabIndex={-1} className={`${sharedClass} outline-none`}>
+        {body}
+      </div>
+    );
+  }
+
+  if (!option.available) {
+    return (
+      <button type="button" disabled className={`${sharedClass} w-full cursor-not-allowed opacity-80`}>
+        {body}
+      </button>
+    );
+  }
+
+  return (
+    <button
+      type="button"
+      onClick={() => onSelect(option.departureHour)}
+      className={`${sharedClass} w-full focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500`}
+    >
+      {body}
+      <span className="mt-2 inline-block text-xs font-medium text-sky-700 dark:text-sky-300">
+        {t("winterRouteComparisonViewButton")}
+      </span>
+    </button>
+  );
+}
+
+// #490 — small departure-time comparison area, rendered next to the
+// existing departure picker/#489 summary. Gated by the caller (S2): only
+// rendered once `data.forecast.available` and `selectedHour` both hold, so
+// it never flashes three identical "unavailable" slots on first load or
+// when the forecast itself is down — the page's existing loading/
+// unavailable states already cover those cases. Each option independently
+// reuses #489's own extrema computation (never a shared/new ETA model);
+// road conditions/closures/notice count are explicitly NOT repeated here —
+// one shared "latest status" note instead (S6).
+function RouteComparison({ data, selectedHour, availableHours, onSelect, baselineRef, t, lang }) {
+  const options = useMemo(() => {
+    const points = data.forecast?.available ? data.forecast.points : [];
+    return computeDepartureOptionSet(selectedHour, availableHours, points);
+  }, [data.forecast, selectedHour, availableHours]);
+
+  const labelFor = (offsetHours) => {
+    if (offsetHours === -2) return t("winterRouteComparisonEarlierLabel");
+    if (offsetHours === 2) return t("winterRouteComparisonLaterLabel");
+    return t("winterRouteComparisonBaselineLabel");
+  };
+
+  return (
+    <div className="mt-4 border-t border-slate-200/60 pt-3 dark:border-slate-800/60">
+      <h3 className="text-sm font-semibold text-slate-700 dark:text-slate-200">{t("winterRouteComparisonHeading")}</h3>
+      <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">{t("winterRouteComparisonRoadNote")}</p>
+
+      {data.forecast.stale ? (
+        <p className="mt-1 text-xs text-amber-600 dark:text-amber-300">
+          {t("winterRouteForecastStaleServed").replace(
+            "{minutes}",
+            String(Math.round((data.forecast.cacheAgeMs || 0) / 60000))
+          )}
+        </p>
+      ) : null}
+
+      <div className="mt-2 grid grid-cols-1 gap-3 sm:grid-cols-3">
+        {options.map((option) => (
+          <DepartureOptionCard
+            key={option.offsetHours}
+            option={option}
+            label={labelFor(option.offsetHours)}
+            isBaseline={option.offsetHours === 0}
+            baselineRef={option.offsetHours === 0 ? baselineRef : null}
+            onSelect={onSelect}
+            t={t}
+            lang={lang}
+          />
+        ))}
+      </div>
+    </div>
+  );
+}
+
 export default function WinterRoute() {
   const { t, lang, theme } = usePageRouteProps();
   useThemeClass(theme === "dark");
@@ -344,6 +493,39 @@ export default function WinterRoute() {
       setSelectedHour(availableHours[0]);
     }
   }, [availableHours, selectedHour]);
+
+  // #490 (S3, R1) — focus/announcement must only follow a comparison-button
+  // selection, never the existing hour <select> (native keyboard behavior
+  // fires `change` on every ArrowDown while the select is open; moving
+  // focus away from it on each change breaks stepping through hours with
+  // the keyboard — see result-review.md R1), and never the auto-select-
+  // first-hour effect above or the once-a-minute availableHours re-filter.
+  // The select's own onChange calls `setSelectedHour` directly (below) and
+  // never touches `userInitiatedRef`, so it keeps native focus/announcement
+  // behavior. `userInitiatedRef` is set synchronously right before the
+  // state update that caused it, and consumed (reset to false) the first
+  // time this effect runs afterward — so an unrelated re-render (e.g. a
+  // language change re-creating `t`) can never accidentally replay the
+  // focus move.
+  const userInitiatedRef = useRef(false);
+  const comparisonBaselineRef = useRef(null);
+  const [comparisonAnnouncement, setComparisonAnnouncement] = useState("");
+
+  const handleUserSelectHour = (hour) => {
+    userInitiatedRef.current = true;
+    setSelectedHour(hour);
+  };
+
+  useEffect(() => {
+    if (!userInitiatedRef.current) return;
+    userInitiatedRef.current = false;
+    if (comparisonBaselineRef.current) comparisonBaselineRef.current.focus();
+    if (selectedHour) {
+      setComparisonAnnouncement(
+        t("winterRouteComparisonSelectedAnnouncement").replace("{time}", formatHourLabel(selectedHour))
+      );
+    }
+  }, [selectedHour, t]);
 
   return (
     <>
@@ -397,6 +579,24 @@ export default function WinterRoute() {
                         ))}
                       </select>
                     )}
+
+                    {/* #490 (S2): only once a baseline departure actually
+                        exists — never a flash of three "unavailable" slots
+                        on first load or when the forecast itself is down. */}
+                    {selectedHour ? (
+                      <RouteComparison
+                        data={data}
+                        selectedHour={selectedHour}
+                        availableHours={availableHours}
+                        onSelect={handleUserSelectHour}
+                        baselineRef={comparisonBaselineRef}
+                        t={t}
+                        lang={lang}
+                      />
+                    ) : null}
+                    <div aria-live="polite" className="sr-only">
+                      {comparisonAnnouncement}
+                    </div>
                   </div>
                 ) : (
                   <p className="mt-2 text-sm text-slate-500 dark:text-slate-400">{t("winterRouteForecastUnavailable")}</p>

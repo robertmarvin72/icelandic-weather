@@ -100,6 +100,15 @@ function renderPage() {
   );
 }
 
+// #490 added a departure-time comparison area that can render its own copy
+// of the same "Mestar hviður"/"Mest úrkoma"/"Lægsti hiti" metric lines (one
+// per available option) alongside the #489 route-level summary — scope a
+// query to the summary's own <section> (found via its stable heading) when
+// a test cares specifically about the summary, not the comparison area.
+function getSummarySection() {
+  return screen.getByText(translations.is.winterRouteSummaryHeading).closest("section");
+}
+
 beforeEach(() => {
   localStorage.clear();
 });
@@ -291,10 +300,11 @@ describe("WinterRoute page", () => {
     // asserting on the earlier-settling text alone raced the later one.
     await waitFor(() => expect(screen.getAllByText(`${formatDecimal(-1.2, "is", 1)} °C`)).toHaveLength(6));
     const expected = translations.is.winterRouteForecastStaleServed.replace("{minutes}", "20");
-    // #489: the same stale-forecast line now appears twice by design — once
-    // in the new route-level summary, once in the original forecast
-    // section (the prompt explicitly keeps the existing warning in place).
-    expect(screen.getAllByText(expected)).toHaveLength(2);
+    // The same stale-forecast line now appears three times by design: the
+    // #489 route-level summary, the original forecast-section warning
+    // (unchanged), and the #490 departure comparison area (S6) — each
+    // keeps the existing warning in place rather than removing it.
+    expect(screen.getAllByText(expected)).toHaveLength(3);
   });
 
   it("does not show the stale-forecast line when forecast.stale is false", async () => {
@@ -409,18 +419,21 @@ describe("WinterRoute page", () => {
       // PARTS (value/point/unit) rather than the whole interpolated
       // string, since the time portion depends on the real clock the
       // suite happens to run at.
-      const gustLine = await screen.findByText((text) => text.startsWith("Mestar hviður"));
+      await screen.findByText(translations.is.winterRouteSummaryHeading);
+      const summary = within(getSummarySection());
+
+      const gustLine = summary.getByText((text) => text.startsWith("Mestar hviður"));
       expect(gustLine.textContent).toContain(`${formatDecimal(7.1, "is", 1)} m/s`);
       expect(gustLine.textContent).toContain("Punktur P1");
 
-      const precipLine = screen.getByText((text) => text.startsWith("Mest úrkoma"));
+      const precipLine = summary.getByText((text) => text.startsWith("Mest úrkoma"));
       expect(precipLine.textContent).toContain(`${formatDecimal(0, "is", 1)} mm`);
 
-      const tempLine = screen.getByText((text) => text.startsWith("Lægsti hiti"));
+      const tempLine = summary.getByText((text) => text.startsWith("Lægsti hiti"));
       expect(tempLine.textContent).toContain(`${formatDecimal(-1.2, "is", 1)} °C`);
 
-      expect(screen.getByText("Kaflar með gildar tilkynningar: 0")).toBeInTheDocument();
-      expect(screen.getByText(translations.is.winterRouteSummaryNoticeScope)).toBeInTheDocument();
+      expect(summary.getByText("Kaflar með gildar tilkynningar: 0")).toBeInTheDocument();
+      expect(summary.getByText(translations.is.winterRouteSummaryNoticeScope)).toBeInTheDocument();
     });
 
     it("S2: the summary's gust/precip lines reuse the exact same period wording as the cards", async () => {
@@ -458,7 +471,7 @@ describe("WinterRoute page", () => {
       // Hour index 0: min temp across identical-distance points is P1's -10
       // (the lowest of -10, -9, -8, -7, -6, -5).
       await waitFor(() => {
-        const tempLine = screen.getByText((text) => text.startsWith("Lægsti hiti"));
+        const tempLine = within(getSummarySection()).getByText((text) => text.startsWith("Lægsti hiti"));
         expect(tempLine.textContent).toContain(`${formatDecimal(-10, "is", 1)} °C`);
         expect(tempLine.textContent).toContain("Punktur P1");
       });
@@ -471,7 +484,7 @@ describe("WinterRoute page", () => {
       // lowest of 90..95), and each of the six cards shows its own moved
       // value (not a single shared value).
       await waitFor(() => {
-        const tempLine = screen.getByText((text) => text.startsWith("Lægsti hiti"));
+        const tempLine = within(getSummarySection()).getByText((text) => text.startsWith("Lægsti hiti"));
         expect(tempLine.textContent).toContain(`${formatDecimal(90, "is", 1)} °C`);
         expect(tempLine.textContent).toContain("Punktur P1");
         for (let i = 0; i < 6; i++) {
@@ -546,6 +559,192 @@ describe("WinterRoute page", () => {
         expect(screen.getByText(translations.is.winterRouteSummaryPrecipMissing)).toBeInTheDocument();
         expect(screen.getByText(translations.is.winterRouteSummaryMinTempMissing)).toBeInTheDocument();
       });
+    });
+  });
+
+  describe("#490 — departure-time comparison", () => {
+    // A wide (8-hour) window starting well into the future, so a baseline
+    // chosen a few hours in gives room for both −2h and +2h to legitimately
+    // land inside `availableHours` — the default auto-selected first hour
+    // never does (N2: "2h earlier" is always unavailable on first load by
+    // design, not tested here since it's already covered by the pure
+    // winterRouteComparison.test.js cases).
+    function wideHours(startOffset = 1, count = 8) {
+      return Array.from({ length: count }, (_, i) => futureHourString(startOffset + i));
+    }
+
+    function makeWidePayload(overrides = {}) {
+      const hours = wideHours();
+      const segments = Array.from({ length: 13 }, (_, i) => makeSegment(100000000 + i));
+      const points = ["P1", "P2", "P3", "P4", "P5", "P6"].map((id) =>
+        makeForecastPoint(id, {
+          hours,
+          series: {
+            temperature_2m: hours.map(() => -1.2),
+            wind_speed_10m: hours.map(() => 4.5),
+            wind_gusts_10m: hours.map(() => 7.1),
+            precipitation: hours.map(() => 0),
+            weather_code: hours.map(() => 3),
+          },
+        })
+      );
+      return {
+        generatedAt: "2026-11-03T18:00:00.000Z",
+        segments,
+        roadMeta: { available: true, stale: false, cacheAgeMs: 0, segmentsAvailable: true, pointsAvailable: true },
+        forecast: { available: true, window: { startHour: hours[0], endHour: hours[hours.length - 1], expectedHours: hours }, points, stale: false, cacheAgeMs: 0 },
+        ...overrides,
+      };
+    }
+
+    function getComparisonSection() {
+      return screen.getByText(translations.is.winterRouteComparisonHeading).closest("div");
+    }
+
+    it("renders three labeled slots with the correct times once a departure is selected, and the default load has '2h earlier' unavailable with a visible reason (N2)", async () => {
+      vi.stubGlobal("fetch", vi.fn().mockResolvedValue({ ok: true, json: async () => makeWidePayload() }));
+      renderPage();
+
+      await screen.findByText(translations.is.winterRouteComparisonHeading);
+      const comparison = within(getComparisonSection());
+
+      expect(comparison.getByText(translations.is.winterRouteComparisonEarlierLabel)).toBeInTheDocument();
+      expect(comparison.getByText(translations.is.winterRouteComparisonBaselineLabel)).toBeInTheDocument();
+      expect(comparison.getByText(translations.is.winterRouteComparisonLaterLabel)).toBeInTheDocument();
+
+      // Default departure is the window's first hour, so "2h earlier" is a
+      // real, honest data-edge unavailability (N2), with a visible reason
+      // — not a crash, not a silently-dropped slot.
+      expect(comparison.getByText(translations.is.winterRouteComparisonReasonNotUpcoming)).toBeInTheDocument();
+      expect(comparison.getByText(translations.is.winterRouteComparisonRoadNote)).toBeInTheDocument();
+    });
+
+    it("no comparison area renders before a departure is selected or when the forecast itself is unavailable (S2), without hiding cards/list", async () => {
+      const payload = makeWidePayload({ forecast: { available: false, reason: "key_missing", points: [] } });
+      vi.stubGlobal("fetch", vi.fn().mockResolvedValue({ ok: true, json: async () => payload }));
+      renderPage();
+
+      await waitFor(() => expect(screen.getByText(translations.is.winterRouteForecastUnavailable)).toBeInTheDocument());
+      expect(screen.queryByText(translations.is.winterRouteComparisonHeading)).toBeNull();
+      // Road list is still rendered.
+      expect(screen.getByText("Kafli 100000000")).toBeInTheDocument();
+    });
+
+    it("selecting an available comparison option updates the cards/#489 summary and recenters the comparison around the NEW baseline", async () => {
+      const payload = makeWidePayload();
+      // Distinct values per hour so each departure's own resolved reading
+      // is independently observable.
+      payload.forecast.points.forEach((p) => {
+        p.series.temperature_2m = wideHours().map((_, h) => -20 + h);
+      });
+      const fetchMock = vi.fn().mockResolvedValue({ ok: true, json: async () => payload });
+      vi.stubGlobal("fetch", fetchMock);
+      renderPage();
+
+      const select = await screen.findByLabelText(translations.is.winterRouteHourLabel);
+      const hours = wideHours();
+      const { fireEvent } = await import("@testing-library/react");
+      // Move the baseline to hour index 3 so both −2h (index 1) and +2h
+      // (index 5) land inside the 8-hour window.
+      fireEvent.change(select, { target: { value: hours[3] } });
+      await waitFor(() => expect(select.value).toBe(hours[3]));
+
+      const laterButton = await screen.findByRole("button", { name: (name) => name.includes("2 klst. síðar") });
+      fireEvent.click(laterButton);
+
+      // The +2h option (hour index 5) becomes the new selectedHour -> cards/select move to it.
+      await waitFor(() => expect(select.value).toBe(hours[5]));
+      // Comparison recenters: the new baseline is hours[5], so its own
+      // "2 klst. fyrr" slot is now hours[3] (the OLD baseline) and "2 klst.
+      // síðar" is hours[7] — i.e. a fresh −2/0/+2 window around the new
+      // selection, not the original one.
+      const comparison = within(getComparisonSection());
+      expect(comparison.getByText(`${hours[3].slice(8, 10)}.${hours[3].slice(5, 7)} ${hours[3].slice(11, 16)} UTC`)).toBeInTheDocument();
+      expect(comparison.getByText(`${hours[7].slice(8, 10)}.${hours[7].slice(5, 7)} ${hours[7].slice(11, 16)} UTC`)).toBeInTheDocument();
+
+      expect(fetchMock).toHaveBeenCalledTimes(1);
+    });
+
+    it("S3: after a user-driven selection, focus lands on a stable node inside the comparison area and an aria-live region announces the new time", async () => {
+      const payload = makeWidePayload();
+      vi.stubGlobal("fetch", vi.fn().mockResolvedValue({ ok: true, json: async () => payload }));
+      renderPage();
+
+      const select = await screen.findByLabelText(translations.is.winterRouteHourLabel);
+      const hours = wideHours();
+      const { fireEvent } = await import("@testing-library/react");
+      fireEvent.change(select, { target: { value: hours[3] } });
+      await waitFor(() => expect(select.value).toBe(hours[3]));
+
+      const laterButton = screen.getByRole("button", { name: (name) => name.includes("2 klst. síðar") });
+      fireEvent.click(laterButton);
+
+      await waitFor(() => {
+        expect(document.activeElement).not.toBe(document.body);
+        expect(getComparisonSection().contains(document.activeElement)).toBe(true);
+      });
+
+      const expectedAnnouncement = translations.is.winterRouteComparisonSelectedAnnouncement.replace(
+        "{time}",
+        `${hours[5].slice(8, 10)}.${hours[5].slice(5, 7)} ${hours[5].slice(11, 16)}`
+      );
+      await waitFor(() => expect(screen.getByText(expectedAnnouncement)).toBeInTheDocument());
+    });
+
+    it("R1: the hour <select> itself keeps focus when its own onChange fires, even though selectedHour/cards/comparison update (native ArrowDown must not be interrupted)", async () => {
+      const payload = makeWidePayload();
+      vi.stubGlobal("fetch", vi.fn().mockResolvedValue({ ok: true, json: async () => payload }));
+      renderPage();
+
+      const select = await screen.findByLabelText(translations.is.winterRouteHourLabel);
+      const hours = wideHours();
+      const { fireEvent } = await import("@testing-library/react");
+
+      await waitFor(() => expect(select.value).toBe(hours[0]));
+      select.focus();
+      expect(document.activeElement).toBe(select);
+
+      fireEvent.change(select, { target: { value: hours[3] } });
+
+      // selectedHour (and therefore the comparison area recentering around
+      // it) really did update from this change — not a no-op assertion.
+      await waitFor(() => expect(select.value).toBe(hours[3]));
+      const comparison = within(getComparisonSection());
+      expect(comparison.getByText(translations.is.winterRouteComparisonBaselineLabel)).toBeInTheDocument();
+
+      // The select itself never had focus moved away from it — unlike the
+      // comparison-button path above, this is the native <select> keyboard
+      // path (real ArrowDown fires `change` on every step; moving focus
+      // away after the first step would strand the user — see
+      // result-review.md R1).
+      expect(document.activeElement).toBe(select);
+    });
+
+    it("S3: a disabled comparison option shows its reason as visible text, not only a title attribute", async () => {
+      vi.stubGlobal("fetch", vi.fn().mockResolvedValue({ ok: true, json: async () => makeWidePayload() }));
+      renderPage();
+
+      await screen.findByText(translations.is.winterRouteComparisonHeading);
+      const comparison = within(getComparisonSection());
+      const reasonText = comparison.getByText(translations.is.winterRouteComparisonReasonNotUpcoming);
+      // A real, disabled <button> — not a plain <div> — carrying the
+      // reason as rendered text content.
+      const button = reasonText.closest("button");
+      expect(button).not.toBeNull();
+      expect(button).toBeDisabled();
+    });
+
+    it("the comparison area shows the stale-forecast marking when forecast.stale is true, without hiding available options", async () => {
+      const payload = makeWidePayload({ forecast: { ...makeWidePayload().forecast, stale: true, cacheAgeMs: 15 * 60 * 1000 } });
+      vi.stubGlobal("fetch", vi.fn().mockResolvedValue({ ok: true, json: async () => payload }));
+      renderPage();
+
+      await screen.findByText(translations.is.winterRouteComparisonHeading);
+      const comparison = within(getComparisonSection());
+      const expected = translations.is.winterRouteForecastStaleServed.replace("{minutes}", "15");
+      expect(comparison.getByText(expected)).toBeInTheDocument();
+      // Baseline slot is still shown with real values, not hidden.
+      expect(comparison.getByText(translations.is.winterRouteComparisonBaselineLabel)).toBeInTheDocument();
     });
   });
 });

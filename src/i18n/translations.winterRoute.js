@@ -67,6 +67,26 @@ export const winterRouteTranslations = {
     winterRouteSummaryNoticeCountUnconfirmed: "The count of sections with valid notices is unconfirmed right now.",
     winterRouteSummaryNoticeScope: "Not the overall road condition — see the road-condition list below.",
 
+    // #490 — departure-time comparison (−2h / selected / +2h), reusing
+    // #489's own extrema per option. Reason strings are a fixed, closed
+    // set (S1b) — never an internal code leaking into the UI.
+    winterRouteComparisonHeading: "Departure time comparison",
+    winterRouteComparisonBaselineLabel: "Selected departure time",
+    winterRouteComparisonEarlierLabel: "2 hours earlier",
+    winterRouteComparisonLaterLabel: "2 hours later",
+    winterRouteComparisonViewButton: "View this time",
+    winterRouteComparisonSelectedBadge: "Currently selected",
+    winterRouteComparisonRoadNote:
+      "Road conditions and closures show the latest available status — not a forecast for these options.",
+    winterRouteComparisonSelectedAnnouncement: "Selected departure time is now {time} UTC.",
+    winterRouteComparisonReasonNotUpcoming: "This time has passed or is outside the available departure times.",
+    winterRouteComparisonReasonArrivalOutsideWindow:
+      "At least one point's estimated arrival falls outside the fetched forecast window; the comparison needs all six points.",
+    winterRouteComparisonReasonPointUnavailable:
+      "Data is missing for at least one of the six points; the comparison needs all six points.",
+    winterRouteComparisonReasonMetricGap:
+      "The comparison needs a value for all six points; a data gap prevents it right now.",
+
     winterRouteAttributionRoadLine:
       "Road-condition and closure data: Vegagerðin (the Icelandic Road Administration), CC BY 4.0.",
     winterRouteAttributionWeatherLine: "Weather forecast data: Open-Meteo.",
@@ -137,6 +157,24 @@ export const winterRouteTranslations = {
     winterRouteSummaryNoticeCount: "Kaflar með gildar tilkynningar: {count}",
     winterRouteSummaryNoticeCountUnconfirmed: "Fjöldi kafla með gildar tilkynningar er óstaðfestur núna.",
     winterRouteSummaryNoticeScope: "Ekki heildarstaða færðar — sjá færðarlistann neðar.",
+
+    // #490 — sjá samsvarandi EN athugasemd að ofan.
+    winterRouteComparisonHeading: "Samanburður brottfarartíma",
+    winterRouteComparisonBaselineLabel: "Valinn brottfarartími",
+    winterRouteComparisonEarlierLabel: "2 klst. fyrr",
+    winterRouteComparisonLaterLabel: "2 klst. síðar",
+    winterRouteComparisonViewButton: "Skoða þennan tíma",
+    winterRouteComparisonSelectedBadge: "Núverandi val",
+    winterRouteComparisonRoadNote:
+      "Færð og lokanir sýna nýjustu tiltæku stöðu — ekki spá fyrir þessa valkosti.",
+    winterRouteComparisonSelectedAnnouncement: "Valinn brottfarartími er nú {time} UTC.",
+    winterRouteComparisonReasonNotUpcoming: "Þessi tími er liðinn eða utan tiltækra brottfarartíma.",
+    winterRouteComparisonReasonArrivalOutsideWindow:
+      "Komutími á a.m.k. einum punkti er utan sótts spáglugga; samanburðurinn þarf alla sex punktana.",
+    winterRouteComparisonReasonPointUnavailable:
+      "Gögn vantar fyrir a.m.k. einn af sex punktunum; samanburðurinn þarf alla sex punktana.",
+    winterRouteComparisonReasonMetricGap:
+      "Samanburðurinn þarf gildi fyrir alla sex punktana; gagnagat kemur í veg fyrir hann núna.",
 
     winterRouteAttributionRoadLine: "Færðar- og lokanargögn: Vegagerðin, CC BY 4.0.",
     winterRouteAttributionWeatherLine: "Veðurspágögn: Open-Meteo.",

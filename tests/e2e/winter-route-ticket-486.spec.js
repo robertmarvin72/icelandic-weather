@@ -140,6 +140,15 @@ async function gotoPage(page) {
   await expect(page.locator("h1")).toBeVisible();
 }
 
+// #490 added a departure-time comparison area that can render its own copy
+// of the same "Mestar hviður"/"Mest úrkoma"/"Lægsti hiti" metric lines for
+// each AVAILABLE option, alongside the #489 route-level summary — scope to
+// the summary's own <section> (its heading is unique/stable) when a test
+// cares specifically about the summary, not the comparison area.
+function summarySection(page, headingText = "Á leiðinni núna") {
+  return page.locator("section").filter({ hasText: headingText });
+}
+
 test.describe("WinterRoute (/winter-route) — Ticket #486 Round 2 (N3) real-browser verification", () => {
   test("desktop, light, Icelandic: title, hour picker, six forecast cards, and all 13 road sections render", async ({
     page,
@@ -154,11 +163,13 @@ test.describe("WinterRoute (/winter-route) — Ticket #486 Round 2 (N3) real-bro
     for (const [, nameIs] of SEGMENT_DEFS) {
       await expect(page.getByText(nameIs, { exact: true }).first()).toBeVisible();
     }
-    // All six forecast cards show the same selected hour's temperature —
-    // plus one more match inside the #489 route summary's own "Lægsti
-    // hiti: -2,3 °C — ..." line (Playwright's getByText is a substring
-    // match by default, unlike RTL's exact-match default).
-    await expect(page.getByText("-2,3 °C")).toHaveCount(7);
+    // All six forecast cards show the same selected hour's temperature,
+    // plus the #489 route summary's own "Lægsti hiti: -2,3 °C — ..." line,
+    // plus the #490 comparison area's baseline and "+2h" options (both
+    // available at the default load — only "-2h" is unavailable, N2) each
+    // showing the same flat fixture value too (Playwright's getByText is a
+    // substring match by default, unlike RTL's exact-match default).
+    await expect(page.getByText("-2,3 °C")).toHaveCount(9);
     await page.screenshot({ path: "test-results/ticket-486/desktop-light-is.png", fullPage: true });
   });
 
@@ -280,15 +291,16 @@ test.describe("WinterRoute (/winter-route) — Ticket #486 Round 2 (N3) real-bro
     await gotoPage(page);
 
     await expect(page.getByText("Á leiðinni núna")).toBeVisible();
+    const summary = summarySection(page);
     // All six points share identical fixture weather series, so the
     // winner is always P1 (first in fixed route order).
     await expect(
-      page.getByText(/Mestar hviður \(hámark síðustu klukkustundar\): 9,8 m\/s — Rauðavatn/),
+      summary.getByText(/Mestar hviður \(hámark síðustu klukkustundar\): 9,8 m\/s — Rauðavatn/),
     ).toBeVisible();
-    await expect(page.getByText(/Mest úrkoma \(síðasta klukkustund\): 0,2 mm — Rauðavatn/)).toBeVisible();
-    await expect(page.getByText(/Lægsti hiti: -2,3 °C — Rauðavatn/)).toBeVisible();
-    await expect(page.getByText("Kaflar með gildar tilkynningar: 1")).toBeVisible();
-    await expect(page.getByText("Ekki heildarstaða færðar — sjá færðarlistann neðar.")).toBeVisible();
+    await expect(summary.getByText(/Mest úrkoma \(síðasta klukkustund\): 0,2 mm — Rauðavatn/)).toBeVisible();
+    await expect(summary.getByText(/Lægsti hiti: -2,3 °C — Rauðavatn/)).toBeVisible();
+    await expect(summary.getByText("Kaflar með gildar tilkynningar: 1")).toBeVisible();
+    await expect(summary.getByText("Ekki heildarstaða færðar — sjá færðarlistann neðar.")).toBeVisible();
     await page.screenshot({ path: "test-results/ticket-486/summary-desktop-light-is.png", fullPage: true });
   });
 
@@ -316,9 +328,10 @@ test.describe("WinterRoute (/winter-route) — Ticket #486 Round 2 (N3) real-bro
 
     const select = page.getByLabel("Áætlaður brottfarartími");
     await select.waitFor({ state: "visible" });
+    const summary = summarySection(page);
     // Departure = EXPECTED_HOURS[0] -> P1 (distance 0) resolves to hour
     // index 0 -> -2.3 + 0 + 0*0.01 = -2.3, the lowest of the six points.
-    await expect(page.getByText(/Lægsti hiti: -2,3 °C — Rauðavatn/)).toBeVisible();
+    await expect(summary.getByText(/Lægsti hiti: -2,3 °C — Rauðavatn/)).toBeVisible();
 
     await select.selectOption({ index: 1 });
     // Departure = EXPECTED_HOURS[1] -> P1 still resolves to +0h -> hour
@@ -327,7 +340,7 @@ test.describe("WinterRoute (/winter-route) — Ticket #486 Round 2 (N3) real-bro
     await select.selectOption({ index: 10 });
     // Departure = EXPECTED_HOURS[10] -> P1 resolves to hour index 10 ->
     // -2.3 + 0 + 10*0.01 = -2.2.
-    await expect(page.getByText(/Lægsti hiti: -2,2 °C — Rauðavatn/)).toBeVisible();
+    await expect(summary.getByText(/Lægsti hiti: -2,2 °C — Rauðavatn/)).toBeVisible();
 
     expect(requestCount).toBe(1);
   });
@@ -353,5 +366,143 @@ test.describe("WinterRoute (/winter-route) — Ticket #486 Round 2 (N3) real-bro
     await expect(page.getByText("Not the overall road condition — see the road-condition list below.")).toBeVisible();
     await expect(page.getByText(/^Sections with valid notices: \d/)).toHaveCount(0);
     await page.screenshot({ path: "test-results/ticket-486/summary-mobile-partial-stale-en.png", fullPage: true });
+  });
+
+  // #490 — departure-time comparison (−2h / selected / +2h). Real-browser
+  // coverage for S3 (keyboard Tab->Enter focus) and S4 (measured 375px
+  // overflow with the longest reason/point text), reusing this same spec
+  // file/stubbing setup, no new tooling.
+  test("#490 keyboard: Tab to an available comparison option, Enter selects it, and focus lands inside the comparison area (S3)", async ({
+    page,
+  }) => {
+    await primePageState(page, { lang: "is", theme: "light" });
+    const payload = basePayload();
+    await stubWinterRoute(page, payload);
+    await page.setViewportSize({ width: 1280, height: 900 });
+    await gotoPage(page);
+
+    const select = page.getByLabel("Áætlaður brottfarartími");
+    await select.waitFor({ state: "visible" });
+    // Move the baseline off the window's first hour so both −2h and +2h
+    // are genuinely available (N2 — the very first hour always has "2h
+    // earlier" unavailable, by design).
+    await select.selectOption({ index: 3 });
+    await expect(page.getByText("Samanburður brottfarartíma")).toBeVisible();
+
+    const viewButtons = page.getByRole("button", { name: /Skoða þennan tíma/ });
+    await expect(viewButtons.first()).toBeEnabled();
+
+    // Real Tab -> Enter flow (not a direct .click()): focus the page body,
+    // then Tab until a "Skoða þennan tíma" button is focused.
+    await page.keyboard.press("Tab");
+    let guard = 0;
+    while (guard < 40) {
+      const isOnViewButton = await page.evaluate(
+        () => document.activeElement?.textContent?.includes("Skoða þennan tíma") ?? false,
+      );
+      if (isOnViewButton) break;
+      await page.keyboard.press("Tab");
+      guard += 1;
+    }
+    expect(guard).toBeLessThan(40);
+
+    await page.keyboard.press("Enter");
+
+    // Focus must land on a stable node INSIDE the comparison area after
+    // activation — never reset to <body> (which would read as "focus
+    // lost" to a keyboard/screen-reader user).
+    await expect(async () => {
+      const result = await page.evaluate(() => {
+        const heading = [...document.querySelectorAll("h3")].find((h) => h.textContent === "Samanburður brottfarartíma");
+        const area = heading?.closest("div");
+        return {
+          isBody: document.activeElement === document.body,
+          insideArea: !!area && area.contains(document.activeElement),
+        };
+      });
+      expect(result.isBody).toBe(false);
+      expect(result.insideArea).toBe(true);
+    }).toPass({ timeout: 5000 });
+
+    await expect(page.getByText(/Valinn brottfarartími er nú .* UTC\./)).toBeAttached();
+  });
+
+  test("#490 keyboard (R1): ArrowDown twice on the focused hour select steps natively without losing focus, and cards/comparison recenter", async ({
+    page,
+  }) => {
+    await primePageState(page, { lang: "is", theme: "light" });
+    const payload = basePayload();
+    await stubWinterRoute(page, payload);
+    await page.setViewportSize({ width: 1280, height: 900 });
+    await gotoPage(page);
+
+    const select = page.getByLabel("Áætlaður brottfarartími");
+    await select.waitFor({ state: "visible" });
+    await expect(select).toHaveValue(EXPECTED_HOURS[0]);
+
+    // Real Tab from the page body to the select — never .focus()/selectOption
+    // used as a substitute for the keyboard path under test.
+    await page.keyboard.press("Tab");
+    let guard = 0;
+    while (guard < 20) {
+      const isOnSelect = await select.evaluate((el) => el === document.activeElement);
+      if (isOnSelect) break;
+      await page.keyboard.press("Tab");
+      guard += 1;
+    }
+    expect(guard).toBeLessThan(20);
+
+    // Two native ArrowDown presses on the focused, CLOSED <select> — in
+    // Chromium this steps the selection and fires `change` immediately
+    // without opening a popup, so no intervening Enter is needed here; if
+    // a platform did open a popup, confirming it with Enter would be the
+    // native closing behavior, not a workaround. No focus() call and no
+    // selectOption substitute between steps — this is the exact path R1
+    // fixed (focus used to jump to the comparison area after the first
+    // step, stranding further ArrowDown presses).
+    await page.keyboard.press("ArrowDown");
+    await expect(select).toHaveValue(EXPECTED_HOURS[1]);
+    expect(await select.evaluate((el) => el === document.activeElement)).toBe(true);
+
+    await page.keyboard.press("ArrowDown");
+    await expect(select).toHaveValue(EXPECTED_HOURS[2]);
+    expect(await select.evaluate((el) => el === document.activeElement)).toBe(true);
+
+    // Cards/comparison really did recenter around the new baseline.
+    await expect(page.getByText("Samanburður brottfarartíma")).toBeVisible();
+    await expect(page.getByText("Núverandi val").first()).toBeVisible();
+  });
+
+  test("#490 mobile (375px): three comparison slots with the longest IS/EN reason and point text cause no horizontal scroll, measured (S4)", async ({
+    page,
+  }) => {
+    await primePageState(page, { lang: "is", theme: "light" });
+    const payload = basePayload();
+    // The baseline stays on the window's first hour, so "2 klst. fyrr" is
+    // unavailable with its (longest) reason text visible by default — no
+    // extra fixture work needed to exercise the longest-text case.
+    await stubWinterRoute(page, payload);
+    await page.setViewportSize({ width: 375, height: 800 });
+    await gotoPage(page);
+
+    await expect(page.getByText("Samanburður brottfarartíma")).toBeVisible();
+    await expect(page.getByText("Þessi tími er liðinn eða utan tiltækra brottfarartíma.")).toBeVisible();
+    // The longest point label in the fixed six, from basePayload() itself.
+    await expect(page.getByText("Rauðavatn–Sandskeið–vestari Hellisheiði").first()).toBeVisible();
+
+    const overflow = await page.evaluate(() => {
+      const el = document.scrollingElement;
+      return { scrollWidth: el.scrollWidth, clientWidth: el.clientWidth };
+    });
+    expect(overflow.scrollWidth).toBeLessThanOrEqual(overflow.clientWidth);
+
+    // A visible focus ring on keyboard selection of an available option —
+    // not a screenshot alone standing in for the scroll measurement above.
+    const viewButton = page.getByRole("button", { name: /Skoða þennan tíma/ }).first();
+    await viewButton.focus();
+    const outline = await viewButton.evaluate((el) => getComputedStyle(el).outlineStyle + getComputedStyle(el).boxShadow);
+    expect(outline).not.toBe("none none");
+
+    await page.screenshot({ path: "test-results/ticket-486/comparison-mobile-375-is.png", fullPage: true });
   });
 });
