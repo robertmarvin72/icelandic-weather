@@ -1,0 +1,125 @@
+Loaded 249 tier0 VEGNR=1 pieces nationwide (reused, unchanged, re-verify hash separately).
+
+Discovered chain length: 47 pieces (from-scratch nearest-unused-endpoint search, not a replay of a hardcoded list).
+Stopped at excluded-boundary piece: {'idferill': 32961, 'idbutur': 909000037, 'stopped_at_excluded_boundary': True, 'gap_m': 0.0}
+
+# idferill idbutur veghluti kaflanr exact_xy_equal unrounded_gap_m orientation next_competitor_m
+1 2819 904040037 1 g7 None None fwd None
+2 30401 904040037 5 g8 False 1.770434 fwd 42.922
+3 2816 904040037 1 g8 False 42.840892 fwd 710.674
+4 2800 904040037 1 g9 True 0.000000 fwd 8534.066
+5 2775 904050037 1 h0 True 0.000000 fwd 7633.926
+6 2753 904050037 1 h1 True 0.000000 fwd 9522.362
+7 3103 904050037 1 h2 True 0.000000 fwd 10081.115
+8 3406 904060037 1 h3 True 0.000000 fwd 8024.094
+9 3407 904060037 1 h4 True 0.000000 fwd 9469.491
+10 3408 904060037 1 j1 True 0.000000 fwd 10304.915
+11 2243 904060037 1 j2 True 0.000000 fwd 5102.779
+12 1481 904060037 1 j2 True 0.000000 fwd 4335.092
+13 3828 907150037 1 k1 True 0.000000 fwd 896.361
+14 3827 907150037 1 k2 True 0.000000 fwd 11128.92
+15 3826 907150037 1 k3 True 0.000000 fwd 11074.716
+16 3825 907150037 1 k4 True 0.000000 fwd 3837.409
+17 3584 907160037 1 k5 True 0.000000 fwd 6439.855
+18 3570 907160037 1 k6 True 0.000000 fwd 5658.192
+19 52490 770040037 1 k6 True 0.000000 fwd 3888.162
+20 3569 770040037 1 k7 True 0.000000 fwd 11145.491
+21 2594 907210037 1 k8 True 0.000000 fwd 9741.813
+22 2593 907210037 1 k9 True 0.000000 fwd 11315.746
+23 3221 908010037 1 m0 True 0.000000 fwd 753.082
+24 2423 908010037 1 m1 True 0.000000 fwd 578.374
+25 2456 908010037 1 m2 True 0.000000 fwd 12925.698
+26 2478 908010037 1 m3 True 0.000000 fwd 11109.532
+27 3237 908020037 1 m4 True 0.000000 fwd 8247.715
+28 3238 908020037 1 m5 True 0.000000 fwd 12308.58
+29 2477 908020037 1 m6 True 0.000000 fwd 728.829
+30 2734 908030037 1 m7 True 0.000000 fwd 4590.272
+31 2733 908030037 1 m8 True 0.000000 fwd 5276.169
+32 2736 908030037 1 m9 True 0.000000 fwd 10495.198
+33 2718 908040037 1 n0 True 0.000000 fwd 8985.019
+34 3233 909010037 1 n1 True 0.000000 fwd 10423.633
+35 3258 909010037 1 p1 True 0.000000 fwd 9373.382
+36 3275 909010037 1 p2 True 0.000000 fwd 9573.621
+37 3016 909020037 1 p3 True 0.000000 fwd 10406.759
+38 3015 909020037 1 p4 True 0.000000 fwd 11040.278
+39 2995 909030037 1 p5 True 0.000000 fwd 2730.727
+40 2940 909030037 1 p6 True 0.000000 fwd 4747.004
+41 3876 909360037 1 p7 True 0.000000 fwd 808.586
+42 3505 909360037 1 p7 True 0.000000 fwd 1609.837
+43 3504 909360037 1 p7 True 0.000000 fwd 816.419
+44 2727 909360037 1 p8 True 0.000000 fwd 333.258
+45 2726 909350037 1 p9 True 0.000000 fwd 1528.25
+46 2725 909350037 1 q0 True 0.000000 fwd 2028.523
+47 32964 909350037 1 q1 True 0.000000 fwd 264.381
+
+Exact-contact count (exact_xy_equal==True): 44 of 46 inter-piece transitions.
+Non-exact transitions (idferill, unrounded_gap_m): [(30401, 1.7704337999295003), (2816, 42.8408915829423)]
+
+=== Y1/L2: roundabout bridge constants vs. unrounded measurement (documentation of correspondence, NOT a new threshold) ===
+  idferill 30401: documented=1.77m, measured(unrounded)=1.770434m, deviation=+0.000434m
+  idferill 2816: documented=42.84m, measured(unrounded)=42.840892m, deviation=+0.000892m
+  Assertion passed: both documented constants are within 1cm of their own unrounded measurement -- same evidence, rounded for display. Grade remains 'bridged by pre-registered rule', not 'VERIFIED driving connection' (K1).
+
+Discovered order == existing candidate chain_order (build_candidate.py)? True
+
+VEGHLUTI role counts across the 47 evidence pieces (incl. reference piece 2819): {1: 46, 5: 1}
+Distinct IDBUTUR: 16 [770040037, 904040037, 904050037, 904060037, 907150037, 907160037, 907210037, 908010037, 908020037, 908030037, 908040037, 909010037, 909020037, 909030037, 909350037, 909360037]
+
+Node-count mismatches (native vs WGS84): NONE
+Total vertices across 47 evidence pieces: 1107
+Zero-z vertices: 141 of 1107
+Pieces entirely zero-z (no elevation recorded at all):
+   2819 904040037 8 vertices
+   2456 908010037 48 vertices
+   2478 908010037 24 vertices
+   2940 909030037 15 vertices
+   3876 909360037 3 vertices
+   3505 909360037 10 vertices
+   3504 909360037 5 vertices
+   2727 909360037 2 vertices
+   2726 909350037 10 vertices
+   2725 909350037 8 vertices
+   32964 909350037 7 vertices
+
+Overall max z: (544.4727, 3258, 909010037)
+Top 5 local maxima by piece:
+  idferill 3258 idbutur 909010037 max_z_m 544.4727
+  idferill 3233 idbutur 909010037 max_z_m 477.0399
+  idferill 3237 idbutur 908020037 max_z_m 422.9379
+  idferill 3238 idbutur 908020037 max_z_m 420.158
+  idferill 3408 idbutur 904060037 max_z_m 395.2098
+
+Roundabout 30401 own closed-loop length: planar=124.672m haversine=124.277m (EXCLUDED from route-distance totals below; evidence of feature existence only)
+
+North-only route-distance (excl. piece 2819 AND ring 30401's own loop, incl. the two disclosed bridging gaps once each, UNROUNDED):
+  planar ISN93 km: 317.7261
+  haversine WGS84 km: 316.7123
+
+=== B (roundabout 33604) measurement vs. piece 32964 (total length 687.839m) ===
+Point-to-line distance (perpendicular, planar ISN93): 0.0 m
+Along-line distance from piece start: 264.381 m
+Along-line distance from piece end: 423.458 m
+Chord (straight-line) distance to piece start: 264.381 m
+Chord (straight-line) distance to piece end: 398.103 m
+Fraction of piece length from start: 38.4 %
+
+=== Y2/L1: feed-file export-timestamp ages, reference = 2026-11-05T18:57:23+00:00 ===
+  faerd2017_1, 2026-10-28 capture: file=docs/ai/tasks/ticket-483/samples/legacy-faerd-fresh.json, field=DagsKeyrtUt, export_ts=2026-10-28T18:51:00Z, age=8d 0h 6m 23s (total_seconds=691583), n_rows=708
+  faerd2017_1, 2026-11-02 capture: file=docs/ai/tasks/ticket-485/samples/legacy-faerd-https.json, field=DagsKeyrtUt, export_ts=2026-11-02T13:21:00Z, age=3d 5h 36m 23s (total_seconds=279383), n_rows=708
+  faerdpunktar2017_1, 2026-10-28 capture: file=docs/ai/tasks/ticket-483/samples/legacy-faerdpunktar.json, field=DagsKeyrtUt, export_ts=2026-10-28T18:56:00Z, age=8d 0h 1m 23s (total_seconds=691283), n_rows=43
+  faerdpunktar2017_1, 2026-11-02 capture: file=docs/ai/tasks/ticket-485/samples/legacy-faerdpunktar-https.json, field=DagsKeyrtUt, export_ts=2026-11-02T13:21:00Z, age=3d 5h 36m 23s (total_seconds=279383), n_rows=26
+  Age range across all 4 feed files: 3.2336 to 8.0044 days -> stated range '3-8 days' (not '3-7 days').
+  DagsSkrad (per-record registration time) is a SEPARATE field from DagsKeyrtUt (file-level export time) and is not conflated here.
+
+=== W5 (retained, not ad hoc): notice 73688 nearest-vertex distance, side-road pieces sharing target IDBUTUR ===
+  Found notice 73688 in docs/ai/tasks/ticket-483/samples/legacy-faerdpunktar.json: IdButur=772210037.0, Astand=VEGAVINNA, GildirTil=2027-10-20T16:00:00Z, lon=-20.360549, lat=65.491479
+  Found notice 73688 in docs/ai/tasks/ticket-485/samples/legacy-faerdpunktar-https.json: IdButur=772210037.0, Astand=VEGAVINNA, GildirTil=2027-10-20T16:00:00Z, lon=-20.360549, lat=65.491479
+  Nearest-vertex haversine distance from notice 73688 to the 47-piece WGS84 chain: 1515.3 m (piece idferill 2594).
+  This is an UPPER BOUND on point-to-line distance (nearest-vertex >= nearest-point-on-line), not a precise point-to-line measurement, and is never used to infer route relevance either way.
+
+  Side-road tier0 pieces sharing a target IDBUTUR but NOT on VEGNR=1 (4 pieces):
+    idferill=3372 idbutur=904050037 vegnr=5240 kaflanr=01 length_m=190.4
+    idferill=3587 idbutur=907150037 vegnr=7020 kaflanr=01 length_m=1016.2
+    idferill=3865 idbutur=907210037 vegnr=731 kaflanr=01 length_m=199.3
+    idferill=3824 idbutur=907150037 vegnr=704 kaflanr=04 length_m=1720.8
+  Sum of distinct side-road tier0 piece lengths: 3.127 km -- NOT part of the Hringvegur chain, not added to it.

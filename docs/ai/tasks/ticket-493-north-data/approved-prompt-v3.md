@@ -1,0 +1,19 @@
+# #493 north-data — Approved prompt v3
+
+Ripley, 2026-11-05. Jonesy samþykkti Y1–Y4 með L1–L4. Lesið docs/ai/README.md og CURRENT.md. Framkvæmið eftir eigandahandoff í READY_FOR_CC. Umfang er offline afleiðslur og gagnaskjöl í ticket-493-north-data ásamt lögboðnum CURRENT-færslum. Varðveitið fryst plan, frumsvör, fyrri ledger-línur og samþykkt prompt. Netköll, appbreytingar, commit og push eru utan umfangs.
+
+- Y1. Skráið nákvæman xy-hnitajöfnuð og óafrúnnaða mælda fjarlægð í sitt hvorum reit fyrir hvert keðjuskref. Leiðið gap/gap_grade í candidate JSON af mælingunum eða staðfestið þær með assertions. Samræmið afleiðslur og skjöl við 44 nákvæmar snertingar og tvö hringtorgsbil. Varðveitið sönnunargráðu akstursátta og leiðarlengd 316,7123 km með fyrri aðferð.
+- Y2. Reiknið sýnisaldur úr varðveittum tímastimplum miðað við 2026-11-05T18:57:23Z. Eldra sýnið er 8 dagar og 6 mínútur, námundað niður í mínútu. Samræmið aldursbil 3–8 dagar. Varðveitið endurkeyranlega W5-afleiðslu og úttak fyrir aldur, notice 73688 vertex-fjarlægð og hliðarvegastykki, helst í fyrirliggjandi inventory-forriti. Lestrarskrá endurspegli raunverulega lesin færðarsýni og geometry. Haldið takmörkunum um lykilpörun og leiðarviðkomu.
+- Y3. Bætið við dagsettri append-only leiðréttingu í ledger og samræmið manifest/report. Tími exchange 1 er UNKNOWN. Varðveitt röðun er probe fyrir forskráningu. 30 mínútna gluggi er óstaðfestur. Exchange 2 skipun er CC-eignuð endurminning. Body-cap framfylgd fyrir chunked svar og full C1-framfylgd eru NOT_DOCUMENTED. Raunbæti exchange 1 eru UNKNOWN og fyrri efri mörk mögulegs afgangs halda gildi.
+- Y4. Tilgreinið canonical UTF-8/LF JSON-bæti og SHA256 fyrir endurgerða skrá. Merkið sögulegu v1 budget-töfluna og liði 4–6 í CC-skýrslu með tilvísun á gildandi leiðréttingu.
+
+Endurkeyrið offline afleiðslurnar og berið saman úttak og candidate JSON. Skráið niðurstöðu Y1–Y4 í cc-report-north-data.md og ljúkið CC-lífsferli. EVIDENCE_READY_FOR_OWNER_REVIEW er áfram markmið gagnalotunnar. Eigandaákvörðun um sameiginlegan spátíma er skráð í ticket-493/owner-decisions-2026-11-05.md. Akureyrarendi og veðurpunktar eru áfram tillögur.
+
+## Skilyrði Jonesy L1–L4
+
+- L1 / Y2. Lesið skráarstigs DagsKeyrtUt úr hverju varðveittu færðar- og tilkynningasýni frá 28. október og 2. nóvember. Sannreynið að reiturinn gefi einn útflutningstíma í hverri skrá. Úttak sýni skráarheiti, stimpilreit, útflutningstíma, UTC-viðmiðun 2026-11-05T18:57:23Z og reiknaðan aldur í sekúndunákvæmni. DagsSkrad er sér færslutími. Varðveitið skriftu og úttak í inventory_chain.py eða litlu notice_key_check.py ásamt lestrarskrá.
+- L2 / Y1. Skráið exact_xy_equal sem bool úr samanburði fullra xy-tupla og mælda fjarlægð án afrúnnunar í sérstökum reit fyrir hvert skref. Berið skjalfestu brúargildin 1,77 og 42,84 m saman við mælingar og sýnið frávik með assertion eða úttaki. Samanburðurinn skráir samsvörun við heimild. Sönnunargráða brúaðra bila fylgir forskráðri reglu K1.
+- L3 / Y3. Afturkallið ágiskun um sömu mínútu og 18:57Z í dagsettri nýrri ledger-línu og skýrt í manifest og v1-gluggafærslu CC-skýrslu. Varðveitið ledger-línur 1–3, þar með talið v2-leiðréttinguna. Exchange 1 fór fram fyrir forskráningu samkvæmt CC. Tími er UNKNOWN og 30 mínútna gluggi óstaðfestur. Ef mtime 18:57:10Z er nefnt skal eigna það fyrri athugun og halda því aðskildu frá probe-tíma. Flögg exchange 2 eru CC-eignuð endurminning. Retained headers sýna chunked svar án Content-Length. Framfylgd body-þaks og min(8 MiB, eftirstandandi) er NOT_DOCUMENTED. Afturkallið fullyrðingu um staðfesta 8 MiB framfylgd.
+- L4 / Y4. Skrifið candidate JSON með encoding='utf-8', newline='\n'. Reiknið og skráið bætafjölda og SHA256 úr canonical LF skránni á diski og tilgreinið aðferðina. Merkið v1 budget-töflu og liði 4–6 inline með tilvísun í v3 leiðréttinguna.
+
+Notið lögboðin CURRENT-stig CC_IN_PROGRESS og CC_COMPLETE og skráið dagsetta v3-færslu. Production NOT_TESTED.
