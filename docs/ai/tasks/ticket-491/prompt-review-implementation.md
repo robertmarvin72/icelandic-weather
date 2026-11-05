@@ -1,0 +1,94 @@
+# #491 — B: leiðarval og Rauðavatn–Borgarnes, innleiðing til review
+
+## Ripley — umferð 1, 2026-11-04
+
+Til Jonesy-review. Ekki execution-/birtingarheimild. #491 feature er enn óinnleitt. Gagnalotu lauk með PASS/skilyrtu GO til þessa undirbúnings, ekki staðfestingu allra akstursforsendna.
+
+### Ákvarðanir sem eigandi samþykkir með seinna „Prompt approved“
+
+- Nýja upplýsingaleiðin er Rauðavatn–Borgarnes (innan víðara heitis miðans Reykjavík–Borgarnes); upphaf/endapunktur og fjórir raunlínupunktar úr yfirfarinni gagnatillögu. Engar borgargötur í Reykjavík.
+- Föst H1-keðja er rökstudd **INFERRED** nálgun að norðurleið, ekki sannreynd umferðarleiðbeining. Engin navigation-/öryggisráðgjöf eða kort. 2982 undantekning/skráðar tengibrýr og óreiknaðir hringbogar eru meðvitaðar forsendur, ekki gleymdar sannprófanir.
+- Lengdir eru áætlaðar út frá tier0 WGS84-línu + skráðum native-tengibilum; hringakstur ekki reiknaður sem bogar. Val spáklukkutíma við Borgarnes getur breyst um klukkutíma með annarri lengdarnálgun. Núverandi 70km/klst./ceil-regla óbreytt. Skýr takmörkun sýnileg við ETA, ekki nýtt áhættumat.
+
+Þetta þarf að vera skýrt í afhendingu/handoff. Samþykki á prompti samþykkir notkun þessarar nálgunar fyrir frumgerð, ekki að H1 eða hringakstur sé orðinn VERIFIED. Ef eigandi vill sannanlega stefnurétta akstursleið/nákvæman aksturstíma er þessi framkvæmd ekki næg; ekki láta kóða gefa þá fullyrðingu.
+
+### Fyrirhugað execution-prompt
+
+Lestu AGENTS.md, CLAUDE.md og docs/ai/README.md/CURRENT.md. CC-lífsferli samkvæmt README. Endurnýttu ticket-491/result-review-final-validation.md (Jonesy F1–F6/C1–C4 OG Ripley lokamat ráða yfir sterkari CC-frumfullyrðingum), final-validation/evidence-table-final.md, route-data-candidate.json og varðveitt WFS/native-sýni. Endurnýttu #486/#489/#490 kóða/próf. Engin ný rannsókn/net-/lyklaprófun eða ný geómetríugagnaöflun.
+
+1. **Read-only audit og afleiddar tölur fyrst:** Rekja fixed13/fixed6 notkun í segments, roadFetch/forecastFetch/validateForecast/cache, handler, summary/comparison og WinterRoute.jsx. Skrá minnsta breytingaumfang. Frysta route-data fyrir tvær leiðir, ekki almenn route engine. Vík hnit/lengdir/nöfn/70km-regla og hegðun óbreytt.
+
+C1–C4: nota nákvæmu 29 IDFERILL í yfirfarinni candidate í þeirri röð, fast hlutverk1/6; útiloka3/4/5/7/8 og **nefnda undantekningu2982** („til suðurs“, andstæð stafræn stefna) frekar en sjálfvirkt nearest-neighbour val. Hringir eru ekki akstursbogar í líkaninu: halda fyrirliggjandi gap-lengdum sérstaklega, engin ný bogaleit. Einnota offline afleiðsla úr varðveittum WGS84 tier0 polyline-hnútum: haversine með R=6371008,8m á milli allra hnúta, plús native-EPSG3057 tengibil í metrum, uppsafnað að hverjum af fjórum punktum; upphafsbil talið einu sinni. Ekki afrita planar-km úr candidate. Para IDFERILL/tier/node-count, ekki svarröð. Afhenda afleidda lengdartöflu/hash/skipun í docs, litlar tölufastar leiðarskilgreiningar í kóða. Enginn stór rannsóknar-JSON í frontend.
+
+Stýring: sama haversine/hlutverka/tier aðferð á 13 Vík-köflum gegn route-segments.csv, skýrt með/án hringtorgs samkvæmt CSV-dálki; <=0,02km per kafla, Jonesy fékk max0,004km. Stýring vottar línusummu, ekki akstursstefnu. Skrá P4 tier-næmi (+1/+2klst. samkvæmt yfirferð), punktmat tier0 með bilum (~70,566km, sjálfstætt endurreiknað hér), engan breyttan ceil. Ef gögn vantar eða afleiðsla mótmælir yfirferð umfram skýrða aðferð, skrá nákvæma hindrun og stöðva háða appvinnu, ekki rannsóknarlota.
+
+2. **Tvær skilgreiningar / einn gagnastraumur á leið:** Föst routeId allowlist (t.d. raudavatn-vik og raudavatn-borgarnes), route-nöfn IS/EN, ordered segments/full IDBUTUR, expectedPointCount (6/4), forecast points/nearIdButur/uppsafnað km. Upphaf Rauðavatn vestari1436-endi; Borgarnes entry2819 við hring30401 samkvæmt reglu, ekki centroid eða allur 904040037. P1–P4 hnit úr candidate óbreytt, P3=47042 upphaf. Vík default. Engin ný entitlement/pricing/DB/dependency; leyfilegar breytingar aðeins fyrir tvær leiðir.
+
+3. **Bakendi og cache:** /api/winter-route fær aðeins routeId val, missing=Vík, unknown=400. Önnur query gildi gefa ekki heimild til hosts/hnita/leiðaleitar. Lágmarks leiðarskilgreining passed í núverandi föll; ekki afrita handlera. Allt route-filtered/cached/last-known/inflight svar bundið routeId, svo A-gögn geti aldrei orðið B-gögn, líka fallback/partial/stale. Tvö bounded cache-par fyrir föstu leiðirnar nægja; landsfeed má deila eingöngu með réttri síun og óbreyttum tímum, ekki nýtt cache-kerfi. TTL/mörk/no-store, paid-only guard í ÖLLUM umhverfum (blank lykill =>0 spábeiðnir) og current road-condition code/closure-priority óbreytt. Response ber routeId og expectedPointCount frá heimilaðri skilgreiningu. Staðfesting fjölda/tíma/eininga/punktaröð skalar að skilgreiningu, ekki aðeins received-list length.
+
+4. **Leiðarval/UI/race:** Merkt native IS/EN-select efst á sömu /winter-route, Vík sjálfgefið og einn núverandi inngangur. Val stýrir titli, köflum, ETA-kortum, samantekt og −2/0/+2 samanburði. Við skipti hreinsa/fela gömlu leiðargögn STRAX á sömu render-skiptum, ekki eitt frame með nýjum titli/gömlu gildi. Loading/error route-scoped; sérhver request/response bundin routeId; abort/request-generation tryggir að sein A-svör yfirskrifi aldrei B og A→B→A virki í StrictMode. Ekki endurtaka gamla fetchedRef+cancelled-villuna eða nota mount-only guard sem hindrar leiðarskipti.
+
+Halda valinni brottför aðeins ef hún er gild í nýju svari, annars fyrsta tiltæka framtíðartíma þegar rétt gögn berast. Leiðarselect og tímaselect halda náttúrulegum fókus; comparison-takkar halda stöðugu baseline-focus/aria-live. Engin focus-stuldur við loading/tick.
+
+5. **Sameiginleg #489/#490 án fixed-six leka:** Endurnýta computeEta/resolvePointAtDeparture og extrema-reglur, útfæra expectedPointCount úr valinni leið (föst config ekki svarlistalengd). Full comparison = öll þrjú mæligildi á öllum 6 eða4 punktum við eigin ETA, annars ótiltækt með þýddum N-punkta ástæðum. Partial samantekt sýnir N af expectedCount; 0/null, jafntefli, UTC-dagamót og stale óbreytt. Engin auka fetch við tímaval eða comparison. Missing fjórði punktur má ekki verða þriggja-punkta „fullt“. Færðarlisti/notices-count aðeins leiðar-IDBUTUR, gildar punkttilkynningar aðgreindar frá yfirborði. Tímaval breytir ekki færð.
+
+6. **Heiðarleg framsetning:** Núverandi heimildir/ferskleiki/expired-closure og coarse-records haldast. Borgarnes-gögn nota aðeins hluta904040037 þótt færðarlínan nái yfir lengri kafla; birta stutta IS/EN-skýringu að færðarupplýsingar geti náð yfir lengri vegkafla en notaðan hluta. ETA-viðmið nýju leiðarinnar sýnir nálgun: „Áætluð koma miðast við einfalda vegalengdarnálgun og 70 km/klst.; ekki akstursleiðbeiningar. Gildistími spár getur hliðrast um klukkustund.“ / sambærilegt EN. Ekki sýna IDFERILL/tier/hashes eða önnur rannsóknarinnviði í UI. Engin fullyrðing um nákvæma akstursstefnu, örugga/bestu leið, öryggisskor eða samfellda veðurþekju. Færð er nýjasta tiltæka staða, aldrei framtíðarfærð fyrir valkosti. Engin kortasýn eða stór endurhönnun.
+
+7. **Markviss próf:** Config-tengdar raunhnit/lengdartölur+stýring í docs, viðeigandi unit-regression fyrir óbreytta Vík, fjóra Borgarnes-punkta, 6/4 expectedCount vs missing/list, rétt IDBUTUR full matching/stefnuundantekning sem föst gögn, cache/singleflight/fallback aðgreining leiða og routeId validation. UI IS/EN með stubbum: A→B, öfug svarröð, A→B→A, bilun við skipti, engin gömul gögn í loading; nýtt svar uppfærir route-title/summary/cards/notices/comparison, tímaval lætur ekki route/state leka, engin extra fetch við brottfararval. Prófa StrictMode, null/0/stale, allar missing-key umhverfisgreinar áfram enginn public-fallback. P4 nálægt70km sýnir +2 samkvæmt valda punktmatinu og sensitivity dæmi <70 sýnir +1 með sömu óbreyttu ETA-reglu, engin gæði talin sönnuð af því.
+
+Raunvafri núverandi Playwright/Chromium, stubbað /api/winter-route eftir routeId (engin raunveita/lykill): farsími375px/skjáborð, báðar leiðir, route switch/loading/failure, select ArrowDown heldur fókus, comparison Tab→Enter. Enginn láréttur skroll, læsilegar IS/EN fjögurra-punkta merkingar og takmarkanir; engin gömul sex-punkta fullyrðing á nýrri leið. Markviss núverandi winterRoute-próf og nýjar greinar, lint/build; víðara suite aðeins ef áhrif réttlæta. Nota fyrirliggjandi tól/dependencies.
+
+8. **Afhending og stöðvun:** Stutt cc-report-implementation.md, gögn/aðferð/sensitivity sem eigandi samþykkti, diff-yfirlit, próf/browser-sönnun/takmarkanir. Óbreyttar eldri gagnayfirferðir/JSON/hashar varðveittar. Fyrirliggjandi ócommitaðar #490 docs-lokaskráningar ekki yfirskrifaðar eða endurflokkaðar. Hvert verkþrep styður #491; engin ný leið/veita/áhættulíkan/leiðarbestun/DB/paywall eða kóðarefactor utan tveggja leiða. Nauðsyn á víðara umfangi/dependency => nákvæm hindrun/eigandaákvörðun, ekki sjálfvirk útvíkkun. Engin subagents, commit/push/GitHub/deploy. CURRENT → CC_COMPLETE, eigandi → Jonesy → Ripley. Production NOT_TESTED; #491 GitHub-lokun bíður samþykktrar eigandastýrðrar birtingar og staðfestingar beggja leiða.
+
+### Jonesy review-áhersla
+
+Meta að C1–C4 séu heiðarlega samþykktar nálganir, ekki endurskýrð sem fullstaðfest akstursleið. Ef þær duga ekki fyrir kröfu #491 um staðfesta leið, skilgreina nákvæma vöruákvörðun/hindrun áður en approved prompt er búið til; ekki bæta almenna rannsóknarlotu við. Eigandi fær concrete reviewable prompt og samþykkir forsendurnar með handoff, engin B-keyrsla núna. Jonesy verdict: PENDING.
+
+## Jonesy review — umferð 1 (2026-11-04)
+
+Hlutverk: tæknilegur rýnir, útfærði ekkert. Stage í CURRENT var PROMPT_REVIEW og passaði við skrárnar. Rýnt: drögin hér að ofan gegn `api/winter-route.js`, `api/_lib/winterRoute/{segments,cache,roadFetch,forecastFetch,validateForecast}.js`, `src/lib/winterRouteComparison.js`, `src/pages/WinterRoute.jsx`, `api/winter-route.test.js`, `src/pages/WinterRoute.test.jsx` (lestur, sandbox) og `final-validation/` gögnum. Ekkert keyrt á vél eiganda; engin próf/lint/build/vafri/git/net keyrð af mér; GitHub-miðatexti ólesinn; Production NOT_TESTED.
+
+### Verdict: APPROVED með skilyrðum B1–B7
+
+Uppbyggingin er rétt: C1–C4 eru borin fram sem **samþykktar nálganir** (INFERRED, ekki VERIFIED akstursleið), röð skrefa er rétt (afleiðing og stýring fyrst, svo bakendi, svo UI), routeId er allowlist, A→B leki er nefndur (fetchedRef-villan), paid-only lyklavörn og 70 km/ceil-regla eru óbreytt. Ekkert hér krefst nýrrar rannsóknar eða nets. Skilyrðin hér að neðan eru ekki ný umfangskrafa; þau loka tvíræðni sem CC gæti leyst rangt og hvert er bundið við tilgreint samþykkisskilyrði í drögunum.
+
+### Sannreynt við kóðann (sandbox lestur)
+
+- `roadFetch.js` línur 72 og 116 og `forecastFetch.js` (`buildForecastUrl`, `validateForecastResponse` með `data.length !== requestedPoints.length`) lesa **modúl-fasta** `WINTER_ROUTE_IDBUTUR_LIST` / `WINTER_ROUTE_FORECAST_POINTS`. Vegakerfisköllin skila þegar síuðum röðum fyrir Vík, og `cache.js` geymir þær síuðu niðurstöður í tveimur föstum bucket-um án lykils. Án breytingar lekur Vík-gögn í Borgarnes-svar. Drögin greina þetta rétt (liður 1 og 3), en leyfa „landsfeed má deila“, sem krefst nýs, óskilgreinds skilasniðs úr `fetchRoadSegments`.
+- `winterRouteComparison.js` lína 97: `validCount === 6` er harðkóðað. `WinterRoute.jsx` línur 453–480: `fetchedRef` + `fetch("/api/winter-route")` í `useEffect(..., [])`, eitt skipti á mount; leiðarskipti virka ekki án endurhönnunar. Drögin ná yfir bæði.
+- `api/winter-route.test.js` línur ~8: mock-beiðnin hefur `url` en **ekki** `req.query`. `WinterRoute.test.jsx` lína 127 fullyrðir `fetch` kallað með nákvæmlega `"/api/winter-route"`.
+- Gögn fyrir lengdarafleiðingu eru til í varðveittum skrám: öll 29 stykki finnast með WGS84 tier 0, **engin skörun** milli skránna, 0 hnútafjöldamunur gegn native (sandbox, Jonesy).
+
+### Skilyrði
+
+**B1 — MED — Heimildaskrár fyrir lengdarafleiðingu (liður 1, C3).** Drögin segja „varðveittum WGS84 tier0 polyline-hnútum“ án nafns. Án skráanna gæti CC leitað eða sótt nýtt. Nefna: `ticket-485/samples/wfs-extension-4326.json` fyrir fyrstu 11 stykkin (1477, 1431, 42243, 49926, 9923, 9925, 9927, 10242, 2796, 10247, 2488); `ticket-491/final-validation/samples/wfs-vesturland-4326.json` fyrir hin 18 (2532 … 2819); `ticket-483/samples/wfs-vegnr1-all.json` (native 3057, tier 0) fyrir tengibil og pörun; upphafsbil frá endapunkti 1436 (`route-data-candidate.json.start_raudavatn.native_3057_end`) að upphafi 1477 talið einu sinni. **Viðmiðunargildi úr sandbox mínu (haversine R=6 371 008,8 m + native-bil, uppsafnað): P1 23,559 km, P2 34,288 km, P3 53,738 km, P4 70,566 km.** CC endurreiknar óháð; frávik >0,01 km frá viðmiði, eða Vík-stýring >0,02 km á kafla, eða hnútafjöldamunur => skrá hindrun og stöðva háða appvinnu (samræmist núverandi orðalagi línu 23). Viðmiðið er ekki sjálfstæð sönnun, aðeins víxlathugun.
+
+**B2 — MED — routeId-sannprófun er ekki fullskilgreind (liður 3).** Tilgreina: (a) allowlist uppfletting með `Map`/`Object.hasOwn`, ekki `ROUTES[routeId]` (annars verða `__proto__`, `constructor`, `toString` „gildar“); (b) `req.query` getur vantað (núverandi test-mock) og gildi getur verið fylki (`?routeId=a&routeId=b`) eða tómur strengur: vantar => Vík; fylki, tómt eða óþekkt => 400 án þess að endurspegla inntakið í svarið; (c) önnur query-gildi áfram hunsuð; (d) 405/OPTIONS/`Cache-Control: no-store` og `502 winter_route_error` óbreytt. Skýrt að #486-prófið/athugasemdin „no query parameters are read“ (S3a) er viljandi uppfært **aðeins** fyrir `routeId`, ekki víkkað.
+
+**B3 — MED — Ein uppspretta sannleika fyrir leið og expectedPointCount (liður 2, 5).** Backend og frontend þurfa hvort sína leiðarskilgreiningu (select-nöfn IS/EN í UI; gögn í API). Drögin segja „föst config ekki svarlistalengd“ án þess að segja hvar config býr. Tilgreina: UI heldur eigin fasta (routeId → expectedPointCount 6/4) og meðhöndlar svar sem **villu** (ekki hlutasýn) ef `response.routeId !== valin leið` eða `response.expectedPointCount !== UI-fasti`; fjöldi punkta í svari ≠ expectedPointCount => sama villa; einstakir `available:false` punktar halda hlutasamantekt (N af M). Bæta við jafnræðisprófi (backend-fasti = UI-fasti) svo þeir geti ekki rekist úr takti.
+
+**B4 — LOW-MED — Cache-hönnun: velja eina leið (liður 3).** „Má deila landsfeed“ opnar á breytingu á skilasniði `roadFetch`. Binda: **eitt bounded bucket-par (road + forecast) á hvert routeId úr allowlist**, með sjálfstæðum inflight/stale/lastError; engin deiling á milli leiða í þessum miða nema CC sýni minni breytingu en per-route bucket, og þá sem skráða athugasemd, ekki hljóðláta umfangsbreytingu. Eigandi á að vita að þetta getur tvöfaldað Vegagerðar-/Open-Meteo-beiðnir (hver leið hefur eigin TTL; fjögurra punkta kall er lítið ódýrara) — ekki nýtt áhættumat, aðeins upplýsing; engin ný gjaldtaka í kóða (óbreytt).
+
+**B5 — LOW-MED — Upplýsandi samþykki eiganda: stærðir (C3).** „Ákvarðanir sem eigandi samþykkir“ segir að val geti breyst um klukkutíma en gefur enga stærð. Bæta við (Jonesy sandbox, ekki Ripley): P1–P3 (23,6/34,3/53,7 km) eru fjarri mörkum og gefa „+1 klst.“; **aðeins P4 er nálægt 70 km**: tier 0 haversine+bil 70,566 km (0,57 km yfir, 0,8 %), án bila 70,171 km (0,24 %); tier 1 án bila 69,839 km gefur „+1 klst.“; tier 2 gefur „+1 klst.“ í öllum mælingum; endapunktur 2876 í stað 2819 gæfi „+1 klst.“ undir haversine. Um 10 hringtorg eru brúuð með beinum bilum (boga ekki talda). Lýsing „sjálfstætt endurreiknað hér“ (lína 23) er Jonesy sandbox-niðurstaða; merkja svo.
+
+**B6 — LOW — Skilgreiningar sem CC gæti annars fundið upp (liður 2, 4, 6).** (a) Færðarlisti nýju leiðarinnar er nákvæmlega þessi 8 IDBUTUR í röð: 914020037, 903020037, 903030037, 904690037, 904000037, 904010037, 804020037, 904040037 (1410010037 er aðeins upphafspunktur, ekki hluti listans); `nearIdButur` P1–P4 = 903030037, 904690037, 804020037, 904040037 (P3 situr við mörk 904010037/804020037; nota 804020037 úr candidate). (b) Sýningarnöfn kafla IS/EN eru föst í kóða (sbr. #486), tekin úr varðveittum `StuttNafnButs` (Suðurlandsv. um Hádegismóa, Vesturlandsvegur, Kjalarnes, Hvalfjarðargöng, Hvalfjarðargöng–Grundartangi, Melasveit, Hafnarfjall, Borgarnes–Baulan); EN-þýðingar skráðar í cc-report til yfirferðar. „Borgarnes–Baulan“ má ekki gefa í skyn að leiðin nái að Baulu — falli undir lið 6 útskýringuna um lengri vegkafla. (c) Leiðarval er **React-state eingöngu** (engin URL-færibreyta, localStorage eða ný leiðarsíða); sjálfgefin Vík-beiðni heldur nákvæmlega `"/api/winter-route"` (núverandi prófi óbreytt), Borgarnes sendir `?routeId=raudavatn-borgarnes`. Svar ber `routeId` í báðum tilvikum.
+
+**B7 — LOW — Hlutverk 2982 orðað rétt (C1).** Í drögum stendur að 2982 sé „nefnd undantekning“; nákvæmara: 2982 (814700037, „Hvalfjarðargöng til suðurs“, N→S) er **útilokað** til að tvítelja ekki göngin, á grundvelli **heitis** og stafrænnar stefnu (ekki mældra raka); 56002 er valið. Samþykki eiganda á C1 á að segja það. Tvö jafngild tilvik (3023→56002, 56002→3796) eru einu tvíræðu útgangarnir í keðjunni af 28 (Jonesy sandbox); 26 útgangar hafa einn leyfðan inngang við hlutverk 1/6.
+
+### Hvað ég samþykki ekki og styð ekki
+
+Ég samþykki ekki að kóði eða UI gefi í skyn staðfesta akstursleið, akstursstefnu, nákvæman aksturstíma eða örugga/besta leið. Drögin banna það réttilega (liður 6). Ég mæli ekki með að breyta 70 km/klst./ceil-reglunni; breyting hennar væri nýtt umfang og nýr eigandaákvörðunarpunktur.
+
+### Umfang (ábending, ekki skilyrði)
+
+Átta liðir í einni CC-keyrslu er mikið (afleiðing + bakendi + cache + UI + race + #489/#490 + próf + Playwright). Röðin í drögunum gerir stöðvunarpunkta eðlilega: ef afleiðing/stýring (1) bregst, stöðva háða vinnu; ef cache/route-einangrun (3) er ekki græn, ekki hefja UI. Ég legg ekki til skiptingu nema Ripley vilji; hún myndi ekki breyta efni skilyrðanna.
+
+### Mörk yfirferðar
+
+Prompt-yfirferð: kóðalestur og sandbox-útreikningar mínir sýna samræmi við drög, ekki að útfærslan virki. Ekkert af eftirfarandi var keyrt af mér: próf, lint, build, vafri, git, Production. GitHub-miðatexti ólesinn. Engin B-keyrsla heimiluð af þessari yfirferð; eigandi samþykkir forsendur C1–C4 (með B5 stærðum) með „Prompt approved“ eftir að Ripley hefur fellt B1–B7 inn í approved-prompt.
+
+Jonesy verdict: **APPROVED með skilyrðum B1–B7** (umferð 1).
+
+## Ripley — afgreiðsla samþykkis, 2026-11-04
+
+B1–B7 felld inn í approved-prompt-v3.md. Fastar frumskrár/viðmiðunargildi og skýr uppruni Jonesy, strict own-property routeId, UI/backend 6/4 contract með mismatch-villu, tvö aðskilin bounded cache-pör, routeIds/8 Borgarnes-ID/nearId/heiti og React-state only. C1–C4 nálganir/kostnaður/tímanæmi sýnileg í eigandasamþykki; engin mæld fullyrðing um rétt akstursstefnu. READY_FOR_CC. Enginn appkóði/net/lykill í þessari afgreiðslu. Eigandi → CC „Prompt approved“.

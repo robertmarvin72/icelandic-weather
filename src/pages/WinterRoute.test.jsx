@@ -6,6 +6,7 @@ import { MemoryRouter } from "react-router-dom";
 import WinterRoute from "./WinterRoute";
 import { translations } from "../i18n/translations";
 import { formatDecimal } from "../lib/winterRoutePresentation";
+import { WINTER_ROUTE_OPTIONS } from "../lib/winterRouteRoutes";
 
 vi.mock("react-helmet-async", () => ({
   Helmet: ({ children }) => <>{children}</>,
@@ -78,6 +79,8 @@ function makePayload(overrides = {}) {
   const segments = Array.from({ length: 13 }, (_, i) => makeSegment(100000000 + i));
   const points = ["P1", "P2", "P3", "P4", "P5", "P6"].map((id) => makeForecastPoint(id));
   return {
+    routeId: "raudavatn-vik",
+    expectedPointCount: 6,
     generatedAt: "2026-11-03T18:00:00.000Z",
     segments,
     roadMeta: { available: true, stale: false, cacheAgeMs: 0, segmentsAvailable: true, pointsAvailable: true },
@@ -120,11 +123,20 @@ describe("WinterRoute page", () => {
 
     renderPage();
 
-    expect(screen.getByText(translations.is.winterRouteTitle)).toBeInTheDocument();
+    // Ticket #491, V1 — h1 comes from the selected WINTER_ROUTE_OPTIONS
+    // entry (Vík is the default), not a fixed translation key. Checked via
+    // role/level (not getByText) since the route <select>'s own Vík
+    // <option> now reads the identical text.
+    expect(screen.getByRole("heading", { level: 1 }).textContent).toBe(
+      WINTER_ROUTE_OPTIONS.find((o) => o.routeId === "raudavatn-vik").nameIs
+    );
     expect(screen.getByText(translations.is.winterRouteSubtitle)).toBeInTheDocument();
 
     await waitFor(() => expect(fetchMock).toHaveBeenCalledTimes(1));
-    expect(fetchMock).toHaveBeenCalledWith("/api/winter-route");
+    // Ticket #491 — the request now also carries an AbortController signal
+    // (route-switch isolation); only the URL itself matters for "default
+    // Vík request stays exactly /api/winter-route, no query string".
+    expect(fetchMock.mock.calls[0][0]).toBe("/api/winter-route");
   });
 
   it("renders all 13 segments once loaded", async () => {
@@ -325,7 +337,13 @@ describe("WinterRoute page", () => {
     vi.stubGlobal("fetch", vi.fn().mockResolvedValue({ ok: true, json: async () => makePayload() }));
     renderPage();
 
-    expect(await screen.findByText(translations.en.winterRouteTitle)).toBeInTheDocument();
+    // Ticket #491, V1 — h1 in English comes from nameEn, not a fixed key.
+    // Checked via role/level since the EN <option> text is identical.
+    await waitFor(() =>
+      expect(screen.getByRole("heading", { level: 1 }).textContent).toBe(
+        WINTER_ROUTE_OPTIONS.find((o) => o.routeId === "raudavatn-vik").nameEn
+      )
+    );
     expect(screen.getByText(translations.en.winterRouteSubtitle)).toBeInTheDocument();
   });
 
@@ -589,6 +607,8 @@ describe("WinterRoute page", () => {
         })
       );
       return {
+        routeId: "raudavatn-vik",
+        expectedPointCount: 6,
         generatedAt: "2026-11-03T18:00:00.000Z",
         segments,
         roadMeta: { available: true, stale: false, cacheAgeMs: 0, segmentsAvailable: true, pointsAvailable: true },
@@ -745,6 +765,448 @@ describe("WinterRoute page", () => {
       expect(comparison.getByText(expected)).toBeInTheDocument();
       // Baseline slot is still shown with real values, not hidden.
       expect(comparison.getByText(translations.is.winterRouteComparisonBaselineLabel)).toBeInTheDocument();
+    });
+  });
+
+  describe("Ticket #491 — route selection", () => {
+    const VIK_OPTION = WINTER_ROUTE_OPTIONS.find((o) => o.routeId === "raudavatn-vik");
+    const BORGARNES_OPTION = WINTER_ROUTE_OPTIONS.find((o) => o.routeId === "raudavatn-borgarnes");
+
+    function makeBorgarnesSegment(idButur) {
+      return makeSegment(idButur);
+    }
+
+    function makeBorgarnesPayload(overrides = {}) {
+      const segments = Array.from({ length: 8 }, (_, i) => makeBorgarnesSegment(200000000 + i));
+      const points = ["P1", "P2", "P3", "P4"].map((id) => makeForecastPoint(id));
+      return {
+        routeId: "raudavatn-borgarnes",
+        expectedPointCount: 4,
+        generatedAt: "2026-11-04T18:00:00.000Z",
+        segments,
+        roadMeta: { available: true, stale: false, cacheAgeMs: 0, segmentsAvailable: true, pointsAvailable: true },
+        forecast: {
+          available: true,
+          window: { startHour: FUTURE_HOURS[0], endHour: FUTURE_HOURS[1], expectedHours: FUTURE_HOURS },
+          points,
+          stale: false,
+          cacheAgeMs: 0,
+        },
+        ...overrides,
+      };
+    }
+
+    function routeAwareFetch({ vik = makePayload(), borgarnes = makeBorgarnesPayload(), delayBorgarnesMs = 0 } = {}) {
+      return vi.fn().mockImplementation((url) => {
+        const isBorgarnes = String(url).includes("routeId=raudavatn-borgarnes");
+        const payload = isBorgarnes ? borgarnes : vik;
+        if (isBorgarnes && delayBorgarnesMs > 0) {
+          return new Promise((resolve) => setTimeout(() => resolve({ ok: true, json: async () => payload }), delayBorgarnesMs));
+        }
+        return Promise.resolve({ ok: true, json: async () => payload });
+      });
+    }
+
+    it("renders the route select with Vík as the default value and both options present, in both languages", async () => {
+      vi.stubGlobal("fetch", routeAwareFetch());
+      renderPage();
+
+      const select = await screen.findByLabelText(translations.is.winterRouteRouteSelectLabel);
+      expect(select.value).toBe("raudavatn-vik");
+      // Scoped to the <select> itself — the h1 now reads the same text as
+      // the Vík <option> (both derive from WINTER_ROUTE_OPTIONS' nameIs).
+      expect(within(select).getByText(VIK_OPTION.nameIs)).toBeInTheDocument();
+      expect(within(select).getByText(BORGARNES_OPTION.nameIs)).toBeInTheDocument();
+    });
+
+    it("the default Vík request stays exactly /api/winter-route, with no query string", async () => {
+      const fetchMock = routeAwareFetch();
+      vi.stubGlobal("fetch", fetchMock);
+      renderPage();
+
+      await waitFor(() => expect(fetchMock).toHaveBeenCalledTimes(1));
+      expect(fetchMock.mock.calls[0][0]).toBe("/api/winter-route");
+    });
+
+    it("switching to Borgarnes requests ?routeId=raudavatn-borgarnes and renders its own 4 points / 8 segments", async () => {
+      const fetchMock = routeAwareFetch();
+      vi.stubGlobal("fetch", fetchMock);
+      renderPage();
+
+      const routeSelect = await screen.findByLabelText(translations.is.winterRouteRouteSelectLabel);
+      await waitFor(() => expect(screen.getByText("Kafli 100000000")).toBeInTheDocument());
+
+      const { fireEvent } = await import("@testing-library/react");
+      fireEvent.change(routeSelect, { target: { value: "raudavatn-borgarnes" } });
+
+      await waitFor(() => expect(fetchMock.mock.calls.at(-1)[0]).toBe("/api/winter-route?routeId=raudavatn-borgarnes"));
+      await waitFor(() => expect(screen.getByText("Kafli 200000000")).toBeInTheDocument());
+      expect(screen.queryByText("Kafli 100000000")).toBeNull();
+      expect(screen.getByText("Punktur P4")).toBeInTheDocument();
+      expect(screen.queryByText("Punktur P5")).toBeNull();
+      expect(screen.queryByText("Punktur P6")).toBeNull();
+    });
+
+    it("switching routes clears the previous route's cards/segments immediately — never one frame of stale data under the new selection", async () => {
+      const fetchMock = routeAwareFetch({ delayBorgarnesMs: 20 });
+      vi.stubGlobal("fetch", fetchMock);
+      renderPage();
+
+      const routeSelect = await screen.findByLabelText(translations.is.winterRouteRouteSelectLabel);
+      await waitFor(() => expect(screen.getByText("Kafli 100000000")).toBeInTheDocument());
+
+      const { fireEvent } = await import("@testing-library/react");
+      fireEvent.change(routeSelect, { target: { value: "raudavatn-borgarnes" } });
+
+      // Immediately after the switch (before the delayed Borgarnes response
+      // resolves), the old route's segments must already be gone.
+      await waitFor(() => expect(screen.queryByText("Kafli 100000000")).toBeNull());
+      await waitFor(() => expect(screen.getByText("Kafli 200000000")).toBeInTheDocument());
+    });
+
+    it("A→B→A: switching back to Vík after Borgarnes re-fetches Vík fresh and shows Vík's own data again, not stale Borgarnes data", async () => {
+      const fetchMock = routeAwareFetch();
+      vi.stubGlobal("fetch", fetchMock);
+      renderPage();
+
+      const routeSelect = await screen.findByLabelText(translations.is.winterRouteRouteSelectLabel);
+      await waitFor(() => expect(screen.getByText("Kafli 100000000")).toBeInTheDocument());
+
+      const { fireEvent } = await import("@testing-library/react");
+      fireEvent.change(routeSelect, { target: { value: "raudavatn-borgarnes" } });
+      await waitFor(() => expect(screen.getByText("Kafli 200000000")).toBeInTheDocument());
+
+      fireEvent.change(routeSelect, { target: { value: "raudavatn-vik" } });
+      await waitFor(() => expect(screen.getByText("Kafli 100000000")).toBeInTheDocument());
+      expect(screen.queryByText("Kafli 200000000")).toBeNull();
+      expect(fetchMock).toHaveBeenCalledTimes(3);
+    });
+
+    it("a late-arriving response for an abandoned route selection never overwrites the current selection's state (reverse-order resolution)", async () => {
+      // Borgarnes's OWN request resolves AFTER the user has already
+      // switched back to Vík and Vík's second request has resolved —
+      // the stale Borgarnes response must be ignored on arrival.
+      const fetchMock = routeAwareFetch({ delayBorgarnesMs: 50 });
+      vi.stubGlobal("fetch", fetchMock);
+      renderPage();
+
+      const routeSelect = await screen.findByLabelText(translations.is.winterRouteRouteSelectLabel);
+      await waitFor(() => expect(screen.getByText("Kafli 100000000")).toBeInTheDocument());
+
+      const { fireEvent } = await import("@testing-library/react");
+      fireEvent.change(routeSelect, { target: { value: "raudavatn-borgarnes" } }); // slow, resolves in 50ms
+      fireEvent.change(routeSelect, { target: { value: "raudavatn-vik" } }); // fast, resolves immediately
+
+      await waitFor(() => expect(screen.getByText("Kafli 100000000")).toBeInTheDocument());
+      // Wait past the slow Borgarnes response's own delay, then confirm it
+      // never clobbered the current (Vík) state.
+      await new Promise((resolve) => setTimeout(resolve, 80));
+      expect(screen.getByText("Kafli 100000000")).toBeInTheDocument();
+      expect(screen.queryByText("Kafli 200000000")).toBeNull();
+    });
+
+    it("a failed fetch after switching routes shows the road-feed-unavailable message, not the previous route's stale data", async () => {
+      const fetchMock = vi.fn().mockImplementation((url) => {
+        if (String(url).includes("routeId=raudavatn-borgarnes")) return Promise.reject(new Error("network down"));
+        return Promise.resolve({ ok: true, json: async () => makePayload() });
+      });
+      vi.stubGlobal("fetch", fetchMock);
+      renderPage();
+
+      const routeSelect = await screen.findByLabelText(translations.is.winterRouteRouteSelectLabel);
+      await waitFor(() => expect(screen.getByText("Kafli 100000000")).toBeInTheDocument());
+
+      const { fireEvent } = await import("@testing-library/react");
+      fireEvent.change(routeSelect, { target: { value: "raudavatn-borgarnes" } });
+
+      await waitFor(() => expect(screen.getByText(translations.is.winterRouteRoadFeedUnavailable)).toBeInTheDocument());
+      expect(screen.queryByText("Kafli 100000000")).toBeNull();
+    });
+
+    it("a response whose routeId doesn't match what was requested is a route-scoped contract-mismatch error, not a silently-wrong view", async () => {
+      const fetchMock = vi.fn().mockResolvedValue({ ok: true, json: async () => makePayload() }); // always Vík's payload
+      vi.stubGlobal("fetch", fetchMock);
+      renderPage();
+
+      const routeSelect = await screen.findByLabelText(translations.is.winterRouteRouteSelectLabel);
+      await waitFor(() => expect(screen.getByText("Kafli 100000000")).toBeInTheDocument());
+
+      const { fireEvent } = await import("@testing-library/react");
+      // Server keeps replying with Vík's own payload even though Borgarnes was requested.
+      fireEvent.change(routeSelect, { target: { value: "raudavatn-borgarnes" } });
+
+      await waitFor(() => expect(screen.getByText(translations.is.winterRouteRouteDataMismatch)).toBeInTheDocument());
+      expect(screen.queryByText("Kafli 100000000")).toBeNull();
+    });
+
+    it("a response whose expectedPointCount doesn't match the UI's own fixed table is a contract-mismatch error", async () => {
+      const fetchMock = routeAwareFetch({ borgarnes: makeBorgarnesPayload({ expectedPointCount: 6 }) });
+      vi.stubGlobal("fetch", fetchMock);
+      renderPage();
+
+      const routeSelect = await screen.findByLabelText(translations.is.winterRouteRouteSelectLabel);
+      await waitFor(() => expect(screen.getByText("Kafli 100000000")).toBeInTheDocument());
+
+      const { fireEvent } = await import("@testing-library/react");
+      fireEvent.change(routeSelect, { target: { value: "raudavatn-borgarnes" } });
+
+      await waitFor(() => expect(screen.getByText(translations.is.winterRouteRouteDataMismatch)).toBeInTheDocument());
+    });
+
+    it("the forecast section title and comparison-unavailable reasons use the route's own point count (4), never a hardcoded 6", async () => {
+      vi.stubGlobal("fetch", routeAwareFetch());
+      renderPage();
+
+      const routeSelect = await screen.findByLabelText(translations.is.winterRouteRouteSelectLabel);
+      await waitFor(() => expect(screen.getByText("Kafli 100000000")).toBeInTheDocument());
+
+      const { fireEvent } = await import("@testing-library/react");
+      fireEvent.change(routeSelect, { target: { value: "raudavatn-borgarnes" } });
+
+      await waitFor(() =>
+        expect(screen.getByText(translations.is.winterRouteForecastSectionTitle.replace("{count}", "4"))).toBeInTheDocument()
+      );
+    });
+
+    it("StrictMode double-invoke never drops the real fetch — data still loads", async () => {
+      const fetchMock = routeAwareFetch();
+      vi.stubGlobal("fetch", fetchMock);
+      render(
+        <React.StrictMode>
+          <MemoryRouter initialEntries={["/winter-route"]}>
+            <WinterRoute />
+          </MemoryRouter>
+        </React.StrictMode>
+      );
+
+      await waitFor(() => expect(screen.getByText("Kafli 100000000")).toBeInTheDocument());
+    });
+
+    it("the route select's own onChange keeps native focus on itself (no focus-stealing side effect, same discipline as the hour select's R1 fix)", async () => {
+      vi.stubGlobal("fetch", routeAwareFetch());
+      renderPage();
+
+      const routeSelect = await screen.findByLabelText(translations.is.winterRouteRouteSelectLabel);
+      await waitFor(() => expect(screen.getByText("Kafli 100000000")).toBeInTheDocument());
+      routeSelect.focus();
+      expect(document.activeElement).toBe(routeSelect);
+
+      const { fireEvent } = await import("@testing-library/react");
+      fireEvent.change(routeSelect, { target: { value: "raudavatn-borgarnes" } });
+
+      await waitFor(() => expect(screen.getByText("Kafli 200000000")).toBeInTheDocument());
+      expect(document.activeElement).toBe(routeSelect);
+    });
+
+    it("selecting a departure hour never triggers an extra fetch on the currently-selected route", async () => {
+      const fetchMock = routeAwareFetch();
+      vi.stubGlobal("fetch", fetchMock);
+      renderPage();
+
+      const { fireEvent } = await import("@testing-library/react");
+      const routeSelect = await screen.findByLabelText(translations.is.winterRouteRouteSelectLabel);
+      fireEvent.change(routeSelect, { target: { value: "raudavatn-borgarnes" } });
+      await waitFor(() => expect(screen.getByText("Kafli 200000000")).toBeInTheDocument());
+      const callsAfterSwitch = fetchMock.mock.calls.length;
+
+      const hourSelect = await screen.findByLabelText(translations.is.winterRouteHourLabel);
+      await waitFor(() => expect(hourSelect.value).toBe(FUTURE_HOURS[0]));
+      fireEvent.change(hourSelect, { target: { value: FUTURE_HOURS[1] } });
+
+      expect(fetchMock.mock.calls.length).toBe(callsAfterSwitch);
+    });
+
+    // V1 (result-review-implementation.md R1) — h1/<title> must come from
+    // the SELECTED route, not a fixed "Rauðavatn–Vík" key, and must follow
+    // the selection immediately — even while the new route's data is still
+    // loading or has failed, not only once it has arrived.
+    describe("V1 — h1/title follow the selected route", () => {
+      it("Borgarnes h1 reads its own name, in Icelandic, once selected", async () => {
+        vi.stubGlobal("fetch", routeAwareFetch());
+        renderPage();
+
+        const routeSelect = await screen.findByLabelText(translations.is.winterRouteRouteSelectLabel);
+        await waitFor(() => expect(screen.getByText("Kafli 100000000")).toBeInTheDocument());
+        expect(screen.getByRole("heading", { level: 1 }).textContent).toBe(VIK_OPTION.nameIs);
+
+        const { fireEvent } = await import("@testing-library/react");
+        fireEvent.change(routeSelect, { target: { value: "raudavatn-borgarnes" } });
+
+        await waitFor(() => expect(screen.getByRole("heading", { level: 1 }).textContent).toBe(BORGARNES_OPTION.nameIs));
+      });
+
+      it("Borgarnes h1 reads its own name, in English, once selected", async () => {
+        localStorage.setItem("lang", JSON.stringify("en"));
+        vi.stubGlobal("fetch", routeAwareFetch());
+        renderPage();
+
+        const routeSelect = await screen.findByLabelText(translations.en.winterRouteRouteSelectLabel);
+        await waitFor(() => expect(screen.getByRole("heading", { level: 1 }).textContent).toBe(VIK_OPTION.nameEn));
+
+        const { fireEvent } = await import("@testing-library/react");
+        fireEvent.change(routeSelect, { target: { value: "raudavatn-borgarnes" } });
+
+        await waitFor(() => expect(screen.getByRole("heading", { level: 1 }).textContent).toBe(BORGARNES_OPTION.nameEn));
+      });
+
+      it("the h1 switches to the new route's name immediately, before that route's own data has arrived", async () => {
+        const fetchMock = routeAwareFetch({ delayBorgarnesMs: 30 });
+        vi.stubGlobal("fetch", fetchMock);
+        renderPage();
+
+        const routeSelect = await screen.findByLabelText(translations.is.winterRouteRouteSelectLabel);
+        await waitFor(() => expect(screen.getByText("Kafli 100000000")).toBeInTheDocument());
+
+        const { fireEvent } = await import("@testing-library/react");
+        fireEvent.change(routeSelect, { target: { value: "raudavatn-borgarnes" } });
+
+        // Still loading (the 30ms-delayed Borgarnes response hasn't
+        // resolved yet) — the h1 must already read Borgarnes, not Vík.
+        expect(screen.getByRole("heading", { level: 1 }).textContent).toBe(BORGARNES_OPTION.nameIs);
+        await waitFor(() => expect(screen.getByText("Kafli 200000000")).toBeInTheDocument());
+      });
+
+      it("the h1 keeps reading the new route's name even when that route's fetch fails", async () => {
+        const fetchMock = vi.fn().mockImplementation((url) => {
+          if (String(url).includes("routeId=raudavatn-borgarnes")) return Promise.reject(new Error("network down"));
+          return Promise.resolve({ ok: true, json: async () => makePayload() });
+        });
+        vi.stubGlobal("fetch", fetchMock);
+        renderPage();
+
+        const routeSelect = await screen.findByLabelText(translations.is.winterRouteRouteSelectLabel);
+        await waitFor(() => expect(screen.getByText("Kafli 100000000")).toBeInTheDocument());
+
+        const { fireEvent } = await import("@testing-library/react");
+        fireEvent.change(routeSelect, { target: { value: "raudavatn-borgarnes" } });
+
+        await waitFor(() => expect(screen.getByText(translations.is.winterRouteRoadFeedUnavailable)).toBeInTheDocument());
+        expect(screen.getByRole("heading", { level: 1 }).textContent).toBe(BORGARNES_OPTION.nameIs);
+      });
+
+      // The document <title> itself (as opposed to the h1, covered above)
+      // is intentionally NOT asserted here: React 19 hoists a literal
+      // <title> host element straight to `document.head` regardless of
+      // this file's `Helmet` mock, and that hoisting does not reliably
+      // populate `document.head`/`document.title` under jsdom in this
+      // project's test setup (verified via a disposable debug test this
+      // round — `document.head.innerHTML` stayed `<title></title>`, empty,
+      // no matter the component's own `<title>` content). This is a test-
+      // environment limitation, not specific to this change. The real
+      // document title is covered in a real browser instead — see
+      // `tests/e2e/winter-route-ticket-491.spec.js`'s
+      // `page.toHaveTitle(/Rauðavatn – Borgarnes/)` assertion.
+    });
+
+    // V2 (result-review-implementation.md R2) — a route switch must never
+    // COMMIT a render with the newly selected routeId next to the
+    // previous route's stale data/error. Checked at the commit/frame
+    // level via React's Profiler onRender callback (fires synchronously
+    // after each commit's DOM mutations are applied), not only on the
+    // settled state after `act` — the gap a plain waitFor-based assertion
+    // cannot see.
+    describe("V2 — render-time route-bound view (frame-level)", () => {
+      function recordCommit(commits) {
+        return () => {
+          commits.push({
+            h1: screen.queryByRole("heading", { level: 1 })?.textContent ?? null,
+            hasVikSegment: !!screen.queryByText("Kafli 100000000"),
+            hasBorgarnesSegment: !!screen.queryByText("Kafli 200000000"),
+            hasRoadFeedError: !!screen.queryByText(translations.is.winterRouteRoadFeedUnavailable),
+          });
+        };
+      }
+
+      it("switching away from stale DATA never commits the new route's h1 together with the previous route's segments", async () => {
+        const fetchMock = routeAwareFetch({ delayBorgarnesMs: 20 });
+        vi.stubGlobal("fetch", fetchMock);
+        const commits = [];
+
+        render(
+          <MemoryRouter initialEntries={["/winter-route"]}>
+            <React.Profiler id="probe-data" onRender={recordCommit(commits)}>
+              <WinterRoute />
+            </React.Profiler>
+          </MemoryRouter>
+        );
+
+        await waitFor(() => expect(screen.getByText("Kafli 100000000")).toBeInTheDocument());
+        commits.length = 0;
+
+        const routeSelect = screen.getByLabelText(translations.is.winterRouteRouteSelectLabel);
+        const { fireEvent } = await import("@testing-library/react");
+        fireEvent.change(routeSelect, { target: { value: "raudavatn-borgarnes" } });
+
+        await waitFor(() => expect(screen.getByText("Kafli 200000000")).toBeInTheDocument());
+
+        const badCommit = commits.find((c) => c.h1 === BORGARNES_OPTION.nameIs && c.hasVikSegment);
+        expect(badCommit).toBeUndefined();
+        // Sanity: the probe actually observed the new h1 at some commit —
+        // otherwise the assertion above would pass vacuously.
+        expect(commits.some((c) => c.h1 === BORGARNES_OPTION.nameIs)).toBe(true);
+      });
+
+      it("switching away from a stale ERROR never commits the new route's h1 together with the previous route's error message", async () => {
+        const fetchMock = vi.fn().mockImplementation((url) => {
+          if (String(url).includes("routeId=raudavatn-borgarnes")) {
+            return new Promise((resolve) =>
+              setTimeout(() => resolve({ ok: true, json: async () => makeBorgarnesPayload() }), 20)
+            );
+          }
+          return Promise.reject(new Error("network down"));
+        });
+        vi.stubGlobal("fetch", fetchMock);
+        const commits = [];
+
+        render(
+          <MemoryRouter initialEntries={["/winter-route"]}>
+            <React.Profiler id="probe-error" onRender={recordCommit(commits)}>
+              <WinterRoute />
+            </React.Profiler>
+          </MemoryRouter>
+        );
+
+        await waitFor(() => expect(screen.getByText(translations.is.winterRouteRoadFeedUnavailable)).toBeInTheDocument());
+        commits.length = 0;
+
+        const routeSelect = screen.getByLabelText(translations.is.winterRouteRouteSelectLabel);
+        const { fireEvent } = await import("@testing-library/react");
+        fireEvent.change(routeSelect, { target: { value: "raudavatn-borgarnes" } });
+
+        await waitFor(() => expect(screen.getByText("Kafli 200000000")).toBeInTheDocument());
+
+        const badCommit = commits.find((c) => c.h1 === BORGARNES_OPTION.nameIs && c.hasRoadFeedError);
+        expect(badCommit).toBeUndefined();
+      });
+
+      it("a late-arriving response for a just-abandoned route never commits into view after switching away", async () => {
+        const fetchMock = routeAwareFetch({ delayBorgarnesMs: 50 });
+        vi.stubGlobal("fetch", fetchMock);
+        const commits = [];
+
+        render(
+          <MemoryRouter initialEntries={["/winter-route"]}>
+            <React.Profiler id="probe-reverse" onRender={recordCommit(commits)}>
+              <WinterRoute />
+            </React.Profiler>
+          </MemoryRouter>
+        );
+
+        await waitFor(() => expect(screen.getByText("Kafli 100000000")).toBeInTheDocument());
+        commits.length = 0;
+
+        const routeSelect = screen.getByLabelText(translations.is.winterRouteRouteSelectLabel);
+        const { fireEvent } = await import("@testing-library/react");
+        fireEvent.change(routeSelect, { target: { value: "raudavatn-borgarnes" } }); // slow (50ms)
+        fireEvent.change(routeSelect, { target: { value: "raudavatn-vik" } }); // fast, resolves first
+
+        await waitFor(() => expect(screen.getByText("Kafli 100000000")).toBeInTheDocument());
+        // Wait past the slow, now-abandoned Borgarnes response's own delay.
+        await new Promise((resolve) => setTimeout(resolve, 80));
+
+        const badCommit = commits.find((c) => c.hasBorgarnesSegment);
+        expect(badCommit).toBeUndefined();
+      });
     });
   });
 });

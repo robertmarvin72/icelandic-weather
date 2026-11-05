@@ -5,10 +5,16 @@
 // baseline, +2h), each reusing #489's own weather-extrema computation
 // unchanged — this module adds no new ETA model, no new upstream data, no
 // new rounding/speed rule. An option is only "available" for the
-// comparison when ALL SIX fixed points individually resolve AND all three
-// #489 metrics have full six-point coverage at that departure — a
-// strictly stricter bar than the cards/#489 summary use for their own
-// (legitimately partial) display, by design (see WinterRoute.jsx).
+// comparison when ALL of the route's fixed points individually resolve AND
+// all three #489 metrics have full coverage (every point) at that
+// departure — a strictly stricter bar than the cards/#489 summary use for
+// their own (legitimately partial) display, by design (see WinterRoute.jsx).
+//
+// Ticket #491 — `expectedPointCount` (6 for Rauðavatn–Vík, 4 for
+// Rauðavatn–Borgarnes) is now a parameter, read from the route's own API
+// response (`data.expectedPointCount`), never a hardcoded "6" — the fixed
+// point-count this module requires for "full coverage" must always match
+// the SELECTED route, not always the original Vík route.
 
 import { resolvePointAtDeparture } from "./winterRouteEta";
 import { computeWeatherExtremaSummary } from "./winterRouteSummary";
@@ -61,7 +67,7 @@ export const COMPARISON_UNAVAILABLE_REASON = {
  * present only when `available` is true. A real `0` value is valid and
  * never treated as a gap (inherited unchanged from #489's own rules).
  */
-export function computeDepartureOption(departureHour, availableHours, points) {
+export function computeDepartureOption(departureHour, availableHours, points, expectedPointCount = 6) {
   const safeAvailableHours = Array.isArray(availableHours) ? availableHours : [];
   const safePoints = Array.isArray(points) ? points : [];
 
@@ -93,10 +99,10 @@ export function computeDepartureOption(departureHour, availableHours, points) {
   }
 
   const summary = computeWeatherExtremaSummary(safePoints, departureHour);
-  const fullSixPointCoverage = [summary.maxGust, summary.maxPrecip, summary.minTemp].every(
-    (metric) => metric.validCount === 6
+  const fullPointCoverage = [summary.maxGust, summary.maxPrecip, summary.minTemp].every(
+    (metric) => metric.validCount === expectedPointCount
   );
-  if (!fullSixPointCoverage) {
+  if (!fullPointCoverage) {
     return { departureHour, available: false, reason: COMPARISON_UNAVAILABLE_REASON.METRIC_GAP, summary: null };
   }
 
@@ -105,9 +111,9 @@ export function computeDepartureOption(departureHour, availableHours, points) {
 
 // The three labeled options around `selectedHour`: −2h, the selection
 // itself (offsetHours: 0), +2h — in this fixed left-to-right order.
-export function computeDepartureOptionSet(selectedHour, availableHours, points) {
+export function computeDepartureOptionSet(selectedHour, availableHours, points, expectedPointCount = 6) {
   return [-2, 0, 2].map((offsetHours) => {
     const departureHour = selectedHour != null ? offsetHourString(selectedHour, offsetHours) : null;
-    return { offsetHours, ...computeDepartureOption(departureHour, availableHours, points) };
+    return { offsetHours, ...computeDepartureOption(departureHour, availableHours, points, expectedPointCount) };
   });
 }

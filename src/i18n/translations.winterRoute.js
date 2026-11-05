@@ -7,15 +7,28 @@ export const winterRouteTranslations = {
   en: {
     footerWinterRoute: "Rauðavatn–Vík road status",
 
-    winterRouteTitle: "Rauðavatn–Vík",
+    // Ticket #491, V1 — the page's own h1/<title> no longer come from a
+    // fixed key here; they're derived directly from the selected
+    // WINTER_ROUTE_OPTIONS entry's nameIs/nameEn in WinterRoute.jsx
+    // (there is no single fixed "the title" once a second route exists).
     winterRouteSubtitle: "Road conditions now and forecast along the route",
     winterRouteLatestStatusNote: "Latest available status, not a forecast of road conditions.",
 
     winterRouteHourLabel: "Estimated departure time",
     winterRouteNoHoursAvailable: "No upcoming time is available right now.",
 
-    winterRouteForecastSectionTitle: "Forecast at six points along the route",
+    // Ticket #491 — {count} is the selected route's own point count (6 for
+    // Rauðavatn–Vík, 4 for Rauðavatn–Borgarnes), never a hardcoded "six".
+    winterRouteForecastSectionTitle: "Forecast at {count} points along the route",
     winterRouteRoadSectionTitle: "Road conditions and closures",
+
+    // Ticket #491 — route selector (native select, same page, Vík default).
+    winterRouteRouteSelectLabel: "Route",
+    winterRouteRouteDataMismatch: "Something went wrong loading data for this route. Please try again.",
+    winterRouteEtaApproximationNote:
+      "Estimated arrival uses a simple distance approximation and 70 km/h — not driving directions. The forecast hour shown may shift by an hour.",
+    winterRouteSectionCoverageNote:
+      "Road-condition data for some sections may cover a longer stretch of road than the part this route actually uses.",
 
     winterRouteCategoryPassable: "Passable",
     winterRouteCategoryHazardNotice: "Caution — notice",
@@ -62,7 +75,7 @@ export const winterRouteTranslations = {
     winterRouteSummaryPrecipMissing: "Most precipitation: data not available",
     winterRouteSummaryMinTemp: "Lowest temperature: {value} °C — {point}, {time} UTC",
     winterRouteSummaryMinTempMissing: "Lowest temperature: data not available",
-    winterRouteSummaryPartialSuffix: " (based on {count} of 6 points)",
+    winterRouteSummaryPartialSuffix: " (based on {count} of {total} points)",
     winterRouteSummaryNoticeCount: "Sections with valid notices: {count}",
     winterRouteSummaryNoticeCountUnconfirmed: "The count of sections with valid notices is unconfirmed right now.",
     winterRouteSummaryNoticeScope: "Not the overall road condition — see the road-condition list below.",
@@ -81,11 +94,11 @@ export const winterRouteTranslations = {
     winterRouteComparisonSelectedAnnouncement: "Selected departure time is now {time} UTC.",
     winterRouteComparisonReasonNotUpcoming: "This time has passed or is outside the available departure times.",
     winterRouteComparisonReasonArrivalOutsideWindow:
-      "At least one point's estimated arrival falls outside the fetched forecast window; the comparison needs all six points.",
+      "At least one point's estimated arrival falls outside the fetched forecast window; the comparison needs all {count} points.",
     winterRouteComparisonReasonPointUnavailable:
-      "Data is missing for at least one of the six points; the comparison needs all six points.",
+      "Data is missing for at least one of the {count} points; the comparison needs all {count} points.",
     winterRouteComparisonReasonMetricGap:
-      "The comparison needs a value for all six points; a data gap prevents it right now.",
+      "The comparison needs a value for all {count} points; a data gap prevents it right now.",
 
     winterRouteAttributionRoadLine:
       "Road-condition and closure data: Vegagerðin (the Icelandic Road Administration), CC BY 4.0.",
@@ -102,15 +115,22 @@ export const winterRouteTranslations = {
   is: {
     footerWinterRoute: "Færð Rauðavatn–Vík",
 
-    winterRouteTitle: "Rauðavatn–Vík",
+    // Ticket #491, V1 — sjá samsvarandi EN athugasemd að ofan.
     winterRouteSubtitle: "Færð núna og veðurspá á leiðinni",
     winterRouteLatestStatusNote: "Nýjasta tiltæka staða, ekki spáð færð.",
 
     winterRouteHourLabel: "Áætlaður brottfarartími",
     winterRouteNoHoursAvailable: "Engin framtíðartími er tiltækur núna.",
 
-    winterRouteForecastSectionTitle: "Veðurspá á sex punktum á leiðinni",
+    winterRouteForecastSectionTitle: "Veðurspá á {count} punktum á leiðinni",
     winterRouteRoadSectionTitle: "Færð og lokanir",
+
+    winterRouteRouteSelectLabel: "Leið",
+    winterRouteRouteDataMismatch: "Eitthvað fór úrskeiðis við að hlaða gögnum fyrir þessa leið. Reyndu aftur.",
+    winterRouteEtaApproximationNote:
+      "Áætluð koma miðast við einfalda vegalengdarnálgun og 70 km/klst.; ekki akstursleiðbeiningar. Gildistími spár getur hliðrast um klukkustund.",
+    winterRouteSectionCoverageNote:
+      "Færðargögn fyrir suma kafla geta náð yfir lengri vegkafla en þann hluta sem þessi leið notar.",
 
     winterRouteCategoryPassable: "Greiðfært",
     winterRouteCategoryHazardNotice: "Aðgát – tilkynning",
@@ -153,7 +173,7 @@ export const winterRouteTranslations = {
     winterRouteSummaryPrecipMissing: "Mest úrkoma: gögn ekki tiltæk",
     winterRouteSummaryMinTemp: "Lægsti hiti: {value} °C — {point}, {time} UTC",
     winterRouteSummaryMinTempMissing: "Lægsti hiti: gögn ekki tiltæk",
-    winterRouteSummaryPartialSuffix: " (byggt á {count} af 6 punktum)",
+    winterRouteSummaryPartialSuffix: " (byggt á {count} af {total} punktum)",
     winterRouteSummaryNoticeCount: "Kaflar með gildar tilkynningar: {count}",
     winterRouteSummaryNoticeCountUnconfirmed: "Fjöldi kafla með gildar tilkynningar er óstaðfestur núna.",
     winterRouteSummaryNoticeScope: "Ekki heildarstaða færðar — sjá færðarlistann neðar.",
@@ -170,11 +190,11 @@ export const winterRouteTranslations = {
     winterRouteComparisonSelectedAnnouncement: "Valinn brottfarartími er nú {time} UTC.",
     winterRouteComparisonReasonNotUpcoming: "Þessi tími er liðinn eða utan tiltækra brottfarartíma.",
     winterRouteComparisonReasonArrivalOutsideWindow:
-      "Komutími á a.m.k. einum punkti er utan sótts spáglugga; samanburðurinn þarf alla sex punktana.",
+      "Komutími á a.m.k. einum punkti er utan sótts spáglugga; samanburðurinn þarf alla {count} punktana.",
     winterRouteComparisonReasonPointUnavailable:
-      "Gögn vantar fyrir a.m.k. einn af sex punktunum; samanburðurinn þarf alla sex punktana.",
+      "Gögn vantar fyrir a.m.k. einn af {count} punktunum; samanburðurinn þarf alla {count} punktana.",
     winterRouteComparisonReasonMetricGap:
-      "Samanburðurinn þarf gildi fyrir alla sex punktana; gagnagat kemur í veg fyrir hann núna.",
+      "Samanburðurinn þarf gildi fyrir alla {count} punktana; gagnagat kemur í veg fyrir hann núna.",
 
     winterRouteAttributionRoadLine: "Færðar- og lokanargögn: Vegagerðin, CC BY 4.0.",
     winterRouteAttributionWeatherLine: "Veðurspágögn: Open-Meteo.",

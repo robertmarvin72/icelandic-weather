@@ -1,12 +1,16 @@
 // src/pages/WinterRoute.jsx
 //
-// Ticket #486 — Rauðavatn–Vík winter road + forecast page. Standalone
-// route (own Footer, like NorthernLightsLanding.jsx), no login/paywall.
-// Fetches /api/winter-route exactly once on mount — hour selection is
-// purely local (no new network request per selection, see "Spá" in the
-// approved prompt), and the list of selectable hours is re-filtered every
-// time the clock ticks past one (checked once a minute) without any
-// refetch, so past hours simply drop out of the picker on their own.
+// Ticket #486 — winter road + forecast page. Standalone route (own Footer,
+// like NorthernLightsLanding.jsx), no login/paywall. Ticket #491 added a
+// second route (Rauðavatn–Borgarnes) selectable via a native IS/EN
+// `<select>` on this same page (Rauðavatn–Vík stays the default/unchanged
+// entrypoint) — fetches /api/winter-route (optionally `?routeId=...`) once
+// per selected route, never once-per-mount; see the routeId effect below.
+// Hour selection is purely local (no new network request per selection,
+// see "Spá" in the approved prompt), and the list of selectable hours is
+// re-filtered every time the clock ticks past one (checked once a minute)
+// without any refetch, so past hours simply drop out of the picker on
+// their own.
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Helmet } from "react-helmet-async";
@@ -27,6 +31,7 @@ import {
 import { resolvePointAtDeparture } from "../lib/winterRouteEta";
 import { computeWeatherExtremaSummary, computeActiveNoticeSegmentCount } from "../lib/winterRouteSummary";
 import { computeDepartureOptionSet, COMPARISON_UNAVAILABLE_REASON } from "../lib/winterRouteComparison";
+import { WINTER_ROUTE_OPTIONS, DEFAULT_WINTER_ROUTE_ID, expectedPointCountForRoute } from "../lib/winterRouteRoutes";
 
 const COMPARISON_REASON_KEY = {
   [COMPARISON_UNAVAILABLE_REASON.NOT_UPCOMING]: "winterRouteComparisonReasonNotUpcoming",
@@ -215,7 +220,7 @@ function ForecastCard({ point, departureHour, t, lang }) {
 // from computeWeatherExtremaSummary()'s result (value/point/hourString/
 // isMissing/isPartial/validCount). Null/missing is its own dedicated
 // string, never a "0" or a silently-dropped line.
-function SummaryMetricLine({ t, lang, metric, valueKey, missingKey }) {
+function SummaryMetricLine({ t, lang, metric, valueKey, missingKey, expectedPointCount }) {
   if (metric.isMissing) {
     return <p className="text-sm text-slate-600 dark:text-slate-300">{t(missingKey)}</p>;
   }
@@ -227,7 +232,9 @@ function SummaryMetricLine({ t, lang, metric, valueKey, missingKey }) {
     .replace("{time}", formatHourLabel(metric.hourString));
 
   if (metric.isPartial) {
-    line += t("winterRouteSummaryPartialSuffix").replace("{count}", String(metric.validCount));
+    line += t("winterRouteSummaryPartialSuffix")
+      .replace("{count}", String(metric.validCount))
+      .replace("{total}", String(expectedPointCount));
   }
 
   return <p className="text-sm text-slate-600 dark:text-slate-300">{line}</p>;
@@ -248,6 +255,7 @@ function RouteSummary({ data, selectedHour, t, lang }) {
     return computeWeatherExtremaSummary(points, selectedHour);
   }, [data.forecast, selectedHour]);
   const noticeSummary = computeActiveNoticeSegmentCount(data.segments, data.roadMeta);
+  const expectedPointCount = data.expectedPointCount;
 
   return (
     <section className="mb-6 rounded-xl border border-slate-200/70 bg-white/70 px-4 py-3 dark:border-slate-800/70 dark:bg-slate-900/70">
@@ -260,6 +268,7 @@ function RouteSummary({ data, selectedHour, t, lang }) {
           metric={weatherSummary.maxGust}
           valueKey="winterRouteSummaryGust"
           missingKey="winterRouteSummaryGustMissing"
+          expectedPointCount={expectedPointCount}
         />
         <SummaryMetricLine
           t={t}
@@ -267,6 +276,7 @@ function RouteSummary({ data, selectedHour, t, lang }) {
           metric={weatherSummary.maxPrecip}
           valueKey="winterRouteSummaryPrecip"
           missingKey="winterRouteSummaryPrecipMissing"
+          expectedPointCount={expectedPointCount}
         />
         <SummaryMetricLine
           t={t}
@@ -274,6 +284,7 @@ function RouteSummary({ data, selectedHour, t, lang }) {
           metric={weatherSummary.minTemp}
           valueKey="winterRouteSummaryMinTemp"
           missingKey="winterRouteSummaryMinTempMissing"
+          expectedPointCount={expectedPointCount}
         />
       </div>
 
@@ -309,9 +320,10 @@ function RouteSummary({ data, selectedHour, t, lang }) {
 // unavailable option is still a real `<button disabled>` (not a plain
 // `<div>`) with its reason rendered as visible text, never only a `title`
 // attribute — satisfies S3's keyboard/screen-reader requirement directly.
-function DepartureOptionCard({ option, label, isBaseline, baselineRef, onSelect, t, lang }) {
+function DepartureOptionCard({ option, label, isBaseline, baselineRef, onSelect, t, lang, expectedPointCount }) {
   const timeLabel = option.departureHour ? formatHourLabel(option.departureHour) : "—";
   const reasonKey = option.reason ? COMPARISON_REASON_KEY[option.reason] : null;
+  const reasonText = reasonKey ? t(reasonKey).replace(/\{count\}/g, String(expectedPointCount)) : null;
 
   const body = (
     <>
@@ -328,7 +340,7 @@ function DepartureOptionCard({ option, label, isBaseline, baselineRef, onSelect,
       <p className="mt-1 text-sm font-medium text-slate-800 dark:text-slate-100">{timeLabel} UTC</p>
 
       {!option.available ? (
-        <p className="mt-2 text-xs text-slate-500 dark:text-slate-400">{reasonKey ? t(reasonKey) : null}</p>
+        <p className="mt-2 text-xs text-slate-500 dark:text-slate-400">{reasonText}</p>
       ) : (
         <div className="mt-2 space-y-1">
           <SummaryMetricLine
@@ -337,6 +349,7 @@ function DepartureOptionCard({ option, label, isBaseline, baselineRef, onSelect,
             metric={option.summary.maxGust}
             valueKey="winterRouteSummaryGust"
             missingKey="winterRouteSummaryGustMissing"
+            expectedPointCount={expectedPointCount}
           />
           <SummaryMetricLine
             t={t}
@@ -344,6 +357,7 @@ function DepartureOptionCard({ option, label, isBaseline, baselineRef, onSelect,
             metric={option.summary.maxPrecip}
             valueKey="winterRouteSummaryPrecip"
             missingKey="winterRouteSummaryPrecipMissing"
+            expectedPointCount={expectedPointCount}
           />
           <SummaryMetricLine
             t={t}
@@ -351,6 +365,7 @@ function DepartureOptionCard({ option, label, isBaseline, baselineRef, onSelect,
             metric={option.summary.minTemp}
             valueKey="winterRouteSummaryMinTemp"
             missingKey="winterRouteSummaryMinTempMissing"
+            expectedPointCount={expectedPointCount}
           />
         </div>
       )}
@@ -400,10 +415,11 @@ function DepartureOptionCard({ option, label, isBaseline, baselineRef, onSelect,
 // road conditions/closures/notice count are explicitly NOT repeated here —
 // one shared "latest status" note instead (S6).
 function RouteComparison({ data, selectedHour, availableHours, onSelect, baselineRef, t, lang }) {
+  const expectedPointCount = data.expectedPointCount;
   const options = useMemo(() => {
     const points = data.forecast?.available ? data.forecast.points : [];
-    return computeDepartureOptionSet(selectedHour, availableHours, points);
-  }, [data.forecast, selectedHour, availableHours]);
+    return computeDepartureOptionSet(selectedHour, availableHours, points, expectedPointCount);
+  }, [data.forecast, selectedHour, availableHours, expectedPointCount]);
 
   const labelFor = (offsetHours) => {
     if (offsetHours === -2) return t("winterRouteComparisonEarlierLabel");
@@ -436,6 +452,7 @@ function RouteComparison({ data, selectedHour, availableHours, onSelect, baselin
             onSelect={onSelect}
             t={t}
             lang={lang}
+            expectedPointCount={expectedPointCount}
           />
         ))}
       </div>
@@ -447,45 +464,136 @@ export default function WinterRoute() {
   const { t, lang, theme } = usePageRouteProps();
   useThemeClass(theme === "dark");
 
+  const [routeId, setRouteId] = useState(DEFAULT_WINTER_ROUTE_ID);
   const [data, setData] = useState(null);
-  const [loadError, setLoadError] = useState(false);
+  // Ticket #491, V2 — tagged with the routeId the error belongs to (the
+  // routeId captured in the fetch effect's closure, i.e. the route that
+  // was actually requested), so a stale error from a route the user has
+  // since switched away from can be told apart from the CURRENT route's
+  // own error at render time. See `viewErrorKey` below.
+  const [loadError, setLoadError] = useState(null); // { routeId, key: "winterRouteRoadFeedUnavailable" | "winterRouteRouteDataMismatch" } | null
   const [selectedHour, setSelectedHour] = useState(null);
-  const fetchedRef = useRef(false);
 
-  // Round 2 correction (N3, found via the real-browser pass): `fetchedRef`
-  // alone already guarantees the real fetch below starts at most once per
-  // mount, including across React 18 StrictMode's synthetic dev-only
-  // double-invoke (mount -> cleanup -> mount again) — refs survive that
-  // synthetic cycle, so the second invocation's own guard check skips it.
-  // A separate per-invocation `cancelled` flag, FLIPPED BY THE CLEANUP OF
-  // THE FIRST (guard-setting) INVOCATION, used to mark the one-and-only
-  // in-flight fetch's own eventual result as "cancelled" before it ever
-  // resolved — StrictMode's synthetic cleanup fires immediately, so the
-  // real network response always arrived too late and `setData` was
-  // silently skipped every time, in every real browser (confirmed via
-  // Playwright against `npm run dev`; not caught by jsdom/RTL tests,
-  // which do not render through `<StrictMode>`). No cancellation flag is
-  // needed here: nothing crashes if this ever resolves after a genuine
-  // unmount, it is just a harmless no-op state update on a discarded page.
+  const selectedRouteOption = useMemo(
+    () => WINTER_ROUTE_OPTIONS.find((o) => o.routeId === routeId) ?? WINTER_ROUTE_OPTIONS[0],
+    [routeId]
+  );
+  const routeName = lang === "en" ? selectedRouteOption.nameEn : selectedRouteOption.nameIs;
+
+  // Ticket #491 — replaces the old #486 `fetchedRef`/mount-only guard,
+  // which deliberately fetched at most ONCE PER MOUNT and therefore could
+  // never support a route switch (a second `routeId` would never trigger a
+  // new fetch). `lastRequestedRouteIdRef` now guards "has a fetch already
+  // been started for THIS routeId" rather than "has any fetch ever
+  // started" — a real `routeId` change always starts a genuinely new
+  // fetch, but React 18 StrictMode's dev-only synthetic double-invoke of
+  // the INITIAL mount's effect (mount -> cleanup -> mount again, same
+  // routeId both times) is correctly collapsed back to a single real
+  // request, exactly like the old behaviour, WITHOUT reintroducing the
+  // actual #490 R1 bug: that bug was the first invocation's own
+  // still-in-flight (never aborted) fetch having its eventual real
+  // response silently discarded by a `cancelled` flag the synthetic
+  // cleanup flipped — not "too many requests". Here, the synthetic
+  // second invocation returns early and touches nothing (no abort, no
+  // flag), so the first invocation's single real fetch is left
+  // completely alone and its response is applied normally when it
+  // resolves. `controllerRef` aborts only a previous GENUINELY abandoned
+  // route's in-flight request (never the current one) when a real switch
+  // happens, and `requestIdRef` is the final authoritative guard so a
+  // late-arriving response for an abandoned route can never overwrite the
+  // current route's state even if abort() itself doesn't actually stop a
+  // fetch already past that point in some runtime (defensive, not the
+  // only safeguard). `selectedHour` is deliberately left untouched here;
+  // the existing availableHours-reconciliation effect below already keeps
+  // it only if still valid in the new data, otherwise picks the new
+  // route's first available hour once that data arrives.
+  //
+  // Ticket #491, V2 correction: an earlier version of this comment (and
+  // of cc-report-implementation.md) claimed `data`/`loadError` were
+  // "cleared synchronously at the top of a GENUINE switch (same render
+  // pass the routeId state change is applied in)" via setData(null)/
+  // setLoadError(null) calls made here. That claim was wrong — those
+  // calls ran inside this PASSIVE EFFECT, which commits one render pass
+  // AFTER the `routeId` state change itself (not in the same pass), so a
+  // route switch really could commit one frame with the new routeId
+  // selected next to the previous route's still-current `data`/
+  // `loadError`. This effect no longer calls setData(null)/
+  // setLoadError(null) at all: `data` and `loadError` now carry the
+  // `routeId` they belong to (the response's own `routeId`, or the
+  // routeId captured in this closure for an error), and `view`/
+  // `viewErrorKey` below mask either one at RENDER TIME whenever that tag
+  // no longer matches the currently selected `routeId` — so the masking
+  // itself lands in the exact same render pass as the `routeId` state
+  // change, with no extra state update required.
+  const requestIdRef = useRef(0);
+  const controllerRef = useRef(null);
+  const lastRequestedRouteIdRef = useRef(null);
   useEffect(() => {
-    if (fetchedRef.current) return;
-    fetchedRef.current = true;
+    if (lastRequestedRouteIdRef.current === routeId) {
+      // StrictMode's synthetic re-invocation for the SAME routeId a fetch
+      // was already started for this render cycle — do nothing.
+      return undefined;
+    }
+    lastRequestedRouteIdRef.current = routeId;
 
-    fetch("/api/winter-route")
+    controllerRef.current?.abort(); // stop a previous, now-abandoned route's request, if any
+    const controller = new AbortController();
+    controllerRef.current = controller;
+
+    const thisRequestId = ++requestIdRef.current;
+
+    const url = routeId === DEFAULT_WINTER_ROUTE_ID ? "/api/winter-route" : `/api/winter-route?routeId=${routeId}`;
+
+    fetch(url, { signal: controller.signal })
       .then((res) => {
         if (!res.ok) throw new Error("winter_route_fetch_failed");
         return res.json();
       })
-      .then((payload) => setData(payload))
-      .catch(() => setLoadError(true));
-  }, []);
+      .then((payload) => {
+        if (requestIdRef.current !== thisRequestId) return; // superseded by a later route switch
+
+        // B3 — the response must match THIS page's own expectation for the
+        // route it was requested for, not just "some" 200 response: a
+        // wrong routeId, a point-count contract mismatch, or (when the
+        // forecast is actually available) a points array of the wrong
+        // length is a route-scoped error, never a silent partial/wrong-
+        // route view.
+        const expected = expectedPointCountForRoute(routeId);
+        const forecastPointCountOk =
+          !payload?.forecast?.available || payload.forecast.points.length === expected;
+        if (payload?.routeId !== routeId || payload?.expectedPointCount !== expected || !forecastPointCountOk) {
+          setLoadError({ routeId, key: "winterRouteRouteDataMismatch" });
+          return;
+        }
+        setData(payload);
+      })
+      .catch((err) => {
+        if (err?.name === "AbortError") return;
+        if (requestIdRef.current !== thisRequestId) return;
+        setLoadError({ routeId, key: "winterRouteRoadFeedUnavailable" });
+      });
+
+    return undefined;
+  }, [routeId]);
+
+  // Ticket #491, V2 — route-bound view of `data`/`loadError`, derived at
+  // render time (not via a setData(null)/setLoadError(null) call inside
+  // the passive effect above — see its corrected comment). `data` only
+  // "counts" for display when its own `routeId` still matches the
+  // currently selected `routeId`; same for `loadError`'s captured
+  // `routeId`. This is what actually prevents a route switch from ever
+  // committing the new selection's title/disclaimers next to the
+  // previous route's stale cards/segments/error — the masking lands in
+  // the exact same render pass as the `routeId` state change itself.
+  const view = data?.routeId === routeId ? data : null;
+  const viewErrorKey = loadError?.routeId === routeId ? loadError.key : null;
 
   const now = useNowTicking();
 
   const availableHours = useMemo(() => {
-    const hours = data?.forecast?.available ? data.forecast.window.expectedHours : [];
+    const hours = view?.forecast?.available ? view.forecast.window.expectedHours : [];
     return hours.filter((h) => new Date(`${h}:00Z`).getTime() > now.getTime());
-  }, [data, now]);
+  }, [view, now]);
 
   useEffect(() => {
     if (availableHours.length === 0) return;
@@ -530,7 +638,7 @@ export default function WinterRoute() {
   return (
     <>
       <Helmet>
-        <title>{t("winterRouteTitle")} · {lang === "en" ? "Chase the Weather" : "Eltum Veðrið"}</title>
+        <title>{routeName} · {lang === "en" ? "Chase the Weather" : "Eltum Veðrið"}</title>
       </Helmet>
 
       <div className="min-h-screen bg-soft-grid text-slate-900 dark:bg-slate-950 dark:text-slate-100">
@@ -541,24 +649,53 @@ export default function WinterRoute() {
         </header>
 
         <main className="mx-auto max-w-4xl px-4 py-8 sm:px-6">
-          <h1 className="text-2xl font-black tracking-tight md:text-3xl">{t("winterRouteTitle")}</h1>
+          <h1 className="text-2xl font-black tracking-tight md:text-3xl">{routeName}</h1>
           <p className="mt-1 text-sm text-slate-600 dark:text-slate-400">{t("winterRouteSubtitle")}</p>
           <p className="mt-1 text-xs italic text-slate-500 dark:text-slate-400">{t("winterRouteLatestStatusNote")}</p>
 
-          {loadError ? (
+          {/* Ticket #491 — native IS/EN route select, Vík default, single
+              existing entrypoint (same page). onChange calls setRouteId
+              directly (no focus-moving ref/effect attached to it, same
+              reasoning as the hour <select>'s own #490 R1 fix: never
+              interrupt native keyboard stepping). */}
+          <div className="mt-4">
+            <label htmlFor="winter-route-select" className="text-sm font-medium text-slate-700 dark:text-slate-200">
+              {t("winterRouteRouteSelectLabel")}
+            </label>
+            <select
+              id="winter-route-select"
+              className="mt-1 block w-full max-w-xs rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 dark:border-slate-700 dark:bg-slate-900"
+              value={routeId}
+              onChange={(e) => setRouteId(e.target.value)}
+            >
+              {WINTER_ROUTE_OPTIONS.map((opt) => (
+                <option key={opt.routeId} value={opt.routeId}>
+                  {lang === "en" ? opt.nameEn : opt.nameIs}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {routeId !== DEFAULT_WINTER_ROUTE_ID ? (
+            <p className="mt-2 text-xs italic text-slate-500 dark:text-slate-400">{t("winterRouteEtaApproximationNote")}</p>
+          ) : null}
+
+          {viewErrorKey ? (
             <p className="mt-6 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700 dark:border-red-900/50 dark:bg-red-950/30 dark:text-red-300">
-              {t("winterRouteRoadFeedUnavailable")}
+              {t(viewErrorKey)}
             </p>
           ) : null}
 
-          {data ? (
+          {view ? (
             <>
-              <RouteSummary data={data} selectedHour={selectedHour} t={t} lang={lang} />
+              <RouteSummary data={view} selectedHour={selectedHour} t={t} lang={lang} />
 
               <section className="mt-6">
-                <h2 className="text-lg font-semibold">{t("winterRouteForecastSectionTitle")}</h2>
+                <h2 className="text-lg font-semibold">
+                  {t("winterRouteForecastSectionTitle").replace("{count}", String(view.expectedPointCount))}
+                </h2>
 
-                {data.forecast.available ? (
+                {view.forecast.available ? (
                   <div className="mt-3">
                     <label htmlFor="winter-route-hour" className="text-sm font-medium text-slate-700 dark:text-slate-200">
                       {t("winterRouteHourLabel")}
@@ -585,7 +722,7 @@ export default function WinterRoute() {
                         on first load or when the forecast itself is down. */}
                     {selectedHour ? (
                       <RouteComparison
-                        data={data}
+                        data={view}
                         selectedHour={selectedHour}
                         availableHours={availableHours}
                         onSelect={handleUserSelectHour}
@@ -602,18 +739,18 @@ export default function WinterRoute() {
                   <p className="mt-2 text-sm text-slate-500 dark:text-slate-400">{t("winterRouteForecastUnavailable")}</p>
                 )}
 
-                {data.forecast.available && data.forecast.stale ? (
+                {view.forecast.available && view.forecast.stale ? (
                   <p className="mt-2 text-xs text-amber-600 dark:text-amber-300">
                     {t("winterRouteForecastStaleServed").replace(
                       "{minutes}",
-                      String(Math.round((data.forecast.cacheAgeMs || 0) / 60000))
+                      String(Math.round((view.forecast.cacheAgeMs || 0) / 60000))
                     )}
                   </p>
                 ) : null}
 
-                {data.forecast.available ? (
+                {view.forecast.available ? (
                   <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-3">
-                    {data.forecast.points.map((point) => (
+                    {view.forecast.points.map((point) => (
                       <ForecastCard key={point.id} point={point} departureHour={selectedHour} t={t} lang={lang} />
                     ))}
                   </div>
@@ -623,19 +760,27 @@ export default function WinterRoute() {
               <section className="mt-8">
                 <h2 className="text-lg font-semibold">{t("winterRouteRoadSectionTitle")}</h2>
 
-                {!data.roadMeta.available ? (
+                {/* B6/item 6 — Borgarnes reuses a few IDBUTUR whose road-
+                    condition line covers a longer stretch than the part
+                    this route actually drives (e.g. 904040037/
+                    904690037); said once here, not per-segment. */}
+                {routeId !== DEFAULT_WINTER_ROUTE_ID ? (
+                  <p className="mt-1 text-xs italic text-slate-500 dark:text-slate-400">{t("winterRouteSectionCoverageNote")}</p>
+                ) : null}
+
+                {!view.roadMeta.available ? (
                   <p className="mt-2 text-sm text-slate-500 dark:text-slate-400">{t("winterRouteRoadFeedUnavailable")}</p>
                 ) : null}
-                {data.roadMeta.stale ? (
+                {view.roadMeta.stale ? (
                   <p className="mt-2 text-xs text-amber-600 dark:text-amber-300">
                     {t("winterRouteRoadStaleServed").replace(
                       "{minutes}",
-                      String(Math.round((data.roadMeta.cacheAgeMs || 0) / 60000))
+                      String(Math.round((view.roadMeta.cacheAgeMs || 0) / 60000))
                     )}
                   </p>
                 ) : null}
 
-                {data.roadMeta.pointsFeedUnavailableOrStale ? (
+                {view.roadMeta.pointsFeedUnavailableOrStale ? (
                   <div className="mt-2 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-xs font-medium text-amber-800 dark:border-amber-900/50 dark:bg-amber-950/30 dark:text-amber-200">
                     <p>{t("winterRoutePointsFeedUnavailable")}</p>
                     {/* Round 3 (R5-2): same retained VEGAGERDIN_LINKS[lang]
@@ -652,7 +797,7 @@ export default function WinterRoute() {
                 ) : null}
 
                 <ol className="mt-3 space-y-2">
-                  {data.segments.map((segment) => (
+                  {view.segments.map((segment) => (
                     <SegmentRow key={segment.idButur} segment={segment} t={t} lang={lang} />
                   ))}
                 </ol>
@@ -660,7 +805,7 @@ export default function WinterRoute() {
 
               <section className="mt-8 rounded-xl border border-slate-200/70 bg-white/60 px-4 py-4 text-xs leading-relaxed text-slate-500 dark:border-slate-800/70 dark:bg-slate-900/60 dark:text-slate-400">
                 <p>{t("winterRouteAttributionRoadLine")}</p>
-                <p>{t("winterRouteAcquiredAt").replace("{time}", formatTimestamp(data.generatedAt))}</p>
+                <p>{t("winterRouteAcquiredAt").replace("{time}", formatTimestamp(view.generatedAt))}</p>
                 <p>{t("winterRouteAttributionWeatherLine")}</p>
                 <p>{t("winterRouteModifiedBy")}</p>
                 <p>{t("winterRouteNoEndorsement")}</p>
@@ -686,7 +831,7 @@ export default function WinterRoute() {
                 </p>
               </section>
             </>
-          ) : !loadError ? (
+          ) : !viewErrorKey ? (
             <p className="mt-6 text-sm text-slate-500 dark:text-slate-400">…</p>
           ) : null}
         </main>

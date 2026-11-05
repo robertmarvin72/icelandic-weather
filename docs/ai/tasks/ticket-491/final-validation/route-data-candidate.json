@@ -1,0 +1,651 @@
+{
+  "generated_by": "CC, ticket-491 final-validation, 2026-11-04",
+  "source": "docs/ai/tasks/ticket-483/samples/wfs-vegnr1-all.json (native ISN93/EPSG:3057) + new bounded WFS call wfs-vesturland-4326.json (EPSG:4326), see cc-report-final-validation.md for full source list/hashes",
+  "status": "ROUTE-DATA CANDIDATE, NOT app config. H1 (VEGHLUTI6 stored-digital-direction=northbound) is INFERRED topology, not proven legal traffic direction.",
+  "start_raudavatn": {
+    "idferill": 1436,
+    "idbutur": 1410010037,
+    "native_3057_end": [
+      365522.0175,
+      402772.762
+    ],
+    "note": "same start as existing Rauðavatn-Vík route; not #485's ETA-zero 49926"
+  },
+  "chain_pieces": [
+    {
+      "idferill": 1477,
+      "idbutur": 914020037,
+      "veghluti": 6,
+      "kaflanr": "e2",
+      "orientation": "start->end",
+      "gap_from_prev_m": 37.39,
+      "piece_length_m": 786.643,
+      "cum_km_at_entry": 0.037,
+      "cum_km_at_exit": 0.824,
+      "native_entry_3057": [
+        365511.185,
+        402808.546
+      ],
+      "native_exit_3057": [
+        364815.38,
+        403168.62
+      ]
+    },
+    {
+      "idferill": 1431,
+      "idbutur": 914020037,
+      "veghluti": 1,
+      "kaflanr": "e3",
+      "orientation": "start->end",
+      "gap_from_prev_m": 38.68,
+      "piece_length_m": 912.476,
+      "cum_km_at_entry": 0.863,
+      "cum_km_at_exit": 1.775,
+      "native_entry_3057": [
+        364783.23,
+        403190.12
+      ],
+      "native_exit_3057": [
+        364530.6014,
+        404024.6077
+      ]
+    },
+    {
+      "idferill": 42243,
+      "idbutur": 914020037,
+      "veghluti": 6,
+      "kaflanr": "e3",
+      "orientation": "start->end",
+      "gap_from_prev_m": 3.6,
+      "piece_length_m": 1277.326,
+      "cum_km_at_entry": 1.779,
+      "cum_km_at_exit": 3.056,
+      "native_entry_3057": [
+        364529.8757,
+        404021.0839
+      ],
+      "native_exit_3057": [
+        364379.2145,
+        405263.0185
+      ]
+    },
+    {
+      "idferill": 49926,
+      "idbutur": 914020037,
+      "veghluti": 1,
+      "kaflanr": "e3",
+      "orientation": "start->end",
+      "gap_from_prev_m": 3.71,
+      "piece_length_m": 183.057,
+      "cum_km_at_entry": 3.06,
+      "cum_km_at_exit": 3.243,
+      "native_entry_3057": [
+        364380.1477,
+        405259.4325
+      ],
+      "native_exit_3057": [
+        364310.0491,
+        405428.4975
+      ]
+    },
+    {
+      "idferill": 9923,
+      "idbutur": 903020037,
+      "veghluti": 6,
+      "kaflanr": "f2",
+      "orientation": "start->end",
+      "gap_from_prev_m": 10.83,
+      "piece_length_m": 2165.854,
+      "cum_km_at_entry": 3.254,
+      "cum_km_at_exit": 5.42,
+      "native_entry_3057": [
+        364315.4588,
+        405419.1142
+      ],
+      "native_exit_3057": [
+        365750.07,
+        406920.23
+      ]
+    },
+    {
+      "idferill": 9925,
+      "idbutur": 903020037,
+      "veghluti": 6,
+      "kaflanr": "f3",
+      "orientation": "start->end",
+      "gap_from_prev_m": 34.16,
+      "piece_length_m": 1907.978,
+      "cum_km_at_entry": 5.454,
+      "cum_km_at_exit": 7.362,
+      "native_entry_3057": [
+        365766.45,
+        406950.21
+      ],
+      "native_exit_3057": [
+        366832.5,
+        408500.08
+      ]
+    },
+    {
+      "idferill": 9927,
+      "idbutur": 903020037,
+      "veghluti": 6,
+      "kaflanr": "f3",
+      "orientation": "start->end",
+      "gap_from_prev_m": 26.55,
+      "piece_length_m": 823.443,
+      "cum_km_at_entry": 7.388,
+      "cum_km_at_exit": 8.212,
+      "native_entry_3057": [
+        366850.06,
+        408520
+      ],
+      "native_exit_3057": [
+        367470.347,
+        409052.717
+      ]
+    },
+    {
+      "idferill": 10242,
+      "idbutur": 903020037,
+      "veghluti": 6,
+      "kaflanr": "f3",
+      "orientation": "start->end",
+      "gap_from_prev_m": 31.47,
+      "piece_length_m": 1156.093,
+      "cum_km_at_entry": 8.243,
+      "cum_km_at_exit": 9.399,
+      "native_entry_3057": [
+        367496.736,
+        409069.855
+      ],
+      "native_exit_3057": [
+        368367.314,
+        409712.635
+      ]
+    },
+    {
+      "idferill": 2796,
+      "idbutur": 903020037,
+      "veghluti": 1,
+      "kaflanr": "f3",
+      "orientation": "start->end",
+      "gap_from_prev_m": 40.83,
+      "piece_length_m": 676.449,
+      "cum_km_at_entry": 9.44,
+      "cum_km_at_exit": 10.117,
+      "native_entry_3057": [
+        368406.315,
+        409700.5641
+      ],
+      "native_exit_3057": [
+        369050.488,
+        409740.261
+      ]
+    },
+    {
+      "idferill": 10247,
+      "idbutur": 903020037,
+      "veghluti": 6,
+      "kaflanr": "f4",
+      "orientation": "start->end",
+      "gap_from_prev_m": 17.92,
+      "piece_length_m": 529.84,
+      "cum_km_at_entry": 10.134,
+      "cum_km_at_exit": 10.664,
+      "native_entry_3057": [
+        369058.623,
+        409756.227
+      ],
+      "native_exit_3057": [
+        369495.412,
+        409996.251
+      ]
+    },
+    {
+      "idferill": 2488,
+      "idbutur": 903020037,
+      "veghluti": 6,
+      "kaflanr": "f4",
+      "orientation": "start->end",
+      "gap_from_prev_m": 32.67,
+      "piece_length_m": 975.361,
+      "cum_km_at_entry": 10.697,
+      "cum_km_at_exit": 11.672,
+      "native_entry_3057": [
+        369524.519,
+        410011.082
+      ],
+      "native_exit_3057": [
+        369884.459,
+        410879.112
+      ]
+    },
+    {
+      "idferill": 2532,
+      "idbutur": 903030037,
+      "veghluti": 1,
+      "kaflanr": "f5",
+      "orientation": "start->end",
+      "gap_from_prev_m": 41.45,
+      "piece_length_m": 6679.566,
+      "cum_km_at_entry": 11.714,
+      "cum_km_at_exit": 18.393,
+      "native_entry_3057": [
+        369876.9665,
+        410919.8825
+      ],
+      "native_exit_3057": [
+        365883.5639,
+        414670.5343
+      ]
+    },
+    {
+      "idferill": 30721,
+      "idbutur": 903030037,
+      "veghluti": 6,
+      "kaflanr": "f5",
+      "orientation": "start->end",
+      "gap_from_prev_m": 7.09,
+      "piece_length_m": 1185.592,
+      "cum_km_at_entry": 18.4,
+      "cum_km_at_exit": 19.586,
+      "native_entry_3057": [
+        365888.5528,
+        414665.5029
+      ],
+      "native_exit_3057": [
+        365003.333,
+        415441.989
+      ]
+    },
+    {
+      "idferill": 49281,
+      "idbutur": 903030037,
+      "veghluti": 6,
+      "kaflanr": "f5",
+      "orientation": "start->end",
+      "gap_from_prev_m": 38.62,
+      "piece_length_m": 2835.286,
+      "cum_km_at_entry": 19.625,
+      "cum_km_at_exit": 22.46,
+      "native_entry_3057": [
+        364977.488,
+        415470.693
+      ],
+      "native_exit_3057": [
+        363284.959,
+        417592.986
+      ]
+    },
+    {
+      "idferill": 49285,
+      "idbutur": 903030037,
+      "veghluti": 1,
+      "kaflanr": "f5",
+      "orientation": "start->end",
+      "gap_from_prev_m": 2.88,
+      "piece_length_m": 1169.516,
+      "cum_km_at_entry": 22.463,
+      "cum_km_at_exit": 23.632,
+      "native_entry_3057": [
+        363285.8088,
+        417590.2334
+      ],
+      "native_exit_3057": [
+        362804.64,
+        418651.23
+      ]
+    },
+    {
+      "idferill": 3025,
+      "idbutur": 903030037,
+      "veghluti": 1,
+      "kaflanr": "f6",
+      "orientation": "start->end",
+      "gap_from_prev_m": 0.0,
+      "piece_length_m": 3568.738,
+      "cum_km_at_entry": 23.632,
+      "cum_km_at_exit": 27.201,
+      "native_entry_3057": [
+        362804.64,
+        418651.23
+      ],
+      "native_exit_3057": [
+        362522.27,
+        422181.62
+      ]
+    },
+    {
+      "idferill": 3023,
+      "idbutur": 904690037,
+      "veghluti": 1,
+      "kaflanr": "f7",
+      "orientation": "start->end",
+      "gap_from_prev_m": 0.0,
+      "piece_length_m": 939.087,
+      "cum_km_at_entry": 27.201,
+      "cum_km_at_exit": 28.14,
+      "native_entry_3057": [
+        362522.27,
+        422181.62
+      ],
+      "native_exit_3057": [
+        362520.27,
+        423091.755
+      ]
+    },
+    {
+      "idferill": 56002,
+      "idbutur": 904690037,
+      "veghluti": 1,
+      "kaflanr": "f8",
+      "orientation": "start->end",
+      "gap_from_prev_m": 0.0,
+      "piece_length_m": 5783.388,
+      "cum_km_at_entry": 28.14,
+      "cum_km_at_exit": 33.924,
+      "native_entry_3057": [
+        362520.27,
+        423091.755
+      ],
+      "native_exit_3057": [
+        359537.73,
+        426271.36
+      ]
+    },
+    {
+      "idferill": 3796,
+      "idbutur": 904690037,
+      "veghluti": 1,
+      "kaflanr": "g0",
+      "orientation": "start->end",
+      "gap_from_prev_m": 0.0,
+      "piece_length_m": 468.432,
+      "cum_km_at_entry": 33.924,
+      "cum_km_at_exit": 34.392,
+      "native_entry_3057": [
+        359537.73,
+        426271.36
+      ],
+      "native_exit_3057": [
+        359141.3289,
+        426125.7452
+      ]
+    },
+    {
+      "idferill": 3794,
+      "idbutur": 904000037,
+      "veghluti": 1,
+      "kaflanr": "g1",
+      "orientation": "start->end",
+      "gap_from_prev_m": 27.62,
+      "piece_length_m": 7124.355,
+      "cum_km_at_entry": 34.42,
+      "cum_km_at_exit": 41.544,
+      "native_entry_3057": [
+        359129.5,
+        426150.7
+      ],
+      "native_exit_3057": [
+        364309.9757,
+        430752.1494
+      ]
+    },
+    {
+      "idferill": 3802,
+      "idbutur": 904010037,
+      "veghluti": 1,
+      "kaflanr": "g1",
+      "orientation": "start->end",
+      "gap_from_prev_m": 0.0,
+      "piece_length_m": 3782.163,
+      "cum_km_at_entry": 41.544,
+      "cum_km_at_exit": 45.326,
+      "native_entry_3057": [
+        364309.9757,
+        430752.1494
+      ],
+      "native_exit_3057": [
+        362442.6,
+        433713.96
+      ]
+    },
+    {
+      "idferill": 3740,
+      "idbutur": 904010037,
+      "veghluti": 1,
+      "kaflanr": "g2",
+      "orientation": "start->end",
+      "gap_from_prev_m": 0.0,
+      "piece_length_m": 1097.361,
+      "cum_km_at_entry": 45.326,
+      "cum_km_at_exit": 46.423,
+      "native_entry_3057": [
+        362442.6,
+        433713.96
+      ],
+      "native_exit_3057": [
+        362688.94,
+        434739.39
+      ]
+    },
+    {
+      "idferill": 3741,
+      "idbutur": 904010037,
+      "veghluti": 1,
+      "kaflanr": "g3",
+      "orientation": "start->end",
+      "gap_from_prev_m": 0.0,
+      "piece_length_m": 7480.557,
+      "cum_km_at_entry": 46.423,
+      "cum_km_at_exit": 53.904,
+      "native_entry_3057": [
+        362688.94,
+        434739.39
+      ],
+      "native_exit_3057": [
+        357621.5519,
+        439559.3877
+      ]
+    },
+    {
+      "idferill": 47042,
+      "idbutur": 804020037,
+      "veghluti": 1,
+      "kaflanr": "g3",
+      "orientation": "start->end",
+      "gap_from_prev_m": 0.0,
+      "piece_length_m": 4132.416,
+      "cum_km_at_entry": 53.904,
+      "cum_km_at_exit": 58.036,
+      "native_entry_3057": [
+        357621.5519,
+        439559.3877
+      ],
+      "native_exit_3057": [
+        357463.15,
+        443687.17
+      ]
+    },
+    {
+      "idferill": 3756,
+      "idbutur": 804020037,
+      "veghluti": 1,
+      "kaflanr": "g4",
+      "orientation": "start->end",
+      "gap_from_prev_m": 0.0,
+      "piece_length_m": 6419.963,
+      "cum_km_at_entry": 58.036,
+      "cum_km_at_exit": 64.456,
+      "native_entry_3057": [
+        357463.15,
+        443687.17
+      ],
+      "native_exit_3057": [
+        360686.6249,
+        448849.1244
+      ]
+    },
+    {
+      "idferill": 3757,
+      "idbutur": 804020037,
+      "veghluti": 1,
+      "kaflanr": "g4",
+      "orientation": "start->end",
+      "gap_from_prev_m": 0.0,
+      "piece_length_m": 1974.984,
+      "cum_km_at_entry": 64.456,
+      "cum_km_at_exit": 66.431,
+      "native_entry_3057": [
+        360686.6249,
+        448849.1244
+      ],
+      "native_exit_3057": [
+        361620.09,
+        450417.43
+      ]
+    },
+    {
+      "idferill": 3758,
+      "idbutur": 804020037,
+      "veghluti": 1,
+      "kaflanr": "g5",
+      "orientation": "start->end",
+      "gap_from_prev_m": 0.0,
+      "piece_length_m": 2472.57,
+      "cum_km_at_entry": 66.431,
+      "cum_km_at_exit": 68.904,
+      "native_entry_3057": [
+        361620.09,
+        450417.43
+      ],
+      "native_exit_3057": [
+        360414.21,
+        452447.79
+      ]
+    },
+    {
+      "idferill": 2876,
+      "idbutur": 904040037,
+      "veghluti": 1,
+      "kaflanr": "g6",
+      "orientation": "start->end",
+      "gap_from_prev_m": 0.0,
+      "piece_length_m": 1156.647,
+      "cum_km_at_entry": 68.904,
+      "cum_km_at_exit": 70.061,
+      "native_entry_3057": [
+        360414.21,
+        452447.79
+      ],
+      "native_exit_3057": [
+        360755.24,
+        453516.21
+      ]
+    },
+    {
+      "idferill": 2819,
+      "idbutur": 904040037,
+      "veghluti": 1,
+      "kaflanr": "g7",
+      "orientation": "start->end",
+      "gap_from_prev_m": 0.0,
+      "piece_length_m": 719.396,
+      "cum_km_at_entry": 70.061,
+      "cum_km_at_exit": 70.78,
+      "native_entry_3057": [
+        360755.24,
+        453516.21
+      ],
+      "native_exit_3057": [
+        361119.191,
+        454127.5752
+      ]
+    }
+  ],
+  "end_borgarnes": {
+    "rule_is": "fyrsta VEGHLUTI5 hringtorg á Hringvegi eftir norðanmunna Hvalfjarðargöngum (42573)",
+    "roundabout_idferill": 30401,
+    "idbutur": 904040037,
+    "entry_point_idferill": 2819,
+    "entry_point_native_3057": [
+      361119.191,
+      454127.5752
+    ],
+    "gap_entry_to_roundabout_m": 1.77,
+    "cum_km_to_entry_point": 70.78,
+    "cum_km_to_roundabout": 70.782
+  },
+  "total_route_length_km_planar_isn93_tier0": 70.78,
+  "four_points": [
+    {
+      "id": "P1",
+      "label_is": "Kjalarnes",
+      "idferill": 3025,
+      "idbutur": 903030037,
+      "which": "start",
+      "native_3057": [
+        362804.64,
+        418651.23
+      ],
+      "cum_km": 23.632,
+      "rationale_is": "Fulltrúi leiðar sunnan Hvalfjarðargöng; valið úr raunlínu (eigandi-tillögusvæði).",
+      "wgs84": {
+        "lon": -21.82931336,
+        "lat": 64.24274349
+      }
+    },
+    {
+      "id": "P2",
+      "label_is": "Norðan Hvalfjarðargöng",
+      "idferill": 3796,
+      "idbutur": 904690037,
+      "which": "end",
+      "native_3057": [
+        359141.3289,
+        426125.7452
+      ],
+      "cum_km": 34.392,
+      "rationale_is": "Veðurpunktur utan ganga, ekki á neðanjarðarkafla (eigandi-tillögusvæði).",
+      "wgs84": {
+        "lon": -21.91184988,
+        "lat": 64.30823023
+      }
+    },
+    {
+      "id": "P3",
+      "label_is": "Hafnarfjall (47042 upphaf)",
+      "idferill": 47042,
+      "idbutur": 804020037,
+      "which": "start",
+      "native_3057": [
+        357621.5519,
+        439559.3877
+      ],
+      "cum_km": 53.904,
+      "rationale_is": "CC-valið (INFERRED) innan tillögusvæðis 47042/3756, ekki 3757 (afturkallað í O2). Valið fyrir jafnari dreifingu: Rv->P1 23.6km, P1->P2 10.76km, P2->P3 19.51km, P3->P4 16.88km (vs. gamla P3=3757: P2->P3 30.04km, P3->P4 5.6-6.3km).",
+      "wgs84": {
+        "lon": -21.95619825,
+        "lat": 64.42797038
+      }
+    },
+    {
+      "id": "P4",
+      "label_is": "Borgarnes-aðkoma (2819 endi)",
+      "idferill": 2819,
+      "idbutur": 904040037,
+      "which": "end",
+      "native_3057": [
+        361119.191,
+        454127.5752
+      ],
+      "cum_km": 70.78,
+      "rationale_is": "O3-regla: fyrsta VEGHLUTI5 hringtorg (30401) á eftir norðanmunna (42573) á þessum Hringvegarköflum; innkomupunktur = endi 2819, 1.77m frá hringpunkti 30401 (ekki miðja/fyrsti geymdi hnútur).",
+      "wgs84": {
+        "lon": -21.89753371,
+        "lat": 64.55996252
+      }
+    }
+  ]
+}

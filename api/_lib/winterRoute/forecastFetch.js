@@ -45,10 +45,14 @@ export function computeForecastWindow(now = new Date()) {
   return { startHour: toHourString(start), endHour: toHourString(end), expectedHours };
 }
 
-export function buildForecastUrl({ host, apiKey, startHour, endHour }) {
+// Ticket #491 — `forecastPoints` defaults to the unchanged Vík six-point
+// list; every allowlisted route passes its OWN fixed points explicitly
+// (api/winter-route.js), so a route's request always matches its own
+// forecastPoints count/order — never a different route's points.
+export function buildForecastUrl({ host, apiKey, startHour, endHour, forecastPoints = WINTER_ROUTE_FORECAST_POINTS }) {
   const url = new URL(`${host}/v1/forecast`);
-  url.searchParams.set("latitude", WINTER_ROUTE_FORECAST_POINTS.map((p) => p.lat).join(","));
-  url.searchParams.set("longitude", WINTER_ROUTE_FORECAST_POINTS.map((p) => p.lon).join(","));
+  url.searchParams.set("latitude", forecastPoints.map((p) => p.lat).join(","));
+  url.searchParams.set("longitude", forecastPoints.map((p) => p.lon).join(","));
   url.searchParams.set("hourly", HOURLY_FIELDS.join(","));
   url.searchParams.set("temperature_unit", "celsius");
   url.searchParams.set("wind_speed_unit", "ms");
@@ -65,7 +69,12 @@ export function buildForecastUrl({ host, apiKey, startHour, endHour }) {
  * never falls back to the public host. Returns a structured result —
  * never throws.
  */
-export async function fetchWinterRouteForecast({ now = new Date(), fetchOptions, env = process.env } = {}) {
+export async function fetchWinterRouteForecast({
+  now = new Date(),
+  fetchOptions,
+  env = process.env,
+  forecastPoints = WINTER_ROUTE_FORECAST_POINTS,
+} = {}) {
   const auth = resolveWinterRouteForecastAuth(env);
   if (!auth.available) {
     return { ok: false, reason: "key_missing" };
@@ -77,6 +86,7 @@ export async function fetchWinterRouteForecast({ now = new Date(), fetchOptions,
     apiKey: auth.apiKey,
     startHour: window.startHour,
     endHour: window.endHour,
+    forecastPoints,
   });
 
   // Ticket #453's own D2 discipline, reused here: never log the raw error,
@@ -87,7 +97,7 @@ export async function fetchWinterRouteForecast({ now = new Date(), fetchOptions,
   if (!result.ok) return result;
 
   const validation = validateForecastResponse(result.data, {
-    requestedPoints: WINTER_ROUTE_FORECAST_POINTS,
+    requestedPoints: forecastPoints,
     expectedHours: window.expectedHours,
   });
   if (!validation.ok) return validation;

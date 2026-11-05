@@ -1,0 +1,322 @@
+{
+  "owner_decision_date": "2026-11-04",
+  "source": "docs/ai/tasks/ticket-483/samples/wfs-vegnr1-all.json",
+  "sha256": "305f60d6f1f17918c058cbd047735681e56d6f9aad99f9e16f50de9419d6983a",
+  "crs": "EPSG:3057; E,N metres",
+  "features": [
+    {
+      "idferill": 3025,
+      "idbutur": 903030037,
+      "veghluti": 1,
+      "kaflanr": "f6",
+      "start_3057": [
+        362804.64,
+        418651.23
+      ],
+      "end_3057": [
+        362522.27,
+        422181.62
+      ],
+      "polyline_length_m": 3568.738,
+      "status": "VERIFIED_RETAINED_GEOMETRY_ONLY_NOT_DRIVEN_ROUTE",
+      "tier": 0
+    },
+    {
+      "idferill": 56002,
+      "idbutur": 904690037,
+      "veghluti": 1,
+      "kaflanr": "f8",
+      "start_3057": [
+        362520.27,
+        423091.755
+      ],
+      "end_3057": [
+        359537.73,
+        426271.36
+      ],
+      "polyline_length_m": 5783.388,
+      "status": "VERIFIED_RETAINED_GEOMETRY_ONLY_NOT_DRIVEN_ROUTE",
+      "tier": 0
+    },
+    {
+      "idferill": 3796,
+      "idbutur": 904690037,
+      "veghluti": 1,
+      "kaflanr": "g0",
+      "start_3057": [
+        359537.73,
+        426271.36
+      ],
+      "end_3057": [
+        359141.3289,
+        426125.7452
+      ],
+      "polyline_length_m": 468.432,
+      "status": "VERIFIED_RETAINED_GEOMETRY_ONLY_NOT_DRIVEN_ROUTE",
+      "tier": 0
+    },
+    {
+      "idferill": 3740,
+      "idbutur": 904010037,
+      "veghluti": 1,
+      "kaflanr": "g2",
+      "start_3057": [
+        362442.6,
+        433713.96
+      ],
+      "end_3057": [
+        362688.94,
+        434739.39
+      ],
+      "polyline_length_m": 1097.361,
+      "status": "VERIFIED_RETAINED_GEOMETRY_ONLY_NOT_DRIVEN_ROUTE",
+      "tier": 0
+    },
+    {
+      "idferill": 3757,
+      "idbutur": 804020037,
+      "veghluti": 1,
+      "kaflanr": "g4",
+      "start_3057": [
+        360686.6249,
+        448849.1244
+      ],
+      "end_3057": [
+        361620.09,
+        450417.43
+      ],
+      "polyline_length_m": 1974.984,
+      "status": "VERIFIED_RETAINED_GEOMETRY_ONLY_NOT_DRIVEN_ROUTE",
+      "tier": 0
+    },
+    {
+      "idferill": 3758,
+      "idbutur": 804020037,
+      "veghluti": 1,
+      "kaflanr": "g5",
+      "start_3057": [
+        361620.09,
+        450417.43
+      ],
+      "end_3057": [
+        360414.21,
+        452447.79
+      ],
+      "polyline_length_m": 2472.57,
+      "status": "VERIFIED_RETAINED_GEOMETRY_ONLY_NOT_DRIVEN_ROUTE",
+      "tier": 0
+    },
+    {
+      "idferill": 2876,
+      "idbutur": 904040037,
+      "veghluti": 1,
+      "kaflanr": "g6",
+      "start_3057": [
+        360414.21,
+        452447.79
+      ],
+      "end_3057": [
+        360755.24,
+        453516.21
+      ],
+      "polyline_length_m": 1156.647,
+      "status": "VERIFIED_RETAINED_GEOMETRY_ONLY_NOT_DRIVEN_ROUTE",
+      "tier": 0
+    },
+    {
+      "idferill": 2819,
+      "idbutur": 904040037,
+      "veghluti": 1,
+      "kaflanr": "g7",
+      "start_3057": [
+        360755.24,
+        453516.21
+      ],
+      "end_3057": [
+        361119.191,
+        454127.5752
+      ],
+      "polyline_length_m": 719.396,
+      "status": "VERIFIED_RETAINED_GEOMETRY_ONLY_NOT_DRIVEN_ROUTE",
+      "tier": 0
+    },
+    {
+      "idferill": 2816,
+      "idbutur": 904040037,
+      "veghluti": 1,
+      "kaflanr": "g8",
+      "start_3057": [
+        361118.5861,
+        454170.4931
+      ],
+      "end_3057": [
+        366573.7381,
+        460448.1087
+      ],
+      "polyline_length_m": 8581.487,
+      "status": "VERIFIED_RETAINED_GEOMETRY_ONLY_NOT_DRIVEN_ROUTE",
+      "tier": 0
+    },
+    {
+      "idferill": 30401,
+      "idbutur": 904040037,
+      "veghluti": 5,
+      "kaflanr": "g8",
+      "start_3057": [
+        361117.423,
+        454127.668
+      ],
+      "end_3057": [
+        361117.423,
+        454127.668
+      ],
+      "polyline_length_m": 124.672,
+      "status": "VERIFIED_RETAINED_GEOMETRY_ONLY_NOT_DRIVEN_ROUTE",
+      "tier": 0
+    },
+    {
+      "idferill": 3023,
+      "idbutur": 904690037,
+      "tier": 0,
+      "veghluti": 1,
+      "kaflanr": "f7",
+      "stadarlysing": "sunnanmunni Hvalfjarðarganga",
+      "start_3057": [
+        362522.27,
+        422181.62
+      ],
+      "end_3057": [
+        362520.27,
+        423091.755
+      ],
+      "polyline_length_m": 939.087,
+      "status": "VERIFIED_RETAINED_GEOMETRY_ONLY_NOT_DRIVEN_ROUTE"
+    },
+    {
+      "idferill": 2982,
+      "idbutur": 814700037,
+      "tier": 0,
+      "veghluti": 1,
+      "kaflanr": "f8",
+      "stadarlysing": "Hvalfjarðargöng til suðurs",
+      "start_3057": [
+        359537.73,
+        426271.36
+      ],
+      "end_3057": [
+        362520.27,
+        423091.755
+      ],
+      "polyline_length_m": 5417.467,
+      "status": "VERIFIED_RETAINED_GEOMETRY_ONLY_NOT_DRIVEN_ROUTE"
+    },
+    {
+      "idferill": 42573,
+      "idbutur": 904690037,
+      "tier": 0,
+      "veghluti": 5,
+      "kaflanr": "g1",
+      "stadarlysing": "norðanmunni Hvalfjarðarganga",
+      "start_3057": [
+        359138.9,
+        426121.7
+      ],
+      "end_3057": [
+        359138.9,
+        426121.7
+      ],
+      "polyline_length_m": 106.949,
+      "status": "VERIFIED_RETAINED_GEOMETRY_ONLY_NOT_DRIVEN_ROUTE"
+    },
+    {
+      "idferill": 47042,
+      "idbutur": 804020037,
+      "tier": 0,
+      "veghluti": 1,
+      "kaflanr": "g3",
+      "stadarlysing": "Hafnarfjall",
+      "start_3057": [
+        357621.5519,
+        439559.3877
+      ],
+      "end_3057": [
+        357463.15,
+        443687.17
+      ],
+      "polyline_length_m": 4132.416,
+      "status": "VERIFIED_RETAINED_GEOMETRY_ONLY_NOT_DRIVEN_ROUTE"
+    },
+    {
+      "idferill": 3756,
+      "idbutur": 804020037,
+      "tier": 0,
+      "veghluti": 1,
+      "kaflanr": "g4",
+      "stadarlysing": "Hafnarfjall",
+      "start_3057": [
+        357463.15,
+        443687.17
+      ],
+      "end_3057": [
+        360686.6249,
+        448849.1244
+      ],
+      "polyline_length_m": 6419.963,
+      "status": "VERIFIED_RETAINED_GEOMETRY_ONLY_NOT_DRIVEN_ROUTE"
+    },
+    {
+      "idferill": 8677,
+      "idbutur": 914020037,
+      "tier": 0,
+      "veghluti": 5,
+      "kaflanr": "e2",
+      "stadarlysing": "Suðurlandsvegur að Norðlingavaði",
+      "start_3057": [
+        365520.995,
+        402771.934
+      ],
+      "end_3057": [
+        365520.995,
+        402771.934
+      ],
+      "polyline_length_m": 119.119,
+      "status": "VERIFIED_RETAINED_GEOMETRY_ONLY_NOT_DRIVEN_ROUTE"
+    },
+    {
+      "idferill": 1477,
+      "idbutur": 914020037,
+      "tier": 0,
+      "veghluti": 6,
+      "kaflanr": "e2",
+      "stadarlysing": "Suðurlandsvegur að Norðlingavaði",
+      "start_3057": [
+        365511.185,
+        402808.546
+      ],
+      "end_3057": [
+        364815.38,
+        403168.62
+      ],
+      "polyline_length_m": 786.643,
+      "status": "VERIFIED_RETAINED_GEOMETRY_ONLY_NOT_DRIVEN_ROUTE"
+    },
+    {
+      "idferill": 54723,
+      "idbutur": 914020037,
+      "tier": 0,
+      "veghluti": 7,
+      "kaflanr": "e2",
+      "stadarlysing": "Suðurlandsvegur að Norðlingavaði",
+      "start_3057": [
+        364790.92,
+        403148.5
+      ],
+      "end_3057": [
+        365489.207,
+        402792.578
+      ],
+      "polyline_length_m": 790.593,
+      "status": "VERIFIED_RETAINED_GEOMETRY_ONLY_NOT_DRIVEN_ROUTE"
+    }
+  ]
+}

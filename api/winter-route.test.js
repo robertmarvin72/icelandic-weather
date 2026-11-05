@@ -4,9 +4,12 @@ import handler from "./winter-route.js";
 import { __resetWinterRouteCacheForTests } from "./_lib/winterRoute/cache.js";
 import { WINTER_ROUTE_IDBUTUR_LIST, WINTER_ROUTE_FORECAST_POINTS } from "./_lib/winterRoute/segments.js";
 import { computeForecastWindow } from "./_lib/winterRoute/forecastFetch.js";
+import { BORGARNES_IDBUTUR_LIST, BORGARNES_FORECAST_POINTS } from "./_lib/winterRoute/routes.js";
 
-function makeReq(method = "GET") {
-  return { method, url: "/api/winter-route", headers: { host: "localhost:3000" } };
+function makeReq(method = "GET", query) {
+  const req = { method, url: "/api/winter-route", headers: { host: "localhost:3000" } };
+  if (query !== undefined) req.query = query;
+  return req;
 }
 
 function makeRes() {
@@ -236,6 +239,22 @@ describe("GET /api/winter-route", () => {
     }
   });
 
+  it("default request (no query, incl. req.query itself undefined) still returns the unchanged Vík routeId/expectedPointCount", async () => {
+    global.fetch = vi.fn().mockImplementation((url) => {
+      if (String(url).includes("faerdpunktar")) return Promise.resolve(okJsonResponse([]));
+      return Promise.resolve(okJsonResponse(WINTER_ROUTE_IDBUTUR_LIST.map(validSegmentRow)));
+    });
+    delete process.env.OPEN_METEO_API_KEY;
+
+    const res = makeRes();
+    await handler(makeReq(), res); // no query at all, same as every pre-#491 test
+
+    expect(res.statusCode).toBe(200);
+    expect(res.body.routeId).toBe("raudavatn-vik");
+    expect(res.body.expectedPointCount).toBe(6);
+    expect(res.body.segments).toHaveLength(13);
+  });
+
   it("a closed segment's category is 'closed' regardless of other segments", async () => {
     global.fetch = vi.fn().mockImplementation((url) => {
       if (String(url).includes("faerdpunktar")) return Promise.resolve(okJsonResponse([]));
@@ -250,5 +269,157 @@ describe("GET /api/winter-route", () => {
 
     expect(res.body.segments[3].category).toBe("closed");
     expect(res.body.segments.filter((s) => s.category === "closed")).toHaveLength(1);
+  });
+});
+
+describe("Ticket #491, B2 — routeId validation", () => {
+  it("rejects an unknown routeId with 400, without echoing the input", async () => {
+    const res = makeRes();
+    await handler(makeReq("GET", { routeId: "nonexistent-route" }), res);
+    expect(res.statusCode).toBe(400);
+    expect(JSON.stringify(res.body)).not.toContain("nonexistent-route");
+    expect(res.headers["Cache-Control"]).toBe("no-store");
+  });
+
+  it("rejects an empty routeId with 400", async () => {
+    const res = makeRes();
+    await handler(makeReq("GET", { routeId: "" }), res);
+    expect(res.statusCode).toBe(400);
+  });
+
+  it("rejects a repeated routeId (array) with 400", async () => {
+    const res = makeRes();
+    await handler(makeReq("GET", { routeId: ["raudavatn-vik", "raudavatn-borgarnes"] }), res);
+    expect(res.statusCode).toBe(400);
+  });
+
+  it("rejects __proto__/constructor/toString as routeId with 400 — never resolves an inherited property", async () => {
+    for (const bad of ["__proto__", "constructor", "toString"]) {
+      const res = makeRes();
+      await handler(makeReq("GET", { routeId: bad }), res);
+      expect(res.statusCode).toBe(400);
+    }
+  });
+
+  it("other query parameters stay ignored even when routeId is present and valid", async () => {
+    global.fetch = vi.fn().mockImplementation((url) => {
+      if (String(url).includes("faerdpunktar")) return Promise.resolve(okJsonResponse([]));
+      return Promise.resolve(okJsonResponse(BORGARNES_IDBUTUR_LIST.map(validSegmentRow)));
+    });
+    delete process.env.OPEN_METEO_API_KEY;
+    const res = makeRes();
+    await handler(makeReq("GET", { routeId: "raudavatn-borgarnes", host: "evil.example", lat: "0", lon: "0" }), res);
+    expect(res.statusCode).toBe(200);
+    expect(res.body.routeId).toBe("raudavatn-borgarnes");
+  });
+});
+
+describe("Ticket #491 — Rauðavatn–Borgarnes route", () => {
+  function borgarnesSegmentRow(idButur) {
+    return validSegmentRow(idButur);
+  }
+
+  it("returns exactly the 8 fixed Borgarnes segments, in fixed order, and expectedPointCount 4", async () => {
+    global.fetch = vi.fn().mockImplementation((url) => {
+      if (String(url).includes("faerdpunktar")) return Promise.resolve(okJsonResponse([]));
+      if (String(url).includes("faerd2017_1")) {
+        return Promise.resolve(okJsonResponse(BORGARNES_IDBUTUR_LIST.map(borgarnesSegmentRow)));
+      }
+      throw new Error("unexpected fetch (forecast must not be called when key is missing)");
+    });
+    delete process.env.OPEN_METEO_API_KEY;
+
+    const res = makeRes();
+    await handler(makeReq("GET", { routeId: "raudavatn-borgarnes" }), res);
+
+    expect(res.statusCode).toBe(200);
+    expect(res.body.routeId).toBe("raudavatn-borgarnes");
+    expect(res.body.expectedPointCount).toBe(4);
+    expect(res.body.segments).toHaveLength(8);
+    expect(res.body.segments.map((s) => s.idButur)).toEqual(BORGARNES_IDBUTUR_LIST);
+    expect(res.body.segments.every((s) => s.category === "passable")).toBe(true);
+    expect(res.body.forecast.available).toBe(false);
+    expect(res.body.forecast.reason).toBe("key_missing");
+  });
+
+  it("Vík's own IDBUTUR rows never leak into a Borgarnes response, even if present in the feed", async () => {
+    global.fetch = vi.fn().mockImplementation((url) => {
+      if (String(url).includes("faerdpunktar")) return Promise.resolve(okJsonResponse([]));
+      const rows = [...BORGARNES_IDBUTUR_LIST, ...WINTER_ROUTE_IDBUTUR_LIST].map(borgarnesSegmentRow);
+      return Promise.resolve(okJsonResponse(rows));
+    });
+    delete process.env.OPEN_METEO_API_KEY;
+
+    const res = makeRes();
+    await handler(makeReq("GET", { routeId: "raudavatn-borgarnes" }), res);
+    expect(res.body.segments).toHaveLength(8);
+    expect(res.body.segments.map((s) => s.idButur)).toEqual(BORGARNES_IDBUTUR_LIST);
+  });
+
+  it("returns exactly 4 forecast points with the fixed Borgarnes lat/lon, in order, when the forecast is available", async () => {
+    const window = computeForecastWindow();
+    const forecastResults = BORGARNES_FORECAST_POINTS.map((p, i) => ({
+      latitude: p.lat,
+      longitude: p.lon,
+      elevation: 1,
+      utc_offset_seconds: 0,
+      hourly_units: {
+        temperature_2m: "°C",
+        wind_speed_10m: "m/s",
+        wind_gusts_10m: "m/s",
+        precipitation: "mm",
+        weather_code: "wmo code",
+      },
+      hourly: {
+        time: window.expectedHours,
+        temperature_2m: window.expectedHours.map(() => i),
+        wind_speed_10m: window.expectedHours.map(() => 1),
+        wind_gusts_10m: window.expectedHours.map(() => 1),
+        precipitation: window.expectedHours.map(() => 0),
+        weather_code: window.expectedHours.map(() => 0),
+      },
+    }));
+
+    global.fetch = vi.fn().mockImplementation((url) => {
+      if (String(url).includes("faerdpunktar")) return Promise.resolve(okJsonResponse([]));
+      if (String(url).includes("faerd2017_1")) {
+        return Promise.resolve(okJsonResponse(BORGARNES_IDBUTUR_LIST.map(borgarnesSegmentRow)));
+      }
+      return Promise.resolve(okJsonResponse(forecastResults));
+    });
+    process.env.OPEN_METEO_API_KEY = "test-key";
+
+    const res = makeRes();
+    await handler(makeReq("GET", { routeId: "raudavatn-borgarnes" }), res);
+
+    expect(res.body.forecast.available).toBe(true);
+    expect(res.body.forecast.points).toHaveLength(4);
+    res.body.forecast.points.forEach((point, i) => {
+      expect(point.available).toBe(true);
+      expect(point.approxDistanceFromStartKm).toBe(BORGARNES_FORECAST_POINTS[i].approxDistanceFromStartKm);
+    });
+  });
+
+  it("Vík and Borgarnes keep fully independent caches — stale/fallback Vík data never appears in a Borgarnes request", async () => {
+    let callCount = 0;
+    global.fetch = vi.fn().mockImplementation((url) => {
+      if (String(url).includes("faerdpunktar")) return Promise.resolve(okJsonResponse([]));
+      callCount += 1;
+      if (callCount === 1) return Promise.resolve(okJsonResponse(WINTER_ROUTE_IDBUTUR_LIST.map(validSegmentRow)));
+      return Promise.resolve({ ok: false, status: 500, text: async () => "" });
+    });
+    delete process.env.OPEN_METEO_API_KEY;
+
+    const vikRes = makeRes();
+    await handler(makeReq(), vikRes);
+    expect(vikRes.body.routeId).toBe("raudavatn-vik");
+    expect(vikRes.body.roadMeta.segmentsAvailable).toBe(true);
+
+    const borgarnesRes = makeRes();
+    await handler(makeReq("GET", { routeId: "raudavatn-borgarnes" }), borgarnesRes);
+    expect(borgarnesRes.body.routeId).toBe("raudavatn-borgarnes");
+    // Borgarnes's own first fetch failed (no prior cache entry for it) —
+    // it must never be served Vík's successful cached segment rows.
+    expect(borgarnesRes.body.roadMeta.segmentsAvailable).toBe(false);
   });
 });

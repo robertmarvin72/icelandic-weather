@@ -91,6 +91,8 @@ function makeForecastPoint(id, label, overrides = {}) {
 
 function basePayload() {
   return {
+    routeId: "raudavatn-vik",
+    expectedPointCount: 6,
     generatedAt: FIXED_NOW.toISOString(),
     segments: SEGMENT_DEFS.map((d) => makeSegment(d)),
     roadMeta: {
@@ -158,7 +160,10 @@ test.describe("WinterRoute (/winter-route) — Ticket #486 Round 2 (N3) real-bro
     await page.setViewportSize({ width: 1280, height: 900 });
     await gotoPage(page);
 
-    await expect(page.getByText("Rauðavatn–Vík", { exact: true })).toBeVisible();
+    // Ticket #491, V1 — h1 now comes from WINTER_ROUTE_OPTIONS' own nameIs
+    // (spaced en dash) — same text as the route <select>'s own option, so
+    // this must be a heading/role lookup, not plain getByText (ambiguous).
+    await expect(page.getByRole("heading", { level: 1, name: "Rauðavatn – Vík" })).toBeVisible();
     await expect(page.getByLabel("Áætlaður brottfarartími")).toBeVisible();
     for (const [, nameIs] of SEGMENT_DEFS) {
       await expect(page.getByText(nameIs, { exact: true }).first()).toBeVisible();
@@ -192,7 +197,7 @@ test.describe("WinterRoute (/winter-route) — Ticket #486 Round 2 (N3) real-bro
     await gotoPage(page);
 
     await expect(page.locator("html")).toHaveClass(/dark/);
-    await expect(page.getByText("Rauðavatn–Vík", { exact: true })).toBeVisible();
+    await expect(page.getByRole("heading", { level: 1, name: "Rauðavatn – Vík" })).toBeVisible();
     await page.screenshot({ path: "test-results/ticket-486/desktop-dark-is.png", fullPage: true });
   });
 

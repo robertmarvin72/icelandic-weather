@@ -120,6 +120,33 @@ describe("computeDepartureOption", () => {
   });
 });
 
+describe("Ticket #491 — expectedPointCount parameter (4-point Borgarnes route), default unchanged (6, Vík)", () => {
+  const FOUR_POINTS = [0, 0, 0, 0].map((d, i) => makePoint(`P${i + 1}`, d));
+
+  it("is available for a 4-point route when all 4 resolve with full coverage, passing expectedPointCount=4", () => {
+    const result = computeDepartureOption("2026-11-04T10:00", AVAILABLE_HOURS, FOUR_POINTS, 4);
+    expect(result.available).toBe(true);
+    expect(result.summary.maxGust.validCount).toBe(4);
+  });
+
+  it("a 4-point route is METRIC_GAP (not available) under the default expectedPointCount=6 — proves the default is real, not a no-op", () => {
+    const result = computeDepartureOption("2026-11-04T10:00", AVAILABLE_HOURS, FOUR_POINTS);
+    expect(result.available).toBe(false);
+    expect(result.reason).toBe(COMPARISON_UNAVAILABLE_REASON.METRIC_GAP);
+  });
+
+  it("omitting expectedPointCount for the original 6-point Vík points keeps the exact old behaviour", () => {
+    const result = computeDepartureOption("2026-11-04T10:00", AVAILABLE_HOURS, SIX_POINTS);
+    expect(result.available).toBe(true);
+    expect(result.summary.maxGust.validCount).toBe(6);
+  });
+
+  it("computeDepartureOptionSet threads expectedPointCount through to every option", () => {
+    const options = computeDepartureOptionSet("2026-11-04T10:00", AVAILABLE_HOURS, FOUR_POINTS, 4);
+    expect(options[1].available).toBe(true);
+  });
+});
+
 describe("computeDepartureOptionSet", () => {
   it("returns three options in fixed −2/0/+2 order, baseline available, others may legitimately be unavailable at the window edge", () => {
     const options = computeDepartureOptionSet("2026-11-04T10:00", AVAILABLE_HOURS, SIX_POINTS);

@@ -54,7 +54,13 @@ function rowIsClosed(fields) {
   );
 }
 
-export async function fetchRoadSegments(fetchOptions) {
+// Ticket #491 — `idButurList` is now a parameter (defaulting to the
+// unchanged Vík list) rather than a hardcoded module import, so the same
+// function serves any allowlisted route's own fixed IDBUTUR set without
+// ever mixing one route's rows into another's response (every existing
+// call site/test omits this argument and keeps getting Vík's 13 — no
+// behaviour change for Vík).
+export async function fetchRoadSegments(idButurList = WINTER_ROUTE_IDBUTUR_LIST, fetchOptions) {
   const result = await fetchJsonBounded(FAERD_URL, fetchOptions);
   if (!result.ok) return result;
   if (!Array.isArray(result.data)) return { ok: false, reason: "invalid_shape" };
@@ -69,7 +75,7 @@ export async function fetchRoadSegments(fetchOptions) {
     groups.get(id).push(row);
   }
 
-  const rows = WINTER_ROUTE_IDBUTUR_LIST.map((id) => {
+  const rows = idButurList.map((id) => {
     const group = groups.get(id);
     if (!group || group.length === 0) return { idButur: id, found: false };
 
@@ -108,12 +114,12 @@ export async function fetchRoadSegments(fetchOptions) {
   return { ok: true, rows, feedDagsKeyrtUt };
 }
 
-export async function fetchRoadPoints(fetchOptions) {
+export async function fetchRoadPoints(idButurList = WINTER_ROUTE_IDBUTUR_LIST, fetchOptions) {
   const result = await fetchJsonBounded(FAERDPUNKTAR_URL, fetchOptions);
   if (!result.ok) return result;
   if (!Array.isArray(result.data)) return { ok: false, reason: "invalid_shape" };
 
-  const idSet = new Set(WINTER_ROUTE_IDBUTUR_LIST);
+  const idSet = new Set(idButurList);
   const points = [];
   for (const row of result.data) {
     const idButur = normalizeIdButur(row?.IdButur);

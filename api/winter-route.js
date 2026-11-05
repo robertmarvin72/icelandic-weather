@@ -1,8 +1,14 @@
 // api/winter-route.js
 //
 // Ticket #486 — Rauðavatn–Vík winter road + forecast data endpoint. GET
-// only, no query parameters are read (all are ignored, per S3a) — the
-// route always returns the same fixed 13 segments and 6 forecast points.
+// only. Ticket #491, B2: `routeId` is now the one query parameter this
+// handler reads (resolveRouteId, routes.js) — every OTHER query value
+// stays ignored, same as #486's original "no query parameters are read"
+// rule (S3a), deliberately widened only for this one allowlisted
+// parameter, never for caller-supplied hosts/coordinates/route search.
+// Missing `routeId` still returns the original fixed Rauðavatn–Vík 13
+// segments/6 forecast points, byte-for-byte the same default behaviour as
+// before this ticket.
 //
 // Three independent upstream calls: the Vegagerðin segment feed, the
 // Vegagerðin point feed, and one six-point Open-Meteo forecast call. Each
@@ -23,7 +29,7 @@
 import { getRoadData, getForecastData } from "./_lib/winterRoute/cache.js";
 import { fetchRoadSegments, fetchRoadPoints } from "./_lib/winterRoute/roadFetch.js";
 import { fetchWinterRouteForecast } from "./_lib/winterRoute/forecastFetch.js";
-import { WINTER_ROUTE_SEGMENTS, WINTER_ROUTE_FORECAST_POINTS } from "./_lib/winterRoute/segments.js";
+import { resolveRouteId } from "./_lib/winterRoute/routes.js";
 import {
   classifySegment,
   categorizePointAstand,
@@ -36,10 +42,10 @@ import { exportFreshness, segmentRegistrationFreshness, pointNoticeStatus } from
 
 const UPSTREAM_FETCH_OPTIONS = { timeoutMs: 15000, maxBytes: 2 * 1024 * 1024 };
 
-async function fetchCombinedRoadData() {
+async function fetchCombinedRoadData(idButurList) {
   const [segments, points] = await Promise.all([
-    fetchRoadSegments(UPSTREAM_FETCH_OPTIONS),
-    fetchRoadPoints(UPSTREAM_FETCH_OPTIONS),
+    fetchRoadSegments(idButurList, UPSTREAM_FETCH_OPTIONS),
+    fetchRoadPoints(idButurList, UPSTREAM_FETCH_OPTIONS),
   ]);
 
   if (!segments.ok && !points.ok) {
@@ -145,12 +151,12 @@ function buildNoticePayload(notice) {
   };
 }
 
-function buildForecastPayload(forecastResult) {
+function buildForecastPayload(forecastResult, forecastPoints) {
   if (!forecastResult.ok) {
     return { available: false, reason: forecastResult.reason, points: [] };
   }
 
-  const points = WINTER_ROUTE_FORECAST_POINTS.map((def, i) => {
+  const points = forecastPoints.map((def, i) => {
     const validated = forecastResult.points[i];
     if (!validated || !validated.ok) {
       return {
@@ -198,20 +204,41 @@ export default async function handler(req, res) {
     if (req.method === "OPTIONS") return res.status(200).end();
     if (req.method !== "GET") return res.status(405).json({ error: "method_not_allowed" });
 
+    // Ticket #491, B2 — the only query parameter ever read. Missing (incl.
+    // `req.query` itself being undefined, as in every pre-existing test
+    // mock) resolves to the unchanged default Vík route; anything not an
+    // own key of the allowlist (empty string, a repeated-param array,
+    // `__proto__`/`constructor`/`toString`, any unknown string) is a 400,
+    // never echoed back. Every OTHER query value stays ignored (S3a).
+    const routeResolution = resolveRouteId(req.query?.routeId);
+    if (!routeResolution.ok) {
+      res.setHeader("Cache-Control", "no-store");
+      return res.status(400).json({ error: routeResolution.reason });
+    }
+    const { routeId, route } = routeResolution;
+
     const now = new Date();
 
+    // B4 — each routeId gets its own independent bounded cache pair
+    // (cache.js), so one route's fallback/partial/stale data can never
+    // surface in the other route's response.
     const [roadData, forecastResult] = await Promise.all([
-      getRoadData(fetchCombinedRoadData),
-      getForecastData(() => fetchWinterRouteForecast({ now, fetchOptions: UPSTREAM_FETCH_OPTIONS })),
+      getRoadData(() => fetchCombinedRoadData(route.idButurList), { routeId }),
+      getForecastData(
+        () => fetchWinterRouteForecast({ now, fetchOptions: UPSTREAM_FETCH_OPTIONS, forecastPoints: route.forecastPoints }),
+        { routeId }
+      ),
     ]);
 
     const pointsFeedUnavailableOrStale = computePointsFeedUnavailableOrStale(roadData.ok ? roadData.points : null, now);
 
-    const segments = WINTER_ROUTE_SEGMENTS.map((def) =>
+    const segments = route.segments.map((def) =>
       buildSegmentPayload(def, roadData.ok ? roadData : null, now, pointsFeedUnavailableOrStale)
     );
 
     return res.status(200).json({
+      routeId,
+      expectedPointCount: route.expectedPointCount,
       generatedAt: now.toISOString(),
       segments,
       roadMeta: {
@@ -222,7 +249,7 @@ export default async function handler(req, res) {
         pointsAvailable: !!roadData?.points?.ok,
         pointsFeedUnavailableOrStale,
       },
-      forecast: buildForecastPayload(forecastResult),
+      forecast: buildForecastPayload(forecastResult, route.forecastPoints),
     });
   } catch {
     // Never the raw error/message/stack — a fetch-path failure could embed

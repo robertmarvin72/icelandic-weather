@@ -116,3 +116,17 @@ R1 og R2 eru bæði útfærð eins og approved-prompt-v2.md krafðist. Rökfræ�
 Sjálfstæð tilraun `npx vitest run src/pages/WinterRoute.test.jsx src/lib/winterRouteComparison.test.js` stöðvaðist áður en próf keyrðu vegna sandbox-temp EPERM rename; núll próf, ekki eigin PASS-keyrsla. CC 81/81 markviss próf, lint og 12/12 Chromium e2e eru CC-eignuð; Jonesy 50 próf/sjálfstæð fuzz-próf úr umferð 2 eru Jonesy-eignuð. Fyrra build/full-suite úr umferð 1 ekki endurkeyrt hér.
 
 CURRENT → CLOSED fyrir staðbundna innleiðingar-/review-afhendingu. **Production NOT_TESTED og GitHub #490 má ekki loka fyrr en eigandastýrð production-staðfesting eftir yfirfarna birtingu liggur fyrir.** Eigandi sér um commit/push og birtingarákvörðun, síðan afmarkaða staðfestingu þriggja sæta/ótiltækileika, tímavals, kortasamstillingar og núverandi færðar. Engin undanþága frá skilyrði miðans, engin ný rannsókn og engin sjálfvirk birting. Enginn forritskóði/raunnet/lykill/commit/push/GitHub/deploy í þessu lokamati.
+
+## Production-athugun — 2026-11-04
+
+Eigandi segir commit/push/birting búin. Nýr IAB-flipi á https://www.eltumvedrid.is/winter-route, síðan ný síðuhleðsla með ?verify=490-20261104 til að forðast endurnotkun sömu síðuslóðar. Fullt AX-tré eftir gagnasókn í báðum tilvikum sýnir #489 samantekt, brottfararselect, sex komutímaspákort og 13 færðarkafla; sóknartími 16:50 UTC. #490 þriggja sæta samanburður/takkar sjást ekki á hvorri síðu. **Production #490 ekki staðfest í þessari athugun.** Birt commit/cache/CDN/PWA orsök UNKNOWN, ekki ályktað að kóði sé rangur eða að birting hafi ekki átt sér stað. Engin viðgerð, bein veitubeiðni, lykilaðgangur eða GitHub-lokun. Innleiðingar-PASS óbreytt; lokaskref bíður sýnilegrar nýrrar útgáfu.
+
+## Production-staðfesting eftir lok build — 2026-11-04
+
+**PASS.** Eigandi skýrði að fyrri athugun var á meðan build stóð yfir og tilkynnti nú nýja útgáfu tilbúna. Nýr IAB-flipi á https://www.eltumvedrid.is/winter-route?verify=490-final sýnir þriggja sæta samanburð. Fyrri athugun á eldri birtingu er ekki núverandi niðurstaða; enginn kóðagalli ályktaður.
+
+Raungögn, engir stubbar: sóknartími 2026-11-04 16:51 UTC. Viðmið 17:00, fyrr 15:00 sýnt disabled með skýrri ástæðu liðinn/utan glugga, síðar 19:00 tiltækt. Smellt á 19:00: viðmið varð 19:00, fyrr 17:00 og síðar 21:00; select/kort/#489-samantekt uppfærðust samhljóða og fókus fór á nýtt viðmið. Valkosturinn hafði áður sýnt hviður 12,7 m/s Hvolsvöllur–Skógar kl.21, úrkomu 0,3 mm Skógar–Vík kl.22, hita 3,8°C P1 kl.20; sömu gildi/kaflar/gildistímar birtust í núverandi samantekt og kortum eftir val. Öll sex kort voru sýnileg; færðarlisti/talning 4 óbreytt og skýr aðgreining núverandi færðar frá framtíðarspá sýnileg.
+
+Lyklaborð: ör niður á select færði 19→20; önnur ör niður án endurfókusar færði 20→21. AX-fókus var áfram select eftir bæði skref; samantekt/kort/samanburður endurmiðjuðust. Við 21:00 var hámarkshviða 12,0 m/s við P2 kl.22 (jafnt gildi við P5, fyrsti punktur valinn), hámarksúrkoma 1,2 mm P5 kl.23 og lágmarkshiti 3,7°C P1 kl.22, í samræmi við birt kort. UTC-dagamót sýndust rétt á P6 kl.00 næsta dag. Birt commit-id ekki tiltækt í UI; útgáfuauðkenni óstaðfest. Engin villuástand þvinguð á production; það er stutt af fyrirliggjandi stubbuðum prófum.
+
+Jonesy-review, Ripley innleiðingar-PASS og afmörkuð production-staðfesting liggja nú fyrir. GitHub #490 má loka eftir eigandafyrirmælum; ekki lokað sjálfkrafa. Enginn lykill lesinn, bein veitubeiðni, kóðabreyting, commit/push/deploy hér.

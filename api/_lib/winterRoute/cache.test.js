@@ -104,3 +104,60 @@ describe("getRoadData — TTL, single-flight coalescing, stale fallback", () => 
     expect(forecast.value).toBe("forecast");
   });
 });
+
+describe("Ticket #491, B4 — per-routeId bucket isolation", () => {
+  it("two different routeIds never share a cache entry — fetching one never serves the other's value", async () => {
+    let clock = 0;
+    const now = () => clock;
+    const vikFetcher = vi.fn().mockResolvedValue({ ok: true, value: "vik-data" });
+    const borgarnesFetcher = vi.fn().mockResolvedValue({ ok: true, value: "borgarnes-data" });
+
+    const vik = await getRoadData(vikFetcher, { now, routeId: "raudavatn-vik" });
+    const borgarnes = await getRoadData(borgarnesFetcher, { now, routeId: "raudavatn-borgarnes" });
+
+    expect(vik.value).toBe("vik-data");
+    expect(borgarnes.value).toBe("borgarnes-data");
+    expect(vikFetcher).toHaveBeenCalledTimes(1);
+    expect(borgarnesFetcher).toHaveBeenCalledTimes(1);
+
+    // Still within TTL: re-reading each route serves ITS OWN cached value,
+    // never the other route's — no cross-route fetcher call either.
+    const vikAgain = await getRoadData(vikFetcher, { now, routeId: "raudavatn-vik" });
+    const borgarnesAgain = await getRoadData(borgarnesFetcher, { now, routeId: "raudavatn-borgarnes" });
+    expect(vikAgain.value).toBe("vik-data");
+    expect(borgarnesAgain.value).toBe("borgarnes-data");
+    expect(vikFetcher).toHaveBeenCalledTimes(1);
+    expect(borgarnesFetcher).toHaveBeenCalledTimes(1);
+  });
+
+  it("a route-specific stale fallback never leaks into the other route's fresh request", async () => {
+    let clock = 0;
+    const now = () => clock;
+    const vikFetcher = vi
+      .fn()
+      .mockResolvedValueOnce({ ok: true, value: "vik-A" })
+      .mockResolvedValueOnce({ ok: false, reason: "upstream_error" });
+    const borgarnesFetcher = vi.fn().mockResolvedValue({ ok: true, value: "borgarnes-fresh" });
+
+    await getRoadData(vikFetcher, { now, routeId: "raudavatn-vik" });
+    clock += ROAD_TTL_MS + 1000;
+    const vikStale = await getRoadData(vikFetcher, { now, routeId: "raudavatn-vik" });
+    const borgarnesFresh = await getRoadData(borgarnesFetcher, { now, routeId: "raudavatn-borgarnes" });
+
+    expect(vikStale.value).toBe("vik-A");
+    expect(vikStale.stale).toBe(true);
+    expect(borgarnesFresh.value).toBe("borgarnes-fresh");
+    expect(borgarnesFresh.stale).toBe(false);
+  });
+
+  it("an explicit routeId and the implicit no-routeId default never share a bucket", async () => {
+    const defaultFetcher = vi.fn().mockResolvedValue({ ok: true, value: "default-no-routeid" });
+    const explicitFetcher = vi.fn().mockResolvedValue({ ok: true, value: "explicit-vik" });
+
+    const noRouteId = await getRoadData(defaultFetcher);
+    const explicitVik = await getRoadData(explicitFetcher, { routeId: "raudavatn-vik" });
+
+    expect(noRouteId.value).toBe("default-no-routeid");
+    expect(explicitVik.value).toBe("explicit-vik");
+  });
+});

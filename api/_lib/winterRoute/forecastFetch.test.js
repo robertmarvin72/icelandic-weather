@@ -1,7 +1,14 @@
 // @vitest-environment node
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { resolveWinterRouteForecastAuth, computeForecastWindow, fetchWinterRouteForecast } from "./forecastFetch.js";
+import {
+  resolveWinterRouteForecastAuth,
+  computeForecastWindow,
+  fetchWinterRouteForecast,
+  buildForecastUrl,
+} from "./forecastFetch.js";
 import { OPEN_METEO_CUSTOMER_HOST } from "../openMeteoAuth.js";
+import { WINTER_ROUTE_FORECAST_POINTS } from "./segments.js";
+import { BORGARNES_FORECAST_POINTS } from "./routes.js";
 
 describe("resolveWinterRouteForecastAuth — key missing stops forecast sourcing in every environment (S6a)", () => {
   it("is available with a real key, regardless of VERCEL_ENV", () => {
@@ -45,6 +52,29 @@ describe("fetchWinterRouteForecast — zero fetch when key missing", () => {
     await fetchWinterRouteForecast({ env: { OPEN_METEO_API_KEY: "", VERCEL_ENV: "development" } });
     await fetchWinterRouteForecast({ env: { OPEN_METEO_API_KEY: "", VERCEL_ENV: undefined } });
     expect(fetchSpy).not.toHaveBeenCalled();
+  });
+});
+
+describe("Ticket #491 — buildForecastUrl accepts an explicit forecastPoints (Borgarnes), default unchanged (Vík)", () => {
+  it("uses the passed forecastPoints' own lat/lon, not the module-level Vík default", () => {
+    const url = new URL(
+      buildForecastUrl({
+        host: "https://example.test",
+        apiKey: "k",
+        startHour: "2026-11-04T15:00",
+        endHour: "2026-11-05T14:00",
+        forecastPoints: BORGARNES_FORECAST_POINTS,
+      })
+    );
+    expect(url.searchParams.get("latitude")).toBe(BORGARNES_FORECAST_POINTS.map((p) => p.lat).join(","));
+    expect(url.searchParams.get("longitude")).toBe(BORGARNES_FORECAST_POINTS.map((p) => p.lon).join(","));
+  });
+
+  it("omitting forecastPoints keeps the original Vík six-point default", () => {
+    const url = new URL(
+      buildForecastUrl({ host: "https://example.test", apiKey: "k", startHour: "2026-11-04T15:00", endHour: "2026-11-05T14:00" })
+    );
+    expect(url.searchParams.get("latitude")).toBe(WINTER_ROUTE_FORECAST_POINTS.map((p) => p.lat).join(","));
   });
 });
 

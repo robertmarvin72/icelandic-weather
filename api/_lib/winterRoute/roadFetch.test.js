@@ -124,6 +124,38 @@ describe("fetchRoadSegments — fixed 13 IDBUTUR, in fixed order, regardless of 
   });
 });
 
+describe("Ticket #491 — fetchRoadSegments/fetchRoadPoints accept an explicit idButurList (Borgarnes), default unchanged (Vík)", () => {
+  const BORGARNES_IDS = [914020037, 903020037, 903030037, 904690037, 904000037, 904010037, 804020037, 904040037];
+
+  it("fetchRoadSegments returns exactly the passed list, in that order, ignoring unrelated feed rows (incl. Vík's own IDs)", async () => {
+    const rows = [...BORGARNES_IDS].reverse().map((id) => ({ IdButur: id, AstandYfirbord: "GREIDFAERT" }));
+    rows.push({ IdButur: WINTER_ROUTE_IDBUTUR_LIST[0], AstandYfirbord: "LOKAD" });
+    global.fetch.mockResolvedValue(jsonResponse(rows));
+
+    const result = await fetchRoadSegments(BORGARNES_IDS);
+    expect(result.ok).toBe(true);
+    expect(result.rows.map((r) => r.idButur)).toEqual(BORGARNES_IDS);
+  });
+
+  it("fetchRoadPoints filters to the passed list only, dropping Vík's own IDs", async () => {
+    global.fetch.mockResolvedValue(
+      jsonResponse([
+        { IdButur: BORGARNES_IDS[0], IdPunktur: 1, Astand: "VEGAVINNA" },
+        { IdButur: WINTER_ROUTE_IDBUTUR_LIST[0], IdPunktur: 2, Astand: "VEGAVINNA" },
+      ])
+    );
+    const result = await fetchRoadPoints(BORGARNES_IDS);
+    expect(result.points).toHaveLength(1);
+    expect(result.points[0].idButur).toBe(BORGARNES_IDS[0]);
+  });
+
+  it("omitting idButurList keeps the original Vík-only default behaviour", async () => {
+    global.fetch.mockResolvedValue(jsonResponse(WINTER_ROUTE_IDBUTUR_LIST.map((id) => ({ IdButur: id, AstandYfirbord: "GREIDFAERT" }))));
+    const result = await fetchRoadSegments();
+    expect(result.rows.map((r) => r.idButur)).toEqual(WINTER_ROUTE_IDBUTUR_LIST);
+  });
+});
+
 describe("fetchRoadPoints — filters to our 13 IDBUTUR, never carries Aths/AthsEn", () => {
   it("drops points on segments outside our corridor", async () => {
     global.fetch.mockResolvedValue(
