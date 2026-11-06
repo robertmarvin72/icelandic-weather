@@ -6,11 +6,20 @@
 // `<select>` on this same page (Rauðavatn–Vík stays the default/unchanged
 // entrypoint) — fetches /api/winter-route (optionally `?routeId=...`) once
 // per selected route, never once-per-mount; see the routeId effect below.
-// Hour selection is purely local (no new network request per selection,
-// see "Spá" in the approved prompt), and the list of selectable hours is
-// re-filtered every time the clock ticks past one (checked once a minute)
-// without any refetch, so past hours simply drop out of the picker on
-// their own.
+// Hour selection is purely local (no new network request per selection),
+// and the list of selectable hours is re-filtered every time the clock
+// ticks past one (checked once a minute) without any refetch, so past
+// hours simply drop out of the picker on their own.
+//
+// Ticket #493 — replaced the former per-point ETA model (a distance +
+// assumed-speed estimate deciding which fetched hourly slot each point's
+// own card showed, plus a ±2h departure-time comparison) with ONE shared
+// selected forecast hour (`effectiveHour`, computed at render time below)
+// looked up directly in every point's own `hours` array via an exact
+// `indexOf` — no distance, no ETA, no per-point time, no arrival-time
+// display. `winterRouteEta.js`/`winterRouteComparison.js` and their tests
+// were removed entirely (zero remaining consumers once ForecastCard/
+// RouteSummary switched to the direct lookup) rather than left dead.
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Helmet } from "react-helmet-async";
@@ -24,21 +33,11 @@ import {
   SEGMENT_CATEGORY_LABEL_KEY,
   formatDecimal,
   formatHourLabel,
-  formatInstantHHMM,
   formatTimestamp,
   hourOfDayFromHourString,
 } from "../lib/winterRoutePresentation";
-import { resolvePointAtDeparture } from "../lib/winterRouteEta";
 import { computeWeatherExtremaSummary, computeActiveNoticeSegmentCount } from "../lib/winterRouteSummary";
-import { computeDepartureOptionSet, COMPARISON_UNAVAILABLE_REASON } from "../lib/winterRouteComparison";
 import { WINTER_ROUTE_OPTIONS, DEFAULT_WINTER_ROUTE_ID, expectedPointCountForRoute } from "../lib/winterRouteRoutes";
-
-const COMPARISON_REASON_KEY = {
-  [COMPARISON_UNAVAILABLE_REASON.NOT_UPCOMING]: "winterRouteComparisonReasonNotUpcoming",
-  [COMPARISON_UNAVAILABLE_REASON.ARRIVAL_OUTSIDE_WINDOW]: "winterRouteComparisonReasonArrivalOutsideWindow",
-  [COMPARISON_UNAVAILABLE_REASON.POINT_UNAVAILABLE]: "winterRouteComparisonReasonPointUnavailable",
-  [COMPARISON_UNAVAILABLE_REASON.METRIC_GAP]: "winterRouteComparisonReasonMetricGap",
-};
 
 const VEGAGERDIN_LINKS = {
   is: "https://www.vegagerdin.is/upplysingar-og-utgafa/gagnaveita-vegagerdarinnar/",
@@ -140,7 +139,7 @@ function SegmentRow({ segment, t, lang }) {
   );
 }
 
-function ForecastCard({ point, departureHour, t, lang }) {
+function ForecastCard({ point, effectiveHour, t, lang }) {
   const label = lang === "en" ? point.labelEn : point.labelIs;
 
   if (!point.available) {
@@ -152,22 +151,20 @@ function ForecastCard({ point, departureHour, t, lang }) {
     );
   }
 
-  // ETA follow-up (#486): each point now resolves its OWN forecast hour
-  // from the shared departure time + its own approximate distance from
-  // the corridor start — no longer a single shared hourIndex across all
-  // six cards. #489: resolution itself now lives in the shared
-  // resolvePointAtDeparture() so the route-level summary reads the exact
-  // same per-point time as this card — never a second parallel
-  // computation. An unresolvable/out-of-window arrival is still an
-  // explicit "not available" (hasHour: false), never a silent wrap.
-  const { rawArrivalMs, forecastHour, hourIndex, hasHour } = resolvePointAtDeparture(point, departureHour);
+  // Ticket #493 — exact lookup of the ONE shared selected forecast hour in
+  // this point's own `hours` array. No distance, no ETA, no per-point time;
+  // a hand-picked hour not present in this point's own `hours` (shouldn't
+  // happen per the backend's own contract, but not assumed) is the same
+  // explicit "not available" outcome as `effectiveHour` itself being null.
+  const hourIndex = effectiveHour != null ? point.hours.indexOf(effectiveHour) : -1;
+  const hasHour = hourIndex >= 0;
 
   const temp = hasHour ? point.series.temperature_2m[hourIndex] : null;
   const wind = hasHour ? point.series.wind_speed_10m[hourIndex] : null;
   const gust = hasHour ? point.series.wind_gusts_10m[hourIndex] : null;
   const precip = hasHour ? point.series.precipitation[hourIndex] : null;
   const code = hasHour ? point.series.weather_code[hourIndex] : null;
-  // N1: derive day/night from the resolved UTC hour's own "HH" digits
+  // N1: derive day/night from the selected UTC hour's own "HH" digits
   // (the fixed "YYYY-MM-DDTHH:00" string, never a Date/local-timezone
   // read) using the same isDaytimeHour() convention ForecastTable/
   // HourlyForecastModal already use — no new sunrise/sunset lookup.
@@ -185,18 +182,12 @@ function ForecastCard({ point, departureHour, t, lang }) {
         )}
       </div>
 
-      {rawArrivalMs != null ? (
-        <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">
-          {t("winterRouteEstimatedArrival").replace("{time}", formatInstantHHMM(rawArrivalMs))}
-        </p>
-      ) : null}
-
       {!hasHour ? (
         <p className="mt-2 text-sm text-slate-500 dark:text-slate-400">{t("winterRouteForecastNotAvailableAtComputedTime")}</p>
       ) : (
         <>
           <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">
-            {t("winterRouteValidFor").replace("{time}", formatHourLabel(forecastHour))}
+            {t("winterRouteValidFor").replace("{time}", formatHourLabel(effectiveHour))}
           </p>
           <dl className="mt-2 grid grid-cols-2 gap-1 text-sm text-slate-700 dark:text-slate-200">
             <dt className="text-slate-500 dark:text-slate-400">{t("winterRouteTemperature")}</dt>
@@ -240,20 +231,20 @@ function SummaryMetricLine({ t, lang, metric, valueKey, missingKey, expectedPoin
   return <p className="text-sm text-slate-600 dark:text-slate-300">{line}</p>;
 }
 
-// #489 — route-level summary, positioned above the six cards and the road
-// list. Weather extrema reuse the exact same per-point ETA resolution the
-// cards use (resolvePointAtDeparture, via computeWeatherExtremaSummary —
-// never a second ETA model); the notice count is independent of the
-// selected departure time entirely (point-notice status is computed
-// server-side from "now"). No positive styling anywhere here (S1) — the
-// notice count never reads as a green/safe indicator, including when it is
-// 0, and the fixed scope disclaimer is always shown regardless of the
-// count's value.
-function RouteSummary({ data, selectedHour, t, lang }) {
+// #489 — route-level summary, positioned above the forecast cards and the
+// road list. Ticket #493: weather extrema read the exact same ONE shared
+// `effectiveHour` the cards use (computeWeatherExtremaSummary, an exact
+// per-point lookup — no ETA model, never a second time per point); the
+// notice count is independent of the selected hour entirely (point-notice
+// status is computed server-side from "now"). No positive styling anywhere
+// here (S1) — the notice count never reads as a green/safe indicator,
+// including when it is 0, and the fixed scope disclaimer is always shown
+// regardless of the count's value.
+function RouteSummary({ data, effectiveHour, t, lang }) {
   const weatherSummary = useMemo(() => {
     const points = data.forecast?.available ? data.forecast.points : [];
-    return computeWeatherExtremaSummary(points, selectedHour);
-  }, [data.forecast, selectedHour]);
+    return computeWeatherExtremaSummary(points, effectiveHour);
+  }, [data.forecast, effectiveHour]);
   const noticeSummary = computeActiveNoticeSegmentCount(data.segments, data.roadMeta);
   const expectedPointCount = data.expectedPointCount;
 
@@ -310,153 +301,6 @@ function RouteSummary({ data, selectedHour, t, lang }) {
         {t("winterRouteAcquiredAt").replace("{time}", formatTimestamp(data.generatedAt))}
       </p>
     </section>
-  );
-}
-
-// #490 — one of the three departure options (−2h / selected / +2h). The
-// baseline (`isBaseline`) is never a button (selecting the already-selected
-// time is a no-op) — it is the stable, programmatically-focusable node
-// (`tabIndex={-1}`) S3 requires after a user-driven selection. An
-// unavailable option is still a real `<button disabled>` (not a plain
-// `<div>`) with its reason rendered as visible text, never only a `title`
-// attribute — satisfies S3's keyboard/screen-reader requirement directly.
-function DepartureOptionCard({ option, label, isBaseline, baselineRef, onSelect, t, lang, expectedPointCount }) {
-  const timeLabel = option.departureHour ? formatHourLabel(option.departureHour) : "—";
-  const reasonKey = option.reason ? COMPARISON_REASON_KEY[option.reason] : null;
-  const reasonText = reasonKey ? t(reasonKey).replace(/\{count\}/g, String(expectedPointCount)) : null;
-
-  const body = (
-    <>
-      <div className="flex items-center justify-between gap-2">
-        <span className="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
-          {label}
-        </span>
-        {isBaseline ? (
-          <span className="rounded-full bg-sky-100 px-2 py-0.5 text-xs font-semibold text-sky-800 dark:bg-sky-900/40 dark:text-sky-200">
-            {t("winterRouteComparisonSelectedBadge")}
-          </span>
-        ) : null}
-      </div>
-      <p className="mt-1 text-sm font-medium text-slate-800 dark:text-slate-100">{timeLabel} UTC</p>
-
-      {!option.available ? (
-        <p className="mt-2 text-xs text-slate-500 dark:text-slate-400">{reasonText}</p>
-      ) : (
-        <div className="mt-2 space-y-1">
-          <SummaryMetricLine
-            t={t}
-            lang={lang}
-            metric={option.summary.maxGust}
-            valueKey="winterRouteSummaryGust"
-            missingKey="winterRouteSummaryGustMissing"
-            expectedPointCount={expectedPointCount}
-          />
-          <SummaryMetricLine
-            t={t}
-            lang={lang}
-            metric={option.summary.maxPrecip}
-            valueKey="winterRouteSummaryPrecip"
-            missingKey="winterRouteSummaryPrecipMissing"
-            expectedPointCount={expectedPointCount}
-          />
-          <SummaryMetricLine
-            t={t}
-            lang={lang}
-            metric={option.summary.minTemp}
-            valueKey="winterRouteSummaryMinTemp"
-            missingKey="winterRouteSummaryMinTempMissing"
-            expectedPointCount={expectedPointCount}
-          />
-        </div>
-      )}
-    </>
-  );
-
-  const sharedClass =
-    "rounded-xl border border-slate-200/70 bg-white/70 p-3 text-left dark:border-slate-800/70 dark:bg-slate-900/70";
-
-  if (isBaseline) {
-    return (
-      <div ref={baselineRef} tabIndex={-1} className={`${sharedClass} outline-none`}>
-        {body}
-      </div>
-    );
-  }
-
-  if (!option.available) {
-    return (
-      <button type="button" disabled className={`${sharedClass} w-full cursor-not-allowed opacity-80`}>
-        {body}
-      </button>
-    );
-  }
-
-  return (
-    <button
-      type="button"
-      onClick={() => onSelect(option.departureHour)}
-      className={`${sharedClass} w-full focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500`}
-    >
-      {body}
-      <span className="mt-2 inline-block text-xs font-medium text-sky-700 dark:text-sky-300">
-        {t("winterRouteComparisonViewButton")}
-      </span>
-    </button>
-  );
-}
-
-// #490 — small departure-time comparison area, rendered next to the
-// existing departure picker/#489 summary. Gated by the caller (S2): only
-// rendered once `data.forecast.available` and `selectedHour` both hold, so
-// it never flashes three identical "unavailable" slots on first load or
-// when the forecast itself is down — the page's existing loading/
-// unavailable states already cover those cases. Each option independently
-// reuses #489's own extrema computation (never a shared/new ETA model);
-// road conditions/closures/notice count are explicitly NOT repeated here —
-// one shared "latest status" note instead (S6).
-function RouteComparison({ data, selectedHour, availableHours, onSelect, baselineRef, t, lang }) {
-  const expectedPointCount = data.expectedPointCount;
-  const options = useMemo(() => {
-    const points = data.forecast?.available ? data.forecast.points : [];
-    return computeDepartureOptionSet(selectedHour, availableHours, points, expectedPointCount);
-  }, [data.forecast, selectedHour, availableHours, expectedPointCount]);
-
-  const labelFor = (offsetHours) => {
-    if (offsetHours === -2) return t("winterRouteComparisonEarlierLabel");
-    if (offsetHours === 2) return t("winterRouteComparisonLaterLabel");
-    return t("winterRouteComparisonBaselineLabel");
-  };
-
-  return (
-    <div className="mt-4 border-t border-slate-200/60 pt-3 dark:border-slate-800/60">
-      <h3 className="text-sm font-semibold text-slate-700 dark:text-slate-200">{t("winterRouteComparisonHeading")}</h3>
-      <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">{t("winterRouteComparisonRoadNote")}</p>
-
-      {data.forecast.stale ? (
-        <p className="mt-1 text-xs text-amber-600 dark:text-amber-300">
-          {t("winterRouteForecastStaleServed").replace(
-            "{minutes}",
-            String(Math.round((data.forecast.cacheAgeMs || 0) / 60000))
-          )}
-        </p>
-      ) : null}
-
-      <div className="mt-2 grid grid-cols-1 gap-3 sm:grid-cols-3">
-        {options.map((option) => (
-          <DepartureOptionCard
-            key={option.offsetHours}
-            option={option}
-            label={labelFor(option.offsetHours)}
-            isBaseline={option.offsetHours === 0}
-            baselineRef={option.offsetHours === 0 ? baselineRef : null}
-            onSelect={onSelect}
-            t={t}
-            lang={lang}
-            expectedPointCount={expectedPointCount}
-          />
-        ))}
-      </div>
-    </div>
   );
 }
 
@@ -602,38 +446,18 @@ export default function WinterRoute() {
     }
   }, [availableHours, selectedHour]);
 
-  // #490 (S3, R1) — focus/announcement must only follow a comparison-button
-  // selection, never the existing hour <select> (native keyboard behavior
-  // fires `change` on every ArrowDown while the select is open; moving
-  // focus away from it on each change breaks stepping through hours with
-  // the keyboard — see result-review.md R1), and never the auto-select-
-  // first-hour effect above or the once-a-minute availableHours re-filter.
-  // The select's own onChange calls `setSelectedHour` directly (below) and
-  // never touches `userInitiatedRef`, so it keeps native focus/announcement
-  // behavior. `userInitiatedRef` is set synchronously right before the
-  // state update that caused it, and consumed (reset to false) the first
-  // time this effect runs afterward — so an unrelated re-render (e.g. a
-  // language change re-creating `t`) can never accidentally replay the
-  // focus move.
-  const userInitiatedRef = useRef(false);
-  const comparisonBaselineRef = useRef(null);
-  const [comparisonAnnouncement, setComparisonAnnouncement] = useState("");
-
-  const handleUserSelectHour = (hour) => {
-    userInitiatedRef.current = true;
-    setSelectedHour(hour);
-  };
-
-  useEffect(() => {
-    if (!userInitiatedRef.current) return;
-    userInitiatedRef.current = false;
-    if (comparisonBaselineRef.current) comparisonBaselineRef.current.focus();
-    if (selectedHour) {
-      setComparisonAnnouncement(
-        t("winterRouteComparisonSelectedAnnouncement").replace("{time}", formatHourLabel(selectedHour))
-      );
-    }
-  }, [selectedHour, t]);
+  // Ticket #493 — the one shared, valid selected forecast hour, computed
+  // fresh EVERY render (not via an effect): `selectedHour` only "counts"
+  // when it is still present in the CURRENT `availableHours` (same filter
+  // the hour `<select>` itself uses). This is what keeps an empty window, a
+  // selection that just expired (the once-a-minute `availableHours`
+  // re-filter above), or the first render right after a route switch whose
+  // new window doesn't contain the old selection from ever showing stale
+  // values for a time the picker itself calls unavailable — the
+  // reconciliation effect above still runs to pick a new valid hour, but
+  // `effectiveHour` is correct in the very same render pass regardless,
+  // one render before that effect would otherwise fire.
+  const effectiveHour = selectedHour && availableHours.includes(selectedHour) ? selectedHour : null;
 
   return (
     <>
@@ -676,10 +500,6 @@ export default function WinterRoute() {
             </select>
           </div>
 
-          {routeId !== DEFAULT_WINTER_ROUTE_ID ? (
-            <p className="mt-2 text-xs italic text-slate-500 dark:text-slate-400">{t("winterRouteEtaApproximationNote")}</p>
-          ) : null}
-
           {viewErrorKey ? (
             <p className="mt-6 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700 dark:border-red-900/50 dark:bg-red-950/30 dark:text-red-300">
               {t(viewErrorKey)}
@@ -688,7 +508,7 @@ export default function WinterRoute() {
 
           {view ? (
             <>
-              <RouteSummary data={view} selectedHour={selectedHour} t={t} lang={lang} />
+              <RouteSummary data={view} effectiveHour={effectiveHour} t={t} lang={lang} />
 
               <section className="mt-6">
                 <h2 className="text-lg font-semibold">
@@ -717,23 +537,12 @@ export default function WinterRoute() {
                       </select>
                     )}
 
-                    {/* #490 (S2): only once a baseline departure actually
-                        exists — never a flash of three "unavailable" slots
-                        on first load or when the forecast itself is down. */}
-                    {selectedHour ? (
-                      <RouteComparison
-                        data={view}
-                        selectedHour={selectedHour}
-                        availableHours={availableHours}
-                        onSelect={handleUserSelectHour}
-                        baselineRef={comparisonBaselineRef}
-                        t={t}
-                        lang={lang}
-                      />
-                    ) : null}
-                    <div aria-live="polite" className="sr-only">
-                      {comparisonAnnouncement}
-                    </div>
+                    {/* Ticket #493 — the one shared forecast hour applies to
+                        every point below; stated once here rather than
+                        repeated per card/metric line. */}
+                    <p className="mt-1 text-xs italic text-slate-500 dark:text-slate-400">
+                      {t("winterRouteSameForecastTimeNote")}
+                    </p>
                   </div>
                 ) : (
                   <p className="mt-2 text-sm text-slate-500 dark:text-slate-400">{t("winterRouteForecastUnavailable")}</p>
@@ -751,7 +560,7 @@ export default function WinterRoute() {
                 {view.forecast.available ? (
                   <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-3">
                     {view.forecast.points.map((point) => (
-                      <ForecastCard key={point.id} point={point} departureHour={selectedHour} t={t} lang={lang} />
+                      <ForecastCard key={point.id} point={point} effectiveHour={effectiveHour} t={t} lang={lang} />
                     ))}
                   </div>
                 ) : null}

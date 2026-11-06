@@ -1,58 +1,58 @@
-// #489 — route-level summary tests. Fixtures build the forecast points in
-// the same shape api/winter-route.js's buildForecastPayload() produces.
+// #489/#493 — route-level summary tests. Fixtures build the forecast points
+// in the same shape api/winter-route.js's buildForecastPayload() produces.
+// Ticket #493 — every point is read at the SAME shared `effectiveHour` (an
+// exact `point.hours.indexOf(effectiveHour)` lookup), never a per-point
+// distance/ETA-resolved hour — there is no `approxDistanceFromStartKm`
+// concept left in this module at all.
 import { describe, it, expect } from "vitest";
 import { computeWeatherExtremaSummary, computeActiveNoticeSegmentCount } from "./winterRouteSummary.js";
 
-const DEPARTURE = "2026-11-04T08:00";
-
-function hoursFrom(offset, count = 24) {
+function hoursFrom(startIso, count = 24) {
   return Array.from({ length: count }, (_, i) => {
-    const d = new Date(Date.parse(`${DEPARTURE}:00Z`) + (offset + i) * 3600000);
+    const d = new Date(Date.parse(startIso) + i * 3600000);
     const pad = (n) => String(n).padStart(2, "0");
     return `${d.getUTCFullYear()}-${pad(d.getUTCMonth() + 1)}-${pad(d.getUTCDate())}T${pad(d.getUTCHours())}:00`;
   });
 }
 
-// distanceKm chosen so each point resolves to a distinct, predictable hour
-// at 70 km/h: 0km -> +0h, 70km -> +1h, 140km -> +2h, etc.
-function makePoint(id, distanceKm, overrides = {}) {
-  const hours = hoursFrom(0, 6); // a short, deterministic 6-hour window
+const HOURS = hoursFrom("2026-11-04T08:00:00Z", 6); // a short, deterministic 6-hour window
+const EFFECTIVE_HOUR = HOURS[2]; // an arbitrary, non-first hour — nothing here should assume index 0
+
+function makePoint(id, overrides = {}) {
   return {
     id,
     labelIs: `Punktur ${id}`,
     labelEn: `Point ${id}`,
     nearIdButur: 1,
-    approxDistanceFromStartKm: distanceKm,
     available: true,
-    hours,
+    hours: HOURS,
     series: {
-      temperature_2m: hours.map(() => -5),
-      wind_speed_10m: hours.map(() => 1),
-      wind_gusts_10m: hours.map(() => 1),
-      precipitation: hours.map(() => 0),
-      weather_code: hours.map(() => 0),
+      temperature_2m: HOURS.map(() => -5),
+      wind_speed_10m: HOURS.map(() => 1),
+      wind_gusts_10m: HOURS.map(() => 1),
+      precipitation: HOURS.map(() => 0),
+      weather_code: HOURS.map(() => 0),
     },
     ...overrides,
   };
 }
 
 describe("computeWeatherExtremaSummary", () => {
-  it("picks the max gust/precip and min temp across six points, each at its OWN resolved hour", () => {
-    const p1 = makePoint("P1", 0);
-    p1.series.wind_gusts_10m[0] = 20; // hour index 0 (distance 0 -> +0h)
-    const p2 = makePoint("P2", 70);
-    p2.series.precipitation[1] = 5.5; // hour index 1 (distance 70 -> +1h)
-    const p3 = makePoint("P3", 140);
-    p3.series.temperature_2m[2] = -20; // hour index 2 (distance 140 -> +2h)
-    const p4 = makePoint("P4", 0);
-    const p5 = makePoint("P5", 0);
-    const p6 = makePoint("P6", 0);
+  it("picks the max gust/precip and min temp across six points, each read at the SAME shared effective hour", () => {
+    const p1 = makePoint("P1");
+    p1.series.wind_gusts_10m[2] = 20;
+    const p2 = makePoint("P2");
+    p2.series.precipitation[2] = 5.5;
+    const p3 = makePoint("P3");
+    p3.series.temperature_2m[2] = -20;
+    const points = [p1, p2, p3, makePoint("P4"), makePoint("P5"), makePoint("P6")];
 
-    const summary = computeWeatherExtremaSummary([p1, p2, p3, p4, p5, p6], DEPARTURE);
+    const summary = computeWeatherExtremaSummary(points, EFFECTIVE_HOUR);
 
     expect(summary.maxGust.value).toBe(20);
     expect(summary.maxGust.point.id).toBe("P1");
     expect(summary.maxGust.isMissing).toBe(false);
+    expect(summary.maxGust.hourString).toBe(EFFECTIVE_HOUR);
 
     expect(summary.maxPrecip.value).toBe(5.5);
     expect(summary.maxPrecip.point.id).toBe("P2");
@@ -62,31 +62,32 @@ describe("computeWeatherExtremaSummary", () => {
   });
 
   it("a tie keeps the FIRST point in fixed route order", () => {
-    const p1 = makePoint("P1", 0);
-    p1.series.wind_gusts_10m[0] = 15;
-    const p2 = makePoint("P2", 0);
-    p2.series.wind_gusts_10m[0] = 15; // exact tie with P1
-    const points = [p1, p2, makePoint("P3", 0), makePoint("P4", 0), makePoint("P5", 0), makePoint("P6", 0)];
+    const p1 = makePoint("P1");
+    p1.series.wind_gusts_10m[2] = 15;
+    const p2 = makePoint("P2");
+    p2.series.wind_gusts_10m[2] = 15; // exact tie with P1
+    const points = [p1, p2, makePoint("P3"), makePoint("P4"), makePoint("P5"), makePoint("P6")];
 
-    const summary = computeWeatherExtremaSummary(points, DEPARTURE);
+    const summary = computeWeatherExtremaSummary(points, EFFECTIVE_HOUR);
     expect(summary.maxGust.value).toBe(15);
     expect(summary.maxGust.point.id).toBe("P1");
   });
 
   it("null/undefined/NaN values are real gaps, never treated as 0", () => {
-    const p1 = makePoint("P1", 0);
-    p1.series.precipitation[0] = null;
-    const p2 = makePoint("P2", 0);
-    p2.series.precipitation[0] = undefined;
-    const p3 = makePoint("P3", 0);
-    p3.series.precipitation[0] = NaN;
-    const p4 = makePoint("P4", 0);
-    p4.series.precipitation[0] = 0; // a real zero, must still count
-    const points = [p1, p2, p3, p4, makePoint("P5", 0), makePoint("P6", 0)];
-    points[4].series.precipitation[0] = null;
-    points[5].series.precipitation[0] = null;
+    const p1 = makePoint("P1");
+    p1.series.precipitation[2] = null;
+    const p2 = makePoint("P2");
+    p2.series.precipitation[2] = undefined;
+    const p3 = makePoint("P3");
+    p3.series.precipitation[2] = NaN;
+    const p4 = makePoint("P4");
+    p4.series.precipitation[2] = 0; // a real zero, must still count
+    const p5 = makePoint("P5");
+    p5.series.precipitation[2] = null;
+    const p6 = makePoint("P6");
+    p6.series.precipitation[2] = null;
 
-    const summary = computeWeatherExtremaSummary(points, DEPARTURE);
+    const summary = computeWeatherExtremaSummary([p1, p2, p3, p4, p5, p6], EFFECTIVE_HOUR);
     expect(summary.maxPrecip.isMissing).toBe(false);
     expect(summary.maxPrecip.value).toBe(0);
     expect(summary.maxPrecip.point.id).toBe("P4");
@@ -95,36 +96,29 @@ describe("computeWeatherExtremaSummary", () => {
   });
 
   it("fewer than six valid points is marked partial, with the real valid count", () => {
-    const points = [makePoint("P1", 0), makePoint("P2", 0), { ...makePoint("P3", 0), available: false }];
-    const summary = computeWeatherExtremaSummary(points, DEPARTURE);
+    const points = [makePoint("P1"), makePoint("P2"), { ...makePoint("P3"), available: false }];
+    const summary = computeWeatherExtremaSummary(points, EFFECTIVE_HOUR);
     expect(summary.minTemp.isPartial).toBe(true);
     expect(summary.minTemp.validCount).toBe(2);
   });
 
   it("zero valid points across all six is missing, not a guessed/zero value", () => {
-    const points = [1, 2, 3, 4, 5, 6].map((n) => ({ ...makePoint(`P${n}`, 0), available: false }));
-    const summary = computeWeatherExtremaSummary(points, DEPARTURE);
+    const points = [1, 2, 3, 4, 5, 6].map((n) => ({ ...makePoint(`P${n}`), available: false }));
+    const summary = computeWeatherExtremaSummary(points, EFFECTIVE_HOUR);
     expect(summary.maxGust.isMissing).toBe(true);
     expect(summary.maxGust.value).toBeNull();
     expect(summary.maxGust.point).toBeNull();
   });
 
-  it("an ETA that resolves outside the point's fetched window contributes no value for that point", () => {
-    const farPoint = makePoint("P1", 24 * 70); // ~24h away, outside the 6-hour fixture window
-    const points = [farPoint, makePoint("P2", 0), makePoint("P3", 0), makePoint("P4", 0), makePoint("P5", 0), makePoint("P6", 0)];
-    const summary = computeWeatherExtremaSummary(points, DEPARTURE);
+  it("a point whose own `hours` does not contain the effective hour contributes no value for that point, never a nearest match (N1)", () => {
+    const mismatchedPoint = makePoint("P1", { hours: hoursFrom("2026-11-05T08:00:00Z", 6) }); // disjoint window
+    const points = [mismatchedPoint, makePoint("P2"), makePoint("P3"), makePoint("P4"), makePoint("P5"), makePoint("P6")];
+    const summary = computeWeatherExtremaSummary(points, EFFECTIVE_HOUR);
     expect(summary.minTemp.validCount).toBe(5);
     expect(summary.minTemp.isPartial).toBe(true);
   });
 
-  it("a missing/null distance contributes no value for that point, never a guess", () => {
-    const points = [makePoint("P1", null), makePoint("P2", 0), makePoint("P3", 0), makePoint("P4", 0), makePoint("P5", 0), makePoint("P6", 0)];
-    const summary = computeWeatherExtremaSummary(points, DEPARTURE);
-    expect(summary.minTemp.validCount).toBe(5);
-  });
-
-  it("handles a UTC day boundary correctly (no wrap, real date arithmetic)", () => {
-    const lateDeparture = "2026-11-04T23:00";
+  it("handles a UTC day boundary correctly (no wrap, exact lookup, real hour strings)", () => {
     const hours = [
       "2026-11-04T23:00",
       "2026-11-05T00:00",
@@ -137,7 +131,6 @@ describe("computeWeatherExtremaSummary", () => {
       id: "P1",
       labelIs: "P1",
       labelEn: "P1",
-      approxDistanceFromStartKm: 140, // +2h -> 2026-11-05T01:00
       available: true,
       hours,
       series: {
@@ -148,13 +141,13 @@ describe("computeWeatherExtremaSummary", () => {
         weather_code: hours.map(() => 0),
       },
     };
-    const summary = computeWeatherExtremaSummary([point], lateDeparture);
+    const summary = computeWeatherExtremaSummary([point], "2026-11-05T01:00");
     expect(summary.minTemp.value).toBe(-9);
     expect(summary.minTemp.hourString).toBe("2026-11-05T01:00");
   });
 
-  it("no departure selected yet (null) resolves every point to missing, matching the cards' own loading state", () => {
-    const points = [1, 2, 3, 4, 5, 6].map((n) => makePoint(`P${n}`, 0));
+  it("no valid hour selected yet (null) resolves every point to missing, matching the cards' own loading state", () => {
+    const points = [1, 2, 3, 4, 5, 6].map((n) => makePoint(`P${n}`));
     const summary = computeWeatherExtremaSummary(points, null);
     expect(summary.maxGust.isMissing).toBe(true);
     expect(summary.maxPrecip.isMissing).toBe(true);
@@ -162,8 +155,8 @@ describe("computeWeatherExtremaSummary", () => {
   });
 
   it("an empty/undefined points array is a clean missing result, not a crash", () => {
-    expect(computeWeatherExtremaSummary([], DEPARTURE).maxGust.isMissing).toBe(true);
-    expect(computeWeatherExtremaSummary(undefined, DEPARTURE).maxGust.isMissing).toBe(true);
+    expect(computeWeatherExtremaSummary([], EFFECTIVE_HOUR).maxGust.isMissing).toBe(true);
+    expect(computeWeatherExtremaSummary(undefined, EFFECTIVE_HOUR).maxGust.isMissing).toBe(true);
   });
 });
 

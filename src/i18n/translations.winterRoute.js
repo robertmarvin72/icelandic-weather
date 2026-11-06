@@ -14,7 +14,8 @@ export const winterRouteTranslations = {
     winterRouteSubtitle: "Road conditions now and forecast along the route",
     winterRouteLatestStatusNote: "Latest available status, not a forecast of road conditions.",
 
-    winterRouteHourLabel: "Estimated departure time",
+    winterRouteHourLabel: "Forecast time",
+    winterRouteSameForecastTimeNote: "The same forecast time applies to all points.",
     winterRouteNoHoursAvailable: "No upcoming time is available right now.",
 
     // Ticket #491 — {count} is the selected route's own point count (6 for
@@ -25,8 +26,6 @@ export const winterRouteTranslations = {
     // Ticket #491 — route selector (native select, same page, Vík default).
     winterRouteRouteSelectLabel: "Route",
     winterRouteRouteDataMismatch: "Something went wrong loading data for this route. Please try again.",
-    winterRouteEtaApproximationNote:
-      "Estimated arrival uses a simple distance approximation and 70 km/h — not driving directions. The forecast hour shown may shift by an hour.",
     winterRouteSectionCoverageNote:
       "Road-condition data for some sections may cover a longer stretch of road than the part this route actually uses.",
 
@@ -53,7 +52,6 @@ export const winterRouteTranslations = {
     winterRouteForecastUnavailable: "Forecast unavailable.",
     winterRouteForecastStaleServed: "Showing the last known forecast ({minutes} min old).",
     winterRoutePointUnavailable: "No forecast data available for this point.",
-    winterRouteEstimatedArrival: "Estimated arrival: {time} UTC",
     winterRouteForecastNotAvailableAtComputedTime: "Forecast not available",
     winterRouteGridDisclaimer: "A forecast grid point from a weather model — not a direct measurement on the road.",
     winterRouteValidFor: "Valid for {time} UTC",
@@ -63,9 +61,10 @@ export const winterRouteTranslations = {
     winterRoutePrecip: "Precipitation (previous hour)",
     winterRouteUnknownWeatherSymbol: "Unknown weather symbol",
 
-    // #489 — route-level summary (max gust/precip, min temp among the six
-    // points at their own already-resolved ETA hour; count of segments
-    // with a currently active point notice). Gust/precip wording
+    // #489 — route-level summary (max gust/precip, min temp among the
+    // route's points at the one shared selected forecast hour, ticket
+    // #493; count of segments with a currently active point notice).
+    // Gust/precip wording
     // deliberately repeats the same "(max, previous hour)"/"(previous
     // hour)" period phrasing as winterRouteGust/winterRoutePrecip above.
     winterRouteSummaryHeading: "Along the route now",
@@ -79,26 +78,6 @@ export const winterRouteTranslations = {
     winterRouteSummaryNoticeCount: "Sections with valid notices: {count}",
     winterRouteSummaryNoticeCountUnconfirmed: "The count of sections with valid notices is unconfirmed right now.",
     winterRouteSummaryNoticeScope: "Not the overall road condition — see the road-condition list below.",
-
-    // #490 — departure-time comparison (−2h / selected / +2h), reusing
-    // #489's own extrema per option. Reason strings are a fixed, closed
-    // set (S1b) — never an internal code leaking into the UI.
-    winterRouteComparisonHeading: "Departure time comparison",
-    winterRouteComparisonBaselineLabel: "Selected departure time",
-    winterRouteComparisonEarlierLabel: "2 hours earlier",
-    winterRouteComparisonLaterLabel: "2 hours later",
-    winterRouteComparisonViewButton: "View this time",
-    winterRouteComparisonSelectedBadge: "Currently selected",
-    winterRouteComparisonRoadNote:
-      "Road conditions and closures show the latest available status — not a forecast for these options.",
-    winterRouteComparisonSelectedAnnouncement: "Selected departure time is now {time} UTC.",
-    winterRouteComparisonReasonNotUpcoming: "This time has passed or is outside the available departure times.",
-    winterRouteComparisonReasonArrivalOutsideWindow:
-      "At least one point's estimated arrival falls outside the fetched forecast window; the comparison needs all {count} points.",
-    winterRouteComparisonReasonPointUnavailable:
-      "Data is missing for at least one of the {count} points; the comparison needs all {count} points.",
-    winterRouteComparisonReasonMetricGap:
-      "The comparison needs a value for all {count} points; a data gap prevents it right now.",
 
     winterRouteAttributionRoadLine:
       "Road-condition and closure data: Vegagerðin (the Icelandic Road Administration), CC BY 4.0.",
@@ -119,7 +98,8 @@ export const winterRouteTranslations = {
     winterRouteSubtitle: "Færð núna og veðurspá á leiðinni",
     winterRouteLatestStatusNote: "Nýjasta tiltæka staða, ekki spáð færð.",
 
-    winterRouteHourLabel: "Áætlaður brottfarartími",
+    winterRouteHourLabel: "Spátími",
+    winterRouteSameForecastTimeNote: "Sami spátími gildir fyrir alla punkta.",
     winterRouteNoHoursAvailable: "Engin framtíðartími er tiltækur núna.",
 
     winterRouteForecastSectionTitle: "Veðurspá á {count} punktum á leiðinni",
@@ -127,8 +107,6 @@ export const winterRouteTranslations = {
 
     winterRouteRouteSelectLabel: "Leið",
     winterRouteRouteDataMismatch: "Eitthvað fór úrskeiðis við að hlaða gögnum fyrir þessa leið. Reyndu aftur.",
-    winterRouteEtaApproximationNote:
-      "Áætluð koma miðast við einfalda vegalengdarnálgun og 70 km/klst.; ekki akstursleiðbeiningar. Gildistími spár getur hliðrast um klukkustund.",
     winterRouteSectionCoverageNote:
       "Færðargögn fyrir suma kafla geta náð yfir lengri vegkafla en þann hluta sem þessi leið notar.",
 
@@ -155,7 +133,6 @@ export const winterRouteTranslations = {
     winterRouteForecastUnavailable: "Veðurspá er ekki tiltæk.",
     winterRouteForecastStaleServed: "Sýnir síðustu þekktu spá ({minutes} mín. gamla).",
     winterRoutePointUnavailable: "Engin spágögn tiltæk fyrir þennan punkt.",
-    winterRouteEstimatedArrival: "Áætluð koma: {time} UTC",
     winterRouteForecastNotAvailableAtComputedTime: "Spá ekki tiltæk",
     winterRouteGridDisclaimer: "Punktspá úr veðurlíkani — ekki bein mæling á vegi.",
     winterRouteValidFor: "Gildir fyrir {time} UTC",
@@ -177,24 +154,6 @@ export const winterRouteTranslations = {
     winterRouteSummaryNoticeCount: "Kaflar með gildar tilkynningar: {count}",
     winterRouteSummaryNoticeCountUnconfirmed: "Fjöldi kafla með gildar tilkynningar er óstaðfestur núna.",
     winterRouteSummaryNoticeScope: "Ekki heildarstaða færðar — sjá færðarlistann neðar.",
-
-    // #490 — sjá samsvarandi EN athugasemd að ofan.
-    winterRouteComparisonHeading: "Samanburður brottfarartíma",
-    winterRouteComparisonBaselineLabel: "Valinn brottfarartími",
-    winterRouteComparisonEarlierLabel: "2 klst. fyrr",
-    winterRouteComparisonLaterLabel: "2 klst. síðar",
-    winterRouteComparisonViewButton: "Skoða þennan tíma",
-    winterRouteComparisonSelectedBadge: "Núverandi val",
-    winterRouteComparisonRoadNote:
-      "Færð og lokanir sýna nýjustu tiltæku stöðu — ekki spá fyrir þessa valkosti.",
-    winterRouteComparisonSelectedAnnouncement: "Valinn brottfarartími er nú {time} UTC.",
-    winterRouteComparisonReasonNotUpcoming: "Þessi tími er liðinn eða utan tiltækra brottfarartíma.",
-    winterRouteComparisonReasonArrivalOutsideWindow:
-      "Komutími á a.m.k. einum punkti er utan sótts spáglugga; samanburðurinn þarf alla {count} punktana.",
-    winterRouteComparisonReasonPointUnavailable:
-      "Gögn vantar fyrir a.m.k. einn af {count} punktunum; samanburðurinn þarf alla {count} punktana.",
-    winterRouteComparisonReasonMetricGap:
-      "Samanburðurinn þarf gildi fyrir alla {count} punktana; gagnagat kemur í veg fyrir hann núna.",
 
     winterRouteAttributionRoadLine: "Færðar- og lokanargögn: Vegagerðin, CC BY 4.0.",
     winterRouteAttributionWeatherLine: "Veðurspágögn: Open-Meteo.",

@@ -193,7 +193,7 @@ test.describe("WinterRoute (/winter-route) — Ticket #491 route selector real-b
     await page.screenshot({ path: "test-results/ticket-491/borgarnes-desktop-light-is.png", fullPage: true });
   });
 
-  test("mobile (375px), English: Borgarnes route renders four points, the ETA approximation note, and the section-coverage note, with no horizontal scroll", async ({
+  test("mobile (375px), English: Borgarnes route renders four points and the section-coverage note, with no horizontal scroll", async ({
     page,
   }) => {
     await primePageState(page, { lang: "en", theme: "light" });
@@ -205,9 +205,7 @@ test.describe("WinterRoute (/winter-route) — Ticket #491 route selector real-b
     await routeSelect.selectOption("raudavatn-borgarnes");
 
     await expect(page.getByText("Forecast at 4 points along the route")).toBeVisible();
-    await expect(
-      page.getByText("Estimated arrival uses a simple distance approximation and 70 km/h", { exact: false }),
-    ).toBeVisible();
+    // Ticket #493 removed the ETA-approximation note entirely.
     await expect(
       page.getByText("Road-condition data for some sections may cover a longer stretch of road", { exact: false }),
     ).toBeVisible();
@@ -286,38 +284,90 @@ test.describe("WinterRoute (/winter-route) — Ticket #491 route selector real-b
     expect(requestCount).toBe(2);
   });
 
-  test("Borgarnes departure-time comparison: keyboard Tab→Enter still works with only 4 points, reusing the existing comparison area", async ({
+  // Ticket #493 removed the #490 departure-time comparison area entirely
+  // (and with it the per-point ETA/distance resolution), so the former
+  // "Borgarnes departure-time comparison" keyboard test no longer applies.
+  // This replacement confirms the renamed forecast-time picker still works
+  // for the Borgarnes route after a route switch, and that stepping it
+  // with the keyboard alone never triggers an extra fetch (N4).
+  test("Borgarnes route: the forecast-time picker is reachable by keyboard, and stepping it causes no extra request", async ({
     page,
   }) => {
     await primePageState(page, { lang: "is", theme: "light" });
-    await stubWinterRoute(page);
+    let requestCount = 0;
+    await stubWinterRoute(page, { onRequest: () => (requestCount += 1) });
     await page.setViewportSize({ width: 1280, height: 900 });
     await gotoPage(page);
 
     const routeSelect = page.getByLabel("Leið");
     await routeSelect.selectOption("raudavatn-borgarnes");
 
-    const hourSelect = page.getByLabel("Áætlaður brottfarartími");
+    const hourSelect = page.getByLabel("Spátími");
     await hourSelect.waitFor({ state: "visible" });
-    await hourSelect.selectOption({ index: 3 });
-    await expect(page.getByText("Samanburður brottfarartíma")).toBeVisible();
+    // The route-switch's own fetch has settled by the time the picker for
+    // the new route is visible — reset here, not right after selectOption
+    // (which only waits for the DOM value change, not the async fetch it
+    // triggers), so the count below reflects the keyboard step alone.
+    requestCount = 0;
+    await hourSelect.focus();
+    await expect(hourSelect).toBeFocused();
+    await page.keyboard.press("ArrowDown");
+    await page.waitForTimeout(100);
 
-    const viewButtons = page.getByRole("button", { name: /Skoða þennan tíma/ });
-    await expect(viewButtons.first()).toBeEnabled();
+    expect(requestCount).toBe(0);
+  });
 
-    await page.keyboard.press("Tab");
-    let guard = 0;
-    while (guard < 40) {
-      const isOnViewButton = await page.evaluate(
-        () => document.activeElement?.textContent?.includes("Skoða þennan tíma") ?? false,
-      );
-      if (isOnViewButton) break;
-      await page.keyboard.press("Tab");
-      guard += 1;
+  // Ticket #493 correction round, V4 (T1/U4) — the keyboard test above runs
+  // at 1280px; W4 requires at least one route's narrow-screen keyboard test
+  // to measure the viewport itself, confirm BOTH the summary and the cards
+  // move to the new hour's own value (not just `select.value`), confirm
+  // the request count stays unchanged, and confirm no horizontal scroll.
+  // Kept as an addition alongside the test above, not a replacement, so no
+  // existing coverage is lost.
+  test("Borgarnes route, mobile (375px) keyboard (V4): stepping the forecast-time picker with the keyboard updates the summary and all four cards to the new hour's value, with no extra request and no horizontal scroll", async ({
+    page,
+  }) => {
+    await primePageState(page, { lang: "is", theme: "light" });
+    const borgarnes = borgarnesPayload();
+    borgarnes.forecast.points.forEach((p) => {
+      p.series.temperature_2m = EXPECTED_HOURS.map((_, h) => -3.1 + h * 0.01);
+    });
+    let requestCount = 0;
+    await stubWinterRoute(page, { borgarnes, onRequest: () => (requestCount += 1) });
+    await page.setViewportSize({ width: 375, height: 800 });
+    await gotoPage(page);
+
+    const viewport = page.viewportSize();
+    expect(viewport.width).toBe(375);
+
+    const routeSelect = page.getByLabel("Leið");
+    await routeSelect.selectOption("raudavatn-borgarnes");
+
+    const hourSelect = page.getByLabel("Spátími");
+    await hourSelect.waitFor({ state: "visible" });
+    requestCount = 0; // reset past the route-switch's own fetch
+
+    const summary = page.locator("section").filter({ hasText: "Á leiðinni núna" });
+    await expect(summary.getByText(/Lægsti hiti: -3,1 °C/)).toBeVisible();
+
+    await hourSelect.focus();
+    await expect(hourSelect).toBeFocused();
+    for (let i = 0; i < 10; i++) {
+      await page.keyboard.press("ArrowDown");
     }
-    expect(guard).toBeLessThan(40);
-    await page.keyboard.press("Enter");
+    await expect(hourSelect).toHaveValue(EXPECTED_HOURS[10]);
 
-    await expect(page.getByText(/Valinn brottfarartími er nú .* UTC\./)).toBeAttached();
+    // Selected hour = EXPECTED_HOURS[10] -> -3.1 + 10*0.01 = -3.0 — both the
+    // summary AND a card move to this new hour's own value.
+    await expect(summary.getByText(/Lægsti hiti: -3,0 °C/)).toBeVisible();
+    await expect(page.getByText("-3,0 °C").first()).toBeVisible();
+
+    expect(requestCount).toBe(0);
+
+    const overflow = await page.evaluate(() => {
+      const el = document.scrollingElement;
+      return { scrollWidth: el.scrollWidth, clientWidth: el.clientWidth };
+    });
+    expect(overflow.scrollWidth).toBeLessThanOrEqual(overflow.clientWidth);
   });
 });

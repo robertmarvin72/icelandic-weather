@@ -3,8 +3,8 @@
 // Ticket #491, B3 — the frontend's OWN small fixed routeId -> display
 // name / expectedPointCount table. Deliberately NOT imported from
 // api/_lib/winterRoute/routes.js (that file is server-only, never bundled
-// into the frontend — same api/<->src boundary as winterRouteEta.js's own
-// doc-comment) — this is a small, separately-maintained duplicate so the
+// into the frontend — see CLAUDE.md/openMeteoAuth.js's own doc-comment on
+// the api/<->src boundary) — this is a small, separately-maintained duplicate so the
 // page can validate the backend's response (`routeId`/`expectedPointCount`)
 // against ITS OWN expectation rather than trusting the response blindly.
 // Route display names are literal IS/EN pairs (same convention as
