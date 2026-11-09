@@ -1,0 +1,38 @@
+=== Validation ===
+role8 check: single VEGHLUTI=8 instance is 36487? True piece 1735 veghluti: 1
+negative tests (all must be 'rejected: ...'):
+   a_54723_1477_rev -> rejected: one-directional piece 54723 (VEGHLUTI=7) traversed 'rev' at step 0
+   b_adjacent_6_7 -> rejected: adjacent 6/7 pair 1477->2024
+   c_49282_49281 -> rejected: adjacent 6/7 pair 49282->49281
+   d_repeated_piece -> rejected: repeated IDFERILL 2138 at step 2
+Positive validation errors: NONE
+
+=== CCW (short) ===
+matches #491 29-piece reference exactly? True
+total cost (m): 70846.57343436239
+bridge summary (#491-only, to 2819): {'nonzero_count': 16, 'bands': {'contact_100m': 10, 'contact_5m': 3, 'contact_25m': 3}, 'highest_m': 41.45324144742609, 'all_gaps_m': [2.8807927380777905, 3.5977502595061908, 3.705436308994961, 7.085485810425801, 10.83102825127653, 17.91902288074401, 26.554848898068858, 27.616388580892792, 31.465701406411526, 32.66766000187088, 34.16291556648123, 37.387667916698646, 38.62490959212858, 38.67651095951517, 40.826273743864505, 41.45324144742609]}
+bridge summary (full, with roundabout seams, to C): {'nonzero_count': 18, 'bands': {'contact_100m': 11, 'contact_5m': 4, 'contact_25m': 3}, 'highest_m': 42.8408915829423, 'all_gaps_m': [1.7704337999295003, 2.8807927380777905, 3.5977502595061908, 3.705436308994961, 7.085485810425801, 10.83102825127653, 17.91902288074401, 26.554848898068858, 27.616388580892792, 31.465701406411526, 32.66766000187088, 34.16291556648123, 37.387667916698646, 38.62490959212858, 38.67651095951517, 40.826273743864505, 41.45324144742609, 42.8408915829423]}
+tie-break demo: {'ccw_chose_direct_2796_10247_not_via_2791': True, 'ccw_chose_without_49284_detour': True, 'cw_tie_events_logged': 10, 'ccw_tie_events_logged': 22}
+
+=== CW (long) ===
+matches #483 13-IDBUTUR reference (first 13)? True
+total cost incl 1436 (m): 928362.9548530912 excl: 925802.8051530912
+bridge summary to Hella (3591): {'nonzero_count': 4, 'bands': {'contact_5m': 1, 'contact_100m': 3}, 'highest_m': 42.30221924830867, 'all_gaps_m': [0.23426975905806502, 30.09662509739531, 34.74867010402701, 42.30221924830867]}
+bridge summary to C (3876): {'nonzero_count': 6, 'bands': {'contact_5m': 1, 'contact_100m': 5}, 'highest_m': 42.30221924830867, 'all_gaps_m': [0.23426975905806502, 30.09662509739531, 32.630052568162306, 32.75571631470905, 34.74867010402701, 42.30221924830867]}
+
+=== Selfoss closure target (Q3) ===
+instance: (2138, 'rev') exit coord: (401739.85, 383119.047)
+cost incl 1436: 45740.46023986309 excl: 43180.31053986309
+route: [1436, 1735, 2071, 2024, 2117, 2135, 2138] idbutur: [252090037, 253020037, 902030037, 903010037, 1410010037]
+
+=== Borgarnes seams (Q4) ===
+source: C:\Users\Notandi\forritun\icelandic-weather\docs\ai\tasks\ticket-493-north-data\route-data-candidate.json sha256: 094fb5d3615c1d5f0e7b372706d134bf48e9c5e954ab3ec7af61fa825b0fb4a8
+gaps (unrounded m): {30401: 1.7704337999295003, 2816: 42.8408915829423}
+
+=== North-data leg length basis (Q5) ===
+canonical piece sum (m): 309782.3833 + seams = 309826.9946253829 m = 309.8269946253829 km
+json-stated (km): 309.6507 difference (km): 0.17629462538292273
+
+=== Closure test (route-level) ===
+CLOSED with real closure set? True (expect True)
+CLOSED with unrelated set (non-vacuity)? False (expect False)

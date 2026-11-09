@@ -1,0 +1,215 @@
+Rauðavatn matches: [(1436, 1410010037, 'Rauðavatn - Nesjavallaleið', 'Geirland - Norðlingavað')]
+Hádegismóar matches: [(1477, 914020037, 'Suðurlandsv. um Hádegismóa', 'Suðurlandsvegur að Norðlingavaði'), (9298, 914020037, 'Suðurlandsv. um Hádegismóa', 'Suðurlandsvegur að Norðlingavaði'), (23681, 914020037, 'Suðurlandsv. um Hádegismóa', 'Suðurlandsvegur að Norðlingavaði'), (42243, 914020037, 'Suðurlandsv. um Hádegismóa', 'Suðurlandsvegur að Norðlingavaði'), (54723, 914020037, 'Suðurlandsv. um Hádegismóa', 'Suðurlandsvegur að Norðlingavaði'), (36803, 914020037, 'Suðurlandsv. um Hádegismóa', 'Suðurlandsvegur að Norðlingavaði'), (10882, 914020037, 'Suðurlandsv. um Hádegismóa', 'Suðurlandsvegur að Norðlingavaði'), (49926, 914020037, 'Suðurlandsv. um Hádegismóa', 'vegamót 41/49'), (8964, 914020037, 'Suðurlandsv. um Hádegismóa', 'Suðurlandsvegur að Norðlingavaði'), (1734, 914020037, 'Suðurlandsv. um Hádegismóa', 'Suðurlandsvegur að Norðlingavaði'), (1431, 914020037, 'Suðurlandsv. um Hádegismóa', 'Suðurlandsvegur að Norðlingavaði'), (42244, 914020037, 'Suðurlandsv. um Hádegismóa', 'Suðurlandsvegur að Norðlingavaði'), (8677, 914020037, 'Suðurlandsv. um Hádegismóa', 'Suðurlandsvegur að Norðlingavaði'), (8678, 914020037, 'Suðurlandsv. um Hádegismóa', 'Suðurlandsvegur að Norðlingavaði')]
+Vesturlandsvegur count: 25
+Suðurlandsvegur count: 0
+Band counts: {'exact': 197, 'contact_5m': 19, 'contact_100m': 123, 'contact_25m': 58}
+Total pieces: 249
+VEGHLUTI counts (canonical pieces): {1: 184, 3: 7, 4: 10, 5: 21, 6: 13, 7: 13, 8: 1}
+Egilsstaðir matches on VEGNR=1: [(1483, 911040037, 'Egilsstaðir'), (2426, 911210037, 'Fagridalur'), (2345, 911040037, 'Egilsstaðir'), (2813, 911210037, 'Fagridalur'), (2814, 911210037, 'Fagridalur'), (2349, 911040037, 'Egilsstaðir'), (2347, 911040037, 'Egilsstaðir')]
+Seyðisfjörður matches on VEGNR=1: []
+VEGNR=93 pieces in this dataset: 0
+'göng' matches: [(32965, 909060037, 'Ljósavatnsskarð', 'Vaðlaheiðargöng - Kross'), (49282, 903030037, 'Kjalarnes', 'Þingvallavegur - Hvalfjarðargöng'), (49283, 903030037, 'Kjalarnes', 'Þingvallavegur - Hvalfjarðargöng'), (49284, 903030037, 'Kjalarnes', 'Þingvallavegur - Hvalfjarðargöng'), (49285, 903030037, 'Kjalarnes', 'Þingvallavegur - Hvalfjarðargöng'), (32961, 909000037, 'Vaðlaheiðargöng', 'Vaðlaheiðargöng'), (3023, 904690037, 'Hvalfjarðargöng', 'sunnanmunni Hvalfjarðarganga'), (3025, 903030037, 'Kjalarnes', 'Þingvallavegur - Hvalfjarðargöng'), (2726, 909350037, 'Akureyri-Vaðlaheiðargöng', 'Höepfnerbryggja - Vaðlaheiðargöng'), (2727, 909360037, 'Akureyri', 'Höepfnerbryggja - Vaðlaheiðargöng'), (2725, 909350037, 'Akureyri-Vaðlaheiðargöng', 'Höepfnerbryggja - Vaðlaheiðargöng'), (2489, 903030037, 'Kjalarnes', 'Þingvallavegur - Hvalfjarðargöng'), (3391, 909060037, 'Ljósavatnsskarð', 'Vaðlaheiðargöng - Kross'), (3531, 909060037, 'Ljósavatnsskarð', 'Vaðlaheiðargöng - Kross'), (56002, 904690037, 'Hvalfjarðargöng', 'Hvalfjarðargöng'), (3222, 912040037, 'Hvalnes-Höfn', 'Almannaskarðsgöng'), (33604, 909350037, 'Akureyri-Vaðlaheiðargöng', 'Höepfnerbryggja - Vaðlaheiðargöng'), (3794, 904000037, 'Hvalfjarðargöng-Grundartangi', 'Hvalfjarðargöng - Grundartangavegur'), (30721, 903030037, 'Kjalarnes', 'Þingvallavegur - Hvalfjarðargöng'), (2619, 911260037, 'Fáskrúðsfjarðargöng', 'Fáskrúðsfjarðargöng'), (52804, 903030037, 'Kjalarnes', 'Þingvallavegur - Hvalfjarðargöng'), (2982, 814700037, 'Hvalfjarðargöng til suðurs', 'Hvalfjarðargöng til suðurs'), (32964, 909350037, 'Akureyri-Vaðlaheiðargöng', 'Höepfnerbryggja - Vaðlaheiðargöng'), (42573, 904690037, 'Hvalfjarðargöng', 'norðanmunni Hvalfjarðarganga'), (52801, 903030037, 'Kjalarnes', 'Þingvallavegur - Hvalfjarðargöng'), (52802, 903030037, 'Kjalarnes', 'Þingvallavegur - Hvalfjarðargöng'), (49281, 903030037, 'Kjalarnes', 'Þingvallavegur - Hvalfjarðargöng'), (32321, 903030037, 'Kjalarnes', 'Þingvallavegur - Hvalfjarðargöng'), (2532, 903030037, 'Kjalarnes', 'Þingvallavegur - Hvalfjarðargöng'), (3796, 904690037, 'Hvalfjarðargöng', 'norðanmunni Hvalfjarðarganga'), (52803, 903030037, 'Kjalarnes', 'Þingvallavegur - Hvalfjarðargöng')]
+'hvalfjarð' matches: [(49282, 903030037, 'Kjalarnes', 'Þingvallavegur - Hvalfjarðargöng'), (49283, 903030037, 'Kjalarnes', 'Þingvallavegur - Hvalfjarðargöng'), (49284, 903030037, 'Kjalarnes', 'Þingvallavegur - Hvalfjarðargöng'), (49285, 903030037, 'Kjalarnes', 'Þingvallavegur - Hvalfjarðargöng'), (3023, 904690037, 'Hvalfjarðargöng', 'sunnanmunni Hvalfjarðarganga'), (3025, 903030037, 'Kjalarnes', 'Þingvallavegur - Hvalfjarðargöng'), (2489, 903030037, 'Kjalarnes', 'Þingvallavegur - Hvalfjarðargöng'), (3740, 904010037, 'Melasveit', 'Hvalfjarðarvegur - Grundartangavegur'), (56002, 904690037, 'Hvalfjarðargöng', 'Hvalfjarðargöng'), (3794, 904000037, 'Hvalfjarðargöng-Grundartangi', 'Hvalfjarðargöng - Grundartangavegur'), (30721, 903030037, 'Kjalarnes', 'Þingvallavegur - Hvalfjarðargöng'), (3802, 904010037, 'Melasveit', 'Hvalfjarðarvegur - Grundartangavegur'), (52804, 903030037, 'Kjalarnes', 'Þingvallavegur - Hvalfjarðargöng'), (2982, 814700037, 'Hvalfjarðargöng til suðurs', 'Hvalfjarðargöng til suðurs'), (42573, 904690037, 'Hvalfjarðargöng', 'norðanmunni Hvalfjarðarganga'), (52801, 903030037, 'Kjalarnes', 'Þingvallavegur - Hvalfjarðargöng'), (52802, 903030037, 'Kjalarnes', 'Þingvallavegur - Hvalfjarðargöng'), (49281, 903030037, 'Kjalarnes', 'Þingvallavegur - Hvalfjarðargöng'), (32321, 903030037, 'Kjalarnes', 'Þingvallavegur - Hvalfjarðargöng'), (2532, 903030037, 'Kjalarnes', 'Þingvallavegur - Hvalfjarðargöng'), (3796, 904690037, 'Hvalfjarðargöng', 'norðanmunni Hvalfjarðarganga'), (52803, 903030037, 'Kjalarnes', 'Þingvallavegur - Hvalfjarðargöng')]
+'vaðlaheið' matches: [(32965, 909060037, 'Ljósavatnsskarð', 'Vaðlaheiðargöng - Kross'), (32961, 909000037, 'Vaðlaheiðargöng', 'Vaðlaheiðargöng'), (2726, 909350037, 'Akureyri-Vaðlaheiðargöng', 'Höepfnerbryggja - Vaðlaheiðargöng'), (2727, 909360037, 'Akureyri', 'Höepfnerbryggja - Vaðlaheiðargöng'), (2725, 909350037, 'Akureyri-Vaðlaheiðargöng', 'Höepfnerbryggja - Vaðlaheiðargöng'), (3391, 909060037, 'Ljósavatnsskarð', 'Vaðlaheiðargöng - Kross'), (3531, 909060037, 'Ljósavatnsskarð', 'Vaðlaheiðargöng - Kross'), (33604, 909350037, 'Akureyri-Vaðlaheiðargöng', 'Höepfnerbryggja - Vaðlaheiðargöng'), (32964, 909350037, 'Akureyri-Vaðlaheiðargöng', 'Höepfnerbryggja - Vaðlaheiðargöng')]
+'fáskrúðsfjarð' matches: [(2619, 911260037, 'Fáskrúðsfjarðargöng', 'Fáskrúðsfjarðargöng')]
+'selfoss' matches (14): [(2116, 'Þrengslavegur-Fossvellir'), (2117, 'Hellisheiði til austurs'), (2134, 'Hellisheiði til vesturs'), (2135, 'Selfoss-Hveragerði'), (8676, 'Þjórsá-Selfoss'), (3737, 'Þjórsá-Selfoss'), (3454, 'Þjórsá-Selfoss'), (3781, 'Þjórsá-Selfoss'), (52491, 'Selfoss-Hveragerði'), (52492, 'Selfoss-Hveragerði')]
+'hella' matches (8): [(3613, 'Hella-Þjórsá'), (3638, 'Hvolsvöllur-Hella'), (16641, 'Hella-Þjórsá'), (3615, 'Hella-Þjórsá'), (3593, 'Hvolsvöllur-Hella'), (3591, 'Hella-Þjórsá'), (3614, 'Hella-Þjórsá'), (3643, 'Hvolsvöllur-Hella')]
+'hveragerð' matches (5): [(2135, 'Selfoss-Hveragerði'), (52491, 'Selfoss-Hveragerði'), (52492, 'Selfoss-Hveragerði'), (36807, 'Selfoss-Hveragerði'), (2138, 'Selfoss-Hveragerði')]
+'vík' matches (10): [(23041, 'Vík'), (2384, 'Mýrdalssandur'), (2408, 'Mýrdalssandur'), (3188, 'Breiðdalsvík-Streiti'), (3845, 'Stöðvarfjörður-Breiðdalsvík'), (3849, 'Vík'), (3736, 'Mýrdalssandur'), (3832, 'Stöðvarfjörður-Breiðdalsvík'), (3841, 'Stöðvarfjörður-Breiðdalsvík'), (3842, 'Stöðvarfjörður-Breiðdalsvík')]
+'höfn' matches (19): [(3463, 'Hvalnes-Höfn'), (3369, 'Þvottá-Hvalnes'), (3248, 'Jökulsá-Höfn'), (3196, 'Hvalnes-Höfn'), (3301, 'Djúpivogur-Þvottá'), (3187, 'Jökulsá-Höfn'), (3189, 'Jökulsá-Höfn'), (3222, 'Hvalnes-Höfn'), (3589, 'Djúpivogur-Þvottá'), (3167, 'Þvottá-Hvalnes')]
+'mývatn' matches (8): [(3524, 'Mývatnsheiði'), (1909, 'Mývatnssveit'), (3079, 'Mývatnssveit'), (3416, 'Mývatnsöræfi'), (3420, 'Mývatnsöræfi'), (3393, 'Mývatnsöræfi'), (3498, 'Mývatnsheiði'), (3348, 'Mývatnsöræfi')]
+'akureyri' matches (10): [(3505, 'Akureyri'), (2726, 'Akureyri-Vaðlaheiðargöng'), (2727, 'Akureyri'), (2725, 'Akureyri-Vaðlaheiðargöng'), (2940, 'Ólafsfjarðarvegur-Akureyri'), (2995, 'Ólafsfjarðarvegur-Akureyri'), (33604, 'Akureyri-Vaðlaheiðargöng'), (32964, 'Akureyri-Vaðlaheiðargöng'), (3876, 'Akureyri'), (3504, 'Akureyri')]
+'borgarnes' matches (5): [(2876, 'Borgarnes-Baulan'), (2800, 'Borgarnes-Baulan'), (2819, 'Borgarnes-Baulan'), (2816, 'Borgarnes-Baulan'), (30401, 'Borgarnes-Baulan')]
+
+=== walk south_via_nesjavallaleid (len=184, stop={'reason': 'gap', 'at_idferill': 49281, 'at_end': 'end', 'nearest_unused_distance_m': 2753.106844618444, 'nearest_unused_idferill': 49284}) ===
+   1436 None None  cum=0.0m 
+   1735 Nesjavallaleið - Geirland Geirland - Norðlingavað veghluti=1 cum=1899.4m 
+   2071 Fossvellir-Þrengslavegur Litla-Kaffistofan - Fossvellir veghluti=7 cum=9542.9m 
+   2024 Fossvellir-Þrengslavegur Litla-Kaffistofan - Fossvellir veghluti=7 cum=14238.7m 
+   2117 Hellisheiði til austurs Hringvegur: Selfoss, Eyrarbakkavegur - Litla-Kaffistofan veghluti=7 cum=30812.4m 
+   2135 Selfoss-Hveragerði Hringvegur: Selfoss, Eyrarbakkavegur - Litla-Kaffistofan veghluti=1 cum=41172.7m branches_not_taken=[36807, 36807]
+   2138 Selfoss-Hveragerði Hringvegur: Selfoss, Eyrarbakkavegur - Litla-Kaffistofan veghluti=1 cum=43180.3m branches_not_taken=[52492, 52492]
+   3737 Þjórsá-Selfoss Hringv.: Laugardælavegur - Eyrarbakkavegur veghluti=1 cum=44489.9m branches_not_taken=[8676, 8676]
+   3768 Þjórsá-Selfoss Þjórsá - Selfoss veghluti=1 cum=44746.4m 
+   3767 Þjórsá-Selfoss Þjórsá - Selfoss veghluti=1 cum=58425.4m branches_not_taken=[3454, 3454]
+   3781 Þjórsá-Selfoss Þjórsá - Selfoss veghluti=1 cum=61607.5m 
+   3613 Hella-Þjórsá Hringvegur: Hella - Þjórsa veghluti=1 cum=71847.5m 
+   3614 Hella-Þjórsá Hringvegur: Hella - Þjórsa veghluti=1 cum=75348.2m 
+   3615 Hella-Þjórsá Hringvegur: Hella - Þjórsa veghluti=1 cum=78377.6m 
+   3591 Hella-Þjórsá Hringvegur: Hella - Þjórsa veghluti=1 cum=79209.4m 
+   3638 Hvolsvöllur-Hella Hringvegur: Hvolsvöllur - Hella veghluti=1 cum=84205.4m branches_not_taken=[16641, 16641]
+   3643 Hvolsvöllur-Hella Hringvegur: Hvolsvöllur - Hella veghluti=1 cum=91814.8m 
+   3593 Hvolsvöllur-Hella Hringvegur: Hvolsvöllur - Hella veghluti=1 cum=92094.2m 
+   3555 Hvolsvöllur-Markarfljót Hringvegur: Þórsmerkurvegur - Hvolsvöllur veghluti=1 cum=102219.9m 
+   3576 Hvolsvöllur-Markarfljót Hringvegur: Þórsmerkurvegur - Hvolsvöllur veghluti=1 cum=108230.6m 
+   3639 Hvolsvöllur-Markarfljót Hringvegur: Þórsmerkurvegur - Hvolsvöllur veghluti=1 cum=114132.5m 
+   3848 Markarfljót-Steinar Hringvegur: Sýslumörk - Þórsmerkurvegur veghluti=1 cum=120034.4m 
+   3854 Markarfljót-Steinar Hringvegur: Sýslumörk - Þórsmerkurvegur veghluti=1 cum=129762.3m 
+   3839 Markarfljót-Steinar Hringvegur: Sýslumörk - Þórsmerkurvegur veghluti=1 cum=131581.8m 
+   3853 Dyrhólavegur-Steinar Hringvegur: Dyrhólavegur - Þórsmerkurvegur veghluti=1 cum=133111.4m 
+   3852 Dyrhólavegur-Steinar Hringvegur: Dyrhólavegur - Þórsmerkurvegur veghluti=1 cum=145568.6m 
+   3851 Dyrhólavegur-Steinar Hringvegur: Dyrhólavegur - Þórsmerkurvegur veghluti=1 cum=159771.7m 
+   3850 Reynisfjall Hringvegur um Reynisfjall veghluti=1 cum=171889.4m 
+   3849 Vík Vík veghluti=1 cum=172611.1m 
+   23041 Vík Vík veghluti=1 cum=173240.5m 
+   3736 Mýrdalssandur Hringvegur: Skálm - Vík veghluti=1 cum=184659.1m 
+   2408 Mýrdalssandur Hringvegur: Skálm - Vík veghluti=1 cum=193447.8m 
+   2384 Mýrdalssandur Hringvegur: Skálm - Vík veghluti=1 cum=205535.2m 
+   2312 Skaftárunguvegur-Skálm Skaftárunguvegur - Skálm veghluti=1 cum=211188.2m 
+   2314 Skaftárunguvegur-Skálm Skaftárunguvegur - Skálm veghluti=1 cum=220012.0m 
+   2410 Eldhraun Klausturvegur – Skaftártunguvegur   veghluti=1 cum=230730.4m 
+   2409 Eldhraun Klausturvegur – Skaftártunguvegur   veghluti=1 cum=243870.4m 
+   2313 Klaustur-Núpsstaður Kirkjubæjarklaustur - Skeiðarársandur veghluti=1 cum=255264.1m branches_not_taken=[8675, 8675]
+   1989 Klaustur-Núpsstaður Kirkjubæjarklaustur - Skeiðarársandur veghluti=1 cum=264707.7m 
+   2386 Klaustur-Núpsstaður Kirkjubæjarklaustur - Skeiðarársandur veghluti=1 cum=275824.4m 
+   1964 Klaustur-Núpsstaður Kirkjubæjarklaustur - Skeiðarársandur veghluti=1 cum=284854.8m 
+   3515 Skeiðarársandur Skeiðarársandur - Skaftafell veghluti=1 cum=286315.6m 
+   3516 Skeiðarársandur Skeiðarársandur - Skaftafell veghluti=1 cum=300281.6m 
+   3514 Skeiðarársandur Skeiðarársandur - Skaftafell veghluti=1 cum=310503.0m 
+   3513 Skeiðarársandur Skaftafell - Fagurhólsmýri veghluti=1 cum=313712.8m 
+   3441 Fagurhólsmýri-Freysnes Skaftafell - Fagurhólsmýri veghluti=1 cum=315492.6m 
+   3571 Fagurhólsmýri-Freysnes Skaftafell - Fagurhólsmýri veghluti=1 cum=324240.3m 
+   3130 Fagurhólsmýri-Freysnes Skaftafell - Fagurhólsmýri veghluti=1 cum=333348.6m 
+   3751 Fagurhólsmýri-Kvísker Jökulsárlón - Fagurhólsmýri veghluti=1 cum=345672.6m 
+   3527 Breiðamerkursandur Jökulsárlón - Fagurhólsmýri veghluti=1 cum=354046.9m 
+   3422 Breiðamerkursandur Jökulsárlón - Fagurhólsmýri veghluti=1 cum=364812.4m 
+   3509 Jökulsá-Höfn Hringvegur : Hornafjarðarvegur - Jökulsárlón veghluti=1 cum=376560.5m 
+   3187 Jökulsá-Höfn Hringvegur : Hornafjarðarvegur - Jökulsárlón veghluti=1 cum=387729.1m 
+   3248 Jökulsá-Höfn Hringvegur : Hornafjarðarvegur - Jökulsárlón veghluti=1 cum=398186.5m 
+   3189 Jökulsá-Höfn Hringvegur : Hornafjarðarvegur - Jökulsárlón veghluti=1 cum=413054.6m 
+   55362 Hornafjarðarfljót Hringvegur: Hafnarvegur - Hornafjarðarvegur veghluti=1 cum=426940.1m 
+   3652 Hvalnes-Höfn Djúpivogur - Höfn veghluti=1 cum=434641.0m 
+   3196 Hvalnes-Höfn Djúpivogur - Höfn veghluti=1 cum=435170.9m 
+   3222 Hvalnes-Höfn Almannaskarðsgöng veghluti=1 cum=436480.9m 
+   3630 Hvalnes-Höfn Djúpivogur - Höfn veghluti=1 cum=444601.4m 
+   3701 Hvalnes-Höfn Djúpivogur - Höfn veghluti=1 cum=454818.4m 
+   3463 Hvalnes-Höfn Djúpivogur - Höfn veghluti=1 cum=466049.6m 
+   3625 Hvalnes-Höfn Djúpivogur - Höfn veghluti=1 cum=472566.0m 
+   3369 Þvottá-Hvalnes Djúpivogur - Höfn veghluti=1 cum=479282.2m 
+   3167 Þvottá-Hvalnes Djúpivogur - Höfn veghluti=1 cum=486745.8m 
+   3574 Djúpivogur-Þvottá Djúpivogur - Höfn veghluti=1 cum=486855.8m 
+   3769 Djúpivogur-Þvottá Djúpivogur - Höfn veghluti=1 cum=494509.1m 
+   3301 Djúpivogur-Þvottá Djúpivogur - Höfn veghluti=1 cum=507467.6m 
+   3628 Djúpivogur-Þvottá Djúpivogur - Höfn veghluti=1 cum=515429.5m 
+   3589 Djúpivogur-Þvottá Djúpivogur - Höfn veghluti=1 cum=525637.0m 
+   3106 Streiti - Djúpivogur Fossgerði - Djúpivogur veghluti=1 cum=533583.7m 
+   3302 Streiti - Djúpivogur Fossgerði - Djúpivogur veghluti=1 cum=544296.7m 
+   3265 Streiti - Djúpivogur Fossgerði - Djúpivogur veghluti=1 cum=555034.2m 
+   3263 Streiti - Djúpivogur Fossgerði - Djúpivogur veghluti=1 cum=564409.8m 
+   3261 Streiti - Djúpivogur Skrúðskambur - Fossgerði veghluti=1 cum=575225.2m 
+   3188 Breiðdalsvík-Streiti Breiðdalsvík - Skrúðskambur veghluti=1 cum=584944.9m 
+   3845 Stöðvarfjörður-Breiðdalsvík Stöðvarfjörður - Breiðdalsvík veghluti=1 cum=585167.6m 
+   3832 Stöðvarfjörður-Breiðdalsvík Stöðvarfjörður - Breiðdalsvík veghluti=1 cum=592820.9m 
+   3842 Stöðvarfjörður-Breiðdalsvík Stöðvarfjörður - Breiðdalsvík veghluti=1 cum=602487.8m 
+   3841 Stöðvarfjörður-Breiðdalsvík Stöðvarfjörður - Breiðdalsvík veghluti=1 cum=603727.8m 
+   3831 Fáskrúðsfjörður-Stöðvarfjörður Fáskrúðsfjörður - Stöðvarfjörður veghluti=1 cum=612143.4m 
+   3840 Fáskrúðsfjörður-Stöðvarfjörður Fáskrúðsfjörður - Stöðvarfjörður veghluti=1 cum=616141.2m 
+   3843 Fáskrúðsfjörður-Stöðvarfjörður Fáskrúðsfjörður - Stöðvarfjörður veghluti=1 cum=628605.5m 
+   2536 Fáskrúðsfjörður Reyðarfjörður - Fáskrúðsfjörður veghluti=1 cum=635235.5m 
+   2619 Fáskrúðsfjarðargöng Fáskrúðsfjarðargöng veghluti=1 cum=641125.4m 
+   2520 Reyðarfjörður Reyðarfjörður - Fáskrúðsfjörður veghluti=1 cum=643901.3m 
+   2553 Reyðarfjörður Reyðarfjörður - Fáskrúðsfjörður veghluti=1 cum=645004.5m 
+   2813 Fagridalur Reyðarfjörður - Egilsstaðir veghluti=1 cum=655461.8m 
+   2426 Fagridalur Reyðarfjörður - Egilsstaðir veghluti=1 cum=666607.7m 
+   2814 Fagridalur Reyðarfjörður - Egilsstaðir veghluti=1 cum=675074.3m 
+   2345 Egilsstaðir Hringvegur að Seyðisfjarðarvegi veghluti=1 cum=676001.3m 
+   2347 Egilsstaðir Fellabær - Dagsverk veghluti=1 cum=678522.2m 
+   2349 Egilsstaðir Fellabær veghluti=1 cum=678685.1m 
+   1483 Egilsstaðir Fellabær veghluti=1 cum=680674.5m 
+   3631 Hlíðarvegur-Fellabær Hlíðarvegur - Fellabær (um Heiðarenda) veghluti=1 cum=689930.7m 
+   3440 Hlíðarvegur-Fellabær Hlíðarvegur - Fellabær (um Heiðarenda) veghluti=1 cum=698889.0m 
+   3606 Jökuldalur Jökuldalsv.efri - Hlíðarvegur (um Jökuldal) veghluti=1 cum=710373.4m 
+   3163 Jökuldalur Jökuldalsv.efri - Hlíðarvegur (um Jökuldal) veghluti=1 cum=720049.6m 
+   3184 Jökuldalur Jökuldalsv.efri - Hlíðarvegur (um Jökuldal) veghluti=1 cum=727462.2m 
+   3166 Jökuldalur Jökuldalsv.efri - Hlíðarvegur (um Jökuldal) veghluti=1 cum=728492.6m 
+   3241 Háreksstaðaleið S Norðausturvegur-Jökuldalsv.efri (um Möðrudalsöræfi) veghluti=1 cum=737241.7m 
+   3190 Háreksstaðaleið S Norðausturvegur-Jökuldalsv.efri (um Möðrudalsöræfi) veghluti=1 cum=757138.7m 
+   3264 Háreksstaðaleið N Biskupsháls-Norðausturvegur veghluti=1 cum=769131.8m 
+   3280 Háreksstaðaleið N Biskupsháls-Norðausturvegur veghluti=1 cum=777204.2m 
+   3300 Biskupsháls Hringvegur: Biskupsháls veghluti=1 cum=785873.0m 
+   3322 Biskupsháls Hringvegur: Biskupsháls veghluti=1 cum=793746.9m 
+   3325 Biskupsháls Hringvegur: Biskupsháls veghluti=1 cum=803836.0m 
+   3348 Mývatnsöræfi Reynihlíð - Grímsstaðir veghluti=1 cum=804558.8m 
+   3393 Mývatnsöræfi Reynihlíð - Grímsstaðir veghluti=1 cum=814451.0m 
+   3416 Mývatnsöræfi Reynihlíð - Grímsstaðir veghluti=1 cum=820176.6m 
+   3420 Mývatnsöræfi Reynihlíð - Grímsstaðir veghluti=1 cum=837699.8m 
+   3566 Reykjahlíð Reynihlíð - Grímsstaðir veghluti=1 cum=840396.9m 
+   1909 Mývatnssveit Hringvegur norðan Mývatns veghluti=1 cum=844348.3m 
+   3079 Mývatnssveit Hringvegur norðan Mývatns veghluti=1 cum=856735.5m 
+   3498 Mývatnsheiði Aðaldalsvegur-Mývatnsvegur veghluti=1 cum=869400.9m 
+   3524 Mývatnsheiði Aðaldalsvegur-Mývatnsvegur veghluti=1 cum=879454.2m 
+   2639 Fljótsheiði Norðausturv.-Aðaldalsvegur veghluti=1 cum=889116.2m 
+   2607 Fljótsheiði Norðausturv.-Aðaldalsvegur veghluti=1 cum=893456.7m 
+   3391 Ljósavatnsskarð Vaðlaheiðargöng - Kross veghluti=1 cum=907274.2m 
+   3531 Ljósavatnsskarð Vaðlaheiðargöng - Kross veghluti=1 cum=908113.6m 
+   32965 Ljósavatnsskarð Vaðlaheiðargöng - Kross veghluti=1 cum=910239.1m 
+   32961 Vaðlaheiðargöng Vaðlaheiðargöng veghluti=1 cum=917708.5m 
+   32964 Akureyri-Vaðlaheiðargöng Höepfnerbryggja - Vaðlaheiðargöng veghluti=1 cum=918404.1m 
+   2725 Akureyri-Vaðlaheiðargöng Höepfnerbryggja - Vaðlaheiðargöng veghluti=1 cum=920533.2m 
+   2726 Akureyri-Vaðlaheiðargöng Höepfnerbryggja - Vaðlaheiðargöng veghluti=1 cum=922111.5m 
+   2727 Akureyri Höepfnerbryggja - Vaðlaheiðargöng veghluti=1 cum=922444.9m 
+   3504 Akureyri Tvöfaldi kaflinn - Höfnersbryggja veghluti=1 cum=923286.9m 
+   3505 Akureyri Tvöfaldi kaflinn veghluti=1 cum=924990.8m 
+   3876 Akureyri Hlíðarbraut - Tvöfaldi kaflinn veghluti=1 cum=925802.8m 
+   2940 Ólafsfjarðarvegur-Akureyri Akureyri - Ólafsfjarðarvegur veghluti=1 cum=930763.4m 
+   2995 Ólafsfjarðarvegur-Akureyri Akureyri - Ólafsfjarðarvegur veghluti=1 cum=933752.7m 
+   3015 Öxnadalur Ólafsfjarðarvegur - Fremra-Kot veghluti=1 cum=945222.3m 
+   3016 Öxnadalur Ólafsfjarðarvegur - Fremra-Kot veghluti=1 cum=955830.5m 
+   3275 Öxnadalsheiði Ólafsfjarðarvegur - Fremra-Kot veghluti=1 cum=965715.3m 
+   3258 Öxnadalsheiði Ólafsfjarðarvegur - Fremra-Kot veghluti=1 cum=976182.0m 
+   3233 Öxnadalsheiði Ólafsfjarðarvegur - Fremra-Kot veghluti=1 cum=986812.3m 
+   2718 Kjálkavegur - Fremri-Kot Varmahlíð - Fremra-Kot veghluti=1 cum=996554.0m 
+   2736 Varmahlíð-Kjálkavegur Varmahlíð - Fremra-Kot veghluti=1 cum=1007652.0m 
+   2733 Varmahlíð-Kjálkavegur Varmahlíð - Fremra-Kot veghluti=1 cum=1012978.6m 
+   2734 Varmahlíð-Kjálkavegur Varmahlíð - Fremra-Kot veghluti=1 cum=1017796.0m 
+   2477 Vatnsskarð Varmahlíð veghluti=1 cum=1018551.8m 
+   3238 Vatnsskarð Svínvetningabraut - Varmahlíð veghluti=1 cum=1032689.8m 
+   3237 Vatnsskarð Svínvetningabraut - Varmahlíð veghluti=1 cum=1041588.2m 
+   2478 Langidalur Skagastrandarvegur - Svínvetningabraut veghluti=1 cum=1052896.5m 
+   2456 Langidalur Skagastrandarvegur - Svínvetningabraut veghluti=1 cum=1066967.7m 
+   2423 Langidalur Blönduós (Efstabraut) - Skagastrandarvegur veghluti=1 cum=1067585.5m 
+   3221 Langidalur Blönduós veghluti=1 cum=1068412.9m 
+   2593 Gljúfurá-Blönduós Víðigerði - Blönduós (Efstabraut) veghluti=1 cum=1079805.0m 
+   2594 Gljúfurá-Blönduós Víðigerði - Blönduós (Efstabraut) veghluti=1 cum=1091198.4m 
+   3569 Víðigerði-Gljúfurá Víðigerði - Blönduós (Efstabraut) veghluti=1 cum=1102875.0m 
+   52490 Víðigerði-Gljúfurá Víðigerði - Blönduós (Efstabraut) veghluti=1 cum=1106864.5m 
+   3570 Hvammstangavegur-Víðigerði Hvammstangav. - Víðigerði veghluti=1 cum=1113443.6m 
+   3584 Hvammstangavegur-Víðigerði Hvammstangav. - Víðigerði veghluti=1 cum=1120431.5m 
+   3825 Staðarskáli-Hvammstangavegur Innstrandavegur - Hvammstangavegur veghluti=1 cum=1124496.1m 
+   3826 Staðarskáli-Hvammstangavegur Innstrandavegur - Hvammstangavegur veghluti=1 cum=1136347.8m 
+   3827 Staðarskáli-Hvammstangavegur Innstrandavegur - Hvammstangavegur veghluti=1 cum=1147690.9m 
+   3828 Staðarskáli-Hvammstangavegur Innstrandavegur - Hvammstangavegur veghluti=1 cum=1148595.3m 
+   1481 Holtavörðuheiði Hrútatunguvegur (701) vestari vegamót - Innstrandavegur veghluti=1 cum=1153064.2m 
+   2243 Holtavörðuheiði Holtavörðuheiði, Norðurárdalsvegur - Hrútatunguvegur (701) vestari vegamót veghluti=1 cum=1158572.7m 
+   3408 Holtavörðuheiði Holtavörðuheiði, Norðurárdalsvegur - Hrútatunguvegur (701) vestari vegamót veghluti=1 cum=1169419.8m 
+   3407 Holtavörðuheiði Holtavörðuheiði, Norðurárdalsvegur - Hrútatunguvegur (701) vestari vegamót veghluti=1 cum=1180488.5m 
+   3406 Holtavörðuheiði Holtavörðuheiði, Norðurárdalsvegur - Hrútatunguvegur (701) vestari vegamót veghluti=1 cum=1189498.0m 
+   3103 Baulan-Norðurá Baulan - Norðurárdalsvegur veghluti=1 cum=1200199.4m 
+   2753 Baulan-Norðurá Baulan - Norðurárdalsvegur veghluti=1 cum=1210141.6m 
+   2775 Baulan-Norðurá Baulan - Norðurárdalsvegur veghluti=1 cum=1217882.4m 
+   2800 Borgarnes-Baulan Borgarnes - Baulan veghluti=1 cum=1227000.4m 
+   2816 Borgarnes-Baulan Borgarnes - Baulan veghluti=1 cum=1235585.2m 
+   2819 Borgarnes-Baulan Borgarnes veghluti=1 cum=1236348.3m branches_not_taken=[30401, 30401]
+   2876 Borgarnes-Baulan Borgarnes veghluti=1 cum=1237506.4m 
+   3758 Hafnarfjall Borgarfjarðarbrú veghluti=1 cum=1239981.6m 
+   3757 Hafnarfjall Hafnarfjall veghluti=1 cum=1241958.7m 
+   3756 Hafnarfjall Hafnarfjall veghluti=1 cum=1248380.0m 
+   47042 Hafnarfjall Hafnarfjall veghluti=1 cum=1252512.8m 
+   3741 Melasveit Melasveit veghluti=1 cum=1259998.9m 
+   3740 Melasveit Hvalfjarðarvegur - Grundartangavegur veghluti=1 cum=1261097.8m 
+   3802 Melasveit Hvalfjarðarvegur - Grundartangavegur veghluti=1 cum=1264881.9m 
+   3794 Hvalfjarðargöng-Grundartangi Hvalfjarðargöng - Grundartangavegur veghluti=1 cum=1272010.7m 
+   3796 Hvalfjarðargöng norðanmunni Hvalfjarðarganga veghluti=1 cum=1272509.5m branches_not_taken=[42573, 42573]
+   56002 Hvalfjarðargöng Hvalfjarðargöng veghluti=1 cum=1278298.0m branches_not_taken=[2982]
+   3023 Hvalfjarðargöng sunnanmunni Hvalfjarðarganga veghluti=1 cum=1279238.9m branches_not_taken=[2982]
+   3025 Kjalarnes Þingvallavegur - Hvalfjarðargöng veghluti=1 cum=1282809.3m 
+   49285 Kjalarnes Þingvallavegur - Hvalfjarðargöng veghluti=1 cum=1283979.5m 
+   49282 Kjalarnes Þingvallavegur - Hvalfjarðargöng veghluti=7 cum=1286827.1m branches_not_taken=[49281]
+   49281 Kjalarnes Þingvallavegur - Hvalfjarðargöng veghluti=6 cum=1289687.6m 
+
+=== walk south_via_sudurlandsvegur (len=5, stop={'reason': 'gap', 'at_idferill': 1477, 'at_end': 'start', 'nearest_unused_distance_m': 821.8985335800526, 'nearest_unused_idferill': 1431}) ===
+   1436 None None  cum=0.0m 
+   8677 Suðurlandsv. um Hádegismóa Suðurlandsvegur að Norðlingavaði veghluti=5 cum=127.2m 
+   54723 Suðurlandsv. um Hádegismóa Suðurlandsvegur að Norðlingavaði veghluti=7 cum=957.4m branches_not_taken=[1477]
+   1734 Suðurlandsv. um Hádegismóa Suðurlandsvegur að Norðlingavaði veghluti=5 cum=1119.8m 
+   1477 Suðurlandsv. um Hádegismóa Suðurlandsvegur að Norðlingavaði veghluti=6 cum=1916.5m 

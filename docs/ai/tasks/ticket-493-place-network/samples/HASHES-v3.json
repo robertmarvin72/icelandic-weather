@@ -1,0 +1,50 @@
+[
+ {
+  "path": "rules-addendum-v3.md",
+  "sha256": "391503f45ea034d089a49fe90aedef29f959dd71ad4f789dddd4d721235feded",
+  "size_bytes": 9857,
+  "line_ending": "LF"
+ },
+ {
+  "path": "evidence.md",
+  "sha256": "fc65fb115dd1e1194b478e2fca59a76013a82795b225ff0f13e6705ee0fdc410",
+  "size_bytes": 27354,
+  "line_ending": "LF"
+ },
+ {
+  "path": "place-inventory.csv",
+  "sha256": "e0acd2c2ae57c8313fb226fa47ab707571335de64748f96e80c7b1c5821af7a3",
+  "size_bytes": 14955,
+  "line_ending": "LF"
+ },
+ {
+  "path": "samples/national_inventory_v3.py",
+  "sha256": "3ff5cb52c0f708efdbc979ec5bc3972173e951ab6fd514319ff9b1005e092df5",
+  "size_bytes": 17433,
+  "line_ending": "LF"
+ },
+ {
+  "path": "samples/chain-walks-v3.json",
+  "sha256": "cb47e04cf896d2dc366be1297b561844ce0c97420c6ab4c73adc905c8f0106e8",
+  "size_bytes": 50381,
+  "line_ending": "LF"
+ },
+ {
+  "path": "samples/bridge-summary-v3.json",
+  "sha256": "f9b148d64d2921ffaed8111332b832131acda31cc5f608603aff9c40d5c272e5",
+  "size_bytes": 1653,
+  "line_ending": "LF"
+ },
+ {
+  "path": "samples/national_inventory_v3-output.txt",
+  "sha256": "769c08ac09d63695f7d216b4f345be9435bbc9aee4fcadec94bb134092389263",
+  "size_bytes": 2113,
+  "line_ending": "LF"
+ },
+ {
+  "path": "samples/generate_hashes_v3.py",
+  "sha256": "17ceaa0335575ea0339a98a61b3a496367eabeba36b9b49502f65ab5e9f7ab4b",
+  "size_bytes": 1595,
+  "line_ending": "LF"
+ }
+]

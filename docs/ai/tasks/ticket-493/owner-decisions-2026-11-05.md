@@ -9,3 +9,7 @@ Eftir PASS A-úttektar mælti Ripley með eftirfarandi og eigandi svaraði „Fl
 Engin nákvæm Akureyrar-endahnitatillaga, nýr valstaðalisti, sjálfvirk bilabrúun, greidd þjónusta, dependency eða veitukostnaður er samþykktur sérstaklega með þessu svari. Rannsóknin skal leggja fram slíkar óleystar forsendur sem skýrar tillögur án þess að lýsa þeim sem fyrri samþykkt.
 
 Röð næstu vinnu: fyrst afmörkuð gagnalota `ticket-493-north-data`; síðan sérstakt prompt fyrir samþykkta tímalíkansbreytingu. Aðeins ein lota virk samkvæmt docs/ai/README.md. Fyrri A-lota #493 CLOSED/PASS; heildarmiði áfram ólokinn.
+
+## Akureyrarendi, 2026-11-06
+
+Eigandi samþykkti kost C, endahnút IDFERILL 2940 við 2940 → 3876. Sjá akureyri-endpoint-decision.md. Veðurpunktaval og samsetning leiða bíða sér ákvörðunar.

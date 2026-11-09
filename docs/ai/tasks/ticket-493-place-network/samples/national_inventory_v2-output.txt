@@ -1,0 +1,23 @@
+clockwise: reached 3876? True stop: {'reason': 'stopped_at_target_or_max_steps'}
+clockwise first13 idbutur == #483 reference? True
+clockwise negative-invariant violations: []
+cum at 3876 excl 1436 (m): 925802.8051530912 =  925.8028051530912 km
+cum at 3876 incl 1436 (m): 928362.9548530912 =  928.3629548530912 km
+piece 1436 length (m): 2560.1497
+
+counterclockwise matches #491 reference (29 pieces)? False
+counterclockwise got (first 10): [8677, 54723, 1734, 1477]
+reference (first 10):           [1477, 1431, 42243, 49926, 9923, 9925, 9927, 10242, 2796, 10247]
+divergence at index 0 got 8677 want 1477
+
+Short route (CC-attributed citation):
+  haversine: 70.5664 + 308.6626 = 379.229 km
+  planar:    70.78 + 309.65077 = 380.43077 km
+
+Long route (this round's own fresh walk, planar, incl. 1436): 928.3630 km
+Ring total (short_planar + long_planar_incl_1436, 1436 counted once): 1308.7937 km
+
+Closure test (X4, directed greedy walk, not graph reachability):
+  with 252090037+902020037 REMOVED, walk stop reason: {'reason': 'gap', 'at_idferill': 22725, 'at_end': 'end'}
+  Selfoss-Hveragerði reached in closure walk: False (expect False)
+  sanity check, same walk with graph OPEN, Selfoss reached: True (expect True)

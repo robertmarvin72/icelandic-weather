@@ -1,0 +1,2825 @@
+{
+ "ccw_short": {
+  "start_coord": [
+   365522.0175,
+   402772.762
+  ],
+  "target": [
+   2819,
+   "fwd"
+  ],
+  "total_cost_m": 70846.57343436239,
+  "fallback_2982_required": false,
+  "matches_491_reference_29": true,
+  "negative_violations": [],
+  "steps": [
+   {
+    "idferill": 1477,
+    "idbutur": 914020037,
+    "name": "Suðurlandsv. um Hádegismóa",
+    "veghluti": 6,
+    "direction": "fwd",
+    "entry": [
+     365511.185,
+     402808.546
+    ],
+    "exit": [
+     364815.38,
+     403168.62
+    ],
+    "piece_cost_m": 787.6528,
+    "gap_into_m": 37.387667916698646
+   },
+   {
+    "idferill": 1431,
+    "idbutur": 914020037,
+    "name": "Suðurlandsv. um Hádegismóa",
+    "veghluti": 1,
+    "direction": "fwd",
+    "entry": [
+     364783.23,
+     403190.12
+    ],
+    "exit": [
+     364530.6014,
+     404024.6077
+    ],
+    "piece_cost_m": 913.4188,
+    "gap_into_m": 38.67651095951517
+   },
+   {
+    "idferill": 42243,
+    "idbutur": 914020037,
+    "name": "Suðurlandsv. um Hádegismóa",
+    "veghluti": 6,
+    "direction": "fwd",
+    "entry": [
+     364529.8757,
+     404021.0839
+    ],
+    "exit": [
+     364379.2145,
+     405263.0185
+    ],
+    "piece_cost_m": 1278.098,
+    "gap_into_m": 3.5977502595061908
+   },
+   {
+    "idferill": 49926,
+    "idbutur": 914020037,
+    "name": "Suðurlandsv. um Hádegismóa",
+    "veghluti": 1,
+    "direction": "fwd",
+    "entry": [
+     364380.1477,
+     405259.4325
+    ],
+    "exit": [
+     364310.0491,
+     405428.4975
+    ],
+    "piece_cost_m": 183.6929,
+    "gap_into_m": 3.705436308994961
+   },
+   {
+    "idferill": 9923,
+    "idbutur": 903020037,
+    "name": "Vesturlandsvegur",
+    "veghluti": 6,
+    "direction": "fwd",
+    "entry": [
+     364315.4588,
+     405419.1142
+    ],
+    "exit": [
+     365750.07,
+     406920.23
+    ],
+    "piece_cost_m": 2166.9084,
+    "gap_into_m": 10.83102825127653
+   },
+   {
+    "idferill": 9925,
+    "idbutur": 903020037,
+    "name": "Vesturlandsvegur",
+    "veghluti": 6,
+    "direction": "fwd",
+    "entry": [
+     365766.45,
+     406950.21
+    ],
+    "exit": [
+     366832.5,
+     408500.08
+    ],
+    "piece_cost_m": 1911.4974,
+    "gap_into_m": 34.16291556648123
+   },
+   {
+    "idferill": 9927,
+    "idbutur": 903020037,
+    "name": "Vesturlandsvegur",
+    "veghluti": 6,
+    "direction": "fwd",
+    "entry": [
+     366850.06,
+     408520.0
+    ],
+    "exit": [
+     367470.347,
+     409052.717
+    ],
+    "piece_cost_m": 825.1486,
+    "gap_into_m": 26.554848898068858
+   },
+   {
+    "idferill": 10242,
+    "idbutur": 903020037,
+    "name": "Vesturlandsvegur",
+    "veghluti": 6,
+    "direction": "fwd",
+    "entry": [
+     367496.736,
+     409069.855
+    ],
+    "exit": [
+     368367.314,
+     409712.635
+    ],
+    "piece_cost_m": 1160.0188,
+    "gap_into_m": 31.465701406411526
+   },
+   {
+    "idferill": 2796,
+    "idbutur": 903020037,
+    "name": "Vesturlandsvegur",
+    "veghluti": 1,
+    "direction": "fwd",
+    "entry": [
+     368406.315,
+     409700.5641
+    ],
+    "exit": [
+     369050.488,
+     409740.261
+    ],
+    "piece_cost_m": 678.6146,
+    "gap_into_m": 40.826273743864505
+   },
+   {
+    "idferill": 10247,
+    "idbutur": 903020037,
+    "name": "Vesturlandsvegur",
+    "veghluti": 6,
+    "direction": "fwd",
+    "entry": [
+     369058.623,
+     409756.227
+    ],
+    "exit": [
+     369495.412,
+     409996.251
+    ],
+    "piece_cost_m": 531.3595,
+    "gap_into_m": 17.91902288074401
+   },
+   {
+    "idferill": 2488,
+    "idbutur": 903020037,
+    "name": "Vesturlandsvegur",
+    "veghluti": 6,
+    "direction": "fwd",
+    "entry": [
+     369524.519,
+     410011.082
+    ],
+    "exit": [
+     369884.459,
+     410879.112
+    ],
+    "piece_cost_m": 977.6354,
+    "gap_into_m": 32.66766000187088
+   },
+   {
+    "idferill": 2532,
+    "idbutur": 903030037,
+    "name": "Kjalarnes",
+    "veghluti": 1,
+    "direction": "fwd",
+    "entry": [
+     369876.9665,
+     410919.8825
+    ],
+    "exit": [
+     365883.5639,
+     414670.5343
+    ],
+    "piece_cost_m": 6690.25,
+    "gap_into_m": 41.45324144742609
+   },
+   {
+    "idferill": 30721,
+    "idbutur": 903030037,
+    "name": "Kjalarnes",
+    "veghluti": 6,
+    "direction": "fwd",
+    "entry": [
+     365888.5528,
+     414665.5029
+    ],
+    "exit": [
+     365003.333,
+     415441.989
+    ],
+    "piece_cost_m": 1186.8745,
+    "gap_into_m": 7.085485810425801
+   },
+   {
+    "idferill": 49281,
+    "idbutur": 903030037,
+    "name": "Kjalarnes",
+    "veghluti": 6,
+    "direction": "fwd",
+    "entry": [
+     364977.488,
+     415470.693
+    ],
+    "exit": [
+     363284.959,
+     417592.986
+    ],
+    "piece_cost_m": 2836.1888,
+    "gap_into_m": 38.62490959212858
+   },
+   {
+    "idferill": 49285,
+    "idbutur": 903030037,
+    "name": "Kjalarnes",
+    "veghluti": 1,
+    "direction": "fwd",
+    "entry": [
+     363285.8088,
+     417590.2334
+    ],
+    "exit": [
+     362804.64,
+     418651.23
+    ],
+    "piece_cost_m": 1170.2243,
+    "gap_into_m": 2.8807927380777905
+   },
+   {
+    "idferill": 3025,
+    "idbutur": 903030037,
+    "name": "Kjalarnes",
+    "veghluti": 1,
+    "direction": "fwd",
+    "entry": [
+     362804.64,
+     418651.23
+    ],
+    "exit": [
+     362522.27,
+     422181.62
+    ],
+    "piece_cost_m": 3570.3545,
+    "gap_into_m": 0.0
+   },
+   {
+    "idferill": 3023,
+    "idbutur": 904690037,
+    "name": "Hvalfjarðargöng",
+    "veghluti": 1,
+    "direction": "fwd",
+    "entry": [
+     362522.27,
+     422181.62
+    ],
+    "exit": [
+     362520.27,
+     423091.755
+    ],
+    "piece_cost_m": 940.944,
+    "gap_into_m": 0.0
+   },
+   {
+    "idferill": 56002,
+    "idbutur": 904690037,
+    "name": "Hvalfjarðargöng",
+    "veghluti": 1,
+    "direction": "fwd",
+    "entry": [
+     362520.27,
+     423091.755
+    ],
+    "exit": [
+     359537.73,
+     426271.36
+    ],
+    "piece_cost_m": 5788.4444,
+    "gap_into_m": 0.0
+   },
+   {
+    "idferill": 3796,
+    "idbutur": 904690037,
+    "name": "Hvalfjarðargöng",
+    "veghluti": 1,
+    "direction": "fwd",
+    "entry": [
+     359537.73,
+     426271.36
+    ],
+    "exit": [
+     359141.3289,
+     426125.7452
+    ],
+    "piece_cost_m": 471.1986,
+    "gap_into_m": 0.0
+   },
+   {
+    "idferill": 3794,
+    "idbutur": 904000037,
+    "name": "Hvalfjarðargöng-Grundartangi",
+    "veghluti": 1,
+    "direction": "fwd",
+    "entry": [
+     359129.5,
+     426150.7
+    ],
+    "exit": [
+     364309.9757,
+     430752.1494
+    ],
+    "piece_cost_m": 7128.8253,
+    "gap_into_m": 27.616388580892792
+   },
+   {
+    "idferill": 3802,
+    "idbutur": 904010037,
+    "name": "Melasveit",
+    "veghluti": 1,
+    "direction": "fwd",
+    "entry": [
+     364309.9757,
+     430752.1494
+    ],
+    "exit": [
+     362442.6,
+     433713.96
+    ],
+    "piece_cost_m": 3784.0426,
+    "gap_into_m": 0.0
+   },
+   {
+    "idferill": 3740,
+    "idbutur": 904010037,
+    "name": "Melasveit",
+    "veghluti": 1,
+    "direction": "fwd",
+    "entry": [
+     362442.6,
+     433713.96
+    ],
+    "exit": [
+     362688.94,
+     434739.39
+    ],
+    "piece_cost_m": 1098.9122,
+    "gap_into_m": 0.0
+   },
+   {
+    "idferill": 3741,
+    "idbutur": 904010037,
+    "name": "Melasveit",
+    "veghluti": 1,
+    "direction": "fwd",
+    "entry": [
+     362688.94,
+     434739.39
+    ],
+    "exit": [
+     357621.5519,
+     439559.3877
+    ],
+    "piece_cost_m": 7486.1576,
+    "gap_into_m": 0.0
+   },
+   {
+    "idferill": 47042,
+    "idbutur": 804020037,
+    "name": "Hafnarfjall",
+    "veghluti": 1,
+    "direction": "fwd",
+    "entry": [
+     357621.5519,
+     439559.3877
+    ],
+    "exit": [
+     357463.15,
+     443687.17
+    ],
+    "piece_cost_m": 4132.7665,
+    "gap_into_m": 0.0
+   },
+   {
+    "idferill": 3756,
+    "idbutur": 804020037,
+    "name": "Hafnarfjall",
+    "veghluti": 1,
+    "direction": "fwd",
+    "entry": [
+     357463.15,
+     443687.17
+    ],
+    "exit": [
+     360686.6249,
+     448849.1244
+    ],
+    "piece_cost_m": 6421.2838,
+    "gap_into_m": 0.0
+   },
+   {
+    "idferill": 3757,
+    "idbutur": 804020037,
+    "name": "Hafnarfjall",
+    "veghluti": 1,
+    "direction": "fwd",
+    "entry": [
+     360686.6249,
+     448849.1244
+    ],
+    "exit": [
+     361620.09,
+     450417.43
+    ],
+    "piece_cost_m": 1977.1306,
+    "gap_into_m": 0.0
+   },
+   {
+    "idferill": 3758,
+    "idbutur": 804020037,
+    "name": "Hafnarfjall",
+    "veghluti": 1,
+    "direction": "fwd",
+    "entry": [
+     361620.09,
+     450417.43
+    ],
+    "exit": [
+     360414.21,
+     452447.79
+    ],
+    "piece_cost_m": 2475.167,
+    "gap_into_m": 0.0
+   },
+   {
+    "idferill": 2876,
+    "idbutur": 904040037,
+    "name": "Borgarnes-Baulan",
+    "veghluti": 1,
+    "direction": "fwd",
+    "entry": [
+     360414.21,
+     452447.79
+    ],
+    "exit": [
+     360755.24,
+     453516.21
+    ],
+    "piece_cost_m": 1158.1115,
+    "gap_into_m": 0.0
+   },
+   {
+    "idferill": 2819,
+    "idbutur": 904040037,
+    "name": "Borgarnes-Baulan",
+    "veghluti": 1,
+    "direction": "fwd",
+    "entry": [
+     360755.24,
+     453516.21
+    ],
+    "exit": [
+     361119.191,
+     454127.5752
+    ],
+    "piece_cost_m": 720.1964,
+    "gap_into_m": 0.0
+   }
+  ],
+  "bridge_summary_491_only": {
+   "nonzero_count": 16,
+   "bands": {
+    "contact_100m": 10,
+    "contact_5m": 3,
+    "contact_25m": 3
+   },
+   "highest_m": 41.45324144742609,
+   "all_gaps_m": [
+    2.8807927380777905,
+    3.5977502595061908,
+    3.705436308994961,
+    7.085485810425801,
+    10.83102825127653,
+    17.91902288074401,
+    26.554848898068858,
+    27.616388580892792,
+    31.465701406411526,
+    32.66766000187088,
+    34.16291556648123,
+    37.387667916698646,
+    38.62490959212858,
+    38.67651095951517,
+    40.826273743864505,
+    41.45324144742609
+   ]
+  },
+  "bridge_summary_full_with_roundabout_seams": {
+   "nonzero_count": 18,
+   "bands": {
+    "contact_100m": 11,
+    "contact_5m": 4,
+    "contact_25m": 3
+   },
+   "highest_m": 42.8409,
+   "all_gaps_m": [
+    1.7704,
+    2.8807927380777905,
+    3.5977502595061908,
+    3.705436308994961,
+    7.085485810425801,
+    10.83102825127653,
+    17.91902288074401,
+    26.554848898068858,
+    27.616388580892792,
+    31.465701406411526,
+    32.66766000187088,
+    34.16291556648123,
+    37.387667916698646,
+    38.62490959212858,
+    38.67651095951517,
+    40.826273743864505,
+    41.45324144742609,
+    42.8409
+   ]
+  }
+ },
+ "cw_long": {
+  "start_coord": [
+   365522.0175,
+   402772.762
+  ],
+  "target": [
+   3876,
+   "rev"
+  ],
+  "total_cost_m_excl_1436": 925802.8051530912,
+  "total_cost_m_incl_1436": 928362.9548530912,
+  "piece_1436_length_m": 2560.1497,
+  "matches_483_reference_first13_idbutur": true,
+  "negative_violations": [],
+  "steps": [
+   {
+    "idferill": 1436,
+    "idbutur": 1410010037,
+    "name": "Rauðavatn - Nesjavallaleið",
+    "veghluti": 1,
+    "direction": "rev",
+    "entry": [
+     365522.0175,
+     402772.762
+    ],
+    "exit": [
+     367768.94,
+     401667.09
+    ],
+    "piece_cost_m": 2560.1497,
+    "gap_into_m": 0.0
+   },
+   {
+    "idferill": 1735,
+    "idbutur": 903010037,
+    "name": "Nesjavallaleið - Geirland",
+    "veghluti": 1,
+    "direction": "rev",
+    "entry": [
+     367768.94,
+     401667.09
+    ],
+    "exit": [
+     369350.568,
+     400623.6659
+    ],
+    "piece_cost_m": 1899.4375,
+    "gap_into_m": 0.0
+   },
+   {
+    "idferill": 2071,
+    "idbutur": 253020037,
+    "name": "Fossvellir-Þrengslavegur",
+    "veghluti": 7,
+    "direction": "fwd",
+    "entry": [
+     369350.3714,
+     400623.7933
+    ],
+    "exit": [
+     376301.2834,
+     397586.9871
+    ],
+    "piece_cost_m": 7643.1889,
+    "gap_into_m": 0.23426975905806502
+   },
+   {
+    "idferill": 2024,
+    "idbutur": 253020037,
+    "name": "Fossvellir-Þrengslavegur",
+    "veghluti": 7,
+    "direction": "fwd",
+    "entry": [
+     376301.2834,
+     397586.9871
+    ],
+    "exit": [
+     380053.5716,
+     395170.5039
+    ],
+    "piece_cost_m": 4695.8733,
+    "gap_into_m": 0.0
+   },
+   {
+    "idferill": 2117,
+    "idbutur": 252090037,
+    "name": "Hellisheiði til austurs",
+    "veghluti": 7,
+    "direction": "fwd",
+    "entry": [
+     380053.5716,
+     395170.5039
+    ],
+    "exit": [
+     392674.357,
+     389846.132
+    ],
+    "piece_cost_m": 16573.7043,
+    "gap_into_m": 0.0
+   },
+   {
+    "idferill": 2135,
+    "idbutur": 902030037,
+    "name": "Selfoss-Hveragerði",
+    "veghluti": 1,
+    "direction": "rev",
+    "entry": [
+     392703.5,
+     389865.057
+    ],
+    "exit": [
+     400974.332,
+     384785.129
+    ],
+    "piece_cost_m": 10325.5606,
+    "gap_into_m": 34.74867010402701
+   },
+   {
+    "idferill": 2138,
+    "idbutur": 902030037,
+    "name": "Selfoss-Hveragerði",
+    "veghluti": 1,
+    "direction": "rev",
+    "entry": [
+     400974.332,
+     384785.129
+    ],
+    "exit": [
+     401739.85,
+     383119.047
+    ],
+    "piece_cost_m": 2007.563,
+    "gap_into_m": 0.0
+   },
+   {
+    "idferill": 3737,
+    "idbutur": 902040037,
+    "name": "Þjórsá-Selfoss",
+    "veghluti": 1,
+    "direction": "rev",
+    "entry": [
+     401763.6867,
+     383100.6726
+    ],
+    "exit": [
+     403016.8402,
+     383178.3789
+    ],
+    "piece_cost_m": 1279.4979,
+    "gap_into_m": 30.09662509739531
+   },
+   {
+    "idferill": 3768,
+    "idbutur": 902040037,
+    "name": "Þjórsá-Selfoss",
+    "veghluti": 1,
+    "direction": "rev",
+    "entry": [
+     403016.8402,
+     383178.3789
+    ],
+    "exit": [
+     403269.528,
+     383219.0345
+    ],
+    "piece_cost_m": 256.5122,
+    "gap_into_m": 0.0
+   },
+   {
+    "idferill": 3767,
+    "idbutur": 902040037,
+    "name": "Þjórsá-Selfoss",
+    "veghluti": 1,
+    "direction": "rev",
+    "entry": [
+     403311.6927,
+     383222.4427
+    ],
+    "exit": [
+     416754.8471,
+     384396.104
+    ],
+    "piece_cost_m": 13636.6974,
+    "gap_into_m": 42.30221924830867
+   },
+   {
+    "idferill": 3781,
+    "idbutur": 902040037,
+    "name": "Þjórsá-Selfoss",
+    "veghluti": 1,
+    "direction": "rev",
+    "entry": [
+     416754.8471,
+     384396.104
+    ],
+    "exit": [
+     418302.2477,
+     381814.9441
+    ],
+    "piece_cost_m": 3182.1042,
+    "gap_into_m": 0.0
+   },
+   {
+    "idferill": 3613,
+    "idbutur": 901130037,
+    "name": "Hella-Þjórsá",
+    "veghluti": 1,
+    "direction": "rev",
+    "entry": [
+     418302.2477,
+     381814.9441
+    ],
+    "exit": [
+     426188.183,
+     375928.946
+    ],
+    "piece_cost_m": 10239.9413,
+    "gap_into_m": 0.0
+   },
+   {
+    "idferill": 3614,
+    "idbutur": 901130037,
+    "name": "Hella-Þjórsá",
+    "veghluti": 1,
+    "direction": "rev",
+    "entry": [
+     426188.183,
+     375928.946
+    ],
+    "exit": [
+     429082.0653,
+     374156.5108
+    ],
+    "piece_cost_m": 3500.7273,
+    "gap_into_m": 0.0
+   },
+   {
+    "idferill": 3615,
+    "idbutur": 901130037,
+    "name": "Hella-Þjórsá",
+    "veghluti": 1,
+    "direction": "rev",
+    "entry": [
+     429082.0653,
+     374156.5108
+    ],
+    "exit": [
+     430713.0138,
+     371613.8204
+    ],
+    "piece_cost_m": 3029.4447,
+    "gap_into_m": 0.0
+   },
+   {
+    "idferill": 3591,
+    "idbutur": 901130037,
+    "name": "Hella-Þjórsá",
+    "veghluti": 1,
+    "direction": "rev",
+    "entry": [
+     430713.0138,
+     371613.8204
+    ],
+    "exit": [
+     430972.1263,
+     370845.6043
+    ],
+    "piece_cost_m": 831.7699,
+    "gap_into_m": 0.0
+   },
+   {
+    "idferill": 3638,
+    "idbutur": 901230037,
+    "name": "Hvolsvöllur-Hella",
+    "veghluti": 1,
+    "direction": "rev",
+    "entry": [
+     430988.4981,
+     370817.3787
+    ],
+    "exit": [
+     434476.6203,
+     367463.5804
+    ],
+    "piece_cost_m": 4963.4012,
+    "gap_into_m": 32.630052568162306
+   },
+   {
+    "idferill": 3643,
+    "idbutur": 901230037,
+    "name": "Hvolsvöllur-Hella",
+    "veghluti": 1,
+    "direction": "rev",
+    "entry": [
+     434476.6203,
+     367463.5804
+    ],
+    "exit": [
+     439003.2622,
+     361386.4806
+    ],
+    "piece_cost_m": 7609.3155,
+    "gap_into_m": 0.0
+   },
+   {
+    "idferill": 3593,
+    "idbutur": 901230037,
+    "name": "Hvolsvöllur-Hella",
+    "veghluti": 1,
+    "direction": "rev",
+    "entry": [
+     439003.2622,
+     361386.4806
+    ],
+    "exit": [
+     439152.9219,
+     361150.6361
+    ],
+    "piece_cost_m": 279.4476,
+    "gap_into_m": 0.0
+   },
+   {
+    "idferill": 3555,
+    "idbutur": 901220037,
+    "name": "Hvolsvöllur-Markarfljót",
+    "veghluti": 1,
+    "direction": "rev",
+    "entry": [
+     439152.9219,
+     361150.6361
+    ],
+    "exit": [
+     443360.3903,
+     352811.4513
+    ],
+    "piece_cost_m": 10125.7189,
+    "gap_into_m": 0.0
+   },
+   {
+    "idferill": 3576,
+    "idbutur": 901220037,
+    "name": "Hvolsvöllur-Markarfljót",
+    "veghluti": 1,
+    "direction": "rev",
+    "entry": [
+     443360.3903,
+     352811.4513
+    ],
+    "exit": [
+     447906.9689,
+     348976.5225
+    ],
+    "piece_cost_m": 6010.71,
+    "gap_into_m": 0.0
+   },
+   {
+    "idferill": 3639,
+    "idbutur": 901220037,
+    "name": "Hvolsvöllur-Markarfljót",
+    "veghluti": 1,
+    "direction": "rev",
+    "entry": [
+     447906.9689,
+     348976.5225
+    ],
+    "exit": [
+     451334.9263,
+     344299.0803
+    ],
+    "piece_cost_m": 5901.8715,
+    "gap_into_m": 0.0
+   },
+   {
+    "idferill": 3848,
+    "idbutur": 901210037,
+    "name": "Markarfljót-Steinar",
+    "veghluti": 1,
+    "direction": "rev",
+    "entry": [
+     451334.9263,
+     344299.0803
+    ],
+    "exit": [
+     456294.1714,
+     341230.2456
+    ],
+    "piece_cost_m": 5901.8974,
+    "gap_into_m": 0.0
+   },
+   {
+    "idferill": 3854,
+    "idbutur": 901210037,
+    "name": "Markarfljót-Steinar",
+    "veghluti": 1,
+    "direction": "rev",
+    "entry": [
+     456294.1714,
+     341230.2456
+    ],
+    "exit": [
+     465221.1912,
+     337777.3847
+    ],
+    "piece_cost_m": 9727.9518,
+    "gap_into_m": 0.0
+   },
+   {
+    "idferill": 3839,
+    "idbutur": 901210037,
+    "name": "Markarfljót-Steinar",
+    "veghluti": 1,
+    "direction": "rev",
+    "entry": [
+     465221.1912,
+     337777.3847
+    ],
+    "exit": [
+     467019.1662,
+     337720.6296
+    ],
+    "piece_cost_m": 1819.4649,
+    "gap_into_m": 0.0
+   },
+   {
+    "idferill": 3853,
+    "idbutur": 901050037,
+    "name": "Dyrhólavegur-Steinar",
+    "veghluti": 1,
+    "direction": "rev",
+    "entry": [
+     467019.1662,
+     337720.6296
+    ],
+    "exit": [
+     468268.1562,
+     336866.5939
+    ],
+    "piece_cost_m": 1529.619,
+    "gap_into_m": 0.0
+   },
+   {
+    "idferill": 3852,
+    "idbutur": 901050037,
+    "name": "Dyrhólavegur-Steinar",
+    "veghluti": 1,
+    "direction": "rev",
+    "entry": [
+     468268.1562,
+     336866.5939
+    ],
+    "exit": [
+     479770.8197,
+     332810.4508
+    ],
+    "piece_cost_m": 12457.1439,
+    "gap_into_m": 0.0
+   },
+   {
+    "idferill": 3851,
+    "idbutur": 901050037,
+    "name": "Dyrhólavegur-Steinar",
+    "veghluti": 1,
+    "direction": "rev",
+    "entry": [
+     479770.8197,
+     332810.4508
+    ],
+    "exit": [
+     490977.537,
+     325147.5638
+    ],
+    "piece_cost_m": 14203.1568,
+    "gap_into_m": 0.0
+   },
+   {
+    "idferill": 3850,
+    "idbutur": 901040037,
+    "name": "Reynisfjall",
+    "veghluti": 1,
+    "direction": "rev",
+    "entry": [
+     490977.537,
+     325147.5638
+    ],
+    "exit": [
+     499391.9569,
+     323996.9084
+    ],
+    "piece_cost_m": 12117.6729,
+    "gap_into_m": 0.0
+   },
+   {
+    "idferill": 3849,
+    "idbutur": 801100037,
+    "name": "Vík",
+    "veghluti": 1,
+    "direction": "rev",
+    "entry": [
+     499391.9569,
+     323996.9084
+    ],
+    "exit": [
+     499985.9121,
+     323611.5093
+    ],
+    "piece_cost_m": 721.6703,
+    "gap_into_m": 0.0
+   },
+   {
+    "idferill": 23041,
+    "idbutur": 801100037,
+    "name": "Vík",
+    "veghluti": 1,
+    "direction": "rev",
+    "entry": [
+     499985.9121,
+     323611.5093
+    ],
+    "exit": [
+     500595.9636,
+     323618.2012
+    ],
+    "piece_cost_m": 629.4483,
+    "gap_into_m": 0.0
+   },
+   {
+    "idferill": 3736,
+    "idbutur": 901030037,
+    "name": "Mýrdalssandur",
+    "veghluti": 1,
+    "direction": "rev",
+    "entry": [
+     500595.9636,
+     323618.2012
+    ],
+    "exit": [
+     511454.8773,
+     326026.2595
+    ],
+    "piece_cost_m": 11418.5377,
+    "gap_into_m": 0.0
+   },
+   {
+    "idferill": 2408,
+    "idbutur": 901030037,
+    "name": "Mýrdalssandur",
+    "veghluti": 1,
+    "direction": "rev",
+    "entry": [
+     511454.8773,
+     326026.2595
+    ],
+    "exit": [
+     519621.7374,
+     328937.3186
+    ],
+    "piece_cost_m": 8788.7433,
+    "gap_into_m": 0.0
+   },
+   {
+    "idferill": 2384,
+    "idbutur": 901030037,
+    "name": "Mýrdalssandur",
+    "veghluti": 1,
+    "direction": "rev",
+    "entry": [
+     519621.7374,
+     328937.3186
+    ],
+    "exit": [
+     527258.9377,
+     337891.1346
+    ],
+    "piece_cost_m": 12087.4095,
+    "gap_into_m": 0.0
+   },
+   {
+    "idferill": 2312,
+    "idbutur": 801040037,
+    "name": "Skaftárunguvegur-Skálm",
+    "veghluti": 1,
+    "direction": "rev",
+    "entry": [
+     527258.9377,
+     337891.1346
+    ],
+    "exit": [
+     526687.2006,
+     343352.8231
+    ],
+    "piece_cost_m": 5653.0143,
+    "gap_into_m": 0.0
+   },
+   {
+    "idferill": 2314,
+    "idbutur": 801040037,
+    "name": "Skaftárunguvegur-Skálm",
+    "veghluti": 1,
+    "direction": "rev",
+    "entry": [
+     526687.2006,
+     343352.8231
+    ],
+    "exit": [
+     529325.4573,
+     351621.0614
+    ],
+    "piece_cost_m": 8823.7695,
+    "gap_into_m": 0.0
+   },
+   {
+    "idferill": 2410,
+    "idbutur": 901020037,
+    "name": "Eldhraun",
+    "veghluti": 1,
+    "direction": "rev",
+    "entry": [
+     529325.4573,
+     351621.0614
+    ],
+    "exit": [
+     537926.6736,
+     357918.2806
+    ],
+    "piece_cost_m": 10718.3647,
+    "gap_into_m": 0.0
+   },
+   {
+    "idferill": 2409,
+    "idbutur": 901020037,
+    "name": "Eldhraun",
+    "veghluti": 1,
+    "direction": "rev",
+    "entry": [
+     537926.6736,
+     357918.2806
+    ],
+    "exit": [
+     547321.41,
+     365958.947
+    ],
+    "piece_cost_m": 13140.0153,
+    "gap_into_m": 0.0
+   },
+   {
+    "idferill": 2313,
+    "idbutur": 901010037,
+    "name": "Klaustur-Núpsstaður",
+    "veghluti": 1,
+    "direction": "rev",
+    "entry": [
+     547336.4823,
+     365988.029
+    ],
+    "exit": [
+     555492.52,
+     372655.2339
+    ],
+    "piece_cost_m": 11361.0155,
+    "gap_into_m": 32.75571631470905
+   },
+   {
+    "idferill": 1989,
+    "idbutur": 901010037,
+    "name": "Klaustur-Núpsstaður",
+    "veghluti": 1,
+    "direction": "rev",
+    "entry": [
+     555492.52,
+     372655.2339
+    ],
+    "exit": [
+     562108.8152,
+     378044.612
+    ],
+    "piece_cost_m": 9443.5919,
+    "gap_into_m": 0.0
+   },
+   {
+    "idferill": 2386,
+    "idbutur": 901010037,
+    "name": "Klaustur-Núpsstaður",
+    "veghluti": 1,
+    "direction": "rev",
+    "entry": [
+     562108.8152,
+     378044.612
+    ],
+    "exit": [
+     569810.855,
+     384471.7515
+    ],
+    "piece_cost_m": 11116.6367,
+    "gap_into_m": 0.0
+   },
+   {
+    "idferill": 1964,
+    "idbutur": 901010037,
+    "name": "Klaustur-Núpsstaður",
+    "veghluti": 1,
+    "direction": "rev",
+    "entry": [
+     569810.855,
+     384471.7515
+    ],
+    "exit": [
+     578608.06,
+     383427.72
+    ],
+    "piece_cost_m": 9030.4503,
+    "gap_into_m": 0.0
+   },
+   {
+    "idferill": 3515,
+    "idbutur": 912090037,
+    "name": "Skeiðarársandur",
+    "veghluti": 1,
+    "direction": "rev",
+    "entry": [
+     578608.06,
+     383427.72
+    ],
+    "exit": [
+     579960.5916,
+     382876.0064
+    ],
+    "piece_cost_m": 1460.7291,
+    "gap_into_m": 0.0
+   },
+   {
+    "idferill": 3516,
+    "idbutur": 912090037,
+    "name": "Skeiðarársandur",
+    "veghluti": 1,
+    "direction": "rev",
+    "entry": [
+     579960.5916,
+     382876.0064
+    ],
+    "exit": [
+     592717.4336,
+     386827.4195
+    ],
+    "piece_cost_m": 13966.0313,
+    "gap_into_m": 0.0
+   },
+   {
+    "idferill": 3514,
+    "idbutur": 912090037,
+    "name": "Skeiðarársandur",
+    "veghluti": 1,
+    "direction": "rev",
+    "entry": [
+     592717.4336,
+     386827.4195
+    ],
+    "exit": [
+     600573.7864,
+     390763.984
+    ],
+    "piece_cost_m": 10221.4492,
+    "gap_into_m": 0.0
+   },
+   {
+    "idferill": 3513,
+    "idbutur": 912090037,
+    "name": "Skeiðarársandur",
+    "veghluti": 1,
+    "direction": "rev",
+    "entry": [
+     600573.7864,
+     390763.984
+    ],
+    "exit": [
+     603052.7917,
+     389153.0427
+    ],
+    "piece_cost_m": 3209.7992,
+    "gap_into_m": 0.0
+   },
+   {
+    "idferill": 3441,
+    "idbutur": 812090037,
+    "name": "Fagurhólsmýri-Freysnes",
+    "veghluti": 1,
+    "direction": "rev",
+    "entry": [
+     603052.7917,
+     389153.0427
+    ],
+    "exit": [
+     604408.8776,
+     388080.8518
+    ],
+    "piece_cost_m": 1779.7731,
+    "gap_into_m": 0.0
+   },
+   {
+    "idferill": 3571,
+    "idbutur": 812090037,
+    "name": "Fagurhólsmýri-Freysnes",
+    "veghluti": 1,
+    "direction": "rev",
+    "entry": [
+     604408.8776,
+     388080.8518
+    ],
+    "exit": [
+     608866.6283,
+     381556.8698
+    ],
+    "piece_cost_m": 8747.703,
+    "gap_into_m": 0.0
+   },
+   {
+    "idferill": 3130,
+    "idbutur": 812090037,
+    "name": "Fagurhólsmýri-Freysnes",
+    "veghluti": 1,
+    "direction": "rev",
+    "entry": [
+     608866.6283,
+     381556.8698
+    ],
+    "exit": [
+     615878.6387,
+     377385.3536
+    ],
+    "piece_cost_m": 9108.2572,
+    "gap_into_m": 0.0
+   },
+   {
+    "idferill": 3751,
+    "idbutur": 912080037,
+    "name": "Fagurhólsmýri-Kvísker",
+    "veghluti": 1,
+    "direction": "rev",
+    "entry": [
+     615878.6387,
+     377385.3536
+    ],
+    "exit": [
+     625826.6636,
+     384081.1425
+    ],
+    "piece_cost_m": 12324.0325,
+    "gap_into_m": 0.0
+   },
+   {
+    "idferill": 3527,
+    "idbutur": 912070037,
+    "name": "Breiðamerkursandur",
+    "veghluti": 1,
+    "direction": "rev",
+    "entry": [
+     625826.6636,
+     384081.1425
+    ],
+    "exit": [
+     628734.5602,
+     391631.9609
+    ],
+    "piece_cost_m": 8374.2994,
+    "gap_into_m": 0.0
+   },
+   {
+    "idferill": 3422,
+    "idbutur": 912070037,
+    "name": "Breiðamerkursandur",
+    "veghluti": 1,
+    "direction": "rev",
+    "entry": [
+     628734.5602,
+     391631.9609
+    ],
+    "exit": [
+     637624.3145,
+     396634.4505
+    ],
+    "piece_cost_m": 10765.4739,
+    "gap_into_m": 0.0
+   },
+   {
+    "idferill": 3509,
+    "idbutur": 912060037,
+    "name": "Jökulsá-Höfn",
+    "veghluti": 1,
+    "direction": "rev",
+    "entry": [
+     637624.3145,
+     396634.4505
+    ],
+    "exit": [
+     643263.0779,
+     406426.8622
+    ],
+    "piece_cost_m": 11748.152,
+    "gap_into_m": 0.0
+   },
+   {
+    "idferill": 3187,
+    "idbutur": 912060037,
+    "name": "Jökulsá-Höfn",
+    "veghluti": 1,
+    "direction": "rev",
+    "entry": [
+     643263.0779,
+     406426.8622
+    ],
+    "exit": [
+     652094.2218,
+     412156.0245
+    ],
+    "piece_cost_m": 11168.5828,
+    "gap_into_m": 0.0
+   },
+   {
+    "idferill": 3248,
+    "idbutur": 912060037,
+    "name": "Jökulsá-Höfn",
+    "veghluti": 1,
+    "direction": "rev",
+    "entry": [
+     652094.2218,
+     412156.0245
+    ],
+    "exit": [
+     659604.7537,
+     416671.0607
+    ],
+    "piece_cost_m": 10457.3876,
+    "gap_into_m": 0.0
+   },
+   {
+    "idferill": 3189,
+    "idbutur": 912060037,
+    "name": "Jökulsá-Höfn",
+    "veghluti": 1,
+    "direction": "rev",
+    "entry": [
+     659604.7537,
+     416671.0607
+    ],
+    "exit": [
+     670857.3099,
+     424587.2466
+    ],
+    "piece_cost_m": 14868.1273,
+    "gap_into_m": 0.0
+   },
+   {
+    "idferill": 55362,
+    "idbutur": 812050037,
+    "name": "Hornafjarðarfljót",
+    "veghluti": 1,
+    "direction": "rev",
+    "entry": [
+     670857.3099,
+     424587.2466
+    ],
+    "exit": [
+     684051.542,
+     425099.504
+    ],
+    "piece_cost_m": 13885.4674,
+    "gap_into_m": 0.0
+   },
+   {
+    "idferill": 3652,
+    "idbutur": 912040037,
+    "name": "Hvalnes-Höfn",
+    "veghluti": 1,
+    "direction": "rev",
+    "entry": [
+     684051.542,
+     425099.504
+    ],
+    "exit": [
+     691165.6782,
+     426104.3012
+    ],
+    "piece_cost_m": 7700.8793,
+    "gap_into_m": 0.0
+   },
+   {
+    "idferill": 3196,
+    "idbutur": 912040037,
+    "name": "Hvalnes-Höfn",
+    "veghluti": 1,
+    "direction": "rev",
+    "entry": [
+     691165.6782,
+     426104.3012
+    ],
+    "exit": [
+     691685.5386,
+     426042.1612
+    ],
+    "piece_cost_m": 529.9763,
+    "gap_into_m": 0.0
+   },
+   {
+    "idferill": 3222,
+    "idbutur": 912040037,
+    "name": "Hvalnes-Höfn",
+    "veghluti": 1,
+    "direction": "rev",
+    "entry": [
+     691685.5386,
+     426042.1612
+    ],
+    "exit": [
+     692196.7167,
+     427092.4586
+    ],
+    "piece_cost_m": 1309.9889,
+    "gap_into_m": 0.0
+   },
+   {
+    "idferill": 3630,
+    "idbutur": 912040037,
+    "name": "Hvalnes-Höfn",
+    "veghluti": 1,
+    "direction": "rev",
+    "entry": [
+     692196.7167,
+     427092.4586
+    ],
+    "exit": [
+     696687.6405,
+     433328.0975
+    ],
+    "piece_cost_m": 8120.4389,
+    "gap_into_m": 0.0
+   },
+   {
+    "idferill": 3701,
+    "idbutur": 912040037,
+    "name": "Hvalnes-Höfn",
+    "veghluti": 1,
+    "direction": "rev",
+    "entry": [
+     696687.6405,
+     433328.0975
+    ],
+    "exit": [
+     698966.3918,
+     441821.8683
+    ],
+    "piece_cost_m": 10217.0147,
+    "gap_into_m": 0.0
+   },
+   {
+    "idferill": 3463,
+    "idbutur": 912040037,
+    "name": "Hvalnes-Höfn",
+    "veghluti": 1,
+    "direction": "rev",
+    "entry": [
+     698966.3918,
+     441821.8683
+    ],
+    "exit": [
+     708376.3114,
+     444215.7696
+    ],
+    "piece_cost_m": 11231.2077,
+    "gap_into_m": 0.0
+   },
+   {
+    "idferill": 3625,
+    "idbutur": 912040037,
+    "name": "Hvalnes-Höfn",
+    "veghluti": 1,
+    "direction": "rev",
+    "entry": [
+     708376.3114,
+     444215.7696
+    ],
+    "exit": [
+     713963.0089,
+     441775.0701
+    ],
+    "piece_cost_m": 6516.4145,
+    "gap_into_m": 0.0
+   },
+   {
+    "idferill": 3369,
+    "idbutur": 912030037,
+    "name": "Þvottá-Hvalnes",
+    "veghluti": 1,
+    "direction": "rev",
+    "entry": [
+     713963.0089,
+     441775.0701
+    ],
+    "exit": [
+     715946.63,
+     446220.78
+    ],
+    "piece_cost_m": 6716.1563,
+    "gap_into_m": 0.0
+   },
+   {
+    "idferill": 3167,
+    "idbutur": 912030037,
+    "name": "Þvottá-Hvalnes",
+    "veghluti": 1,
+    "direction": "rev",
+    "entry": [
+     715946.63,
+     446220.78
+    ],
+    "exit": [
+     716227.2113,
+     452810.9914
+    ],
+    "piece_cost_m": 7463.6744,
+    "gap_into_m": 0.0
+   },
+   {
+    "idferill": 3574,
+    "idbutur": 912020037,
+    "name": "Djúpivogur-Þvottá",
+    "veghluti": 1,
+    "direction": "rev",
+    "entry": [
+     716227.2113,
+     452810.9914
+    ],
+    "exit": [
+     716152.6256,
+     452891.7496
+    ],
+    "piece_cost_m": 109.9314,
+    "gap_into_m": 0.0
+   },
+   {
+    "idferill": 3769,
+    "idbutur": 912020037,
+    "name": "Djúpivogur-Þvottá",
+    "veghluti": 1,
+    "direction": "rev",
+    "entry": [
+     716152.6256,
+     452891.7496
+    ],
+    "exit": [
+     710286.6747,
+     457220.6659
+    ],
+    "piece_cost_m": 7653.3313,
+    "gap_into_m": 0.0
+   },
+   {
+    "idferill": 3301,
+    "idbutur": 912020037,
+    "name": "Djúpivogur-Þvottá",
+    "veghluti": 1,
+    "direction": "rev",
+    "entry": [
+     710286.6747,
+     457220.6659
+    ],
+    "exit": [
+     719244.0272,
+     463460.3864
+    ],
+    "piece_cost_m": 12958.4533,
+    "gap_into_m": 0.0
+   },
+   {
+    "idferill": 3628,
+    "idbutur": 912020037,
+    "name": "Djúpivogur-Þvottá",
+    "veghluti": 1,
+    "direction": "rev",
+    "entry": [
+     719244.0272,
+     463460.3864
+    ],
+    "exit": [
+     714574.7767,
+     468403.9754
+    ],
+    "piece_cost_m": 7961.9727,
+    "gap_into_m": 0.0
+   },
+   {
+    "idferill": 3589,
+    "idbutur": 912020037,
+    "name": "Djúpivogur-Þvottá",
+    "veghluti": 1,
+    "direction": "rev",
+    "entry": [
+     714574.7767,
+     468403.9754
+    ],
+    "exit": [
+     723780.6097,
+     470117.5108
+    ],
+    "piece_cost_m": 10207.4431,
+    "gap_into_m": 0.0
+   },
+   {
+    "idferill": 3106,
+    "idbutur": 912010037,
+    "name": "Streiti - Djúpivogur",
+    "veghluti": 1,
+    "direction": "rev",
+    "entry": [
+     723780.6097,
+     470117.5108
+    ],
+    "exit": [
+     719180.7941,
+     475814.5482
+    ],
+    "piece_cost_m": 7946.674,
+    "gap_into_m": 0.0
+   },
+   {
+    "idferill": 3302,
+    "idbutur": 912010037,
+    "name": "Streiti - Djúpivogur",
+    "veghluti": 1,
+    "direction": "rev",
+    "entry": [
+     719180.7941,
+     475814.5482
+    ],
+    "exit": [
+     714140.2624,
+     483733.1074
+    ],
+    "piece_cost_m": 10713.053,
+    "gap_into_m": 0.0
+   },
+   {
+    "idferill": 3265,
+    "idbutur": 912010037,
+    "name": "Streiti - Djúpivogur",
+    "veghluti": 1,
+    "direction": "rev",
+    "entry": [
+     714140.2624,
+     483733.1074
+    ],
+    "exit": [
+     721864.801,
+     478526.3063
+    ],
+    "piece_cost_m": 10737.4562,
+    "gap_into_m": 0.0
+   },
+   {
+    "idferill": 3263,
+    "idbutur": 912010037,
+    "name": "Streiti - Djúpivogur",
+    "veghluti": 1,
+    "direction": "rev",
+    "entry": [
+     721864.801,
+     478526.3063
+    ],
+    "exit": [
+     728882.8782,
+     474661.7642
+    ],
+    "piece_cost_m": 9375.6315,
+    "gap_into_m": 0.0
+   },
+   {
+    "idferill": 3261,
+    "idbutur": 912010037,
+    "name": "Streiti - Djúpivogur",
+    "veghluti": 1,
+    "direction": "rev",
+    "entry": [
+     728882.8782,
+     474661.7642
+    ],
+    "exit": [
+     738373.9474,
+     479390.6273
+    ],
+    "piece_cost_m": 10815.3965,
+    "gap_into_m": 0.0
+   },
+   {
+    "idferill": 3188,
+    "idbutur": 911080037,
+    "name": "Breiðdalsvík-Streiti",
+    "veghluti": 1,
+    "direction": "rev",
+    "entry": [
+     738373.9474,
+     479390.6273
+    ],
+    "exit": [
+     736751.4251,
+     486926.9774
+    ],
+    "piece_cost_m": 9719.6759,
+    "gap_into_m": 0.0
+   },
+   {
+    "idferill": 3845,
+    "idbutur": 911400037,
+    "name": "Stöðvarfjörður-Breiðdalsvík",
+    "veghluti": 1,
+    "direction": "rev",
+    "entry": [
+     736751.4251,
+     486926.9774
+    ],
+    "exit": [
+     736937.8165,
+     487048.7298
+    ],
+    "piece_cost_m": 222.7072,
+    "gap_into_m": 0.0
+   },
+   {
+    "idferill": 3832,
+    "idbutur": 911400037,
+    "name": "Stöðvarfjörður-Breiðdalsvík",
+    "veghluti": 1,
+    "direction": "rev",
+    "entry": [
+     736937.8165,
+     487048.7298
+    ],
+    "exit": [
+     743828.5097,
+     488335.8028
+    ],
+    "piece_cost_m": 7653.3004,
+    "gap_into_m": 0.0
+   },
+   {
+    "idferill": 3842,
+    "idbutur": 911400037,
+    "name": "Stöðvarfjörður-Breiðdalsvík",
+    "veghluti": 1,
+    "direction": "rev",
+    "entry": [
+     743828.5097,
+     488335.8028
+    ],
+    "exit": [
+     742407.0031,
+     491580.8756
+    ],
+    "piece_cost_m": 9666.9772,
+    "gap_into_m": 0.0
+   },
+   {
+    "idferill": 3841,
+    "idbutur": 911400037,
+    "name": "Stöðvarfjörður-Breiðdalsvík",
+    "veghluti": 1,
+    "direction": "rev",
+    "entry": [
+     742407.0031,
+     491580.8756
+    ],
+    "exit": [
+     743541.1536,
+     491201.2663
+    ],
+    "piece_cost_m": 1239.9552,
+    "gap_into_m": 0.0
+   },
+   {
+    "idferill": 3831,
+    "idbutur": 911270037,
+    "name": "Fáskrúðsfjörður-Stöðvarfjörður",
+    "veghluti": 1,
+    "direction": "rev",
+    "entry": [
+     743541.1536,
+     491201.2663
+    ],
+    "exit": [
+     747380.4242,
+     496038.4068
+    ],
+    "piece_cost_m": 8415.6451,
+    "gap_into_m": 0.0
+   },
+   {
+    "idferill": 3840,
+    "idbutur": 911270037,
+    "name": "Fáskrúðsfjörður-Stöðvarfjörður",
+    "veghluti": 1,
+    "direction": "rev",
+    "entry": [
+     747380.4242,
+     496038.4068
+    ],
+    "exit": [
+     743927.9162,
+     497882.2834
+    ],
+    "piece_cost_m": 3997.7945,
+    "gap_into_m": 0.0
+   },
+   {
+    "idferill": 3843,
+    "idbutur": 911270037,
+    "name": "Fáskrúðsfjörður-Stöðvarfjörður",
+    "veghluti": 1,
+    "direction": "rev",
+    "entry": [
+     743927.9162,
+     497882.2834
+    ],
+    "exit": [
+     733763.5297,
+     501861.908
+    ],
+    "piece_cost_m": 12464.2617,
+    "gap_into_m": 0.0
+   },
+   {
+    "idferill": 2536,
+    "idbutur": 911440037,
+    "name": "Fáskrúðsfjörður",
+    "veghluti": 1,
+    "direction": "rev",
+    "entry": [
+     733763.5297,
+     501861.908
+    ],
+    "exit": [
+     727817.225,
+     504290.235
+    ],
+    "piece_cost_m": 6630.0311,
+    "gap_into_m": 0.0
+   },
+   {
+    "idferill": 2619,
+    "idbutur": 911260037,
+    "name": "Fáskrúðsfjarðargöng",
+    "veghluti": 1,
+    "direction": "rev",
+    "entry": [
+     727817.225,
+     504290.235
+    ],
+    "exit": [
+     726168.31,
+     509914.83
+    ],
+    "piece_cost_m": 5889.8513,
+    "gap_into_m": 0.0
+   },
+   {
+    "idferill": 2520,
+    "idbutur": 911430037,
+    "name": "Reyðarfjörður",
+    "veghluti": 1,
+    "direction": "rev",
+    "entry": [
+     726168.31,
+     509914.83
+    ],
+    "exit": [
+     723714.2197,
+     511018.4862
+    ],
+    "piece_cost_m": 2775.9297,
+    "gap_into_m": 0.0
+   },
+   {
+    "idferill": 2553,
+    "idbutur": 911430037,
+    "name": "Reyðarfjörður",
+    "veghluti": 1,
+    "direction": "rev",
+    "entry": [
+     723714.2197,
+     511018.4862
+    ],
+    "exit": [
+     722850.6187,
+     511691.77
+    ],
+    "piece_cost_m": 1103.1656,
+    "gap_into_m": 0.0
+   },
+   {
+    "idferill": 2813,
+    "idbutur": 911210037,
+    "name": "Fagridalur",
+    "veghluti": 1,
+    "direction": "rev",
+    "entry": [
+     722850.6187,
+     511691.77
+    ],
+    "exit": [
+     719383.51,
+     518507.73
+    ],
+    "piece_cost_m": 10457.3567,
+    "gap_into_m": 0.0
+   },
+   {
+    "idferill": 2426,
+    "idbutur": 911210037,
+    "name": "Fagridalur",
+    "veghluti": 1,
+    "direction": "rev",
+    "entry": [
+     719383.51,
+     518507.73
+    ],
+    "exit": [
+     717929.34,
+     529501.71
+    ],
+    "piece_cost_m": 11145.8139,
+    "gap_into_m": 0.0
+   },
+   {
+    "idferill": 2814,
+    "idbutur": 911210037,
+    "name": "Fagridalur",
+    "veghluti": 1,
+    "direction": "rev",
+    "entry": [
+     717929.34,
+     529501.71
+    ],
+    "exit": [
+     715153.74,
+     536679.93
+    ],
+    "piece_cost_m": 8466.5971,
+    "gap_into_m": 0.0
+   },
+   {
+    "idferill": 2345,
+    "idbutur": 911040037,
+    "name": "Egilsstaðir",
+    "veghluti": 1,
+    "direction": "rev",
+    "entry": [
+     715153.74,
+     536679.93
+    ],
+    "exit": [
+     714320.9956,
+     536912.9869
+    ],
+    "piece_cost_m": 927.0346,
+    "gap_into_m": 0.0
+   },
+   {
+    "idferill": 2347,
+    "idbutur": 911040037,
+    "name": "Egilsstaðir",
+    "veghluti": 1,
+    "direction": "rev",
+    "entry": [
+     714320.9956,
+     536912.9869
+    ],
+    "exit": [
+     713384.3067,
+     539102.0572
+    ],
+    "piece_cost_m": 2520.8974,
+    "gap_into_m": 0.0
+   },
+   {
+    "idferill": 2349,
+    "idbutur": 911040037,
+    "name": "Egilsstaðir",
+    "veghluti": 1,
+    "direction": "rev",
+    "entry": [
+     713384.3067,
+     539102.0572
+    ],
+    "exit": [
+     713269.63,
+     539217.71
+    ],
+    "piece_cost_m": 162.954,
+    "gap_into_m": 0.0
+   },
+   {
+    "idferill": 1483,
+    "idbutur": 911040037,
+    "name": "Egilsstaðir",
+    "veghluti": 1,
+    "direction": "rev",
+    "entry": [
+     713269.63,
+     539217.71
+    ],
+    "exit": [
+     712210.7117,
+     540890.2965
+    ],
+    "piece_cost_m": 1989.3352,
+    "gap_into_m": 0.0
+   },
+   {
+    "idferill": 3631,
+    "idbutur": 911030037,
+    "name": "Hlíðarvegur-Fellabær",
+    "veghluti": 1,
+    "direction": "rev",
+    "entry": [
+     712210.7117,
+     540890.2965
+    ],
+    "exit": [
+     707862.7295,
+     548575.514
+    ],
+    "piece_cost_m": 9256.2696,
+    "gap_into_m": 0.0
+   },
+   {
+    "idferill": 3440,
+    "idbutur": 911030037,
+    "name": "Hlíðarvegur-Fellabær",
+    "veghluti": 1,
+    "direction": "rev",
+    "entry": [
+     707862.7295,
+     548575.514
+    ],
+    "exit": [
+     703715.1457,
+     555030.8739
+    ],
+    "piece_cost_m": 8958.2938,
+    "gap_into_m": 0.0
+   },
+   {
+    "idferill": 3606,
+    "idbutur": 911020037,
+    "name": "Jökuldalur",
+    "veghluti": 1,
+    "direction": "rev",
+    "entry": [
+     703715.1457,
+     555030.8739
+    ],
+    "exit": [
+     695480.4336,
+     548048.2697
+    ],
+    "piece_cost_m": 11484.3923,
+    "gap_into_m": 0.0
+   },
+   {
+    "idferill": 3163,
+    "idbutur": 911020037,
+    "name": "Jökuldalur",
+    "veghluti": 1,
+    "direction": "rev",
+    "entry": [
+     695480.4336,
+     548048.2697
+    ],
+    "exit": [
+     686478.6284,
+     544731.1467
+    ],
+    "piece_cost_m": 9676.1665,
+    "gap_into_m": 0.0
+   },
+   {
+    "idferill": 3184,
+    "idbutur": 911020037,
+    "name": "Jökuldalur",
+    "veghluti": 1,
+    "direction": "rev",
+    "entry": [
+     686478.6284,
+     544731.1467
+    ],
+    "exit": [
+     680390.4498,
+     540661.6877
+    ],
+    "piece_cost_m": 7412.6474,
+    "gap_into_m": 0.0
+   },
+   {
+    "idferill": 3166,
+    "idbutur": 911020037,
+    "name": "Jökuldalur",
+    "veghluti": 1,
+    "direction": "rev",
+    "entry": [
+     680390.4498,
+     540661.6877
+    ],
+    "exit": [
+     679500.7209,
+     540154.2958
+    ],
+    "piece_cost_m": 1030.3264,
+    "gap_into_m": 0.0
+   },
+   {
+    "idferill": 3241,
+    "idbutur": 911010037,
+    "name": "Háreksstaðaleið S",
+    "veghluti": 1,
+    "direction": "rev",
+    "entry": [
+     679500.7209,
+     540154.2958
+    ],
+    "exit": [
+     671285.2844,
+     539243.3077
+    ],
+    "piece_cost_m": 8749.1625,
+    "gap_into_m": 0.0
+   },
+   {
+    "idferill": 3190,
+    "idbutur": 911010037,
+    "name": "Háreksstaðaleið S",
+    "veghluti": 1,
+    "direction": "rev",
+    "entry": [
+     671285.2844,
+     539243.3077
+    ],
+    "exit": [
+     661829.8422,
+     555666.8264
+    ],
+    "piece_cost_m": 19896.9535,
+    "gap_into_m": 0.0
+   },
+   {
+    "idferill": 3264,
+    "idbutur": 911000037,
+    "name": "Háreksstaðaleið N",
+    "veghluti": 1,
+    "direction": "rev",
+    "entry": [
+     661829.8422,
+     555666.8264
+    ],
+    "exit": [
+     650352.1089,
+     555616.6765
+    ],
+    "piece_cost_m": 11993.0959,
+    "gap_into_m": 0.0
+   },
+   {
+    "idferill": 3280,
+    "idbutur": 911000037,
+    "name": "Háreksstaðaleið N",
+    "veghluti": 1,
+    "direction": "rev",
+    "entry": [
+     650352.1089,
+     555616.6765
+    ],
+    "exit": [
+     643214.5595,
+     552446.226
+    ],
+    "piece_cost_m": 8072.4242,
+    "gap_into_m": 0.0
+   },
+   {
+    "idferill": 3300,
+    "idbutur": 910460037,
+    "name": "Biskupsháls",
+    "veghluti": 1,
+    "direction": "rev",
+    "entry": [
+     643214.5595,
+     552446.226
+    ],
+    "exit": [
+     639993.79,
+     559185.3701
+    ],
+    "piece_cost_m": 8668.7531,
+    "gap_into_m": 0.0
+   },
+   {
+    "idferill": 3322,
+    "idbutur": 910460037,
+    "name": "Biskupsháls",
+    "veghluti": 1,
+    "direction": "rev",
+    "entry": [
+     639993.79,
+     559185.3701
+    ],
+    "exit": [
+     637148.2723,
+     566071.3501
+    ],
+    "piece_cost_m": 7873.9168,
+    "gap_into_m": 0.0
+   },
+   {
+    "idferill": 3325,
+    "idbutur": 910460037,
+    "name": "Biskupsháls",
+    "veghluti": 1,
+    "direction": "rev",
+    "entry": [
+     637148.2723,
+     566071.3501
+    ],
+    "exit": [
+     629975.4875,
+     572718.4748
+    ],
+    "piece_cost_m": 10089.117,
+    "gap_into_m": 0.0
+   },
+   {
+    "idferill": 3348,
+    "idbutur": 910040037,
+    "name": "Mývatnsöræfi",
+    "veghluti": 1,
+    "direction": "rev",
+    "entry": [
+     629975.4875,
+     572718.4748
+    ],
+    "exit": [
+     629421.8757,
+     572390.4273
+    ],
+    "piece_cost_m": 722.8019,
+    "gap_into_m": 0.0
+   },
+   {
+    "idferill": 3393,
+    "idbutur": 910040037,
+    "name": "Mývatnsöræfi",
+    "veghluti": 1,
+    "direction": "rev",
+    "entry": [
+     629421.8757,
+     572390.4273
+    ],
+    "exit": [
+     620602.9884,
+     574900.1106
+    ],
+    "piece_cost_m": 9892.2001,
+    "gap_into_m": 0.0
+   },
+   {
+    "idferill": 3416,
+    "idbutur": 910040037,
+    "name": "Mývatnsöræfi",
+    "veghluti": 1,
+    "direction": "rev",
+    "entry": [
+     620602.9884,
+     574900.1106
+    ],
+    "exit": [
+     614971.6314,
+     575625.6506
+    ],
+    "piece_cost_m": 5725.6085,
+    "gap_into_m": 0.0
+   },
+   {
+    "idferill": 3420,
+    "idbutur": 910040037,
+    "name": "Mývatnsöræfi",
+    "veghluti": 1,
+    "direction": "rev",
+    "entry": [
+     614971.6314,
+     575625.6506
+    ],
+    "exit": [
+     598866.6951,
+     572980.6378
+    ],
+    "piece_cost_m": 17523.1921,
+    "gap_into_m": 0.0
+   },
+   {
+    "idferill": 3566,
+    "idbutur": 810040037,
+    "name": "Reykjahlíð",
+    "veghluti": 1,
+    "direction": "rev",
+    "entry": [
+     598866.6951,
+     572980.6378
+    ],
+    "exit": [
+     596178.6007,
+     572933.0514
+    ],
+    "piece_cost_m": 2697.1391,
+    "gap_into_m": 0.0
+   },
+   {
+    "idferill": 1909,
+    "idbutur": 910030037,
+    "name": "Mývatnssveit",
+    "veghluti": 1,
+    "direction": "rev",
+    "entry": [
+     596178.6007,
+     572933.0514
+    ],
+    "exit": [
+     593147.5151,
+     575143.969
+    ],
+    "piece_cost_m": 3951.3799,
+    "gap_into_m": 0.0
+   },
+   {
+    "idferill": 3079,
+    "idbutur": 910030037,
+    "name": "Mývatnssveit",
+    "veghluti": 1,
+    "direction": "rev",
+    "entry": [
+     593147.5151,
+     575143.969
+    ],
+    "exit": [
+     586072.51,
+     566533.93
+    ],
+    "piece_cost_m": 12387.1865,
+    "gap_into_m": 0.0
+   },
+   {
+    "idferill": 3498,
+    "idbutur": 910020037,
+    "name": "Mývatnsheiði",
+    "veghluti": 1,
+    "direction": "rev",
+    "entry": [
+     586072.51,
+     566533.93
+    ],
+    "exit": [
+     578006.1608,
+     574935.9057
+    ],
+    "piece_cost_m": 12665.4187,
+    "gap_into_m": 0.0
+   },
+   {
+    "idferill": 3524,
+    "idbutur": 910020037,
+    "name": "Mývatnsheiði",
+    "veghluti": 1,
+    "direction": "rev",
+    "entry": [
+     578006.1608,
+     574935.9057
+    ],
+    "exit": [
+     573032.2619,
+     583229.1019
+    ],
+    "piece_cost_m": 10053.3304,
+    "gap_into_m": 0.0
+   },
+   {
+    "idferill": 2639,
+    "idbutur": 910010037,
+    "name": "Fljótsheiði",
+    "veghluti": 1,
+    "direction": "rev",
+    "entry": [
+     573032.2619,
+     583229.1019
+    ],
+    "exit": [
+     567138.5658,
+     577319.8236
+    ],
+    "piece_cost_m": 9661.9901,
+    "gap_into_m": 0.0
+   },
+   {
+    "idferill": 2607,
+    "idbutur": 910010037,
+    "name": "Fljótsheiði",
+    "veghluti": 1,
+    "direction": "rev",
+    "entry": [
+     567138.5658,
+     577319.8236
+    ],
+    "exit": [
+     563285.5868,
+     579146.1259
+    ],
+    "piece_cost_m": 4340.472,
+    "gap_into_m": 0.0
+   },
+   {
+    "idferill": 3391,
+    "idbutur": 909060037,
+    "name": "Ljósavatnsskarð",
+    "veghluti": 1,
+    "direction": "rev",
+    "entry": [
+     563285.5868,
+     579146.1259
+    ],
+    "exit": [
+     550783.3427,
+     583775.6516
+    ],
+    "piece_cost_m": 13817.4457,
+    "gap_into_m": 0.0
+   },
+   {
+    "idferill": 3531,
+    "idbutur": 909060037,
+    "name": "Ljósavatnsskarð",
+    "veghluti": 1,
+    "direction": "rev",
+    "entry": [
+     550783.3427,
+     583775.6516
+    ],
+    "exit": [
+     549962.0839,
+     583606.8568
+    ],
+    "piece_cost_m": 839.436,
+    "gap_into_m": 0.0
+   },
+   {
+    "idferill": 32965,
+    "idbutur": 909060037,
+    "name": "Ljósavatnsskarð",
+    "veghluti": 1,
+    "direction": "rev",
+    "entry": [
+     549962.0839,
+     583606.8568
+    ],
+    "exit": [
+     549646.248,
+     581641.865
+    ],
+    "piece_cost_m": 2125.4842,
+    "gap_into_m": 0.0
+   },
+   {
+    "idferill": 32961,
+    "idbutur": 909000037,
+    "name": "Vaðlaheiðargöng",
+    "veghluti": 1,
+    "direction": "rev",
+    "entry": [
+     549646.248,
+     581641.865
+    ],
+    "exit": [
+     543478.436,
+     577668.227
+    ],
+    "piece_cost_m": 7469.4409,
+    "gap_into_m": 0.0
+   },
+   {
+    "idferill": 32964,
+    "idbutur": 909350037,
+    "name": "Akureyri-Vaðlaheiðargöng",
+    "veghluti": 1,
+    "direction": "rev",
+    "entry": [
+     543478.436,
+     577668.227
+    ],
+    "exit": [
+     543587.71,
+     577015.26
+    ],
+    "piece_cost_m": 695.5952,
+    "gap_into_m": 0.0
+   },
+   {
+    "idferill": 2725,
+    "idbutur": 909350037,
+    "name": "Akureyri-Vaðlaheiðargöng",
+    "veghluti": 1,
+    "direction": "rev",
+    "entry": [
+     543587.71,
+     577015.26
+    ],
+    "exit": [
+     543723.1,
+     574991.26
+    ],
+    "piece_cost_m": 2129.1214,
+    "gap_into_m": 0.0
+   },
+   {
+    "idferill": 2726,
+    "idbutur": 909350037,
+    "name": "Akureyri-Vaðlaheiðargöng",
+    "veghluti": 1,
+    "direction": "rev",
+    "entry": [
+     543723.1,
+     574991.26
+    ],
+    "exit": [
+     542195.51,
+     575036.17
+    ],
+    "piece_cost_m": 1578.218,
+    "gap_into_m": 0.0
+   },
+   {
+    "idferill": 2727,
+    "idbutur": 909360037,
+    "name": "Akureyri",
+    "veghluti": 1,
+    "direction": "rev",
+    "entry": [
+     542195.51,
+     575036.17
+    ],
+    "exit": [
+     542071.76,
+     575345.6
+    ],
+    "piece_cost_m": 333.4164,
+    "gap_into_m": 0.0
+   },
+   {
+    "idferill": 3504,
+    "idbutur": 909360037,
+    "name": "Akureyri",
+    "veghluti": 1,
+    "direction": "rev",
+    "entry": [
+     542071.76,
+     575345.6
+    ],
+    "exit": [
+     541958.8364,
+     576154.1715
+    ],
+    "piece_cost_m": 842.0783,
+    "gap_into_m": 0.0
+   },
+   {
+    "idferill": 3505,
+    "idbutur": 909360037,
+    "name": "Akureyri",
+    "veghluti": 1,
+    "direction": "rev",
+    "entry": [
+     541958.8364,
+     576154.1715
+    ],
+    "exit": [
+     540930.2487,
+     577392.5508
+    ],
+    "piece_cost_m": 1703.8458,
+    "gap_into_m": 0.0
+   },
+   {
+    "idferill": 3876,
+    "idbutur": 909360037,
+    "name": "Akureyri",
+    "veghluti": 1,
+    "direction": "rev",
+    "entry": [
+     540930.2487,
+     577392.5508
+    ],
+    "exit": [
+     540259.2615,
+     577843.7582
+    ],
+    "piece_cost_m": 812.0134,
+    "gap_into_m": 0.0
+   }
+  ],
+  "bridge_summary_to_c": {
+   "nonzero_count": 6,
+   "bands": {
+    "contact_5m": 1,
+    "contact_100m": 5
+   },
+   "highest_m": 42.30221924830867,
+   "all_gaps_m": [
+    0.23426975905806502,
+    30.09662509739531,
+    32.630052568162306,
+    32.75571631470905,
+    34.74867010402701,
+    42.30221924830867
+   ]
+  },
+  "bridge_summary_to_hella": {
+   "nonzero_count": 4,
+   "bands": {
+    "contact_5m": 1,
+    "contact_100m": 3
+   },
+   "highest_m": 42.30221924830867,
+   "all_gaps_m": [
+    0.23426975905806502,
+    30.09662509739531,
+    34.74867010402701,
+    42.30221924830867
+   ]
+  }
+ },
+ "closure_test": {
+  "closure_set": [
+   252090037,
+   902020037
+  ],
+  "unrelated_set_for_non_vacuity": [
+   810040037
+  ],
+  "selfoss_route_idbutur": [
+   252090037,
+   253020037,
+   902030037,
+   903010037,
+   1410010037
+  ],
+  "closed_with_real_closure_set": true,
+  "closed_with_unrelated_set_non_vacuity_check": false
+ }
+}
