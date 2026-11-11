@@ -1,0 +1,1646 @@
+{
+ "v3_mutation_tests_rerun_count": 41,
+ "v4_new_mutation_tests_count": 140,
+ "part_a_rerun_of_v3_tests": [
+  {
+   "kind": "role_label_only",
+   "target": "csv:Reyðarfjörður",
+   "expected": [
+    "ROLE_COORD_MISMATCH",
+    "ROLE_CUM_MISMATCH"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (1 location(s)): [('csv:Reyðarfjörður:role_coord_cum', ['ROLE_COORD_MISMATCH', 'STORED_FIELD_MISMATCH', 'ROLE_CUM_MISMATCH'])]",
+   "pass": true
+  },
+  {
+   "kind": "coord_deviation_0.2m",
+   "target": "csv:Reyðarfjörður",
+   "expected": [
+    "ROLE_COORD_MISMATCH"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (1 location(s)): [('csv:Reyðarfjörður:role_coord_cum', ['ROLE_COORD_MISMATCH'])]",
+   "pass": true
+  },
+  {
+   "kind": "stored_field_swap",
+   "target": "csv:Reyðarfjörður",
+   "expected": [
+    "STORED_FIELD_MISMATCH"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (2 location(s)): [('csv:Reyðarfjörður:role_coord_cum', ['STORED_FIELD_MISMATCH']), ('csv:Reyðarfjörður:source_field', ['PROVENANCE_SOURCE_FIELD_MISMATCH'])]",
+   "pass": true
+  },
+  {
+   "kind": "cum_incl_excl_swap",
+   "target": "csv:Reyðarfjörður",
+   "expected": [
+    "ROLE_CUM_MISMATCH"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (1 location(s)): [('csv:Reyðarfjörður:role_coord_cum', ['ROLE_CUM_MISMATCH'])]",
+   "pass": true
+  },
+  {
+   "kind": "double_counted_1436",
+   "target": "csv:Reyðarfjörður",
+   "expected": [
+    "ROLE_CUM_MISMATCH"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (1 location(s)): [('csv:Reyðarfjörður:role_coord_cum', ['ROLE_CUM_MISMATCH'])]",
+   "pass": true
+  },
+  {
+   "kind": "wrong_source_hash_key",
+   "target": "csv:Reyðarfjörður",
+   "expected": [
+    "PROVENANCE_HASH_KEY_INVALID"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (1 location(s)): [('csv:Reyðarfjörður:provenance', ['PROVENANCE_PATH_MISMATCH', 'PROVENANCE_HASH_KEY_INVALID'])]",
+   "pass": true
+  },
+  {
+   "kind": "wrong_source_path",
+   "target": "csv:Reyðarfjörður",
+   "expected": [
+    "PROVENANCE_PATH_MISMATCH"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (1 location(s)): [('csv:Reyðarfjörður:provenance', ['PROVENANCE_PATH_MISMATCH', 'PROVENANCE_SOURCE_FILE_MISSING'])]",
+   "pass": true
+  },
+  {
+   "kind": "wrong_crs",
+   "target": "csv:Reyðarfjörður",
+   "expected": [
+    "PROVENANCE_CRS_INVALID"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (1 location(s)): [('csv:Reyðarfjörður:provenance', ['PROVENANCE_CRS_INVALID'])]",
+   "pass": true
+  },
+  {
+   "kind": "provenance_missing_on_real_coord",
+   "target": "csv:Reyðarfjörður",
+   "expected": [
+    "PROVENANCE_MISSING",
+    "VALIDATED_ROW_MISSING_REQUIRED_FIELD"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (1 location(s)): [('csv:Reyðarfjörður:required_fields', ['VALIDATED_ROW_MISSING_REQUIRED_FIELD'])]",
+   "pass": true
+  },
+  {
+   "kind": "role_label_only",
+   "target": "csv:Vík",
+   "expected": [
+    "ROLE_COORD_MISMATCH",
+    "ROLE_CUM_MISMATCH"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (1 location(s)): [('csv:Vík:role_coord_cum', ['ROLE_COORD_MISMATCH', 'STORED_FIELD_MISMATCH', 'ROLE_CUM_MISMATCH'])]",
+   "pass": true
+  },
+  {
+   "kind": "coord_deviation_0.2m",
+   "target": "csv:Vík",
+   "expected": [
+    "ROLE_COORD_MISMATCH"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (1 location(s)): [('csv:Vík:role_coord_cum', ['ROLE_COORD_MISMATCH'])]",
+   "pass": true
+  },
+  {
+   "kind": "stored_field_swap",
+   "target": "csv:Vík",
+   "expected": [
+    "STORED_FIELD_MISMATCH"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (2 location(s)): [('csv:Vík:role_coord_cum', ['STORED_FIELD_MISMATCH']), ('csv:Vík:source_field', ['PROVENANCE_SOURCE_FIELD_MISMATCH'])]",
+   "pass": true
+  },
+  {
+   "kind": "cum_incl_excl_swap",
+   "target": "csv:Vík",
+   "expected": [
+    "ROLE_CUM_MISMATCH"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (1 location(s)): [('csv:Vík:role_coord_cum', ['ROLE_CUM_MISMATCH'])]",
+   "pass": true
+  },
+  {
+   "kind": "double_counted_1436",
+   "target": "csv:Vík",
+   "expected": [
+    "ROLE_CUM_MISMATCH"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (1 location(s)): [('csv:Vík:role_coord_cum', ['ROLE_CUM_MISMATCH'])]",
+   "pass": true
+  },
+  {
+   "kind": "wrong_source_hash_key",
+   "target": "csv:Vík",
+   "expected": [
+    "PROVENANCE_HASH_KEY_INVALID"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (1 location(s)): [('csv:Vík:provenance', ['PROVENANCE_PATH_MISMATCH', 'PROVENANCE_HASH_KEY_INVALID'])]",
+   "pass": true
+  },
+  {
+   "kind": "wrong_source_path",
+   "target": "csv:Vík",
+   "expected": [
+    "PROVENANCE_PATH_MISMATCH"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (1 location(s)): [('csv:Vík:provenance', ['PROVENANCE_PATH_MISMATCH', 'PROVENANCE_SOURCE_FILE_MISSING'])]",
+   "pass": true
+  },
+  {
+   "kind": "wrong_crs",
+   "target": "csv:Vík",
+   "expected": [
+    "PROVENANCE_CRS_INVALID"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (1 location(s)): [('csv:Vík:provenance', ['PROVENANCE_CRS_INVALID'])]",
+   "pass": true
+  },
+  {
+   "kind": "provenance_missing_on_real_coord",
+   "target": "csv:Vík",
+   "expected": [
+    "PROVENANCE_MISSING",
+    "VALIDATED_ROW_MISSING_REQUIRED_FIELD"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (1 location(s)): [('csv:Vík:required_fields', ['VALIDATED_ROW_MISSING_REQUIRED_FIELD'])]",
+   "pass": true
+  },
+  {
+   "kind": "role_label_only",
+   "target": "reference:Selfoss",
+   "expected": [
+    "ROLE_COORD_MISMATCH",
+    "ROLE_CUM_MISMATCH"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (3 location(s)): [('reference:Selfoss:EXIT:role_coord_cum', ['ROLE_COORD_MISMATCH', 'STORED_FIELD_MISMATCH', 'ROLE_CUM_MISMATCH']), ('reference:Selfoss:EXIT:record_source', ['RECORD_SOURCE_MISMATCH']), ('reference:Selfoss:EXIT:role_divergence', ['ROLE_DIVERGENCE_MISMATCH'])]",
+   "pass": true
+  },
+  {
+   "kind": "coord_deviation_0.2m",
+   "target": "reference:Selfoss",
+   "expected": [
+    "ROLE_COORD_MISMATCH"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (1 location(s)): [('reference:Selfoss:ENTRY:role_coord_cum', ['ROLE_COORD_MISMATCH'])]",
+   "pass": true
+  },
+  {
+   "kind": "stored_field_swap",
+   "target": "reference:Selfoss",
+   "expected": [
+    "STORED_FIELD_MISMATCH"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (2 location(s)): [('reference:Selfoss:ENTRY:role_coord_cum', ['STORED_FIELD_MISMATCH']), ('reference:Selfoss:ENTRY:source_field', ['PROVENANCE_SOURCE_FIELD_MISMATCH'])]",
+   "pass": true
+  },
+  {
+   "kind": "cum_incl_excl_swap",
+   "target": "reference:Selfoss",
+   "expected": [
+    "ROLE_CUM_MISMATCH"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (1 location(s)): [('reference:Selfoss:ENTRY:role_coord_cum', ['ROLE_CUM_MISMATCH'])]",
+   "pass": true
+  },
+  {
+   "kind": "double_counted_1436",
+   "target": "reference:Selfoss",
+   "expected": [
+    "ROLE_CUM_MISMATCH"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (1 location(s)): [('reference:Selfoss:ENTRY:role_coord_cum', ['ROLE_CUM_MISMATCH'])]",
+   "pass": true
+  },
+  {
+   "kind": "wrong_source_hash_key",
+   "target": "reference:Selfoss",
+   "expected": [
+    "PROVENANCE_HASH_KEY_INVALID"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (1 location(s)): [('reference:Selfoss:ENTRY:provenance', ['PROVENANCE_PATH_MISMATCH', 'PROVENANCE_HASH_KEY_INVALID'])]",
+   "pass": true
+  },
+  {
+   "kind": "wrong_source_path",
+   "target": "reference:Selfoss",
+   "expected": [
+    "PROVENANCE_PATH_MISMATCH"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (1 location(s)): [('reference:Selfoss:ENTRY:provenance', ['PROVENANCE_PATH_MISMATCH', 'PROVENANCE_SOURCE_FILE_MISSING'])]",
+   "pass": true
+  },
+  {
+   "kind": "wrong_crs",
+   "target": "reference:Selfoss",
+   "expected": [
+    "PROVENANCE_CRS_INVALID"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (1 location(s)): [('reference:Selfoss:ENTRY:provenance', ['PROVENANCE_CRS_INVALID'])]",
+   "pass": true
+  },
+  {
+   "kind": "provenance_missing_on_real_coord",
+   "target": "reference:Selfoss",
+   "expected": [
+    "PROVENANCE_MISSING"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (2 location(s)): [('reference:Selfoss:ENTRY:provenance', ['PROVENANCE_MISSING']), ('reference:Selfoss:ENTRY:source_field', ['PROVENANCE_SOURCE_FIELD_MISMATCH'])]",
+   "pass": true
+  },
+  {
+   "kind": "role_label_only",
+   "target": "reference:Hella",
+   "expected": [
+    "ROLE_COORD_MISMATCH",
+    "ROLE_CUM_MISMATCH"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (3 location(s)): [('reference:Hella:EXIT:role_coord_cum', ['ROLE_COORD_MISMATCH', 'STORED_FIELD_MISMATCH', 'ROLE_CUM_MISMATCH']), ('reference:Hella:EXIT:record_source', ['RECORD_SOURCE_MISMATCH']), ('reference:Hella:EXIT:role_divergence', ['ROLE_DIVERGENCE_MISMATCH'])]",
+   "pass": true
+  },
+  {
+   "kind": "coord_deviation_0.2m",
+   "target": "reference:Hella",
+   "expected": [
+    "ROLE_COORD_MISMATCH"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (1 location(s)): [('reference:Hella:ENTRY:role_coord_cum', ['ROLE_COORD_MISMATCH'])]",
+   "pass": true
+  },
+  {
+   "kind": "stored_field_swap",
+   "target": "reference:Hella",
+   "expected": [
+    "STORED_FIELD_MISMATCH"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (2 location(s)): [('reference:Hella:ENTRY:role_coord_cum', ['STORED_FIELD_MISMATCH']), ('reference:Hella:ENTRY:source_field', ['PROVENANCE_SOURCE_FIELD_MISMATCH'])]",
+   "pass": true
+  },
+  {
+   "kind": "cum_incl_excl_swap",
+   "target": "reference:Hella",
+   "expected": [
+    "ROLE_CUM_MISMATCH"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (1 location(s)): [('reference:Hella:ENTRY:role_coord_cum', ['ROLE_CUM_MISMATCH'])]",
+   "pass": true
+  },
+  {
+   "kind": "double_counted_1436",
+   "target": "reference:Hella",
+   "expected": [
+    "ROLE_CUM_MISMATCH"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (1 location(s)): [('reference:Hella:ENTRY:role_coord_cum', ['ROLE_CUM_MISMATCH'])]",
+   "pass": true
+  },
+  {
+   "kind": "wrong_source_hash_key",
+   "target": "reference:Hella",
+   "expected": [
+    "PROVENANCE_HASH_KEY_INVALID"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (1 location(s)): [('reference:Hella:ENTRY:provenance', ['PROVENANCE_PATH_MISMATCH', 'PROVENANCE_HASH_KEY_INVALID'])]",
+   "pass": true
+  },
+  {
+   "kind": "wrong_source_path",
+   "target": "reference:Hella",
+   "expected": [
+    "PROVENANCE_PATH_MISMATCH"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (1 location(s)): [('reference:Hella:ENTRY:provenance', ['PROVENANCE_PATH_MISMATCH', 'PROVENANCE_SOURCE_FILE_MISSING'])]",
+   "pass": true
+  },
+  {
+   "kind": "wrong_crs",
+   "target": "reference:Hella",
+   "expected": [
+    "PROVENANCE_CRS_INVALID"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (1 location(s)): [('reference:Hella:ENTRY:provenance', ['PROVENANCE_CRS_INVALID'])]",
+   "pass": true
+  },
+  {
+   "kind": "provenance_missing_on_real_coord",
+   "target": "reference:Hella",
+   "expected": [
+    "PROVENANCE_MISSING"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (2 location(s)): [('reference:Hella:ENTRY:provenance', ['PROVENANCE_MISSING']), ('reference:Hella:ENTRY:source_field', ['PROVENANCE_SOURCE_FIELD_MISMATCH'])]",
+   "pass": true
+  },
+  {
+   "kind": "coord_deviation_0.2m",
+   "target": "endpoint_candidates:egilsstadir",
+   "expected": [
+    "G4_COORD_MISMATCH",
+    "ROLE_COORD_MISMATCH"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (1 location(s)): [('g4:2345:end:geometry', ['G4_COORD_MISMATCH'])]",
+   "pass": true
+  },
+  {
+   "kind": "cum_incl_excl_swap",
+   "target": "endpoint_candidates:egilsstadir",
+   "expected": [
+    "G4_CUM_MISMATCH",
+    "ROLE_CUM_MISMATCH"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (1 location(s)): [('g4:2345:end:geometry', ['G4_CUM_MISMATCH'])]",
+   "pass": true
+  },
+  {
+   "kind": "wrong_source_hash_key",
+   "target": "endpoint_candidates:egilsstadir",
+   "expected": [
+    "PROVENANCE_HASH_KEY_INVALID"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (1 location(s)): [('g4:2345:end:provenance', ['PROVENANCE_PATH_MISMATCH', 'PROVENANCE_HASH_KEY_INVALID'])]",
+   "pass": true
+  },
+  {
+   "kind": "wrong_crs",
+   "target": "endpoint_candidates:egilsstadir",
+   "expected": [
+    "PROVENANCE_CRS_INVALID"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (1 location(s)): [('g4:2345:end:provenance', ['PROVENANCE_CRS_INVALID'])]",
+   "pass": true
+  },
+  {
+   "kind": "akureyri_wgs84_digit_altered",
+   "target": "endpoint_candidates:akureyri",
+   "expected": [
+    "AKUREYRI_WGS84_MISMATCH"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (1 location(s)): [('akureyri:wgs84:value', ['AKUREYRI_WGS84_MISMATCH'])]",
+   "pass": true
+  }
+ ],
+ "part_b_new_i1_to_i4_tests": [
+  {
+   "kind": "blank_required_field",
+   "target": "csv:Akureyri:road_connection",
+   "expected": [
+    "VALIDATED_ROW_MISSING_REQUIRED_FIELD"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (1 location(s)): [('csv:Akureyri:required_fields', ['VALIDATED_ROW_MISSING_REQUIRED_FIELD'])]",
+   "pass": true
+  },
+  {
+   "kind": "blank_required_field",
+   "target": "csv:Akureyri:coordinate_source",
+   "expected": [
+    "VALIDATED_ROW_MISSING_REQUIRED_FIELD"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (1 location(s)): [('csv:Akureyri:required_fields', ['VALIDATED_ROW_MISSING_REQUIRED_FIELD'])]",
+   "pass": true
+  },
+  {
+   "kind": "blank_required_field",
+   "target": "csv:Akureyri:node_role",
+   "expected": [
+    "VALIDATED_ROW_MISSING_REQUIRED_FIELD"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (1 location(s)): [('csv:Akureyri:required_fields', ['VALIDATED_ROW_MISSING_REQUIRED_FIELD'])]",
+   "pass": true
+  },
+  {
+   "kind": "blank_required_field",
+   "target": "csv:Akureyri:stored_field",
+   "expected": [
+    "VALIDATED_ROW_MISSING_REQUIRED_FIELD"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (1 location(s)): [('csv:Akureyri:required_fields', ['VALIDATED_ROW_MISSING_REQUIRED_FIELD'])]",
+   "pass": true
+  },
+  {
+   "kind": "blank_required_field",
+   "target": "csv:Akureyri:record_source",
+   "expected": [
+    "VALIDATED_ROW_MISSING_REQUIRED_FIELD"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (1 location(s)): [('csv:Akureyri:required_fields', ['VALIDATED_ROW_MISSING_REQUIRED_FIELD'])]",
+   "pass": true
+  },
+  {
+   "kind": "blank_required_field",
+   "target": "csv:Akureyri:reference_status",
+   "expected": [
+    "VALIDATED_ROW_MISSING_REQUIRED_FIELD"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (1 location(s)): [('csv:Akureyri:required_fields', ['VALIDATED_ROW_MISSING_REQUIRED_FIELD'])]",
+   "pass": true
+  },
+  {
+   "kind": "blank_required_field",
+   "target": "csv:Akureyri:role_divergence",
+   "expected": [
+    "VALIDATED_ROW_MISSING_REQUIRED_FIELD"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (1 location(s)): [('csv:Akureyri:required_fields', ['VALIDATED_ROW_MISSING_REQUIRED_FIELD'])]",
+   "pass": true
+  },
+  {
+   "kind": "blank_required_field",
+   "target": "csv:Akureyri:final_validation_outcome",
+   "expected": [
+    "VALIDATED_ROW_MISSING_REQUIRED_FIELD"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (1 location(s)): [('csv:Akureyri:required_fields', ['VALIDATED_ROW_MISSING_REQUIRED_FIELD'])]",
+   "pass": true
+  },
+  {
+   "kind": "blank_required_field",
+   "target": "csv:Akureyri:native_x",
+   "expected": [
+    "VALIDATED_ROW_MISSING_REQUIRED_FIELD"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (1 location(s)): [('csv:Akureyri:required_fields', ['VALIDATED_ROW_MISSING_REQUIRED_FIELD'])]",
+   "pass": true
+  },
+  {
+   "kind": "blank_required_field",
+   "target": "csv:Akureyri:native_y",
+   "expected": [
+    "VALIDATED_ROW_MISSING_REQUIRED_FIELD"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (1 location(s)): [('csv:Akureyri:required_fields', ['VALIDATED_ROW_MISSING_REQUIRED_FIELD'])]",
+   "pass": true
+  },
+  {
+   "kind": "blank_required_field",
+   "target": "csv:Akureyri:source_path",
+   "expected": [
+    "VALIDATED_ROW_MISSING_REQUIRED_FIELD"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (1 location(s)): [('csv:Akureyri:required_fields', ['VALIDATED_ROW_MISSING_REQUIRED_FIELD'])]",
+   "pass": true
+  },
+  {
+   "kind": "blank_required_field",
+   "target": "csv:Akureyri:source_hash_key",
+   "expected": [
+    "VALIDATED_ROW_MISSING_REQUIRED_FIELD"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (1 location(s)): [('csv:Akureyri:required_fields', ['VALIDATED_ROW_MISSING_REQUIRED_FIELD'])]",
+   "pass": true
+  },
+  {
+   "kind": "blank_required_field",
+   "target": "csv:Akureyri:piece_id",
+   "expected": [
+    "VALIDATED_ROW_MISSING_REQUIRED_FIELD"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (1 location(s)): [('csv:Akureyri:required_fields', ['VALIDATED_ROW_MISSING_REQUIRED_FIELD'])]",
+   "pass": true
+  },
+  {
+   "kind": "blank_required_field",
+   "target": "csv:Akureyri:source_field",
+   "expected": [
+    "VALIDATED_ROW_MISSING_REQUIRED_FIELD"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (1 location(s)): [('csv:Akureyri:required_fields', ['VALIDATED_ROW_MISSING_REQUIRED_FIELD'])]",
+   "pass": true
+  },
+  {
+   "kind": "blank_required_field",
+   "target": "csv:Akureyri:crs",
+   "expected": [
+    "VALIDATED_ROW_MISSING_REQUIRED_FIELD"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (1 location(s)): [('csv:Akureyri:required_fields', ['VALIDATED_ROW_MISSING_REQUIRED_FIELD'])]",
+   "pass": true
+  },
+  {
+   "kind": "blank_required_field",
+   "target": "csv:Akureyri:native_source_piece",
+   "expected": [
+    "VALIDATED_ROW_MISSING_REQUIRED_FIELD"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (1 location(s)): [('csv:Akureyri:required_fields', ['VALIDATED_ROW_MISSING_REQUIRED_FIELD'])]",
+   "pass": true
+  },
+  {
+   "kind": "blank_required_field",
+   "target": "csv:Akureyri:native_source_field",
+   "expected": [
+    "VALIDATED_ROW_MISSING_REQUIRED_FIELD"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (1 location(s)): [('csv:Akureyri:required_fields', ['VALIDATED_ROW_MISSING_REQUIRED_FIELD'])]",
+   "pass": true
+  },
+  {
+   "kind": "blank_required_field",
+   "target": "csv:Akureyri:cum_km_incl_1436",
+   "expected": [
+    "VALIDATED_ROW_MISSING_REQUIRED_FIELD"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (1 location(s)): [('csv:Akureyri:required_fields', ['VALIDATED_ROW_MISSING_REQUIRED_FIELD'])]",
+   "pass": true
+  },
+  {
+   "kind": "blank_required_field",
+   "target": "csv:Akureyri:cum_km_excl_1436",
+   "expected": [
+    "VALIDATED_ROW_MISSING_REQUIRED_FIELD"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (1 location(s)): [('csv:Akureyri:required_fields', ['VALIDATED_ROW_MISSING_REQUIRED_FIELD'])]",
+   "pass": true
+  },
+  {
+   "kind": "blank_required_field",
+   "target": "csv:Akureyri:direction_status",
+   "expected": [
+    "VALIDATED_ROW_MISSING_REQUIRED_FIELD"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (1 location(s)): [('csv:Akureyri:required_fields', ['VALIDATED_ROW_MISSING_REQUIRED_FIELD'])]",
+   "pass": true
+  },
+  {
+   "kind": "blank_required_field",
+   "target": "csv:Akureyri:notes",
+   "expected": [
+    "VALIDATED_ROW_MISSING_REQUIRED_FIELD"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (1 location(s)): [('csv:Akureyri:required_fields', ['VALIDATED_ROW_MISSING_REQUIRED_FIELD'])]",
+   "pass": true
+  },
+  {
+   "kind": "blank_required_field",
+   "target": "csv:Egilsstaðir:road_connection",
+   "expected": [
+    "VALIDATED_ROW_MISSING_REQUIRED_FIELD"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (1 location(s)): [('csv:Egilsstaðir:required_fields', ['VALIDATED_ROW_MISSING_REQUIRED_FIELD'])]",
+   "pass": true
+  },
+  {
+   "kind": "blank_required_field",
+   "target": "csv:Egilsstaðir:coordinate_source",
+   "expected": [
+    "VALIDATED_ROW_MISSING_REQUIRED_FIELD"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (1 location(s)): [('csv:Egilsstaðir:required_fields', ['VALIDATED_ROW_MISSING_REQUIRED_FIELD'])]",
+   "pass": true
+  },
+  {
+   "kind": "blank_required_field",
+   "target": "csv:Egilsstaðir:node_role",
+   "expected": [
+    "VALIDATED_ROW_MISSING_REQUIRED_FIELD"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (1 location(s)): [('csv:Egilsstaðir:required_fields', ['VALIDATED_ROW_MISSING_REQUIRED_FIELD'])]",
+   "pass": true
+  },
+  {
+   "kind": "blank_required_field",
+   "target": "csv:Egilsstaðir:stored_field",
+   "expected": [
+    "VALIDATED_ROW_MISSING_REQUIRED_FIELD"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (1 location(s)): [('csv:Egilsstaðir:required_fields', ['VALIDATED_ROW_MISSING_REQUIRED_FIELD'])]",
+   "pass": true
+  },
+  {
+   "kind": "blank_required_field",
+   "target": "csv:Egilsstaðir:record_source",
+   "expected": [
+    "VALIDATED_ROW_MISSING_REQUIRED_FIELD"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (1 location(s)): [('csv:Egilsstaðir:required_fields', ['VALIDATED_ROW_MISSING_REQUIRED_FIELD'])]",
+   "pass": true
+  },
+  {
+   "kind": "blank_required_field",
+   "target": "csv:Egilsstaðir:reference_status",
+   "expected": [
+    "VALIDATED_ROW_MISSING_REQUIRED_FIELD"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (1 location(s)): [('csv:Egilsstaðir:required_fields', ['VALIDATED_ROW_MISSING_REQUIRED_FIELD'])]",
+   "pass": true
+  },
+  {
+   "kind": "blank_required_field",
+   "target": "csv:Egilsstaðir:role_divergence",
+   "expected": [
+    "VALIDATED_ROW_MISSING_REQUIRED_FIELD"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (1 location(s)): [('csv:Egilsstaðir:required_fields', ['VALIDATED_ROW_MISSING_REQUIRED_FIELD'])]",
+   "pass": true
+  },
+  {
+   "kind": "blank_required_field",
+   "target": "csv:Egilsstaðir:final_validation_outcome",
+   "expected": [
+    "VALIDATED_ROW_MISSING_REQUIRED_FIELD"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (1 location(s)): [('csv:Egilsstaðir:required_fields', ['VALIDATED_ROW_MISSING_REQUIRED_FIELD'])]",
+   "pass": true
+  },
+  {
+   "kind": "blank_required_field",
+   "target": "csv:Egilsstaðir:native_x",
+   "expected": [
+    "VALIDATED_ROW_MISSING_REQUIRED_FIELD"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (1 location(s)): [('csv:Egilsstaðir:required_fields', ['VALIDATED_ROW_MISSING_REQUIRED_FIELD'])]",
+   "pass": true
+  },
+  {
+   "kind": "blank_required_field",
+   "target": "csv:Egilsstaðir:native_y",
+   "expected": [
+    "VALIDATED_ROW_MISSING_REQUIRED_FIELD"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (1 location(s)): [('csv:Egilsstaðir:required_fields', ['VALIDATED_ROW_MISSING_REQUIRED_FIELD'])]",
+   "pass": true
+  },
+  {
+   "kind": "blank_required_field",
+   "target": "csv:Egilsstaðir:source_path",
+   "expected": [
+    "VALIDATED_ROW_MISSING_REQUIRED_FIELD"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (1 location(s)): [('csv:Egilsstaðir:required_fields', ['VALIDATED_ROW_MISSING_REQUIRED_FIELD'])]",
+   "pass": true
+  },
+  {
+   "kind": "blank_required_field",
+   "target": "csv:Egilsstaðir:source_hash_key",
+   "expected": [
+    "VALIDATED_ROW_MISSING_REQUIRED_FIELD"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (1 location(s)): [('csv:Egilsstaðir:required_fields', ['VALIDATED_ROW_MISSING_REQUIRED_FIELD'])]",
+   "pass": true
+  },
+  {
+   "kind": "blank_required_field",
+   "target": "csv:Egilsstaðir:piece_id",
+   "expected": [
+    "VALIDATED_ROW_MISSING_REQUIRED_FIELD"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (1 location(s)): [('csv:Egilsstaðir:required_fields', ['VALIDATED_ROW_MISSING_REQUIRED_FIELD'])]",
+   "pass": true
+  },
+  {
+   "kind": "blank_required_field",
+   "target": "csv:Egilsstaðir:source_field",
+   "expected": [
+    "VALIDATED_ROW_MISSING_REQUIRED_FIELD"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (1 location(s)): [('csv:Egilsstaðir:required_fields', ['VALIDATED_ROW_MISSING_REQUIRED_FIELD'])]",
+   "pass": true
+  },
+  {
+   "kind": "blank_required_field",
+   "target": "csv:Egilsstaðir:crs",
+   "expected": [
+    "VALIDATED_ROW_MISSING_REQUIRED_FIELD"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (1 location(s)): [('csv:Egilsstaðir:required_fields', ['VALIDATED_ROW_MISSING_REQUIRED_FIELD'])]",
+   "pass": true
+  },
+  {
+   "kind": "blank_required_field",
+   "target": "csv:Egilsstaðir:native_source_piece",
+   "expected": [
+    "VALIDATED_ROW_MISSING_REQUIRED_FIELD"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (1 location(s)): [('csv:Egilsstaðir:required_fields', ['VALIDATED_ROW_MISSING_REQUIRED_FIELD'])]",
+   "pass": true
+  },
+  {
+   "kind": "blank_required_field",
+   "target": "csv:Egilsstaðir:native_source_field",
+   "expected": [
+    "VALIDATED_ROW_MISSING_REQUIRED_FIELD"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (1 location(s)): [('csv:Egilsstaðir:required_fields', ['VALIDATED_ROW_MISSING_REQUIRED_FIELD'])]",
+   "pass": true
+  },
+  {
+   "kind": "blank_required_field",
+   "target": "csv:Egilsstaðir:cum_km_incl_1436",
+   "expected": [
+    "VALIDATED_ROW_MISSING_REQUIRED_FIELD"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (1 location(s)): [('csv:Egilsstaðir:required_fields', ['VALIDATED_ROW_MISSING_REQUIRED_FIELD'])]",
+   "pass": true
+  },
+  {
+   "kind": "blank_required_field",
+   "target": "csv:Egilsstaðir:cum_km_excl_1436",
+   "expected": [
+    "VALIDATED_ROW_MISSING_REQUIRED_FIELD"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (1 location(s)): [('csv:Egilsstaðir:required_fields', ['VALIDATED_ROW_MISSING_REQUIRED_FIELD'])]",
+   "pass": true
+  },
+  {
+   "kind": "blank_required_field",
+   "target": "csv:Egilsstaðir:direction_status",
+   "expected": [
+    "VALIDATED_ROW_MISSING_REQUIRED_FIELD"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (1 location(s)): [('csv:Egilsstaðir:required_fields', ['VALIDATED_ROW_MISSING_REQUIRED_FIELD'])]",
+   "pass": true
+  },
+  {
+   "kind": "blank_required_field",
+   "target": "csv:Egilsstaðir:notes",
+   "expected": [
+    "VALIDATED_ROW_MISSING_REQUIRED_FIELD"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (1 location(s)): [('csv:Egilsstaðir:required_fields', ['VALIDATED_ROW_MISSING_REQUIRED_FIELD'])]",
+   "pass": true
+  },
+  {
+   "kind": "blank_required_field",
+   "target": "csv:Fáskrúðsfjörður:road_connection",
+   "expected": [
+    "VALIDATED_ROW_MISSING_REQUIRED_FIELD"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (1 location(s)): [('csv:Fáskrúðsfjörður:required_fields', ['VALIDATED_ROW_MISSING_REQUIRED_FIELD'])]",
+   "pass": true
+  },
+  {
+   "kind": "blank_required_field",
+   "target": "csv:Fáskrúðsfjörður:coordinate_source",
+   "expected": [
+    "VALIDATED_ROW_MISSING_REQUIRED_FIELD"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (1 location(s)): [('csv:Fáskrúðsfjörður:required_fields', ['VALIDATED_ROW_MISSING_REQUIRED_FIELD'])]",
+   "pass": true
+  },
+  {
+   "kind": "blank_required_field",
+   "target": "csv:Fáskrúðsfjörður:node_role",
+   "expected": [
+    "VALIDATED_ROW_MISSING_REQUIRED_FIELD"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (1 location(s)): [('csv:Fáskrúðsfjörður:required_fields', ['VALIDATED_ROW_MISSING_REQUIRED_FIELD'])]",
+   "pass": true
+  },
+  {
+   "kind": "blank_required_field",
+   "target": "csv:Fáskrúðsfjörður:stored_field",
+   "expected": [
+    "VALIDATED_ROW_MISSING_REQUIRED_FIELD"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (1 location(s)): [('csv:Fáskrúðsfjörður:required_fields', ['VALIDATED_ROW_MISSING_REQUIRED_FIELD'])]",
+   "pass": true
+  },
+  {
+   "kind": "blank_required_field",
+   "target": "csv:Fáskrúðsfjörður:record_source",
+   "expected": [
+    "VALIDATED_ROW_MISSING_REQUIRED_FIELD"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (1 location(s)): [('csv:Fáskrúðsfjörður:required_fields', ['VALIDATED_ROW_MISSING_REQUIRED_FIELD'])]",
+   "pass": true
+  },
+  {
+   "kind": "blank_required_field",
+   "target": "csv:Fáskrúðsfjörður:reference_status",
+   "expected": [
+    "VALIDATED_ROW_MISSING_REQUIRED_FIELD"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (1 location(s)): [('csv:Fáskrúðsfjörður:required_fields', ['VALIDATED_ROW_MISSING_REQUIRED_FIELD'])]",
+   "pass": true
+  },
+  {
+   "kind": "blank_required_field",
+   "target": "csv:Fáskrúðsfjörður:role_divergence",
+   "expected": [
+    "VALIDATED_ROW_MISSING_REQUIRED_FIELD"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (1 location(s)): [('csv:Fáskrúðsfjörður:required_fields', ['VALIDATED_ROW_MISSING_REQUIRED_FIELD'])]",
+   "pass": true
+  },
+  {
+   "kind": "blank_required_field",
+   "target": "csv:Fáskrúðsfjörður:final_validation_outcome",
+   "expected": [
+    "VALIDATED_ROW_MISSING_REQUIRED_FIELD"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (1 location(s)): [('csv:Fáskrúðsfjörður:required_fields', ['VALIDATED_ROW_MISSING_REQUIRED_FIELD'])]",
+   "pass": true
+  },
+  {
+   "kind": "blank_required_field",
+   "target": "csv:Fáskrúðsfjörður:native_x",
+   "expected": [
+    "VALIDATED_ROW_MISSING_REQUIRED_FIELD"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (1 location(s)): [('csv:Fáskrúðsfjörður:required_fields', ['VALIDATED_ROW_MISSING_REQUIRED_FIELD'])]",
+   "pass": true
+  },
+  {
+   "kind": "blank_required_field",
+   "target": "csv:Fáskrúðsfjörður:native_y",
+   "expected": [
+    "VALIDATED_ROW_MISSING_REQUIRED_FIELD"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (1 location(s)): [('csv:Fáskrúðsfjörður:required_fields', ['VALIDATED_ROW_MISSING_REQUIRED_FIELD'])]",
+   "pass": true
+  },
+  {
+   "kind": "blank_required_field",
+   "target": "csv:Fáskrúðsfjörður:source_path",
+   "expected": [
+    "VALIDATED_ROW_MISSING_REQUIRED_FIELD"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (1 location(s)): [('csv:Fáskrúðsfjörður:required_fields', ['VALIDATED_ROW_MISSING_REQUIRED_FIELD'])]",
+   "pass": true
+  },
+  {
+   "kind": "blank_required_field",
+   "target": "csv:Fáskrúðsfjörður:source_hash_key",
+   "expected": [
+    "VALIDATED_ROW_MISSING_REQUIRED_FIELD"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (1 location(s)): [('csv:Fáskrúðsfjörður:required_fields', ['VALIDATED_ROW_MISSING_REQUIRED_FIELD'])]",
+   "pass": true
+  },
+  {
+   "kind": "blank_required_field",
+   "target": "csv:Fáskrúðsfjörður:piece_id",
+   "expected": [
+    "VALIDATED_ROW_MISSING_REQUIRED_FIELD"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (1 location(s)): [('csv:Fáskrúðsfjörður:required_fields', ['VALIDATED_ROW_MISSING_REQUIRED_FIELD'])]",
+   "pass": true
+  },
+  {
+   "kind": "blank_required_field",
+   "target": "csv:Fáskrúðsfjörður:source_field",
+   "expected": [
+    "VALIDATED_ROW_MISSING_REQUIRED_FIELD"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (1 location(s)): [('csv:Fáskrúðsfjörður:required_fields', ['VALIDATED_ROW_MISSING_REQUIRED_FIELD'])]",
+   "pass": true
+  },
+  {
+   "kind": "blank_required_field",
+   "target": "csv:Fáskrúðsfjörður:crs",
+   "expected": [
+    "VALIDATED_ROW_MISSING_REQUIRED_FIELD"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (1 location(s)): [('csv:Fáskrúðsfjörður:required_fields', ['VALIDATED_ROW_MISSING_REQUIRED_FIELD'])]",
+   "pass": true
+  },
+  {
+   "kind": "blank_required_field",
+   "target": "csv:Fáskrúðsfjörður:native_source_piece",
+   "expected": [
+    "VALIDATED_ROW_MISSING_REQUIRED_FIELD"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (1 location(s)): [('csv:Fáskrúðsfjörður:required_fields', ['VALIDATED_ROW_MISSING_REQUIRED_FIELD'])]",
+   "pass": true
+  },
+  {
+   "kind": "blank_required_field",
+   "target": "csv:Fáskrúðsfjörður:native_source_field",
+   "expected": [
+    "VALIDATED_ROW_MISSING_REQUIRED_FIELD"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (1 location(s)): [('csv:Fáskrúðsfjörður:required_fields', ['VALIDATED_ROW_MISSING_REQUIRED_FIELD'])]",
+   "pass": true
+  },
+  {
+   "kind": "blank_required_field",
+   "target": "csv:Fáskrúðsfjörður:cum_km_incl_1436",
+   "expected": [
+    "VALIDATED_ROW_MISSING_REQUIRED_FIELD"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (1 location(s)): [('csv:Fáskrúðsfjörður:required_fields', ['VALIDATED_ROW_MISSING_REQUIRED_FIELD'])]",
+   "pass": true
+  },
+  {
+   "kind": "blank_required_field",
+   "target": "csv:Fáskrúðsfjörður:cum_km_excl_1436",
+   "expected": [
+    "VALIDATED_ROW_MISSING_REQUIRED_FIELD"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (1 location(s)): [('csv:Fáskrúðsfjörður:required_fields', ['VALIDATED_ROW_MISSING_REQUIRED_FIELD'])]",
+   "pass": true
+  },
+  {
+   "kind": "blank_required_field",
+   "target": "csv:Fáskrúðsfjörður:direction_status",
+   "expected": [
+    "VALIDATED_ROW_MISSING_REQUIRED_FIELD"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (1 location(s)): [('csv:Fáskrúðsfjörður:required_fields', ['VALIDATED_ROW_MISSING_REQUIRED_FIELD'])]",
+   "pass": true
+  },
+  {
+   "kind": "blank_required_field",
+   "target": "csv:Fáskrúðsfjörður:notes",
+   "expected": [
+    "VALIDATED_ROW_MISSING_REQUIRED_FIELD"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (1 location(s)): [('csv:Fáskrúðsfjörður:required_fields', ['VALIDATED_ROW_MISSING_REQUIRED_FIELD'])]",
+   "pass": true
+  },
+  {
+   "kind": "blank_required_field",
+   "target": "csv:Reykjahlíð:road_connection",
+   "expected": [
+    "VALIDATED_ROW_MISSING_REQUIRED_FIELD"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (1 location(s)): [('csv:Reykjahlíð:required_fields', ['VALIDATED_ROW_MISSING_REQUIRED_FIELD'])]",
+   "pass": true
+  },
+  {
+   "kind": "blank_required_field",
+   "target": "csv:Reykjahlíð:coordinate_source",
+   "expected": [
+    "VALIDATED_ROW_MISSING_REQUIRED_FIELD"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (1 location(s)): [('csv:Reykjahlíð:required_fields', ['VALIDATED_ROW_MISSING_REQUIRED_FIELD'])]",
+   "pass": true
+  },
+  {
+   "kind": "blank_required_field",
+   "target": "csv:Reykjahlíð:node_role",
+   "expected": [
+    "VALIDATED_ROW_MISSING_REQUIRED_FIELD"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (1 location(s)): [('csv:Reykjahlíð:required_fields', ['VALIDATED_ROW_MISSING_REQUIRED_FIELD'])]",
+   "pass": true
+  },
+  {
+   "kind": "blank_required_field",
+   "target": "csv:Reykjahlíð:stored_field",
+   "expected": [
+    "VALIDATED_ROW_MISSING_REQUIRED_FIELD"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (1 location(s)): [('csv:Reykjahlíð:required_fields', ['VALIDATED_ROW_MISSING_REQUIRED_FIELD'])]",
+   "pass": true
+  },
+  {
+   "kind": "blank_required_field",
+   "target": "csv:Reykjahlíð:record_source",
+   "expected": [
+    "VALIDATED_ROW_MISSING_REQUIRED_FIELD"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (1 location(s)): [('csv:Reykjahlíð:required_fields', ['VALIDATED_ROW_MISSING_REQUIRED_FIELD'])]",
+   "pass": true
+  },
+  {
+   "kind": "blank_required_field",
+   "target": "csv:Reykjahlíð:reference_status",
+   "expected": [
+    "VALIDATED_ROW_MISSING_REQUIRED_FIELD"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (1 location(s)): [('csv:Reykjahlíð:required_fields', ['VALIDATED_ROW_MISSING_REQUIRED_FIELD'])]",
+   "pass": true
+  },
+  {
+   "kind": "blank_required_field",
+   "target": "csv:Reykjahlíð:role_divergence",
+   "expected": [
+    "VALIDATED_ROW_MISSING_REQUIRED_FIELD"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (1 location(s)): [('csv:Reykjahlíð:required_fields', ['VALIDATED_ROW_MISSING_REQUIRED_FIELD'])]",
+   "pass": true
+  },
+  {
+   "kind": "blank_required_field",
+   "target": "csv:Reykjahlíð:final_validation_outcome",
+   "expected": [
+    "VALIDATED_ROW_MISSING_REQUIRED_FIELD"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (1 location(s)): [('csv:Reykjahlíð:required_fields', ['VALIDATED_ROW_MISSING_REQUIRED_FIELD'])]",
+   "pass": true
+  },
+  {
+   "kind": "blank_required_field",
+   "target": "csv:Reykjahlíð:native_x",
+   "expected": [
+    "VALIDATED_ROW_MISSING_REQUIRED_FIELD"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (1 location(s)): [('csv:Reykjahlíð:required_fields', ['VALIDATED_ROW_MISSING_REQUIRED_FIELD'])]",
+   "pass": true
+  },
+  {
+   "kind": "blank_required_field",
+   "target": "csv:Reykjahlíð:native_y",
+   "expected": [
+    "VALIDATED_ROW_MISSING_REQUIRED_FIELD"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (1 location(s)): [('csv:Reykjahlíð:required_fields', ['VALIDATED_ROW_MISSING_REQUIRED_FIELD'])]",
+   "pass": true
+  },
+  {
+   "kind": "blank_required_field",
+   "target": "csv:Reykjahlíð:source_path",
+   "expected": [
+    "VALIDATED_ROW_MISSING_REQUIRED_FIELD"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (1 location(s)): [('csv:Reykjahlíð:required_fields', ['VALIDATED_ROW_MISSING_REQUIRED_FIELD'])]",
+   "pass": true
+  },
+  {
+   "kind": "blank_required_field",
+   "target": "csv:Reykjahlíð:source_hash_key",
+   "expected": [
+    "VALIDATED_ROW_MISSING_REQUIRED_FIELD"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (1 location(s)): [('csv:Reykjahlíð:required_fields', ['VALIDATED_ROW_MISSING_REQUIRED_FIELD'])]",
+   "pass": true
+  },
+  {
+   "kind": "blank_required_field",
+   "target": "csv:Reykjahlíð:piece_id",
+   "expected": [
+    "VALIDATED_ROW_MISSING_REQUIRED_FIELD"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (1 location(s)): [('csv:Reykjahlíð:required_fields', ['VALIDATED_ROW_MISSING_REQUIRED_FIELD'])]",
+   "pass": true
+  },
+  {
+   "kind": "blank_required_field",
+   "target": "csv:Reykjahlíð:source_field",
+   "expected": [
+    "VALIDATED_ROW_MISSING_REQUIRED_FIELD"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (1 location(s)): [('csv:Reykjahlíð:required_fields', ['VALIDATED_ROW_MISSING_REQUIRED_FIELD'])]",
+   "pass": true
+  },
+  {
+   "kind": "blank_required_field",
+   "target": "csv:Reykjahlíð:crs",
+   "expected": [
+    "VALIDATED_ROW_MISSING_REQUIRED_FIELD"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (1 location(s)): [('csv:Reykjahlíð:required_fields', ['VALIDATED_ROW_MISSING_REQUIRED_FIELD'])]",
+   "pass": true
+  },
+  {
+   "kind": "blank_required_field",
+   "target": "csv:Reykjahlíð:native_source_piece",
+   "expected": [
+    "VALIDATED_ROW_MISSING_REQUIRED_FIELD"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (1 location(s)): [('csv:Reykjahlíð:required_fields', ['VALIDATED_ROW_MISSING_REQUIRED_FIELD'])]",
+   "pass": true
+  },
+  {
+   "kind": "blank_required_field",
+   "target": "csv:Reykjahlíð:native_source_field",
+   "expected": [
+    "VALIDATED_ROW_MISSING_REQUIRED_FIELD"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (1 location(s)): [('csv:Reykjahlíð:required_fields', ['VALIDATED_ROW_MISSING_REQUIRED_FIELD'])]",
+   "pass": true
+  },
+  {
+   "kind": "blank_required_field",
+   "target": "csv:Reykjahlíð:cum_km_incl_1436",
+   "expected": [
+    "VALIDATED_ROW_MISSING_REQUIRED_FIELD"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (1 location(s)): [('csv:Reykjahlíð:required_fields', ['VALIDATED_ROW_MISSING_REQUIRED_FIELD'])]",
+   "pass": true
+  },
+  {
+   "kind": "blank_required_field",
+   "target": "csv:Reykjahlíð:cum_km_excl_1436",
+   "expected": [
+    "VALIDATED_ROW_MISSING_REQUIRED_FIELD"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (1 location(s)): [('csv:Reykjahlíð:required_fields', ['VALIDATED_ROW_MISSING_REQUIRED_FIELD'])]",
+   "pass": true
+  },
+  {
+   "kind": "blank_required_field",
+   "target": "csv:Reykjahlíð:direction_status",
+   "expected": [
+    "VALIDATED_ROW_MISSING_REQUIRED_FIELD"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (1 location(s)): [('csv:Reykjahlíð:required_fields', ['VALIDATED_ROW_MISSING_REQUIRED_FIELD'])]",
+   "pass": true
+  },
+  {
+   "kind": "blank_required_field",
+   "target": "csv:Reykjahlíð:notes",
+   "expected": [
+    "VALIDATED_ROW_MISSING_REQUIRED_FIELD"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (1 location(s)): [('csv:Reykjahlíð:required_fields', ['VALIDATED_ROW_MISSING_REQUIRED_FIELD'])]",
+   "pass": true
+  },
+  {
+   "kind": "blank_required_field",
+   "target": "csv:Reyðarfjörður:road_connection",
+   "expected": [
+    "VALIDATED_ROW_MISSING_REQUIRED_FIELD"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (1 location(s)): [('csv:Reyðarfjörður:required_fields', ['VALIDATED_ROW_MISSING_REQUIRED_FIELD'])]",
+   "pass": true
+  },
+  {
+   "kind": "blank_required_field",
+   "target": "csv:Reyðarfjörður:coordinate_source",
+   "expected": [
+    "VALIDATED_ROW_MISSING_REQUIRED_FIELD"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (1 location(s)): [('csv:Reyðarfjörður:required_fields', ['VALIDATED_ROW_MISSING_REQUIRED_FIELD'])]",
+   "pass": true
+  },
+  {
+   "kind": "blank_required_field",
+   "target": "csv:Reyðarfjörður:node_role",
+   "expected": [
+    "VALIDATED_ROW_MISSING_REQUIRED_FIELD"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (1 location(s)): [('csv:Reyðarfjörður:required_fields', ['VALIDATED_ROW_MISSING_REQUIRED_FIELD'])]",
+   "pass": true
+  },
+  {
+   "kind": "blank_required_field",
+   "target": "csv:Reyðarfjörður:stored_field",
+   "expected": [
+    "VALIDATED_ROW_MISSING_REQUIRED_FIELD"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (1 location(s)): [('csv:Reyðarfjörður:required_fields', ['VALIDATED_ROW_MISSING_REQUIRED_FIELD'])]",
+   "pass": true
+  },
+  {
+   "kind": "blank_required_field",
+   "target": "csv:Reyðarfjörður:record_source",
+   "expected": [
+    "VALIDATED_ROW_MISSING_REQUIRED_FIELD"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (1 location(s)): [('csv:Reyðarfjörður:required_fields', ['VALIDATED_ROW_MISSING_REQUIRED_FIELD'])]",
+   "pass": true
+  },
+  {
+   "kind": "blank_required_field",
+   "target": "csv:Reyðarfjörður:reference_status",
+   "expected": [
+    "VALIDATED_ROW_MISSING_REQUIRED_FIELD"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (1 location(s)): [('csv:Reyðarfjörður:required_fields', ['VALIDATED_ROW_MISSING_REQUIRED_FIELD'])]",
+   "pass": true
+  },
+  {
+   "kind": "blank_required_field",
+   "target": "csv:Reyðarfjörður:role_divergence",
+   "expected": [
+    "VALIDATED_ROW_MISSING_REQUIRED_FIELD"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (1 location(s)): [('csv:Reyðarfjörður:required_fields', ['VALIDATED_ROW_MISSING_REQUIRED_FIELD'])]",
+   "pass": true
+  },
+  {
+   "kind": "blank_required_field",
+   "target": "csv:Reyðarfjörður:final_validation_outcome",
+   "expected": [
+    "VALIDATED_ROW_MISSING_REQUIRED_FIELD"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (1 location(s)): [('csv:Reyðarfjörður:required_fields', ['VALIDATED_ROW_MISSING_REQUIRED_FIELD'])]",
+   "pass": true
+  },
+  {
+   "kind": "blank_required_field",
+   "target": "csv:Reyðarfjörður:native_x",
+   "expected": [
+    "VALIDATED_ROW_MISSING_REQUIRED_FIELD"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (1 location(s)): [('csv:Reyðarfjörður:required_fields', ['VALIDATED_ROW_MISSING_REQUIRED_FIELD'])]",
+   "pass": true
+  },
+  {
+   "kind": "blank_required_field",
+   "target": "csv:Reyðarfjörður:native_y",
+   "expected": [
+    "VALIDATED_ROW_MISSING_REQUIRED_FIELD"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (1 location(s)): [('csv:Reyðarfjörður:required_fields', ['VALIDATED_ROW_MISSING_REQUIRED_FIELD'])]",
+   "pass": true
+  },
+  {
+   "kind": "blank_required_field",
+   "target": "csv:Reyðarfjörður:source_path",
+   "expected": [
+    "VALIDATED_ROW_MISSING_REQUIRED_FIELD"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (1 location(s)): [('csv:Reyðarfjörður:required_fields', ['VALIDATED_ROW_MISSING_REQUIRED_FIELD'])]",
+   "pass": true
+  },
+  {
+   "kind": "blank_required_field",
+   "target": "csv:Reyðarfjörður:source_hash_key",
+   "expected": [
+    "VALIDATED_ROW_MISSING_REQUIRED_FIELD"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (1 location(s)): [('csv:Reyðarfjörður:required_fields', ['VALIDATED_ROW_MISSING_REQUIRED_FIELD'])]",
+   "pass": true
+  },
+  {
+   "kind": "blank_required_field",
+   "target": "csv:Reyðarfjörður:piece_id",
+   "expected": [
+    "VALIDATED_ROW_MISSING_REQUIRED_FIELD"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (1 location(s)): [('csv:Reyðarfjörður:required_fields', ['VALIDATED_ROW_MISSING_REQUIRED_FIELD'])]",
+   "pass": true
+  },
+  {
+   "kind": "blank_required_field",
+   "target": "csv:Reyðarfjörður:source_field",
+   "expected": [
+    "VALIDATED_ROW_MISSING_REQUIRED_FIELD"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (1 location(s)): [('csv:Reyðarfjörður:required_fields', ['VALIDATED_ROW_MISSING_REQUIRED_FIELD'])]",
+   "pass": true
+  },
+  {
+   "kind": "blank_required_field",
+   "target": "csv:Reyðarfjörður:crs",
+   "expected": [
+    "VALIDATED_ROW_MISSING_REQUIRED_FIELD"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (1 location(s)): [('csv:Reyðarfjörður:required_fields', ['VALIDATED_ROW_MISSING_REQUIRED_FIELD'])]",
+   "pass": true
+  },
+  {
+   "kind": "blank_required_field",
+   "target": "csv:Reyðarfjörður:native_source_piece",
+   "expected": [
+    "VALIDATED_ROW_MISSING_REQUIRED_FIELD"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (1 location(s)): [('csv:Reyðarfjörður:required_fields', ['VALIDATED_ROW_MISSING_REQUIRED_FIELD'])]",
+   "pass": true
+  },
+  {
+   "kind": "blank_required_field",
+   "target": "csv:Reyðarfjörður:native_source_field",
+   "expected": [
+    "VALIDATED_ROW_MISSING_REQUIRED_FIELD"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (1 location(s)): [('csv:Reyðarfjörður:required_fields', ['VALIDATED_ROW_MISSING_REQUIRED_FIELD'])]",
+   "pass": true
+  },
+  {
+   "kind": "blank_required_field",
+   "target": "csv:Reyðarfjörður:cum_km_incl_1436",
+   "expected": [
+    "VALIDATED_ROW_MISSING_REQUIRED_FIELD"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (1 location(s)): [('csv:Reyðarfjörður:required_fields', ['VALIDATED_ROW_MISSING_REQUIRED_FIELD'])]",
+   "pass": true
+  },
+  {
+   "kind": "blank_required_field",
+   "target": "csv:Reyðarfjörður:cum_km_excl_1436",
+   "expected": [
+    "VALIDATED_ROW_MISSING_REQUIRED_FIELD"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (1 location(s)): [('csv:Reyðarfjörður:required_fields', ['VALIDATED_ROW_MISSING_REQUIRED_FIELD'])]",
+   "pass": true
+  },
+  {
+   "kind": "blank_required_field",
+   "target": "csv:Reyðarfjörður:direction_status",
+   "expected": [
+    "VALIDATED_ROW_MISSING_REQUIRED_FIELD"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (1 location(s)): [('csv:Reyðarfjörður:required_fields', ['VALIDATED_ROW_MISSING_REQUIRED_FIELD'])]",
+   "pass": true
+  },
+  {
+   "kind": "blank_required_field",
+   "target": "csv:Reyðarfjörður:notes",
+   "expected": [
+    "VALIDATED_ROW_MISSING_REQUIRED_FIELD"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (1 location(s)): [('csv:Reyðarfjörður:required_fields', ['VALIDATED_ROW_MISSING_REQUIRED_FIELD'])]",
+   "pass": true
+  },
+  {
+   "kind": "blank_required_field",
+   "target": "csv:Vík:road_connection",
+   "expected": [
+    "VALIDATED_ROW_MISSING_REQUIRED_FIELD"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (1 location(s)): [('csv:Vík:required_fields', ['VALIDATED_ROW_MISSING_REQUIRED_FIELD'])]",
+   "pass": true
+  },
+  {
+   "kind": "blank_required_field",
+   "target": "csv:Vík:coordinate_source",
+   "expected": [
+    "VALIDATED_ROW_MISSING_REQUIRED_FIELD"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (1 location(s)): [('csv:Vík:required_fields', ['VALIDATED_ROW_MISSING_REQUIRED_FIELD'])]",
+   "pass": true
+  },
+  {
+   "kind": "blank_required_field",
+   "target": "csv:Vík:node_role",
+   "expected": [
+    "VALIDATED_ROW_MISSING_REQUIRED_FIELD"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (1 location(s)): [('csv:Vík:required_fields', ['VALIDATED_ROW_MISSING_REQUIRED_FIELD'])]",
+   "pass": true
+  },
+  {
+   "kind": "blank_required_field",
+   "target": "csv:Vík:stored_field",
+   "expected": [
+    "VALIDATED_ROW_MISSING_REQUIRED_FIELD"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (1 location(s)): [('csv:Vík:required_fields', ['VALIDATED_ROW_MISSING_REQUIRED_FIELD'])]",
+   "pass": true
+  },
+  {
+   "kind": "blank_required_field",
+   "target": "csv:Vík:record_source",
+   "expected": [
+    "VALIDATED_ROW_MISSING_REQUIRED_FIELD"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (1 location(s)): [('csv:Vík:required_fields', ['VALIDATED_ROW_MISSING_REQUIRED_FIELD'])]",
+   "pass": true
+  },
+  {
+   "kind": "blank_required_field",
+   "target": "csv:Vík:reference_status",
+   "expected": [
+    "VALIDATED_ROW_MISSING_REQUIRED_FIELD"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (1 location(s)): [('csv:Vík:required_fields', ['VALIDATED_ROW_MISSING_REQUIRED_FIELD'])]",
+   "pass": true
+  },
+  {
+   "kind": "blank_required_field",
+   "target": "csv:Vík:role_divergence",
+   "expected": [
+    "VALIDATED_ROW_MISSING_REQUIRED_FIELD"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (1 location(s)): [('csv:Vík:required_fields', ['VALIDATED_ROW_MISSING_REQUIRED_FIELD'])]",
+   "pass": true
+  },
+  {
+   "kind": "blank_required_field",
+   "target": "csv:Vík:final_validation_outcome",
+   "expected": [
+    "VALIDATED_ROW_MISSING_REQUIRED_FIELD"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (1 location(s)): [('csv:Vík:required_fields', ['VALIDATED_ROW_MISSING_REQUIRED_FIELD'])]",
+   "pass": true
+  },
+  {
+   "kind": "blank_required_field",
+   "target": "csv:Vík:native_x",
+   "expected": [
+    "VALIDATED_ROW_MISSING_REQUIRED_FIELD"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (1 location(s)): [('csv:Vík:required_fields', ['VALIDATED_ROW_MISSING_REQUIRED_FIELD'])]",
+   "pass": true
+  },
+  {
+   "kind": "blank_required_field",
+   "target": "csv:Vík:native_y",
+   "expected": [
+    "VALIDATED_ROW_MISSING_REQUIRED_FIELD"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (1 location(s)): [('csv:Vík:required_fields', ['VALIDATED_ROW_MISSING_REQUIRED_FIELD'])]",
+   "pass": true
+  },
+  {
+   "kind": "blank_required_field",
+   "target": "csv:Vík:source_path",
+   "expected": [
+    "VALIDATED_ROW_MISSING_REQUIRED_FIELD"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (1 location(s)): [('csv:Vík:required_fields', ['VALIDATED_ROW_MISSING_REQUIRED_FIELD'])]",
+   "pass": true
+  },
+  {
+   "kind": "blank_required_field",
+   "target": "csv:Vík:source_hash_key",
+   "expected": [
+    "VALIDATED_ROW_MISSING_REQUIRED_FIELD"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (1 location(s)): [('csv:Vík:required_fields', ['VALIDATED_ROW_MISSING_REQUIRED_FIELD'])]",
+   "pass": true
+  },
+  {
+   "kind": "blank_required_field",
+   "target": "csv:Vík:piece_id",
+   "expected": [
+    "VALIDATED_ROW_MISSING_REQUIRED_FIELD"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (1 location(s)): [('csv:Vík:required_fields', ['VALIDATED_ROW_MISSING_REQUIRED_FIELD'])]",
+   "pass": true
+  },
+  {
+   "kind": "blank_required_field",
+   "target": "csv:Vík:source_field",
+   "expected": [
+    "VALIDATED_ROW_MISSING_REQUIRED_FIELD"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (1 location(s)): [('csv:Vík:required_fields', ['VALIDATED_ROW_MISSING_REQUIRED_FIELD'])]",
+   "pass": true
+  },
+  {
+   "kind": "blank_required_field",
+   "target": "csv:Vík:crs",
+   "expected": [
+    "VALIDATED_ROW_MISSING_REQUIRED_FIELD"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (1 location(s)): [('csv:Vík:required_fields', ['VALIDATED_ROW_MISSING_REQUIRED_FIELD'])]",
+   "pass": true
+  },
+  {
+   "kind": "blank_required_field",
+   "target": "csv:Vík:native_source_piece",
+   "expected": [
+    "VALIDATED_ROW_MISSING_REQUIRED_FIELD"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (1 location(s)): [('csv:Vík:required_fields', ['VALIDATED_ROW_MISSING_REQUIRED_FIELD'])]",
+   "pass": true
+  },
+  {
+   "kind": "blank_required_field",
+   "target": "csv:Vík:native_source_field",
+   "expected": [
+    "VALIDATED_ROW_MISSING_REQUIRED_FIELD"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (1 location(s)): [('csv:Vík:required_fields', ['VALIDATED_ROW_MISSING_REQUIRED_FIELD'])]",
+   "pass": true
+  },
+  {
+   "kind": "blank_required_field",
+   "target": "csv:Vík:cum_km_incl_1436",
+   "expected": [
+    "VALIDATED_ROW_MISSING_REQUIRED_FIELD"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (1 location(s)): [('csv:Vík:required_fields', ['VALIDATED_ROW_MISSING_REQUIRED_FIELD'])]",
+   "pass": true
+  },
+  {
+   "kind": "blank_required_field",
+   "target": "csv:Vík:cum_km_excl_1436",
+   "expected": [
+    "VALIDATED_ROW_MISSING_REQUIRED_FIELD"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (1 location(s)): [('csv:Vík:required_fields', ['VALIDATED_ROW_MISSING_REQUIRED_FIELD'])]",
+   "pass": true
+  },
+  {
+   "kind": "blank_required_field",
+   "target": "csv:Vík:direction_status",
+   "expected": [
+    "VALIDATED_ROW_MISSING_REQUIRED_FIELD"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (1 location(s)): [('csv:Vík:required_fields', ['VALIDATED_ROW_MISSING_REQUIRED_FIELD'])]",
+   "pass": true
+  },
+  {
+   "kind": "blank_required_field",
+   "target": "csv:Vík:notes",
+   "expected": [
+    "VALIDATED_ROW_MISSING_REQUIRED_FIELD"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (1 location(s)): [('csv:Vík:required_fields', ['VALIDATED_ROW_MISSING_REQUIRED_FIELD'])]",
+   "pass": true
+  },
+  {
+   "kind": "borgarnes_role_set",
+   "target": "csv:Borgarnes",
+   "expected": [
+    "BORGARNES_FIELD_NOT_EMPTY"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (1 location(s)): [('csv:Borgarnes:required_empty', ['BORGARNES_FIELD_NOT_EMPTY'])]",
+   "pass": true
+  },
+  {
+   "kind": "borgarnes_cum_filled",
+   "target": "csv:Borgarnes",
+   "expected": [
+    "BORGARNES_FIELD_NOT_EMPTY"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (1 location(s)): [('csv:Borgarnes:required_empty', ['BORGARNES_FIELD_NOT_EMPTY'])]",
+   "pass": true
+  },
+  {
+   "kind": "no_node_field_filled",
+   "target": "csv:Reykjavík",
+   "expected": [
+    "NO_NODE_OR_PAIR_FIELD_NOT_EMPTY"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (1 location(s)): [('csv:Reykjavík:required_empty', ['NO_NODE_OR_PAIR_FIELD_NOT_EMPTY'])]",
+   "pass": true
+  },
+  {
+   "kind": "pair_field_filled",
+   "target": "csv:Selfoss",
+   "expected": [
+    "NO_NODE_OR_PAIR_FIELD_NOT_EMPTY"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (1 location(s)): [('csv:Selfoss:required_empty', ['NO_NODE_OR_PAIR_FIELD_NOT_EMPTY'])]",
+   "pass": true
+  },
+  {
+   "kind": "role_divergence_mutated",
+   "target": "csv:Egilsstaðir",
+   "expected": [
+    "ROLE_DIVERGENCE_MISMATCH"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (1 location(s)): [('csv:Egilsstaðir:role_divergence', ['ROLE_DIVERGENCE_MISMATCH'])]",
+   "pass": true
+  },
+  {
+   "kind": "coordinate_source_mutated",
+   "target": "csv:Akureyri",
+   "expected": [
+    "COORDINATE_SOURCE_MISMATCH"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (1 location(s)): [('csv:Akureyri:coordinate_source', ['COORDINATE_SOURCE_MISMATCH'])]",
+   "pass": true
+  },
+  {
+   "kind": "direction_status_mutated",
+   "target": "csv:Vík",
+   "expected": [
+    "DIRECTION_STATUS_MISMATCH"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (1 location(s)): [('csv:Vík:direction_status', ['DIRECTION_STATUS_MISMATCH'])]",
+   "pass": true
+  },
+  {
+   "kind": "g4_coord_plus_0.2m",
+   "target": "g4:3410",
+   "expected": [
+    "G4_COORD_MISMATCH"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (2 location(s)): [('g4:3410:end:geometry', ['G4_COORD_MISMATCH']), ('g4:3410:end:provenance', ['PROVENANCE_CRS_INVALID'])]",
+   "pass": true
+  },
+  {
+   "kind": "g4_coord_plus_5m",
+   "target": "g4:3410",
+   "expected": [
+    "G4_COORD_MISMATCH"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (1 location(s)): [('g4:3410:end:geometry', ['G4_COORD_MISMATCH'])]",
+   "pass": true
+  },
+  {
+   "kind": "g4_tier_cum_mutated",
+   "target": "g4:3410",
+   "expected": [
+    "G4_CUM_MISMATCH"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (1 location(s)): [('g4:3410:end:geometry', ['G4_CUM_MISMATCH'])]",
+   "pass": true
+  },
+  {
+   "kind": "g4_wrong_source_hash_key",
+   "target": "g4:3410",
+   "expected": [
+    "PROVENANCE_HASH_KEY_INVALID"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (1 location(s)): [('g4:3410:end:provenance', ['PROVENANCE_PATH_MISMATCH', 'PROVENANCE_HASH_KEY_INVALID'])]",
+   "pass": true
+  },
+  {
+   "kind": "g4_native_crs_4326",
+   "target": "g4:3410",
+   "expected": [
+    "PROVENANCE_CRS_INVALID"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (1 location(s)): [('g4:3410:end:provenance', ['PROVENANCE_CRS_INVALID'])]",
+   "pass": true
+  },
+  {
+   "kind": "g4_wrong_source_field",
+   "target": "g4:2345",
+   "expected": [
+    "PROVENANCE_SOURCE_FIELD_MISMATCH"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (1 location(s)): [('g4:2345:end:source_field', ['PROVENANCE_SOURCE_FIELD_MISMATCH'])]",
+   "pass": true
+  },
+  {
+   "kind": "missing_source_file",
+   "target": "all_provenance_checks",
+   "expected": [
+    "PROVENANCE_SOURCE_FILE_MISSING"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED (26 location(s)): [('csv:Borgarnes:provenance', ['PROVENANCE_SOURCE_FILE_MISSING']), ('csv:Akureyri:provenance', ['PROVENANCE_SOURCE_FILE_MISSING']), ('csv:Reykjahlíð:provenance', ['PROVENANCE_SOURCE_FILE_MISSING']), ('csv:Egilsstaðir:provenance', ['PROVENANCE_SOURCE_FILE_MISSING']), ('csv:Reyðarfjörður:provenance', ['PROVENANCE_SOURCE_FILE_MISSING']), ('csv:Fáskrúðsfjörður:provenance', ['PROVENANCE_SOURCE_FILE_MISSING']), ('csv:Vík:provenance', ['PROVENANCE_SOURCE_FILE_MISSING']), ('reference:Hvolsvöllur:ENTRY:provenance', ['PROVENANCE_SOURCE_FILE_MISSING']), ('reference:Hvolsvöllur:EXIT:provenance', ['PROVENANCE_SOURCE_FILE_MISSING']), ('reference:Hella:ENTRY:provenance', ['PROVENANCE_SOURCE_FILE_MISSING']), ('reference:Hella:EXIT:provenance', ['PROVENANCE_SOURCE_FILE_MISSING']), ('reference:Selfoss:ENTRY:provenance', ['PROVENANCE_SOURCE_FILE_MISSING']), ('reference:Selfoss:EXIT:provenance', ['PROVENANCE_SOURCE_FILE_MISSING']), ('g4:2345:end:provenance', ['PROVENANCE_SOURCE_FILE_MISSING']), ('g4:2344:end:provenance', ['PROVENANCE_SOURCE_FILE_MISSING']), ('g4:3410:end:provenance', ['PROVENANCE_SOURCE_FILE_MISSING']), ('g4:3409:end:provenance', ['PROVENANCE_SOURCE_FILE_MISSING']), ('g4:2892:start:provenance', ['PROVENANCE_SOURCE_FILE_MISSING']), ('g4:2891:start:provenance', ['PROVENANCE_SOURCE_FILE_MISSING']), ('g4:2891:end:provenance', ['PROVENANCE_SOURCE_FILE_MISSING']), ('akureyri:native:provenance', ['PROVENANCE_SOURCE_FILE_MISSING']), ('akureyri:wgs84:provenance', ['PROVENANCE_SOURCE_FILE_MISSING']), ('reykjavik:short_western_leg_ENTRY_stored_END:provenance', ['PROVENANCE_SOURCE_FILE_MISSING']), ('reykjavik:long_eastern_leg_EXIT_stored_START:provenance', ['PROVENANCE_SOURCE_FILE_MISSING']), ('reykjavik:raudavatn_candidate_ENTRY_stored_END:provenance', ['PROVENANCE_SOURCE_FILE_MISSING']), ('reykjavik:raudavatn_candidate_EXIT_stored_START:provenance', ['PROVENANCE_SOURCE_FILE_MISSING'])]",
+   "pass": true
+  }
+ ],
+ "all_pass": true
+}

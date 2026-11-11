@@ -1,0 +1,22 @@
+{
+ "note": "Analysis only -- does not modify stem_search_hints_v3.json or any road_connection/coordinate_source/direction_status value. Rule: an informative compound is a matched_token ending in vegur/braut/stigur/gata (NFC) that is longer than the bare searched-for place name.",
+ "jonesy_cited_figure_in_i5_review": "7 of 15 (her own sandbox/manual count, covering only the 3 named examples in her I5 text; did not include the 4 Hvammstangavegur matches)",
+ "actual_code_computed_figure_against_the_same_stated_rule": {
+  "swallowed_by_rule1": 11,
+  "of_informative_compounds": 19
+ },
+ "stem_search_hints_v3_json_sha256_verified_unchanged": "0db96b9669636ff231011d6e8b718d4e4e5d20b85acc0c86673ca25a283a682c",
+ "unchanged_totals": {
+  "total_matches": 113,
+  "category_totals": {
+   "HOME_PIECE_OR_ROUTE_ENDPOINT": 102,
+   "UNCLASSIFIED_TEXT_MENTION": 3,
+   "ROAD_NAME_COMPOUND_MENTION": 8
+  }
+ },
+ "informative_compound_analysis": {
+  "informative_compound_count": 19,
+  "swallowed_by_rule1_count": 11,
+  "correctly_rule2_count": 8
+ }
+}

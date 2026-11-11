@@ -1,0 +1,11 @@
+3cdeecdcf292b0b4038925b391c081c2b6732429d4e8ae9940d79a41a0784ada  docs/ai/tasks/ticket-493-access-points/rules-v4.md
+005b5b1b4c05dc90c4d937018c804943bd26bb5b1270dcaf02fb400c8ed4ff33  docs/ai/tasks/ticket-493-access-points/rules-v4.sha256
+d098ec34a0a07c702a37853c4174d21d143629421e1736b21c3178914f4c8e5c  docs/ai/tasks/ticket-493-access-points/evidence-v4.md
+d83b4db41ee1d12c70302730e3582f7eb5be70ba6d60762f3e647c0eb9aa31fe  docs/ai/tasks/ticket-493-access-points/samples/v4/snapshot_v3_and_inputs.py
+dfcfb9f2c3e8f6e81c8f3ef0f1a41f68ae45cda135d2fba706c9f11208f354a0  docs/ai/tasks/ticket-493-access-points/samples/v4/v1_v2_v3_and_input_baseline.json
+be5466db74a832597387f2abdfbe505d654b88c9e7c837663122b9deeeae34c0  docs/ai/tasks/ticket-493-access-points/samples/v4/direction_status_frozen_map.json
+03b24efc85103250b28be00516915fbd7ad2215236bdce428ad9c29646ebe7c0  docs/ai/tasks/ticket-493-access-points/samples/v4/validate_final_outputs_v4.py
+87e511f10668f2756753c66ba6f49732f9007656aed7f6377f8faf8d27199dbb  docs/ai/tasks/ticket-493-access-points/samples/v4/mutation_tests_v4.py
+f895c08e4e126dcdee618f66f58fe48a0d26d9350d816e96765aab06af8a0d99  docs/ai/tasks/ticket-493-access-points/samples/v4/mutation_test_report_v4.json
+2391c1f741b1afe1d347e28b12e30ff1a7d8c9a05d9dcca47226bbab04379463  docs/ai/tasks/ticket-493-access-points/samples/v4/compute_7_of_15_v4.py
+29179c0f9d1d4002b92662685ae4ca1e9d1973066ffc4e15ea27d442cb123417  docs/ai/tasks/ticket-493-access-points/samples/v4/seven_of_fifteen_analysis_v4.json
