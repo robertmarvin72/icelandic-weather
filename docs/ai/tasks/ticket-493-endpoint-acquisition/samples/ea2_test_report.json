@@ -1,0 +1,94 @@
+{
+ "note": "This proves this task's own driver behaviour against a controlled 127.0.0.1 test server -- it proves NOTHING about gagnaveita.vegagerdin.is itself. Sandbox/CC-attributed.",
+ "results": [
+  {
+   "test": "redirect",
+   "expected_check_id": "REDIRECT",
+   "actual_check_id": "REDIRECT",
+   "passed": true,
+   "detail": null
+  },
+  {
+   "test": "non_200_status",
+   "expected_check_id": "NON_200_STATUS",
+   "actual_check_id": "NON_200_STATUS",
+   "passed": true,
+   "detail": null
+  },
+  {
+   "test": "over_cap_direct",
+   "expected_check_id": "TRUNCATED",
+   "actual_check_id": "TRUNCATED",
+   "passed": true,
+   "detail": null
+  },
+  {
+   "test": "over_cap_chunked",
+   "expected_check_id": "TRUNCATED",
+   "actual_check_id": "TRUNCATED",
+   "passed": true,
+   "detail": null
+  },
+  {
+   "test": "mid_body_stall_wall_clock",
+   "expected_check_id": "WALL_CLOCK_CAP_EXCEEDED",
+   "actual_check_id": "WALL_CLOCK_CAP_EXCEEDED",
+   "passed": true,
+   "detail": null
+  },
+  {
+   "test": "remaining_budget_less_than_cap",
+   "expected_check_id": "TRUNCATED",
+   "actual_check_id": "TRUNCATED",
+   "passed": true,
+   "detail": null
+  },
+  {
+   "test": "fourth_call_refused",
+   "expected_check_id": "FOURTH_CALL_REFUSED",
+   "actual_check_id": "FOURTH_CALL_REFUSED",
+   "passed": true,
+   "detail": null
+  },
+  {
+   "test": "disallowed_host",
+   "expected_check_id": "HOST_NOT_ALLOWLISTED",
+   "actual_check_id": "HOST_NOT_ALLOWLISTED",
+   "passed": true,
+   "detail": null
+  },
+  {
+   "test": "duplicate_request_id",
+   "expected_check_id": "DUPLICATE_REQUEST_ID_REFUSED",
+   "actual_check_id": "DUPLICATE_REQUEST_ID_REFUSED",
+   "passed": true,
+   "detail": null
+  },
+  {
+   "test": "preconnect_failure_invalid_url",
+   "expected_check_id": "TRANSPORT_ERROR (counted, STOP)",
+   "actual_check_id": [
+    "NON_200_STATUS",
+    "TRANSPORT_ERROR"
+   ],
+   "passed": true,
+   "detail": null
+  },
+  {
+   "test": "clean_small_call_passes",
+   "expected_check_id": "NO_STOP",
+   "actual_check_id": "NO_STOP",
+   "passed": true,
+   "detail": null
+  },
+  {
+   "test": "live_mode_refuses_restart_if_ledger_exists",
+   "expected_check_id": "DRIVER_REFUSES_RESTART_LEDGER_EXISTS",
+   "actual_check_id": "DRIVER_REFUSES_RESTART_LEDGER_EXISTS",
+   "passed": true,
+   "detail": null
+  }
+ ],
+ "total": 12,
+ "all_passed": true
+}

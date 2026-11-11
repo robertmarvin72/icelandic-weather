@@ -1,0 +1,67 @@
+{
+ "stopped_reason": "E1-WGS84 EA4 deviation: EA4_II_EXTRA_FEATURE_WHILE_EXPECTED_SET_COMPLETE",
+ "findings": {
+  "E1-WGS84": {
+   "number_matched": 32,
+   "number_returned": 32,
+   "total_features": 32,
+   "len_features": 32,
+   "expected_count": 20,
+   "missing_expected_keys": [],
+   "extra_keys_beyond_expected": [
+    [
+     1985,
+     -1
+    ],
+    [
+     1985,
+     0
+    ],
+    [
+     1985,
+     1
+    ],
+    [
+     1985,
+     2
+    ],
+    [
+     2899,
+     -1
+    ],
+    [
+     2899,
+     0
+    ],
+    [
+     2899,
+     1
+    ],
+    [
+     2899,
+     2
+    ],
+    [
+     19524,
+     -1
+    ],
+    [
+     19524,
+     0
+    ],
+    [
+     19524,
+     1
+    ],
+    [
+     19524,
+     2
+    ]
+   ],
+   "duplicate_keys": [],
+   "deviation_type": "EA4_II_EXTRA_FEATURE_WHILE_EXPECTED_SET_COMPLETE"
+  }
+ },
+ "calls_made": 1,
+ "bytes_received_total": 28056
+}

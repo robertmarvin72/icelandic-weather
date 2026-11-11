@@ -1,0 +1,333 @@
+{
+ "note": "E1 values are produced by the server; pairing here is a construction/consistency check against retained native data, not an independent proof of the WGS84 values themselves (EA5d) -- reprojection is prohibited. z is excluded from every value above (EA5a). All four tiers are published per role, each carrying its own tier_consistency_flag (EA6).",
+ "entries": [
+  {
+   "role": "END",
+   "place": "Egilsstaðir (E1)",
+   "idferill": 2345,
+   "nakvaemniferlis": -1,
+   "objectid": 5172,
+   "id": "faerdferlar2017_1.5172",
+   "latitude": 65.25861764,
+   "longitude": -14.39028964,
+   "tier_consistency_flag": true,
+   "null_reason": null,
+   "native_reference": {
+    "file_label": "wfs-vegnr1-all.json (#483)",
+    "idferill": 2345,
+    "nakvaemniferlis": -1,
+    "native_xy": [
+     715153.74,
+     536679.93
+    ],
+    "note": "native reference is the retained tier -1 vertex (finest retained precision); the WGS84 value above is the server's own answer for this (idferill, tier) pair, not reprojected from this native value."
+   },
+   "raw_response_sha256": "cb9382946098c2040dbc5c151985977974a1b7bf38aede520a7c1a312ee78355",
+   "ledger_line": 1,
+   "dagsferils": "2026-10-07T00:00:00Z"
+  },
+  {
+   "role": "END",
+   "place": "Egilsstaðir (E1)",
+   "idferill": 2345,
+   "nakvaemniferlis": 0,
+   "objectid": 3652,
+   "id": "faerdferlar2017_1.3652",
+   "latitude": 65.25861764,
+   "longitude": -14.39028964,
+   "tier_consistency_flag": true,
+   "null_reason": null,
+   "native_reference": {
+    "file_label": "wfs-vegnr1-all.json (#483)",
+    "idferill": 2345,
+    "nakvaemniferlis": -1,
+    "native_xy": [
+     715153.74,
+     536679.93
+    ],
+    "note": "native reference is the retained tier -1 vertex (finest retained precision); the WGS84 value above is the server's own answer for this (idferill, tier) pair, not reprojected from this native value."
+   },
+   "raw_response_sha256": "cb9382946098c2040dbc5c151985977974a1b7bf38aede520a7c1a312ee78355",
+   "ledger_line": 1,
+   "dagsferils": "2026-10-07T00:00:00Z"
+  },
+  {
+   "role": "END",
+   "place": "Egilsstaðir (E1)",
+   "idferill": 2345,
+   "nakvaemniferlis": 1,
+   "objectid": 2076,
+   "id": "faerdferlar2017_1.2076",
+   "latitude": 65.25861764,
+   "longitude": -14.39028964,
+   "tier_consistency_flag": true,
+   "null_reason": null,
+   "native_reference": {
+    "file_label": "wfs-vegnr1-all.json (#483)",
+    "idferill": 2345,
+    "nakvaemniferlis": -1,
+    "native_xy": [
+     715153.74,
+     536679.93
+    ],
+    "note": "native reference is the retained tier -1 vertex (finest retained precision); the WGS84 value above is the server's own answer for this (idferill, tier) pair, not reprojected from this native value."
+   },
+   "raw_response_sha256": "cb9382946098c2040dbc5c151985977974a1b7bf38aede520a7c1a312ee78355",
+   "ledger_line": 1,
+   "dagsferils": "2026-10-07T00:00:00Z"
+  },
+  {
+   "role": "END",
+   "place": "Egilsstaðir (E1)",
+   "idferill": 2345,
+   "nakvaemniferlis": 2,
+   "objectid": 483,
+   "id": "faerdferlar2017_1.483",
+   "latitude": 65.25861764,
+   "longitude": -14.39028964,
+   "tier_consistency_flag": true,
+   "null_reason": null,
+   "native_reference": {
+    "file_label": "wfs-vegnr1-all.json (#483)",
+    "idferill": 2345,
+    "nakvaemniferlis": -1,
+    "native_xy": [
+     715153.74,
+     536679.93
+    ],
+    "note": "native reference is the retained tier -1 vertex (finest retained precision); the WGS84 value above is the server's own answer for this (idferill, tier) pair, not reprojected from this native value."
+   },
+   "raw_response_sha256": "cb9382946098c2040dbc5c151985977974a1b7bf38aede520a7c1a312ee78355",
+   "ledger_line": 1,
+   "dagsferils": "2026-10-07T00:00:00Z"
+  },
+  {
+   "role": "START",
+   "place": "Egilsstaðir (E1)",
+   "idferill": 2344,
+   "nakvaemniferlis": -1,
+   "objectid": 5882,
+   "id": "faerdferlar2017_1.5882",
+   "latitude": 65.25861764,
+   "longitude": -14.39028964,
+   "tier_consistency_flag": true,
+   "null_reason": null,
+   "native_reference": {
+    "file_label": "wfs93-raw.json (phase2)",
+    "idferill": 2344,
+    "nakvaemniferlis": -1,
+    "native_xy": [
+     715153.74,
+     536679.93
+    ],
+    "note": "native reference is the retained tier -1 vertex (finest retained precision); the WGS84 value above is the server's own answer for this (idferill, tier) pair, not reprojected from this native value."
+   },
+   "raw_response_sha256": "cb9382946098c2040dbc5c151985977974a1b7bf38aede520a7c1a312ee78355",
+   "ledger_line": 1,
+   "dagsferils": "2026-10-07T00:00:00Z"
+  },
+  {
+   "role": "START",
+   "place": "Egilsstaðir (E1)",
+   "idferill": 2344,
+   "nakvaemniferlis": 0,
+   "objectid": 4484,
+   "id": "faerdferlar2017_1.4484",
+   "latitude": 65.25861764,
+   "longitude": -14.39028964,
+   "tier_consistency_flag": true,
+   "null_reason": null,
+   "native_reference": {
+    "file_label": "wfs93-raw.json (phase2)",
+    "idferill": 2344,
+    "nakvaemniferlis": -1,
+    "native_xy": [
+     715153.74,
+     536679.93
+    ],
+    "note": "native reference is the retained tier -1 vertex (finest retained precision); the WGS84 value above is the server's own answer for this (idferill, tier) pair, not reprojected from this native value."
+   },
+   "raw_response_sha256": "cb9382946098c2040dbc5c151985977974a1b7bf38aede520a7c1a312ee78355",
+   "ledger_line": 1,
+   "dagsferils": "2026-10-07T00:00:00Z"
+  },
+  {
+   "role": "START",
+   "place": "Egilsstaðir (E1)",
+   "idferill": 2344,
+   "nakvaemniferlis": 1,
+   "objectid": 2548,
+   "id": "faerdferlar2017_1.2548",
+   "latitude": 65.25861764,
+   "longitude": -14.39028964,
+   "tier_consistency_flag": true,
+   "null_reason": null,
+   "native_reference": {
+    "file_label": "wfs93-raw.json (phase2)",
+    "idferill": 2344,
+    "nakvaemniferlis": -1,
+    "native_xy": [
+     715153.74,
+     536679.93
+    ],
+    "note": "native reference is the retained tier -1 vertex (finest retained precision); the WGS84 value above is the server's own answer for this (idferill, tier) pair, not reprojected from this native value."
+   },
+   "raw_response_sha256": "cb9382946098c2040dbc5c151985977974a1b7bf38aede520a7c1a312ee78355",
+   "ledger_line": 1,
+   "dagsferils": "2026-10-07T00:00:00Z"
+  },
+  {
+   "role": "START",
+   "place": "Egilsstaðir (E1)",
+   "idferill": 2344,
+   "nakvaemniferlis": 2,
+   "objectid": 968,
+   "id": "faerdferlar2017_1.968",
+   "latitude": 65.25861764,
+   "longitude": -14.39028964,
+   "tier_consistency_flag": true,
+   "null_reason": null,
+   "native_reference": {
+    "file_label": "wfs93-raw.json (phase2)",
+    "idferill": 2344,
+    "nakvaemniferlis": -1,
+    "native_xy": [
+     715153.74,
+     536679.93
+    ],
+    "note": "native reference is the retained tier -1 vertex (finest retained precision); the WGS84 value above is the server's own answer for this (idferill, tier) pair, not reprojected from this native value."
+   },
+   "raw_response_sha256": "cb9382946098c2040dbc5c151985977974a1b7bf38aede520a7c1a312ee78355",
+   "ledger_line": 1,
+   "dagsferils": "2026-10-07T00:00:00Z"
+  },
+  {
+   "role": "END",
+   "place": "Seyðisfjörður (S2)",
+   "idferill": 2894,
+   "nakvaemniferlis": -1,
+   "objectid": null,
+   "id": null,
+   "latitude": null,
+   "longitude": null,
+   "tier_consistency_flag": null,
+   "null_reason": "S2-WGS84 was never called this run: the E1-WGS84 response deviated (EA4(ii): 12 extra features beyond the expected set of 20, from IDFERILL 1985/2899/19524 on VEGNR 931/941/95 sharing IDBUTUR 911040037), which per the approved prompt's own documented choice stops all further calls for this run. No S2 value can be published; this is null, not a failed pairing.",
+   "native_reference": null,
+   "raw_response_sha256": null,
+   "ledger_line": null,
+   "dagsferils": null
+  },
+  {
+   "role": "END",
+   "place": "Seyðisfjörður (S2)",
+   "idferill": 2894,
+   "nakvaemniferlis": 0,
+   "objectid": null,
+   "id": null,
+   "latitude": null,
+   "longitude": null,
+   "tier_consistency_flag": null,
+   "null_reason": "S2-WGS84 was never called this run: the E1-WGS84 response deviated (EA4(ii): 12 extra features beyond the expected set of 20, from IDFERILL 1985/2899/19524 on VEGNR 931/941/95 sharing IDBUTUR 911040037), which per the approved prompt's own documented choice stops all further calls for this run. No S2 value can be published; this is null, not a failed pairing.",
+   "native_reference": null,
+   "raw_response_sha256": null,
+   "ledger_line": null,
+   "dagsferils": null
+  },
+  {
+   "role": "END",
+   "place": "Seyðisfjörður (S2)",
+   "idferill": 2894,
+   "nakvaemniferlis": 1,
+   "objectid": null,
+   "id": null,
+   "latitude": null,
+   "longitude": null,
+   "tier_consistency_flag": null,
+   "null_reason": "S2-WGS84 was never called this run: the E1-WGS84 response deviated (EA4(ii): 12 extra features beyond the expected set of 20, from IDFERILL 1985/2899/19524 on VEGNR 931/941/95 sharing IDBUTUR 911040037), which per the approved prompt's own documented choice stops all further calls for this run. No S2 value can be published; this is null, not a failed pairing.",
+   "native_reference": null,
+   "raw_response_sha256": null,
+   "ledger_line": null,
+   "dagsferils": null
+  },
+  {
+   "role": "END",
+   "place": "Seyðisfjörður (S2)",
+   "idferill": 2894,
+   "nakvaemniferlis": 2,
+   "objectid": null,
+   "id": null,
+   "latitude": null,
+   "longitude": null,
+   "tier_consistency_flag": null,
+   "null_reason": "S2-WGS84 was never called this run: the E1-WGS84 response deviated (EA4(ii): 12 extra features beyond the expected set of 20, from IDFERILL 1985/2899/19524 on VEGNR 931/941/95 sharing IDBUTUR 911040037), which per the approved prompt's own documented choice stops all further calls for this run. No S2 value can be published; this is null, not a failed pairing.",
+   "native_reference": null,
+   "raw_response_sha256": null,
+   "ledger_line": null,
+   "dagsferils": null
+  },
+  {
+   "role": "START",
+   "place": "Seyðisfjörður (S2)",
+   "idferill": 2892,
+   "nakvaemniferlis": -1,
+   "objectid": null,
+   "id": null,
+   "latitude": null,
+   "longitude": null,
+   "tier_consistency_flag": null,
+   "null_reason": "S2-WGS84 was never called this run: the E1-WGS84 response deviated (EA4(ii): 12 extra features beyond the expected set of 20, from IDFERILL 1985/2899/19524 on VEGNR 931/941/95 sharing IDBUTUR 911040037), which per the approved prompt's own documented choice stops all further calls for this run. No S2 value can be published; this is null, not a failed pairing.",
+   "native_reference": null,
+   "raw_response_sha256": null,
+   "ledger_line": null,
+   "dagsferils": null
+  },
+  {
+   "role": "START",
+   "place": "Seyðisfjörður (S2)",
+   "idferill": 2892,
+   "nakvaemniferlis": 0,
+   "objectid": null,
+   "id": null,
+   "latitude": null,
+   "longitude": null,
+   "tier_consistency_flag": null,
+   "null_reason": "S2-WGS84 was never called this run: the E1-WGS84 response deviated (EA4(ii): 12 extra features beyond the expected set of 20, from IDFERILL 1985/2899/19524 on VEGNR 931/941/95 sharing IDBUTUR 911040037), which per the approved prompt's own documented choice stops all further calls for this run. No S2 value can be published; this is null, not a failed pairing.",
+   "native_reference": null,
+   "raw_response_sha256": null,
+   "ledger_line": null,
+   "dagsferils": null
+  },
+  {
+   "role": "START",
+   "place": "Seyðisfjörður (S2)",
+   "idferill": 2892,
+   "nakvaemniferlis": 1,
+   "objectid": null,
+   "id": null,
+   "latitude": null,
+   "longitude": null,
+   "tier_consistency_flag": null,
+   "null_reason": "S2-WGS84 was never called this run: the E1-WGS84 response deviated (EA4(ii): 12 extra features beyond the expected set of 20, from IDFERILL 1985/2899/19524 on VEGNR 931/941/95 sharing IDBUTUR 911040037), which per the approved prompt's own documented choice stops all further calls for this run. No S2 value can be published; this is null, not a failed pairing.",
+   "native_reference": null,
+   "raw_response_sha256": null,
+   "ledger_line": null,
+   "dagsferils": null
+  },
+  {
+   "role": "START",
+   "place": "Seyðisfjörður (S2)",
+   "idferill": 2892,
+   "nakvaemniferlis": 2,
+   "objectid": null,
+   "id": null,
+   "latitude": null,
+   "longitude": null,
+   "tier_consistency_flag": null,
+   "null_reason": "S2-WGS84 was never called this run: the E1-WGS84 response deviated (EA4(ii): 12 extra features beyond the expected set of 20, from IDFERILL 1985/2899/19524 on VEGNR 931/941/95 sharing IDBUTUR 911040037), which per the approved prompt's own documented choice stops all further calls for this run. No S2 value can be published; this is null, not a failed pairing.",
+   "native_reference": null,
+   "raw_response_sha256": null,
+   "ledger_line": null,
+   "dagsferils": null
+  }
+ ]
+}

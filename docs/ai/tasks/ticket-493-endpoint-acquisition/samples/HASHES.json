@@ -1,0 +1,308 @@
+{
+ "deliverables": [
+  {
+   "path": "docs/ai/tasks/ticket-493-endpoint-acquisition/owner-authorisation.md",
+   "sha256": "f4429883d32972084796d5e669126094e156d30359e64b8f5d7c92202681a149",
+   "size_bytes": 4365,
+   "line_ending": "LF"
+  },
+  {
+   "path": "docs/ai/tasks/ticket-493-endpoint-acquisition/pairing-rules.md",
+   "sha256": "a83a8ff28b9b438d9d0810f6f2b2135404433ca9193c06d2934667e1a90b8b60",
+   "size_bytes": 7720,
+   "line_ending": "LF"
+  },
+  {
+   "path": "docs/ai/tasks/ticket-493-endpoint-acquisition/pairing-rules.sha256",
+   "sha256": "8c5733bf14cbef2f5690bc29881de9e48e2dd6bcc596d047d67e58b94f8ec510",
+   "size_bytes": 129,
+   "line_ending": "LF"
+  },
+  {
+   "path": "docs/ai/tasks/ticket-493-endpoint-acquisition/metadata-classification-rule.md",
+   "sha256": "b3c18d67d09d5aa37c037a3768c6a275298af45fc4205954416a7c95e617510f",
+   "size_bytes": 2431,
+   "line_ending": "LF"
+  },
+  {
+   "path": "docs/ai/tasks/ticket-493-endpoint-acquisition/metadata-classification-rule.sha256",
+   "sha256": "a409244ae3e876792cb3e49f8ded41cd8b431a36306dd775136c140a35a90316",
+   "size_bytes": 144,
+   "line_ending": "LF"
+  },
+  {
+   "path": "docs/ai/tasks/ticket-493-endpoint-acquisition/request-manifest.json",
+   "sha256": "0c313eaced376c37eefc9ada98f4cbb09327383302b7ecbed3bdae4f5f189f74",
+   "size_bytes": 5225,
+   "line_ending": "LF"
+  },
+  {
+   "path": "docs/ai/tasks/ticket-493-endpoint-acquisition/request-manifest.sha256",
+   "sha256": "991b65d8e0618ef4dd3541a96fc3e6a7138ee7c0ce8d8a5e9735a75bfe09177e",
+   "size_bytes": 134,
+   "line_ending": "LF"
+  },
+  {
+   "path": "docs/ai/tasks/ticket-493-endpoint-acquisition/evidence.md",
+   "sha256": "4c89639a7fb5ef0e2ce78e005d79ceff24bc9b9b487c111926e89bbdd4b5837f",
+   "size_bytes": 7426,
+   "line_ending": "LF"
+  },
+  {
+   "path": "docs/ai/tasks/ticket-493-endpoint-acquisition/endpoint-wgs84.json",
+   "sha256": "916ac90bbb9677dce8ea67bd1408d13ae22f139b864947d1294710a9c569fa6d",
+   "size_bytes": 12726,
+   "line_ending": "LF"
+  },
+  {
+   "path": "docs/ai/tasks/ticket-493-endpoint-acquisition/discovery-gaps.json",
+   "sha256": "9ee4b0a0fa784b0799bfb688a947fe73e7980bbef0996e76bfcb158037fe4e87",
+   "size_bytes": 1808,
+   "line_ending": "LF"
+  },
+  {
+   "path": "docs/ai/tasks/ticket-493-endpoint-acquisition/cc-report.md",
+   "sha256": "be231b6d6f8a2956c9c156f2c3830031574d65b77aec60128c1fd00a9d787d6d",
+   "size_bytes": 8142,
+   "line_ending": "LF"
+  },
+  {
+   "path": "docs/ai/tasks/ticket-493-endpoint-acquisition/samples/rp1_baseline.py",
+   "sha256": "09f01c65b95b7f7f5b3fe1661a793a961b5e4325672e8f4604e74672c413f36d",
+   "size_bytes": 3494,
+   "line_ending": "LF"
+  },
+  {
+   "path": "docs/ai/tasks/ticket-493-endpoint-acquisition/samples/rp1_baseline.json",
+   "sha256": "3ead0c92d852782c76d9254ac09223a500c86c5295a6e86c4d86aaed5c485cd8",
+   "size_bytes": 4564,
+   "line_ending": "LF"
+  },
+  {
+   "path": "docs/ai/tasks/ticket-493-endpoint-acquisition/samples/rp1_native_reference.py",
+   "sha256": "a3e7289fe695b815c5f4eb2ba767aeafde6a1e827a17e2991e723d1848d9d449",
+   "size_bytes": 4306,
+   "line_ending": "LF"
+  },
+  {
+   "path": "docs/ai/tasks/ticket-493-endpoint-acquisition/samples/rp1_native_reference.json",
+   "sha256": "bc1a6dbc2b50cfb3020d6dca705e96b7809648e828de6b5802900a1731e036cf",
+   "size_bytes": 16124,
+   "line_ending": "LF"
+  },
+  {
+   "path": "docs/ai/tasks/ticket-493-endpoint-acquisition/samples/request_encoding.py",
+   "sha256": "2be3bb313cd2a30501d3fdadb020ec60d3a415eda4fbf197353d3b97de7a56e3",
+   "size_bytes": 2400,
+   "line_ending": "LF"
+  },
+  {
+   "path": "docs/ai/tasks/ticket-493-endpoint-acquisition/samples/build_manifest.py",
+   "sha256": "c1e7c1f8d554a3f4e82e0ae37267d344d2608b8aa96fd4db7d26b2bff3886769",
+   "size_bytes": 3505,
+   "line_ending": "LF"
+  },
+  {
+   "path": "docs/ai/tasks/ticket-493-endpoint-acquisition/samples/driver.py",
+   "sha256": "dbee6d1b92c5b3c55e88f926c1174d01d2d5857ea25852a4850c071e7676060e",
+   "size_bytes": 16728,
+   "line_ending": "LF"
+  },
+  {
+   "path": "docs/ai/tasks/ticket-493-endpoint-acquisition/samples/test_server.py",
+   "sha256": "35a9d6da132593db22b5daef305967dba72593e5c9d8e9d7172f7e4677354a6c",
+   "size_bytes": 3439,
+   "line_ending": "LF"
+  },
+  {
+   "path": "docs/ai/tasks/ticket-493-endpoint-acquisition/samples/run_ea2_tests.py",
+   "sha256": "3c8bc8c2d4faffa2b9f7c6b60cdbda5d87d8c46fdc9119482dddef91cdb162e5",
+   "size_bytes": 8568,
+   "line_ending": "LF"
+  },
+  {
+   "path": "docs/ai/tasks/ticket-493-endpoint-acquisition/samples/ea2_test_report.json",
+   "sha256": "792d87c5ad23cf78b1355f537300f711abb688fcb143177fbcbb9669720ceed4",
+   "size_bytes": 2318,
+   "line_ending": "LF"
+  },
+  {
+   "path": "docs/ai/tasks/ticket-493-endpoint-acquisition/samples/live_driver.py",
+   "sha256": "f5460c098a85dde70e309522f1ba2e0c9a9ce765588325ecc1c3726803f68418",
+   "size_bytes": 6343,
+   "line_ending": "LF"
+  },
+  {
+   "path": "docs/ai/tasks/ticket-493-endpoint-acquisition/samples/exchange-ledger.jsonl",
+   "sha256": "fb7150d1f9d132d9dbd2f897fbe4753a592940ccf6137869801ceee641079a09",
+   "size_bytes": 1272,
+   "line_ending": "LF"
+  },
+  {
+   "path": "docs/ai/tasks/ticket-493-endpoint-acquisition/samples/raw-E1-WGS84.json",
+   "sha256": "cb9382946098c2040dbc5c151985977974a1b7bf38aede520a7c1a312ee78355",
+   "size_bytes": 28056,
+   "line_ending": "LF"
+  },
+  {
+   "path": "docs/ai/tasks/ticket-493-endpoint-acquisition/samples/live_run_summary.json",
+   "sha256": "fe6ae7d7bcc216ad656a479c5d6d2543209dd6247fea20479581634e7af95025",
+   "size_bytes": 859,
+   "line_ending": "LF"
+  },
+  {
+   "path": "docs/ai/tasks/ticket-493-endpoint-acquisition/samples/build_endpoint_output.py",
+   "sha256": "130214356cd17d75c062e617ad53ee6fd60ac3010ceec078237a44369b7267a6",
+   "size_bytes": 6007,
+   "line_ending": "LF"
+  },
+  {
+   "path": "docs/ai/tasks/ticket-493-endpoint-acquisition/samples/validate_endpoint_output.py",
+   "sha256": "e5fc938d814132c047ab13cba40ce80d133ddd73d300356507806ac03c52c8f1",
+   "size_bytes": 7010,
+   "line_ending": "LF"
+  },
+  {
+   "path": "docs/ai/tasks/ticket-493-endpoint-acquisition/samples/run_negative_tests.py",
+   "sha256": "d4b6a74e9e50c714f58a9b1f14664cd427edb6bc63dc4453adfb99d4a39f3bf1",
+   "size_bytes": 5484,
+   "line_ending": "LF"
+  },
+  {
+   "path": "docs/ai/tasks/ticket-493-endpoint-acquisition/samples/negative_test_report.json",
+   "sha256": "d9f78f813880cdfb652e5a0d32992faf1f1e322af7802477a0f6cf8a111c384d",
+   "size_bytes": 4755,
+   "line_ending": "LF"
+  }
+ ],
+ "retained_inputs_still_unchanged": [
+  {
+   "path": "docs/ai/tasks/ticket-493/endpoint-owner-decisions-2026-11-11.md",
+   "label": "endpoint-owner-decisions-2026-11-11.md",
+   "before_sha256": "e820a09c8b9da56b97bb0937db71bb9da8e1fd23ef5c42e18e5e0dc495774d31",
+   "after_sha256": "e820a09c8b9da56b97bb0937db71bb9da8e1fd23ef5c42e18e5e0dc495774d31",
+   "unchanged": true
+  },
+  {
+   "path": "docs/ai/tasks/ticket-493-access-points/endpoint-candidates-v3.json",
+   "label": "endpoint-candidates-v3.json",
+   "before_sha256": "9dcb47c048a32348568aeba2479f096d42974210c259c3036fa544845769c171",
+   "after_sha256": "9dcb47c048a32348568aeba2479f096d42974210c259c3036fa544845769c171",
+   "unchanged": true
+  },
+  {
+   "path": "docs/ai/tasks/ticket-493-place-network/samples/road-links.csv",
+   "label": "road-links.csv",
+   "before_sha256": "bf25ff0f68f0d7e7b46f4beb3fa7619c6e91fd8a1ad7c3f8d71eb24937db10c7",
+   "after_sha256": "bf25ff0f68f0d7e7b46f4beb3fa7619c6e91fd8a1ad7c3f8d71eb24937db10c7",
+   "unchanged": true
+  },
+  {
+   "path": "docs/ai/tasks/ticket-493-place-network/samples/chain-walks-v4.json",
+   "label": "chain-walks-v4.json",
+   "before_sha256": "640efec931a374ac3ddd95d0750980e97654fe1d166229dc579d355a082becd7",
+   "after_sha256": "640efec931a374ac3ddd95d0750980e97654fe1d166229dc579d355a082becd7",
+   "unchanged": true
+  },
+  {
+   "path": "docs/ai/tasks/ticket-483/samples/wfs-vegnr1-all.json",
+   "label": "wfs-vegnr1-all.json (#483)",
+   "before_sha256": "305f60d6f1f17918c058cbd047735681e56d6f9aad99f9e16f50de9419d6983a",
+   "after_sha256": "305f60d6f1f17918c058cbd047735681e56d6f9aad99f9e16f50de9419d6983a",
+   "unchanged": true
+  },
+  {
+   "path": "docs/ai/tasks/ticket-493-place-data-phase2/samples/wfs93-raw.json",
+   "label": "wfs93-raw.json (phase2)",
+   "before_sha256": "1d8c9cf880df374b9cb8120e1053e8ffd5acfba3d4bf55714e57ffdd8c49eb33",
+   "after_sha256": "1d8c9cf880df374b9cb8120e1053e8ffd5acfba3d4bf55714e57ffdd8c49eb33",
+   "unchanged": true
+  },
+  {
+   "path": "docs/ai/tasks/ticket-493-north-data/samples/exchange-ledger.jsonl",
+   "label": "exchange-ledger.jsonl (north-data)",
+   "before_sha256": "780fc0c5e3301fd631fbe3dfc3671034f0fe7c7e82ca274acef61df93c3b3ef1",
+   "after_sha256": "780fc0c5e3301fd631fbe3dfc3671034f0fe7c7e82ca274acef61df93c3b3ef1",
+   "unchanged": true
+  },
+  {
+   "path": "docs/ai/tasks/ticket-493-north-data/samples/wfs-north-4326.json",
+   "label": "wfs-north-4326.json",
+   "before_sha256": "7075416ca4635e4dea058b43124cfdefa7caec9d860d2dd43208504022eedb9b",
+   "after_sha256": "7075416ca4635e4dea058b43124cfdefa7caec9d860d2dd43208504022eedb9b",
+   "unchanged": true
+  },
+  {
+   "path": "docs/ai/tasks/ticket-493-place-data-phase2/samples/bounded_fetch.py",
+   "label": "bounded_fetch.py (phase2)",
+   "before_sha256": "c2610ebfbfdc56fd11776df0511c68246a7a958486fda96fd2e8858cab259be6",
+   "after_sha256": "c2610ebfbfdc56fd11776df0511c68246a7a958486fda96fd2e8858cab259be6",
+   "unchanged": true
+  },
+  {
+   "path": "docs/ai/tasks/ticket-493-place-data-phase2/samples/ledger_integrity-v3.json",
+   "label": "ledger_integrity-v3.json (phase2)",
+   "before_sha256": "6170aa400d90667ce9bb1c0ed0df875fb712028c82e239906c661a7dca7bcda3",
+   "after_sha256": "6170aa400d90667ce9bb1c0ed0df875fb712028c82e239906c661a7dca7bcda3",
+   "unchanged": true
+  },
+  {
+   "path": "docs/ai/tasks/ticket-493-place-data-phase2/owner-authorisation.md",
+   "label": "owner-authorisation.md (phase2, precedent)",
+   "before_sha256": "7a59deb72e16f82a0a4270474e871ae3a7ab299d13cb4fc195c8d5fb4fe9f9c6",
+   "after_sha256": "7a59deb72e16f82a0a4270474e871ae3a7ab299d13cb4fc195c8d5fb4fe9f9c6",
+   "unchanged": true
+  },
+  {
+   "path": "docs/ai/tasks/ticket-493-endpoint-acquisition-plan/acquisition-plan.md",
+   "label": "acquisition-plan.md",
+   "before_sha256": "23690bfa7539f6dbe43a5682d8c2a44263ef16272593cf39bc8378101920aa8c",
+   "after_sha256": "23690bfa7539f6dbe43a5682d8c2a44263ef16272593cf39bc8378101920aa8c",
+   "unchanged": true
+  },
+  {
+   "path": "docs/ai/tasks/ticket-493-endpoint-acquisition-plan/request-plan.json",
+   "label": "request-plan.json",
+   "before_sha256": "591a8887de08d25cb413fdb2d3a10b59729f5dd8ab0ea7036aa9dab696cd93e1",
+   "after_sha256": "591a8887de08d25cb413fdb2d3a10b59729f5dd8ab0ea7036aa9dab696cd93e1",
+   "unchanged": true
+  },
+  {
+   "path": "docs/ai/tasks/ticket-493-endpoint-acquisition-plan/coverage-matrix.json",
+   "label": "coverage-matrix.json",
+   "before_sha256": "3df1b3a228482985ce64dd2dfc6c8d94a731aefeeb2041d7c84feae523dd3c69",
+   "after_sha256": "3df1b3a228482985ce64dd2dfc6c8d94a731aefeeb2041d7c84feae523dd3c69",
+   "unchanged": true
+  },
+  {
+   "path": "docs/ai/tasks/ticket-493-endpoint-acquisition-plan/result-review.md",
+   "label": "result-review.md (acquisition-plan, RP1-RP4)",
+   "before_sha256": "42048852c475c7bc94897625434295c5d03c9eb3528c65e5d6581fa4b09438fd",
+   "after_sha256": "42048852c475c7bc94897625434295c5d03c9eb3528c65e5d6581fa4b09438fd",
+   "unchanged": true
+  },
+  {
+   "path": "docs/ai/tasks/ticket-493-endpoint-acquisition-plan/cc-report.md",
+   "label": "cc-report.md (acquisition-plan)",
+   "before_sha256": "e88f0689c7a84d433876fb5ee88b02a4697e1900cfd4cd5f7db98d329f17e9e1",
+   "after_sha256": "e88f0689c7a84d433876fb5ee88b02a4697e1900cfd4cd5f7db98d329f17e9e1",
+   "unchanged": true
+  },
+  {
+   "path": "docs/ai/tasks/ticket-493-endpoint-acquisition/approved-prompt-v1.md",
+   "label": "approved-prompt-v1.md (this task)",
+   "before_sha256": "6f13b4cff953352b72f77b04663cf3aa108d64ed43bb6d6ced70b58ec95bd8dc",
+   "after_sha256": "6f13b4cff953352b72f77b04663cf3aa108d64ed43bb6d6ced70b58ec95bd8dc",
+   "unchanged": true
+  },
+  {
+   "path": "docs/ai/tasks/ticket-493-endpoint-acquisition/prompt-review.md",
+   "label": "prompt-review.md (this task)",
+   "before_sha256": "61dbad171517f4a551bfb527d1da9e7f50f5135b0364c13e4e2995b205229a48",
+   "after_sha256": "61dbad171517f4a551bfb527d1da9e7f50f5135b0364c13e4e2995b205229a48",
+   "unchanged": true
+  }
+ ],
+ "all_ok": true,
+ "retained_input_count": 18
+}

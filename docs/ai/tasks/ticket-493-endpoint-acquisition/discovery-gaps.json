@@ -1,0 +1,14 @@
+{
+ "capabilities_status": "NOT_RECEIVED",
+ "reason": "ACCESS-CAPABILITIES was never called this run. The approved prompt's own ordering (E1-WGS84, then S2-WGS84, then ACCESS-CAPABILITIES, each gated on the previous) stops all further calls on an EA4 deviation. E1-WGS84's own response deviated under EA4(ii) (12 extra features beyond the expected 20 -- see evidence.md), which per Ripley's own documented choice in the approved prompt stops S2-WGS84 and ACCESS-CAPABILITIES as well. This is not a truncated or invalid capabilities response; it is a request that was never sent.",
+ "feature_types_enumerated": [],
+ "discovery_candidates": [],
+ "classification_rule_used": null,
+ "classification_rule_file": "metadata-classification-rule.md",
+ "classification_rule_sha256": "b3c18d67d09d5aa37c037a3768c6a275298af45fc4205954416a7c95e617510f",
+ "driving_access_status": "EXACT_GAP",
+ "driving_access_authority": {"file": "docs/ai/tasks/ticket-493-place-data-phase2/samples/wfs93-raw.json", "pointer": "features[].properties -- confirmed again in this round's own real E1-WGS84 response (28 properties per feature, none encoding direction/one-way/access)"},
+ "driving_access_note": "No metadata result changes this status, per EA7 -- and no metadata call was even made this run. Driving access for R1/E1/S2 remains EXACT_GAP until a real, retained source shows otherwise.",
+ "r1_status": "No coordinate, no candidate, no connection claim -- unchanged by this run. R1's own exact point remains PENDING, as it was before this round started.",
+ "license_note": "Vegagerðin's own 'Skilmálar vefþjónustur' CC BY 4.0 reference stands (retained, unchanged). Hagstofa stays LICENSE_NOT_DETERMINED. No licence inference is drawn from this round -- no Fees/AccessConstraints metadata was ever received to even read."
+}

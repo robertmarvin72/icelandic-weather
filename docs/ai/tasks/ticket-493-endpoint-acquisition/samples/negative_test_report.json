@@ -1,0 +1,84 @@
+{
+ "results": [
+  {
+   "test": "latlon_swap",
+   "expected_check_id": "LATLON_SWAP_DETECTED",
+   "message": "VALIDATION FAILED: [('END', 2345, -1, ['LATLON_SWAP_DETECTED']), ('END', 2345, 'ALL_TIERS', ['TIER_CONSISTENCY_MISMATCH'])]",
+   "pass": true
+  },
+  {
+   "test": "value_altered",
+   "expected_check_id": "VALUE_MISMATCH",
+   "message": "VALIDATION FAILED: [('END', 2345, -1, ['VALUE_MISMATCH']), ('END', 2345, 'ALL_TIERS', ['TIER_CONSISTENCY_MISMATCH'])]",
+   "pass": true
+  },
+  {
+   "test": "role_swapped",
+   "expected_check_id": "ROLE_FIELD_MISMATCH",
+   "message": "VALIDATION FAILED: [('START', 2345, -1, ['ROLE_FIELD_MISMATCH'])]",
+   "pass": true
+  },
+  {
+   "test": "piece_tier_mismatch",
+   "expected_check_id": "PIECE_TIER_MISMATCH",
+   "message": "VALIDATION FAILED: [('END', 9999999, -1, ['PIECE_TIER_MISMATCH'])]",
+   "pass": true
+  },
+  {
+   "test": "missing_feature",
+   "expected_check_id": "MISSING_FEATURE",
+   "message": "VALIDATION FAILED: [('END', 2345, -1, ['MISSING_FEATURE']), ('END', 2345, 0, ['PROVENANCE_REFERENCE_MISMATCH']), ('END', 2345, 1, ['PROVENANCE_REFERENCE_MISMATCH']), ('END', 2345, 2, ['PROVENANCE_REFERENCE_MISMATCH']), ('START', 2344, -1, ['PROVENANCE_REFERENCE_MISMATCH']), ('START', 2344, 0, ['PROVENANCE_REFERENCE_MISMATCH']), ('START', 2344, 1, ['PROVENANCE_REFERENCE_MISMATCH']), ('START', 2344, 2, ['PROVENANCE_REFERENCE_MISMATCH'])]",
+   "pass": true
+  },
+  {
+   "test": "duplicate_feature",
+   "expected_check_id": "DUPLICATE_FEATURE",
+   "message": "VALIDATION FAILED: [('E1-WGS84', 'RAW_FILE', 'ALL', ['DUPLICATE_FEATURE']), ('END', 2345, -1, ['VERTEX_COUNT_MISMATCH', 'VALUE_MISMATCH', 'OBJECTID_ID_MISMATCH', 'PROVENANCE_REFERENCE_MISMATCH']), ('END', 2345, 0, ['PROVENANCE_REFERENCE_MISMATCH']), ('END', 2345, 1, ['PROVENANCE_REFERENCE_MISMATCH']), ('END', 2345, 2, ['PROVENANCE_REFERENCE_MISMATCH']), ('START', 2344, -1, ['MISSING_FEATURE']), ('START', 2344, 0, ['PROVENANCE_REFERENCE_MISMATCH']), ('START', 2344, 1, ['PROVENANCE_REFERENCE_MISMATCH']), ('START', 2344, 2, ['PROVENANCE_REFERENCE_MISMATCH'])]",
+   "pass": true
+  },
+  {
+   "test": "vertex_count_mismatch",
+   "expected_check_id": "VERTEX_COUNT_MISMATCH",
+   "message": "VALIDATION FAILED: [('END', 2345, -1, ['VERTEX_COUNT_MISMATCH', 'PROVENANCE_REFERENCE_MISMATCH']), ('END', 2345, 0, ['PROVENANCE_REFERENCE_MISMATCH']), ('END', 2345, 1, ['PROVENANCE_REFERENCE_MISMATCH']), ('END', 2345, 2, ['PROVENANCE_REFERENCE_MISMATCH']), ('START', 2344, -1, ['PROVENANCE_REFERENCE_MISMATCH']), ('START', 2344, 0, ['PROVENANCE_REFERENCE_MISMATCH']), ('START', 2344, 1, ['PROVENANCE_REFERENCE_MISMATCH']), ('START', 2344, 2, ['PROVENANCE_REFERENCE_MISMATCH'])]",
+   "pass": true
+  },
+  {
+   "test": "provenance_mismatch",
+   "expected_check_id": "PROVENANCE_REFERENCE_MISMATCH",
+   "message": "VALIDATION FAILED: [('END', 2345, -1, ['PROVENANCE_REFERENCE_MISMATCH'])]",
+   "pass": true
+  },
+  {
+   "test": "tier_consistency_mismatch",
+   "expected_check_id": "TIER_CONSISTENCY_MISMATCH",
+   "message": "VALIDATION FAILED: [('END', 2345, 0, ['VALUE_MISMATCH']), ('END', 2345, 'ALL_TIERS', ['TIER_CONSISTENCY_MISMATCH'])]",
+   "pass": true
+  },
+  {
+   "test": "z_in_published_value",
+   "expected_check_id": "Z_IN_PUBLISHED_VALUE",
+   "message": "VALIDATION FAILED: [('END', 2345, -1, ['Z_IN_PUBLISHED_VALUE'])]",
+   "pass": true
+  },
+  {
+   "test": "invalid_coordinate_arity",
+   "expected_check_id": "INVALID_COORDINATE_ARITY",
+   "message": "VALIDATION FAILED: [('END', 2345, -1, ['INVALID_COORDINATE_ARITY']), ('END', 2345, 0, ['PROVENANCE_REFERENCE_MISMATCH']), ('END', 2345, 1, ['PROVENANCE_REFERENCE_MISMATCH']), ('END', 2345, 2, ['PROVENANCE_REFERENCE_MISMATCH']), ('START', 2344, -1, ['PROVENANCE_REFERENCE_MISMATCH']), ('START', 2344, 0, ['PROVENANCE_REFERENCE_MISMATCH']), ('START', 2344, 1, ['PROVENANCE_REFERENCE_MISMATCH']), ('START', 2344, 2, ['PROVENANCE_REFERENCE_MISMATCH'])]",
+   "pass": true
+  },
+  {
+   "test": "objectid_mismatch",
+   "expected_check_id": "OBJECTID_ID_MISMATCH",
+   "message": "VALIDATION FAILED: [('END', 2345, -1, ['OBJECTID_ID_MISMATCH'])]",
+   "pass": true
+  },
+  {
+   "test": "missing_dagsferils",
+   "expected_check_id": "MISSING_DAGSFERILS",
+   "message": "VALIDATION FAILED: [('END', 2345, -1, ['PROVENANCE_REFERENCE_MISMATCH', 'MISSING_DAGSFERILS']), ('END', 2345, 0, ['PROVENANCE_REFERENCE_MISMATCH']), ('END', 2345, 1, ['PROVENANCE_REFERENCE_MISMATCH']), ('END', 2345, 2, ['PROVENANCE_REFERENCE_MISMATCH']), ('START', 2344, -1, ['PROVENANCE_REFERENCE_MISMATCH']), ('START', 2344, 0, ['PROVENANCE_REFERENCE_MISMATCH']), ('START', 2344, 1, ['PROVENANCE_REFERENCE_MISMATCH']), ('START', 2344, 2, ['PROVENANCE_REFERENCE_MISMATCH'])]",
+   "pass": true
+  }
+ ],
+ "total": 13,
+ "all_passed": true
+}

@@ -1,0 +1,750 @@
+{
+ "e1_expected_feature_count": 20,
+ "e1_pieces": [
+  1483,
+  2344,
+  2345,
+  2347,
+  2349
+ ],
+ "e1_junction_native_xy": [
+  715153.74,
+  536679.93
+ ],
+ "e1_features": [
+  {
+   "idferill": 1483,
+   "idbutur": 911040037,
+   "nakvaemniferlis": 2,
+   "objectid": 36,
+   "geometry_type": "LineString",
+   "vertex_count": 3,
+   "first_xy": [
+    712210.7117,
+    540890.2965
+   ],
+   "last_xy": [
+    713269.63,
+    539217.71
+   ],
+   "source_label": "wfs-vegnr1-all.json (#483)",
+   "source_path": "docs/ai/tasks/ticket-483/samples/wfs-vegnr1-all.json"
+  },
+  {
+   "idferill": 2345,
+   "idbutur": 911040037,
+   "nakvaemniferlis": 2,
+   "objectid": 483,
+   "geometry_type": "LineString",
+   "vertex_count": 2,
+   "first_xy": [
+    714320.9956,
+    536912.9869
+   ],
+   "last_xy": [
+    715153.74,
+    536679.93
+   ],
+   "source_label": "wfs-vegnr1-all.json (#483)",
+   "source_path": "docs/ai/tasks/ticket-483/samples/wfs-vegnr1-all.json"
+  },
+  {
+   "idferill": 2349,
+   "idbutur": 911040037,
+   "nakvaemniferlis": 2,
+   "objectid": 427,
+   "geometry_type": "LineString",
+   "vertex_count": 2,
+   "first_xy": [
+    713269.63,
+    539217.71
+   ],
+   "last_xy": [
+    713384.3067,
+    539102.0572
+   ],
+   "source_label": "wfs-vegnr1-all.json (#483)",
+   "source_path": "docs/ai/tasks/ticket-483/samples/wfs-vegnr1-all.json"
+  },
+  {
+   "idferill": 2347,
+   "idbutur": 911040037,
+   "nakvaemniferlis": 2,
+   "objectid": 1270,
+   "geometry_type": "LineString",
+   "vertex_count": 3,
+   "first_xy": [
+    713384.3067,
+    539102.0572
+   ],
+   "last_xy": [
+    714320.9956,
+    536912.9869
+   ],
+   "source_label": "wfs-vegnr1-all.json (#483)",
+   "source_path": "docs/ai/tasks/ticket-483/samples/wfs-vegnr1-all.json"
+  },
+  {
+   "idferill": 1483,
+   "idbutur": 911040037,
+   "nakvaemniferlis": 1,
+   "objectid": 1613,
+   "geometry_type": "LineString",
+   "vertex_count": 4,
+   "first_xy": [
+    712210.7117,
+    540890.2965
+   ],
+   "last_xy": [
+    713269.63,
+    539217.71
+   ],
+   "source_label": "wfs-vegnr1-all.json (#483)",
+   "source_path": "docs/ai/tasks/ticket-483/samples/wfs-vegnr1-all.json"
+  },
+  {
+   "idferill": 2345,
+   "idbutur": 911040037,
+   "nakvaemniferlis": 1,
+   "objectid": 2076,
+   "geometry_type": "LineString",
+   "vertex_count": 4,
+   "first_xy": [
+    714320.9956,
+    536912.9869
+   ],
+   "last_xy": [
+    715153.74,
+    536679.93
+   ],
+   "source_label": "wfs-vegnr1-all.json (#483)",
+   "source_path": "docs/ai/tasks/ticket-483/samples/wfs-vegnr1-all.json"
+  },
+  {
+   "idferill": 2349,
+   "idbutur": 911040037,
+   "nakvaemniferlis": 1,
+   "objectid": 2078,
+   "geometry_type": "LineString",
+   "vertex_count": 2,
+   "first_xy": [
+    713269.63,
+    539217.71
+   ],
+   "last_xy": [
+    713384.3067,
+    539102.0572
+   ],
+   "source_label": "wfs-vegnr1-all.json (#483)",
+   "source_path": "docs/ai/tasks/ticket-483/samples/wfs-vegnr1-all.json"
+  },
+  {
+   "idferill": 2347,
+   "idbutur": 911040037,
+   "nakvaemniferlis": 1,
+   "objectid": 2738,
+   "geometry_type": "LineString",
+   "vertex_count": 5,
+   "first_xy": [
+    713384.3067,
+    539102.0572
+   ],
+   "last_xy": [
+    714320.9956,
+    536912.9869
+   ],
+   "source_label": "wfs-vegnr1-all.json (#483)",
+   "source_path": "docs/ai/tasks/ticket-483/samples/wfs-vegnr1-all.json"
+  },
+  {
+   "idferill": 1483,
+   "idbutur": 911040037,
+   "nakvaemniferlis": 0,
+   "objectid": 3216,
+   "geometry_type": "LineString",
+   "vertex_count": 6,
+   "first_xy": [
+    712210.7117,
+    540890.2965
+   ],
+   "last_xy": [
+    713269.63,
+    539217.71
+   ],
+   "source_label": "wfs-vegnr1-all.json (#483)",
+   "source_path": "docs/ai/tasks/ticket-483/samples/wfs-vegnr1-all.json"
+  },
+  {
+   "idferill": 2345,
+   "idbutur": 911040037,
+   "nakvaemniferlis": 0,
+   "objectid": 3652,
+   "geometry_type": "LineString",
+   "vertex_count": 10,
+   "first_xy": [
+    714320.9956,
+    536912.9869
+   ],
+   "last_xy": [
+    715153.74,
+    536679.93
+   ],
+   "source_label": "wfs-vegnr1-all.json (#483)",
+   "source_path": "docs/ai/tasks/ticket-483/samples/wfs-vegnr1-all.json"
+  },
+  {
+   "idferill": 2349,
+   "idbutur": 911040037,
+   "nakvaemniferlis": 0,
+   "objectid": 3654,
+   "geometry_type": "LineString",
+   "vertex_count": 2,
+   "first_xy": [
+    713269.63,
+    539217.71
+   ],
+   "last_xy": [
+    713384.3067,
+    539102.0572
+   ],
+   "source_label": "wfs-vegnr1-all.json (#483)",
+   "source_path": "docs/ai/tasks/ticket-483/samples/wfs-vegnr1-all.json"
+  },
+  {
+   "idferill": 2347,
+   "idbutur": 911040037,
+   "nakvaemniferlis": 0,
+   "objectid": 4165,
+   "geometry_type": "LineString",
+   "vertex_count": 12,
+   "first_xy": [
+    713384.3067,
+    539102.0572
+   ],
+   "last_xy": [
+    714320.9956,
+    536912.9869
+   ],
+   "source_label": "wfs-vegnr1-all.json (#483)",
+   "source_path": "docs/ai/tasks/ticket-483/samples/wfs-vegnr1-all.json"
+  },
+  {
+   "idferill": 1483,
+   "idbutur": 911040037,
+   "nakvaemniferlis": -1,
+   "objectid": 4789,
+   "geometry_type": "LineString",
+   "vertex_count": 11,
+   "first_xy": [
+    712210.7117,
+    540890.2965
+   ],
+   "last_xy": [
+    713269.63,
+    539217.71
+   ],
+   "source_label": "wfs-vegnr1-all.json (#483)",
+   "source_path": "docs/ai/tasks/ticket-483/samples/wfs-vegnr1-all.json"
+  },
+  {
+   "idferill": 2345,
+   "idbutur": 911040037,
+   "nakvaemniferlis": -1,
+   "objectid": 5172,
+   "geometry_type": "LineString",
+   "vertex_count": 23,
+   "first_xy": [
+    714320.9956,
+    536912.9869
+   ],
+   "last_xy": [
+    715153.74,
+    536679.93
+   ],
+   "source_label": "wfs-vegnr1-all.json (#483)",
+   "source_path": "docs/ai/tasks/ticket-483/samples/wfs-vegnr1-all.json"
+  },
+  {
+   "idferill": 2349,
+   "idbutur": 911040037,
+   "nakvaemniferlis": -1,
+   "objectid": 5174,
+   "geometry_type": "LineString",
+   "vertex_count": 3,
+   "first_xy": [
+    713269.63,
+    539217.71
+   ],
+   "last_xy": [
+    713384.3067,
+    539102.0572
+   ],
+   "source_label": "wfs-vegnr1-all.json (#483)",
+   "source_path": "docs/ai/tasks/ticket-483/samples/wfs-vegnr1-all.json"
+  },
+  {
+   "idferill": 2347,
+   "idbutur": 911040037,
+   "nakvaemniferlis": -1,
+   "objectid": 5509,
+   "geometry_type": "LineString",
+   "vertex_count": 25,
+   "first_xy": [
+    713384.3067,
+    539102.0572
+   ],
+   "last_xy": [
+    714320.9956,
+    536912.9869
+   ],
+   "source_label": "wfs-vegnr1-all.json (#483)",
+   "source_path": "docs/ai/tasks/ticket-483/samples/wfs-vegnr1-all.json"
+  },
+  {
+   "idferill": 2344,
+   "idbutur": 911040037,
+   "nakvaemniferlis": 2,
+   "objectid": 968,
+   "geometry_type": "LineString",
+   "vertex_count": 2,
+   "first_xy": [
+    715153.74,
+    536679.93
+   ],
+   "last_xy": [
+    715800.5282,
+    538148.7474
+   ],
+   "source_label": "wfs93-raw.json (phase2)",
+   "source_path": "docs/ai/tasks/ticket-493-place-data-phase2/samples/wfs93-raw.json"
+  },
+  {
+   "idferill": 2344,
+   "idbutur": 911040037,
+   "nakvaemniferlis": 1,
+   "objectid": 2548,
+   "geometry_type": "LineString",
+   "vertex_count": 6,
+   "first_xy": [
+    715153.74,
+    536679.93
+   ],
+   "last_xy": [
+    715800.5282,
+    538148.7474
+   ],
+   "source_label": "wfs93-raw.json (phase2)",
+   "source_path": "docs/ai/tasks/ticket-493-place-data-phase2/samples/wfs93-raw.json"
+  },
+  {
+   "idferill": 2344,
+   "idbutur": 911040037,
+   "nakvaemniferlis": 0,
+   "objectid": 4484,
+   "geometry_type": "LineString",
+   "vertex_count": 13,
+   "first_xy": [
+    715153.74,
+    536679.93
+   ],
+   "last_xy": [
+    715800.5282,
+    538148.7474
+   ],
+   "source_label": "wfs93-raw.json (phase2)",
+   "source_path": "docs/ai/tasks/ticket-493-place-data-phase2/samples/wfs93-raw.json"
+  },
+  {
+   "idferill": 2344,
+   "idbutur": 911040037,
+   "nakvaemniferlis": -1,
+   "objectid": 5882,
+   "geometry_type": "LineString",
+   "vertex_count": 35,
+   "first_xy": [
+    715153.74,
+    536679.93
+   ],
+   "last_xy": [
+    715800.5282,
+    538148.7474
+   ],
+   "source_label": "wfs93-raw.json (phase2)",
+   "source_path": "docs/ai/tasks/ticket-493-place-data-phase2/samples/wfs93-raw.json"
+  }
+ ],
+ "s2_expected_feature_count": 20,
+ "s2_pieces": [
+  2891,
+  2892,
+  2894,
+  3409,
+  3410
+ ],
+ "s2_junction_native_xy": [
+  732875.674,
+  538207.0762
+ ],
+ "s2_features": [
+  {
+   "idferill": 2891,
+   "idbutur": 911170037,
+   "nakvaemniferlis": 2,
+   "objectid": 257,
+   "geometry_type": "LineString",
+   "vertex_count": 2,
+   "first_xy": [
+    732743.757,
+    538421.6228
+   ],
+   "last_xy": [
+    733080.7436,
+    538522.4045
+   ],
+   "source_label": "wfs93-raw.json (phase2)",
+   "source_path": "docs/ai/tasks/ticket-493-place-data-phase2/samples/wfs93-raw.json"
+  },
+  {
+   "idferill": 2892,
+   "idbutur": 911170037,
+   "nakvaemniferlis": 2,
+   "objectid": 258,
+   "geometry_type": "LineString",
+   "vertex_count": 2,
+   "first_xy": [
+    732875.674,
+    538207.0762
+   ],
+   "last_xy": [
+    732743.757,
+    538421.6228
+   ],
+   "source_label": "wfs93-raw.json (phase2)",
+   "source_path": "docs/ai/tasks/ticket-493-place-data-phase2/samples/wfs93-raw.json"
+  },
+  {
+   "idferill": 2894,
+   "idbutur": 911170037,
+   "nakvaemniferlis": 2,
+   "objectid": 259,
+   "geometry_type": "LineString",
+   "vertex_count": 2,
+   "first_xy": [
+    732722.8305,
+    537584.8513
+   ],
+   "last_xy": [
+    732875.674,
+    538207.0762
+   ],
+   "source_label": "wfs93-raw.json (phase2)",
+   "source_path": "docs/ai/tasks/ticket-493-place-data-phase2/samples/wfs93-raw.json"
+  },
+  {
+   "idferill": 3409,
+   "idbutur": 911170037,
+   "nakvaemniferlis": 2,
+   "objectid": 957,
+   "geometry_type": "LineString",
+   "vertex_count": 9,
+   "first_xy": [
+    722827.8006,
+    537350.2933
+   ],
+   "last_xy": [
+    732722.8305,
+    537584.8513
+   ],
+   "source_label": "wfs93-raw.json (phase2)",
+   "source_path": "docs/ai/tasks/ticket-493-place-data-phase2/samples/wfs93-raw.json"
+  },
+  {
+   "idferill": 3410,
+   "idbutur": 911170037,
+   "nakvaemniferlis": 2,
+   "objectid": 958,
+   "geometry_type": "LineString",
+   "vertex_count": 6,
+   "first_xy": [
+    715800.5282,
+    538148.7474
+   ],
+   "last_xy": [
+    722827.8006,
+    537350.2933
+   ],
+   "source_label": "wfs93-raw.json (phase2)",
+   "source_path": "docs/ai/tasks/ticket-493-place-data-phase2/samples/wfs93-raw.json"
+  },
+  {
+   "idferill": 2891,
+   "idbutur": 911170037,
+   "nakvaemniferlis": 1,
+   "objectid": 1852,
+   "geometry_type": "LineString",
+   "vertex_count": 4,
+   "first_xy": [
+    732743.757,
+    538421.6228
+   ],
+   "last_xy": [
+    733080.7436,
+    538522.4045
+   ],
+   "source_label": "wfs93-raw.json (phase2)",
+   "source_path": "docs/ai/tasks/ticket-493-place-data-phase2/samples/wfs93-raw.json"
+  },
+  {
+   "idferill": 2892,
+   "idbutur": 911170037,
+   "nakvaemniferlis": 1,
+   "objectid": 1853,
+   "geometry_type": "LineString",
+   "vertex_count": 2,
+   "first_xy": [
+    732875.674,
+    538207.0762
+   ],
+   "last_xy": [
+    732743.757,
+    538421.6228
+   ],
+   "source_label": "wfs93-raw.json (phase2)",
+   "source_path": "docs/ai/tasks/ticket-493-place-data-phase2/samples/wfs93-raw.json"
+  },
+  {
+   "idferill": 2894,
+   "idbutur": 911170037,
+   "nakvaemniferlis": 1,
+   "objectid": 1854,
+   "geometry_type": "LineString",
+   "vertex_count": 2,
+   "first_xy": [
+    732722.8305,
+    537584.8513
+   ],
+   "last_xy": [
+    732875.674,
+    538207.0762
+   ],
+   "source_label": "wfs93-raw.json (phase2)",
+   "source_path": "docs/ai/tasks/ticket-493-place-data-phase2/samples/wfs93-raw.json"
+  },
+  {
+   "idferill": 3409,
+   "idbutur": 911170037,
+   "nakvaemniferlis": 1,
+   "objectid": 2537,
+   "geometry_type": "LineString",
+   "vertex_count": 28,
+   "first_xy": [
+    722827.8006,
+    537350.2933
+   ],
+   "last_xy": [
+    732722.8305,
+    537584.8513
+   ],
+   "source_label": "wfs93-raw.json (phase2)",
+   "source_path": "docs/ai/tasks/ticket-493-place-data-phase2/samples/wfs93-raw.json"
+  },
+  {
+   "idferill": 3410,
+   "idbutur": 911170037,
+   "nakvaemniferlis": 1,
+   "objectid": 2538,
+   "geometry_type": "LineString",
+   "vertex_count": 19,
+   "first_xy": [
+    715800.5282,
+    538148.7474
+   ],
+   "last_xy": [
+    722827.8006,
+    537350.2933
+   ],
+   "source_label": "wfs93-raw.json (phase2)",
+   "source_path": "docs/ai/tasks/ticket-493-place-data-phase2/samples/wfs93-raw.json"
+  },
+  {
+   "idferill": 2891,
+   "idbutur": 911170037,
+   "nakvaemniferlis": 0,
+   "objectid": 3363,
+   "geometry_type": "LineString",
+   "vertex_count": 4,
+   "first_xy": [
+    732743.757,
+    538421.6228
+   ],
+   "last_xy": [
+    733080.7436,
+    538522.4045
+   ],
+   "source_label": "wfs93-raw.json (phase2)",
+   "source_path": "docs/ai/tasks/ticket-493-place-data-phase2/samples/wfs93-raw.json"
+  },
+  {
+   "idferill": 2892,
+   "idbutur": 911170037,
+   "nakvaemniferlis": 0,
+   "objectid": 3364,
+   "geometry_type": "LineString",
+   "vertex_count": 4,
+   "first_xy": [
+    732875.674,
+    538207.0762
+   ],
+   "last_xy": [
+    732743.757,
+    538421.6228
+   ],
+   "source_label": "wfs93-raw.json (phase2)",
+   "source_path": "docs/ai/tasks/ticket-493-place-data-phase2/samples/wfs93-raw.json"
+  },
+  {
+   "idferill": 2894,
+   "idbutur": 911170037,
+   "nakvaemniferlis": 0,
+   "objectid": 3365,
+   "geometry_type": "LineString",
+   "vertex_count": 3,
+   "first_xy": [
+    732722.8305,
+    537584.8513
+   ],
+   "last_xy": [
+    732875.674,
+    538207.0762
+   ],
+   "source_label": "wfs93-raw.json (phase2)",
+   "source_path": "docs/ai/tasks/ticket-493-place-data-phase2/samples/wfs93-raw.json"
+  },
+  {
+   "idferill": 3409,
+   "idbutur": 911170037,
+   "nakvaemniferlis": 0,
+   "objectid": 4440,
+   "geometry_type": "LineString",
+   "vertex_count": 90,
+   "first_xy": [
+    722827.8006,
+    537350.2933
+   ],
+   "last_xy": [
+    732722.8305,
+    537584.8513
+   ],
+   "source_label": "wfs93-raw.json (phase2)",
+   "source_path": "docs/ai/tasks/ticket-493-place-data-phase2/samples/wfs93-raw.json"
+  },
+  {
+   "idferill": 3410,
+   "idbutur": 911170037,
+   "nakvaemniferlis": 0,
+   "objectid": 4441,
+   "geometry_type": "LineString",
+   "vertex_count": 61,
+   "first_xy": [
+    715800.5282,
+    538148.7474
+   ],
+   "last_xy": [
+    722827.8006,
+    537350.2933
+   ],
+   "source_label": "wfs93-raw.json (phase2)",
+   "source_path": "docs/ai/tasks/ticket-493-place-data-phase2/samples/wfs93-raw.json"
+  },
+  {
+   "idferill": 2891,
+   "idbutur": 911170037,
+   "nakvaemniferlis": -1,
+   "objectid": 4978,
+   "geometry_type": "LineString",
+   "vertex_count": 13,
+   "first_xy": [
+    732743.757,
+    538421.6228
+   ],
+   "last_xy": [
+    733080.7436,
+    538522.4045
+   ],
+   "source_label": "wfs93-raw.json (phase2)",
+   "source_path": "docs/ai/tasks/ticket-493-place-data-phase2/samples/wfs93-raw.json"
+  },
+  {
+   "idferill": 2892,
+   "idbutur": 911170037,
+   "nakvaemniferlis": -1,
+   "objectid": 4979,
+   "geometry_type": "LineString",
+   "vertex_count": 7,
+   "first_xy": [
+    732875.674,
+    538207.0762
+   ],
+   "last_xy": [
+    732743.757,
+    538421.6228
+   ],
+   "source_label": "wfs93-raw.json (phase2)",
+   "source_path": "docs/ai/tasks/ticket-493-place-data-phase2/samples/wfs93-raw.json"
+  },
+  {
+   "idferill": 2894,
+   "idbutur": 911170037,
+   "nakvaemniferlis": -1,
+   "objectid": 4980,
+   "geometry_type": "LineString",
+   "vertex_count": 9,
+   "first_xy": [
+    732722.8305,
+    537584.8513
+   ],
+   "last_xy": [
+    732875.674,
+    538207.0762
+   ],
+   "source_label": "wfs93-raw.json (phase2)",
+   "source_path": "docs/ai/tasks/ticket-493-place-data-phase2/samples/wfs93-raw.json"
+  },
+  {
+   "idferill": 3409,
+   "idbutur": 911170037,
+   "nakvaemniferlis": -1,
+   "objectid": 5838,
+   "geometry_type": "LineString",
+   "vertex_count": 247,
+   "first_xy": [
+    722827.8006,
+    537350.2933
+   ],
+   "last_xy": [
+    732722.8305,
+    537584.8513
+   ],
+   "source_label": "wfs93-raw.json (phase2)",
+   "source_path": "docs/ai/tasks/ticket-493-place-data-phase2/samples/wfs93-raw.json"
+  },
+  {
+   "idferill": 3410,
+   "idbutur": 911170037,
+   "nakvaemniferlis": -1,
+   "objectid": 5839,
+   "geometry_type": "LineString",
+   "vertex_count": 157,
+   "first_xy": [
+    715800.5282,
+    538148.7474
+   ],
+   "last_xy": [
+    722827.8006,
+    537350.2933
+   ],
+   "source_label": "wfs93-raw.json (phase2)",
+   "source_path": "docs/ai/tasks/ticket-493-place-data-phase2/samples/wfs93-raw.json"
+  }
+ ]
+}

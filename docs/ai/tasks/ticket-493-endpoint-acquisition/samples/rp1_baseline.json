@@ -1,0 +1,128 @@
+[
+ {
+  "label": "endpoint-owner-decisions-2026-11-11.md",
+  "path": "docs/ai/tasks/ticket-493/endpoint-owner-decisions-2026-11-11.md",
+  "sha256": "e820a09c8b9da56b97bb0937db71bb9da8e1fd23ef5c42e18e5e0dc495774d31",
+  "size_bytes": 1745,
+  "line_ending": "LF"
+ },
+ {
+  "label": "endpoint-candidates-v3.json",
+  "path": "docs/ai/tasks/ticket-493-access-points/endpoint-candidates-v3.json",
+  "sha256": "9dcb47c048a32348568aeba2479f096d42974210c259c3036fa544845769c171",
+  "size_bytes": 9879,
+  "line_ending": "LF"
+ },
+ {
+  "label": "road-links.csv",
+  "path": "docs/ai/tasks/ticket-493-place-network/samples/road-links.csv",
+  "sha256": "bf25ff0f68f0d7e7b46f4beb3fa7619c6e91fd8a1ad7c3f8d71eb24937db10c7",
+  "size_bytes": 35424,
+  "line_ending": "LF"
+ },
+ {
+  "label": "chain-walks-v4.json",
+  "path": "docs/ai/tasks/ticket-493-place-network/samples/chain-walks-v4.json",
+  "sha256": "640efec931a374ac3ddd95d0750980e97654fe1d166229dc579d355a082becd7",
+  "size_bytes": 53750,
+  "line_ending": "LF"
+ },
+ {
+  "label": "wfs-vegnr1-all.json (#483)",
+  "path": "docs/ai/tasks/ticket-483/samples/wfs-vegnr1-all.json",
+  "sha256": "305f60d6f1f17918c058cbd047735681e56d6f9aad99f9e16f50de9419d6983a",
+  "size_bytes": 1242779,
+  "line_ending": "LF"
+ },
+ {
+  "label": "wfs93-raw.json (phase2)",
+  "path": "docs/ai/tasks/ticket-493-place-data-phase2/samples/wfs93-raw.json",
+  "sha256": "1d8c9cf880df374b9cb8120e1053e8ffd5acfba3d4bf55714e57ffdd8c49eb33",
+  "size_bytes": 37991,
+  "line_ending": "LF"
+ },
+ {
+  "label": "exchange-ledger.jsonl (north-data)",
+  "path": "docs/ai/tasks/ticket-493-north-data/samples/exchange-ledger.jsonl",
+  "sha256": "780fc0c5e3301fd631fbe3dfc3671034f0fe7c7e82ca274acef61df93c3b3ef1",
+  "size_bytes": 7398,
+  "line_ending": "LF"
+ },
+ {
+  "label": "wfs-north-4326.json",
+  "path": "docs/ai/tasks/ticket-493-north-data/samples/wfs-north-4326.json",
+  "sha256": "7075416ca4635e4dea058b43124cfdefa7caec9d860d2dd43208504022eedb9b",
+  "size_bytes": 302849,
+  "line_ending": "LF"
+ },
+ {
+  "label": "bounded_fetch.py (phase2)",
+  "path": "docs/ai/tasks/ticket-493-place-data-phase2/samples/bounded_fetch.py",
+  "sha256": "c2610ebfbfdc56fd11776df0511c68246a7a958486fda96fd2e8858cab259be6",
+  "size_bytes": 6226,
+  "line_ending": "LF"
+ },
+ {
+  "label": "ledger_integrity-v3.json (phase2)",
+  "path": "docs/ai/tasks/ticket-493-place-data-phase2/samples/ledger_integrity-v3.json",
+  "sha256": "6170aa400d90667ce9bb1c0ed0df875fb712028c82e239906c661a7dca7bcda3",
+  "size_bytes": 1990,
+  "line_ending": "LF"
+ },
+ {
+  "label": "owner-authorisation.md (phase2, precedent)",
+  "path": "docs/ai/tasks/ticket-493-place-data-phase2/owner-authorisation.md",
+  "sha256": "7a59deb72e16f82a0a4270474e871ae3a7ab299d13cb4fc195c8d5fb4fe9f9c6",
+  "size_bytes": 3219,
+  "line_ending": "LF"
+ },
+ {
+  "label": "acquisition-plan.md",
+  "path": "docs/ai/tasks/ticket-493-endpoint-acquisition-plan/acquisition-plan.md",
+  "sha256": "23690bfa7539f6dbe43a5682d8c2a44263ef16272593cf39bc8378101920aa8c",
+  "size_bytes": 22974,
+  "line_ending": "LF"
+ },
+ {
+  "label": "request-plan.json",
+  "path": "docs/ai/tasks/ticket-493-endpoint-acquisition-plan/request-plan.json",
+  "sha256": "591a8887de08d25cb413fdb2d3a10b59729f5dd8ab0ea7036aa9dab696cd93e1",
+  "size_bytes": 19586,
+  "line_ending": "LF"
+ },
+ {
+  "label": "coverage-matrix.json",
+  "path": "docs/ai/tasks/ticket-493-endpoint-acquisition-plan/coverage-matrix.json",
+  "sha256": "3df1b3a228482985ce64dd2dfc6c8d94a731aefeeb2041d7c84feae523dd3c69",
+  "size_bytes": 8077,
+  "line_ending": "LF"
+ },
+ {
+  "label": "result-review.md (acquisition-plan, RP1-RP4)",
+  "path": "docs/ai/tasks/ticket-493-endpoint-acquisition-plan/result-review.md",
+  "sha256": "42048852c475c7bc94897625434295c5d03c9eb3528c65e5d6581fa4b09438fd",
+  "size_bytes": 11014,
+  "line_ending": "LF"
+ },
+ {
+  "label": "cc-report.md (acquisition-plan)",
+  "path": "docs/ai/tasks/ticket-493-endpoint-acquisition-plan/cc-report.md",
+  "sha256": "e88f0689c7a84d433876fb5ee88b02a4697e1900cfd4cd5f7db98d329f17e9e1",
+  "size_bytes": 7891,
+  "line_ending": "LF"
+ },
+ {
+  "label": "approved-prompt-v1.md (this task)",
+  "path": "docs/ai/tasks/ticket-493-endpoint-acquisition/approved-prompt-v1.md",
+  "sha256": "6f13b4cff953352b72f77b04663cf3aa108d64ed43bb6d6ced70b58ec95bd8dc",
+  "size_bytes": 21054,
+  "line_ending": "LF"
+ },
+ {
+  "label": "prompt-review.md (this task)",
+  "path": "docs/ai/tasks/ticket-493-endpoint-acquisition/prompt-review.md",
+  "sha256": "61dbad171517f4a551bfb527d1da9e7f50f5135b0364c13e4e2995b205229a48",
+  "size_bytes": 23911,
+  "line_ending": "LF"
+ }
+]
