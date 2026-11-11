@@ -1,0 +1,23 @@
+{
+ "direction_in_cw_long": "rev",
+ "junction_node": {
+  "description": "ring/road93 junction -- piece 2345's own stored END, the walk's own ENTRY point",
+  "coord": [
+   715153.74,
+   536679.93
+  ],
+  "cum_km_incl_1436": 680.1945,
+  "cum_km_excl_1436": 677.6344
+ },
+ "phase1_inventory_node": {
+  "description": "phase-1's own recorded node -- piece 2345's own stored START, the walk's own EXIT point",
+  "coord": [
+   714320.9956,
+   536912.9869
+  ],
+  "cum_km_incl_1436": 681.1216,
+  "cum_km_excl_1436": 678.5614
+ },
+ "mutation_tests_all_correctly_distinguished": true,
+ "mutation_test_failures": []
+}

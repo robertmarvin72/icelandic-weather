@@ -1,0 +1,391 @@
+{
+ "tests": [
+  {
+   "kind": "role_label_only",
+   "target": "csv:Reyðarfjörður:2520",
+   "expected": [
+    "ROLE_COORD_MISMATCH",
+    "ROLE_CUM_MISMATCH"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED for Reyðarfjörður: ['ROLE_COORD_MISMATCH', 'STORED_FIELD_MISMATCH', 'ROLE_CUM_MISMATCH']",
+   "pass": true
+  },
+  {
+   "kind": "coord_deviation_0.2m",
+   "target": "csv:Reyðarfjörður:2520",
+   "expected": [
+    "ROLE_COORD_MISMATCH"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED for Reyðarfjörður: ['ROLE_COORD_MISMATCH']",
+   "pass": true
+  },
+  {
+   "kind": "stored_field_swap",
+   "target": "csv:Reyðarfjörður:2520",
+   "expected": [
+    "STORED_FIELD_MISMATCH"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED for Reyðarfjörður: ['STORED_FIELD_MISMATCH']",
+   "pass": true
+  },
+  {
+   "kind": "cum_incl_excl_swap",
+   "target": "csv:Reyðarfjörður:2520",
+   "expected": [
+    "ROLE_CUM_MISMATCH"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED for Reyðarfjörður: ['ROLE_CUM_MISMATCH']",
+   "pass": true
+  },
+  {
+   "kind": "double_counted_1436",
+   "target": "csv:Reyðarfjörður:2520",
+   "expected": [
+    "ROLE_CUM_MISMATCH"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED for Reyðarfjörður: ['ROLE_CUM_MISMATCH']",
+   "pass": true
+  },
+  {
+   "kind": "wrong_source_hash_key",
+   "target": "csv:Reyðarfjörður:2520",
+   "expected": [
+    "PROVENANCE_HASH_KEY_INVALID"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED for Reyðarfjörður: ['PROVENANCE_PATH_MISMATCH', 'PROVENANCE_HASH_KEY_INVALID']",
+   "pass": true
+  },
+  {
+   "kind": "wrong_source_path",
+   "target": "csv:Reyðarfjörður:2520",
+   "expected": [
+    "PROVENANCE_PATH_MISMATCH"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED for Reyðarfjörður: ['PROVENANCE_PATH_MISMATCH']",
+   "pass": true
+  },
+  {
+   "kind": "wrong_crs",
+   "target": "csv:Reyðarfjörður:2520",
+   "expected": [
+    "PROVENANCE_CRS_INVALID"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED for Reyðarfjörður: ['PROVENANCE_CRS_INVALID']",
+   "pass": true
+  },
+  {
+   "kind": "provenance_missing_on_real_coord",
+   "target": "csv:Reyðarfjörður:2520",
+   "expected": [
+    "PROVENANCE_MISSING"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED for Reyðarfjörður: ['PROVENANCE_MISSING']",
+   "pass": true
+  },
+  {
+   "kind": "role_label_only",
+   "target": "csv:Vík:3849",
+   "expected": [
+    "ROLE_COORD_MISMATCH",
+    "ROLE_CUM_MISMATCH"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED for Vík: ['ROLE_COORD_MISMATCH', 'STORED_FIELD_MISMATCH', 'ROLE_CUM_MISMATCH']",
+   "pass": true
+  },
+  {
+   "kind": "coord_deviation_0.2m",
+   "target": "csv:Vík:3849",
+   "expected": [
+    "ROLE_COORD_MISMATCH"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED for Vík: ['ROLE_COORD_MISMATCH']",
+   "pass": true
+  },
+  {
+   "kind": "stored_field_swap",
+   "target": "csv:Vík:3849",
+   "expected": [
+    "STORED_FIELD_MISMATCH"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED for Vík: ['STORED_FIELD_MISMATCH']",
+   "pass": true
+  },
+  {
+   "kind": "cum_incl_excl_swap",
+   "target": "csv:Vík:3849",
+   "expected": [
+    "ROLE_CUM_MISMATCH"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED for Vík: ['ROLE_CUM_MISMATCH']",
+   "pass": true
+  },
+  {
+   "kind": "double_counted_1436",
+   "target": "csv:Vík:3849",
+   "expected": [
+    "ROLE_CUM_MISMATCH"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED for Vík: ['ROLE_CUM_MISMATCH']",
+   "pass": true
+  },
+  {
+   "kind": "wrong_source_hash_key",
+   "target": "csv:Vík:3849",
+   "expected": [
+    "PROVENANCE_HASH_KEY_INVALID"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED for Vík: ['PROVENANCE_PATH_MISMATCH', 'PROVENANCE_HASH_KEY_INVALID']",
+   "pass": true
+  },
+  {
+   "kind": "wrong_source_path",
+   "target": "csv:Vík:3849",
+   "expected": [
+    "PROVENANCE_PATH_MISMATCH"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED for Vík: ['PROVENANCE_PATH_MISMATCH']",
+   "pass": true
+  },
+  {
+   "kind": "wrong_crs",
+   "target": "csv:Vík:3849",
+   "expected": [
+    "PROVENANCE_CRS_INVALID"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED for Vík: ['PROVENANCE_CRS_INVALID']",
+   "pass": true
+  },
+  {
+   "kind": "provenance_missing_on_real_coord",
+   "target": "csv:Vík:3849",
+   "expected": [
+    "PROVENANCE_MISSING"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED for Vík: ['PROVENANCE_MISSING']",
+   "pass": true
+  },
+  {
+   "kind": "role_label_only",
+   "target": "reference:Selfoss:ENTRY",
+   "expected": [
+    "ROLE_COORD_MISMATCH",
+    "ROLE_CUM_MISMATCH"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED for reference Selfoss/EXIT: ['ROLE_COORD_MISMATCH', 'STORED_FIELD_MISMATCH', 'ROLE_CUM_MISMATCH']",
+   "pass": true
+  },
+  {
+   "kind": "coord_deviation_0.2m",
+   "target": "reference:Selfoss:ENTRY",
+   "expected": [
+    "ROLE_COORD_MISMATCH"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED for reference Selfoss/ENTRY: ['ROLE_COORD_MISMATCH']",
+   "pass": true
+  },
+  {
+   "kind": "stored_field_swap",
+   "target": "reference:Selfoss:ENTRY",
+   "expected": [
+    "STORED_FIELD_MISMATCH"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED for reference Selfoss/ENTRY: ['STORED_FIELD_MISMATCH']",
+   "pass": true
+  },
+  {
+   "kind": "cum_incl_excl_swap",
+   "target": "reference:Selfoss:ENTRY",
+   "expected": [
+    "ROLE_CUM_MISMATCH"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED for reference Selfoss/ENTRY: ['ROLE_CUM_MISMATCH']",
+   "pass": true
+  },
+  {
+   "kind": "double_counted_1436",
+   "target": "reference:Selfoss:ENTRY",
+   "expected": [
+    "ROLE_CUM_MISMATCH"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED for reference Selfoss/ENTRY: ['ROLE_CUM_MISMATCH']",
+   "pass": true
+  },
+  {
+   "kind": "wrong_source_hash_key",
+   "target": "reference:Selfoss:ENTRY",
+   "expected": [
+    "PROVENANCE_HASH_KEY_INVALID"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED for reference Selfoss/ENTRY: ['PROVENANCE_PATH_MISMATCH', 'PROVENANCE_HASH_KEY_INVALID']",
+   "pass": true
+  },
+  {
+   "kind": "wrong_source_path",
+   "target": "reference:Selfoss:ENTRY",
+   "expected": [
+    "PROVENANCE_PATH_MISMATCH"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED for reference Selfoss/ENTRY: ['PROVENANCE_PATH_MISMATCH']",
+   "pass": true
+  },
+  {
+   "kind": "wrong_crs",
+   "target": "reference:Selfoss:ENTRY",
+   "expected": [
+    "PROVENANCE_CRS_INVALID"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED for reference Selfoss/ENTRY: ['PROVENANCE_CRS_INVALID']",
+   "pass": true
+  },
+  {
+   "kind": "provenance_missing_on_real_coord",
+   "target": "reference:Selfoss:ENTRY",
+   "expected": [
+    "PROVENANCE_MISSING"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED for reference Selfoss/ENTRY: ['PROVENANCE_MISSING']",
+   "pass": true
+  },
+  {
+   "kind": "role_label_only",
+   "target": "reference:Hella:ENTRY",
+   "expected": [
+    "ROLE_COORD_MISMATCH",
+    "ROLE_CUM_MISMATCH"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED for reference Hella/EXIT: ['ROLE_COORD_MISMATCH', 'STORED_FIELD_MISMATCH', 'ROLE_CUM_MISMATCH']",
+   "pass": true
+  },
+  {
+   "kind": "coord_deviation_0.2m",
+   "target": "reference:Hella:ENTRY",
+   "expected": [
+    "ROLE_COORD_MISMATCH"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED for reference Hella/ENTRY: ['ROLE_COORD_MISMATCH']",
+   "pass": true
+  },
+  {
+   "kind": "stored_field_swap",
+   "target": "reference:Hella:ENTRY",
+   "expected": [
+    "STORED_FIELD_MISMATCH"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED for reference Hella/ENTRY: ['STORED_FIELD_MISMATCH']",
+   "pass": true
+  },
+  {
+   "kind": "cum_incl_excl_swap",
+   "target": "reference:Hella:ENTRY",
+   "expected": [
+    "ROLE_CUM_MISMATCH"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED for reference Hella/ENTRY: ['ROLE_CUM_MISMATCH']",
+   "pass": true
+  },
+  {
+   "kind": "double_counted_1436",
+   "target": "reference:Hella:ENTRY",
+   "expected": [
+    "ROLE_CUM_MISMATCH"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED for reference Hella/ENTRY: ['ROLE_CUM_MISMATCH']",
+   "pass": true
+  },
+  {
+   "kind": "wrong_source_hash_key",
+   "target": "reference:Hella:ENTRY",
+   "expected": [
+    "PROVENANCE_HASH_KEY_INVALID"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED for reference Hella/ENTRY: ['PROVENANCE_PATH_MISMATCH', 'PROVENANCE_HASH_KEY_INVALID']",
+   "pass": true
+  },
+  {
+   "kind": "wrong_source_path",
+   "target": "reference:Hella:ENTRY",
+   "expected": [
+    "PROVENANCE_PATH_MISMATCH"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED for reference Hella/ENTRY: ['PROVENANCE_PATH_MISMATCH']",
+   "pass": true
+  },
+  {
+   "kind": "wrong_crs",
+   "target": "reference:Hella:ENTRY",
+   "expected": [
+    "PROVENANCE_CRS_INVALID"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED for reference Hella/ENTRY: ['PROVENANCE_CRS_INVALID']",
+   "pass": true
+  },
+  {
+   "kind": "provenance_missing_on_real_coord",
+   "target": "reference:Hella:ENTRY",
+   "expected": [
+    "PROVENANCE_MISSING"
+   ],
+   "message": "FINAL OUTPUT VALIDATION FAILED for reference Hella/ENTRY: ['PROVENANCE_MISSING']",
+   "pass": true
+  },
+  {
+   "kind": "coord_deviation_0.2m",
+   "target": "endpoint_candidates:egilsstadir:2345",
+   "expected": [
+    "ROLE_COORD_MISMATCH"
+   ],
+   "message": "egilsstadir_2345_node: ['ROLE_COORD_MISMATCH']",
+   "pass": true
+  },
+  {
+   "kind": "cum_incl_excl_swap",
+   "target": "endpoint_candidates:egilsstadir:2345",
+   "expected": [
+    "ROLE_CUM_MISMATCH"
+   ],
+   "message": "egilsstadir_2345_node: ['ROLE_CUM_MISMATCH']",
+   "pass": true
+  },
+  {
+   "kind": "wrong_source_hash_key",
+   "target": "endpoint_candidates:egilsstadir:2345",
+   "expected": [
+    "PROVENANCE_HASH_KEY_INVALID"
+   ],
+   "message": "egilsstadir_2345_node: ['PROVENANCE_PATH_MISMATCH', 'PROVENANCE_HASH_KEY_INVALID']",
+   "pass": true
+  },
+  {
+   "kind": "wrong_crs",
+   "target": "endpoint_candidates:egilsstadir:2345",
+   "expected": [
+    "PROVENANCE_CRS_INVALID"
+   ],
+   "message": "egilsstadir_2345_node: ['PROVENANCE_CRS_INVALID']",
+   "pass": true
+  },
+  {
+   "kind": "akureyri_wgs84_digit_altered",
+   "target": "endpoint_candidates:akureyri",
+   "expected": [
+    "AKUREYRI_WGS84_MISMATCH"
+   ],
+   "message": "akureyri_wgs84: ['AKUREYRI_WGS84_MISMATCH']",
+   "pass": true
+  }
+ ],
+ "sanity_clean_copy_passes": true,
+ "total_mutation_tests": 41,
+ "by_kind_counts": {
+  "role_label_only": 4,
+  "coord_deviation_0.2m": 5,
+  "stored_field_swap": 4,
+  "cum_incl_excl_swap": 5,
+  "double_counted_1436": 4,
+  "wrong_source_hash_key": 5,
+  "wrong_source_path": 4,
+  "wrong_crs": 5,
+  "provenance_missing_on_real_coord": 4,
+  "akureyri_wgs84_digit_altered": 1
+ }
+}

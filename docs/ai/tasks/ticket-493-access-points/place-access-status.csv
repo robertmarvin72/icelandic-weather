@@ -1,0 +1,73 @@
+name,hagstofa_pairing,hagstofa_match_type,hagstofa_codes,road_connection,coordinate_source,native_x,native_y,native_source_piece,native_source_field,cum_km_incl_1436,cum_km_excl_1436,direction_status,gap_id,notes
+Reykjavík,MATCHED,EXACT,50,NODE_UNDETERMINED,NO_COORDINATE_SOURCE,,,,,,,NOT_APPLICABLE,GAP-001,"REY-CORE: no VEGNR=1 piece represents the city core itself (INFERRED_OUTSIDE_VEGNR1, phase-1). See endpoint-candidates.json for the piece-1436-based leg definitions and the Rauðavatn comparison anchor (candidate/INFERRED, never a confirmed core)."
+Mosfellsbær,MATCHED,EXACT,70,NODE_UNDETERMINED,NO_COORDINATE_SOURCE,,,,,,,NOT_APPLICABLE,GAP-002,phase-1 status carried forward unchanged: NODE_UNDETERMINED.
+Kópavogur,UNMATCHED,NONE,,NODE_UNDETERMINED,NO_COORDINATE_SOURCE,,,,,,,NOT_APPLICABLE,GAP-003,No VEGNR=1 name/desc match found this round; never assessed individually before.
+Garðabær,UNMATCHED,NONE,,NODE_UNDETERMINED,NO_COORDINATE_SOURCE,,,,,,,NOT_APPLICABLE,GAP-004,No VEGNR=1 name/desc match found this round; never assessed individually before.
+Hafnarfjörður,UNMATCHED,NONE,,NODE_UNDETERMINED,NO_COORDINATE_SOURCE,,,,,,,NOT_APPLICABLE,GAP-005,No VEGNR=1 name/desc match found this round; never assessed individually before.
+Reykjanesbær,UNMATCHED,NONE,,NODE_UNDETERMINED,NO_COORDINATE_SOURCE,,,,,,,NOT_APPLICABLE,GAP-006,No VEGNR=1 name/desc match found this round; never assessed individually before.
+Grindavík,MATCHED,EXACT,110,NODE_UNDETERMINED,NO_COORDINATE_SOURCE,,,,,,,NOT_APPLICABLE,GAP-007,No VEGNR=1 name/desc match found this round; never assessed individually before.
+Vogar,MATCHED,EXACT,160,NODE_UNDETERMINED,NO_COORDINATE_SOURCE,,,,,,,NOT_APPLICABLE,GAP-008,No VEGNR=1 name/desc match found this round; never assessed individually before.
+Sandgerði,MATCHED,EXACT,120,NODE_UNDETERMINED,NO_COORDINATE_SOURCE,,,,,,,NOT_APPLICABLE,GAP-009,No VEGNR=1 name/desc match found this round; never assessed individually before.
+Garður,MATCHED,EXACT,130,NODE_UNDETERMINED,NO_COORDINATE_SOURCE,,,,,,,NOT_APPLICABLE,GAP-010,No VEGNR=1 name/desc match found this round; never assessed individually before.
+Borgarnes,MATCHED,EXACT,200,NAME_MATCH_INFERRED,RETAINED_GEOMETRY,361119.191,454127.5752,2819,"stored end of 2819 (road-links.csv); own name/desc ('Borgarnes-Baulan'/'Borgarnes') plus #491's own prior-round rule (PRIOR_ROUND_REFERENCE, not OWNER_APPROVED)",,,UNKNOWN,GAP-011,"cum not validated this round: piece 2819 is on ccw_short, not cw_long -- out of this round's validator scope (see evidence.md). direction_status UNKNOWN, not INFERRED."
+Bifröst,MATCHED,EXACT,205,NODE_UNDETERMINED,NO_COORDINATE_SOURCE,,,,,,,NOT_APPLICABLE,GAP-012,No VEGNR=1 name/desc match found this round; never assessed individually before.
+Akranes,MATCHED,EXACT,190,NODE_UNDETERMINED,NO_COORDINATE_SOURCE,,,,,,,NOT_APPLICABLE,GAP-013,No VEGNR=1 name/desc match found this round; never assessed individually before.
+Stykkishólmur,MATCHED,EXACT,240,NODE_UNDETERMINED,NO_COORDINATE_SOURCE,,,,,,,NOT_APPLICABLE,GAP-014,No VEGNR=1 name/desc match found this round; never assessed individually before.
+Grundarfjörður,MATCHED,EXACT,230,NODE_UNDETERMINED,NO_COORDINATE_SOURCE,,,,,,,NOT_APPLICABLE,GAP-015,No VEGNR=1 name/desc match found this round; never assessed individually before.
+Ólafsvík,MATCHED,EXACT,220,NODE_UNDETERMINED,NO_COORDINATE_SOURCE,,,,,,,NOT_APPLICABLE,GAP-016,No VEGNR=1 name/desc match found this round; never assessed individually before.
+Hellissandur,MATCHED,EXACT,210,NODE_UNDETERMINED,NO_COORDINATE_SOURCE,,,,,,,NOT_APPLICABLE,GAP-017,No VEGNR=1 name/desc match found this round; never assessed individually before.
+Búðardalur,MATCHED,EXACT,250,NODE_UNDETERMINED,NO_COORDINATE_SOURCE,,,,,,,NOT_APPLICABLE,GAP-018,No VEGNR=1 name/desc match found this round; never assessed individually before.
+Ísafjörður,MATCHED,EXACT,410,NODE_UNDETERMINED,NO_COORDINATE_SOURCE,,,,,,,NOT_APPLICABLE,GAP-019,No VEGNR=1 name/desc match found this round; never assessed individually before.
+Bolungarvík,MATCHED,EXACT,400,NODE_UNDETERMINED,NO_COORDINATE_SOURCE,,,,,,,NOT_APPLICABLE,GAP-020,No VEGNR=1 name/desc match found this round; never assessed individually before.
+Súðavík,MATCHED,EXACT,430,NODE_UNDETERMINED,NO_COORDINATE_SOURCE,,,,,,,NOT_APPLICABLE,GAP-021,No VEGNR=1 name/desc match found this round; never assessed individually before.
+Suðureyri,MATCHED,EXACT,390,NODE_UNDETERMINED,NO_COORDINATE_SOURCE,,,,,,,NOT_APPLICABLE,GAP-022,No VEGNR=1 name/desc match found this round; never assessed individually before.
+Flateyri,MATCHED,EXACT,380,NODE_UNDETERMINED,NO_COORDINATE_SOURCE,,,,,,,NOT_APPLICABLE,GAP-023,No VEGNR=1 name/desc match found this round; never assessed individually before.
+Þingeyri,MATCHED,EXACT,370,NODE_UNDETERMINED,NO_COORDINATE_SOURCE,,,,,,,NOT_APPLICABLE,GAP-024,No VEGNR=1 name/desc match found this round; never assessed individually before.
+Bíldudalur,MATCHED,EXACT,360,NODE_UNDETERMINED,NO_COORDINATE_SOURCE,,,,,,,NOT_APPLICABLE,GAP-025,No VEGNR=1 name/desc match found this round; never assessed individually before.
+Tálknafjörður,MATCHED,EXACT,350,NODE_UNDETERMINED,NO_COORDINATE_SOURCE,,,,,,,NOT_APPLICABLE,GAP-026,No VEGNR=1 name/desc match found this round; never assessed individually before.
+Patreksfjörður,MATCHED,EXACT,340,NODE_UNDETERMINED,NO_COORDINATE_SOURCE,,,,,,,NOT_APPLICABLE,GAP-027,No VEGNR=1 name/desc match found this round; never assessed individually before.
+Hólmavík,MATCHED,EXACT,440,NODE_UNDETERMINED,NO_COORDINATE_SOURCE,,,,,,,NOT_APPLICABLE,GAP-028,No VEGNR=1 name/desc match found this round; never assessed individually before.
+Hvammstangi,MATCHED,EXACT,530,NODE_UNDETERMINED,NO_COORDINATE_SOURCE,,,,,,,NOT_APPLICABLE,GAP-029,phase-1 status carried forward unchanged: CONNECTING_ROAD_NEEDED_PHASE2.
+Blönduós,MATCHED,EXACT,540,NODE_UNDETERMINED,NO_COORDINATE_SOURCE,,,,,,,NOT_APPLICABLE,GAP-030,phase-1 status carried forward unchanged: NODE_UNDETERMINED.
+Varmahlíð,MATCHED,EXACT,561,NODE_UNDETERMINED,NO_COORDINATE_SOURCE,,,,,,,NOT_APPLICABLE,GAP-031,phase-1 status carried forward unchanged: NODE_UNDETERMINED.
+Skagaströnd,MATCHED,EXACT,550,NODE_UNDETERMINED,NO_COORDINATE_SOURCE,,,,,,,NOT_APPLICABLE,GAP-032,No VEGNR=1 name/desc match found this round; never assessed individually before.
+Sauðárkrókur,MATCHED,EXACT,560,NODE_UNDETERMINED,NO_COORDINATE_SOURCE,,,,,,,NOT_APPLICABLE,GAP-033,No VEGNR=1 name/desc match found this round; never assessed individually before.
+Hofsós,MATCHED,EXACT,570,NODE_UNDETERMINED,NO_COORDINATE_SOURCE,,,,,,,NOT_APPLICABLE,GAP-034,No VEGNR=1 name/desc match found this round; never assessed individually before.
+Siglufjörður,MATCHED,EXACT,580,NODE_UNDETERMINED,NO_COORDINATE_SOURCE,,,,,,,NOT_APPLICABLE,GAP-035,No VEGNR=1 name/desc match found this round; never assessed individually before.
+Akureyri,MATCHED,EXACT,680,OWNER_APPROVED_ANCHOR,OWNER_APPROVED_RETAINED,540259.2615,577843.7582,2940,"end of 2940 = start of 3876 (road-links.csv), native xy sourced from akureyri-endpoint-decision.md",928.363,925.8028,INFERRED,,"OWNER_APPROVED (2026-11-06). WGS84 65.69570405 N, 18.12371406 W copied verbatim from akureyri-endpoint-decision.md, not recomputed. cum validated via piece 3876's own exit (= 2940's own end, 0.0 m shared coordinate)."
+Reykjahlíð,MATCHED,EXACT,700,NAME_MATCH_INFERRED,RETAINED_GEOMETRY,598866.6951,572980.6378,3566,"stored end of 3566 (road-links.csv), via phase-1's own ON_RING_NAME_MATCH_INFERRED",842.9571,840.3969,INFERRED,GAP-036,
+Laugar,MATCHED,EXACT,701,NODE_UNDETERMINED,NO_COORDINATE_SOURCE,,,,,,,NOT_APPLICABLE,GAP-037,No VEGNR=1 name/desc match found this round; never assessed individually before.
+Hrafnagil,MATCHED,EXACT,682,NODE_UNDETERMINED,NO_COORDINATE_SOURCE,,,,,,,NOT_APPLICABLE,GAP-038,No VEGNR=1 name/desc match found this round; never assessed individually before.
+Dalvík,MATCHED,EXACT,660,NODE_UNDETERMINED,NO_COORDINATE_SOURCE,,,,,,,NOT_APPLICABLE,GAP-039,No VEGNR=1 name/desc match found this round; never assessed individually before.
+Ólafsfjörður,MATCHED,EXACT,650,NODE_UNDETERMINED,NO_COORDINATE_SOURCE,,,,,,,NOT_APPLICABLE,GAP-040,No VEGNR=1 name/desc match found this round; never assessed individually before.
+Grenivík,MATCHED,EXACT,690,NODE_UNDETERMINED,NO_COORDINATE_SOURCE,,,,,,,NOT_APPLICABLE,GAP-041,No VEGNR=1 name/desc match found this round; never assessed individually before.
+Húsavík,MATCHED,EXACT,710,NODE_UNDETERMINED,NO_COORDINATE_SOURCE,,,,,,,NOT_APPLICABLE,GAP-042,No VEGNR=1 name/desc match found this round; never assessed individually before.
+Kópasker,MATCHED,EXACT,711,NODE_UNDETERMINED,NO_COORDINATE_SOURCE,,,,,,,NOT_APPLICABLE,GAP-043,No VEGNR=1 name/desc match found this round; never assessed individually before.
+Raufarhöfn,MATCHED,EXACT,720,NODE_UNDETERMINED,NO_COORDINATE_SOURCE,,,,,,,NOT_APPLICABLE,GAP-044,No VEGNR=1 name/desc match found this round; never assessed individually before.
+Þórshöfn,MATCHED,EXACT,730,NODE_UNDETERMINED,NO_COORDINATE_SOURCE,,,,,,,NOT_APPLICABLE,GAP-045,No VEGNR=1 name/desc match found this round; never assessed individually before.
+Egilsstaðir,MATCHED,EXACT,902,MAPPED_CONTACT_VERIFIED,RETAINED_GEOMETRY,715153.74,536679.93,2345,"stored end of 2345 (road-links.csv) = ring/road93 junction, verified 0.0 m contact with road93's own piece 2344",677.6344,675.0743,INFERRED,,"Two distinct candidate nodes exist (ring/road93 junction vs phase-1's own node); this row reports the JUNCTION node only (phase2 EGILSSTADIR_JUNCTION). See endpoint-candidates.json for both, unselected, per G4."
+Fellabær,MATCHED,EXACT,890,NODE_UNDETERMINED,NO_COORDINATE_SOURCE,,,,,,,NOT_APPLICABLE,GAP-046,phase-1 status carried forward unchanged: NODE_UNDETERMINED.
+Reyðarfjörður,MATCHED,EXACT,930,NAME_MATCH_INFERRED,RETAINED_GEOMETRY,726168.31,509914.83,2520,"stored end of 2520 (road-links.csv), via phase-1's own ON_RING_NAME_MATCH_INFERRED",646.4615,643.9013,INFERRED,GAP-047,
+Fáskrúðsfjörður,MATCHED,EXACT,940,NAME_MATCH_INFERRED,RETAINED_GEOMETRY,733763.5297,501861.908,2536,"stored end of 2536 (road-links.csv), via phase-1's own ON_RING_NAME_MATCH_INFERRED",637.7957,635.2355,INFERRED,GAP-048,
+Stöðvarfjörður,MATCHED,EXACT,950,NODE_UNDETERMINED,NO_COORDINATE_SOURCE,,,,,,,NOT_APPLICABLE,GAP-049,phase-1 status carried forward unchanged: NODE_UNDETERMINED.
+Breiðdalsvík,MATCHED,EXACT,960,NODE_UNDETERMINED,NO_COORDINATE_SOURCE,,,,,,,NOT_APPLICABLE,GAP-050,phase-1 status carried forward unchanged: NODE_UNDETERMINED.
+Djúpivogur,MATCHED,EXACT,970,NODE_UNDETERMINED,NO_COORDINATE_SOURCE,,,,,,,NOT_APPLICABLE,GAP-051,phase-1 status carried forward unchanged: NODE_UNDETERMINED.
+Vopnafjörður,MATCHED,EXACT,870,NODE_UNDETERMINED,NO_COORDINATE_SOURCE,,,,,,,NOT_APPLICABLE,GAP-052,phase-1 status carried forward unchanged: CONNECTING_ROAD_NEEDED_PHASE2.
+Borgarfjörður eystri,MATCHED,EXACT,891,NODE_UNDETERMINED,NO_COORDINATE_SOURCE,,,,,,,NOT_APPLICABLE,GAP-053,No VEGNR=1 name/desc match found this round; never assessed individually before.
+Seyðisfjörður,MATCHED,EXACT,900,MAPPED_CONTACT_VERIFIED,NO_COORDINATE_SOURCE,,,,,,,NOT_APPLICABLE,GAP-054,"The CONNECTING ROAD (road 93)'s own contact to the ring is verified (0.0 m, via Egilsstaðir junction) -- the SETTLEMENT's own representative coordinate is NOT chosen (several unpicked pier/town-entrance candidates; see endpoint-candidates.json, PROPOSAL per release-definition-proposal.md). No retained WGS84 exists for road 93 at all (gap)."
+Eskifjörður,MATCHED,EXACT,920,NODE_UNDETERMINED,NO_COORDINATE_SOURCE,,,,,,,NOT_APPLICABLE,GAP-055,No VEGNR=1 name/desc match found this round; never assessed individually before.
+Neskaupstaður,MATCHED,EXACT,910,NODE_UNDETERMINED,NO_COORDINATE_SOURCE,,,,,,,NOT_APPLICABLE,GAP-056,No VEGNR=1 name/desc match found this round; never assessed individually before.
+Höfn,MATCHED,PREFIX_SINGLE,980,NODE_UNDETERMINED,NO_COORDINATE_SOURCE,,,,,,,NOT_APPLICABLE,GAP-057,phase-1 status carried forward unchanged: NODE_UNDETERMINED.
+Kirkjubæjarklaustur,MATCHED,EXACT,1089,NODE_UNDETERMINED,NO_COORDINATE_SOURCE,,,,,,,NOT_APPLICABLE,GAP-058,phase-1 status carried forward unchanged: NODE_UNDETERMINED.
+Vík,MATCHED,PREFIX_SINGLE,1090,NAME_MATCH_INFERRED,RETAINED_GEOMETRY,499391.9569,323996.9084,3849,"stored end of 3849 (road-links.csv), via phase-1's own ON_RING_NAME_MATCH_INFERRED",175.1712,172.6111,INFERRED,GAP-059,
+Hvolsvöllur,MATCHED,EXACT,1110,NAME_MATCH_INFERRED,RETAINED_GEOMETRY,439003.2622,361386.4806,3593,"stored end of 3593 (road-links.csv), via phase-1's own ON_RING_NAME_MATCH_INFERRED",94.6543,92.0942,INFERRED,GAP-060,
+Hella,MATCHED,EXACT,1120,NAME_MATCH_INFERRED,RETAINED_GEOMETRY,430713.0138,371613.8204,3591,"stored end of 3591 (road-links.csv), via phase-1's own ON_RING_NAME_MATCH_INFERRED",81.7696,79.2094,INFERRED,GAP-061,
+Selfoss,MATCHED,EXACT,1150,NAME_MATCH_INFERRED,RETAINED_GEOMETRY,400974.332,384785.129,2138,"stored end of 2138 (road-links.csv), via phase-1's own ON_RING_NAME_MATCH_INFERRED",45.7405,43.1803,INFERRED,GAP-062,
+Hveragerði,MATCHED,EXACT,1170,NODE_UNDETERMINED,NO_COORDINATE_SOURCE,,,,,,,NOT_APPLICABLE,GAP-063,phase-1 status carried forward unchanged: NODE_UNDETERMINED.
+Þorlákshöfn,MATCHED,EXACT,1180,NODE_UNDETERMINED,NO_COORDINATE_SOURCE,,,,,,,NOT_APPLICABLE,GAP-064,No VEGNR=1 name/desc match found this round; never assessed individually before.
+Eyrarbakki,MATCHED,EXACT,1140,NODE_UNDETERMINED,NO_COORDINATE_SOURCE,,,,,,,NOT_APPLICABLE,GAP-065,No VEGNR=1 name/desc match found this round; never assessed individually before.
+Stokkseyri,MATCHED,EXACT,1130,NODE_UNDETERMINED,NO_COORDINATE_SOURCE,,,,,,,NOT_APPLICABLE,GAP-066,No VEGNR=1 name/desc match found this round; never assessed individually before.
+Flúðir,MATCHED,EXACT,1160,NODE_UNDETERMINED,NO_COORDINATE_SOURCE,,,,,,,NOT_APPLICABLE,GAP-067,No VEGNR=1 name/desc match found this round; never assessed individually before.
+Laugarvatn,MATCHED,EXACT,1163,NODE_UNDETERMINED,NO_COORDINATE_SOURCE,,,,,,,NOT_APPLICABLE,GAP-068,No VEGNR=1 name/desc match found this round; never assessed individually before.
+Reykholt,AMBIGUOUS,AMBIGUOUS,193|1162,NODE_UNDETERMINED,NO_COORDINATE_SOURCE,,,,,,,NOT_APPLICABLE,GAP-069,No VEGNR=1 name/desc match found this round; never assessed individually before.
+Laugarás,MATCHED,EXACT,1161,NODE_UNDETERMINED,NO_COORDINATE_SOURCE,,,,,,,NOT_APPLICABLE,GAP-070,No VEGNR=1 name/desc match found this round; never assessed individually before.

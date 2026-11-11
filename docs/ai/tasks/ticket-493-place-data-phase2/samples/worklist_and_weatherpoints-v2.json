@@ -1,0 +1,1866 @@
+{
+ "work_list_extraction": {
+  "input_cell_count": 74,
+  "excluded_non_places": [
+   {
+    "region": "Vestfirðir og Strandir",
+    "source_col": "ring_or_nearby",
+    "name": "Gatnamót tenginga við veg 1",
+    "reason": "names a type of road-junction connection, not a settlement"
+   }
+  ],
+  "editorial_text_stripped": [
+   {
+    "region": "Austurland",
+    "source_col": "connecting_road",
+    "before": "Stöðvarfjörður og fleiri firðir eftir nákvæmri yfirferð tenginga",
+    "after": "Stöðvarfjörður"
+   }
+  ],
+  "cleaned_count_before_merge": 73,
+  "output_row_count_after_merge": 72,
+  "rows": [
+   {
+    "name": "Reykjavík",
+    "sources": [
+     {
+      "region": "Höfuðborgarsvæði og Reykjanes",
+      "source_col": "ring_or_nearby"
+     }
+    ]
+   },
+   {
+    "name": "Mosfellsbær",
+    "sources": [
+     {
+      "region": "Höfuðborgarsvæði og Reykjanes",
+      "source_col": "ring_or_nearby"
+     }
+    ]
+   },
+   {
+    "name": "Kópavogur",
+    "sources": [
+     {
+      "region": "Höfuðborgarsvæði og Reykjanes",
+      "source_col": "connecting_road"
+     }
+    ]
+   },
+   {
+    "name": "Garðabær",
+    "sources": [
+     {
+      "region": "Höfuðborgarsvæði og Reykjanes",
+      "source_col": "connecting_road"
+     }
+    ]
+   },
+   {
+    "name": "Hafnarfjörður",
+    "sources": [
+     {
+      "region": "Höfuðborgarsvæði og Reykjanes",
+      "source_col": "connecting_road"
+     }
+    ]
+   },
+   {
+    "name": "Reykjanesbær",
+    "sources": [
+     {
+      "region": "Höfuðborgarsvæði og Reykjanes",
+      "source_col": "connecting_road"
+     }
+    ]
+   },
+   {
+    "name": "Grindavík",
+    "sources": [
+     {
+      "region": "Höfuðborgarsvæði og Reykjanes",
+      "source_col": "connecting_road"
+     }
+    ]
+   },
+   {
+    "name": "Vogar",
+    "sources": [
+     {
+      "region": "Höfuðborgarsvæði og Reykjanes",
+      "source_col": "connecting_road"
+     }
+    ]
+   },
+   {
+    "name": "Sandgerði",
+    "sources": [
+     {
+      "region": "Höfuðborgarsvæði og Reykjanes",
+      "source_col": "connecting_road"
+     }
+    ]
+   },
+   {
+    "name": "Garður",
+    "sources": [
+     {
+      "region": "Höfuðborgarsvæði og Reykjanes",
+      "source_col": "connecting_road"
+     }
+    ]
+   },
+   {
+    "name": "Borgarnes",
+    "sources": [
+     {
+      "region": "Vesturland",
+      "source_col": "ring_or_nearby"
+     }
+    ]
+   },
+   {
+    "name": "Bifröst",
+    "sources": [
+     {
+      "region": "Vesturland",
+      "source_col": "ring_or_nearby"
+     }
+    ]
+   },
+   {
+    "name": "Akranes",
+    "sources": [
+     {
+      "region": "Vesturland",
+      "source_col": "connecting_road"
+     }
+    ]
+   },
+   {
+    "name": "Stykkishólmur",
+    "sources": [
+     {
+      "region": "Vesturland",
+      "source_col": "connecting_road"
+     }
+    ]
+   },
+   {
+    "name": "Grundarfjörður",
+    "sources": [
+     {
+      "region": "Vesturland",
+      "source_col": "connecting_road"
+     }
+    ]
+   },
+   {
+    "name": "Ólafsvík",
+    "sources": [
+     {
+      "region": "Vesturland",
+      "source_col": "connecting_road"
+     }
+    ]
+   },
+   {
+    "name": "Hellissandur",
+    "sources": [
+     {
+      "region": "Vesturland",
+      "source_col": "connecting_road"
+     }
+    ]
+   },
+   {
+    "name": "Búðardalur",
+    "sources": [
+     {
+      "region": "Vesturland",
+      "source_col": "connecting_road"
+     }
+    ]
+   },
+   {
+    "name": "Ísafjörður",
+    "sources": [
+     {
+      "region": "Vestfirðir og Strandir",
+      "source_col": "connecting_road"
+     }
+    ]
+   },
+   {
+    "name": "Bolungarvík",
+    "sources": [
+     {
+      "region": "Vestfirðir og Strandir",
+      "source_col": "connecting_road"
+     }
+    ]
+   },
+   {
+    "name": "Súðavík",
+    "sources": [
+     {
+      "region": "Vestfirðir og Strandir",
+      "source_col": "connecting_road"
+     }
+    ]
+   },
+   {
+    "name": "Suðureyri",
+    "sources": [
+     {
+      "region": "Vestfirðir og Strandir",
+      "source_col": "connecting_road"
+     }
+    ]
+   },
+   {
+    "name": "Flateyri",
+    "sources": [
+     {
+      "region": "Vestfirðir og Strandir",
+      "source_col": "connecting_road"
+     }
+    ]
+   },
+   {
+    "name": "Þingeyri",
+    "sources": [
+     {
+      "region": "Vestfirðir og Strandir",
+      "source_col": "connecting_road"
+     }
+    ]
+   },
+   {
+    "name": "Bíldudalur",
+    "sources": [
+     {
+      "region": "Vestfirðir og Strandir",
+      "source_col": "connecting_road"
+     }
+    ]
+   },
+   {
+    "name": "Tálknafjörður",
+    "sources": [
+     {
+      "region": "Vestfirðir og Strandir",
+      "source_col": "connecting_road"
+     }
+    ]
+   },
+   {
+    "name": "Patreksfjörður",
+    "sources": [
+     {
+      "region": "Vestfirðir og Strandir",
+      "source_col": "connecting_road"
+     }
+    ]
+   },
+   {
+    "name": "Hólmavík",
+    "sources": [
+     {
+      "region": "Vestfirðir og Strandir",
+      "source_col": "connecting_road"
+     }
+    ]
+   },
+   {
+    "name": "Hvammstangi",
+    "sources": [
+     {
+      "region": "Norðurland vestra",
+      "source_col": "ring_or_nearby"
+     }
+    ]
+   },
+   {
+    "name": "Blönduós",
+    "sources": [
+     {
+      "region": "Norðurland vestra",
+      "source_col": "ring_or_nearby"
+     }
+    ]
+   },
+   {
+    "name": "Varmahlíð",
+    "sources": [
+     {
+      "region": "Norðurland vestra",
+      "source_col": "ring_or_nearby"
+     }
+    ]
+   },
+   {
+    "name": "Skagaströnd",
+    "sources": [
+     {
+      "region": "Norðurland vestra",
+      "source_col": "connecting_road"
+     }
+    ]
+   },
+   {
+    "name": "Sauðárkrókur",
+    "sources": [
+     {
+      "region": "Norðurland vestra",
+      "source_col": "connecting_road"
+     }
+    ]
+   },
+   {
+    "name": "Hofsós",
+    "sources": [
+     {
+      "region": "Norðurland vestra",
+      "source_col": "connecting_road"
+     }
+    ]
+   },
+   {
+    "name": "Siglufjörður",
+    "sources": [
+     {
+      "region": "Norðurland vestra",
+      "source_col": "connecting_road"
+     }
+    ]
+   },
+   {
+    "name": "Akureyri",
+    "sources": [
+     {
+      "region": "Norðurland eystra",
+      "source_col": "ring_or_nearby"
+     }
+    ]
+   },
+   {
+    "name": "Reykjahlíð",
+    "sources": [
+     {
+      "region": "Norðurland eystra",
+      "source_col": "ring_or_nearby"
+     }
+    ]
+   },
+   {
+    "name": "Laugar",
+    "sources": [
+     {
+      "region": "Norðurland eystra",
+      "source_col": "ring_or_nearby"
+     }
+    ]
+   },
+   {
+    "name": "Hrafnagil",
+    "sources": [
+     {
+      "region": "Norðurland eystra",
+      "source_col": "connecting_road"
+     }
+    ]
+   },
+   {
+    "name": "Dalvík",
+    "sources": [
+     {
+      "region": "Norðurland eystra",
+      "source_col": "connecting_road"
+     }
+    ]
+   },
+   {
+    "name": "Ólafsfjörður",
+    "sources": [
+     {
+      "region": "Norðurland eystra",
+      "source_col": "connecting_road"
+     }
+    ]
+   },
+   {
+    "name": "Grenivík",
+    "sources": [
+     {
+      "region": "Norðurland eystra",
+      "source_col": "connecting_road"
+     }
+    ]
+   },
+   {
+    "name": "Húsavík",
+    "sources": [
+     {
+      "region": "Norðurland eystra",
+      "source_col": "connecting_road"
+     }
+    ]
+   },
+   {
+    "name": "Kópasker",
+    "sources": [
+     {
+      "region": "Norðurland eystra",
+      "source_col": "connecting_road"
+     }
+    ]
+   },
+   {
+    "name": "Raufarhöfn",
+    "sources": [
+     {
+      "region": "Norðurland eystra",
+      "source_col": "connecting_road"
+     }
+    ]
+   },
+   {
+    "name": "Þórshöfn",
+    "sources": [
+     {
+      "region": "Norðurland eystra",
+      "source_col": "connecting_road"
+     }
+    ]
+   },
+   {
+    "name": "Egilsstaðir",
+    "sources": [
+     {
+      "region": "Austurland",
+      "source_col": "ring_or_nearby"
+     }
+    ]
+   },
+   {
+    "name": "Fellabær",
+    "sources": [
+     {
+      "region": "Austurland",
+      "source_col": "ring_or_nearby"
+     }
+    ]
+   },
+   {
+    "name": "Reyðarfjörður",
+    "sources": [
+     {
+      "region": "Austurland",
+      "source_col": "ring_or_nearby"
+     }
+    ]
+   },
+   {
+    "name": "Fáskrúðsfjörður",
+    "sources": [
+     {
+      "region": "Austurland",
+      "source_col": "ring_or_nearby"
+     }
+    ]
+   },
+   {
+    "name": "Stöðvarfjörður",
+    "sources": [
+     {
+      "region": "Austurland",
+      "source_col": "ring_or_nearby"
+     },
+     {
+      "region": "Austurland",
+      "source_col": "connecting_road"
+     }
+    ]
+   },
+   {
+    "name": "Breiðdalsvík",
+    "sources": [
+     {
+      "region": "Austurland",
+      "source_col": "ring_or_nearby"
+     }
+    ]
+   },
+   {
+    "name": "Djúpivogur",
+    "sources": [
+     {
+      "region": "Austurland",
+      "source_col": "ring_or_nearby"
+     }
+    ]
+   },
+   {
+    "name": "Vopnafjörður",
+    "sources": [
+     {
+      "region": "Austurland",
+      "source_col": "connecting_road"
+     }
+    ]
+   },
+   {
+    "name": "Borgarfjörður eystri",
+    "sources": [
+     {
+      "region": "Austurland",
+      "source_col": "connecting_road"
+     }
+    ]
+   },
+   {
+    "name": "Seyðisfjörður",
+    "sources": [
+     {
+      "region": "Austurland",
+      "source_col": "connecting_road"
+     }
+    ]
+   },
+   {
+    "name": "Eskifjörður",
+    "sources": [
+     {
+      "region": "Austurland",
+      "source_col": "connecting_road"
+     }
+    ]
+   },
+   {
+    "name": "Neskaupstaður",
+    "sources": [
+     {
+      "region": "Austurland",
+      "source_col": "connecting_road"
+     }
+    ]
+   },
+   {
+    "name": "Höfn",
+    "sources": [
+     {
+      "region": "Suðaustur- og Suðurland",
+      "source_col": "ring_or_nearby"
+     }
+    ]
+   },
+   {
+    "name": "Kirkjubæjarklaustur",
+    "sources": [
+     {
+      "region": "Suðaustur- og Suðurland",
+      "source_col": "ring_or_nearby"
+     }
+    ]
+   },
+   {
+    "name": "Vík",
+    "sources": [
+     {
+      "region": "Suðaustur- og Suðurland",
+      "source_col": "ring_or_nearby"
+     }
+    ]
+   },
+   {
+    "name": "Hvolsvöllur",
+    "sources": [
+     {
+      "region": "Suðaustur- og Suðurland",
+      "source_col": "ring_or_nearby"
+     }
+    ]
+   },
+   {
+    "name": "Hella",
+    "sources": [
+     {
+      "region": "Suðaustur- og Suðurland",
+      "source_col": "ring_or_nearby"
+     }
+    ]
+   },
+   {
+    "name": "Selfoss",
+    "sources": [
+     {
+      "region": "Suðaustur- og Suðurland",
+      "source_col": "ring_or_nearby"
+     }
+    ]
+   },
+   {
+    "name": "Hveragerði",
+    "sources": [
+     {
+      "region": "Suðaustur- og Suðurland",
+      "source_col": "ring_or_nearby"
+     }
+    ]
+   },
+   {
+    "name": "Þorlákshöfn",
+    "sources": [
+     {
+      "region": "Suðaustur- og Suðurland",
+      "source_col": "connecting_road"
+     }
+    ]
+   },
+   {
+    "name": "Eyrarbakki",
+    "sources": [
+     {
+      "region": "Suðaustur- og Suðurland",
+      "source_col": "connecting_road"
+     }
+    ]
+   },
+   {
+    "name": "Stokkseyri",
+    "sources": [
+     {
+      "region": "Suðaustur- og Suðurland",
+      "source_col": "connecting_road"
+     }
+    ]
+   },
+   {
+    "name": "Flúðir",
+    "sources": [
+     {
+      "region": "Suðaustur- og Suðurland",
+      "source_col": "connecting_road"
+     }
+    ]
+   },
+   {
+    "name": "Laugarvatn",
+    "sources": [
+     {
+      "region": "Suðaustur- og Suðurland",
+      "source_col": "connecting_road"
+     }
+    ]
+   },
+   {
+    "name": "Reykholt",
+    "sources": [
+     {
+      "region": "Suðaustur- og Suðurland",
+      "source_col": "connecting_road"
+     }
+    ]
+   },
+   {
+    "name": "Laugarás",
+    "sources": [
+     {
+      "region": "Suðaustur- og Suðurland",
+      "source_col": "connecting_road"
+     }
+    ]
+   }
+  ]
+ },
+ "hagstofa_matching": [
+  {
+   "work_list_name": "Reykjavík",
+   "sources": [
+    {
+     "region": "Höfuðborgarsvæði og Reykjanes",
+     "source_col": "ring_or_nearby"
+    }
+   ],
+   "status": "MATCHED",
+   "candidates": [
+    {
+     "name": "Reykjavík",
+     "code": "50"
+    }
+   ]
+  },
+  {
+   "work_list_name": "Mosfellsbær",
+   "sources": [
+    {
+     "region": "Höfuðborgarsvæði og Reykjanes",
+     "source_col": "ring_or_nearby"
+    }
+   ],
+   "status": "MATCHED",
+   "candidates": [
+    {
+     "name": "Mosfellsbær",
+     "code": "70"
+    }
+   ]
+  },
+  {
+   "work_list_name": "Kópavogur",
+   "sources": [
+    {
+     "region": "Höfuðborgarsvæði og Reykjanes",
+     "source_col": "connecting_road"
+    }
+   ],
+   "status": "UNMATCHED",
+   "candidates": []
+  },
+  {
+   "work_list_name": "Garðabær",
+   "sources": [
+    {
+     "region": "Höfuðborgarsvæði og Reykjanes",
+     "source_col": "connecting_road"
+    }
+   ],
+   "status": "UNMATCHED",
+   "candidates": []
+  },
+  {
+   "work_list_name": "Hafnarfjörður",
+   "sources": [
+    {
+     "region": "Höfuðborgarsvæði og Reykjanes",
+     "source_col": "connecting_road"
+    }
+   ],
+   "status": "UNMATCHED",
+   "candidates": []
+  },
+  {
+   "work_list_name": "Reykjanesbær",
+   "sources": [
+    {
+     "region": "Höfuðborgarsvæði og Reykjanes",
+     "source_col": "connecting_road"
+    }
+   ],
+   "status": "UNMATCHED",
+   "candidates": []
+  },
+  {
+   "work_list_name": "Grindavík",
+   "sources": [
+    {
+     "region": "Höfuðborgarsvæði og Reykjanes",
+     "source_col": "connecting_road"
+    }
+   ],
+   "status": "MATCHED",
+   "candidates": [
+    {
+     "name": "Grindavík",
+     "code": "110"
+    }
+   ]
+  },
+  {
+   "work_list_name": "Vogar",
+   "sources": [
+    {
+     "region": "Höfuðborgarsvæði og Reykjanes",
+     "source_col": "connecting_road"
+    }
+   ],
+   "status": "AMBIGUOUS",
+   "candidates": [
+    {
+     "name": "Vogar",
+     "code": "160"
+    },
+    {
+     "name": "Vogar við Mývatn",
+     "code": "705"
+    }
+   ]
+  },
+  {
+   "work_list_name": "Sandgerði",
+   "sources": [
+    {
+     "region": "Höfuðborgarsvæði og Reykjanes",
+     "source_col": "connecting_road"
+    }
+   ],
+   "status": "MATCHED",
+   "candidates": [
+    {
+     "name": "Sandgerði",
+     "code": "120"
+    }
+   ]
+  },
+  {
+   "work_list_name": "Garður",
+   "sources": [
+    {
+     "region": "Höfuðborgarsvæði og Reykjanes",
+     "source_col": "connecting_road"
+    }
+   ],
+   "status": "MATCHED",
+   "candidates": [
+    {
+     "name": "Garður",
+     "code": "130"
+    }
+   ]
+  },
+  {
+   "work_list_name": "Borgarnes",
+   "sources": [
+    {
+     "region": "Vesturland",
+     "source_col": "ring_or_nearby"
+    }
+   ],
+   "status": "MATCHED",
+   "candidates": [
+    {
+     "name": "Borgarnes",
+     "code": "200"
+    }
+   ]
+  },
+  {
+   "work_list_name": "Bifröst",
+   "sources": [
+    {
+     "region": "Vesturland",
+     "source_col": "ring_or_nearby"
+    }
+   ],
+   "status": "MATCHED",
+   "candidates": [
+    {
+     "name": "Bifröst",
+     "code": "205"
+    }
+   ]
+  },
+  {
+   "work_list_name": "Akranes",
+   "sources": [
+    {
+     "region": "Vesturland",
+     "source_col": "connecting_road"
+    }
+   ],
+   "status": "MATCHED",
+   "candidates": [
+    {
+     "name": "Akranes",
+     "code": "190"
+    }
+   ]
+  },
+  {
+   "work_list_name": "Stykkishólmur",
+   "sources": [
+    {
+     "region": "Vesturland",
+     "source_col": "connecting_road"
+    }
+   ],
+   "status": "MATCHED",
+   "candidates": [
+    {
+     "name": "Stykkishólmur",
+     "code": "240"
+    }
+   ]
+  },
+  {
+   "work_list_name": "Grundarfjörður",
+   "sources": [
+    {
+     "region": "Vesturland",
+     "source_col": "connecting_road"
+    }
+   ],
+   "status": "MATCHED",
+   "candidates": [
+    {
+     "name": "Grundarfjörður",
+     "code": "230"
+    }
+   ]
+  },
+  {
+   "work_list_name": "Ólafsvík",
+   "sources": [
+    {
+     "region": "Vesturland",
+     "source_col": "connecting_road"
+    }
+   ],
+   "status": "MATCHED",
+   "candidates": [
+    {
+     "name": "Ólafsvík",
+     "code": "220"
+    }
+   ]
+  },
+  {
+   "work_list_name": "Hellissandur",
+   "sources": [
+    {
+     "region": "Vesturland",
+     "source_col": "connecting_road"
+    }
+   ],
+   "status": "MATCHED",
+   "candidates": [
+    {
+     "name": "Hellissandur",
+     "code": "210"
+    }
+   ]
+  },
+  {
+   "work_list_name": "Búðardalur",
+   "sources": [
+    {
+     "region": "Vesturland",
+     "source_col": "connecting_road"
+    }
+   ],
+   "status": "MATCHED",
+   "candidates": [
+    {
+     "name": "Búðardalur",
+     "code": "250"
+    }
+   ]
+  },
+  {
+   "work_list_name": "Ísafjörður",
+   "sources": [
+    {
+     "region": "Vestfirðir og Strandir",
+     "source_col": "connecting_road"
+    }
+   ],
+   "status": "MATCHED",
+   "candidates": [
+    {
+     "name": "Ísafjörður",
+     "code": "410"
+    }
+   ]
+  },
+  {
+   "work_list_name": "Bolungarvík",
+   "sources": [
+    {
+     "region": "Vestfirðir og Strandir",
+     "source_col": "connecting_road"
+    }
+   ],
+   "status": "MATCHED",
+   "candidates": [
+    {
+     "name": "Bolungarvík",
+     "code": "400"
+    }
+   ]
+  },
+  {
+   "work_list_name": "Súðavík",
+   "sources": [
+    {
+     "region": "Vestfirðir og Strandir",
+     "source_col": "connecting_road"
+    }
+   ],
+   "status": "MATCHED",
+   "candidates": [
+    {
+     "name": "Súðavík",
+     "code": "430"
+    }
+   ]
+  },
+  {
+   "work_list_name": "Suðureyri",
+   "sources": [
+    {
+     "region": "Vestfirðir og Strandir",
+     "source_col": "connecting_road"
+    }
+   ],
+   "status": "MATCHED",
+   "candidates": [
+    {
+     "name": "Suðureyri",
+     "code": "390"
+    }
+   ]
+  },
+  {
+   "work_list_name": "Flateyri",
+   "sources": [
+    {
+     "region": "Vestfirðir og Strandir",
+     "source_col": "connecting_road"
+    }
+   ],
+   "status": "MATCHED",
+   "candidates": [
+    {
+     "name": "Flateyri",
+     "code": "380"
+    }
+   ]
+  },
+  {
+   "work_list_name": "Þingeyri",
+   "sources": [
+    {
+     "region": "Vestfirðir og Strandir",
+     "source_col": "connecting_road"
+    }
+   ],
+   "status": "MATCHED",
+   "candidates": [
+    {
+     "name": "Þingeyri",
+     "code": "370"
+    }
+   ]
+  },
+  {
+   "work_list_name": "Bíldudalur",
+   "sources": [
+    {
+     "region": "Vestfirðir og Strandir",
+     "source_col": "connecting_road"
+    }
+   ],
+   "status": "MATCHED",
+   "candidates": [
+    {
+     "name": "Bíldudalur",
+     "code": "360"
+    }
+   ]
+  },
+  {
+   "work_list_name": "Tálknafjörður",
+   "sources": [
+    {
+     "region": "Vestfirðir og Strandir",
+     "source_col": "connecting_road"
+    }
+   ],
+   "status": "MATCHED",
+   "candidates": [
+    {
+     "name": "Tálknafjörður",
+     "code": "350"
+    }
+   ]
+  },
+  {
+   "work_list_name": "Patreksfjörður",
+   "sources": [
+    {
+     "region": "Vestfirðir og Strandir",
+     "source_col": "connecting_road"
+    }
+   ],
+   "status": "MATCHED",
+   "candidates": [
+    {
+     "name": "Patreksfjörður",
+     "code": "340"
+    }
+   ]
+  },
+  {
+   "work_list_name": "Hólmavík",
+   "sources": [
+    {
+     "region": "Vestfirðir og Strandir",
+     "source_col": "connecting_road"
+    }
+   ],
+   "status": "MATCHED",
+   "candidates": [
+    {
+     "name": "Hólmavík",
+     "code": "440"
+    }
+   ]
+  },
+  {
+   "work_list_name": "Hvammstangi",
+   "sources": [
+    {
+     "region": "Norðurland vestra",
+     "source_col": "ring_or_nearby"
+    }
+   ],
+   "status": "MATCHED",
+   "candidates": [
+    {
+     "name": "Hvammstangi",
+     "code": "530"
+    }
+   ]
+  },
+  {
+   "work_list_name": "Blönduós",
+   "sources": [
+    {
+     "region": "Norðurland vestra",
+     "source_col": "ring_or_nearby"
+    }
+   ],
+   "status": "MATCHED",
+   "candidates": [
+    {
+     "name": "Blönduós",
+     "code": "540"
+    }
+   ]
+  },
+  {
+   "work_list_name": "Varmahlíð",
+   "sources": [
+    {
+     "region": "Norðurland vestra",
+     "source_col": "ring_or_nearby"
+    }
+   ],
+   "status": "MATCHED",
+   "candidates": [
+    {
+     "name": "Varmahlíð",
+     "code": "561"
+    }
+   ]
+  },
+  {
+   "work_list_name": "Skagaströnd",
+   "sources": [
+    {
+     "region": "Norðurland vestra",
+     "source_col": "connecting_road"
+    }
+   ],
+   "status": "MATCHED",
+   "candidates": [
+    {
+     "name": "Skagaströnd",
+     "code": "550"
+    }
+   ]
+  },
+  {
+   "work_list_name": "Sauðárkrókur",
+   "sources": [
+    {
+     "region": "Norðurland vestra",
+     "source_col": "connecting_road"
+    }
+   ],
+   "status": "MATCHED",
+   "candidates": [
+    {
+     "name": "Sauðárkrókur",
+     "code": "560"
+    }
+   ]
+  },
+  {
+   "work_list_name": "Hofsós",
+   "sources": [
+    {
+     "region": "Norðurland vestra",
+     "source_col": "connecting_road"
+    }
+   ],
+   "status": "MATCHED",
+   "candidates": [
+    {
+     "name": "Hofsós",
+     "code": "570"
+    }
+   ]
+  },
+  {
+   "work_list_name": "Siglufjörður",
+   "sources": [
+    {
+     "region": "Norðurland vestra",
+     "source_col": "connecting_road"
+    }
+   ],
+   "status": "MATCHED",
+   "candidates": [
+    {
+     "name": "Siglufjörður",
+     "code": "580"
+    }
+   ]
+  },
+  {
+   "work_list_name": "Akureyri",
+   "sources": [
+    {
+     "region": "Norðurland eystra",
+     "source_col": "ring_or_nearby"
+    }
+   ],
+   "status": "MATCHED",
+   "candidates": [
+    {
+     "name": "Akureyri",
+     "code": "680"
+    }
+   ]
+  },
+  {
+   "work_list_name": "Reykjahlíð",
+   "sources": [
+    {
+     "region": "Norðurland eystra",
+     "source_col": "ring_or_nearby"
+    }
+   ],
+   "status": "MATCHED",
+   "candidates": [
+    {
+     "name": "Reykjahlíð",
+     "code": "700"
+    }
+   ]
+  },
+  {
+   "work_list_name": "Laugar",
+   "sources": [
+    {
+     "region": "Norðurland eystra",
+     "source_col": "ring_or_nearby"
+    }
+   ],
+   "status": "MATCHED",
+   "candidates": [
+    {
+     "name": "Laugar",
+     "code": "701"
+    }
+   ]
+  },
+  {
+   "work_list_name": "Hrafnagil",
+   "sources": [
+    {
+     "region": "Norðurland eystra",
+     "source_col": "connecting_road"
+    }
+   ],
+   "status": "MATCHED",
+   "candidates": [
+    {
+     "name": "Hrafnagil",
+     "code": "682"
+    }
+   ]
+  },
+  {
+   "work_list_name": "Dalvík",
+   "sources": [
+    {
+     "region": "Norðurland eystra",
+     "source_col": "connecting_road"
+    }
+   ],
+   "status": "MATCHED",
+   "candidates": [
+    {
+     "name": "Dalvík",
+     "code": "660"
+    }
+   ]
+  },
+  {
+   "work_list_name": "Ólafsfjörður",
+   "sources": [
+    {
+     "region": "Norðurland eystra",
+     "source_col": "connecting_road"
+    }
+   ],
+   "status": "MATCHED",
+   "candidates": [
+    {
+     "name": "Ólafsfjörður",
+     "code": "650"
+    }
+   ]
+  },
+  {
+   "work_list_name": "Grenivík",
+   "sources": [
+    {
+     "region": "Norðurland eystra",
+     "source_col": "connecting_road"
+    }
+   ],
+   "status": "MATCHED",
+   "candidates": [
+    {
+     "name": "Grenivík",
+     "code": "690"
+    }
+   ]
+  },
+  {
+   "work_list_name": "Húsavík",
+   "sources": [
+    {
+     "region": "Norðurland eystra",
+     "source_col": "connecting_road"
+    }
+   ],
+   "status": "MATCHED",
+   "candidates": [
+    {
+     "name": "Húsavík",
+     "code": "710"
+    }
+   ]
+  },
+  {
+   "work_list_name": "Kópasker",
+   "sources": [
+    {
+     "region": "Norðurland eystra",
+     "source_col": "connecting_road"
+    }
+   ],
+   "status": "MATCHED",
+   "candidates": [
+    {
+     "name": "Kópasker",
+     "code": "711"
+    }
+   ]
+  },
+  {
+   "work_list_name": "Raufarhöfn",
+   "sources": [
+    {
+     "region": "Norðurland eystra",
+     "source_col": "connecting_road"
+    }
+   ],
+   "status": "MATCHED",
+   "candidates": [
+    {
+     "name": "Raufarhöfn",
+     "code": "720"
+    }
+   ]
+  },
+  {
+   "work_list_name": "Þórshöfn",
+   "sources": [
+    {
+     "region": "Norðurland eystra",
+     "source_col": "connecting_road"
+    }
+   ],
+   "status": "MATCHED",
+   "candidates": [
+    {
+     "name": "Þórshöfn",
+     "code": "730"
+    }
+   ]
+  },
+  {
+   "work_list_name": "Egilsstaðir",
+   "sources": [
+    {
+     "region": "Austurland",
+     "source_col": "ring_or_nearby"
+    }
+   ],
+   "status": "MATCHED",
+   "candidates": [
+    {
+     "name": "Egilsstaðir",
+     "code": "902"
+    }
+   ]
+  },
+  {
+   "work_list_name": "Fellabær",
+   "sources": [
+    {
+     "region": "Austurland",
+     "source_col": "ring_or_nearby"
+    }
+   ],
+   "status": "MATCHED",
+   "candidates": [
+    {
+     "name": "Fellabær",
+     "code": "890"
+    }
+   ]
+  },
+  {
+   "work_list_name": "Reyðarfjörður",
+   "sources": [
+    {
+     "region": "Austurland",
+     "source_col": "ring_or_nearby"
+    }
+   ],
+   "status": "MATCHED",
+   "candidates": [
+    {
+     "name": "Reyðarfjörður",
+     "code": "930"
+    }
+   ]
+  },
+  {
+   "work_list_name": "Fáskrúðsfjörður",
+   "sources": [
+    {
+     "region": "Austurland",
+     "source_col": "ring_or_nearby"
+    }
+   ],
+   "status": "MATCHED",
+   "candidates": [
+    {
+     "name": "Fáskrúðsfjörður",
+     "code": "940"
+    }
+   ]
+  },
+  {
+   "work_list_name": "Stöðvarfjörður",
+   "sources": [
+    {
+     "region": "Austurland",
+     "source_col": "ring_or_nearby"
+    },
+    {
+     "region": "Austurland",
+     "source_col": "connecting_road"
+    }
+   ],
+   "status": "MATCHED",
+   "candidates": [
+    {
+     "name": "Stöðvarfjörður",
+     "code": "950"
+    }
+   ]
+  },
+  {
+   "work_list_name": "Breiðdalsvík",
+   "sources": [
+    {
+     "region": "Austurland",
+     "source_col": "ring_or_nearby"
+    }
+   ],
+   "status": "MATCHED",
+   "candidates": [
+    {
+     "name": "Breiðdalsvík",
+     "code": "960"
+    }
+   ]
+  },
+  {
+   "work_list_name": "Djúpivogur",
+   "sources": [
+    {
+     "region": "Austurland",
+     "source_col": "ring_or_nearby"
+    }
+   ],
+   "status": "MATCHED",
+   "candidates": [
+    {
+     "name": "Djúpivogur",
+     "code": "970"
+    }
+   ]
+  },
+  {
+   "work_list_name": "Vopnafjörður",
+   "sources": [
+    {
+     "region": "Austurland",
+     "source_col": "connecting_road"
+    }
+   ],
+   "status": "MATCHED",
+   "candidates": [
+    {
+     "name": "Vopnafjörður",
+     "code": "870"
+    }
+   ]
+  },
+  {
+   "work_list_name": "Borgarfjörður eystri",
+   "sources": [
+    {
+     "region": "Austurland",
+     "source_col": "connecting_road"
+    }
+   ],
+   "status": "MATCHED",
+   "candidates": [
+    {
+     "name": "Borgarfjörður eystri",
+     "code": "891"
+    }
+   ]
+  },
+  {
+   "work_list_name": "Seyðisfjörður",
+   "sources": [
+    {
+     "region": "Austurland",
+     "source_col": "connecting_road"
+    }
+   ],
+   "status": "MATCHED",
+   "candidates": [
+    {
+     "name": "Seyðisfjörður",
+     "code": "900"
+    }
+   ]
+  },
+  {
+   "work_list_name": "Eskifjörður",
+   "sources": [
+    {
+     "region": "Austurland",
+     "source_col": "connecting_road"
+    }
+   ],
+   "status": "MATCHED",
+   "candidates": [
+    {
+     "name": "Eskifjörður",
+     "code": "920"
+    }
+   ]
+  },
+  {
+   "work_list_name": "Neskaupstaður",
+   "sources": [
+    {
+     "region": "Austurland",
+     "source_col": "connecting_road"
+    }
+   ],
+   "status": "MATCHED",
+   "candidates": [
+    {
+     "name": "Neskaupstaður",
+     "code": "910"
+    }
+   ]
+  },
+  {
+   "work_list_name": "Höfn",
+   "sources": [
+    {
+     "region": "Suðaustur- og Suðurland",
+     "source_col": "ring_or_nearby"
+    }
+   ],
+   "status": "MATCHED",
+   "candidates": [
+    {
+     "name": "Höfn í Hornafirði",
+     "code": "980"
+    }
+   ]
+  },
+  {
+   "work_list_name": "Kirkjubæjarklaustur",
+   "sources": [
+    {
+     "region": "Suðaustur- og Suðurland",
+     "source_col": "ring_or_nearby"
+    }
+   ],
+   "status": "MATCHED",
+   "candidates": [
+    {
+     "name": "Kirkjubæjarklaustur",
+     "code": "1089"
+    }
+   ]
+  },
+  {
+   "work_list_name": "Vík",
+   "sources": [
+    {
+     "region": "Suðaustur- og Suðurland",
+     "source_col": "ring_or_nearby"
+    }
+   ],
+   "status": "MATCHED",
+   "candidates": [
+    {
+     "name": "Vík í Mýrdal",
+     "code": "1090"
+    }
+   ]
+  },
+  {
+   "work_list_name": "Hvolsvöllur",
+   "sources": [
+    {
+     "region": "Suðaustur- og Suðurland",
+     "source_col": "ring_or_nearby"
+    }
+   ],
+   "status": "MATCHED",
+   "candidates": [
+    {
+     "name": "Hvolsvöllur",
+     "code": "1110"
+    }
+   ]
+  },
+  {
+   "work_list_name": "Hella",
+   "sources": [
+    {
+     "region": "Suðaustur- og Suðurland",
+     "source_col": "ring_or_nearby"
+    }
+   ],
+   "status": "MATCHED",
+   "candidates": [
+    {
+     "name": "Hella",
+     "code": "1120"
+    }
+   ]
+  },
+  {
+   "work_list_name": "Selfoss",
+   "sources": [
+    {
+     "region": "Suðaustur- og Suðurland",
+     "source_col": "ring_or_nearby"
+    }
+   ],
+   "status": "MATCHED",
+   "candidates": [
+    {
+     "name": "Selfoss",
+     "code": "1150"
+    }
+   ]
+  },
+  {
+   "work_list_name": "Hveragerði",
+   "sources": [
+    {
+     "region": "Suðaustur- og Suðurland",
+     "source_col": "ring_or_nearby"
+    }
+   ],
+   "status": "MATCHED",
+   "candidates": [
+    {
+     "name": "Hveragerði",
+     "code": "1170"
+    }
+   ]
+  },
+  {
+   "work_list_name": "Þorlákshöfn",
+   "sources": [
+    {
+     "region": "Suðaustur- og Suðurland",
+     "source_col": "connecting_road"
+    }
+   ],
+   "status": "MATCHED",
+   "candidates": [
+    {
+     "name": "Þorlákshöfn",
+     "code": "1180"
+    }
+   ]
+  },
+  {
+   "work_list_name": "Eyrarbakki",
+   "sources": [
+    {
+     "region": "Suðaustur- og Suðurland",
+     "source_col": "connecting_road"
+    }
+   ],
+   "status": "MATCHED",
+   "candidates": [
+    {
+     "name": "Eyrarbakki",
+     "code": "1140"
+    }
+   ]
+  },
+  {
+   "work_list_name": "Stokkseyri",
+   "sources": [
+    {
+     "region": "Suðaustur- og Suðurland",
+     "source_col": "connecting_road"
+    }
+   ],
+   "status": "MATCHED",
+   "candidates": [
+    {
+     "name": "Stokkseyri",
+     "code": "1130"
+    }
+   ]
+  },
+  {
+   "work_list_name": "Flúðir",
+   "sources": [
+    {
+     "region": "Suðaustur- og Suðurland",
+     "source_col": "connecting_road"
+    }
+   ],
+   "status": "MATCHED",
+   "candidates": [
+    {
+     "name": "Flúðir",
+     "code": "1160"
+    }
+   ]
+  },
+  {
+   "work_list_name": "Laugarvatn",
+   "sources": [
+    {
+     "region": "Suðaustur- og Suðurland",
+     "source_col": "connecting_road"
+    }
+   ],
+   "status": "MATCHED",
+   "candidates": [
+    {
+     "name": "Laugarvatn",
+     "code": "1163"
+    }
+   ]
+  },
+  {
+   "work_list_name": "Reykholt",
+   "sources": [
+    {
+     "region": "Suðaustur- og Suðurland",
+     "source_col": "connecting_road"
+    }
+   ],
+   "status": "AMBIGUOUS",
+   "candidates": [
+    {
+     "name": "Reykholt, Borgarfirði",
+     "code": "193"
+    },
+    {
+     "name": "Reykholt, Biskupstungum",
+     "code": "1162"
+    }
+   ]
+  },
+  {
+   "work_list_name": "Laugarás",
+   "sources": [
+    {
+     "region": "Suðaustur- og Suðurland",
+     "source_col": "connecting_road"
+    }
+   ],
+   "status": "MATCHED",
+   "candidates": [
+    {
+     "name": "Laugarás",
+     "code": "1161"
+    }
+   ]
+  }
+ ],
+ "weather_point_proposals": {
+  "basis": "tier -1 (canonical, most-vertices) polyline, linear interpolation only -- no elevation/terrain/weather claim",
+  "total_length_m": 26926.6,
+  "points": [
+   {
+    "coord": [
+     715153.74,
+     536679.93
+    ],
+    "piece": 2344,
+    "idbutur": 911040037,
+    "distance_from_junction_m": 0.0
+   },
+   {
+    "coord": [
+     720424.7841,
+     538280.8521
+    ],
+    "piece": 3410,
+    "idbutur": 911170037,
+    "distance_from_junction_m": 8975.5
+   },
+   {
+    "coord": [
+     728080.798,
+     534609.529
+    ],
+    "piece": 3409,
+    "idbutur": 911170037,
+    "distance_from_junction_m": 17951.0
+   },
+   {
+    "coord": [
+     733080.7436,
+     538522.4045
+    ],
+    "piece": 2891,
+    "idbutur": 911170037,
+    "distance_from_junction_m": 26926.6
+   }
+  ],
+  "note": "point selection remains an owner decision; this is a proposal"
+ }
+}

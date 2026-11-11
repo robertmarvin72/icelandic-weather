@@ -1,0 +1,1144 @@
+{
+ "Reykjavík": {
+  "stem_variants": [
+   "Reykjavík"
+  ],
+  "matches": []
+ },
+ "Mosfellsbær": {
+  "stem_variants": [
+   "Mosfellsbær"
+  ],
+  "matches": []
+ },
+ "Kópavogur": {
+  "stem_variants": [
+   "Kópavogur"
+  ],
+  "matches": []
+ },
+ "Garðabær": {
+  "stem_variants": [
+   "Garðabær"
+  ],
+  "matches": []
+ },
+ "Hafnarfjörður": {
+  "stem_variants": [
+   "Hafnarfjarður",
+   "Hafnarfjörður"
+  ],
+  "matches": []
+ },
+ "Reykjanesbær": {
+  "stem_variants": [
+   "Reykjanesbær"
+  ],
+  "matches": []
+ },
+ "Grindavík": {
+  "stem_variants": [
+   "Grindavík"
+  ],
+  "matches": []
+ },
+ "Vogar": {
+  "stem_variants": [],
+  "matches": []
+ },
+ "Sandgerði": {
+  "stem_variants": [
+   "Sandgerð",
+   "Sandgerði"
+  ],
+  "matches": []
+ },
+ "Garður": {
+  "stem_variants": [],
+  "matches": []
+ },
+ "Borgarnes": {
+  "stem_variants": [
+   "Borgarnes"
+  ],
+  "matches": [
+   {
+    "idferill": 2800,
+    "desc": "Borgarnes - Baulan",
+    "matched_token": "Borgarnes",
+    "matched_stem_variant": "Borgarnes"
+   },
+   {
+    "idferill": 2816,
+    "desc": "Borgarnes - Baulan",
+    "matched_token": "Borgarnes",
+    "matched_stem_variant": "Borgarnes"
+   },
+   {
+    "idferill": 2819,
+    "desc": "Borgarnes",
+    "matched_token": "Borgarnes",
+    "matched_stem_variant": "Borgarnes"
+   },
+   {
+    "idferill": 2876,
+    "desc": "Borgarnes",
+    "matched_token": "Borgarnes",
+    "matched_stem_variant": "Borgarnes"
+   },
+   {
+    "idferill": 30401,
+    "desc": "Borgarnes",
+    "matched_token": "Borgarnes",
+    "matched_stem_variant": "Borgarnes"
+   }
+  ]
+ },
+ "Bifröst": {
+  "stem_variants": [
+   "Bifrast",
+   "Bifröst"
+  ],
+  "matches": []
+ },
+ "Akranes": {
+  "stem_variants": [
+   "Akranes"
+  ],
+  "matches": []
+ },
+ "Stykkishólmur": {
+  "stem_variants": [
+   "Stykkishólmur"
+  ],
+  "matches": []
+ },
+ "Grundarfjörður": {
+  "stem_variants": [
+   "Grundarfjarður",
+   "Grundarfjörður"
+  ],
+  "matches": []
+ },
+ "Ólafsvík": {
+  "stem_variants": [
+   "Ólafsvík"
+  ],
+  "matches": []
+ },
+ "Hellissandur": {
+  "stem_variants": [
+   "Hellissandur"
+  ],
+  "matches": []
+ },
+ "Búðardalur": {
+  "stem_variants": [
+   "Búðardalur"
+  ],
+  "matches": []
+ },
+ "Ísafjörður": {
+  "stem_variants": [
+   "Ísafjarður",
+   "Ísafjörður"
+  ],
+  "matches": []
+ },
+ "Bolungarvík": {
+  "stem_variants": [
+   "Bolungarvík"
+  ],
+  "matches": []
+ },
+ "Súðavík": {
+  "stem_variants": [
+   "Súðavík"
+  ],
+  "matches": []
+ },
+ "Suðureyri": {
+  "stem_variants": [
+   "Suðureyr",
+   "Suðureyri"
+  ],
+  "matches": []
+ },
+ "Flateyri": {
+  "stem_variants": [
+   "Flateyr",
+   "Flateyri"
+  ],
+  "matches": []
+ },
+ "Þingeyri": {
+  "stem_variants": [
+   "Þingeyr",
+   "Þingeyri"
+  ],
+  "matches": []
+ },
+ "Bíldudalur": {
+  "stem_variants": [
+   "Bíldudalur"
+  ],
+  "matches": []
+ },
+ "Tálknafjörður": {
+  "stem_variants": [
+   "Tálknafjarður",
+   "Tálknafjörður"
+  ],
+  "matches": []
+ },
+ "Patreksfjörður": {
+  "stem_variants": [
+   "Patreksfjarður",
+   "Patreksfjörður"
+  ],
+  "matches": []
+ },
+ "Hólmavík": {
+  "stem_variants": [
+   "Hólmavík"
+  ],
+  "matches": []
+ },
+ "Hvammstangi": {
+  "stem_variants": [
+   "Hvammstang",
+   "Hvammstangi"
+  ],
+  "matches": [
+   {
+    "idferill": 3570,
+    "desc": "Hvammstangav. - Víðigerði",
+    "matched_token": "Hvammstangav",
+    "matched_stem_variant": "Hvammstang"
+   },
+   {
+    "idferill": 3584,
+    "desc": "Hvammstangav. - Víðigerði",
+    "matched_token": "Hvammstangav",
+    "matched_stem_variant": "Hvammstang"
+   },
+   {
+    "idferill": 3825,
+    "desc": "Innstrandavegur - Hvammstangavegur",
+    "matched_token": "Hvammstangavegur",
+    "matched_stem_variant": "Hvammstang"
+   },
+   {
+    "idferill": 3826,
+    "desc": "Innstrandavegur - Hvammstangavegur",
+    "matched_token": "Hvammstangavegur",
+    "matched_stem_variant": "Hvammstang"
+   },
+   {
+    "idferill": 3827,
+    "desc": "Innstrandavegur - Hvammstangavegur",
+    "matched_token": "Hvammstangavegur",
+    "matched_stem_variant": "Hvammstang"
+   },
+   {
+    "idferill": 3828,
+    "desc": "Innstrandavegur - Hvammstangavegur",
+    "matched_token": "Hvammstangavegur",
+    "matched_stem_variant": "Hvammstang"
+   }
+  ]
+ },
+ "Blönduós": {
+  "stem_variants": [
+   "Blanduós",
+   "Blönduós"
+  ],
+  "matches": [
+   {
+    "idferill": 2423,
+    "desc": "Blönduós (Efstabraut) - Skagastrandarvegur",
+    "matched_token": "Blönduós",
+    "matched_stem_variant": "Blönduós"
+   },
+   {
+    "idferill": 2593,
+    "desc": "Víðigerði - Blönduós (Efstabraut)",
+    "matched_token": "Blönduós",
+    "matched_stem_variant": "Blönduós"
+   },
+   {
+    "idferill": 2594,
+    "desc": "Víðigerði - Blönduós (Efstabraut)",
+    "matched_token": "Blönduós",
+    "matched_stem_variant": "Blönduós"
+   },
+   {
+    "idferill": 3221,
+    "desc": "Blönduós",
+    "matched_token": "Blönduós",
+    "matched_stem_variant": "Blönduós"
+   },
+   {
+    "idferill": 3569,
+    "desc": "Víðigerði - Blönduós (Efstabraut)",
+    "matched_token": "Blönduós",
+    "matched_stem_variant": "Blönduós"
+   },
+   {
+    "idferill": 52490,
+    "desc": "Víðigerði - Blönduós (Efstabraut)",
+    "matched_token": "Blönduós",
+    "matched_stem_variant": "Blönduós"
+   }
+  ]
+ },
+ "Varmahlíð": {
+  "stem_variants": [
+   "Varmahlíð"
+  ],
+  "matches": [
+   {
+    "idferill": 2477,
+    "desc": "Varmahlíð",
+    "matched_token": "Varmahlíð",
+    "matched_stem_variant": "Varmahlíð"
+   },
+   {
+    "idferill": 2718,
+    "desc": "Varmahlíð - Fremra-Kot",
+    "matched_token": "Varmahlíð",
+    "matched_stem_variant": "Varmahlíð"
+   },
+   {
+    "idferill": 2733,
+    "desc": "Varmahlíð - Fremra-Kot",
+    "matched_token": "Varmahlíð",
+    "matched_stem_variant": "Varmahlíð"
+   },
+   {
+    "idferill": 2734,
+    "desc": "Varmahlíð - Fremra-Kot",
+    "matched_token": "Varmahlíð",
+    "matched_stem_variant": "Varmahlíð"
+   },
+   {
+    "idferill": 2736,
+    "desc": "Varmahlíð - Fremra-Kot",
+    "matched_token": "Varmahlíð",
+    "matched_stem_variant": "Varmahlíð"
+   },
+   {
+    "idferill": 3237,
+    "desc": "Svínvetningabraut - Varmahlíð",
+    "matched_token": "Varmahlíð",
+    "matched_stem_variant": "Varmahlíð"
+   },
+   {
+    "idferill": 3238,
+    "desc": "Svínvetningabraut - Varmahlíð",
+    "matched_token": "Varmahlíð",
+    "matched_stem_variant": "Varmahlíð"
+   }
+  ]
+ },
+ "Skagaströnd": {
+  "stem_variants": [
+   "Skagastrand",
+   "Skagaströnd"
+  ],
+  "matches": [
+   {
+    "idferill": 2423,
+    "desc": "Blönduós (Efstabraut) - Skagastrandarvegur",
+    "matched_token": "Skagastrandarvegur",
+    "matched_stem_variant": "Skagastrand"
+   },
+   {
+    "idferill": 2456,
+    "desc": "Skagastrandarvegur - Svínvetningabraut",
+    "matched_token": "Skagastrandarvegur",
+    "matched_stem_variant": "Skagastrand"
+   },
+   {
+    "idferill": 2478,
+    "desc": "Skagastrandarvegur - Svínvetningabraut",
+    "matched_token": "Skagastrandarvegur",
+    "matched_stem_variant": "Skagastrand"
+   }
+  ]
+ },
+ "Sauðárkrókur": {
+  "stem_variants": [
+   "Sauðárkrókur"
+  ],
+  "matches": []
+ },
+ "Hofsós": {
+  "stem_variants": [],
+  "matches": []
+ },
+ "Siglufjörður": {
+  "stem_variants": [
+   "Siglufjarður",
+   "Siglufjörður"
+  ],
+  "matches": []
+ },
+ "Akureyri": {
+  "stem_variants": [
+   "Akureyr",
+   "Akureyri"
+  ],
+  "matches": [
+   {
+    "idferill": 2940,
+    "desc": "Akureyri - Ólafsfjarðarvegur",
+    "matched_token": "Akureyri",
+    "matched_stem_variant": "Akureyr"
+   },
+   {
+    "idferill": 2995,
+    "desc": "Akureyri - Ólafsfjarðarvegur",
+    "matched_token": "Akureyri",
+    "matched_stem_variant": "Akureyr"
+   }
+  ]
+ },
+ "Reykjahlíð": {
+  "stem_variants": [
+   "Reykjahlíð"
+  ],
+  "matches": []
+ },
+ "Laugar": {
+  "stem_variants": [],
+  "matches": []
+ },
+ "Hrafnagil": {
+  "stem_variants": [
+   "Hrafnagil"
+  ],
+  "matches": []
+ },
+ "Dalvík": {
+  "stem_variants": [],
+  "matches": []
+ },
+ "Ólafsfjörður": {
+  "stem_variants": [
+   "Ólafsfjarður",
+   "Ólafsfjörður"
+  ],
+  "matches": []
+ },
+ "Grenivík": {
+  "stem_variants": [
+   "Grenivík"
+  ],
+  "matches": []
+ },
+ "Húsavík": {
+  "stem_variants": [
+   "Húsavík"
+  ],
+  "matches": []
+ },
+ "Kópasker": {
+  "stem_variants": [
+   "Kópasker"
+  ],
+  "matches": []
+ },
+ "Raufarhöfn": {
+  "stem_variants": [
+   "Raufarhafn",
+   "Raufarhöfn"
+  ],
+  "matches": []
+ },
+ "Þórshöfn": {
+  "stem_variants": [
+   "Þórshafn",
+   "Þórshöfn"
+  ],
+  "matches": []
+ },
+ "Egilsstaðir": {
+  "stem_variants": [
+   "Egilsstaðir"
+  ],
+  "matches": [
+   {
+    "idferill": 2426,
+    "desc": "Reyðarfjörður - Egilsstaðir",
+    "matched_token": "Egilsstaðir",
+    "matched_stem_variant": "Egilsstaðir"
+   },
+   {
+    "idferill": 2813,
+    "desc": "Reyðarfjörður - Egilsstaðir",
+    "matched_token": "Egilsstaðir",
+    "matched_stem_variant": "Egilsstaðir"
+   },
+   {
+    "idferill": 2814,
+    "desc": "Reyðarfjörður - Egilsstaðir",
+    "matched_token": "Egilsstaðir",
+    "matched_stem_variant": "Egilsstaðir"
+   }
+  ]
+ },
+ "Fellabær": {
+  "stem_variants": [
+   "Fellabær"
+  ],
+  "matches": [
+   {
+    "idferill": 1483,
+    "desc": "Fellabær",
+    "matched_token": "Fellabær",
+    "matched_stem_variant": "Fellabær"
+   },
+   {
+    "idferill": 2347,
+    "desc": "Fellabær - Dagsverk",
+    "matched_token": "Fellabær",
+    "matched_stem_variant": "Fellabær"
+   },
+   {
+    "idferill": 2349,
+    "desc": "Fellabær",
+    "matched_token": "Fellabær",
+    "matched_stem_variant": "Fellabær"
+   },
+   {
+    "idferill": 3440,
+    "desc": "Hlíðarvegur - Fellabær (um Heiðarenda)",
+    "matched_token": "Fellabær",
+    "matched_stem_variant": "Fellabær"
+   },
+   {
+    "idferill": 3631,
+    "desc": "Hlíðarvegur - Fellabær (um Heiðarenda)",
+    "matched_token": "Fellabær",
+    "matched_stem_variant": "Fellabær"
+   }
+  ]
+ },
+ "Reyðarfjörður": {
+  "stem_variants": [
+   "Reyðarfjarður",
+   "Reyðarfjörður"
+  ],
+  "matches": [
+   {
+    "idferill": 2426,
+    "desc": "Reyðarfjörður - Egilsstaðir",
+    "matched_token": "Reyðarfjörður",
+    "matched_stem_variant": "Reyðarfjörður"
+   },
+   {
+    "idferill": 2520,
+    "desc": "Reyðarfjörður - Fáskrúðsfjörður",
+    "matched_token": "Reyðarfjörður",
+    "matched_stem_variant": "Reyðarfjörður"
+   },
+   {
+    "idferill": 2536,
+    "desc": "Reyðarfjörður - Fáskrúðsfjörður",
+    "matched_token": "Reyðarfjörður",
+    "matched_stem_variant": "Reyðarfjörður"
+   },
+   {
+    "idferill": 2553,
+    "desc": "Reyðarfjörður - Fáskrúðsfjörður",
+    "matched_token": "Reyðarfjörður",
+    "matched_stem_variant": "Reyðarfjörður"
+   },
+   {
+    "idferill": 2813,
+    "desc": "Reyðarfjörður - Egilsstaðir",
+    "matched_token": "Reyðarfjörður",
+    "matched_stem_variant": "Reyðarfjörður"
+   },
+   {
+    "idferill": 2814,
+    "desc": "Reyðarfjörður - Egilsstaðir",
+    "matched_token": "Reyðarfjörður",
+    "matched_stem_variant": "Reyðarfjörður"
+   }
+  ]
+ },
+ "Fáskrúðsfjörður": {
+  "stem_variants": [
+   "Fáskrúðsfjarður",
+   "Fáskrúðsfjörður"
+  ],
+  "matches": [
+   {
+    "idferill": 2520,
+    "desc": "Reyðarfjörður - Fáskrúðsfjörður",
+    "matched_token": "Fáskrúðsfjörður",
+    "matched_stem_variant": "Fáskrúðsfjörður"
+   },
+   {
+    "idferill": 2536,
+    "desc": "Reyðarfjörður - Fáskrúðsfjörður",
+    "matched_token": "Fáskrúðsfjörður",
+    "matched_stem_variant": "Fáskrúðsfjörður"
+   },
+   {
+    "idferill": 2553,
+    "desc": "Reyðarfjörður - Fáskrúðsfjörður",
+    "matched_token": "Fáskrúðsfjörður",
+    "matched_stem_variant": "Fáskrúðsfjörður"
+   },
+   {
+    "idferill": 3831,
+    "desc": "Fáskrúðsfjörður - Stöðvarfjörður",
+    "matched_token": "Fáskrúðsfjörður",
+    "matched_stem_variant": "Fáskrúðsfjörður"
+   },
+   {
+    "idferill": 3840,
+    "desc": "Fáskrúðsfjörður - Stöðvarfjörður",
+    "matched_token": "Fáskrúðsfjörður",
+    "matched_stem_variant": "Fáskrúðsfjörður"
+   },
+   {
+    "idferill": 3843,
+    "desc": "Fáskrúðsfjörður - Stöðvarfjörður",
+    "matched_token": "Fáskrúðsfjörður",
+    "matched_stem_variant": "Fáskrúðsfjörður"
+   }
+  ]
+ },
+ "Stöðvarfjörður": {
+  "stem_variants": [
+   "Staðvarfjarður",
+   "Stöðvarfjörður"
+  ],
+  "matches": [
+   {
+    "idferill": 3831,
+    "desc": "Fáskrúðsfjörður - Stöðvarfjörður",
+    "matched_token": "Stöðvarfjörður",
+    "matched_stem_variant": "Stöðvarfjörður"
+   },
+   {
+    "idferill": 3832,
+    "desc": "Stöðvarfjörður - Breiðdalsvík",
+    "matched_token": "Stöðvarfjörður",
+    "matched_stem_variant": "Stöðvarfjörður"
+   },
+   {
+    "idferill": 3840,
+    "desc": "Fáskrúðsfjörður - Stöðvarfjörður",
+    "matched_token": "Stöðvarfjörður",
+    "matched_stem_variant": "Stöðvarfjörður"
+   },
+   {
+    "idferill": 3841,
+    "desc": "Stöðvarfjörður - Breiðdalsvík",
+    "matched_token": "Stöðvarfjörður",
+    "matched_stem_variant": "Stöðvarfjörður"
+   },
+   {
+    "idferill": 3842,
+    "desc": "Stöðvarfjörður - Breiðdalsvík",
+    "matched_token": "Stöðvarfjörður",
+    "matched_stem_variant": "Stöðvarfjörður"
+   },
+   {
+    "idferill": 3843,
+    "desc": "Fáskrúðsfjörður - Stöðvarfjörður",
+    "matched_token": "Stöðvarfjörður",
+    "matched_stem_variant": "Stöðvarfjörður"
+   },
+   {
+    "idferill": 3845,
+    "desc": "Stöðvarfjörður - Breiðdalsvík",
+    "matched_token": "Stöðvarfjörður",
+    "matched_stem_variant": "Stöðvarfjörður"
+   }
+  ]
+ },
+ "Breiðdalsvík": {
+  "stem_variants": [
+   "Breiðdalsvík"
+  ],
+  "matches": [
+   {
+    "idferill": 3188,
+    "desc": "Breiðdalsvík - Skrúðskambur",
+    "matched_token": "Breiðdalsvík",
+    "matched_stem_variant": "Breiðdalsvík"
+   },
+   {
+    "idferill": 3832,
+    "desc": "Stöðvarfjörður - Breiðdalsvík",
+    "matched_token": "Breiðdalsvík",
+    "matched_stem_variant": "Breiðdalsvík"
+   },
+   {
+    "idferill": 3841,
+    "desc": "Stöðvarfjörður - Breiðdalsvík",
+    "matched_token": "Breiðdalsvík",
+    "matched_stem_variant": "Breiðdalsvík"
+   },
+   {
+    "idferill": 3842,
+    "desc": "Stöðvarfjörður - Breiðdalsvík",
+    "matched_token": "Breiðdalsvík",
+    "matched_stem_variant": "Breiðdalsvík"
+   },
+   {
+    "idferill": 3845,
+    "desc": "Stöðvarfjörður - Breiðdalsvík",
+    "matched_token": "Breiðdalsvík",
+    "matched_stem_variant": "Breiðdalsvík"
+   }
+  ]
+ },
+ "Djúpivogur": {
+  "stem_variants": [
+   "Djúpivogur"
+  ],
+  "matches": [
+   {
+    "idferill": 3106,
+    "desc": "Fossgerði - Djúpivogur",
+    "matched_token": "Djúpivogur",
+    "matched_stem_variant": "Djúpivogur"
+   },
+   {
+    "idferill": 3167,
+    "desc": "Djúpivogur - Höfn",
+    "matched_token": "Djúpivogur",
+    "matched_stem_variant": "Djúpivogur"
+   },
+   {
+    "idferill": 3196,
+    "desc": "Djúpivogur - Höfn",
+    "matched_token": "Djúpivogur",
+    "matched_stem_variant": "Djúpivogur"
+   },
+   {
+    "idferill": 3263,
+    "desc": "Fossgerði - Djúpivogur",
+    "matched_token": "Djúpivogur",
+    "matched_stem_variant": "Djúpivogur"
+   },
+   {
+    "idferill": 3265,
+    "desc": "Fossgerði - Djúpivogur",
+    "matched_token": "Djúpivogur",
+    "matched_stem_variant": "Djúpivogur"
+   },
+   {
+    "idferill": 3301,
+    "desc": "Djúpivogur - Höfn",
+    "matched_token": "Djúpivogur",
+    "matched_stem_variant": "Djúpivogur"
+   },
+   {
+    "idferill": 3302,
+    "desc": "Fossgerði - Djúpivogur",
+    "matched_token": "Djúpivogur",
+    "matched_stem_variant": "Djúpivogur"
+   },
+   {
+    "idferill": 3369,
+    "desc": "Djúpivogur - Höfn",
+    "matched_token": "Djúpivogur",
+    "matched_stem_variant": "Djúpivogur"
+   },
+   {
+    "idferill": 3463,
+    "desc": "Djúpivogur - Höfn",
+    "matched_token": "Djúpivogur",
+    "matched_stem_variant": "Djúpivogur"
+   },
+   {
+    "idferill": 3574,
+    "desc": "Djúpivogur - Höfn",
+    "matched_token": "Djúpivogur",
+    "matched_stem_variant": "Djúpivogur"
+   },
+   {
+    "idferill": 3589,
+    "desc": "Djúpivogur - Höfn",
+    "matched_token": "Djúpivogur",
+    "matched_stem_variant": "Djúpivogur"
+   },
+   {
+    "idferill": 3625,
+    "desc": "Djúpivogur - Höfn",
+    "matched_token": "Djúpivogur",
+    "matched_stem_variant": "Djúpivogur"
+   },
+   {
+    "idferill": 3628,
+    "desc": "Djúpivogur - Höfn",
+    "matched_token": "Djúpivogur",
+    "matched_stem_variant": "Djúpivogur"
+   },
+   {
+    "idferill": 3630,
+    "desc": "Djúpivogur - Höfn",
+    "matched_token": "Djúpivogur",
+    "matched_stem_variant": "Djúpivogur"
+   },
+   {
+    "idferill": 3652,
+    "desc": "Djúpivogur - Höfn",
+    "matched_token": "Djúpivogur",
+    "matched_stem_variant": "Djúpivogur"
+   },
+   {
+    "idferill": 3701,
+    "desc": "Djúpivogur - Höfn",
+    "matched_token": "Djúpivogur",
+    "matched_stem_variant": "Djúpivogur"
+   },
+   {
+    "idferill": 3769,
+    "desc": "Djúpivogur - Höfn",
+    "matched_token": "Djúpivogur",
+    "matched_stem_variant": "Djúpivogur"
+   }
+  ]
+ },
+ "Vopnafjörður": {
+  "stem_variants": [
+   "Vopnafjarður",
+   "Vopnafjörður"
+  ],
+  "matches": []
+ },
+ "Borgarfjörður eystri": {
+  "stem_variants": [
+   "Borgarfjarður eystr",
+   "Borgarfjarður eystri",
+   "Borgarfjörður eystr",
+   "Borgarfjörður eystri"
+  ],
+  "matches": []
+ },
+ "Seyðisfjörður": {
+  "stem_variants": [
+   "Seyðisfjarður",
+   "Seyðisfjörður"
+  ],
+  "matches": []
+ },
+ "Eskifjörður": {
+  "stem_variants": [
+   "Eskifjarður",
+   "Eskifjörður"
+  ],
+  "matches": []
+ },
+ "Neskaupstaður": {
+  "stem_variants": [
+   "Neskaupstaður"
+  ],
+  "matches": []
+ },
+ "Höfn": {
+  "stem_variants": [],
+  "matches": []
+ },
+ "Kirkjubæjarklaustur": {
+  "stem_variants": [
+   "Kirkjubæjarklaustur"
+  ],
+  "matches": [
+   {
+    "idferill": 1964,
+    "desc": "Kirkjubæjarklaustur - Skeiðarársandur",
+    "matched_token": "Kirkjubæjarklaustur",
+    "matched_stem_variant": "Kirkjubæjarklaustur"
+   },
+   {
+    "idferill": 1989,
+    "desc": "Kirkjubæjarklaustur - Skeiðarársandur",
+    "matched_token": "Kirkjubæjarklaustur",
+    "matched_stem_variant": "Kirkjubæjarklaustur"
+   },
+   {
+    "idferill": 2313,
+    "desc": "Kirkjubæjarklaustur - Skeiðarársandur",
+    "matched_token": "Kirkjubæjarklaustur",
+    "matched_stem_variant": "Kirkjubæjarklaustur"
+   },
+   {
+    "idferill": 2386,
+    "desc": "Kirkjubæjarklaustur - Skeiðarársandur",
+    "matched_token": "Kirkjubæjarklaustur",
+    "matched_stem_variant": "Kirkjubæjarklaustur"
+   },
+   {
+    "idferill": 8675,
+    "desc": "Kirkjubæjarklaustur - Skeiðarársandur",
+    "matched_token": "Kirkjubæjarklaustur",
+    "matched_stem_variant": "Kirkjubæjarklaustur"
+   }
+  ]
+ },
+ "Vík": {
+  "stem_variants": [],
+  "matches": []
+ },
+ "Hvolsvöllur": {
+  "stem_variants": [
+   "Hvolsvallur",
+   "Hvolsvöllur"
+  ],
+  "matches": [
+   {
+    "idferill": 3555,
+    "desc": "Hringvegur: Þórsmerkurvegur - Hvolsvöllur",
+    "matched_token": "Hvolsvöllur",
+    "matched_stem_variant": "Hvolsvöllur"
+   },
+   {
+    "idferill": 3576,
+    "desc": "Hringvegur: Þórsmerkurvegur - Hvolsvöllur",
+    "matched_token": "Hvolsvöllur",
+    "matched_stem_variant": "Hvolsvöllur"
+   },
+   {
+    "idferill": 3593,
+    "desc": "Hringvegur: Hvolsvöllur - Hella",
+    "matched_token": "Hvolsvöllur",
+    "matched_stem_variant": "Hvolsvöllur"
+   },
+   {
+    "idferill": 3638,
+    "desc": "Hringvegur: Hvolsvöllur - Hella",
+    "matched_token": "Hvolsvöllur",
+    "matched_stem_variant": "Hvolsvöllur"
+   },
+   {
+    "idferill": 3639,
+    "desc": "Hringvegur: Þórsmerkurvegur - Hvolsvöllur",
+    "matched_token": "Hvolsvöllur",
+    "matched_stem_variant": "Hvolsvöllur"
+   },
+   {
+    "idferill": 3643,
+    "desc": "Hringvegur: Hvolsvöllur - Hella",
+    "matched_token": "Hvolsvöllur",
+    "matched_stem_variant": "Hvolsvöllur"
+   }
+  ]
+ },
+ "Hella": {
+  "stem_variants": [],
+  "matches": []
+ },
+ "Selfoss": {
+  "stem_variants": [
+   "Selfoss"
+  ],
+  "matches": [
+   {
+    "idferill": 2116,
+    "desc": "Hringvegur: Selfoss, Eyrarbakkavegur - Litla-Kaffistofan",
+    "matched_token": "Selfoss",
+    "matched_stem_variant": "Selfoss"
+   },
+   {
+    "idferill": 2117,
+    "desc": "Hringvegur: Selfoss, Eyrarbakkavegur - Litla-Kaffistofan",
+    "matched_token": "Selfoss",
+    "matched_stem_variant": "Selfoss"
+   },
+   {
+    "idferill": 2134,
+    "desc": "Hringvegur: Selfoss, Eyrarbakkavegur - Litla-Kaffistofan",
+    "matched_token": "Selfoss",
+    "matched_stem_variant": "Selfoss"
+   },
+   {
+    "idferill": 2135,
+    "desc": "Hringvegur: Selfoss, Eyrarbakkavegur - Litla-Kaffistofan",
+    "matched_token": "Selfoss",
+    "matched_stem_variant": "Selfoss"
+   },
+   {
+    "idferill": 2138,
+    "desc": "Hringvegur: Selfoss, Eyrarbakkavegur - Litla-Kaffistofan",
+    "matched_token": "Selfoss",
+    "matched_stem_variant": "Selfoss"
+   },
+   {
+    "idferill": 3454,
+    "desc": "Þjórsá - Selfoss",
+    "matched_token": "Selfoss",
+    "matched_stem_variant": "Selfoss"
+   },
+   {
+    "idferill": 3767,
+    "desc": "Þjórsá - Selfoss",
+    "matched_token": "Selfoss",
+    "matched_stem_variant": "Selfoss"
+   },
+   {
+    "idferill": 3768,
+    "desc": "Þjórsá - Selfoss",
+    "matched_token": "Selfoss",
+    "matched_stem_variant": "Selfoss"
+   },
+   {
+    "idferill": 3781,
+    "desc": "Þjórsá - Selfoss",
+    "matched_token": "Selfoss",
+    "matched_stem_variant": "Selfoss"
+   },
+   {
+    "idferill": 36807,
+    "desc": "Hringvegur: Selfoss, Eyrarbakkavegur - Litla-Kaffistofan",
+    "matched_token": "Selfoss",
+    "matched_stem_variant": "Selfoss"
+   },
+   {
+    "idferill": 52491,
+    "desc": "Hringvegur: Selfoss, Eyrarbakkavegur - Litla-Kaffistofan",
+    "matched_token": "Selfoss",
+    "matched_stem_variant": "Selfoss"
+   },
+   {
+    "idferill": 52492,
+    "desc": "Hringvegur: Selfoss, Eyrarbakkavegur - Litla-Kaffistofan",
+    "matched_token": "Selfoss",
+    "matched_stem_variant": "Selfoss"
+   }
+  ]
+ },
+ "Hveragerði": {
+  "stem_variants": [
+   "Hveragerð",
+   "Hveragerði"
+  ],
+  "matches": []
+ },
+ "Þorlákshöfn": {
+  "stem_variants": [
+   "Þorlákshafn",
+   "Þorlákshöfn"
+  ],
+  "matches": [
+   {
+    "idferill": 22722,
+    "desc": "Þrengslavegur m/ að- og fráreinum: Hringvegur - Þorlákshafnarvegur",
+    "matched_token": "Þorlákshafnarvegur",
+    "matched_stem_variant": "Þorlákshafn"
+   },
+   {
+    "idferill": 22725,
+    "desc": "Þrengslavegur m/ að- og fráreinum: Hringvegur - Þorlákshafnarvegur",
+    "matched_token": "Þorlákshafnarvegur",
+    "matched_stem_variant": "Þorlákshafn"
+   }
+  ]
+ },
+ "Eyrarbakki": {
+  "stem_variants": [
+   "Eyrarbakk",
+   "Eyrarbakki"
+  ],
+  "matches": [
+   {
+    "idferill": 2116,
+    "desc": "Hringvegur: Selfoss, Eyrarbakkavegur - Litla-Kaffistofan",
+    "matched_token": "Eyrarbakkavegur",
+    "matched_stem_variant": "Eyrarbakk"
+   },
+   {
+    "idferill": 2117,
+    "desc": "Hringvegur: Selfoss, Eyrarbakkavegur - Litla-Kaffistofan",
+    "matched_token": "Eyrarbakkavegur",
+    "matched_stem_variant": "Eyrarbakk"
+   },
+   {
+    "idferill": 2134,
+    "desc": "Hringvegur: Selfoss, Eyrarbakkavegur - Litla-Kaffistofan",
+    "matched_token": "Eyrarbakkavegur",
+    "matched_stem_variant": "Eyrarbakk"
+   },
+   {
+    "idferill": 2135,
+    "desc": "Hringvegur: Selfoss, Eyrarbakkavegur - Litla-Kaffistofan",
+    "matched_token": "Eyrarbakkavegur",
+    "matched_stem_variant": "Eyrarbakk"
+   },
+   {
+    "idferill": 2138,
+    "desc": "Hringvegur: Selfoss, Eyrarbakkavegur - Litla-Kaffistofan",
+    "matched_token": "Eyrarbakkavegur",
+    "matched_stem_variant": "Eyrarbakk"
+   },
+   {
+    "idferill": 3737,
+    "desc": "Hringv.: Laugardælavegur - Eyrarbakkavegur",
+    "matched_token": "Eyrarbakkavegur",
+    "matched_stem_variant": "Eyrarbakk"
+   },
+   {
+    "idferill": 8676,
+    "desc": "Hringv.: Laugardælavegur - Eyrarbakkavegur",
+    "matched_token": "Eyrarbakkavegur",
+    "matched_stem_variant": "Eyrarbakk"
+   },
+   {
+    "idferill": 36807,
+    "desc": "Hringvegur: Selfoss, Eyrarbakkavegur - Litla-Kaffistofan",
+    "matched_token": "Eyrarbakkavegur",
+    "matched_stem_variant": "Eyrarbakk"
+   },
+   {
+    "idferill": 52491,
+    "desc": "Hringvegur: Selfoss, Eyrarbakkavegur - Litla-Kaffistofan",
+    "matched_token": "Eyrarbakkavegur",
+    "matched_stem_variant": "Eyrarbakk"
+   },
+   {
+    "idferill": 52492,
+    "desc": "Hringvegur: Selfoss, Eyrarbakkavegur - Litla-Kaffistofan",
+    "matched_token": "Eyrarbakkavegur",
+    "matched_stem_variant": "Eyrarbakk"
+   }
+  ]
+ },
+ "Stokkseyri": {
+  "stem_variants": [
+   "Stokkseyr",
+   "Stokkseyri"
+  ],
+  "matches": []
+ },
+ "Flúðir": {
+  "stem_variants": [],
+  "matches": []
+ },
+ "Laugarvatn": {
+  "stem_variants": [
+   "Laugarvatn"
+  ],
+  "matches": []
+ },
+ "Reykholt": {
+  "stem_variants": [
+   "Reykholt"
+  ],
+  "matches": []
+ },
+ "Laugarás": {
+  "stem_variants": [
+   "Laugarás"
+  ],
+  "matches": []
+ }
+}

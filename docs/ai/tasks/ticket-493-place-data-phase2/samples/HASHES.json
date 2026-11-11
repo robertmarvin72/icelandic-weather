@@ -1,0 +1,168 @@
+{
+ "this_round_new_files": [
+  {
+   "path": "owner-authorisation.md",
+   "sha256": "7a59deb72e16f82a0a4270474e871ae3a7ab299d13cb4fc195c8d5fb4fe9f9c6",
+   "size_bytes": 3219,
+   "line_ending": "LF"
+  },
+  {
+   "path": "pre-sample-plan.md",
+   "sha256": "c6605688c1c52537d071df3f103f775f4b56ed178fdcd71a421c6b7dd65b1d4a",
+   "size_bytes": 10996,
+   "line_ending": "LF"
+  },
+  {
+   "path": "evidence.md",
+   "sha256": "925d68f8ac6f7fe2278df369d1d490c8edea8b8928d34bb44461244cc9c436ed",
+   "size_bytes": 13597,
+   "line_ending": "LF"
+  },
+  {
+   "path": "place-inventory.csv",
+   "sha256": "197759059d06b9d4e5f75335af04d451dd3797f9223dada575266557ec8c1a7f",
+   "size_bytes": 5232,
+   "line_ending": "LF"
+  },
+  {
+   "path": "samples/bounded_fetch.py",
+   "sha256": "c2610ebfbfdc56fd11776df0511c68246a7a958486fda96fd2e8858cab259be6",
+   "size_bytes": 6226,
+   "line_ending": "LF"
+  },
+  {
+   "path": "samples/local_enforcement_test.py",
+   "sha256": "2ebfec4fb784e0732fbb36e062156bd02945788907049e46fb821a11fa4237ea",
+   "size_bytes": 6404,
+   "line_ending": "LF"
+  },
+  {
+   "path": "samples/local-test-ledger.json",
+   "sha256": "6d59b5df761531c92dc033a7363ad8d95d2cd14a8e55346f502ad025c0be251d",
+   "size_bytes": 1041,
+   "line_ending": "LF"
+  },
+  {
+   "path": "samples/exchange1_metadata.py",
+   "sha256": "6f41c8c2809dfb9eef64537bd624922e4ee5ed3d29af0710df1f12fc1d631a16",
+   "size_bytes": 927,
+   "line_ending": "LF"
+  },
+  {
+   "path": "samples/exchange2_data.py",
+   "sha256": "b2283185f08a22f402084ebb9030419887cccd8d821dc2ea4cc00caa9c9a4b08",
+   "size_bytes": 1243,
+   "line_ending": "LF"
+  },
+  {
+   "path": "samples/exchange3_wfs93.py",
+   "sha256": "f696807e62cb7cf5514a7112a8dfff7d63b594071be6d00d24be04415619590d",
+   "size_bytes": 823,
+   "line_ending": "LF"
+  },
+  {
+   "path": "samples/exchange-ledger.jsonl",
+   "sha256": "901d8d7c8d64fa13d29051540f6c8b9831f630328ca63c58d9bc6b1ca637eae6",
+   "size_bytes": 4805,
+   "line_ending": "LF"
+  },
+  {
+   "path": "samples/metadata-MAN030106-raw.json",
+   "sha256": "f3cd482f2596a4752b991447966c9ed607186d2ecb6b0678a68ee3a7877c13bf",
+   "size_bytes": 5055,
+   "line_ending": "LF"
+  },
+  {
+   "path": "samples/data-MAN030106-raw.json",
+   "sha256": "913c4ea7c2258e7967ab67da57f65dc735562b3476df4fdffe7af91ece8fc0f8",
+   "size_bytes": 6091,
+   "line_ending": "LF"
+  },
+  {
+   "path": "samples/wfs93-raw.json",
+   "sha256": "1d8c9cf880df374b9cb8120e1053e8ffd5acfba3d4bf55714e57ffdd8c49eb33",
+   "size_bytes": 37991,
+   "line_ending": "LF"
+  },
+  {
+   "path": "samples/hagstofa_settlements_2023_2025.csv",
+   "sha256": "29ac97c6b061bca128df233dbd7ddf9b3fb23e0014d0e86f4b5b1ba0def7a5eb",
+   "size_bytes": 3740,
+   "line_ending": "LF"
+  },
+  {
+   "path": "samples/build_road93_candidate.py",
+   "sha256": "3fb2d1afac59bc9cd519b60dcf74f6f40b2b0a40e9be6f99cf23c1d1e80b94f8",
+   "size_bytes": 5251,
+   "line_ending": "LF"
+  },
+  {
+   "path": "samples/road93-candidate.json",
+   "sha256": "b012d12c91853004f8ee34e4d3b730640a774a5eb6d9b06259de2287a7a12180",
+   "size_bytes": 5202,
+   "line_ending": "LF"
+  },
+  {
+   "path": "samples/generate_hashes.py",
+   "sha256": "474f7ba25f3966a601970c94852b6c8a230e327957457996dbd382d864f94a13",
+   "size_bytes": 2745,
+   "line_ending": "LF"
+  }
+ ],
+ "confirmed_unchanged_prior_files": [
+  {
+   "path": "tasks\\ticket-493-place-network\\place-inventory.csv",
+   "sha256": "e0acd2c2ae57c8313fb226fa47ab707571335de64748f96e80c7b1c5821af7a3",
+   "size_bytes": 14955,
+   "line_ending": "LF"
+  },
+  {
+   "path": "tasks\\ticket-493-place-network\\evidence.md",
+   "sha256": "4142a3ea3fcfbdc5b5b00c07571befb595595c22bca101c73e24303299e37661",
+   "size_bytes": 38646,
+   "line_ending": "LF"
+  },
+  {
+   "path": "tasks\\ticket-493-place-network\\cc-report.md",
+   "sha256": "9ec7b5431c7730fed0b23e34a992bc7739561c337679d5259976c386cecb389e",
+   "size_bytes": 33269,
+   "line_ending": "LF"
+  },
+  {
+   "path": "tasks\\ticket-493-place-network\\rules.md",
+   "sha256": "c56f2f7e0c5fcfd9b7c88616da5bd0eaf6ff9ea647d36145630f34bea1b6b4e4",
+   "size_bytes": 9659,
+   "line_ending": "LF"
+  },
+  {
+   "path": "tasks\\ticket-493-place-network\\rules-addendum-v4.md",
+   "sha256": "460c2dbdd6b3f9f5c89c1674152ac60b0f924cb454f2056bf9f59430e59f9c47",
+   "size_bytes": 7598,
+   "line_ending": "LF"
+  },
+  {
+   "path": "tasks\\ticket-493-place-network\\samples\\road-links.csv",
+   "sha256": "bf25ff0f68f0d7e7b46f4beb3fa7619c6e91fd8a1ad7c3f8d71eb24937db10c7",
+   "size_bytes": 35424,
+   "line_ending": "LF"
+  },
+  {
+   "path": "tasks\\ticket-493-place-network\\samples\\chain-walks-v4.json",
+   "sha256": "640efec931a374ac3ddd95d0750980e97654fe1d166229dc579d355a082becd7",
+   "size_bytes": 53750,
+   "line_ending": "LF"
+  },
+  {
+   "path": "tasks\\ticket-483\\samples\\wfs-vegnr1-all.json",
+   "sha256": "305f60d6f1f17918c058cbd047735681e56d6f9aad99f9e16f50de9419d6983a",
+   "size_bytes": 1242779,
+   "line_ending": "LF"
+  },
+  {
+   "path": "tasks\\ticket-493-north-data\\route-data-candidate.json",
+   "sha256": "094fb5d3615c1d5f0e7b372706d134bf48e9c5e954ab3ec7af61fa825b0fb4a8",
+   "size_bytes": 52691,
+   "line_ending": "LF"
+  }
+ ]
+}

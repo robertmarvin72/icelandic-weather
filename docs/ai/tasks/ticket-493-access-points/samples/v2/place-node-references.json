@@ -1,0 +1,92 @@
+{
+ "Hvolsvöllur": [
+  {
+   "place": "Hvolsvöllur",
+   "idferill": 3593,
+   "node_role": "ENTRY",
+   "stored_field": "END",
+   "record_source": "PHASE1_ACCESS_NODE_END",
+   "reference_status": "PHASE1_REFERENCE",
+   "coord": [
+    439003.2622,
+    361386.4806
+   ],
+   "cum_km_incl_1436": 94.3749,
+   "cum_km_excl_1436": 91.8148
+  },
+  {
+   "place": "Hvolsvöllur",
+   "idferill": 3593,
+   "node_role": "EXIT",
+   "stored_field": "START",
+   "record_source": "PHASE2_V3_NODE",
+   "reference_status": "PHASE2_V3_NODE",
+   "coord": [
+    439152.9219,
+    361150.6361
+   ],
+   "cum_km_incl_1436": 94.6543,
+   "cum_km_excl_1436": 92.0942
+  }
+ ],
+ "Hella": [
+  {
+   "place": "Hella",
+   "idferill": 3591,
+   "node_role": "ENTRY",
+   "stored_field": "END",
+   "record_source": "PHASE1_ACCESS_NODE_END",
+   "reference_status": "PHASE1_REFERENCE",
+   "coord": [
+    430713.0138,
+    371613.8204
+   ],
+   "cum_km_incl_1436": 80.9378,
+   "cum_km_excl_1436": 78.3776
+  },
+  {
+   "place": "Hella",
+   "idferill": 3591,
+   "node_role": "EXIT",
+   "stored_field": "START",
+   "record_source": "PHASE2_V3_NODE",
+   "reference_status": "PHASE2_V3_NODE",
+   "coord": [
+    430972.1263,
+    370845.6043
+   ],
+   "cum_km_incl_1436": 81.7696,
+   "cum_km_excl_1436": 79.2094
+  }
+ ],
+ "Selfoss": [
+  {
+   "place": "Selfoss",
+   "idferill": 2138,
+   "node_role": "ENTRY",
+   "stored_field": "END",
+   "record_source": "PHASE1_ACCESS_NODE_END",
+   "reference_status": "PHASE1_REFERENCE",
+   "coord": [
+    400974.332,
+    384785.129
+   ],
+   "cum_km_incl_1436": 43.7329,
+   "cum_km_excl_1436": 41.1727
+  },
+  {
+   "place": "Selfoss",
+   "idferill": 2138,
+   "node_role": "EXIT",
+   "stored_field": "START",
+   "record_source": "PHASE2_V3_NODE",
+   "reference_status": "PHASE2_V3_NODE",
+   "coord": [
+    401739.85,
+    383119.047
+   ],
+   "cum_km_incl_1436": 45.7405,
+   "cum_km_excl_1436": 43.1803
+  }
+ ]
+}

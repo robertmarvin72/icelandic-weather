@@ -1,0 +1,112 @@
+[
+ {
+  "name": "Rauðavatn",
+  "idferill": 1436,
+  "phase1_access_node_end": "both (see notes)",
+  "in_cw_long": true,
+  "direction": "rev",
+  "derived_node_role": null,
+  "derived_stored_field": null,
+  "phase1_status": "RETAINED_REFERENCE_ANCHOR"
+ },
+ {
+  "name": "Selfoss",
+  "idferill": 2138,
+  "phase1_access_node_end": "end",
+  "in_cw_long": true,
+  "direction": "rev",
+  "derived_node_role": "ENTRY",
+  "derived_stored_field": "END",
+  "phase1_status": "ON_RING_NAME_MATCH_INFERRED"
+ },
+ {
+  "name": "Hella",
+  "idferill": 3591,
+  "phase1_access_node_end": "end",
+  "in_cw_long": true,
+  "direction": "rev",
+  "derived_node_role": "ENTRY",
+  "derived_stored_field": "END",
+  "phase1_status": "ON_RING_NAME_MATCH_INFERRED"
+ },
+ {
+  "name": "Hvolsvöllur",
+  "idferill": 3593,
+  "phase1_access_node_end": "end",
+  "in_cw_long": true,
+  "direction": "rev",
+  "derived_node_role": "ENTRY",
+  "derived_stored_field": "END",
+  "phase1_status": "ON_RING_NAME_MATCH_INFERRED"
+ },
+ {
+  "name": "Vík",
+  "idferill": 3849,
+  "phase1_access_node_end": "start",
+  "in_cw_long": true,
+  "direction": "rev",
+  "derived_node_role": "EXIT",
+  "derived_stored_field": "START",
+  "phase1_status": "ON_RING_NAME_MATCH_INFERRED"
+ },
+ {
+  "name": "Fáskrúðsfjörður",
+  "idferill": 2536,
+  "phase1_access_node_end": "start",
+  "in_cw_long": true,
+  "direction": "rev",
+  "derived_node_role": "EXIT",
+  "derived_stored_field": "START",
+  "phase1_status": "ON_RING_NAME_MATCH_INFERRED"
+ },
+ {
+  "name": "Reyðarfjörður",
+  "idferill": 2520,
+  "phase1_access_node_end": "start",
+  "in_cw_long": true,
+  "direction": "rev",
+  "derived_node_role": "EXIT",
+  "derived_stored_field": "START",
+  "phase1_status": "ON_RING_NAME_MATCH_INFERRED"
+ },
+ {
+  "name": "Egilsstaðir",
+  "idferill": 2345,
+  "phase1_access_node_end": "start",
+  "in_cw_long": true,
+  "direction": "rev",
+  "derived_node_role": "EXIT",
+  "derived_stored_field": "START",
+  "phase1_status": "ON_RING_NAME_MATCH_INFERRED"
+ },
+ {
+  "name": "Akureyri",
+  "idferill": 2940,
+  "phase1_access_node_end": "end",
+  "in_cw_long": false,
+  "direction": null,
+  "derived_node_role": null,
+  "derived_stored_field": "END",
+  "phase1_status": "AKUREYRI_C_OWNER_DECISION"
+ },
+ {
+  "name": "Reykjahlíð",
+  "idferill": 3566,
+  "phase1_access_node_end": "start",
+  "in_cw_long": true,
+  "direction": "rev",
+  "derived_node_role": "EXIT",
+  "derived_stored_field": "START",
+  "phase1_status": "ON_RING_NAME_MATCH_INFERRED"
+ },
+ {
+  "name": "Borgarnes",
+  "idferill": 2819,
+  "phase1_access_node_end": "end",
+  "in_cw_long": false,
+  "direction": null,
+  "derived_node_role": null,
+  "derived_stored_field": "END",
+  "phase1_status": "BORGARNES_PER_PRIOR_ROUND_RULE"
+ }
+]

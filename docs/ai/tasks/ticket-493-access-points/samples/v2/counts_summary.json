@@ -1,0 +1,25 @@
+{
+ "total_rows": 72,
+ "total_gap_entries": 70,
+ "no_gap_places": 2,
+ "predictable_BLOCKED_sub_item_gaps": 2,
+ "predictable_gap_places": [
+  "Reykjavík",
+  "Seyðisfjörður"
+ ],
+ "ordinary_gap_entries": 68,
+ "dual_candidate_gap_entries": 3,
+ "dual_candidate_places": [
+  "Hvolsvöllur",
+  "Hella",
+  "Selfoss"
+ ],
+ "vopnafjordur_stem_search_hint_count": 0,
+ "hvammstangi_stem_search_hint_count": 6,
+ "road_connection_counts": {
+  "NODE_UNDETERMINED": 61,
+  "NAME_MATCH_INFERRED": 8,
+  "OWNER_APPROVED_ANCHOR": 1,
+  "MAPPED_CONTACT_VERIFIED": 2
+ }
+}

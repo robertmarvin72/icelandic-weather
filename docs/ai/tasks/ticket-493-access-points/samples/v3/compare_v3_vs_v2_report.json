@@ -1,0 +1,35 @@
+{
+ "stable_fields_checked": [
+  "name",
+  "hagstofa_pairing",
+  "hagstofa_match_type",
+  "hagstofa_codes",
+  "road_connection",
+  "coordinate_source",
+  "native_x",
+  "native_y",
+  "native_source_piece",
+  "cum_km_incl_1436",
+  "cum_km_excl_1436",
+  "direction_status"
+ ],
+ "total_deviations_found": 0,
+ "deviations": [],
+ "undocumented_deviations": [],
+ "road_connection_counts_v2": {
+  "NODE_UNDETERMINED": 61,
+  "NAME_MATCH_INFERRED": 8,
+  "OWNER_APPROVED_ANCHOR": 1,
+  "MAPPED_CONTACT_VERIFIED": 2
+ },
+ "road_connection_counts_v3": {
+  "NODE_UNDETERMINED": 61,
+  "NAME_MATCH_INFERRED": 8,
+  "OWNER_APPROVED_ANCHOR": 1,
+  "MAPPED_CONTACT_VERIFIED": 2
+ },
+ "reykjavik_offsets_unchanged": true,
+ "g4_nodes_unchanged": true,
+ "place_node_references_unchanged": true,
+ "f5_pass": true
+}

@@ -1,0 +1,16 @@
+a03034920582d7d414512c48a55e7498c38127cd30cb9c6e85e616d24c66247c  docs/ai/tasks/ticket-493-access-points/rules-v2.md
+2f783e20b5223d73bd6d1021846700af3dad0beb579e926ed418fb9bd7d95d14  docs/ai/tasks/ticket-493-access-points/rules-v2.sha256
+60f15adc33b1f3107f069aebbc901e276352bf1fe3dcd90343d76153a47e26ea  docs/ai/tasks/ticket-493-access-points/evidence-v2.md
+583588bce0d94bec7f8f48104522e157af2df759287dbbf46c1003ceed10815e  docs/ai/tasks/ticket-493-access-points/place-access-status-v2.csv
+9d8b7a7b63f9e1d2bcfc43553011c93f84ee676fea9c2531ab9b7803f694f5a0  docs/ai/tasks/ticket-493-access-points/endpoint-candidates-v2.json
+c986bfa44241d6bc7a14b588c7029f38d4de8cd78c76877d022e89553b76e727  docs/ai/tasks/ticket-493-access-points/samples/v2/build_access_points_v2.py
+c2bdb2fe903cdb2d45741f0e00a7a4c6be1416d31865701c09f0666c5877ea5a  docs/ai/tasks/ticket-493-access-points/samples/v2/validate_final_outputs_v2.py
+71f2d55d03ecaa7188c81cbac1a85cb39e03402bc56abcbbe9c410a0a9098d88  docs/ai/tasks/ticket-493-access-points/samples/v2/snapshot_v1_and_inputs.py
+b52383e33df3697a5ee49944398e44dd3b9cea7ab9d3a2de8f83c95758a04610  docs/ai/tasks/ticket-493-access-points/samples/v2/v1_and_input_baseline.json
+d54c3edde3883f24222ddace68be63598d19f45be8499e85675448e3ea3c6f4e  docs/ai/tasks/ticket-493-access-points/samples/v2/input_hashes.json
+2e5d71e7fb9b0aee6d0cb7083a0f5294c0b203a031e285873335dcb52b7036b4  docs/ai/tasks/ticket-493-access-points/samples/v2/phase1_role_readout.json
+6fd4fea85d4f00977ce24b47fd75df809ca90dadd117a83304bb2c505913975a  docs/ai/tasks/ticket-493-access-points/samples/v2/place-node-references.json
+0dd69677854d64183f81c131a1234d4ba3786f484ff8f59fb149de12c13b78b7  docs/ai/tasks/ticket-493-access-points/samples/v2/gap_list_v2.json
+16ec1c36a6743bf0efa2d839470413e2bfe5eeebdb800dffa256cfaefcddec3e  docs/ai/tasks/ticket-493-access-points/samples/v2/stem_search_hints.json
+5bbb186f37c942911814e9405e2b47c8d08b3b3377223c1e8c4d6767a08c16bb  docs/ai/tasks/ticket-493-access-points/samples/v2/mutation_test_summary.json
+e7ceef428888841531c598e49fab81b3edf0634935d036e72bd03915a173f95d  docs/ai/tasks/ticket-493-access-points/samples/v2/counts_summary.json

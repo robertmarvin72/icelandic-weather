@@ -1,0 +1,1017 @@
+{
+ "rows_with_type": [
+  {
+   "code": "0",
+   "name": "Alls",
+   "pop_2023": "379472",
+   "pop_2024": "386585",
+   "pop_2025": "391884",
+   "row_type": "TOTAL"
+  },
+  {
+   "code": "30",
+   "name": "Álftanes",
+   "pop_2023": "2483",
+   "pop_2024": "2589",
+   "pop_2025": "2803",
+   "row_type": "SETTLEMENT"
+  },
+  {
+   "code": "50",
+   "name": "Reykjavík",
+   "pop_2023": "237325",
+   "pop_2024": "242135",
+   "pop_2025": "245849",
+   "row_type": "SETTLEMENT"
+  },
+  {
+   "code": "70",
+   "name": "Mosfellsbær",
+   "pop_2023": "0",
+   "pop_2024": "0",
+   "pop_2025": "0",
+   "row_type": "SETTLEMENT"
+  },
+  {
+   "code": "80",
+   "name": "Mosfellsdalur",
+   "pop_2023": "269",
+   "pop_2024": "263",
+   "pop_2025": "252",
+   "row_type": "SETTLEMENT"
+  },
+  {
+   "code": "90",
+   "name": "Grundarhverfi, Kjalarnesi",
+   "pop_2023": "515",
+   "pop_2024": "620",
+   "pop_2025": "683",
+   "row_type": "SETTLEMENT"
+  },
+  {
+   "code": "100",
+   "name": "Strjálbýli á höfuðborgarsvæði",
+   "pop_2023": "1143",
+   "pop_2024": "1010",
+   "pop_2025": "897",
+   "row_type": "RURAL_AGGREGATE"
+  },
+  {
+   "code": "110",
+   "name": "Grindavík",
+   "pop_2023": "3567",
+   "pop_2024": "2409",
+   "pop_2025": "1030",
+   "row_type": "SETTLEMENT"
+  },
+  {
+   "code": "111",
+   "name": "Hafnir",
+   "pop_2023": "107",
+   "pop_2024": "113",
+   "pop_2025": "121",
+   "row_type": "SETTLEMENT"
+  },
+  {
+   "code": "120",
+   "name": "Sandgerði",
+   "pop_2023": "1960",
+   "pop_2024": "2041",
+   "pop_2025": "2140",
+   "row_type": "SETTLEMENT"
+  },
+  {
+   "code": "130",
+   "name": "Garður",
+   "pop_2023": "1853",
+   "pop_2024": "1911",
+   "pop_2025": "1984",
+   "row_type": "SETTLEMENT"
+  },
+  {
+   "code": "141",
+   "name": "Keflavík og Njarðvík",
+   "pop_2023": "21364",
+   "pop_2024": "22112",
+   "pop_2025": "22475",
+   "row_type": "SETTLEMENT"
+  },
+  {
+   "code": "160",
+   "name": "Vogar",
+   "pop_2023": "1312",
+   "pop_2024": "1527",
+   "pop_2025": "1742",
+   "row_type": "SETTLEMENT"
+  },
+  {
+   "code": "180",
+   "name": "Strjálbýli á Suðurnesjum",
+   "pop_2023": "160",
+   "pop_2024": "143",
+   "pop_2025": "120",
+   "row_type": "RURAL_AGGREGATE"
+  },
+  {
+   "code": "190",
+   "name": "Akranes",
+   "pop_2023": "8049",
+   "pop_2024": "8288",
+   "pop_2025": "8512",
+   "row_type": "SETTLEMENT"
+  },
+  {
+   "code": "195",
+   "name": "Melahverfi, Hvalfirði",
+   "pop_2023": "162",
+   "pop_2024": "154",
+   "pop_2025": "161",
+   "row_type": "SETTLEMENT"
+  },
+  {
+   "code": "191",
+   "name": "Hvanneyri",
+   "pop_2023": "293",
+   "pop_2024": "289",
+   "pop_2025": "278",
+   "row_type": "SETTLEMENT"
+  },
+  {
+   "code": "192",
+   "name": "Kleppjárnsreykir",
+   "pop_2023": "42",
+   "pop_2024": "49",
+   "pop_2025": "55",
+   "row_type": "SETTLEMENT"
+  },
+  {
+   "code": "193",
+   "name": "Reykholt, Borgarfirði",
+   "pop_2023": "89",
+   "pop_2024": "79",
+   "pop_2025": "73",
+   "row_type": "SETTLEMENT"
+  },
+  {
+   "code": "200",
+   "name": "Borgarnes",
+   "pop_2023": "2122",
+   "pop_2024": "2181",
+   "pop_2025": "2232",
+   "row_type": "SETTLEMENT"
+  },
+  {
+   "code": "205",
+   "name": "Bifröst",
+   "pop_2023": "271",
+   "pop_2024": "291",
+   "pop_2025": "260",
+   "row_type": "SETTLEMENT"
+  },
+  {
+   "code": "210",
+   "name": "Hellissandur",
+   "pop_2023": "354",
+   "pop_2024": "352",
+   "pop_2025": "362",
+   "row_type": "SETTLEMENT"
+  },
+  {
+   "code": "211",
+   "name": "Rif",
+   "pop_2023": "129",
+   "pop_2024": "131",
+   "pop_2025": "137",
+   "row_type": "SETTLEMENT"
+  },
+  {
+   "code": "220",
+   "name": "Ólafsvík",
+   "pop_2023": "964",
+   "pop_2024": "975",
+   "pop_2025": "984",
+   "row_type": "SETTLEMENT"
+  },
+  {
+   "code": "230",
+   "name": "Grundarfjörður",
+   "pop_2023": "781",
+   "pop_2024": "779",
+   "pop_2025": "795",
+   "row_type": "SETTLEMENT"
+  },
+  {
+   "code": "240",
+   "name": "Stykkishólmur",
+   "pop_2023": "1172",
+   "pop_2024": "1187",
+   "pop_2025": "1211",
+   "row_type": "SETTLEMENT"
+  },
+  {
+   "code": "250",
+   "name": "Búðardalur",
+   "pop_2023": "244",
+   "pop_2024": "246",
+   "pop_2025": "242",
+   "row_type": "SETTLEMENT"
+  },
+  {
+   "code": "331",
+   "name": "Strjálbýli á Vesturlandi",
+   "pop_2023": "2583",
+   "pop_2024": "2592",
+   "pop_2025": "2580",
+   "row_type": "RURAL_AGGREGATE"
+  },
+  {
+   "code": "339",
+   "name": "Reykhólar",
+   "pop_2023": "111",
+   "pop_2024": "114",
+   "pop_2025": "123",
+   "row_type": "SETTLEMENT"
+  },
+  {
+   "code": "340",
+   "name": "Patreksfjörður",
+   "pop_2023": "752",
+   "pop_2024": "736",
+   "pop_2025": "715",
+   "row_type": "SETTLEMENT"
+  },
+  {
+   "code": "350",
+   "name": "Tálknafjörður",
+   "pop_2023": "234",
+   "pop_2024": "238",
+   "pop_2025": "230",
+   "row_type": "SETTLEMENT"
+  },
+  {
+   "code": "360",
+   "name": "Bíldudalur",
+   "pop_2023": "251",
+   "pop_2024": "250",
+   "pop_2025": "241",
+   "row_type": "SETTLEMENT"
+  },
+  {
+   "code": "370",
+   "name": "Þingeyri",
+   "pop_2023": "264",
+   "pop_2024": "265",
+   "pop_2025": "279",
+   "row_type": "SETTLEMENT"
+  },
+  {
+   "code": "380",
+   "name": "Flateyri",
+   "pop_2023": "186",
+   "pop_2024": "192",
+   "pop_2025": "209",
+   "row_type": "SETTLEMENT"
+  },
+  {
+   "code": "390",
+   "name": "Suðureyri",
+   "pop_2023": "292",
+   "pop_2024": "295",
+   "pop_2025": "297",
+   "row_type": "SETTLEMENT"
+  },
+  {
+   "code": "400",
+   "name": "Bolungarvík",
+   "pop_2023": "962",
+   "pop_2024": "975",
+   "pop_2025": "982",
+   "row_type": "SETTLEMENT"
+  },
+  {
+   "code": "420",
+   "name": "Hnífsdalur",
+   "pop_2023": "203",
+   "pop_2024": "214",
+   "pop_2025": "215",
+   "row_type": "SETTLEMENT"
+  },
+  {
+   "code": "410",
+   "name": "Ísafjörður",
+   "pop_2023": "2666",
+   "pop_2024": "2692",
+   "pop_2025": "2756",
+   "row_type": "SETTLEMENT"
+  },
+  {
+   "code": "430",
+   "name": "Súðavík",
+   "pop_2023": "171",
+   "pop_2024": "165",
+   "pop_2025": "169",
+   "row_type": "SETTLEMENT"
+  },
+  {
+   "code": "431",
+   "name": "Drangsnes",
+   "pop_2023": "68",
+   "pop_2024": "67",
+   "pop_2025": "73",
+   "row_type": "SETTLEMENT"
+  },
+  {
+   "code": "440",
+   "name": "Hólmavík",
+   "pop_2023": "292",
+   "pop_2024": "291",
+   "pop_2025": "300",
+   "row_type": "SETTLEMENT"
+  },
+  {
+   "code": "521",
+   "name": "Strjálbýli á Vestfjörðum",
+   "pop_2023": "686",
+   "pop_2024": "681",
+   "pop_2025": "674",
+   "row_type": "RURAL_AGGREGATE"
+  },
+  {
+   "code": "529",
+   "name": "Laugarbakki",
+   "pop_2023": "0",
+   "pop_2024": "39",
+   "pop_2025": "72",
+   "row_type": "SETTLEMENT"
+  },
+  {
+   "code": "530",
+   "name": "Hvammstangi",
+   "pop_2023": "607",
+   "pop_2024": "601",
+   "pop_2025": "596",
+   "row_type": "SETTLEMENT"
+  },
+  {
+   "code": "540",
+   "name": "Blönduós",
+   "pop_2023": "829",
+   "pop_2024": "860",
+   "pop_2025": "870",
+   "row_type": "SETTLEMENT"
+  },
+  {
+   "code": "550",
+   "name": "Skagaströnd",
+   "pop_2023": "455",
+   "pop_2024": "450",
+   "pop_2025": "446",
+   "row_type": "SETTLEMENT"
+  },
+  {
+   "code": "560",
+   "name": "Sauðárkrókur",
+   "pop_2023": "2591",
+   "pop_2024": "2639",
+   "pop_2025": "2670",
+   "row_type": "SETTLEMENT"
+  },
+  {
+   "code": "561",
+   "name": "Varmahlíð",
+   "pop_2023": "143",
+   "pop_2024": "154",
+   "pop_2025": "158",
+   "row_type": "SETTLEMENT"
+  },
+  {
+   "code": "562",
+   "name": "Hólar í Hjaltadal",
+   "pop_2023": "89",
+   "pop_2024": "83",
+   "pop_2025": "87",
+   "row_type": "SETTLEMENT"
+  },
+  {
+   "code": "570",
+   "name": "Hofsós",
+   "pop_2023": "157",
+   "pop_2024": "156",
+   "pop_2025": "160",
+   "row_type": "SETTLEMENT"
+  },
+  {
+   "code": "580",
+   "name": "Siglufjörður",
+   "pop_2023": "1163",
+   "pop_2024": "1164",
+   "pop_2025": "1161",
+   "row_type": "SETTLEMENT"
+  },
+  {
+   "code": "641",
+   "name": "Strjálbýli á Norðurlandi vestra",
+   "pop_2023": "2402",
+   "pop_2024": "2345",
+   "pop_2025": "2297",
+   "row_type": "RURAL_AGGREGATE"
+  },
+  {
+   "code": "649",
+   "name": "Grímsey",
+   "pop_2023": "56",
+   "pop_2024": "55",
+   "pop_2025": "50",
+   "row_type": "SETTLEMENT"
+  },
+  {
+   "code": "650",
+   "name": "Ólafsfjörður",
+   "pop_2023": "755",
+   "pop_2024": "762",
+   "pop_2025": "767",
+   "row_type": "SETTLEMENT"
+  },
+  {
+   "code": "660",
+   "name": "Dalvík",
+   "pop_2023": "1371",
+   "pop_2024": "1373",
+   "pop_2025": "1385",
+   "row_type": "SETTLEMENT"
+  },
+  {
+   "code": "670",
+   "name": "Hrísey",
+   "pop_2023": "160",
+   "pop_2024": "166",
+   "pop_2025": "162",
+   "row_type": "SETTLEMENT"
+  },
+  {
+   "code": "671",
+   "name": "Litli-Árskógssandur",
+   "pop_2023": "116",
+   "pop_2024": "116",
+   "pop_2025": "114",
+   "row_type": "SETTLEMENT"
+  },
+  {
+   "code": "672",
+   "name": "Hauganes",
+   "pop_2023": "98",
+   "pop_2024": "105",
+   "pop_2025": "113",
+   "row_type": "SETTLEMENT"
+  },
+  {
+   "code": "673",
+   "name": "Hjalteyri",
+   "pop_2023": "0",
+   "pop_2024": "0",
+   "pop_2025": "0",
+   "row_type": "SETTLEMENT"
+  },
+  {
+   "code": "680",
+   "name": "Akureyri",
+   "pop_2023": "19704",
+   "pop_2024": "20003",
+   "pop_2025": "20313",
+   "row_type": "SETTLEMENT"
+  },
+  {
+   "code": "681",
+   "name": "Kristnes",
+   "pop_2023": "37",
+   "pop_2024": "18",
+   "pop_2025": "0",
+   "row_type": "SETTLEMENT"
+  },
+  {
+   "code": "682",
+   "name": "Hrafnagil",
+   "pop_2023": "366",
+   "pop_2024": "379",
+   "pop_2025": "388",
+   "row_type": "SETTLEMENT"
+  },
+  {
+   "code": "684",
+   "name": "Öngulsstaðir",
+   "pop_2023": "0",
+   "pop_2024": "48",
+   "pop_2025": "93",
+   "row_type": "SETTLEMENT"
+  },
+  {
+   "code": "685",
+   "name": "Brúnahlíð, Eyjafirði",
+   "pop_2023": "66",
+   "pop_2024": "102",
+   "pop_2025": "140",
+   "row_type": "SETTLEMENT"
+  },
+  {
+   "code": "687",
+   "name": "Veigastaðir",
+   "pop_2023": "0",
+   "pop_2024": "37",
+   "pop_2025": "74",
+   "row_type": "SETTLEMENT"
+  },
+  {
+   "code": "688",
+   "name": "Sólberg",
+   "pop_2023": "0",
+   "pop_2024": "29",
+   "pop_2025": "57",
+   "row_type": "SETTLEMENT"
+  },
+  {
+   "code": "689",
+   "name": "Svalbarðseyri",
+   "pop_2023": "262",
+   "pop_2024": "270",
+   "pop_2025": "280",
+   "row_type": "SETTLEMENT"
+  },
+  {
+   "code": "690",
+   "name": "Grenivík",
+   "pop_2023": "307",
+   "pop_2024": "309",
+   "pop_2025": "299",
+   "row_type": "SETTLEMENT"
+  },
+  {
+   "code": "701",
+   "name": "Laugar",
+   "pop_2023": "110",
+   "pop_2024": "117",
+   "pop_2025": "120",
+   "row_type": "SETTLEMENT"
+  },
+  {
+   "code": "710",
+   "name": "Húsavík",
+   "pop_2023": "2446",
+   "pop_2024": "2464",
+   "pop_2025": "2441",
+   "row_type": "SETTLEMENT"
+  },
+  {
+   "code": "700",
+   "name": "Reykjahlíð",
+   "pop_2023": "236",
+   "pop_2024": "259",
+   "pop_2025": "268",
+   "row_type": "SETTLEMENT"
+  },
+  {
+   "code": "705",
+   "name": "Vogar við Mývatn",
+   "pop_2023": "0",
+   "pop_2024": "29",
+   "pop_2025": "59",
+   "row_type": "SETTLEMENT"
+  },
+  {
+   "code": "711",
+   "name": "Kópasker",
+   "pop_2023": "119",
+   "pop_2024": "119",
+   "pop_2025": "124",
+   "row_type": "SETTLEMENT"
+  },
+  {
+   "code": "720",
+   "name": "Raufarhöfn",
+   "pop_2023": "183",
+   "pop_2024": "184",
+   "pop_2025": "175",
+   "row_type": "SETTLEMENT"
+  },
+  {
+   "code": "730",
+   "name": "Þórshöfn",
+   "pop_2023": "352",
+   "pop_2024": "352",
+   "pop_2025": "350",
+   "row_type": "SETTLEMENT"
+  },
+  {
+   "code": "861",
+   "name": "Strjálbýli á Norðurlandi eystra",
+   "pop_2023": "3411",
+   "pop_2024": "3285",
+   "pop_2025": "3166",
+   "row_type": "RURAL_AGGREGATE"
+  },
+  {
+   "code": "869",
+   "name": "Bakkafjörður",
+   "pop_2023": "57",
+   "pop_2024": "61",
+   "pop_2025": "66",
+   "row_type": "SETTLEMENT"
+  },
+  {
+   "code": "870",
+   "name": "Vopnafjörður",
+   "pop_2023": "514",
+   "pop_2024": "515",
+   "pop_2025": "511",
+   "row_type": "SETTLEMENT"
+  },
+  {
+   "code": "891",
+   "name": "Borgarfjörður eystri",
+   "pop_2023": "91",
+   "pop_2024": "96",
+   "pop_2025": "100",
+   "row_type": "SETTLEMENT"
+  },
+  {
+   "code": "900",
+   "name": "Seyðisfjörður",
+   "pop_2023": "645",
+   "pop_2024": "652",
+   "pop_2025": "652",
+   "row_type": "SETTLEMENT"
+  },
+  {
+   "code": "890",
+   "name": "Fellabær",
+   "pop_2023": "406",
+   "pop_2024": "413",
+   "pop_2025": "409",
+   "row_type": "SETTLEMENT"
+  },
+  {
+   "code": "901",
+   "name": "Hallormsstaður",
+   "pop_2023": "0",
+   "pop_2024": "26",
+   "pop_2025": "54",
+   "row_type": "SETTLEMENT"
+  },
+  {
+   "code": "902",
+   "name": "Egilsstaðir",
+   "pop_2023": "2606",
+   "pop_2024": "2667",
+   "pop_2025": "2715",
+   "row_type": "SETTLEMENT"
+  },
+  {
+   "code": "903",
+   "name": "Eiðar",
+   "pop_2023": "0",
+   "pop_2024": "0",
+   "pop_2025": "0",
+   "row_type": "SETTLEMENT"
+  },
+  {
+   "code": "910",
+   "name": "Neskaupstaður",
+   "pop_2023": "1455",
+   "pop_2024": "1467",
+   "pop_2025": "1476",
+   "row_type": "SETTLEMENT"
+  },
+  {
+   "code": "920",
+   "name": "Eskifjörður",
+   "pop_2023": "1059",
+   "pop_2024": "1097",
+   "pop_2025": "1084",
+   "row_type": "SETTLEMENT"
+  },
+  {
+   "code": "930",
+   "name": "Reyðarfjörður",
+   "pop_2023": "1359",
+   "pop_2024": "1399",
+   "pop_2025": "1450",
+   "row_type": "SETTLEMENT"
+  },
+  {
+   "code": "940",
+   "name": "Fáskrúðsfjörður",
+   "pop_2023": "731",
+   "pop_2024": "729",
+   "pop_2025": "715",
+   "row_type": "SETTLEMENT"
+  },
+  {
+   "code": "950",
+   "name": "Stöðvarfjörður",
+   "pop_2023": "179",
+   "pop_2024": "178",
+   "pop_2025": "171",
+   "row_type": "SETTLEMENT"
+  },
+  {
+   "code": "960",
+   "name": "Breiðdalsvík",
+   "pop_2023": "147",
+   "pop_2024": "148",
+   "pop_2025": "151",
+   "row_type": "SETTLEMENT"
+  },
+  {
+   "code": "970",
+   "name": "Djúpivogur",
+   "pop_2023": "408",
+   "pop_2024": "408",
+   "pop_2025": "406",
+   "row_type": "SETTLEMENT"
+  },
+  {
+   "code": "971",
+   "name": "Nesjahverfi, Hornafirði",
+   "pop_2023": "106",
+   "pop_2024": "107",
+   "pop_2025": "109",
+   "row_type": "SETTLEMENT"
+  },
+  {
+   "code": "980",
+   "name": "Höfn í Hornafirði",
+   "pop_2023": "1759",
+   "pop_2024": "1785",
+   "pop_2025": "1808",
+   "row_type": "SETTLEMENT"
+  },
+  {
+   "code": "990",
+   "name": "Hof",
+   "pop_2023": "0",
+   "pop_2024": "34",
+   "pop_2025": "68",
+   "row_type": "SETTLEMENT"
+  },
+  {
+   "code": "1081",
+   "name": "Strjálbýli á Austurlandi",
+   "pop_2023": "1854",
+   "pop_2024": "1594",
+   "pop_2025": "1324",
+   "row_type": "RURAL_AGGREGATE"
+  },
+  {
+   "code": "1089",
+   "name": "Kirkjubæjarklaustur",
+   "pop_2023": "185",
+   "pop_2024": "193",
+   "pop_2025": "207",
+   "row_type": "SETTLEMENT"
+  },
+  {
+   "code": "1090",
+   "name": "Vík í Mýrdal",
+   "pop_2023": "614",
+   "pop_2024": "680",
+   "pop_2025": "730",
+   "row_type": "SETTLEMENT"
+  },
+  {
+   "code": "1100",
+   "name": "Vestmannaeyjar",
+   "pop_2023": "4410",
+   "pop_2024": "4457",
+   "pop_2025": "4494",
+   "row_type": "SETTLEMENT"
+  },
+  {
+   "code": "1101",
+   "name": "Skógar",
+   "pop_2023": "0",
+   "pop_2024": "0",
+   "pop_2025": "0",
+   "row_type": "SETTLEMENT"
+  },
+  {
+   "code": "1110",
+   "name": "Hvolsvöllur",
+   "pop_2023": "1074",
+   "pop_2024": "1100",
+   "pop_2025": "1152",
+   "row_type": "SETTLEMENT"
+  },
+  {
+   "code": "1120",
+   "name": "Hella",
+   "pop_2023": "1002",
+   "pop_2024": "1037",
+   "pop_2025": "1071",
+   "row_type": "SETTLEMENT"
+  },
+  {
+   "code": "1125",
+   "name": "Þykkvibær",
+   "pop_2023": "78",
+   "pop_2024": "85",
+   "pop_2025": "89",
+   "row_type": "SETTLEMENT"
+  },
+  {
+   "code": "1121",
+   "name": "Rauðalækur",
+   "pop_2023": "0",
+   "pop_2024": "0",
+   "pop_2025": "0",
+   "row_type": "SETTLEMENT"
+  },
+  {
+   "code": "1130",
+   "name": "Stokkseyri",
+   "pop_2023": "522",
+   "pop_2024": "526",
+   "pop_2025": "520",
+   "row_type": "SETTLEMENT"
+  },
+  {
+   "code": "1140",
+   "name": "Eyrarbakki",
+   "pop_2023": "605",
+   "pop_2024": "614",
+   "pop_2025": "619",
+   "row_type": "SETTLEMENT"
+  },
+  {
+   "code": "1145",
+   "name": "Tjarnabyggð",
+   "pop_2023": "172",
+   "pop_2024": "210",
+   "pop_2025": "230",
+   "row_type": "SETTLEMENT"
+  },
+  {
+   "code": "1150",
+   "name": "Selfoss",
+   "pop_2023": "9702",
+   "pop_2024": "10175",
+   "pop_2025": "10772",
+   "row_type": "SETTLEMENT"
+  },
+  {
+   "code": "1155",
+   "name": "Brautarholt, Skeiðum",
+   "pop_2023": "71",
+   "pop_2024": "86",
+   "pop_2025": "93",
+   "row_type": "SETTLEMENT"
+  },
+  {
+   "code": "1157",
+   "name": "Árnes",
+   "pop_2023": "64",
+   "pop_2024": "63",
+   "pop_2025": "70",
+   "row_type": "SETTLEMENT"
+  },
+  {
+   "code": "1160",
+   "name": "Flúðir",
+   "pop_2023": "489",
+   "pop_2024": "520",
+   "pop_2025": "540",
+   "row_type": "SETTLEMENT"
+  },
+  {
+   "code": "1161",
+   "name": "Laugarás",
+   "pop_2023": "116",
+   "pop_2024": "114",
+   "pop_2025": "116",
+   "row_type": "SETTLEMENT"
+  },
+  {
+   "code": "1162",
+   "name": "Reykholt, Biskupstungum",
+   "pop_2023": "345",
+   "pop_2024": "386",
+   "pop_2025": "439",
+   "row_type": "SETTLEMENT"
+  },
+  {
+   "code": "1163",
+   "name": "Laugarvatn",
+   "pop_2023": "249",
+   "pop_2024": "263",
+   "pop_2025": "273",
+   "row_type": "SETTLEMENT"
+  },
+  {
+   "code": "1164",
+   "name": "Sólheimar, Grímsnesi",
+   "pop_2023": "94",
+   "pop_2024": "95",
+   "pop_2025": "92",
+   "row_type": "SETTLEMENT"
+  },
+  {
+   "code": "1167",
+   "name": "Borg, Grímsnesi",
+   "pop_2023": "168",
+   "pop_2024": "201",
+   "pop_2025": "247",
+   "row_type": "SETTLEMENT"
+  },
+  {
+   "code": "1168",
+   "name": "Gljúfurárholt",
+   "pop_2023": "0",
+   "pop_2024": "54",
+   "pop_2025": "105",
+   "row_type": "SETTLEMENT"
+  },
+  {
+   "code": "1169",
+   "name": "Vellir",
+   "pop_2023": "0",
+   "pop_2024": "28",
+   "pop_2025": "55",
+   "row_type": "SETTLEMENT"
+  },
+  {
+   "code": "1170",
+   "name": "Hveragerði",
+   "pop_2023": "3217",
+   "pop_2024": "3293",
+   "pop_2025": "3331",
+   "row_type": "SETTLEMENT"
+  },
+  {
+   "code": "1180",
+   "name": "Þorlákshöfn",
+   "pop_2023": "1971",
+   "pop_2024": "2110",
+   "pop_2025": "2249",
+   "row_type": "SETTLEMENT"
+  },
+  {
+   "code": "1301",
+   "name": "Strjálbýli á Suðurlandi",
+   "pop_2023": "5934",
+   "pop_2024": "6233",
+   "pop_2025": "6450",
+   "row_type": "RURAL_AGGREGATE"
+  }
+ ],
+ "settlement_count": 111,
+ "brackets_2025": {
+  "200": 67,
+  "500": 42,
+  "1000": 27
+ },
+ "comparison_targets_not_assert_targets": {
+  "settlement_count_target": 111,
+  "brackets_target": {
+   "200": 67,
+   "500": 42,
+   "1000": 27
+  }
+ },
+ "year_completeness_pct": {
+  "pop_2023": {
+   "interpretation_A_zero_is_valid_pct": 100.0,
+   "interpretation_B_zero_is_invalid_pct": 87.38738738738739
+  },
+  "pop_2024": {
+   "interpretation_A_zero_is_valid_pct": 100.0,
+   "interpretation_B_zero_is_invalid_pct": 95.49549549549549
+  },
+  "pop_2025": {
+   "interpretation_A_zero_is_valid_pct": 100.0,
+   "interpretation_B_zero_is_invalid_pct": 94.5945945945946
+  }
+ },
+ "zero_value_2025_settlement_names": [
+  "Mosfellsbær",
+  "Hjalteyri",
+  "Kristnes",
+  "Eiðar",
+  "Skógar",
+  "Rauðalækur"
+ ],
+ "sum_non_total_rows_2025": 391909,
+ "total_row_2025": 391884,
+ "unexplained_difference": 25,
+ "unexplained_difference_inferred_cause": "independent per-row rounding of an 'average population' measure (INFERRED, not proven)",
+ "code_50_included_inferred_candidates": {
+  "Kópavogur": true,
+  "Hafnarfjörður": true,
+  "Garðabær": true,
+  "Seltjarnarnes": true,
+  "Mosfellsbær": false
+ },
+ "grindavik_2023_2024_2025": [
+  3567,
+  2409,
+  1030
+ ],
+ "year_2025_finality_status": "NOT_DETERMINED (no provisional/finality field in metadata; metadata 'updated' timestamp 2024-03-17 predates 2025's own existence in the table)"
+}

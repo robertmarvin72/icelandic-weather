@@ -1,0 +1,53 @@
+{
+ "canonical_order": [
+  2344,
+  3410,
+  3409,
+  2894,
+  2892,
+  2891
+ ],
+ "kaflanr_order": [
+  "01",
+  "02",
+  "03",
+  "04",
+  "05",
+  "06"
+ ],
+ "continuity_canonical": {
+  "gaps": [
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0
+  ],
+  "violations": [],
+  "has_repeat": false,
+  "passes": true
+ },
+ "negative_tests": {
+  "random_permutation": {
+   "passes": false
+  },
+  "duplicated_piece": {
+   "passes": false
+  },
+  "inserted_gap_over_100m": {
+   "passes": false
+  }
+ },
+ "validate_route_source_sha256_verified": "a3fa0bd4891405081fa25a1087e409c21582006f0777f3f8fbe91a2246ab3ad8",
+ "validate_route_accepts_fwd_and_rev": true,
+ "validate_route_rejects_duplicate": true,
+ "tier_sensitivity": {
+  "tier_minus1_m": 26926.550118283696,
+  "tier_2_m": 24752.45281567276,
+  "pct_diff": -8.07
+ },
+ "route_length_variants_km": {
+  "from_junction_node": 26.9266,
+  "from_phase1_node_via_2345": 27.8536
+ }
+}

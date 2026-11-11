@@ -1,0 +1,150 @@
+{
+ "reykjavik": {
+  "basis": "named by piece 1436's own stored endpoints (road-links.csv), never by compass words",
+  "piece_1436_length_m": 2560.1497,
+  "short_western_leg": {
+   "starts_at": "piece 1436's own stored END",
+   "coord": [
+    365522.0175,
+    402772.762
+   ],
+   "leads_toward": "Borgarnes (candidate/NAME_MATCH_INFERRED, see place-access-status.csv)",
+   "cum_offset_km_excl_1436": 0.0,
+   "cum_offset_km_incl_1436": 2.5601
+  },
+  "long_eastern_leg": {
+   "starts_at": "piece 1436's own stored START",
+   "coord": [
+    367768.94,
+    401667.09
+   ],
+   "leads_toward": "traverses piece 1436 itself backward before continuing around the ring",
+   "cum_offset_km_excl_1436": -2.5601,
+   "cum_offset_km_incl_1436": 0.0
+  },
+  "raudavatn_comparison_anchor": {
+   "status": "candidate/INFERRED, never a confirmed Reykjavík core",
+   "coord": [
+    367768.94,
+    401667.09
+   ],
+   "note": "identical to the long/eastern leg's own start coordinate; retained from prior rounds as a comparison anchor only"
+  },
+  "rey_core": {
+   "coordinate_source": "NO_COORDINATE_SOURCE",
+   "note": "no VEGNR=1 piece represents the city core; no distance claim is made between Rauðavatn and the core because no core coordinate is retained"
+  }
+ },
+ "egilsstadir_seydisfjordur": {
+  "selection": "UNSELECTED -- every node below is a candidate; the choice of Egilsstaðir/Seyðisfjörður access point is an owner decision",
+  "exit_length_variants_km": {
+   "from_ring_junction_2345": 26.9266,
+   "from_phase1_node_via_2345_927m": 27.8536
+  },
+  "spelling_note": "piece 2894's own STADARLYSING says 'Hánefsstaðavegur'; piece 2892's says 'Hánesstaðavegur' -- preserved verbatim, not normalised",
+  "wgs84_note": "no retained WGS84 geometry exists for road 93 -- this is a data gap (see gap_list.json), not a failure",
+  "nodes": [
+   {
+    "idferill": 2345,
+    "role": "end",
+    "coord": [
+     715153.74,
+     536679.93
+    ],
+    "piece_name_verbatim": "Egilsstaðir",
+    "piece_desc_verbatim": "Hringvegur að Seyðisfjarðarvegi",
+    "cum_km_tier_minus1": "see place_nodes-v3.json (ring basis, 677.6344/675.0743 km incl/excl 1436) -- not road93's own 0-based count",
+    "cum_km_tier_2": "not computed for the ring at tier 2 this round",
+    "description": "ring/road93 junction -- VERIFIED 0.0 m contact with road93 piece 2344"
+   },
+   {
+    "idferill": 2344,
+    "role": "end",
+    "coord": [
+     715800.5282,
+     538148.7474
+    ],
+    "piece_name_verbatim": "Egilsstaðir",
+    "piece_desc_verbatim": "Seyðisfjarðarvegur um Egilsstaði",
+    "cum_km_tier_minus1": 1.7162,
+    "cum_km_tier_2": 1.6049,
+    "description": "end of road93's own first piece"
+   },
+   {
+    "idferill": 3410,
+    "role": "end",
+    "coord": [
+     722827.8006,
+     537350.2933
+    ],
+    "piece_name_verbatim": "Fjarðarheiði",
+    "piece_desc_verbatim": "Seyðisfjarðarvegur",
+    "cum_km_tier_minus1": 11.5982,
+    "cum_km_tier_2": 10.6441,
+    "description": "end of road93's own second piece"
+   },
+   {
+    "idferill": 3409,
+    "role": "end",
+    "coord": [
+     732722.8305,
+     537584.8513
+    ],
+    "piece_name_verbatim": "Fjarðarheiði",
+    "piece_desc_verbatim": "Seyðisfjarðarvegur",
+    "cum_km_tier_minus1": 25.6094,
+    "cum_km_tier_2": 23.5081,
+    "description": "= start of 2894; STADARLYSING names this 'kirkjugarðshorn'"
+   },
+   {
+    "idferill": 2892,
+    "role": "start",
+    "coord": [
+     732875.674,
+     538207.0762
+    ],
+    "piece_name_verbatim": "Fjarðarheiði",
+    "piece_desc_verbatim": "Hánesstaðavegur - Vestdalseyrarvegur",
+    "cum_km_tier_minus1": 26.2523,
+    "cum_km_tier_2": 24.1489,
+    "description": "junction 2894/2892 (start of 2892 = end of 2894)"
+   },
+   {
+    "idferill": 2891,
+    "role": "start",
+    "coord": [
+     732743.757,
+     538421.6228
+    ],
+    "piece_name_verbatim": "Fjarðarheiði",
+    "piece_desc_verbatim": "Vestdalseyrarvegur - Ferjubryggja",
+    "cum_km_tier_minus1": 26.5131,
+    "cum_km_tier_2": 24.4007,
+    "description": "junction 2892/2891 (start of 2891 = end of 2892)"
+   },
+   {
+    "idferill": 2891,
+    "role": "end",
+    "coord": [
+     733080.7436,
+     538522.4045
+    ],
+    "piece_name_verbatim": "Fjarðarheiði",
+    "piece_desc_verbatim": "Vestdalseyrarvegur - Ferjubryggja",
+    "cum_km_tier_minus1": 26.9266,
+    "cum_km_tier_2": 24.7525,
+    "description": "ferry pier (end of 2891) -- 'Vestdalseyrarvegur - Ferjubryggja'"
+   }
+  ]
+ },
+ "akureyri": {
+  "status": "OWNER_APPROVED (owner decision 2026-11-06, akureyri-endpoint-decision.md) -- not reopened this round",
+  "idferill": 2940,
+  "native_coord": [
+   540259.2615,
+   577843.7582
+  ],
+  "wgs84": "65.69570405 N, 18.12371406 W",
+  "wgs84_source": "akureyri-endpoint-decision.md (copied verbatim, not recomputed)"
+ }
+}

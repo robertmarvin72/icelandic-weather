@@ -1,0 +1,46 @@
+{
+ "total_rows": 72,
+ "total_gap_entries": 70,
+ "no_gap_places": 2,
+ "predictable_BLOCKED_sub_item_gaps": 2,
+ "predictable_gap_places": [
+  "Reykjavík",
+  "Seyðisfjörður"
+ ],
+ "dual_candidate_gap_entries": 3,
+ "dual_candidate_places": [
+  "Hvolsvöllur",
+  "Hella",
+  "Selfoss"
+ ],
+ "ordinary_gap_entries": 65,
+ "gap_breakdown_check": "70 = 2 predictable + 3 dual-candidate + 65 ordinary",
+ "vopnafjordur_stem_search_hint_count": 0,
+ "hvammstangi_stem_search_hint_count": 6,
+ "road_connection_counts": {
+  "NODE_UNDETERMINED": 61,
+  "NAME_MATCH_INFERRED": 8,
+  "OWNER_APPROVED_ANCHOR": 1,
+  "MAPPED_CONTACT_VERIFIED": 2
+ },
+ "final_validation_outcome_counts": {
+  "VALIDATED": 6,
+  "NOT_VALIDATED_OUTSIDE_CW_LONG": 1,
+  "NO_NODE": 62,
+  "PAIR_REFERENCE": 3
+ },
+ "stem_search_total_matches": 113,
+ "stem_search_category_totals": {
+  "HOME_PIECE_OR_ROUTE_ENDPOINT": 102,
+  "UNCLASSIFIED_TEXT_MENTION": 3,
+  "ROAD_NAME_COMPOUND_MENTION": 8
+ },
+ "role_divergence_count": 4,
+ "role_divergence_places": [
+  "Egilsstaðir",
+  "Hvolsvöllur",
+  "Hella",
+  "Selfoss"
+ ],
+ "role_readout_entry_count": 11
+}

@@ -1,0 +1,30 @@
+[
+ {
+  "place": "Egilsstaðir",
+  "record_source": "PHASE2_V3_NODE",
+  "published_role": "ENTRY",
+  "phase1_implied_role": "EXIT",
+  "divergence": "ROLE_SOURCE_DIVERGENCE"
+ },
+ {
+  "place": "Hvolsvöllur",
+  "record_source": "PHASE2_V3_NODE",
+  "published_role": "EXIT",
+  "phase1_implied_role": "ENTRY",
+  "divergence": "ROLE_SOURCE_DIVERGENCE"
+ },
+ {
+  "place": "Hella",
+  "record_source": "PHASE2_V3_NODE",
+  "published_role": "EXIT",
+  "phase1_implied_role": "ENTRY",
+  "divergence": "ROLE_SOURCE_DIVERGENCE"
+ },
+ {
+  "place": "Selfoss",
+  "record_source": "PHASE2_V3_NODE",
+  "published_role": "EXIT",
+  "phase1_implied_role": "ENTRY",
+  "divergence": "ROLE_SOURCE_DIVERGENCE"
+ }
+]

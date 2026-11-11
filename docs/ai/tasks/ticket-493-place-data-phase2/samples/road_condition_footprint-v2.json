@@ -1,0 +1,103 @@
+{
+ "age_reference_utc": "2026-11-09T00:00:00Z",
+ "faerd_condition_samples": {
+  "legacy-faerd-fresh.json": {
+   "total_rows": 708,
+   "by_target_idbutur": {
+    "911040037": [
+     {
+      "astandYfirbord": "GREIDFAERT",
+      "astandLysing": "Greiðfært",
+      "snjomokstursregla": "7X",
+      "dagsKeyrtUt": "2026-10-28T18:51:00Z",
+      "age_seconds_from_reference": 968940.0
+     }
+    ],
+    "911170037": [
+     {
+      "astandYfirbord": "HALKUBLETTIR",
+      "astandLysing": "Hálkublettir",
+      "snjomokstursregla": "7X",
+      "dagsKeyrtUt": "2026-10-28T18:51:00Z",
+      "age_seconds_from_reference": 968940.0
+     }
+    ]
+   }
+  },
+  "legacy-faerd-https.json": {
+   "total_rows": 708,
+   "by_target_idbutur": {
+    "911040037": [
+     {
+      "astandYfirbord": "GREIDFAERT",
+      "astandLysing": "Greiðfært",
+      "snjomokstursregla": "7X",
+      "dagsKeyrtUt": "2026-11-02T13:21:00Z",
+      "age_seconds_from_reference": 556740.0
+     }
+    ],
+    "911170037": [
+     {
+      "astandYfirbord": "GREIDFAERT",
+      "astandLysing": "Greiðfært",
+      "snjomokstursregla": "7X",
+      "dagsKeyrtUt": "2026-11-02T13:21:00Z",
+      "age_seconds_from_reference": 556740.0
+     }
+    ]
+   }
+  }
+ },
+ "faerdpunktar_notice_samples": {
+  "legacy-faerdpunktar.json": {
+   "total_rows": 43,
+   "by_target_idbutur": {
+    "911040037": {
+     "notice_count": 0,
+     "has_notices": false
+    },
+    "911170037": {
+     "notice_count": 0,
+     "has_notices": false
+    }
+   }
+  },
+  "legacy-faerdpunktar-https.json": {
+   "total_rows": 26,
+   "by_target_idbutur": {
+    "911040037": {
+     "notice_count": 0,
+     "has_notices": false
+    },
+    "911170037": {
+     "notice_count": 0,
+     "has_notices": false
+    }
+   }
+  }
+ },
+ "idbutur_footprint": {
+  "911040037": {
+   "ring_pieces": [
+    1483,
+    2345,
+    2347,
+    2349
+   ],
+   "road93_pieces": [
+    2344
+   ]
+  },
+  "911170037": {
+   "ring_pieces": [],
+   "road93_pieces": [
+    2891,
+    2892,
+    2894,
+    3409,
+    3410
+   ]
+  }
+ },
+ "retraction": "v1's 'NOT_AVAILABLE' claim is RETRACTED: both target IDBUTUR are present with real condition data in both legacy-faerd samples."
+}

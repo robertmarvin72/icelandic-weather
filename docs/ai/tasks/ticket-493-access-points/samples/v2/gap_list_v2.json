@@ -1,0 +1,1262 @@
+[
+ {
+  "gap_id": "GAP-001",
+  "place": "Reykjavík",
+  "missing_fact": "no VEGNR=1 (or known connecting-road) piece identified as Reykjavík's own access point (hagstofa_pairing=MATCHED/EXACT, codes=['50'])",
+  "purpose": "to establish this place's own weather/route access point and/or Hagstofa identity",
+  "required_data": {
+   "fields": [
+    "geometry (LineString or Point)",
+    "name/description",
+    "CRS"
+   ],
+   "crs": "EPSG:3057 (native) or EPSG:4326 (WGS84), whichever the source actually provides",
+   "precision": "sufficient to identify a specific node, not just a route segment"
+  },
+  "host_candidates": [],
+  "host_candidates_reason": "no retained file in this task's own input set names a host/layer for this specific place; a host used by an earlier, different round is not re-authorised by this round",
+  "authorisation": "NOT_AUTHORISED"
+ },
+ {
+  "gap_id": "GAP-002",
+  "place": "Mosfellsbær",
+  "missing_fact": "no VEGNR=1 (or known connecting-road) piece identified as Mosfellsbær's own access point (hagstofa_pairing=MATCHED/EXACT, codes=['70'])",
+  "purpose": "to establish this place's own weather/route access point and/or Hagstofa identity",
+  "required_data": {
+   "fields": [
+    "geometry (LineString or Point)",
+    "name/description",
+    "CRS"
+   ],
+   "crs": "EPSG:3057 (native) or EPSG:4326 (WGS84), whichever the source actually provides",
+   "precision": "sufficient to identify a specific node, not just a route segment"
+  },
+  "host_candidates": [],
+  "host_candidates_reason": "no retained file in this task's own input set names a host/layer for this specific place; a host used by an earlier, different round is not re-authorised by this round",
+  "authorisation": "NOT_AUTHORISED"
+ },
+ {
+  "gap_id": "GAP-003",
+  "place": "Kópavogur",
+  "missing_fact": "Kópavogur is UNMATCHED against Hagstofa's own þéttbýlisstaðir dimension (no row of its own anywhere in the 120-row table); separately, this same absence is the basis for an INFERRED 'possibly included in code 50 (Reykjavík)' grouping proposal from phase-2's own classification step -- that INFERRED grouping is NOT a confirmed Hagstofa match and must not be read as one.",
+  "purpose": "to establish this place's own weather/route access point and/or Hagstofa identity",
+  "required_data": {
+   "fields": [
+    "geometry (LineString or Point)",
+    "name/description",
+    "CRS"
+   ],
+   "crs": "EPSG:3057 (native) or EPSG:4326 (WGS84), whichever the source actually provides",
+   "precision": "sufficient to identify a specific node, not just a route segment"
+  },
+  "host_candidates": [],
+  "host_candidates_reason": "no retained file in this task's own input set names a host/layer for this specific place; a host used by an earlier, different round is not re-authorised by this round",
+  "authorisation": "NOT_AUTHORISED"
+ },
+ {
+  "gap_id": "GAP-004",
+  "place": "Garðabær",
+  "missing_fact": "Garðabær is UNMATCHED against Hagstofa's own þéttbýlisstaðir dimension (no row of its own anywhere in the 120-row table); separately, this same absence is the basis for an INFERRED 'possibly included in code 50 (Reykjavík)' grouping proposal from phase-2's own classification step -- that INFERRED grouping is NOT a confirmed Hagstofa match and must not be read as one.",
+  "purpose": "to establish this place's own weather/route access point and/or Hagstofa identity",
+  "required_data": {
+   "fields": [
+    "geometry (LineString or Point)",
+    "name/description",
+    "CRS"
+   ],
+   "crs": "EPSG:3057 (native) or EPSG:4326 (WGS84), whichever the source actually provides",
+   "precision": "sufficient to identify a specific node, not just a route segment"
+  },
+  "host_candidates": [],
+  "host_candidates_reason": "no retained file in this task's own input set names a host/layer for this specific place; a host used by an earlier, different round is not re-authorised by this round",
+  "authorisation": "NOT_AUTHORISED"
+ },
+ {
+  "gap_id": "GAP-005",
+  "place": "Hafnarfjörður",
+  "missing_fact": "Hafnarfjörður is UNMATCHED against Hagstofa's own þéttbýlisstaðir dimension (no row of its own anywhere in the 120-row table); separately, this same absence is the basis for an INFERRED 'possibly included in code 50 (Reykjavík)' grouping proposal from phase-2's own classification step -- that INFERRED grouping is NOT a confirmed Hagstofa match and must not be read as one.",
+  "purpose": "to establish this place's own weather/route access point and/or Hagstofa identity",
+  "required_data": {
+   "fields": [
+    "geometry (LineString or Point)",
+    "name/description",
+    "CRS"
+   ],
+   "crs": "EPSG:3057 (native) or EPSG:4326 (WGS84), whichever the source actually provides",
+   "precision": "sufficient to identify a specific node, not just a route segment"
+  },
+  "host_candidates": [],
+  "host_candidates_reason": "no retained file in this task's own input set names a host/layer for this specific place; a host used by an earlier, different round is not re-authorised by this round",
+  "authorisation": "NOT_AUTHORISED"
+ },
+ {
+  "gap_id": "GAP-006",
+  "place": "Reykjanesbær",
+  "missing_fact": "Reykjanesbær is UNMATCHED against Hagstofa's own þéttbýlisstaðir dimension; UNLIKE Kópavogur/Garðabær/Hafnarfjörður, no code-50 (or other) INFERRED grouping applies here -- Reykjanesbær is a municipality whose own settlement is 'Keflavík og Njarðvík' (code 141, itself MATCHED), a different relationship, not an inferred merger.",
+  "purpose": "to establish this place's own weather/route access point and/or Hagstofa identity",
+  "required_data": {
+   "fields": [
+    "geometry (LineString or Point)",
+    "name/description",
+    "CRS"
+   ],
+   "crs": "EPSG:3057 (native) or EPSG:4326 (WGS84), whichever the source actually provides",
+   "precision": "sufficient to identify a specific node, not just a route segment"
+  },
+  "host_candidates": [],
+  "host_candidates_reason": "no retained file in this task's own input set names a host/layer for this specific place; a host used by an earlier, different round is not re-authorised by this round",
+  "authorisation": "NOT_AUTHORISED"
+ },
+ {
+  "gap_id": "GAP-007",
+  "place": "Grindavík",
+  "missing_fact": "no VEGNR=1 (or known connecting-road) piece identified as Grindavík's own access point (hagstofa_pairing=MATCHED/EXACT, codes=['110'])",
+  "purpose": "to establish this place's own weather/route access point and/or Hagstofa identity",
+  "required_data": {
+   "fields": [
+    "geometry (LineString or Point)",
+    "name/description",
+    "CRS"
+   ],
+   "crs": "EPSG:3057 (native) or EPSG:4326 (WGS84), whichever the source actually provides",
+   "precision": "sufficient to identify a specific node, not just a route segment"
+  },
+  "host_candidates": [],
+  "host_candidates_reason": "no retained file in this task's own input set names a host/layer for this specific place; a host used by an earlier, different round is not re-authorised by this round",
+  "authorisation": "NOT_AUTHORISED"
+ },
+ {
+  "gap_id": "GAP-008",
+  "place": "Vogar",
+  "missing_fact": "no VEGNR=1 (or known connecting-road) piece identified as Vogar's own access point (hagstofa_pairing=MATCHED/EXACT, codes=['160'])",
+  "purpose": "to establish this place's own weather/route access point and/or Hagstofa identity",
+  "required_data": {
+   "fields": [
+    "geometry (LineString or Point)",
+    "name/description",
+    "CRS"
+   ],
+   "crs": "EPSG:3057 (native) or EPSG:4326 (WGS84), whichever the source actually provides",
+   "precision": "sufficient to identify a specific node, not just a route segment"
+  },
+  "host_candidates": [],
+  "host_candidates_reason": "no retained file in this task's own input set names a host/layer for this specific place; a host used by an earlier, different round is not re-authorised by this round",
+  "authorisation": "NOT_AUTHORISED"
+ },
+ {
+  "gap_id": "GAP-009",
+  "place": "Sandgerði",
+  "missing_fact": "no VEGNR=1 (or known connecting-road) piece identified as Sandgerði's own access point (hagstofa_pairing=MATCHED/EXACT, codes=['120'])",
+  "purpose": "to establish this place's own weather/route access point and/or Hagstofa identity",
+  "required_data": {
+   "fields": [
+    "geometry (LineString or Point)",
+    "name/description",
+    "CRS"
+   ],
+   "crs": "EPSG:3057 (native) or EPSG:4326 (WGS84), whichever the source actually provides",
+   "precision": "sufficient to identify a specific node, not just a route segment"
+  },
+  "host_candidates": [],
+  "host_candidates_reason": "no retained file in this task's own input set names a host/layer for this specific place; a host used by an earlier, different round is not re-authorised by this round",
+  "authorisation": "NOT_AUTHORISED"
+ },
+ {
+  "gap_id": "GAP-010",
+  "place": "Garður",
+  "missing_fact": "no VEGNR=1 (or known connecting-road) piece identified as Garður's own access point (hagstofa_pairing=MATCHED/EXACT, codes=['130'])",
+  "purpose": "to establish this place's own weather/route access point and/or Hagstofa identity",
+  "required_data": {
+   "fields": [
+    "geometry (LineString or Point)",
+    "name/description",
+    "CRS"
+   ],
+   "crs": "EPSG:3057 (native) or EPSG:4326 (WGS84), whichever the source actually provides",
+   "precision": "sufficient to identify a specific node, not just a route segment"
+  },
+  "host_candidates": [],
+  "host_candidates_reason": "no retained file in this task's own input set names a host/layer for this specific place; a host used by an earlier, different round is not re-authorised by this round",
+  "authorisation": "NOT_AUTHORISED"
+ },
+ {
+  "gap_id": "GAP-011",
+  "place": "Borgarnes",
+  "missing_fact": "Borgarnes's own candidate piece is a text-mention match only, not a verified contact or owner-approved anchor (hagstofa_pairing=MATCHED/EXACT, codes=['200']) 5 stem-search hint(s) found this round (INFERRED, text-mention only, no road_connection effect) -- see samples/v2/stem_search_hints.json.",
+  "purpose": "to establish this place's own weather/route access point and/or Hagstofa identity",
+  "required_data": {
+   "fields": [
+    "geometry (LineString or Point)",
+    "name/description",
+    "CRS"
+   ],
+   "crs": "EPSG:3057 (native) or EPSG:4326 (WGS84), whichever the source actually provides",
+   "precision": "sufficient to identify a specific node, not just a route segment"
+  },
+  "host_candidates": [],
+  "host_candidates_reason": "no retained file in this task's own input set names a host/layer for this specific place; a host used by an earlier, different round is not re-authorised by this round",
+  "authorisation": "NOT_AUTHORISED"
+ },
+ {
+  "gap_id": "GAP-012",
+  "place": "Bifröst",
+  "missing_fact": "no VEGNR=1 (or known connecting-road) piece identified as Bifröst's own access point (hagstofa_pairing=MATCHED/EXACT, codes=['205'])",
+  "purpose": "to establish this place's own weather/route access point and/or Hagstofa identity",
+  "required_data": {
+   "fields": [
+    "geometry (LineString or Point)",
+    "name/description",
+    "CRS"
+   ],
+   "crs": "EPSG:3057 (native) or EPSG:4326 (WGS84), whichever the source actually provides",
+   "precision": "sufficient to identify a specific node, not just a route segment"
+  },
+  "host_candidates": [],
+  "host_candidates_reason": "no retained file in this task's own input set names a host/layer for this specific place; a host used by an earlier, different round is not re-authorised by this round",
+  "authorisation": "NOT_AUTHORISED"
+ },
+ {
+  "gap_id": "GAP-013",
+  "place": "Akranes",
+  "missing_fact": "no VEGNR=1 (or known connecting-road) piece identified as Akranes's own access point (hagstofa_pairing=MATCHED/EXACT, codes=['190'])",
+  "purpose": "to establish this place's own weather/route access point and/or Hagstofa identity",
+  "required_data": {
+   "fields": [
+    "geometry (LineString or Point)",
+    "name/description",
+    "CRS"
+   ],
+   "crs": "EPSG:3057 (native) or EPSG:4326 (WGS84), whichever the source actually provides",
+   "precision": "sufficient to identify a specific node, not just a route segment"
+  },
+  "host_candidates": [],
+  "host_candidates_reason": "no retained file in this task's own input set names a host/layer for this specific place; a host used by an earlier, different round is not re-authorised by this round",
+  "authorisation": "NOT_AUTHORISED"
+ },
+ {
+  "gap_id": "GAP-014",
+  "place": "Stykkishólmur",
+  "missing_fact": "no VEGNR=1 (or known connecting-road) piece identified as Stykkishólmur's own access point (hagstofa_pairing=MATCHED/EXACT, codes=['240'])",
+  "purpose": "to establish this place's own weather/route access point and/or Hagstofa identity",
+  "required_data": {
+   "fields": [
+    "geometry (LineString or Point)",
+    "name/description",
+    "CRS"
+   ],
+   "crs": "EPSG:3057 (native) or EPSG:4326 (WGS84), whichever the source actually provides",
+   "precision": "sufficient to identify a specific node, not just a route segment"
+  },
+  "host_candidates": [],
+  "host_candidates_reason": "no retained file in this task's own input set names a host/layer for this specific place; a host used by an earlier, different round is not re-authorised by this round",
+  "authorisation": "NOT_AUTHORISED"
+ },
+ {
+  "gap_id": "GAP-015",
+  "place": "Grundarfjörður",
+  "missing_fact": "no VEGNR=1 (or known connecting-road) piece identified as Grundarfjörður's own access point (hagstofa_pairing=MATCHED/EXACT, codes=['230'])",
+  "purpose": "to establish this place's own weather/route access point and/or Hagstofa identity",
+  "required_data": {
+   "fields": [
+    "geometry (LineString or Point)",
+    "name/description",
+    "CRS"
+   ],
+   "crs": "EPSG:3057 (native) or EPSG:4326 (WGS84), whichever the source actually provides",
+   "precision": "sufficient to identify a specific node, not just a route segment"
+  },
+  "host_candidates": [],
+  "host_candidates_reason": "no retained file in this task's own input set names a host/layer for this specific place; a host used by an earlier, different round is not re-authorised by this round",
+  "authorisation": "NOT_AUTHORISED"
+ },
+ {
+  "gap_id": "GAP-016",
+  "place": "Ólafsvík",
+  "missing_fact": "no VEGNR=1 (or known connecting-road) piece identified as Ólafsvík's own access point (hagstofa_pairing=MATCHED/EXACT, codes=['220'])",
+  "purpose": "to establish this place's own weather/route access point and/or Hagstofa identity",
+  "required_data": {
+   "fields": [
+    "geometry (LineString or Point)",
+    "name/description",
+    "CRS"
+   ],
+   "crs": "EPSG:3057 (native) or EPSG:4326 (WGS84), whichever the source actually provides",
+   "precision": "sufficient to identify a specific node, not just a route segment"
+  },
+  "host_candidates": [],
+  "host_candidates_reason": "no retained file in this task's own input set names a host/layer for this specific place; a host used by an earlier, different round is not re-authorised by this round",
+  "authorisation": "NOT_AUTHORISED"
+ },
+ {
+  "gap_id": "GAP-017",
+  "place": "Hellissandur",
+  "missing_fact": "no VEGNR=1 (or known connecting-road) piece identified as Hellissandur's own access point (hagstofa_pairing=MATCHED/EXACT, codes=['210'])",
+  "purpose": "to establish this place's own weather/route access point and/or Hagstofa identity",
+  "required_data": {
+   "fields": [
+    "geometry (LineString or Point)",
+    "name/description",
+    "CRS"
+   ],
+   "crs": "EPSG:3057 (native) or EPSG:4326 (WGS84), whichever the source actually provides",
+   "precision": "sufficient to identify a specific node, not just a route segment"
+  },
+  "host_candidates": [],
+  "host_candidates_reason": "no retained file in this task's own input set names a host/layer for this specific place; a host used by an earlier, different round is not re-authorised by this round",
+  "authorisation": "NOT_AUTHORISED"
+ },
+ {
+  "gap_id": "GAP-018",
+  "place": "Búðardalur",
+  "missing_fact": "no VEGNR=1 (or known connecting-road) piece identified as Búðardalur's own access point (hagstofa_pairing=MATCHED/EXACT, codes=['250'])",
+  "purpose": "to establish this place's own weather/route access point and/or Hagstofa identity",
+  "required_data": {
+   "fields": [
+    "geometry (LineString or Point)",
+    "name/description",
+    "CRS"
+   ],
+   "crs": "EPSG:3057 (native) or EPSG:4326 (WGS84), whichever the source actually provides",
+   "precision": "sufficient to identify a specific node, not just a route segment"
+  },
+  "host_candidates": [],
+  "host_candidates_reason": "no retained file in this task's own input set names a host/layer for this specific place; a host used by an earlier, different round is not re-authorised by this round",
+  "authorisation": "NOT_AUTHORISED"
+ },
+ {
+  "gap_id": "GAP-019",
+  "place": "Ísafjörður",
+  "missing_fact": "no VEGNR=1 (or known connecting-road) piece identified as Ísafjörður's own access point (hagstofa_pairing=MATCHED/EXACT, codes=['410'])",
+  "purpose": "to establish this place's own weather/route access point and/or Hagstofa identity",
+  "required_data": {
+   "fields": [
+    "geometry (LineString or Point)",
+    "name/description",
+    "CRS"
+   ],
+   "crs": "EPSG:3057 (native) or EPSG:4326 (WGS84), whichever the source actually provides",
+   "precision": "sufficient to identify a specific node, not just a route segment"
+  },
+  "host_candidates": [],
+  "host_candidates_reason": "no retained file in this task's own input set names a host/layer for this specific place; a host used by an earlier, different round is not re-authorised by this round",
+  "authorisation": "NOT_AUTHORISED"
+ },
+ {
+  "gap_id": "GAP-020",
+  "place": "Bolungarvík",
+  "missing_fact": "no VEGNR=1 (or known connecting-road) piece identified as Bolungarvík's own access point (hagstofa_pairing=MATCHED/EXACT, codes=['400'])",
+  "purpose": "to establish this place's own weather/route access point and/or Hagstofa identity",
+  "required_data": {
+   "fields": [
+    "geometry (LineString or Point)",
+    "name/description",
+    "CRS"
+   ],
+   "crs": "EPSG:3057 (native) or EPSG:4326 (WGS84), whichever the source actually provides",
+   "precision": "sufficient to identify a specific node, not just a route segment"
+  },
+  "host_candidates": [],
+  "host_candidates_reason": "no retained file in this task's own input set names a host/layer for this specific place; a host used by an earlier, different round is not re-authorised by this round",
+  "authorisation": "NOT_AUTHORISED"
+ },
+ {
+  "gap_id": "GAP-021",
+  "place": "Súðavík",
+  "missing_fact": "no VEGNR=1 (or known connecting-road) piece identified as Súðavík's own access point (hagstofa_pairing=MATCHED/EXACT, codes=['430'])",
+  "purpose": "to establish this place's own weather/route access point and/or Hagstofa identity",
+  "required_data": {
+   "fields": [
+    "geometry (LineString or Point)",
+    "name/description",
+    "CRS"
+   ],
+   "crs": "EPSG:3057 (native) or EPSG:4326 (WGS84), whichever the source actually provides",
+   "precision": "sufficient to identify a specific node, not just a route segment"
+  },
+  "host_candidates": [],
+  "host_candidates_reason": "no retained file in this task's own input set names a host/layer for this specific place; a host used by an earlier, different round is not re-authorised by this round",
+  "authorisation": "NOT_AUTHORISED"
+ },
+ {
+  "gap_id": "GAP-022",
+  "place": "Suðureyri",
+  "missing_fact": "no VEGNR=1 (or known connecting-road) piece identified as Suðureyri's own access point (hagstofa_pairing=MATCHED/EXACT, codes=['390'])",
+  "purpose": "to establish this place's own weather/route access point and/or Hagstofa identity",
+  "required_data": {
+   "fields": [
+    "geometry (LineString or Point)",
+    "name/description",
+    "CRS"
+   ],
+   "crs": "EPSG:3057 (native) or EPSG:4326 (WGS84), whichever the source actually provides",
+   "precision": "sufficient to identify a specific node, not just a route segment"
+  },
+  "host_candidates": [],
+  "host_candidates_reason": "no retained file in this task's own input set names a host/layer for this specific place; a host used by an earlier, different round is not re-authorised by this round",
+  "authorisation": "NOT_AUTHORISED"
+ },
+ {
+  "gap_id": "GAP-023",
+  "place": "Flateyri",
+  "missing_fact": "no VEGNR=1 (or known connecting-road) piece identified as Flateyri's own access point (hagstofa_pairing=MATCHED/EXACT, codes=['380'])",
+  "purpose": "to establish this place's own weather/route access point and/or Hagstofa identity",
+  "required_data": {
+   "fields": [
+    "geometry (LineString or Point)",
+    "name/description",
+    "CRS"
+   ],
+   "crs": "EPSG:3057 (native) or EPSG:4326 (WGS84), whichever the source actually provides",
+   "precision": "sufficient to identify a specific node, not just a route segment"
+  },
+  "host_candidates": [],
+  "host_candidates_reason": "no retained file in this task's own input set names a host/layer for this specific place; a host used by an earlier, different round is not re-authorised by this round",
+  "authorisation": "NOT_AUTHORISED"
+ },
+ {
+  "gap_id": "GAP-024",
+  "place": "Þingeyri",
+  "missing_fact": "no VEGNR=1 (or known connecting-road) piece identified as Þingeyri's own access point (hagstofa_pairing=MATCHED/EXACT, codes=['370'])",
+  "purpose": "to establish this place's own weather/route access point and/or Hagstofa identity",
+  "required_data": {
+   "fields": [
+    "geometry (LineString or Point)",
+    "name/description",
+    "CRS"
+   ],
+   "crs": "EPSG:3057 (native) or EPSG:4326 (WGS84), whichever the source actually provides",
+   "precision": "sufficient to identify a specific node, not just a route segment"
+  },
+  "host_candidates": [],
+  "host_candidates_reason": "no retained file in this task's own input set names a host/layer for this specific place; a host used by an earlier, different round is not re-authorised by this round",
+  "authorisation": "NOT_AUTHORISED"
+ },
+ {
+  "gap_id": "GAP-025",
+  "place": "Bíldudalur",
+  "missing_fact": "no VEGNR=1 (or known connecting-road) piece identified as Bíldudalur's own access point (hagstofa_pairing=MATCHED/EXACT, codes=['360'])",
+  "purpose": "to establish this place's own weather/route access point and/or Hagstofa identity",
+  "required_data": {
+   "fields": [
+    "geometry (LineString or Point)",
+    "name/description",
+    "CRS"
+   ],
+   "crs": "EPSG:3057 (native) or EPSG:4326 (WGS84), whichever the source actually provides",
+   "precision": "sufficient to identify a specific node, not just a route segment"
+  },
+  "host_candidates": [],
+  "host_candidates_reason": "no retained file in this task's own input set names a host/layer for this specific place; a host used by an earlier, different round is not re-authorised by this round",
+  "authorisation": "NOT_AUTHORISED"
+ },
+ {
+  "gap_id": "GAP-026",
+  "place": "Tálknafjörður",
+  "missing_fact": "no VEGNR=1 (or known connecting-road) piece identified as Tálknafjörður's own access point (hagstofa_pairing=MATCHED/EXACT, codes=['350'])",
+  "purpose": "to establish this place's own weather/route access point and/or Hagstofa identity",
+  "required_data": {
+   "fields": [
+    "geometry (LineString or Point)",
+    "name/description",
+    "CRS"
+   ],
+   "crs": "EPSG:3057 (native) or EPSG:4326 (WGS84), whichever the source actually provides",
+   "precision": "sufficient to identify a specific node, not just a route segment"
+  },
+  "host_candidates": [],
+  "host_candidates_reason": "no retained file in this task's own input set names a host/layer for this specific place; a host used by an earlier, different round is not re-authorised by this round",
+  "authorisation": "NOT_AUTHORISED"
+ },
+ {
+  "gap_id": "GAP-027",
+  "place": "Patreksfjörður",
+  "missing_fact": "no VEGNR=1 (or known connecting-road) piece identified as Patreksfjörður's own access point (hagstofa_pairing=MATCHED/EXACT, codes=['340'])",
+  "purpose": "to establish this place's own weather/route access point and/or Hagstofa identity",
+  "required_data": {
+   "fields": [
+    "geometry (LineString or Point)",
+    "name/description",
+    "CRS"
+   ],
+   "crs": "EPSG:3057 (native) or EPSG:4326 (WGS84), whichever the source actually provides",
+   "precision": "sufficient to identify a specific node, not just a route segment"
+  },
+  "host_candidates": [],
+  "host_candidates_reason": "no retained file in this task's own input set names a host/layer for this specific place; a host used by an earlier, different round is not re-authorised by this round",
+  "authorisation": "NOT_AUTHORISED"
+ },
+ {
+  "gap_id": "GAP-028",
+  "place": "Hólmavík",
+  "missing_fact": "no VEGNR=1 (or known connecting-road) piece identified as Hólmavík's own access point (hagstofa_pairing=MATCHED/EXACT, codes=['440'])",
+  "purpose": "to establish this place's own weather/route access point and/or Hagstofa identity",
+  "required_data": {
+   "fields": [
+    "geometry (LineString or Point)",
+    "name/description",
+    "CRS"
+   ],
+   "crs": "EPSG:3057 (native) or EPSG:4326 (WGS84), whichever the source actually provides",
+   "precision": "sufficient to identify a specific node, not just a route segment"
+  },
+  "host_candidates": [],
+  "host_candidates_reason": "no retained file in this task's own input set names a host/layer for this specific place; a host used by an earlier, different round is not re-authorised by this round",
+  "authorisation": "NOT_AUTHORISED"
+ },
+ {
+  "gap_id": "GAP-029",
+  "place": "Hvammstangi",
+  "missing_fact": "no VEGNR=1 (or known connecting-road) piece identified as Hvammstangi's own access point (hagstofa_pairing=MATCHED/EXACT, codes=['530']) 6 stem-search hint(s) found this round (INFERRED, text-mention only, no road_connection effect) -- see samples/v2/stem_search_hints.json.",
+  "purpose": "to establish this place's own weather/route access point and/or Hagstofa identity",
+  "required_data": {
+   "fields": [
+    "geometry (LineString or Point)",
+    "name/description",
+    "CRS"
+   ],
+   "crs": "EPSG:3057 (native) or EPSG:4326 (WGS84), whichever the source actually provides",
+   "precision": "sufficient to identify a specific node, not just a route segment"
+  },
+  "host_candidates": [],
+  "host_candidates_reason": "no retained file in this task's own input set names a host/layer for this specific place; a host used by an earlier, different round is not re-authorised by this round",
+  "authorisation": "NOT_AUTHORISED"
+ },
+ {
+  "gap_id": "GAP-030",
+  "place": "Blönduós",
+  "missing_fact": "no VEGNR=1 (or known connecting-road) piece identified as Blönduós's own access point (hagstofa_pairing=MATCHED/EXACT, codes=['540']) 6 stem-search hint(s) found this round (INFERRED, text-mention only, no road_connection effect) -- see samples/v2/stem_search_hints.json.",
+  "purpose": "to establish this place's own weather/route access point and/or Hagstofa identity",
+  "required_data": {
+   "fields": [
+    "geometry (LineString or Point)",
+    "name/description",
+    "CRS"
+   ],
+   "crs": "EPSG:3057 (native) or EPSG:4326 (WGS84), whichever the source actually provides",
+   "precision": "sufficient to identify a specific node, not just a route segment"
+  },
+  "host_candidates": [],
+  "host_candidates_reason": "no retained file in this task's own input set names a host/layer for this specific place; a host used by an earlier, different round is not re-authorised by this round",
+  "authorisation": "NOT_AUTHORISED"
+ },
+ {
+  "gap_id": "GAP-031",
+  "place": "Varmahlíð",
+  "missing_fact": "no VEGNR=1 (or known connecting-road) piece identified as Varmahlíð's own access point (hagstofa_pairing=MATCHED/EXACT, codes=['561']) 7 stem-search hint(s) found this round (INFERRED, text-mention only, no road_connection effect) -- see samples/v2/stem_search_hints.json.",
+  "purpose": "to establish this place's own weather/route access point and/or Hagstofa identity",
+  "required_data": {
+   "fields": [
+    "geometry (LineString or Point)",
+    "name/description",
+    "CRS"
+   ],
+   "crs": "EPSG:3057 (native) or EPSG:4326 (WGS84), whichever the source actually provides",
+   "precision": "sufficient to identify a specific node, not just a route segment"
+  },
+  "host_candidates": [],
+  "host_candidates_reason": "no retained file in this task's own input set names a host/layer for this specific place; a host used by an earlier, different round is not re-authorised by this round",
+  "authorisation": "NOT_AUTHORISED"
+ },
+ {
+  "gap_id": "GAP-032",
+  "place": "Skagaströnd",
+  "missing_fact": "no VEGNR=1 (or known connecting-road) piece identified as Skagaströnd's own access point (hagstofa_pairing=MATCHED/EXACT, codes=['550']) 3 stem-search hint(s) found this round (INFERRED, text-mention only, no road_connection effect) -- see samples/v2/stem_search_hints.json.",
+  "purpose": "to establish this place's own weather/route access point and/or Hagstofa identity",
+  "required_data": {
+   "fields": [
+    "geometry (LineString or Point)",
+    "name/description",
+    "CRS"
+   ],
+   "crs": "EPSG:3057 (native) or EPSG:4326 (WGS84), whichever the source actually provides",
+   "precision": "sufficient to identify a specific node, not just a route segment"
+  },
+  "host_candidates": [],
+  "host_candidates_reason": "no retained file in this task's own input set names a host/layer for this specific place; a host used by an earlier, different round is not re-authorised by this round",
+  "authorisation": "NOT_AUTHORISED"
+ },
+ {
+  "gap_id": "GAP-033",
+  "place": "Sauðárkrókur",
+  "missing_fact": "no VEGNR=1 (or known connecting-road) piece identified as Sauðárkrókur's own access point (hagstofa_pairing=MATCHED/EXACT, codes=['560'])",
+  "purpose": "to establish this place's own weather/route access point and/or Hagstofa identity",
+  "required_data": {
+   "fields": [
+    "geometry (LineString or Point)",
+    "name/description",
+    "CRS"
+   ],
+   "crs": "EPSG:3057 (native) or EPSG:4326 (WGS84), whichever the source actually provides",
+   "precision": "sufficient to identify a specific node, not just a route segment"
+  },
+  "host_candidates": [],
+  "host_candidates_reason": "no retained file in this task's own input set names a host/layer for this specific place; a host used by an earlier, different round is not re-authorised by this round",
+  "authorisation": "NOT_AUTHORISED"
+ },
+ {
+  "gap_id": "GAP-034",
+  "place": "Hofsós",
+  "missing_fact": "no VEGNR=1 (or known connecting-road) piece identified as Hofsós's own access point (hagstofa_pairing=MATCHED/EXACT, codes=['570'])",
+  "purpose": "to establish this place's own weather/route access point and/or Hagstofa identity",
+  "required_data": {
+   "fields": [
+    "geometry (LineString or Point)",
+    "name/description",
+    "CRS"
+   ],
+   "crs": "EPSG:3057 (native) or EPSG:4326 (WGS84), whichever the source actually provides",
+   "precision": "sufficient to identify a specific node, not just a route segment"
+  },
+  "host_candidates": [],
+  "host_candidates_reason": "no retained file in this task's own input set names a host/layer for this specific place; a host used by an earlier, different round is not re-authorised by this round",
+  "authorisation": "NOT_AUTHORISED"
+ },
+ {
+  "gap_id": "GAP-035",
+  "place": "Siglufjörður",
+  "missing_fact": "no VEGNR=1 (or known connecting-road) piece identified as Siglufjörður's own access point (hagstofa_pairing=MATCHED/EXACT, codes=['580'])",
+  "purpose": "to establish this place's own weather/route access point and/or Hagstofa identity",
+  "required_data": {
+   "fields": [
+    "geometry (LineString or Point)",
+    "name/description",
+    "CRS"
+   ],
+   "crs": "EPSG:3057 (native) or EPSG:4326 (WGS84), whichever the source actually provides",
+   "precision": "sufficient to identify a specific node, not just a route segment"
+  },
+  "host_candidates": [],
+  "host_candidates_reason": "no retained file in this task's own input set names a host/layer for this specific place; a host used by an earlier, different round is not re-authorised by this round",
+  "authorisation": "NOT_AUTHORISED"
+ },
+ {
+  "gap_id": "GAP-036",
+  "place": "Reykjahlíð",
+  "missing_fact": "Reykjahlíð's own candidate piece is a text-mention match only, not a verified contact or owner-approved anchor (hagstofa_pairing=MATCHED/EXACT, codes=['700'])",
+  "purpose": "to establish this place's own weather/route access point and/or Hagstofa identity",
+  "required_data": {
+   "fields": [
+    "geometry (LineString or Point)",
+    "name/description",
+    "CRS"
+   ],
+   "crs": "EPSG:3057 (native) or EPSG:4326 (WGS84), whichever the source actually provides",
+   "precision": "sufficient to identify a specific node, not just a route segment"
+  },
+  "host_candidates": [],
+  "host_candidates_reason": "no retained file in this task's own input set names a host/layer for this specific place; a host used by an earlier, different round is not re-authorised by this round",
+  "authorisation": "NOT_AUTHORISED"
+ },
+ {
+  "gap_id": "GAP-037",
+  "place": "Laugar",
+  "missing_fact": "no VEGNR=1 (or known connecting-road) piece identified as Laugar's own access point (hagstofa_pairing=MATCHED/EXACT, codes=['701'])",
+  "purpose": "to establish this place's own weather/route access point and/or Hagstofa identity",
+  "required_data": {
+   "fields": [
+    "geometry (LineString or Point)",
+    "name/description",
+    "CRS"
+   ],
+   "crs": "EPSG:3057 (native) or EPSG:4326 (WGS84), whichever the source actually provides",
+   "precision": "sufficient to identify a specific node, not just a route segment"
+  },
+  "host_candidates": [],
+  "host_candidates_reason": "no retained file in this task's own input set names a host/layer for this specific place; a host used by an earlier, different round is not re-authorised by this round",
+  "authorisation": "NOT_AUTHORISED"
+ },
+ {
+  "gap_id": "GAP-038",
+  "place": "Hrafnagil",
+  "missing_fact": "no VEGNR=1 (or known connecting-road) piece identified as Hrafnagil's own access point (hagstofa_pairing=MATCHED/EXACT, codes=['682'])",
+  "purpose": "to establish this place's own weather/route access point and/or Hagstofa identity",
+  "required_data": {
+   "fields": [
+    "geometry (LineString or Point)",
+    "name/description",
+    "CRS"
+   ],
+   "crs": "EPSG:3057 (native) or EPSG:4326 (WGS84), whichever the source actually provides",
+   "precision": "sufficient to identify a specific node, not just a route segment"
+  },
+  "host_candidates": [],
+  "host_candidates_reason": "no retained file in this task's own input set names a host/layer for this specific place; a host used by an earlier, different round is not re-authorised by this round",
+  "authorisation": "NOT_AUTHORISED"
+ },
+ {
+  "gap_id": "GAP-039",
+  "place": "Dalvík",
+  "missing_fact": "no VEGNR=1 (or known connecting-road) piece identified as Dalvík's own access point (hagstofa_pairing=MATCHED/EXACT, codes=['660'])",
+  "purpose": "to establish this place's own weather/route access point and/or Hagstofa identity",
+  "required_data": {
+   "fields": [
+    "geometry (LineString or Point)",
+    "name/description",
+    "CRS"
+   ],
+   "crs": "EPSG:3057 (native) or EPSG:4326 (WGS84), whichever the source actually provides",
+   "precision": "sufficient to identify a specific node, not just a route segment"
+  },
+  "host_candidates": [],
+  "host_candidates_reason": "no retained file in this task's own input set names a host/layer for this specific place; a host used by an earlier, different round is not re-authorised by this round",
+  "authorisation": "NOT_AUTHORISED"
+ },
+ {
+  "gap_id": "GAP-040",
+  "place": "Ólafsfjörður",
+  "missing_fact": "no VEGNR=1 (or known connecting-road) piece identified as Ólafsfjörður's own access point (hagstofa_pairing=MATCHED/EXACT, codes=['650'])",
+  "purpose": "to establish this place's own weather/route access point and/or Hagstofa identity",
+  "required_data": {
+   "fields": [
+    "geometry (LineString or Point)",
+    "name/description",
+    "CRS"
+   ],
+   "crs": "EPSG:3057 (native) or EPSG:4326 (WGS84), whichever the source actually provides",
+   "precision": "sufficient to identify a specific node, not just a route segment"
+  },
+  "host_candidates": [],
+  "host_candidates_reason": "no retained file in this task's own input set names a host/layer for this specific place; a host used by an earlier, different round is not re-authorised by this round",
+  "authorisation": "NOT_AUTHORISED"
+ },
+ {
+  "gap_id": "GAP-041",
+  "place": "Grenivík",
+  "missing_fact": "no VEGNR=1 (or known connecting-road) piece identified as Grenivík's own access point (hagstofa_pairing=MATCHED/EXACT, codes=['690'])",
+  "purpose": "to establish this place's own weather/route access point and/or Hagstofa identity",
+  "required_data": {
+   "fields": [
+    "geometry (LineString or Point)",
+    "name/description",
+    "CRS"
+   ],
+   "crs": "EPSG:3057 (native) or EPSG:4326 (WGS84), whichever the source actually provides",
+   "precision": "sufficient to identify a specific node, not just a route segment"
+  },
+  "host_candidates": [],
+  "host_candidates_reason": "no retained file in this task's own input set names a host/layer for this specific place; a host used by an earlier, different round is not re-authorised by this round",
+  "authorisation": "NOT_AUTHORISED"
+ },
+ {
+  "gap_id": "GAP-042",
+  "place": "Húsavík",
+  "missing_fact": "no VEGNR=1 (or known connecting-road) piece identified as Húsavík's own access point (hagstofa_pairing=MATCHED/EXACT, codes=['710'])",
+  "purpose": "to establish this place's own weather/route access point and/or Hagstofa identity",
+  "required_data": {
+   "fields": [
+    "geometry (LineString or Point)",
+    "name/description",
+    "CRS"
+   ],
+   "crs": "EPSG:3057 (native) or EPSG:4326 (WGS84), whichever the source actually provides",
+   "precision": "sufficient to identify a specific node, not just a route segment"
+  },
+  "host_candidates": [],
+  "host_candidates_reason": "no retained file in this task's own input set names a host/layer for this specific place; a host used by an earlier, different round is not re-authorised by this round",
+  "authorisation": "NOT_AUTHORISED"
+ },
+ {
+  "gap_id": "GAP-043",
+  "place": "Kópasker",
+  "missing_fact": "no VEGNR=1 (or known connecting-road) piece identified as Kópasker's own access point (hagstofa_pairing=MATCHED/EXACT, codes=['711'])",
+  "purpose": "to establish this place's own weather/route access point and/or Hagstofa identity",
+  "required_data": {
+   "fields": [
+    "geometry (LineString or Point)",
+    "name/description",
+    "CRS"
+   ],
+   "crs": "EPSG:3057 (native) or EPSG:4326 (WGS84), whichever the source actually provides",
+   "precision": "sufficient to identify a specific node, not just a route segment"
+  },
+  "host_candidates": [],
+  "host_candidates_reason": "no retained file in this task's own input set names a host/layer for this specific place; a host used by an earlier, different round is not re-authorised by this round",
+  "authorisation": "NOT_AUTHORISED"
+ },
+ {
+  "gap_id": "GAP-044",
+  "place": "Raufarhöfn",
+  "missing_fact": "no VEGNR=1 (or known connecting-road) piece identified as Raufarhöfn's own access point (hagstofa_pairing=MATCHED/EXACT, codes=['720'])",
+  "purpose": "to establish this place's own weather/route access point and/or Hagstofa identity",
+  "required_data": {
+   "fields": [
+    "geometry (LineString or Point)",
+    "name/description",
+    "CRS"
+   ],
+   "crs": "EPSG:3057 (native) or EPSG:4326 (WGS84), whichever the source actually provides",
+   "precision": "sufficient to identify a specific node, not just a route segment"
+  },
+  "host_candidates": [],
+  "host_candidates_reason": "no retained file in this task's own input set names a host/layer for this specific place; a host used by an earlier, different round is not re-authorised by this round",
+  "authorisation": "NOT_AUTHORISED"
+ },
+ {
+  "gap_id": "GAP-045",
+  "place": "Þórshöfn",
+  "missing_fact": "no VEGNR=1 (or known connecting-road) piece identified as Þórshöfn's own access point (hagstofa_pairing=MATCHED/EXACT, codes=['730'])",
+  "purpose": "to establish this place's own weather/route access point and/or Hagstofa identity",
+  "required_data": {
+   "fields": [
+    "geometry (LineString or Point)",
+    "name/description",
+    "CRS"
+   ],
+   "crs": "EPSG:3057 (native) or EPSG:4326 (WGS84), whichever the source actually provides",
+   "precision": "sufficient to identify a specific node, not just a route segment"
+  },
+  "host_candidates": [],
+  "host_candidates_reason": "no retained file in this task's own input set names a host/layer for this specific place; a host used by an earlier, different round is not re-authorised by this round",
+  "authorisation": "NOT_AUTHORISED"
+ },
+ {
+  "gap_id": "GAP-046",
+  "place": "Fellabær",
+  "missing_fact": "no VEGNR=1 (or known connecting-road) piece identified as Fellabær's own access point (hagstofa_pairing=MATCHED/EXACT, codes=['890']) 5 stem-search hint(s) found this round (INFERRED, text-mention only, no road_connection effect) -- see samples/v2/stem_search_hints.json.",
+  "purpose": "to establish this place's own weather/route access point and/or Hagstofa identity",
+  "required_data": {
+   "fields": [
+    "geometry (LineString or Point)",
+    "name/description",
+    "CRS"
+   ],
+   "crs": "EPSG:3057 (native) or EPSG:4326 (WGS84), whichever the source actually provides",
+   "precision": "sufficient to identify a specific node, not just a route segment"
+  },
+  "host_candidates": [],
+  "host_candidates_reason": "no retained file in this task's own input set names a host/layer for this specific place; a host used by an earlier, different round is not re-authorised by this round",
+  "authorisation": "NOT_AUTHORISED"
+ },
+ {
+  "gap_id": "GAP-047",
+  "place": "Reyðarfjörður",
+  "missing_fact": "Reyðarfjörður's own candidate piece is a text-mention match only, not a verified contact or owner-approved anchor (hagstofa_pairing=MATCHED/EXACT, codes=['930']) 6 stem-search hint(s) found this round (INFERRED, text-mention only, no road_connection effect) -- see samples/v2/stem_search_hints.json.",
+  "purpose": "to establish this place's own weather/route access point and/or Hagstofa identity",
+  "required_data": {
+   "fields": [
+    "geometry (LineString or Point)",
+    "name/description",
+    "CRS"
+   ],
+   "crs": "EPSG:3057 (native) or EPSG:4326 (WGS84), whichever the source actually provides",
+   "precision": "sufficient to identify a specific node, not just a route segment"
+  },
+  "host_candidates": [],
+  "host_candidates_reason": "no retained file in this task's own input set names a host/layer for this specific place; a host used by an earlier, different round is not re-authorised by this round",
+  "authorisation": "NOT_AUTHORISED"
+ },
+ {
+  "gap_id": "GAP-048",
+  "place": "Fáskrúðsfjörður",
+  "missing_fact": "Fáskrúðsfjörður's own candidate piece is a text-mention match only, not a verified contact or owner-approved anchor (hagstofa_pairing=MATCHED/EXACT, codes=['940']) 6 stem-search hint(s) found this round (INFERRED, text-mention only, no road_connection effect) -- see samples/v2/stem_search_hints.json.",
+  "purpose": "to establish this place's own weather/route access point and/or Hagstofa identity",
+  "required_data": {
+   "fields": [
+    "geometry (LineString or Point)",
+    "name/description",
+    "CRS"
+   ],
+   "crs": "EPSG:3057 (native) or EPSG:4326 (WGS84), whichever the source actually provides",
+   "precision": "sufficient to identify a specific node, not just a route segment"
+  },
+  "host_candidates": [],
+  "host_candidates_reason": "no retained file in this task's own input set names a host/layer for this specific place; a host used by an earlier, different round is not re-authorised by this round",
+  "authorisation": "NOT_AUTHORISED"
+ },
+ {
+  "gap_id": "GAP-049",
+  "place": "Stöðvarfjörður",
+  "missing_fact": "no VEGNR=1 (or known connecting-road) piece identified as Stöðvarfjörður's own access point (hagstofa_pairing=MATCHED/EXACT, codes=['950']) 7 stem-search hint(s) found this round (INFERRED, text-mention only, no road_connection effect) -- see samples/v2/stem_search_hints.json.",
+  "purpose": "to establish this place's own weather/route access point and/or Hagstofa identity",
+  "required_data": {
+   "fields": [
+    "geometry (LineString or Point)",
+    "name/description",
+    "CRS"
+   ],
+   "crs": "EPSG:3057 (native) or EPSG:4326 (WGS84), whichever the source actually provides",
+   "precision": "sufficient to identify a specific node, not just a route segment"
+  },
+  "host_candidates": [],
+  "host_candidates_reason": "no retained file in this task's own input set names a host/layer for this specific place; a host used by an earlier, different round is not re-authorised by this round",
+  "authorisation": "NOT_AUTHORISED"
+ },
+ {
+  "gap_id": "GAP-050",
+  "place": "Breiðdalsvík",
+  "missing_fact": "no VEGNR=1 (or known connecting-road) piece identified as Breiðdalsvík's own access point (hagstofa_pairing=MATCHED/EXACT, codes=['960']) 5 stem-search hint(s) found this round (INFERRED, text-mention only, no road_connection effect) -- see samples/v2/stem_search_hints.json.",
+  "purpose": "to establish this place's own weather/route access point and/or Hagstofa identity",
+  "required_data": {
+   "fields": [
+    "geometry (LineString or Point)",
+    "name/description",
+    "CRS"
+   ],
+   "crs": "EPSG:3057 (native) or EPSG:4326 (WGS84), whichever the source actually provides",
+   "precision": "sufficient to identify a specific node, not just a route segment"
+  },
+  "host_candidates": [],
+  "host_candidates_reason": "no retained file in this task's own input set names a host/layer for this specific place; a host used by an earlier, different round is not re-authorised by this round",
+  "authorisation": "NOT_AUTHORISED"
+ },
+ {
+  "gap_id": "GAP-051",
+  "place": "Djúpivogur",
+  "missing_fact": "no VEGNR=1 (or known connecting-road) piece identified as Djúpivogur's own access point (hagstofa_pairing=MATCHED/EXACT, codes=['970']) 17 stem-search hint(s) found this round (INFERRED, text-mention only, no road_connection effect) -- see samples/v2/stem_search_hints.json.",
+  "purpose": "to establish this place's own weather/route access point and/or Hagstofa identity",
+  "required_data": {
+   "fields": [
+    "geometry (LineString or Point)",
+    "name/description",
+    "CRS"
+   ],
+   "crs": "EPSG:3057 (native) or EPSG:4326 (WGS84), whichever the source actually provides",
+   "precision": "sufficient to identify a specific node, not just a route segment"
+  },
+  "host_candidates": [],
+  "host_candidates_reason": "no retained file in this task's own input set names a host/layer for this specific place; a host used by an earlier, different round is not re-authorised by this round",
+  "authorisation": "NOT_AUTHORISED"
+ },
+ {
+  "gap_id": "GAP-052",
+  "place": "Vopnafjörður",
+  "missing_fact": "no VEGNR=1 (or known connecting-road) piece identified as Vopnafjörður's own access point (hagstofa_pairing=MATCHED/EXACT, codes=['870'])",
+  "purpose": "to establish this place's own weather/route access point and/or Hagstofa identity",
+  "required_data": {
+   "fields": [
+    "geometry (LineString or Point)",
+    "name/description",
+    "CRS"
+   ],
+   "crs": "EPSG:3057 (native) or EPSG:4326 (WGS84), whichever the source actually provides",
+   "precision": "sufficient to identify a specific node, not just a route segment"
+  },
+  "host_candidates": [],
+  "host_candidates_reason": "no retained file in this task's own input set names a host/layer for this specific place; a host used by an earlier, different round is not re-authorised by this round",
+  "authorisation": "NOT_AUTHORISED"
+ },
+ {
+  "gap_id": "GAP-053",
+  "place": "Borgarfjörður eystri",
+  "missing_fact": "no VEGNR=1 (or known connecting-road) piece identified as Borgarfjörður eystri's own access point (hagstofa_pairing=MATCHED/EXACT, codes=['891'])",
+  "purpose": "to establish this place's own weather/route access point and/or Hagstofa identity",
+  "required_data": {
+   "fields": [
+    "geometry (LineString or Point)",
+    "name/description",
+    "CRS"
+   ],
+   "crs": "EPSG:3057 (native) or EPSG:4326 (WGS84), whichever the source actually provides",
+   "precision": "sufficient to identify a specific node, not just a route segment"
+  },
+  "host_candidates": [],
+  "host_candidates_reason": "no retained file in this task's own input set names a host/layer for this specific place; a host used by an earlier, different round is not re-authorised by this round",
+  "authorisation": "NOT_AUTHORISED"
+ },
+ {
+  "gap_id": "GAP-054",
+  "place": "Seyðisfjörður",
+  "missing_fact": "Seyðisfjörður's own road connection is verified, but no single coordinate represents the settlement itself (hagstofa_pairing=MATCHED/EXACT, codes=['900'])",
+  "purpose": "to establish this place's own weather/route access point and/or Hagstofa identity",
+  "required_data": {
+   "fields": [
+    "geometry (LineString or Point)",
+    "name/description",
+    "CRS"
+   ],
+   "crs": "EPSG:3057 (native) or EPSG:4326 (WGS84), whichever the source actually provides",
+   "precision": "sufficient to identify a specific node, not just a route segment"
+  },
+  "host_candidates": [],
+  "host_candidates_reason": "no retained file in this task's own input set names a host/layer for this specific place; a host used by an earlier, different round is not re-authorised by this round",
+  "authorisation": "NOT_AUTHORISED"
+ },
+ {
+  "gap_id": "GAP-055",
+  "place": "Eskifjörður",
+  "missing_fact": "no VEGNR=1 (or known connecting-road) piece identified as Eskifjörður's own access point (hagstofa_pairing=MATCHED/EXACT, codes=['920'])",
+  "purpose": "to establish this place's own weather/route access point and/or Hagstofa identity",
+  "required_data": {
+   "fields": [
+    "geometry (LineString or Point)",
+    "name/description",
+    "CRS"
+   ],
+   "crs": "EPSG:3057 (native) or EPSG:4326 (WGS84), whichever the source actually provides",
+   "precision": "sufficient to identify a specific node, not just a route segment"
+  },
+  "host_candidates": [],
+  "host_candidates_reason": "no retained file in this task's own input set names a host/layer for this specific place; a host used by an earlier, different round is not re-authorised by this round",
+  "authorisation": "NOT_AUTHORISED"
+ },
+ {
+  "gap_id": "GAP-056",
+  "place": "Neskaupstaður",
+  "missing_fact": "no VEGNR=1 (or known connecting-road) piece identified as Neskaupstaður's own access point (hagstofa_pairing=MATCHED/EXACT, codes=['910'])",
+  "purpose": "to establish this place's own weather/route access point and/or Hagstofa identity",
+  "required_data": {
+   "fields": [
+    "geometry (LineString or Point)",
+    "name/description",
+    "CRS"
+   ],
+   "crs": "EPSG:3057 (native) or EPSG:4326 (WGS84), whichever the source actually provides",
+   "precision": "sufficient to identify a specific node, not just a route segment"
+  },
+  "host_candidates": [],
+  "host_candidates_reason": "no retained file in this task's own input set names a host/layer for this specific place; a host used by an earlier, different round is not re-authorised by this round",
+  "authorisation": "NOT_AUTHORISED"
+ },
+ {
+  "gap_id": "GAP-057",
+  "place": "Höfn",
+  "missing_fact": "no VEGNR=1 (or known connecting-road) piece identified as Höfn's own access point (hagstofa_pairing=MATCHED/PREFIX_SINGLE, codes=['980'])",
+  "purpose": "to establish this place's own weather/route access point and/or Hagstofa identity",
+  "required_data": {
+   "fields": [
+    "geometry (LineString or Point)",
+    "name/description",
+    "CRS"
+   ],
+   "crs": "EPSG:3057 (native) or EPSG:4326 (WGS84), whichever the source actually provides",
+   "precision": "sufficient to identify a specific node, not just a route segment"
+  },
+  "host_candidates": [],
+  "host_candidates_reason": "no retained file in this task's own input set names a host/layer for this specific place; a host used by an earlier, different round is not re-authorised by this round",
+  "authorisation": "NOT_AUTHORISED"
+ },
+ {
+  "gap_id": "GAP-058",
+  "place": "Kirkjubæjarklaustur",
+  "missing_fact": "no VEGNR=1 (or known connecting-road) piece identified as Kirkjubæjarklaustur's own access point (hagstofa_pairing=MATCHED/EXACT, codes=['1089']) 5 stem-search hint(s) found this round (INFERRED, text-mention only, no road_connection effect) -- see samples/v2/stem_search_hints.json.",
+  "purpose": "to establish this place's own weather/route access point and/or Hagstofa identity",
+  "required_data": {
+   "fields": [
+    "geometry (LineString or Point)",
+    "name/description",
+    "CRS"
+   ],
+   "crs": "EPSG:3057 (native) or EPSG:4326 (WGS84), whichever the source actually provides",
+   "precision": "sufficient to identify a specific node, not just a route segment"
+  },
+  "host_candidates": [],
+  "host_candidates_reason": "no retained file in this task's own input set names a host/layer for this specific place; a host used by an earlier, different round is not re-authorised by this round",
+  "authorisation": "NOT_AUTHORISED"
+ },
+ {
+  "gap_id": "GAP-059",
+  "place": "Vík",
+  "missing_fact": "Vík's own candidate piece is a text-mention match only, not a verified contact or owner-approved anchor (hagstofa_pairing=MATCHED/PREFIX_SINGLE, codes=['1090'])",
+  "purpose": "to establish this place's own weather/route access point and/or Hagstofa identity",
+  "required_data": {
+   "fields": [
+    "geometry (LineString or Point)",
+    "name/description",
+    "CRS"
+   ],
+   "crs": "EPSG:3057 (native) or EPSG:4326 (WGS84), whichever the source actually provides",
+   "precision": "sufficient to identify a specific node, not just a route segment"
+  },
+  "host_candidates": [],
+  "host_candidates_reason": "no retained file in this task's own input set names a host/layer for this specific place; a host used by an earlier, different round is not re-authorised by this round",
+  "authorisation": "NOT_AUTHORISED"
+ },
+ {
+  "gap_id": "GAP-060",
+  "place": "Hvolsvöllur",
+  "missing_fact": "Hvolsvöllur's own piece (3593) has TWO retained, independently-validated candidate records (phase-1's own ENTRY/stored-END pick and phase-2's own EXIT/stored-START node) that disagree by 0.3-6.4 km; neither is promoted to a single place endpoint this round (hagstofa_pairing=MATCHED/EXACT, codes=['1110']) 6 stem-search hint(s) found this round (INFERRED, text-mention only, no road_connection effect) -- see samples/v2/stem_search_hints.json.",
+  "purpose": "to establish this place's own weather/route access point and/or Hagstofa identity",
+  "required_data": {
+   "fields": [
+    "geometry (LineString or Point)",
+    "name/description",
+    "CRS"
+   ],
+   "crs": "EPSG:3057 (native) or EPSG:4326 (WGS84), whichever the source actually provides",
+   "precision": "sufficient to identify a specific node, not just a route segment"
+  },
+  "host_candidates": [],
+  "host_candidates_reason": "no retained file in this task's own input set names a host/layer for this specific place; a host used by an earlier, different round is not re-authorised by this round",
+  "authorisation": "NOT_AUTHORISED"
+ },
+ {
+  "gap_id": "GAP-061",
+  "place": "Hella",
+  "missing_fact": "Hella's own piece (3591) has TWO retained, independently-validated candidate records (phase-1's own ENTRY/stored-END pick and phase-2's own EXIT/stored-START node) that disagree by 0.3-6.4 km; neither is promoted to a single place endpoint this round (hagstofa_pairing=MATCHED/EXACT, codes=['1120'])",
+  "purpose": "to establish this place's own weather/route access point and/or Hagstofa identity",
+  "required_data": {
+   "fields": [
+    "geometry (LineString or Point)",
+    "name/description",
+    "CRS"
+   ],
+   "crs": "EPSG:3057 (native) or EPSG:4326 (WGS84), whichever the source actually provides",
+   "precision": "sufficient to identify a specific node, not just a route segment"
+  },
+  "host_candidates": [],
+  "host_candidates_reason": "no retained file in this task's own input set names a host/layer for this specific place; a host used by an earlier, different round is not re-authorised by this round",
+  "authorisation": "NOT_AUTHORISED"
+ },
+ {
+  "gap_id": "GAP-062",
+  "place": "Selfoss",
+  "missing_fact": "Selfoss's own piece (2138) has TWO retained, independently-validated candidate records (phase-1's own ENTRY/stored-END pick and phase-2's own EXIT/stored-START node) that disagree by 0.3-6.4 km; neither is promoted to a single place endpoint this round (hagstofa_pairing=MATCHED/EXACT, codes=['1150']) 12 stem-search hint(s) found this round (INFERRED, text-mention only, no road_connection effect) -- see samples/v2/stem_search_hints.json.",
+  "purpose": "to establish this place's own weather/route access point and/or Hagstofa identity",
+  "required_data": {
+   "fields": [
+    "geometry (LineString or Point)",
+    "name/description",
+    "CRS"
+   ],
+   "crs": "EPSG:3057 (native) or EPSG:4326 (WGS84), whichever the source actually provides",
+   "precision": "sufficient to identify a specific node, not just a route segment"
+  },
+  "host_candidates": [],
+  "host_candidates_reason": "no retained file in this task's own input set names a host/layer for this specific place; a host used by an earlier, different round is not re-authorised by this round",
+  "authorisation": "NOT_AUTHORISED"
+ },
+ {
+  "gap_id": "GAP-063",
+  "place": "Hveragerði",
+  "missing_fact": "no VEGNR=1 (or known connecting-road) piece identified as Hveragerði's own access point (hagstofa_pairing=MATCHED/EXACT, codes=['1170'])",
+  "purpose": "to establish this place's own weather/route access point and/or Hagstofa identity",
+  "required_data": {
+   "fields": [
+    "geometry (LineString or Point)",
+    "name/description",
+    "CRS"
+   ],
+   "crs": "EPSG:3057 (native) or EPSG:4326 (WGS84), whichever the source actually provides",
+   "precision": "sufficient to identify a specific node, not just a route segment"
+  },
+  "host_candidates": [],
+  "host_candidates_reason": "no retained file in this task's own input set names a host/layer for this specific place; a host used by an earlier, different round is not re-authorised by this round",
+  "authorisation": "NOT_AUTHORISED"
+ },
+ {
+  "gap_id": "GAP-064",
+  "place": "Þorlákshöfn",
+  "missing_fact": "no VEGNR=1 (or known connecting-road) piece identified as Þorlákshöfn's own access point (hagstofa_pairing=MATCHED/EXACT, codes=['1180']) 2 stem-search hint(s) found this round (INFERRED, text-mention only, no road_connection effect) -- see samples/v2/stem_search_hints.json.",
+  "purpose": "to establish this place's own weather/route access point and/or Hagstofa identity",
+  "required_data": {
+   "fields": [
+    "geometry (LineString or Point)",
+    "name/description",
+    "CRS"
+   ],
+   "crs": "EPSG:3057 (native) or EPSG:4326 (WGS84), whichever the source actually provides",
+   "precision": "sufficient to identify a specific node, not just a route segment"
+  },
+  "host_candidates": [],
+  "host_candidates_reason": "no retained file in this task's own input set names a host/layer for this specific place; a host used by an earlier, different round is not re-authorised by this round",
+  "authorisation": "NOT_AUTHORISED"
+ },
+ {
+  "gap_id": "GAP-065",
+  "place": "Eyrarbakki",
+  "missing_fact": "no VEGNR=1 (or known connecting-road) piece identified as Eyrarbakki's own access point (hagstofa_pairing=MATCHED/EXACT, codes=['1140']) 10 stem-search hint(s) found this round (INFERRED, text-mention only, no road_connection effect) -- see samples/v2/stem_search_hints.json.",
+  "purpose": "to establish this place's own weather/route access point and/or Hagstofa identity",
+  "required_data": {
+   "fields": [
+    "geometry (LineString or Point)",
+    "name/description",
+    "CRS"
+   ],
+   "crs": "EPSG:3057 (native) or EPSG:4326 (WGS84), whichever the source actually provides",
+   "precision": "sufficient to identify a specific node, not just a route segment"
+  },
+  "host_candidates": [],
+  "host_candidates_reason": "no retained file in this task's own input set names a host/layer for this specific place; a host used by an earlier, different round is not re-authorised by this round",
+  "authorisation": "NOT_AUTHORISED"
+ },
+ {
+  "gap_id": "GAP-066",
+  "place": "Stokkseyri",
+  "missing_fact": "no VEGNR=1 (or known connecting-road) piece identified as Stokkseyri's own access point (hagstofa_pairing=MATCHED/EXACT, codes=['1130'])",
+  "purpose": "to establish this place's own weather/route access point and/or Hagstofa identity",
+  "required_data": {
+   "fields": [
+    "geometry (LineString or Point)",
+    "name/description",
+    "CRS"
+   ],
+   "crs": "EPSG:3057 (native) or EPSG:4326 (WGS84), whichever the source actually provides",
+   "precision": "sufficient to identify a specific node, not just a route segment"
+  },
+  "host_candidates": [],
+  "host_candidates_reason": "no retained file in this task's own input set names a host/layer for this specific place; a host used by an earlier, different round is not re-authorised by this round",
+  "authorisation": "NOT_AUTHORISED"
+ },
+ {
+  "gap_id": "GAP-067",
+  "place": "Flúðir",
+  "missing_fact": "no VEGNR=1 (or known connecting-road) piece identified as Flúðir's own access point (hagstofa_pairing=MATCHED/EXACT, codes=['1160'])",
+  "purpose": "to establish this place's own weather/route access point and/or Hagstofa identity",
+  "required_data": {
+   "fields": [
+    "geometry (LineString or Point)",
+    "name/description",
+    "CRS"
+   ],
+   "crs": "EPSG:3057 (native) or EPSG:4326 (WGS84), whichever the source actually provides",
+   "precision": "sufficient to identify a specific node, not just a route segment"
+  },
+  "host_candidates": [],
+  "host_candidates_reason": "no retained file in this task's own input set names a host/layer for this specific place; a host used by an earlier, different round is not re-authorised by this round",
+  "authorisation": "NOT_AUTHORISED"
+ },
+ {
+  "gap_id": "GAP-068",
+  "place": "Laugarvatn",
+  "missing_fact": "no VEGNR=1 (or known connecting-road) piece identified as Laugarvatn's own access point (hagstofa_pairing=MATCHED/EXACT, codes=['1163'])",
+  "purpose": "to establish this place's own weather/route access point and/or Hagstofa identity",
+  "required_data": {
+   "fields": [
+    "geometry (LineString or Point)",
+    "name/description",
+    "CRS"
+   ],
+   "crs": "EPSG:3057 (native) or EPSG:4326 (WGS84), whichever the source actually provides",
+   "precision": "sufficient to identify a specific node, not just a route segment"
+  },
+  "host_candidates": [],
+  "host_candidates_reason": "no retained file in this task's own input set names a host/layer for this specific place; a host used by an earlier, different round is not re-authorised by this round",
+  "authorisation": "NOT_AUTHORISED"
+ },
+ {
+  "gap_id": "GAP-069",
+  "place": "Reykholt",
+  "missing_fact": "Reykholt's own Hagstofa pairing is AMBIGUOUS between code 193 (Reykholt, Borgarfirði) and code 1162 (Reykholt, Biskupstungum); no road/coordinate issue -- this is a region-identification gap, not a connectivity gap.",
+  "purpose": "to establish this place's own weather/route access point and/or Hagstofa identity",
+  "required_data": {
+   "fields": [
+    "geometry (LineString or Point)",
+    "name/description",
+    "CRS"
+   ],
+   "crs": "EPSG:3057 (native) or EPSG:4326 (WGS84), whichever the source actually provides",
+   "precision": "sufficient to identify a specific node, not just a route segment"
+  },
+  "host_candidates": [],
+  "host_candidates_reason": "no retained file in this task's own input set names a host/layer for this specific place; a host used by an earlier, different round is not re-authorised by this round",
+  "authorisation": "NOT_AUTHORISED"
+ },
+ {
+  "gap_id": "GAP-070",
+  "place": "Laugarás",
+  "missing_fact": "no VEGNR=1 (or known connecting-road) piece identified as Laugarás's own access point (hagstofa_pairing=MATCHED/EXACT, codes=['1161'])",
+  "purpose": "to establish this place's own weather/route access point and/or Hagstofa identity",
+  "required_data": {
+   "fields": [
+    "geometry (LineString or Point)",
+    "name/description",
+    "CRS"
+   ],
+   "crs": "EPSG:3057 (native) or EPSG:4326 (WGS84), whichever the source actually provides",
+   "precision": "sufficient to identify a specific node, not just a route segment"
+  },
+  "host_candidates": [],
+  "host_candidates_reason": "no retained file in this task's own input set names a host/layer for this specific place; a host used by an earlier, different round is not re-authorised by this round",
+  "authorisation": "NOT_AUTHORISED"
+ }
+]

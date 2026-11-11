@@ -1,0 +1,125 @@
+{
+ "mutation_tests_before_any_output_written": {
+  "correct_record_accepted": true,
+  "entry_exit_coord_swap": {
+   "rejected": true,
+   "reason": "entry coord [714320.9956, 536912.9869] does not match expected stored role [715153.74, 536679.93]"
+  },
+  "incl_excl_field_swap": {
+   "rejected": true,
+   "reason": "entry_cum_km_incl_1436: got 675.0742503530913 != expected 677.6344000530911 (tol 0.1m/0.0001km)"
+  },
+  "double_counted_1436": {
+   "rejected": true,
+   "reason": "entry_cum_km_incl_1436: got 680.1945497530912 != expected 677.6344000530911 (tol 0.1m/0.0001km)"
+  },
+  "v2_wrong_junction_values": {
+   "rejected": true,
+   "reason": "entry_cum_km_incl_1436: got 680.1945 != expected 677.6344000530911 (tol 0.1m/0.0001km)"
+  },
+  "v2_wrong_phase1_values": {
+   "rejected": true,
+   "reason": "exit_cum_km_incl_1436: got 681.1216 != expected 678.5614346530912 (tol 0.1m/0.0001km)"
+  }
+ },
+ "nodes_by_idferill": {
+  "2345": {
+   "label": "EGILSSTADIR_JUNCTION_PHASE1",
+   "direction": "rev",
+   "entry_coord": [
+    715153.74,
+    536679.93
+   ],
+   "exit_coord": [
+    714320.9956,
+    536912.9869
+   ],
+   "entry_cum_km_incl_1436": 677.6344000530912,
+   "entry_cum_km_excl_1436": 675.0742503530913,
+   "exit_cum_km_incl_1436": 678.5614346530913,
+   "exit_cum_km_excl_1436": 676.0012849530913
+  },
+  "2138": {
+   "label": "SELFOSS",
+   "direction": "rev",
+   "entry_coord": [
+    400974.332,
+    384785.129
+   ],
+   "exit_coord": [
+    401739.85,
+    383119.047
+   ],
+   "entry_cum_km_incl_1436": 43.732897239863085,
+   "entry_cum_km_excl_1436": 41.17274753986308,
+   "exit_cum_km_incl_1436": 45.74046023986309,
+   "exit_cum_km_excl_1436": 43.180310539863086
+  },
+  "3591": {
+   "label": "HELLA",
+   "direction": "rev",
+   "entry_coord": [
+    430713.0138,
+    371613.8204
+   ],
+   "exit_coord": [
+    430972.1263,
+    370845.6043
+   ],
+   "entry_cum_km_incl_1436": 80.9377840842088,
+   "entry_cum_km_excl_1436": 78.3776343842088,
+   "exit_cum_km_incl_1436": 81.7695539842088,
+   "exit_cum_km_excl_1436": 79.20940428420882
+  },
+  "3593": {
+   "label": "HVOLSVOLLUR",
+   "direction": "rev",
+   "entry_coord": [
+    439003.2622,
+    361386.4806
+   ],
+   "exit_coord": [
+    439152.9219,
+    361150.6361
+   ],
+   "entry_cum_km_incl_1436": 94.37490073677697,
+   "entry_cum_km_excl_1436": 91.81475103677697,
+   "exit_cum_km_incl_1436": 94.65434833677696,
+   "exit_cum_km_excl_1436": 92.09419863677697
+  }
+ },
+ "comparison_targets_not_assert_targets_km": {
+  "2345_entry": [
+   677.6344,
+   675.0743
+  ],
+  "2345_exit": [
+   678.5614,
+   676.0013
+  ],
+  "2138_entry": [
+   43.7329,
+   41.1727
+  ],
+  "2138_exit": [
+   45.7405,
+   43.1803
+  ],
+  "3591_entry": [
+   80.9378,
+   78.3776
+  ],
+  "3591_exit": [
+   81.7696,
+   79.2094
+  ],
+  "3593_entry": [
+   94.3749,
+   91.8148
+  ],
+  "3593_exit": [
+   94.6543,
+   92.0942
+  ]
+ }
+}

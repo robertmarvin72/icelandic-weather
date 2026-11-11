@@ -1,0 +1,182 @@
+[
+ {
+  "path": "docs/ai/tasks/ticket-493-access-points/approved-prompt-v1.md",
+  "sha256": "46d663a1c100832056608f5501cc62678704836755557ff4c0526c6e6be45a04",
+  "size_bytes": 11653,
+  "line_ending": "CRLF"
+ },
+ {
+  "path": "docs/ai/tasks/ticket-493-access-points/approved-prompt-v2.md",
+  "sha256": "48eff4dc783f101b44fc85516bb9f816492726a3ba01f7dcacece602bd291d32",
+  "size_bytes": 15384,
+  "line_ending": "LF"
+ },
+ {
+  "path": "docs/ai/tasks/ticket-493-access-points/cc-report.md",
+  "sha256": "c7fd1a1f83c03cfab7f69bf1a85448fbb548be5860ed9802d91aeccaa1e511a8",
+  "size_bytes": 7906,
+  "line_ending": "LF"
+ },
+ {
+  "path": "docs/ai/tasks/ticket-493-access-points/correction-prompt-review.md",
+  "sha256": "caaf023790c8eb76544bbb647009c598f449d4a24f37eb148a49f555f82e94bc",
+  "size_bytes": 16270,
+  "line_ending": "LF"
+ },
+ {
+  "path": "docs/ai/tasks/ticket-493-access-points/endpoint-candidates.json",
+  "sha256": "da0e7de0907a47118f9a9f06a3606860098cb6b09fbc8ae34b41ebcb4c249936",
+  "size_bytes": 4782,
+  "line_ending": "LF"
+ },
+ {
+  "path": "docs/ai/tasks/ticket-493-access-points/evidence.md",
+  "sha256": "12b468626f9ae467109c33810c07fa3e9137d819e31a8f5be76c59d1b19ca30d",
+  "size_bytes": 12824,
+  "line_ending": "LF"
+ },
+ {
+  "path": "docs/ai/tasks/ticket-493-access-points/place-access-status.csv",
+  "sha256": "12f3d93544f460252275060fa4b85b5db03c875e6e43f13b995a851fc600a475",
+  "size_bytes": 14438,
+  "line_ending": "LF"
+ },
+ {
+  "path": "docs/ai/tasks/ticket-493-access-points/prompt-review.md",
+  "sha256": "82bcbdcdb72182bc401851cd14e927f28b7e48261c0c5aaee976fed935e96bf3",
+  "size_bytes": 14610,
+  "line_ending": "CRLF"
+ },
+ {
+  "path": "docs/ai/tasks/ticket-493-access-points/result-review.md",
+  "sha256": "b0ea356cb302544c07e8e75a4cb3b2daa79a5be923385bd7a626a26bec3a4cff",
+  "size_bytes": 12243,
+  "line_ending": "LF"
+ },
+ {
+  "path": "docs/ai/tasks/ticket-493-access-points/rules.md",
+  "sha256": "cdc2e99cc4b173093e53ba575f949ea76616fcc461060e70d5ee958a0efc444f",
+  "size_bytes": 12941,
+  "line_ending": "LF"
+ },
+ {
+  "path": "docs/ai/tasks/ticket-493-access-points/rules.sha256",
+  "sha256": "b038051b428cc3bd3ce0b5b04119f53f5e88e3f28d26bd367d09e7b46f522eb3",
+  "size_bytes": 75,
+  "line_ending": "LF"
+ },
+ {
+  "path": "docs/ai/tasks/ticket-493-access-points/samples/HASHES.json",
+  "sha256": "d509dd101cb028c4f953004ec3b813103dad5bf797bef10fb7e72c322fd25a95",
+  "size_bytes": 5105,
+  "line_ending": "LF"
+ },
+ {
+  "path": "docs/ai/tasks/ticket-493-access-points/samples/HASHES.sha256",
+  "sha256": "7e23eee320f403e8e326c6c1e891d0751bf70290d5ca54e70f840abd36ca782d",
+  "size_bytes": 791,
+  "line_ending": "LF"
+ },
+ {
+  "path": "docs/ai/tasks/ticket-493-access-points/samples/build_access_points.py",
+  "sha256": "a9e34d777ca36e7199bcf6474e076c1a6b9f8a77772e2fbf06c61f9fad72dd16",
+  "size_bytes": 32696,
+  "line_ending": "LF"
+ },
+ {
+  "path": "docs/ai/tasks/ticket-493-access-points/samples/gap_list.json",
+  "sha256": "7209b7b5ba858e35de6e382e7a39d62404c685647e6254f80d3b13ae5ee2912a",
+  "size_bytes": 58539,
+  "line_ending": "LF"
+ },
+ {
+  "path": "docs/ai/tasks/ticket-493-access-points/samples/generate_hashes.py",
+  "sha256": "7105638a0ee5ac5eb5dce8adcd8585bb28f91430bddea957c542cce21a62d318",
+  "size_bytes": 2182,
+  "line_ending": "LF"
+ },
+ {
+  "path": "docs/ai/tasks/ticket-493-access-points/samples/input_hashes.json",
+  "sha256": "d8bd963f22307eb56853fd8692ffbfde34aeeee54c371f0c21f098e414c233de",
+  "size_bytes": 3023,
+  "line_ending": "LF"
+ },
+ {
+  "path": "docs/ai/tasks/ticket-493-access-points/samples/name_match_candidates.json",
+  "sha256": "ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356",
+  "size_bytes": 3,
+  "line_ending": "LF"
+ },
+ {
+  "path": "docs/ai/tasks/ticket-493-place-data-phase2/samples/place_nodes-v3.json",
+  "sha256": "d3a598e1c8bc654d3a25a8064a7fc2b53e3a9e030cd9a0b6882289e875d8ab47",
+  "size_bytes": 2835,
+  "line_ending": "LF"
+ },
+ {
+  "path": "docs/ai/tasks/ticket-493-place-data-phase2/samples/worklist_matching-v3.json",
+  "sha256": "f2d3f26f9703a3a3455a25498a4fb05bad73ba48dcf7f31e72bf68340ef3ec5f",
+  "size_bytes": 44099,
+  "line_ending": "LF"
+ },
+ {
+  "path": "docs/ai/tasks/ticket-493-place-data-phase2/samples/road93_section-v2.json",
+  "sha256": "d77c66072cc3a07b03ce20259f8ed81cad0323299af1d74945215cf5c6093b37",
+  "size_bytes": 894,
+  "line_ending": "LF"
+ },
+ {
+  "path": "docs/ai/tasks/ticket-493-place-data-phase2/samples/wfs93-raw.json",
+  "sha256": "1d8c9cf880df374b9cb8120e1053e8ffd5acfba3d4bf55714e57ffdd8c49eb33",
+  "size_bytes": 37991,
+  "line_ending": "LF"
+ },
+ {
+  "path": "docs/ai/tasks/ticket-493-place-network/samples/chain-walks-v4.json",
+  "sha256": "640efec931a374ac3ddd95d0750980e97654fe1d166229dc579d355a082becd7",
+  "size_bytes": 53750,
+  "line_ending": "LF"
+ },
+ {
+  "path": "docs/ai/tasks/ticket-493-place-network/samples/road-links.csv",
+  "sha256": "bf25ff0f68f0d7e7b46f4beb3fa7619c6e91fd8a1ad7c3f8d71eb24937db10c7",
+  "size_bytes": 35424,
+  "line_ending": "LF"
+ },
+ {
+  "path": "docs/ai/tasks/ticket-493-place-network/place-inventory.csv",
+  "sha256": "e0acd2c2ae57c8313fb226fa47ab707571335de64748f96e80c7b1c5821af7a3",
+  "size_bytes": 14955,
+  "line_ending": "LF"
+ },
+ {
+  "path": "docs/ai/tasks/ticket-493-place-data-phase2/place-inventory-v3.csv",
+  "sha256": "d5606a4fa74eb21b55bfe284fa0502db8a34cb476cd3c35951e362312ffe2eb4",
+  "size_bytes": 6476,
+  "line_ending": "LF"
+ },
+ {
+  "path": "docs/ai/tasks/ticket-493-north-data/route-data-candidate.json",
+  "sha256": "094fb5d3615c1d5f0e7b372706d134bf48e9c5e954ab3ec7af61fa825b0fb4a8",
+  "size_bytes": 52691,
+  "line_ending": "LF"
+ },
+ {
+  "path": "docs/ai/tasks/ticket-493-north-data/samples/wfs-north-4326.json",
+  "sha256": "7075416ca4635e4dea058b43124cfdefa7caec9d860d2dd43208504022eedb9b",
+  "size_bytes": 302849,
+  "line_ending": "LF"
+ },
+ {
+  "path": "docs/ai/tasks/ticket-493/national-place-coverage.md",
+  "sha256": "2777107e48eea09b083ea278da3cbda3be7a9557b722c0247a1fb8f96a64e35e",
+  "size_bytes": 4890,
+  "line_ending": "LF"
+ },
+ {
+  "path": "docs/ai/tasks/ticket-493/akureyri-endpoint-decision.md",
+  "sha256": "c2a57e96d1f394630d2c54188c37ef49350b697e717062ee52e805d98bc74669",
+  "size_bytes": 2330,
+  "line_ending": "CRLF"
+ }
+]

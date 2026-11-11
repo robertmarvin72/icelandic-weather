@@ -1,0 +1,134 @@
+{
+ "Hvolsvöllur": [
+  {
+   "place": "Hvolsvöllur",
+   "idferill": 3593,
+   "node_role": "ENTRY",
+   "stored_field": "END",
+   "record_source": "PHASE1_ACCESS_NODE_END",
+   "reference_status": "PHASE1_REFERENCE",
+   "role_divergence": "NONE",
+   "coord": [
+    439003.2622,
+    361386.4806
+   ],
+   "source_path": "docs/ai/tasks/ticket-493-place-network/samples/road-links.csv",
+   "source_hash_key": "road-links.csv",
+   "piece_id": 3593,
+   "source_field": "end_x/end_y",
+   "crs": "EPSG:3057",
+   "native_source_piece": 3593,
+   "cum_km_incl_1436": 94.3749,
+   "cum_km_excl_1436": 91.8148
+  },
+  {
+   "place": "Hvolsvöllur",
+   "idferill": 3593,
+   "node_role": "EXIT",
+   "stored_field": "START",
+   "record_source": "PHASE2_V3_NODE",
+   "reference_status": "PHASE2_V3_NODE",
+   "role_divergence": "ROLE_SOURCE_DIVERGENCE",
+   "coord": [
+    439152.9219,
+    361150.6361
+   ],
+   "source_path": "docs/ai/tasks/ticket-493-place-network/samples/road-links.csv",
+   "source_hash_key": "road-links.csv",
+   "piece_id": 3593,
+   "source_field": "start_x/start_y",
+   "crs": "EPSG:3057",
+   "native_source_piece": 3593,
+   "cum_km_incl_1436": 94.6543,
+   "cum_km_excl_1436": 92.0942
+  }
+ ],
+ "Hella": [
+  {
+   "place": "Hella",
+   "idferill": 3591,
+   "node_role": "ENTRY",
+   "stored_field": "END",
+   "record_source": "PHASE1_ACCESS_NODE_END",
+   "reference_status": "PHASE1_REFERENCE",
+   "role_divergence": "NONE",
+   "coord": [
+    430713.0138,
+    371613.8204
+   ],
+   "source_path": "docs/ai/tasks/ticket-493-place-network/samples/road-links.csv",
+   "source_hash_key": "road-links.csv",
+   "piece_id": 3591,
+   "source_field": "end_x/end_y",
+   "crs": "EPSG:3057",
+   "native_source_piece": 3591,
+   "cum_km_incl_1436": 80.9378,
+   "cum_km_excl_1436": 78.3776
+  },
+  {
+   "place": "Hella",
+   "idferill": 3591,
+   "node_role": "EXIT",
+   "stored_field": "START",
+   "record_source": "PHASE2_V3_NODE",
+   "reference_status": "PHASE2_V3_NODE",
+   "role_divergence": "ROLE_SOURCE_DIVERGENCE",
+   "coord": [
+    430972.1263,
+    370845.6043
+   ],
+   "source_path": "docs/ai/tasks/ticket-493-place-network/samples/road-links.csv",
+   "source_hash_key": "road-links.csv",
+   "piece_id": 3591,
+   "source_field": "start_x/start_y",
+   "crs": "EPSG:3057",
+   "native_source_piece": 3591,
+   "cum_km_incl_1436": 81.7696,
+   "cum_km_excl_1436": 79.2094
+  }
+ ],
+ "Selfoss": [
+  {
+   "place": "Selfoss",
+   "idferill": 2138,
+   "node_role": "ENTRY",
+   "stored_field": "END",
+   "record_source": "PHASE1_ACCESS_NODE_END",
+   "reference_status": "PHASE1_REFERENCE",
+   "role_divergence": "NONE",
+   "coord": [
+    400974.332,
+    384785.129
+   ],
+   "source_path": "docs/ai/tasks/ticket-493-place-network/samples/road-links.csv",
+   "source_hash_key": "road-links.csv",
+   "piece_id": 2138,
+   "source_field": "end_x/end_y",
+   "crs": "EPSG:3057",
+   "native_source_piece": 2138,
+   "cum_km_incl_1436": 43.7329,
+   "cum_km_excl_1436": 41.1727
+  },
+  {
+   "place": "Selfoss",
+   "idferill": 2138,
+   "node_role": "EXIT",
+   "stored_field": "START",
+   "record_source": "PHASE2_V3_NODE",
+   "reference_status": "PHASE2_V3_NODE",
+   "role_divergence": "ROLE_SOURCE_DIVERGENCE",
+   "coord": [
+    401739.85,
+    383119.047
+   ],
+   "source_path": "docs/ai/tasks/ticket-493-place-network/samples/road-links.csv",
+   "source_hash_key": "road-links.csv",
+   "piece_id": 2138,
+   "source_field": "start_x/start_y",
+   "crs": "EPSG:3057",
+   "native_source_piece": 2138,
+   "cum_km_incl_1436": 45.7405,
+   "cum_km_excl_1436": 43.1803
+  }
+ ]
+}

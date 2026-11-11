@@ -1,0 +1,52 @@
+{
+ "all_pass": true,
+ "results": {
+  "a_chunked_over_cap": {
+   "bytes_received": 1024,
+   "truncated": true,
+   "pass": true
+  },
+  "b_timeout": {
+   "elapsed_s": 1.0208890999201685,
+   "error": "TimeoutError: timed out",
+   "pass": true
+  },
+  "c_redirect_not_followed": {
+   "status": 302,
+   "is_redirect": true,
+   "redirect_location": "https://example.invalid/elsewhere",
+   "pass": true
+  },
+  "d_http_error_status": {
+   "status": 503,
+   "pass": true
+  },
+  "e_hostname_allowlist_rejection": {
+   "pass": true,
+   "note": "host '127.0.0.1' not in allowlist ['px.hagstofa.is'] -- STOP before connecting"
+  },
+  "f_ledger_write": {
+   "pass": true,
+   "fields_present": [
+    "allowlisted",
+    "bytes_received",
+    "cap_applied_bytes",
+    "elapsed_s",
+    "ended_at_utc",
+    "error",
+    "host",
+    "is_redirect",
+    "method",
+    "redirect_location",
+    "request_body",
+    "request_headers",
+    "response_headers",
+    "sha256_of_received_bytes",
+    "started_at_utc",
+    "status",
+    "truncated",
+    "url"
+   ]
+  }
+ }
+}

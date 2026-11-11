@@ -1,0 +1,117 @@
+{
+ "tests_run": 60,
+ "pieces_tested": [
+  1436,
+  2138,
+  2345,
+  2520,
+  2536,
+  3566,
+  3591,
+  3593,
+  3849,
+  3876
+ ],
+ "per_piece_role_results": {
+  "1436_ENTRY": {
+   "wrong_role_coord": true,
+   "incl_excl_swap": true,
+   "double_counted_1436": true
+  },
+  "1436_EXIT": {
+   "wrong_role_coord": true,
+   "incl_excl_swap": true,
+   "double_counted_1436": true
+  },
+  "2138_ENTRY": {
+   "wrong_role_coord": true,
+   "incl_excl_swap": true,
+   "double_counted_1436": true
+  },
+  "2138_EXIT": {
+   "wrong_role_coord": true,
+   "incl_excl_swap": true,
+   "double_counted_1436": true
+  },
+  "2345_ENTRY": {
+   "wrong_role_coord": true,
+   "incl_excl_swap": true,
+   "double_counted_1436": true
+  },
+  "2345_EXIT": {
+   "wrong_role_coord": true,
+   "incl_excl_swap": true,
+   "double_counted_1436": true
+  },
+  "2520_ENTRY": {
+   "wrong_role_coord": true,
+   "incl_excl_swap": true,
+   "double_counted_1436": true
+  },
+  "2520_EXIT": {
+   "wrong_role_coord": true,
+   "incl_excl_swap": true,
+   "double_counted_1436": true
+  },
+  "2536_ENTRY": {
+   "wrong_role_coord": true,
+   "incl_excl_swap": true,
+   "double_counted_1436": true
+  },
+  "2536_EXIT": {
+   "wrong_role_coord": true,
+   "incl_excl_swap": true,
+   "double_counted_1436": true
+  },
+  "3566_ENTRY": {
+   "wrong_role_coord": true,
+   "incl_excl_swap": true,
+   "double_counted_1436": true
+  },
+  "3566_EXIT": {
+   "wrong_role_coord": true,
+   "incl_excl_swap": true,
+   "double_counted_1436": true
+  },
+  "3591_ENTRY": {
+   "wrong_role_coord": true,
+   "incl_excl_swap": true,
+   "double_counted_1436": true
+  },
+  "3591_EXIT": {
+   "wrong_role_coord": true,
+   "incl_excl_swap": true,
+   "double_counted_1436": true
+  },
+  "3593_ENTRY": {
+   "wrong_role_coord": true,
+   "incl_excl_swap": true,
+   "double_counted_1436": true
+  },
+  "3593_EXIT": {
+   "wrong_role_coord": true,
+   "incl_excl_swap": true,
+   "double_counted_1436": true
+  },
+  "3849_ENTRY": {
+   "wrong_role_coord": true,
+   "incl_excl_swap": true,
+   "double_counted_1436": true
+  },
+  "3849_EXIT": {
+   "wrong_role_coord": true,
+   "incl_excl_swap": true,
+   "double_counted_1436": true
+  },
+  "3876_ENTRY": {
+   "wrong_role_coord": true,
+   "incl_excl_swap": true,
+   "double_counted_1436": true
+  },
+  "3876_EXIT": {
+   "wrong_role_coord": true,
+   "incl_excl_swap": true,
+   "double_counted_1436": true
+  }
+ }
+}

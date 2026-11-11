@@ -1,0 +1,40 @@
+{
+ "ledger_line_count": 3,
+ "integrity_checks": [
+  {
+   "raw_file": "metadata-MAN030106-raw.json",
+   "ledger_sha256": "f3cd482f2596a4752b991447966c9ed607186d2ecb6b0678a68ee3a7877c13bf",
+   "actual_sha256": "f3cd482f2596a4752b991447966c9ed607186d2ecb6b0678a68ee3a7877c13bf",
+   "hash_match": true,
+   "ledger_bytes": 5055,
+   "actual_bytes": 5055,
+   "bytes_match": true
+  },
+  {
+   "raw_file": "data-MAN030106-raw.json",
+   "ledger_sha256": "913c4ea7c2258e7967ab67da57f65dc735562b3476df4fdffe7af91ece8fc0f8",
+   "actual_sha256": "913c4ea7c2258e7967ab67da57f65dc735562b3476df4fdffe7af91ece8fc0f8",
+   "hash_match": true,
+   "ledger_bytes": 6091,
+   "actual_bytes": 6091,
+   "bytes_match": true
+  },
+  {
+   "raw_file": "wfs93-raw.json",
+   "ledger_sha256": "1d8c9cf880df374b9cb8120e1053e8ffd5acfba3d4bf55714e57ffdd8c49eb33",
+   "actual_sha256": "1d8c9cf880df374b9cb8120e1053e8ffd5acfba3d4bf55714e57ffdd8c49eb33",
+   "hash_match": true,
+   "ledger_bytes": 37991,
+   "actual_bytes": 37991,
+   "bytes_match": true
+  }
+ ],
+ "all_3_of_3_pass": true,
+ "this_proves": "the retained bytes are exactly what the ledgered exchanges received -- NOT that any guard/protection mechanism was exercised",
+ "limitations_untested_unenforced": {
+  "mid_body_stall": "a response stalling mid-body can present as status=200, error=None, truncated=false, 0 bytes, with only timeout=true set; exchange*.py never checks that key (Jonesy's own 127.0.0.1 sandbox finding, result-review.md S7 -- cited as hers, not re-run this round, no new network attempt authorised)",
+  "socket_vs_wallclock_timeout": "the 20s limit is a socket timeout, not a wall-clock total (same source)",
+  "remaining_budget_not_exercised": "remaining_total_budget_bytes was never actually sent in any of the 3 real requests -- cap_applied_bytes=8388608 in all three ledger lines, so the min() cap was only exercised indirectly",
+  "aggregate_guards_absent": "no code guards the aggregate exchange count or elapsed time across exchanges"
+ }
+}

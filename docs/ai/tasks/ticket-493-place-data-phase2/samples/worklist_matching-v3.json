@@ -1,0 +1,1944 @@
+{
+ "work_list_extraction": {
+  "input_cell_count": 74,
+  "excluded_non_places": [
+   {
+    "region": "Vestfirðir og Strandir",
+    "source_col": "ring_or_nearby",
+    "name": "Gatnamót tenginga við veg 1",
+    "reason": "names a type of road-junction connection, not a settlement"
+   }
+  ],
+  "editorial_text_stripped": [
+   {
+    "region": "Austurland",
+    "source_col": "connecting_road",
+    "before": "Stöðvarfjörður og fleiri firðir eftir nákvæmri yfirferð tenginga",
+    "after": "Stöðvarfjörður"
+   }
+  ],
+  "cleaned_count_before_merge": 73,
+  "output_row_count_after_merge": 72,
+  "rows": [
+   {
+    "name": "Reykjavík",
+    "sources": [
+     {
+      "region": "Höfuðborgarsvæði og Reykjanes",
+      "source_col": "ring_or_nearby"
+     }
+    ]
+   },
+   {
+    "name": "Mosfellsbær",
+    "sources": [
+     {
+      "region": "Höfuðborgarsvæði og Reykjanes",
+      "source_col": "ring_or_nearby"
+     }
+    ]
+   },
+   {
+    "name": "Kópavogur",
+    "sources": [
+     {
+      "region": "Höfuðborgarsvæði og Reykjanes",
+      "source_col": "connecting_road"
+     }
+    ]
+   },
+   {
+    "name": "Garðabær",
+    "sources": [
+     {
+      "region": "Höfuðborgarsvæði og Reykjanes",
+      "source_col": "connecting_road"
+     }
+    ]
+   },
+   {
+    "name": "Hafnarfjörður",
+    "sources": [
+     {
+      "region": "Höfuðborgarsvæði og Reykjanes",
+      "source_col": "connecting_road"
+     }
+    ]
+   },
+   {
+    "name": "Reykjanesbær",
+    "sources": [
+     {
+      "region": "Höfuðborgarsvæði og Reykjanes",
+      "source_col": "connecting_road"
+     }
+    ]
+   },
+   {
+    "name": "Grindavík",
+    "sources": [
+     {
+      "region": "Höfuðborgarsvæði og Reykjanes",
+      "source_col": "connecting_road"
+     }
+    ]
+   },
+   {
+    "name": "Vogar",
+    "sources": [
+     {
+      "region": "Höfuðborgarsvæði og Reykjanes",
+      "source_col": "connecting_road"
+     }
+    ]
+   },
+   {
+    "name": "Sandgerði",
+    "sources": [
+     {
+      "region": "Höfuðborgarsvæði og Reykjanes",
+      "source_col": "connecting_road"
+     }
+    ]
+   },
+   {
+    "name": "Garður",
+    "sources": [
+     {
+      "region": "Höfuðborgarsvæði og Reykjanes",
+      "source_col": "connecting_road"
+     }
+    ]
+   },
+   {
+    "name": "Borgarnes",
+    "sources": [
+     {
+      "region": "Vesturland",
+      "source_col": "ring_or_nearby"
+     }
+    ]
+   },
+   {
+    "name": "Bifröst",
+    "sources": [
+     {
+      "region": "Vesturland",
+      "source_col": "ring_or_nearby"
+     }
+    ]
+   },
+   {
+    "name": "Akranes",
+    "sources": [
+     {
+      "region": "Vesturland",
+      "source_col": "connecting_road"
+     }
+    ]
+   },
+   {
+    "name": "Stykkishólmur",
+    "sources": [
+     {
+      "region": "Vesturland",
+      "source_col": "connecting_road"
+     }
+    ]
+   },
+   {
+    "name": "Grundarfjörður",
+    "sources": [
+     {
+      "region": "Vesturland",
+      "source_col": "connecting_road"
+     }
+    ]
+   },
+   {
+    "name": "Ólafsvík",
+    "sources": [
+     {
+      "region": "Vesturland",
+      "source_col": "connecting_road"
+     }
+    ]
+   },
+   {
+    "name": "Hellissandur",
+    "sources": [
+     {
+      "region": "Vesturland",
+      "source_col": "connecting_road"
+     }
+    ]
+   },
+   {
+    "name": "Búðardalur",
+    "sources": [
+     {
+      "region": "Vesturland",
+      "source_col": "connecting_road"
+     }
+    ]
+   },
+   {
+    "name": "Ísafjörður",
+    "sources": [
+     {
+      "region": "Vestfirðir og Strandir",
+      "source_col": "connecting_road"
+     }
+    ]
+   },
+   {
+    "name": "Bolungarvík",
+    "sources": [
+     {
+      "region": "Vestfirðir og Strandir",
+      "source_col": "connecting_road"
+     }
+    ]
+   },
+   {
+    "name": "Súðavík",
+    "sources": [
+     {
+      "region": "Vestfirðir og Strandir",
+      "source_col": "connecting_road"
+     }
+    ]
+   },
+   {
+    "name": "Suðureyri",
+    "sources": [
+     {
+      "region": "Vestfirðir og Strandir",
+      "source_col": "connecting_road"
+     }
+    ]
+   },
+   {
+    "name": "Flateyri",
+    "sources": [
+     {
+      "region": "Vestfirðir og Strandir",
+      "source_col": "connecting_road"
+     }
+    ]
+   },
+   {
+    "name": "Þingeyri",
+    "sources": [
+     {
+      "region": "Vestfirðir og Strandir",
+      "source_col": "connecting_road"
+     }
+    ]
+   },
+   {
+    "name": "Bíldudalur",
+    "sources": [
+     {
+      "region": "Vestfirðir og Strandir",
+      "source_col": "connecting_road"
+     }
+    ]
+   },
+   {
+    "name": "Tálknafjörður",
+    "sources": [
+     {
+      "region": "Vestfirðir og Strandir",
+      "source_col": "connecting_road"
+     }
+    ]
+   },
+   {
+    "name": "Patreksfjörður",
+    "sources": [
+     {
+      "region": "Vestfirðir og Strandir",
+      "source_col": "connecting_road"
+     }
+    ]
+   },
+   {
+    "name": "Hólmavík",
+    "sources": [
+     {
+      "region": "Vestfirðir og Strandir",
+      "source_col": "connecting_road"
+     }
+    ]
+   },
+   {
+    "name": "Hvammstangi",
+    "sources": [
+     {
+      "region": "Norðurland vestra",
+      "source_col": "ring_or_nearby"
+     }
+    ]
+   },
+   {
+    "name": "Blönduós",
+    "sources": [
+     {
+      "region": "Norðurland vestra",
+      "source_col": "ring_or_nearby"
+     }
+    ]
+   },
+   {
+    "name": "Varmahlíð",
+    "sources": [
+     {
+      "region": "Norðurland vestra",
+      "source_col": "ring_or_nearby"
+     }
+    ]
+   },
+   {
+    "name": "Skagaströnd",
+    "sources": [
+     {
+      "region": "Norðurland vestra",
+      "source_col": "connecting_road"
+     }
+    ]
+   },
+   {
+    "name": "Sauðárkrókur",
+    "sources": [
+     {
+      "region": "Norðurland vestra",
+      "source_col": "connecting_road"
+     }
+    ]
+   },
+   {
+    "name": "Hofsós",
+    "sources": [
+     {
+      "region": "Norðurland vestra",
+      "source_col": "connecting_road"
+     }
+    ]
+   },
+   {
+    "name": "Siglufjörður",
+    "sources": [
+     {
+      "region": "Norðurland vestra",
+      "source_col": "connecting_road"
+     }
+    ]
+   },
+   {
+    "name": "Akureyri",
+    "sources": [
+     {
+      "region": "Norðurland eystra",
+      "source_col": "ring_or_nearby"
+     }
+    ]
+   },
+   {
+    "name": "Reykjahlíð",
+    "sources": [
+     {
+      "region": "Norðurland eystra",
+      "source_col": "ring_or_nearby"
+     }
+    ]
+   },
+   {
+    "name": "Laugar",
+    "sources": [
+     {
+      "region": "Norðurland eystra",
+      "source_col": "ring_or_nearby"
+     }
+    ]
+   },
+   {
+    "name": "Hrafnagil",
+    "sources": [
+     {
+      "region": "Norðurland eystra",
+      "source_col": "connecting_road"
+     }
+    ]
+   },
+   {
+    "name": "Dalvík",
+    "sources": [
+     {
+      "region": "Norðurland eystra",
+      "source_col": "connecting_road"
+     }
+    ]
+   },
+   {
+    "name": "Ólafsfjörður",
+    "sources": [
+     {
+      "region": "Norðurland eystra",
+      "source_col": "connecting_road"
+     }
+    ]
+   },
+   {
+    "name": "Grenivík",
+    "sources": [
+     {
+      "region": "Norðurland eystra",
+      "source_col": "connecting_road"
+     }
+    ]
+   },
+   {
+    "name": "Húsavík",
+    "sources": [
+     {
+      "region": "Norðurland eystra",
+      "source_col": "connecting_road"
+     }
+    ]
+   },
+   {
+    "name": "Kópasker",
+    "sources": [
+     {
+      "region": "Norðurland eystra",
+      "source_col": "connecting_road"
+     }
+    ]
+   },
+   {
+    "name": "Raufarhöfn",
+    "sources": [
+     {
+      "region": "Norðurland eystra",
+      "source_col": "connecting_road"
+     }
+    ]
+   },
+   {
+    "name": "Þórshöfn",
+    "sources": [
+     {
+      "region": "Norðurland eystra",
+      "source_col": "connecting_road"
+     }
+    ]
+   },
+   {
+    "name": "Egilsstaðir",
+    "sources": [
+     {
+      "region": "Austurland",
+      "source_col": "ring_or_nearby"
+     }
+    ]
+   },
+   {
+    "name": "Fellabær",
+    "sources": [
+     {
+      "region": "Austurland",
+      "source_col": "ring_or_nearby"
+     }
+    ]
+   },
+   {
+    "name": "Reyðarfjörður",
+    "sources": [
+     {
+      "region": "Austurland",
+      "source_col": "ring_or_nearby"
+     }
+    ]
+   },
+   {
+    "name": "Fáskrúðsfjörður",
+    "sources": [
+     {
+      "region": "Austurland",
+      "source_col": "ring_or_nearby"
+     }
+    ]
+   },
+   {
+    "name": "Stöðvarfjörður",
+    "sources": [
+     {
+      "region": "Austurland",
+      "source_col": "ring_or_nearby"
+     },
+     {
+      "region": "Austurland",
+      "source_col": "connecting_road"
+     }
+    ]
+   },
+   {
+    "name": "Breiðdalsvík",
+    "sources": [
+     {
+      "region": "Austurland",
+      "source_col": "ring_or_nearby"
+     }
+    ]
+   },
+   {
+    "name": "Djúpivogur",
+    "sources": [
+     {
+      "region": "Austurland",
+      "source_col": "ring_or_nearby"
+     }
+    ]
+   },
+   {
+    "name": "Vopnafjörður",
+    "sources": [
+     {
+      "region": "Austurland",
+      "source_col": "connecting_road"
+     }
+    ]
+   },
+   {
+    "name": "Borgarfjörður eystri",
+    "sources": [
+     {
+      "region": "Austurland",
+      "source_col": "connecting_road"
+     }
+    ]
+   },
+   {
+    "name": "Seyðisfjörður",
+    "sources": [
+     {
+      "region": "Austurland",
+      "source_col": "connecting_road"
+     }
+    ]
+   },
+   {
+    "name": "Eskifjörður",
+    "sources": [
+     {
+      "region": "Austurland",
+      "source_col": "connecting_road"
+     }
+    ]
+   },
+   {
+    "name": "Neskaupstaður",
+    "sources": [
+     {
+      "region": "Austurland",
+      "source_col": "connecting_road"
+     }
+    ]
+   },
+   {
+    "name": "Höfn",
+    "sources": [
+     {
+      "region": "Suðaustur- og Suðurland",
+      "source_col": "ring_or_nearby"
+     }
+    ]
+   },
+   {
+    "name": "Kirkjubæjarklaustur",
+    "sources": [
+     {
+      "region": "Suðaustur- og Suðurland",
+      "source_col": "ring_or_nearby"
+     }
+    ]
+   },
+   {
+    "name": "Vík",
+    "sources": [
+     {
+      "region": "Suðaustur- og Suðurland",
+      "source_col": "ring_or_nearby"
+     }
+    ]
+   },
+   {
+    "name": "Hvolsvöllur",
+    "sources": [
+     {
+      "region": "Suðaustur- og Suðurland",
+      "source_col": "ring_or_nearby"
+     }
+    ]
+   },
+   {
+    "name": "Hella",
+    "sources": [
+     {
+      "region": "Suðaustur- og Suðurland",
+      "source_col": "ring_or_nearby"
+     }
+    ]
+   },
+   {
+    "name": "Selfoss",
+    "sources": [
+     {
+      "region": "Suðaustur- og Suðurland",
+      "source_col": "ring_or_nearby"
+     }
+    ]
+   },
+   {
+    "name": "Hveragerði",
+    "sources": [
+     {
+      "region": "Suðaustur- og Suðurland",
+      "source_col": "ring_or_nearby"
+     }
+    ]
+   },
+   {
+    "name": "Þorlákshöfn",
+    "sources": [
+     {
+      "region": "Suðaustur- og Suðurland",
+      "source_col": "connecting_road"
+     }
+    ]
+   },
+   {
+    "name": "Eyrarbakki",
+    "sources": [
+     {
+      "region": "Suðaustur- og Suðurland",
+      "source_col": "connecting_road"
+     }
+    ]
+   },
+   {
+    "name": "Stokkseyri",
+    "sources": [
+     {
+      "region": "Suðaustur- og Suðurland",
+      "source_col": "connecting_road"
+     }
+    ]
+   },
+   {
+    "name": "Flúðir",
+    "sources": [
+     {
+      "region": "Suðaustur- og Suðurland",
+      "source_col": "connecting_road"
+     }
+    ]
+   },
+   {
+    "name": "Laugarvatn",
+    "sources": [
+     {
+      "region": "Suðaustur- og Suðurland",
+      "source_col": "connecting_road"
+     }
+    ]
+   },
+   {
+    "name": "Reykholt",
+    "sources": [
+     {
+      "region": "Suðaustur- og Suðurland",
+      "source_col": "connecting_road"
+     }
+    ]
+   },
+   {
+    "name": "Laugarás",
+    "sources": [
+     {
+      "region": "Suðaustur- og Suðurland",
+      "source_col": "connecting_road"
+     }
+    ]
+   }
+  ]
+ },
+ "hagstofa_matching": [
+  {
+   "work_list_name": "Reykjavík",
+   "source_reference": "Höfuðborgarsvæði og Reykjanes/ring_or_nearby",
+   "status": "MATCHED",
+   "match_type": "EXACT",
+   "candidates": [
+    {
+     "name": "Reykjavík",
+     "code": "50"
+    }
+   ],
+   "flags": {
+    "zero_population": false,
+    "is_rural_aggregate": false
+   },
+   "included_in_code_50_inferred": false,
+   "reason": "exact NFC match against Hagstofa settlement name 'Reykjavík'"
+  },
+  {
+   "work_list_name": "Mosfellsbær",
+   "source_reference": "Höfuðborgarsvæði og Reykjanes/ring_or_nearby",
+   "status": "MATCHED",
+   "match_type": "EXACT",
+   "candidates": [
+    {
+     "name": "Mosfellsbær",
+     "code": "70"
+    }
+   ],
+   "flags": {
+    "zero_population": true,
+    "is_rural_aggregate": false
+   },
+   "included_in_code_50_inferred": false,
+   "reason": "exact NFC match against Hagstofa settlement name 'Mosfellsbær'; matched code has population 0 in 2025, interpretation NOT_DETERMINED (not asserted discontinued/reclassified)"
+  },
+  {
+   "work_list_name": "Kópavogur",
+   "source_reference": "Höfuðborgarsvæði og Reykjanes/connecting_road",
+   "status": "UNMATCHED",
+   "match_type": "NONE",
+   "candidates": [],
+   "flags": {},
+   "included_in_code_50_inferred": true,
+   "reason": "no exact or single-prefix Hagstofa name match for 'Kópavogur'; proposed INCLUDED_IN_CODE_50_INFERRED (classification step: no row of its own anywhere in the 120-row table) -- INFERRED, not a confirmed boundary, no population figure duplicated"
+  },
+  {
+   "work_list_name": "Garðabær",
+   "source_reference": "Höfuðborgarsvæði og Reykjanes/connecting_road",
+   "status": "UNMATCHED",
+   "match_type": "NONE",
+   "candidates": [],
+   "flags": {},
+   "included_in_code_50_inferred": true,
+   "reason": "no exact or single-prefix Hagstofa name match for 'Garðabær'; proposed INCLUDED_IN_CODE_50_INFERRED (classification step: no row of its own anywhere in the 120-row table) -- INFERRED, not a confirmed boundary, no population figure duplicated"
+  },
+  {
+   "work_list_name": "Hafnarfjörður",
+   "source_reference": "Höfuðborgarsvæði og Reykjanes/connecting_road",
+   "status": "UNMATCHED",
+   "match_type": "NONE",
+   "candidates": [],
+   "flags": {},
+   "included_in_code_50_inferred": true,
+   "reason": "no exact or single-prefix Hagstofa name match for 'Hafnarfjörður'; proposed INCLUDED_IN_CODE_50_INFERRED (classification step: no row of its own anywhere in the 120-row table) -- INFERRED, not a confirmed boundary, no population figure duplicated"
+  },
+  {
+   "work_list_name": "Reykjanesbær",
+   "source_reference": "Höfuðborgarsvæði og Reykjanes/connecting_road",
+   "status": "UNMATCHED",
+   "match_type": "NONE",
+   "candidates": [],
+   "flags": {},
+   "included_in_code_50_inferred": false,
+   "reason": "no exact or single-prefix Hagstofa name match for 'Reykjanesbær'; no INCLUDED_IN_CODE_50_INFERRED or other grouping proposal found in retained data"
+  },
+  {
+   "work_list_name": "Grindavík",
+   "source_reference": "Höfuðborgarsvæði og Reykjanes/connecting_road",
+   "status": "MATCHED",
+   "match_type": "EXACT",
+   "candidates": [
+    {
+     "name": "Grindavík",
+     "code": "110"
+    }
+   ],
+   "flags": {
+    "zero_population": false,
+    "is_rural_aggregate": false
+   },
+   "included_in_code_50_inferred": false,
+   "reason": "exact NFC match against Hagstofa settlement name 'Grindavík'"
+  },
+  {
+   "work_list_name": "Vogar",
+   "source_reference": "Höfuðborgarsvæði og Reykjanes/connecting_road",
+   "status": "MATCHED",
+   "match_type": "EXACT",
+   "candidates": [
+    {
+     "name": "Vogar",
+     "code": "160"
+    }
+   ],
+   "flags": {
+    "zero_population": false,
+    "is_rural_aggregate": false
+   },
+   "included_in_code_50_inferred": false,
+   "reason": "exact NFC match against Hagstofa settlement name 'Vogar'"
+  },
+  {
+   "work_list_name": "Sandgerði",
+   "source_reference": "Höfuðborgarsvæði og Reykjanes/connecting_road",
+   "status": "MATCHED",
+   "match_type": "EXACT",
+   "candidates": [
+    {
+     "name": "Sandgerði",
+     "code": "120"
+    }
+   ],
+   "flags": {
+    "zero_population": false,
+    "is_rural_aggregate": false
+   },
+   "included_in_code_50_inferred": false,
+   "reason": "exact NFC match against Hagstofa settlement name 'Sandgerði'"
+  },
+  {
+   "work_list_name": "Garður",
+   "source_reference": "Höfuðborgarsvæði og Reykjanes/connecting_road",
+   "status": "MATCHED",
+   "match_type": "EXACT",
+   "candidates": [
+    {
+     "name": "Garður",
+     "code": "130"
+    }
+   ],
+   "flags": {
+    "zero_population": false,
+    "is_rural_aggregate": false
+   },
+   "included_in_code_50_inferred": false,
+   "reason": "exact NFC match against Hagstofa settlement name 'Garður'"
+  },
+  {
+   "work_list_name": "Borgarnes",
+   "source_reference": "Vesturland/ring_or_nearby",
+   "status": "MATCHED",
+   "match_type": "EXACT",
+   "candidates": [
+    {
+     "name": "Borgarnes",
+     "code": "200"
+    }
+   ],
+   "flags": {
+    "zero_population": false,
+    "is_rural_aggregate": false
+   },
+   "included_in_code_50_inferred": false,
+   "reason": "exact NFC match against Hagstofa settlement name 'Borgarnes'"
+  },
+  {
+   "work_list_name": "Bifröst",
+   "source_reference": "Vesturland/ring_or_nearby",
+   "status": "MATCHED",
+   "match_type": "EXACT",
+   "candidates": [
+    {
+     "name": "Bifröst",
+     "code": "205"
+    }
+   ],
+   "flags": {
+    "zero_population": false,
+    "is_rural_aggregate": false
+   },
+   "included_in_code_50_inferred": false,
+   "reason": "exact NFC match against Hagstofa settlement name 'Bifröst'"
+  },
+  {
+   "work_list_name": "Akranes",
+   "source_reference": "Vesturland/connecting_road",
+   "status": "MATCHED",
+   "match_type": "EXACT",
+   "candidates": [
+    {
+     "name": "Akranes",
+     "code": "190"
+    }
+   ],
+   "flags": {
+    "zero_population": false,
+    "is_rural_aggregate": false
+   },
+   "included_in_code_50_inferred": false,
+   "reason": "exact NFC match against Hagstofa settlement name 'Akranes'"
+  },
+  {
+   "work_list_name": "Stykkishólmur",
+   "source_reference": "Vesturland/connecting_road",
+   "status": "MATCHED",
+   "match_type": "EXACT",
+   "candidates": [
+    {
+     "name": "Stykkishólmur",
+     "code": "240"
+    }
+   ],
+   "flags": {
+    "zero_population": false,
+    "is_rural_aggregate": false
+   },
+   "included_in_code_50_inferred": false,
+   "reason": "exact NFC match against Hagstofa settlement name 'Stykkishólmur'"
+  },
+  {
+   "work_list_name": "Grundarfjörður",
+   "source_reference": "Vesturland/connecting_road",
+   "status": "MATCHED",
+   "match_type": "EXACT",
+   "candidates": [
+    {
+     "name": "Grundarfjörður",
+     "code": "230"
+    }
+   ],
+   "flags": {
+    "zero_population": false,
+    "is_rural_aggregate": false
+   },
+   "included_in_code_50_inferred": false,
+   "reason": "exact NFC match against Hagstofa settlement name 'Grundarfjörður'"
+  },
+  {
+   "work_list_name": "Ólafsvík",
+   "source_reference": "Vesturland/connecting_road",
+   "status": "MATCHED",
+   "match_type": "EXACT",
+   "candidates": [
+    {
+     "name": "Ólafsvík",
+     "code": "220"
+    }
+   ],
+   "flags": {
+    "zero_population": false,
+    "is_rural_aggregate": false
+   },
+   "included_in_code_50_inferred": false,
+   "reason": "exact NFC match against Hagstofa settlement name 'Ólafsvík'"
+  },
+  {
+   "work_list_name": "Hellissandur",
+   "source_reference": "Vesturland/connecting_road",
+   "status": "MATCHED",
+   "match_type": "EXACT",
+   "candidates": [
+    {
+     "name": "Hellissandur",
+     "code": "210"
+    }
+   ],
+   "flags": {
+    "zero_population": false,
+    "is_rural_aggregate": false
+   },
+   "included_in_code_50_inferred": false,
+   "reason": "exact NFC match against Hagstofa settlement name 'Hellissandur'"
+  },
+  {
+   "work_list_name": "Búðardalur",
+   "source_reference": "Vesturland/connecting_road",
+   "status": "MATCHED",
+   "match_type": "EXACT",
+   "candidates": [
+    {
+     "name": "Búðardalur",
+     "code": "250"
+    }
+   ],
+   "flags": {
+    "zero_population": false,
+    "is_rural_aggregate": false
+   },
+   "included_in_code_50_inferred": false,
+   "reason": "exact NFC match against Hagstofa settlement name 'Búðardalur'"
+  },
+  {
+   "work_list_name": "Ísafjörður",
+   "source_reference": "Vestfirðir og Strandir/connecting_road",
+   "status": "MATCHED",
+   "match_type": "EXACT",
+   "candidates": [
+    {
+     "name": "Ísafjörður",
+     "code": "410"
+    }
+   ],
+   "flags": {
+    "zero_population": false,
+    "is_rural_aggregate": false
+   },
+   "included_in_code_50_inferred": false,
+   "reason": "exact NFC match against Hagstofa settlement name 'Ísafjörður'"
+  },
+  {
+   "work_list_name": "Bolungarvík",
+   "source_reference": "Vestfirðir og Strandir/connecting_road",
+   "status": "MATCHED",
+   "match_type": "EXACT",
+   "candidates": [
+    {
+     "name": "Bolungarvík",
+     "code": "400"
+    }
+   ],
+   "flags": {
+    "zero_population": false,
+    "is_rural_aggregate": false
+   },
+   "included_in_code_50_inferred": false,
+   "reason": "exact NFC match against Hagstofa settlement name 'Bolungarvík'"
+  },
+  {
+   "work_list_name": "Súðavík",
+   "source_reference": "Vestfirðir og Strandir/connecting_road",
+   "status": "MATCHED",
+   "match_type": "EXACT",
+   "candidates": [
+    {
+     "name": "Súðavík",
+     "code": "430"
+    }
+   ],
+   "flags": {
+    "zero_population": false,
+    "is_rural_aggregate": false
+   },
+   "included_in_code_50_inferred": false,
+   "reason": "exact NFC match against Hagstofa settlement name 'Súðavík'"
+  },
+  {
+   "work_list_name": "Suðureyri",
+   "source_reference": "Vestfirðir og Strandir/connecting_road",
+   "status": "MATCHED",
+   "match_type": "EXACT",
+   "candidates": [
+    {
+     "name": "Suðureyri",
+     "code": "390"
+    }
+   ],
+   "flags": {
+    "zero_population": false,
+    "is_rural_aggregate": false
+   },
+   "included_in_code_50_inferred": false,
+   "reason": "exact NFC match against Hagstofa settlement name 'Suðureyri'"
+  },
+  {
+   "work_list_name": "Flateyri",
+   "source_reference": "Vestfirðir og Strandir/connecting_road",
+   "status": "MATCHED",
+   "match_type": "EXACT",
+   "candidates": [
+    {
+     "name": "Flateyri",
+     "code": "380"
+    }
+   ],
+   "flags": {
+    "zero_population": false,
+    "is_rural_aggregate": false
+   },
+   "included_in_code_50_inferred": false,
+   "reason": "exact NFC match against Hagstofa settlement name 'Flateyri'"
+  },
+  {
+   "work_list_name": "Þingeyri",
+   "source_reference": "Vestfirðir og Strandir/connecting_road",
+   "status": "MATCHED",
+   "match_type": "EXACT",
+   "candidates": [
+    {
+     "name": "Þingeyri",
+     "code": "370"
+    }
+   ],
+   "flags": {
+    "zero_population": false,
+    "is_rural_aggregate": false
+   },
+   "included_in_code_50_inferred": false,
+   "reason": "exact NFC match against Hagstofa settlement name 'Þingeyri'"
+  },
+  {
+   "work_list_name": "Bíldudalur",
+   "source_reference": "Vestfirðir og Strandir/connecting_road",
+   "status": "MATCHED",
+   "match_type": "EXACT",
+   "candidates": [
+    {
+     "name": "Bíldudalur",
+     "code": "360"
+    }
+   ],
+   "flags": {
+    "zero_population": false,
+    "is_rural_aggregate": false
+   },
+   "included_in_code_50_inferred": false,
+   "reason": "exact NFC match against Hagstofa settlement name 'Bíldudalur'"
+  },
+  {
+   "work_list_name": "Tálknafjörður",
+   "source_reference": "Vestfirðir og Strandir/connecting_road",
+   "status": "MATCHED",
+   "match_type": "EXACT",
+   "candidates": [
+    {
+     "name": "Tálknafjörður",
+     "code": "350"
+    }
+   ],
+   "flags": {
+    "zero_population": false,
+    "is_rural_aggregate": false
+   },
+   "included_in_code_50_inferred": false,
+   "reason": "exact NFC match against Hagstofa settlement name 'Tálknafjörður'"
+  },
+  {
+   "work_list_name": "Patreksfjörður",
+   "source_reference": "Vestfirðir og Strandir/connecting_road",
+   "status": "MATCHED",
+   "match_type": "EXACT",
+   "candidates": [
+    {
+     "name": "Patreksfjörður",
+     "code": "340"
+    }
+   ],
+   "flags": {
+    "zero_population": false,
+    "is_rural_aggregate": false
+   },
+   "included_in_code_50_inferred": false,
+   "reason": "exact NFC match against Hagstofa settlement name 'Patreksfjörður'"
+  },
+  {
+   "work_list_name": "Hólmavík",
+   "source_reference": "Vestfirðir og Strandir/connecting_road",
+   "status": "MATCHED",
+   "match_type": "EXACT",
+   "candidates": [
+    {
+     "name": "Hólmavík",
+     "code": "440"
+    }
+   ],
+   "flags": {
+    "zero_population": false,
+    "is_rural_aggregate": false
+   },
+   "included_in_code_50_inferred": false,
+   "reason": "exact NFC match against Hagstofa settlement name 'Hólmavík'"
+  },
+  {
+   "work_list_name": "Hvammstangi",
+   "source_reference": "Norðurland vestra/ring_or_nearby",
+   "status": "MATCHED",
+   "match_type": "EXACT",
+   "candidates": [
+    {
+     "name": "Hvammstangi",
+     "code": "530"
+    }
+   ],
+   "flags": {
+    "zero_population": false,
+    "is_rural_aggregate": false
+   },
+   "included_in_code_50_inferred": false,
+   "reason": "exact NFC match against Hagstofa settlement name 'Hvammstangi'"
+  },
+  {
+   "work_list_name": "Blönduós",
+   "source_reference": "Norðurland vestra/ring_or_nearby",
+   "status": "MATCHED",
+   "match_type": "EXACT",
+   "candidates": [
+    {
+     "name": "Blönduós",
+     "code": "540"
+    }
+   ],
+   "flags": {
+    "zero_population": false,
+    "is_rural_aggregate": false
+   },
+   "included_in_code_50_inferred": false,
+   "reason": "exact NFC match against Hagstofa settlement name 'Blönduós'"
+  },
+  {
+   "work_list_name": "Varmahlíð",
+   "source_reference": "Norðurland vestra/ring_or_nearby",
+   "status": "MATCHED",
+   "match_type": "EXACT",
+   "candidates": [
+    {
+     "name": "Varmahlíð",
+     "code": "561"
+    }
+   ],
+   "flags": {
+    "zero_population": false,
+    "is_rural_aggregate": false
+   },
+   "included_in_code_50_inferred": false,
+   "reason": "exact NFC match against Hagstofa settlement name 'Varmahlíð'"
+  },
+  {
+   "work_list_name": "Skagaströnd",
+   "source_reference": "Norðurland vestra/connecting_road",
+   "status": "MATCHED",
+   "match_type": "EXACT",
+   "candidates": [
+    {
+     "name": "Skagaströnd",
+     "code": "550"
+    }
+   ],
+   "flags": {
+    "zero_population": false,
+    "is_rural_aggregate": false
+   },
+   "included_in_code_50_inferred": false,
+   "reason": "exact NFC match against Hagstofa settlement name 'Skagaströnd'"
+  },
+  {
+   "work_list_name": "Sauðárkrókur",
+   "source_reference": "Norðurland vestra/connecting_road",
+   "status": "MATCHED",
+   "match_type": "EXACT",
+   "candidates": [
+    {
+     "name": "Sauðárkrókur",
+     "code": "560"
+    }
+   ],
+   "flags": {
+    "zero_population": false,
+    "is_rural_aggregate": false
+   },
+   "included_in_code_50_inferred": false,
+   "reason": "exact NFC match against Hagstofa settlement name 'Sauðárkrókur'"
+  },
+  {
+   "work_list_name": "Hofsós",
+   "source_reference": "Norðurland vestra/connecting_road",
+   "status": "MATCHED",
+   "match_type": "EXACT",
+   "candidates": [
+    {
+     "name": "Hofsós",
+     "code": "570"
+    }
+   ],
+   "flags": {
+    "zero_population": false,
+    "is_rural_aggregate": false
+   },
+   "included_in_code_50_inferred": false,
+   "reason": "exact NFC match against Hagstofa settlement name 'Hofsós'"
+  },
+  {
+   "work_list_name": "Siglufjörður",
+   "source_reference": "Norðurland vestra/connecting_road",
+   "status": "MATCHED",
+   "match_type": "EXACT",
+   "candidates": [
+    {
+     "name": "Siglufjörður",
+     "code": "580"
+    }
+   ],
+   "flags": {
+    "zero_population": false,
+    "is_rural_aggregate": false
+   },
+   "included_in_code_50_inferred": false,
+   "reason": "exact NFC match against Hagstofa settlement name 'Siglufjörður'"
+  },
+  {
+   "work_list_name": "Akureyri",
+   "source_reference": "Norðurland eystra/ring_or_nearby",
+   "status": "MATCHED",
+   "match_type": "EXACT",
+   "candidates": [
+    {
+     "name": "Akureyri",
+     "code": "680"
+    }
+   ],
+   "flags": {
+    "zero_population": false,
+    "is_rural_aggregate": false
+   },
+   "included_in_code_50_inferred": false,
+   "reason": "exact NFC match against Hagstofa settlement name 'Akureyri'"
+  },
+  {
+   "work_list_name": "Reykjahlíð",
+   "source_reference": "Norðurland eystra/ring_or_nearby",
+   "status": "MATCHED",
+   "match_type": "EXACT",
+   "candidates": [
+    {
+     "name": "Reykjahlíð",
+     "code": "700"
+    }
+   ],
+   "flags": {
+    "zero_population": false,
+    "is_rural_aggregate": false
+   },
+   "included_in_code_50_inferred": false,
+   "reason": "exact NFC match against Hagstofa settlement name 'Reykjahlíð'"
+  },
+  {
+   "work_list_name": "Laugar",
+   "source_reference": "Norðurland eystra/ring_or_nearby",
+   "status": "MATCHED",
+   "match_type": "EXACT",
+   "candidates": [
+    {
+     "name": "Laugar",
+     "code": "701"
+    }
+   ],
+   "flags": {
+    "zero_population": false,
+    "is_rural_aggregate": false
+   },
+   "included_in_code_50_inferred": false,
+   "reason": "exact NFC match against Hagstofa settlement name 'Laugar'"
+  },
+  {
+   "work_list_name": "Hrafnagil",
+   "source_reference": "Norðurland eystra/connecting_road",
+   "status": "MATCHED",
+   "match_type": "EXACT",
+   "candidates": [
+    {
+     "name": "Hrafnagil",
+     "code": "682"
+    }
+   ],
+   "flags": {
+    "zero_population": false,
+    "is_rural_aggregate": false
+   },
+   "included_in_code_50_inferred": false,
+   "reason": "exact NFC match against Hagstofa settlement name 'Hrafnagil'"
+  },
+  {
+   "work_list_name": "Dalvík",
+   "source_reference": "Norðurland eystra/connecting_road",
+   "status": "MATCHED",
+   "match_type": "EXACT",
+   "candidates": [
+    {
+     "name": "Dalvík",
+     "code": "660"
+    }
+   ],
+   "flags": {
+    "zero_population": false,
+    "is_rural_aggregate": false
+   },
+   "included_in_code_50_inferred": false,
+   "reason": "exact NFC match against Hagstofa settlement name 'Dalvík'"
+  },
+  {
+   "work_list_name": "Ólafsfjörður",
+   "source_reference": "Norðurland eystra/connecting_road",
+   "status": "MATCHED",
+   "match_type": "EXACT",
+   "candidates": [
+    {
+     "name": "Ólafsfjörður",
+     "code": "650"
+    }
+   ],
+   "flags": {
+    "zero_population": false,
+    "is_rural_aggregate": false
+   },
+   "included_in_code_50_inferred": false,
+   "reason": "exact NFC match against Hagstofa settlement name 'Ólafsfjörður'"
+  },
+  {
+   "work_list_name": "Grenivík",
+   "source_reference": "Norðurland eystra/connecting_road",
+   "status": "MATCHED",
+   "match_type": "EXACT",
+   "candidates": [
+    {
+     "name": "Grenivík",
+     "code": "690"
+    }
+   ],
+   "flags": {
+    "zero_population": false,
+    "is_rural_aggregate": false
+   },
+   "included_in_code_50_inferred": false,
+   "reason": "exact NFC match against Hagstofa settlement name 'Grenivík'"
+  },
+  {
+   "work_list_name": "Húsavík",
+   "source_reference": "Norðurland eystra/connecting_road",
+   "status": "MATCHED",
+   "match_type": "EXACT",
+   "candidates": [
+    {
+     "name": "Húsavík",
+     "code": "710"
+    }
+   ],
+   "flags": {
+    "zero_population": false,
+    "is_rural_aggregate": false
+   },
+   "included_in_code_50_inferred": false,
+   "reason": "exact NFC match against Hagstofa settlement name 'Húsavík'"
+  },
+  {
+   "work_list_name": "Kópasker",
+   "source_reference": "Norðurland eystra/connecting_road",
+   "status": "MATCHED",
+   "match_type": "EXACT",
+   "candidates": [
+    {
+     "name": "Kópasker",
+     "code": "711"
+    }
+   ],
+   "flags": {
+    "zero_population": false,
+    "is_rural_aggregate": false
+   },
+   "included_in_code_50_inferred": false,
+   "reason": "exact NFC match against Hagstofa settlement name 'Kópasker'"
+  },
+  {
+   "work_list_name": "Raufarhöfn",
+   "source_reference": "Norðurland eystra/connecting_road",
+   "status": "MATCHED",
+   "match_type": "EXACT",
+   "candidates": [
+    {
+     "name": "Raufarhöfn",
+     "code": "720"
+    }
+   ],
+   "flags": {
+    "zero_population": false,
+    "is_rural_aggregate": false
+   },
+   "included_in_code_50_inferred": false,
+   "reason": "exact NFC match against Hagstofa settlement name 'Raufarhöfn'"
+  },
+  {
+   "work_list_name": "Þórshöfn",
+   "source_reference": "Norðurland eystra/connecting_road",
+   "status": "MATCHED",
+   "match_type": "EXACT",
+   "candidates": [
+    {
+     "name": "Þórshöfn",
+     "code": "730"
+    }
+   ],
+   "flags": {
+    "zero_population": false,
+    "is_rural_aggregate": false
+   },
+   "included_in_code_50_inferred": false,
+   "reason": "exact NFC match against Hagstofa settlement name 'Þórshöfn'"
+  },
+  {
+   "work_list_name": "Egilsstaðir",
+   "source_reference": "Austurland/ring_or_nearby",
+   "status": "MATCHED",
+   "match_type": "EXACT",
+   "candidates": [
+    {
+     "name": "Egilsstaðir",
+     "code": "902"
+    }
+   ],
+   "flags": {
+    "zero_population": false,
+    "is_rural_aggregate": false
+   },
+   "included_in_code_50_inferred": false,
+   "reason": "exact NFC match against Hagstofa settlement name 'Egilsstaðir'"
+  },
+  {
+   "work_list_name": "Fellabær",
+   "source_reference": "Austurland/ring_or_nearby",
+   "status": "MATCHED",
+   "match_type": "EXACT",
+   "candidates": [
+    {
+     "name": "Fellabær",
+     "code": "890"
+    }
+   ],
+   "flags": {
+    "zero_population": false,
+    "is_rural_aggregate": false
+   },
+   "included_in_code_50_inferred": false,
+   "reason": "exact NFC match against Hagstofa settlement name 'Fellabær'"
+  },
+  {
+   "work_list_name": "Reyðarfjörður",
+   "source_reference": "Austurland/ring_or_nearby",
+   "status": "MATCHED",
+   "match_type": "EXACT",
+   "candidates": [
+    {
+     "name": "Reyðarfjörður",
+     "code": "930"
+    }
+   ],
+   "flags": {
+    "zero_population": false,
+    "is_rural_aggregate": false
+   },
+   "included_in_code_50_inferred": false,
+   "reason": "exact NFC match against Hagstofa settlement name 'Reyðarfjörður'"
+  },
+  {
+   "work_list_name": "Fáskrúðsfjörður",
+   "source_reference": "Austurland/ring_or_nearby",
+   "status": "MATCHED",
+   "match_type": "EXACT",
+   "candidates": [
+    {
+     "name": "Fáskrúðsfjörður",
+     "code": "940"
+    }
+   ],
+   "flags": {
+    "zero_population": false,
+    "is_rural_aggregate": false
+   },
+   "included_in_code_50_inferred": false,
+   "reason": "exact NFC match against Hagstofa settlement name 'Fáskrúðsfjörður'"
+  },
+  {
+   "work_list_name": "Stöðvarfjörður",
+   "source_reference": "Austurland/ring_or_nearby, Austurland/connecting_road",
+   "status": "MATCHED",
+   "match_type": "EXACT",
+   "candidates": [
+    {
+     "name": "Stöðvarfjörður",
+     "code": "950"
+    }
+   ],
+   "flags": {
+    "zero_population": false,
+    "is_rural_aggregate": false
+   },
+   "included_in_code_50_inferred": false,
+   "reason": "exact NFC match against Hagstofa settlement name 'Stöðvarfjörður'"
+  },
+  {
+   "work_list_name": "Breiðdalsvík",
+   "source_reference": "Austurland/ring_or_nearby",
+   "status": "MATCHED",
+   "match_type": "EXACT",
+   "candidates": [
+    {
+     "name": "Breiðdalsvík",
+     "code": "960"
+    }
+   ],
+   "flags": {
+    "zero_population": false,
+    "is_rural_aggregate": false
+   },
+   "included_in_code_50_inferred": false,
+   "reason": "exact NFC match against Hagstofa settlement name 'Breiðdalsvík'"
+  },
+  {
+   "work_list_name": "Djúpivogur",
+   "source_reference": "Austurland/ring_or_nearby",
+   "status": "MATCHED",
+   "match_type": "EXACT",
+   "candidates": [
+    {
+     "name": "Djúpivogur",
+     "code": "970"
+    }
+   ],
+   "flags": {
+    "zero_population": false,
+    "is_rural_aggregate": false
+   },
+   "included_in_code_50_inferred": false,
+   "reason": "exact NFC match against Hagstofa settlement name 'Djúpivogur'"
+  },
+  {
+   "work_list_name": "Vopnafjörður",
+   "source_reference": "Austurland/connecting_road",
+   "status": "MATCHED",
+   "match_type": "EXACT",
+   "candidates": [
+    {
+     "name": "Vopnafjörður",
+     "code": "870"
+    }
+   ],
+   "flags": {
+    "zero_population": false,
+    "is_rural_aggregate": false
+   },
+   "included_in_code_50_inferred": false,
+   "reason": "exact NFC match against Hagstofa settlement name 'Vopnafjörður'"
+  },
+  {
+   "work_list_name": "Borgarfjörður eystri",
+   "source_reference": "Austurland/connecting_road",
+   "status": "MATCHED",
+   "match_type": "EXACT",
+   "candidates": [
+    {
+     "name": "Borgarfjörður eystri",
+     "code": "891"
+    }
+   ],
+   "flags": {
+    "zero_population": false,
+    "is_rural_aggregate": false
+   },
+   "included_in_code_50_inferred": false,
+   "reason": "exact NFC match against Hagstofa settlement name 'Borgarfjörður eystri'"
+  },
+  {
+   "work_list_name": "Seyðisfjörður",
+   "source_reference": "Austurland/connecting_road",
+   "status": "MATCHED",
+   "match_type": "EXACT",
+   "candidates": [
+    {
+     "name": "Seyðisfjörður",
+     "code": "900"
+    }
+   ],
+   "flags": {
+    "zero_population": false,
+    "is_rural_aggregate": false
+   },
+   "included_in_code_50_inferred": false,
+   "reason": "exact NFC match against Hagstofa settlement name 'Seyðisfjörður'"
+  },
+  {
+   "work_list_name": "Eskifjörður",
+   "source_reference": "Austurland/connecting_road",
+   "status": "MATCHED",
+   "match_type": "EXACT",
+   "candidates": [
+    {
+     "name": "Eskifjörður",
+     "code": "920"
+    }
+   ],
+   "flags": {
+    "zero_population": false,
+    "is_rural_aggregate": false
+   },
+   "included_in_code_50_inferred": false,
+   "reason": "exact NFC match against Hagstofa settlement name 'Eskifjörður'"
+  },
+  {
+   "work_list_name": "Neskaupstaður",
+   "source_reference": "Austurland/connecting_road",
+   "status": "MATCHED",
+   "match_type": "EXACT",
+   "candidates": [
+    {
+     "name": "Neskaupstaður",
+     "code": "910"
+    }
+   ],
+   "flags": {
+    "zero_population": false,
+    "is_rural_aggregate": false
+   },
+   "included_in_code_50_inferred": false,
+   "reason": "exact NFC match against Hagstofa settlement name 'Neskaupstaður'"
+  },
+  {
+   "work_list_name": "Höfn",
+   "source_reference": "Suðaustur- og Suðurland/ring_or_nearby",
+   "status": "MATCHED",
+   "match_type": "PREFIX_SINGLE",
+   "candidates": [
+    {
+     "name": "Höfn í Hornafirði",
+     "code": "980"
+    }
+   ],
+   "flags": {
+    "zero_population": false,
+    "is_rural_aggregate": false
+   },
+   "included_in_code_50_inferred": false,
+   "reason": "no exact match; exactly one Hagstofa name starts with 'Höfn' ('Höfn í Hornafirði')"
+  },
+  {
+   "work_list_name": "Kirkjubæjarklaustur",
+   "source_reference": "Suðaustur- og Suðurland/ring_or_nearby",
+   "status": "MATCHED",
+   "match_type": "EXACT",
+   "candidates": [
+    {
+     "name": "Kirkjubæjarklaustur",
+     "code": "1089"
+    }
+   ],
+   "flags": {
+    "zero_population": false,
+    "is_rural_aggregate": false
+   },
+   "included_in_code_50_inferred": false,
+   "reason": "exact NFC match against Hagstofa settlement name 'Kirkjubæjarklaustur'"
+  },
+  {
+   "work_list_name": "Vík",
+   "source_reference": "Suðaustur- og Suðurland/ring_or_nearby",
+   "status": "MATCHED",
+   "match_type": "PREFIX_SINGLE",
+   "candidates": [
+    {
+     "name": "Vík í Mýrdal",
+     "code": "1090"
+    }
+   ],
+   "flags": {
+    "zero_population": false,
+    "is_rural_aggregate": false
+   },
+   "included_in_code_50_inferred": false,
+   "reason": "no exact match; exactly one Hagstofa name starts with 'Vík' ('Vík í Mýrdal')"
+  },
+  {
+   "work_list_name": "Hvolsvöllur",
+   "source_reference": "Suðaustur- og Suðurland/ring_or_nearby",
+   "status": "MATCHED",
+   "match_type": "EXACT",
+   "candidates": [
+    {
+     "name": "Hvolsvöllur",
+     "code": "1110"
+    }
+   ],
+   "flags": {
+    "zero_population": false,
+    "is_rural_aggregate": false
+   },
+   "included_in_code_50_inferred": false,
+   "reason": "exact NFC match against Hagstofa settlement name 'Hvolsvöllur'"
+  },
+  {
+   "work_list_name": "Hella",
+   "source_reference": "Suðaustur- og Suðurland/ring_or_nearby",
+   "status": "MATCHED",
+   "match_type": "EXACT",
+   "candidates": [
+    {
+     "name": "Hella",
+     "code": "1120"
+    }
+   ],
+   "flags": {
+    "zero_population": false,
+    "is_rural_aggregate": false
+   },
+   "included_in_code_50_inferred": false,
+   "reason": "exact NFC match against Hagstofa settlement name 'Hella'"
+  },
+  {
+   "work_list_name": "Selfoss",
+   "source_reference": "Suðaustur- og Suðurland/ring_or_nearby",
+   "status": "MATCHED",
+   "match_type": "EXACT",
+   "candidates": [
+    {
+     "name": "Selfoss",
+     "code": "1150"
+    }
+   ],
+   "flags": {
+    "zero_population": false,
+    "is_rural_aggregate": false
+   },
+   "included_in_code_50_inferred": false,
+   "reason": "exact NFC match against Hagstofa settlement name 'Selfoss'"
+  },
+  {
+   "work_list_name": "Hveragerði",
+   "source_reference": "Suðaustur- og Suðurland/ring_or_nearby",
+   "status": "MATCHED",
+   "match_type": "EXACT",
+   "candidates": [
+    {
+     "name": "Hveragerði",
+     "code": "1170"
+    }
+   ],
+   "flags": {
+    "zero_population": false,
+    "is_rural_aggregate": false
+   },
+   "included_in_code_50_inferred": false,
+   "reason": "exact NFC match against Hagstofa settlement name 'Hveragerði'"
+  },
+  {
+   "work_list_name": "Þorlákshöfn",
+   "source_reference": "Suðaustur- og Suðurland/connecting_road",
+   "status": "MATCHED",
+   "match_type": "EXACT",
+   "candidates": [
+    {
+     "name": "Þorlákshöfn",
+     "code": "1180"
+    }
+   ],
+   "flags": {
+    "zero_population": false,
+    "is_rural_aggregate": false
+   },
+   "included_in_code_50_inferred": false,
+   "reason": "exact NFC match against Hagstofa settlement name 'Þorlákshöfn'"
+  },
+  {
+   "work_list_name": "Eyrarbakki",
+   "source_reference": "Suðaustur- og Suðurland/connecting_road",
+   "status": "MATCHED",
+   "match_type": "EXACT",
+   "candidates": [
+    {
+     "name": "Eyrarbakki",
+     "code": "1140"
+    }
+   ],
+   "flags": {
+    "zero_population": false,
+    "is_rural_aggregate": false
+   },
+   "included_in_code_50_inferred": false,
+   "reason": "exact NFC match against Hagstofa settlement name 'Eyrarbakki'"
+  },
+  {
+   "work_list_name": "Stokkseyri",
+   "source_reference": "Suðaustur- og Suðurland/connecting_road",
+   "status": "MATCHED",
+   "match_type": "EXACT",
+   "candidates": [
+    {
+     "name": "Stokkseyri",
+     "code": "1130"
+    }
+   ],
+   "flags": {
+    "zero_population": false,
+    "is_rural_aggregate": false
+   },
+   "included_in_code_50_inferred": false,
+   "reason": "exact NFC match against Hagstofa settlement name 'Stokkseyri'"
+  },
+  {
+   "work_list_name": "Flúðir",
+   "source_reference": "Suðaustur- og Suðurland/connecting_road",
+   "status": "MATCHED",
+   "match_type": "EXACT",
+   "candidates": [
+    {
+     "name": "Flúðir",
+     "code": "1160"
+    }
+   ],
+   "flags": {
+    "zero_population": false,
+    "is_rural_aggregate": false
+   },
+   "included_in_code_50_inferred": false,
+   "reason": "exact NFC match against Hagstofa settlement name 'Flúðir'"
+  },
+  {
+   "work_list_name": "Laugarvatn",
+   "source_reference": "Suðaustur- og Suðurland/connecting_road",
+   "status": "MATCHED",
+   "match_type": "EXACT",
+   "candidates": [
+    {
+     "name": "Laugarvatn",
+     "code": "1163"
+    }
+   ],
+   "flags": {
+    "zero_population": false,
+    "is_rural_aggregate": false
+   },
+   "included_in_code_50_inferred": false,
+   "reason": "exact NFC match against Hagstofa settlement name 'Laugarvatn'"
+  },
+  {
+   "work_list_name": "Reykholt",
+   "source_reference": "Suðaustur- og Suðurland/connecting_road",
+   "status": "AMBIGUOUS",
+   "match_type": "AMBIGUOUS",
+   "candidates": [
+    {
+     "name": "Reykholt, Borgarfirði",
+     "code": "193"
+    },
+    {
+     "name": "Reykholt, Biskupstungum",
+     "code": "1162"
+    }
+   ],
+   "flags": {},
+   "included_in_code_50_inferred": false,
+   "reason": "no exact match; 2 Hagstofa names start with 'Reykholt', none auto-resolved"
+  },
+  {
+   "work_list_name": "Laugarás",
+   "source_reference": "Suðaustur- og Suðurland/connecting_road",
+   "status": "MATCHED",
+   "match_type": "EXACT",
+   "candidates": [
+    {
+     "name": "Laugarás",
+     "code": "1161"
+    }
+   ],
+   "flags": {
+    "zero_population": false,
+    "is_rural_aggregate": false
+   },
+   "included_in_code_50_inferred": false,
+   "reason": "exact NFC match against Hagstofa settlement name 'Laugarás'"
+  }
+ ]
+}

@@ -1,0 +1,190 @@
+{
+ "source_wfs_response": "wfs93-raw.json",
+ "source_sha256": "1d8c9cf880df374b9cb8120e1053e8ffd5acfba3d4bf55714e57ffdd8c49eb33",
+ "query_used": "VEGNR='93', EPSG:3057, gis:faerdferlar2017_1, maxFeatures=1000",
+ "completeness": {
+  "totalFeatures": 24,
+  "numberMatched": 24,
+  "numberReturned": 24
+ },
+ "canonical_selection_rule": "rules.md E2d, unchanged: most vertices, tie -> lowest OBJECTID",
+ "chain_egilsstadir_to_seydisfjordur": {
+  "order": [
+   2344,
+   3410,
+   3409,
+   2894,
+   2892,
+   2891
+  ],
+  "pieces": [
+   {
+    "idferill": 2344,
+    "idbutur": 911040037,
+    "vegnr": "93",
+    "kaflanr": "01",
+    "veghluti": 1,
+    "name": "Egilsstaðir",
+    "desc": "Seyðisfjarðarvegur um Egilsstaði",
+    "n_vertices_canonical": 35,
+    "objectid_canonical": 5882,
+    "start": [
+     715153.74,
+     536679.93
+    ],
+    "end": [
+     715800.5282,
+     538148.7474
+    ],
+    "length_planar_m": 1716.1742045748806,
+    "gap_from_prev_m": 0.0,
+    "direction_grade": "INFERRED (VEGHLUTI=1, undocumented majority-pattern role per rules.md E2b, unchanged from phase1)"
+   },
+   {
+    "idferill": 3410,
+    "idbutur": 911170037,
+    "vegnr": "93",
+    "kaflanr": "02",
+    "veghluti": 1,
+    "name": "Fjarðarheiði",
+    "desc": "Seyðisfjarðarvegur",
+    "n_vertices_canonical": 157,
+    "objectid_canonical": 5839,
+    "start": [
+     715800.5282,
+     538148.7474
+    ],
+    "end": [
+     722827.8006,
+     537350.2933
+    ],
+    "length_planar_m": 9882.05388430196,
+    "gap_from_prev_m": 0.0,
+    "direction_grade": "INFERRED (VEGHLUTI=1, undocumented majority-pattern role per rules.md E2b, unchanged from phase1)"
+   },
+   {
+    "idferill": 3409,
+    "idbutur": 911170037,
+    "vegnr": "93",
+    "kaflanr": "03",
+    "veghluti": 1,
+    "name": "Fjarðarheiði",
+    "desc": "Seyðisfjarðarvegur",
+    "n_vertices_canonical": 247,
+    "objectid_canonical": 5838,
+    "start": [
+     722827.8006,
+     537350.2933
+    ],
+    "end": [
+     732722.8305,
+     537584.8513
+    ],
+    "length_planar_m": 14011.187844455075,
+    "gap_from_prev_m": 0.0,
+    "direction_grade": "INFERRED (VEGHLUTI=1, undocumented majority-pattern role per rules.md E2b, unchanged from phase1)"
+   },
+   {
+    "idferill": 2894,
+    "idbutur": 911170037,
+    "vegnr": "93",
+    "kaflanr": "04",
+    "veghluti": 1,
+    "name": "Fjarðarheiði",
+    "desc": "Seyðirfj.v.: kirkjugarðshorn - Hánefsstaðavegur",
+    "n_vertices_canonical": 9,
+    "objectid_canonical": 4980,
+    "start": [
+     732722.8305,
+     537584.8513
+    ],
+    "end": [
+     732875.674,
+     538207.0762
+    ],
+    "length_planar_m": 642.8778561675865,
+    "gap_from_prev_m": 0.0,
+    "direction_grade": "INFERRED (VEGHLUTI=1, undocumented majority-pattern role per rules.md E2b, unchanged from phase1)"
+   },
+   {
+    "idferill": 2892,
+    "idbutur": 911170037,
+    "vegnr": "93",
+    "kaflanr": "05",
+    "veghluti": 1,
+    "name": "Fjarðarheiði",
+    "desc": "Hánesstaðavegur - Vestdalseyrarvegur",
+    "n_vertices_canonical": 7,
+    "objectid_canonical": 4979,
+    "start": [
+     732875.674,
+     538207.0762
+    ],
+    "end": [
+     732743.757,
+     538421.6228
+    ],
+    "length_planar_m": 260.79431371702265,
+    "gap_from_prev_m": 0.0,
+    "direction_grade": "INFERRED (VEGHLUTI=1, undocumented majority-pattern role per rules.md E2b, unchanged from phase1)"
+   },
+   {
+    "idferill": 2891,
+    "idbutur": 911170037,
+    "vegnr": "93",
+    "kaflanr": "06",
+    "veghluti": 1,
+    "name": "Fjarðarheiði",
+    "desc": "Vestdalseyrarvegur - Ferjubryggja",
+    "n_vertices_canonical": 13,
+    "objectid_canonical": 4978,
+    "start": [
+     732743.757,
+     538421.6228
+    ],
+    "end": [
+     733080.7436,
+     538522.4045
+    ],
+    "length_planar_m": 413.46201506717364,
+    "gap_from_prev_m": 0.0,
+    "direction_grade": "INFERRED (VEGHLUTI=1, undocumented majority-pattern role per rules.md E2b, unchanged from phase1)"
+   }
+  ],
+  "total_length_planar_m": 26926.550118283696,
+  "total_length_planar_km": 26.926550118283696,
+  "all_gaps_m": [
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0
+  ],
+  "contact_grade": "CONTINUOUS_EXACT (every inter-piece gap is exactly 0.0 m)"
+ },
+ "ring_junction": {
+  "ring_piece_idferill": 2345,
+  "ring_piece_idbutur": 911040037,
+  "ring_piece_own_end_coord": [
+   715153.74,
+   536679.93
+  ],
+  "road93_own_start_coord": [
+   715153.74,
+   536679.93
+  ],
+  "gap_m": 0.0,
+  "contact_grade": "VERIFIED exact native-coordinate contact (CC-independently confirmed this round; NOT a verified driving permission)",
+  "ring_piece_cum_km_from_raudavatn_incl_1436": 676.0013,
+  "note": "CC-attributed: the cum_km figure is cited from ticket-493-place-network's own v4 chain-walks-v4.json (cw_long), not recomputed from scratch this round."
+ },
+ "seydisfjordur_end": {
+  "idferill": 2891,
+  "coord": [
+   733080.7436,
+   538522.4045
+  ],
+  "desc": "Vestdalseyrarvegur - Ferjubryggja",
+  "note": "INFERRED endpoint = the far end of road93's own own last digitized piece ('Vestdalseyrarvegur - Ferjubryggja', i.e. the ferry pier) -- the town of Seyðisfjörður itself is NOT a surveyed coordinate; this is a road-geometry endpoint, not a settlement centroid, per item 3's own E3(a) discipline."
+ }
+}

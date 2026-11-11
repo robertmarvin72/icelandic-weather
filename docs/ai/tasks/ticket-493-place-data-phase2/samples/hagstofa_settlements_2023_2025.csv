@@ -1,0 +1,121 @@
+code,name,pop_2023,pop_2024,pop_2025
+0,Alls,379472,386585,391884
+30,Álftanes,2483,2589,2803
+50,Reykjavík,237325,242135,245849
+70,Mosfellsbær,0,0,0
+80,Mosfellsdalur,269,263,252
+90,"Grundarhverfi, Kjalarnesi",515,620,683
+100,Strjálbýli á höfuðborgarsvæði,1143,1010,897
+110,Grindavík,3567,2409,1030
+111,Hafnir,107,113,121
+120,Sandgerði,1960,2041,2140
+130,Garður,1853,1911,1984
+141,Keflavík og Njarðvík,21364,22112,22475
+160,Vogar,1312,1527,1742
+180,Strjálbýli á Suðurnesjum,160,143,120
+190,Akranes,8049,8288,8512
+195,"Melahverfi, Hvalfirði",162,154,161
+191,Hvanneyri,293,289,278
+192,Kleppjárnsreykir,42,49,55
+193,"Reykholt, Borgarfirði",89,79,73
+200,Borgarnes,2122,2181,2232
+205,Bifröst,271,291,260
+210,Hellissandur,354,352,362
+211,Rif,129,131,137
+220,Ólafsvík,964,975,984
+230,Grundarfjörður,781,779,795
+240,Stykkishólmur,1172,1187,1211
+250,Búðardalur,244,246,242
+331,Strjálbýli á Vesturlandi,2583,2592,2580
+339,Reykhólar,111,114,123
+340,Patreksfjörður,752,736,715
+350,Tálknafjörður,234,238,230
+360,Bíldudalur,251,250,241
+370,Þingeyri,264,265,279
+380,Flateyri,186,192,209
+390,Suðureyri,292,295,297
+400,Bolungarvík,962,975,982
+420,Hnífsdalur,203,214,215
+410,Ísafjörður,2666,2692,2756
+430,Súðavík,171,165,169
+431,Drangsnes,68,67,73
+440,Hólmavík,292,291,300
+521,Strjálbýli á Vestfjörðum,686,681,674
+529,Laugarbakki,0,39,72
+530,Hvammstangi,607,601,596
+540,Blönduós,829,860,870
+550,Skagaströnd,455,450,446
+560,Sauðárkrókur,2591,2639,2670
+561,Varmahlíð,143,154,158
+562,Hólar í Hjaltadal,89,83,87
+570,Hofsós,157,156,160
+580,Siglufjörður,1163,1164,1161
+641,Strjálbýli á Norðurlandi vestra,2402,2345,2297
+649,Grímsey,56,55,50
+650,Ólafsfjörður,755,762,767
+660,Dalvík,1371,1373,1385
+670,Hrísey,160,166,162
+671,Litli-Árskógssandur,116,116,114
+672,Hauganes,98,105,113
+673,Hjalteyri,0,0,0
+680,Akureyri,19704,20003,20313
+681,Kristnes,37,18,0
+682,Hrafnagil,366,379,388
+684,Öngulsstaðir,0,48,93
+685,"Brúnahlíð, Eyjafirði",66,102,140
+687,Veigastaðir,0,37,74
+688,Sólberg,0,29,57
+689,Svalbarðseyri,262,270,280
+690,Grenivík,307,309,299
+701,Laugar,110,117,120
+710,Húsavík,2446,2464,2441
+700,Reykjahlíð,236,259,268
+705,Vogar við Mývatn,0,29,59
+711,Kópasker,119,119,124
+720,Raufarhöfn,183,184,175
+730,Þórshöfn,352,352,350
+861,Strjálbýli á Norðurlandi eystra,3411,3285,3166
+869,Bakkafjörður,57,61,66
+870,Vopnafjörður,514,515,511
+891,Borgarfjörður eystri,91,96,100
+900,Seyðisfjörður,645,652,652
+890,Fellabær,406,413,409
+901,Hallormsstaður,0,26,54
+902,Egilsstaðir,2606,2667,2715
+903,Eiðar,0,0,0
+910,Neskaupstaður,1455,1467,1476
+920,Eskifjörður,1059,1097,1084
+930,Reyðarfjörður,1359,1399,1450
+940,Fáskrúðsfjörður,731,729,715
+950,Stöðvarfjörður,179,178,171
+960,Breiðdalsvík,147,148,151
+970,Djúpivogur,408,408,406
+971,"Nesjahverfi, Hornafirði",106,107,109
+980,Höfn í Hornafirði,1759,1785,1808
+990,Hof,0,34,68
+1081,Strjálbýli á Austurlandi,1854,1594,1324
+1089,Kirkjubæjarklaustur,185,193,207
+1090,Vík í Mýrdal,614,680,730
+1100,Vestmannaeyjar,4410,4457,4494
+1101,Skógar,0,0,0
+1110,Hvolsvöllur,1074,1100,1152
+1120,Hella,1002,1037,1071
+1125,Þykkvibær,78,85,89
+1121,Rauðalækur,0,0,0
+1130,Stokkseyri,522,526,520
+1140,Eyrarbakki,605,614,619
+1145,Tjarnabyggð,172,210,230
+1150,Selfoss,9702,10175,10772
+1155,"Brautarholt, Skeiðum",71,86,93
+1157,Árnes,64,63,70
+1160,Flúðir,489,520,540
+1161,Laugarás,116,114,116
+1162,"Reykholt, Biskupstungum",345,386,439
+1163,Laugarvatn,249,263,273
+1164,"Sólheimar, Grímsnesi",94,95,92
+1167,"Borg, Grímsnesi",168,201,247
+1168,Gljúfurárholt,0,54,105
+1169,Vellir,0,28,55
+1170,Hveragerði,3217,3293,3331
+1180,Þorlákshöfn,1971,2110,2249
+1301,Strjálbýli á Suðurlandi,5934,6233,6450
