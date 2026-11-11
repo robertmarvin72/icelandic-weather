@@ -1,0 +1,234 @@
+{
+ "findings": [
+  {
+   "check": "json_parse_request_plan",
+   "passed": true,
+   "detail": null
+  },
+  {
+   "check": "json_parse_coverage_matrix",
+   "passed": true,
+   "detail": null
+  },
+  {
+   "check": "request_ids_unique",
+   "passed": true,
+   "detail": {
+    "ids": [
+     "REQ-E1-WGS84-01",
+     "REQ-S2-WGS84-01",
+     "REQ-META-DFT-01",
+     "REQ-META-CAPS-01"
+    ]
+   }
+  },
+  {
+   "check": "matrix_request_ids_resolve",
+   "passed": true,
+   "detail": {
+    "unresolved": [],
+    "known_ids": [
+     "REQ-E1-WGS84-01",
+     "REQ-S2-WGS84-01",
+     "REQ-META-DFT-01",
+     "REQ-META-CAPS-01"
+    ]
+   }
+  },
+  {
+   "check": "all_three_locations_present",
+   "passed": true,
+   "detail": {
+    "found": [
+     "Egilsstaðir",
+     "Reykjavík",
+     "Seyðisfjörður"
+    ]
+   }
+  },
+  {
+   "check": "location_has_items:Seyðisfjörður",
+   "passed": true,
+   "detail": {
+    "item_count": 5
+   }
+  },
+  {
+   "check": "location_has_items:Reykjavík",
+   "passed": true,
+   "detail": {
+    "item_count": 5
+   }
+  },
+  {
+   "check": "location_has_items:Egilsstaðir",
+   "passed": true,
+   "detail": {
+    "item_count": 4
+   }
+  },
+  {
+   "check": "total_calls_within_ceiling",
+   "passed": true,
+   "detail": {
+    "total_calls": 4,
+    "ceiling": 12
+   }
+  },
+  {
+   "check": "total_max_bytes_within_ceiling",
+   "passed": true,
+   "detail": {
+    "total_max_bytes": 5767168,
+    "ceiling": 33554432
+   }
+  },
+  {
+   "check": "per_request_cap_within_default:REQ-E1-WGS84-01",
+   "passed": true,
+   "detail": {
+    "cap": 262144
+   }
+  },
+  {
+   "check": "per_request_cap_within_default:REQ-S2-WGS84-01",
+   "passed": true,
+   "detail": {
+    "cap": 262144
+   }
+  },
+  {
+   "check": "per_request_cap_within_default:REQ-META-DFT-01",
+   "passed": true,
+   "detail": {
+    "cap": 1048576
+   }
+  },
+  {
+   "check": "per_request_cap_within_default:REQ-META-CAPS-01",
+   "passed": true,
+   "detail": {
+    "cap": 4194304
+   }
+  },
+  {
+   "check": "all_requests_marked_not_authorised",
+   "passed": true,
+   "detail": null
+  },
+  {
+   "check": "idbutur_911040037_vegnr1_pieces",
+   "passed": true,
+   "detail": {
+    "found": [
+     1483,
+     2345,
+     2347,
+     2349
+    ]
+   }
+  },
+  {
+   "check": "idbutur_911170037_has_no_vegnr1_pieces",
+   "passed": true,
+   "detail": {
+    "found": []
+   }
+  },
+  {
+   "check": "idbutur_911040037_vegnr93_pieces",
+   "passed": true,
+   "detail": {
+    "found": [
+     2344
+    ]
+   }
+  },
+  {
+   "check": "idbutur_911170037_vegnr93_pieces",
+   "passed": true,
+   "detail": {
+    "found": [
+     2891,
+     2892,
+     2894,
+     3409,
+     3410
+    ]
+   }
+  },
+  {
+   "check": "confirmed_feature_count_911040037_matches_plan",
+   "passed": true,
+   "detail": {
+    "count": 4
+   }
+  },
+  {
+   "check": "confirmed_feature_count_911170037_matches_plan",
+   "passed": true,
+   "detail": {
+    "count": 20
+   }
+  },
+  {
+   "check": "single_demonstrated_layer_name_used",
+   "passed": true,
+   "detail": {
+    "found": [
+     "gis:faerdferlar2017_1"
+    ]
+   }
+  },
+  {
+   "check": "wfs_north_4326_sha_matches_citation",
+   "passed": true,
+   "detail": {
+    "live_sha": "7075416ca4635e4dea058b43124cfdefa7caec9d860d2dd43208504022eedb9b"
+   }
+  },
+  {
+   "check": "north_ledger_line2_sha_matches_citation",
+   "passed": true,
+   "detail": {
+    "live_sha": "6b0cb0d60e8894bdd7f36cd7b7320b801f5dc3279c2b4b138e0c51baf2a0cb1d"
+   }
+  },
+  {
+   "check": "bounded_fetch_allowlist_includes_vegagerdin",
+   "passed": true,
+   "detail": null
+  },
+  {
+   "check": "plan_hosts_subset_of_bounded_fetch_allowlist",
+   "passed": true,
+   "detail": {
+    "found": [
+     "gagnaveita.vegagerdin.is"
+    ]
+   }
+  },
+  {
+   "check": "no_px_hagstofa_host_in_this_plan",
+   "passed": true,
+   "detail": "px.hagstofa.is is task-scoped per owner-authorisation.md and not needed for R1/E1/S2 geometry requests"
+  }
+ ],
+ "budget_table": {
+  "total_requests_planned": 4,
+  "total_max_calls": 4,
+  "total_max_bytes": 5767168,
+  "per_request_caps_bytes": {
+   "REQ-E1-WGS84-01": 262144,
+   "REQ-S2-WGS84-01": 262144,
+   "REQ-META-DFT-01": 1048576,
+   "REQ-META-CAPS-01": 4194304
+  },
+  "timeout_s_per_request": 20,
+  "acquisition_window_minutes": 30,
+  "retries": 0,
+  "all_authorised_field_false": true
+ },
+ "total_findings": 27,
+ "all_passed": true
+}

@@ -1,0 +1,182 @@
+{
+ "status": "ALL REQUESTS NOT_AUTHORISED IN THIS OFFLINE PLANNING ROUND -- this file plans, it does not execute. Authorisation for the next (execution) round requires its own dated owner-authorisation.md record, per the task-scoped pattern already used in docs/ai/tasks/ticket-493-place-data-phase2/owner-authorisation.md.",
+ "budget_ceiling_reused_from_prior_precedent": {
+  "source": "docs/ai/tasks/ticket-493-place-data-phase2/owner-authorisation.md",
+  "max_exchanges_total": 12,
+  "max_bytes_total": 33554432,
+  "max_bytes_per_response_default": 8388608,
+  "timeout_s_per_request": 20,
+  "acquisition_window_minutes": 30,
+  "retries": 0,
+  "note": "This plan's own per-request caps (below) are each well under the 8 MiB default, reasoned from each request's own expected volume -- a conservative deviation, not a loosening."
+ },
+ "requests": [
+  {
+   "request_id": "REQ-E1-WGS84-01",
+   "place": "Egilsstaðir (E1)",
+   "exact_data_gap": "No retained WGS84 geometry exists for road 93 or for the ring pieces at the Egilsstaðir/Seyðisfjarðarvegur junction (endpoint-candidates-v3.json's own wgs84_note: 'no retained WGS84 geometry exists for road 93 -- this is a data gap, not a failure'). This request targets the WGS84 pair for the E1 access node (piece 2345 stored END = piece 2344 stored START) and its own immediate administrative road unit.",
+   "retained_source_demonstrating_host_endpoint_example": {
+    "file": "docs/ai/tasks/ticket-493-north-data/samples/exchange-ledger.jsonl",
+    "location": "line 2",
+    "ledger_line_sha256": "6b0cb0d60e8894bdd7f36cd7b7320b801f5dc3279c2b4b138e0c51baf2a0cb1d",
+    "example_url_abbreviated": "https://gagnaveita.vegagerdin.is/geoserver/gis/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=gis:faerdferlar2017_1&CQL_FILTER=IDBUTUR IN (904040037,...)&srsName=EPSG:4326&outputFormat=application/json&maxFeatures=300",
+    "note": "ledger_line_sha256 is the sha256 of that ledger line's own exact text (re-verified by samples/verify_plan.py against the live file). The demonstrated RESPONSE's own sha256 (of wfs-north-4326.json) is 7075416ca4635e4dea058b43124cfdefa7caec9d860d2dd43208504022eedb9b, see samples/retained_inputs_baseline.json"
+   },
+   "host": "gagnaveita.vegagerdin.is",
+   "method": "GET",
+   "path": "/geoserver/gis/ows",
+   "query": {
+    "service": "WFS",
+    "version": "1.0.0",
+    "request": "GetFeature",
+    "typeName": "gis:faerdferlar2017_1",
+    "CQL_FILTER": "IDBUTUR IN (911040037)",
+    "srsName": "EPSG:4326",
+    "outputFormat": "application/json",
+    "maxFeatures": 300
+   },
+   "body": null,
+   "required_layer_feature_fields_filter": "Layer gis:faerdferlar2017_1 (the only demonstrated layer); no new fields requested beyond the full feature (OBJECTID, STUTTNAFNLEIDAR, STADARLYSING, IDFERILL, IDBUTUR, VEGNR, KAFLANR, VEGHLUTI, NAKVAEMNIFERLIS, DAGSFERILS, geometry, plus the winter-service/opening fields already known from wfs93-raw.json).",
+   "crs": "EPSG:4326 (requested, srsName param); compared against native EPSG:3057 from road-links.csv/wfs93-raw.json per EP3's pairing rule -- no reprojection performed by this plan or the next round's own code.",
+   "bounded_scope": "CQL_FILTER=IDBUTUR IN (911040037) -- a single administrative road unit (IDBUTUR), NOT a bbox and NOT a national download.",
+   "idbutur_scope_finding": "IDBUTUR 911040037 is shared by FOUR VEGNR=1 ring pieces (1483 kaflanr t1, 2349 t2, 2347 t3, 2345 t4 -- all named 'Egilsstaðir' in road-links.csv, a contiguous 4-segment chain through Fellabær up to the Seyðisfjarðarvegur junction) PLUS VEGNR=93 piece 2344 (confirmed in wfs93-raw.json, 4 NAKVAEMNIFERLIS tiers). This is a correction of the prior round's own sandbox note, which named only pieces 2344/2345 for this IDBUTUR and did not check road-links.csv for the other two VEGNR=1 rows sharing it (1483, 2347, 2349) -- confirmed here by a direct grep of road-links.csv, not assumed.",
+   "expected_feature_count": {
+    "confirmed_minimum": 4,
+    "confirmed_minimum_basis": "piece 2344's own 4 NAKVAEMNIFERLIS tiers, already retained verbatim in wfs93-raw.json",
+    "reasoned_plausible_range": [8, 20],
+    "reasoned_range_basis": "road-links.csv carries ONE row per VEGNR=1 idferill with no tier field, so whether the 4 VEGNR=1 pieces (1483/2345/2347/2349) each return 1 untiered feature (+4 = 8 total) or also carry the same 4-tier structure seen on road-93 (+16 = 20 total) is UNKNOWN from retained data -- not guessed either way.",
+    "registered_maximum_before_stop": 40,
+    "stop_rule": "if numberReturned/numberMatched exceeds 40, or if the response is truncated before completion, STOP and record the actual count as a new finding -- do not retry, do not widen the filter."
+   },
+   "expected_bytes": {
+    "per_feature_bytes_precedent": 1429,
+    "precedent_basis": "302849 B / 212 features from wfs-north-4326.json (ledger line 2)",
+    "reasoned_expected_bytes_at_upper_range": 28580,
+    "max_response_bytes_cap": 262144,
+    "cap_basis": "~9x the reasoned upper-range byte estimate (28,580 B) -- a reasoned margin, not the blanket 8 MiB default, and well under the project's own 8 MiB per-response ceiling."
+   },
+   "max_calls": 1,
+   "redirects_rule": "STOP -- any 301/302/303/307/308 response is ledgered as its own completed exchange (status, headers, Location) and is NOT followed. A new request to the redirect target would require its own separate planning entry.",
+   "what_response_proves": "The WGS84 (EPSG:4326) coordinate pair(s) for the specific IDFERILL+NAKVAEMNIFERLIS combinations matching E1's own native points, PROVIDED the pairing rule in EP3 is satisfied (same IDFERILL, same NAKVAEMNIFERLIS, same vertex count, same first/last-point direction, same WGS84 endpoint across all 4 tiers where tiers exist).",
+   "what_response_does_not_prove": "Driving access or direction permission in either direction (a separate EXACT_GAP/NEEDS_REQUEST item, see coverage-matrix.json); that E1 is the 'correct' or final product endpoint (that is the owner's own prior decision, not reopened here); any population or licensing fact; whether the VEGNR=1 pieces under this IDBUTUR actually carry multiple tiers (the response itself will settle this, but this plan does not presume the answer).",
+   "license_freshness_status": "Vegagerðin's own 'Skilmálar vefþjónustur' terms are retained as CC BY 4.0 (per EP6); freshness is marked by the response's own DAGSFERILS field and the ledger's own UTC retrieval time -- no claim of currency beyond that.",
+   "stop_condition": "Any of: host resolves outside the allowlist; HTTP status is not 200; response exceeds the registered byte cap or feature-count maximum; response is a redirect; response is chunked with no means to confirm the cap was honoured (per the north-data round's own disclosed curl limitation) -- bounded_fetch.py's own streamed-read-with-cap design (not curl) is required for exactly this reason, see EP5.",
+   "precedent_status": "DEMONSTRATED_IN_RETAINED_LEDGER",
+   "precedent_reference": {"file": "docs/ai/tasks/ticket-493-north-data/samples/exchange-ledger.jsonl", "line": 2},
+   "forbidden_variants": ["bbox/BBOX filter", "unbounded or missing maxFeatures", "a different host", "typeName other than gis:faerdferlar2017_1", "ILIKE or any other undemonstrated CQL operator", "POST/write of any kind to this host", "following a redirect automatically", "chaining a second, broader request based on this response within this same round"],
+   "authorised": false,
+   "authorisation_note": "NOT_AUTHORISED in this offline planning round."
+  },
+  {
+   "request_id": "REQ-S2-WGS84-01",
+   "place": "Seyðisfjörður (S2)",
+   "exact_data_gap": "No retained WGS84 geometry exists for road 93 (same wgs84_note as E1). This request targets the WGS84 pair for the S2 access node (piece 2894 stored END = piece 2892 stored START) and the rest of the Fjarðarheiði road-93 chain sharing the same administrative unit.",
+   "retained_source_demonstrating_host_endpoint_example": {
+    "file": "docs/ai/tasks/ticket-493-north-data/samples/exchange-ledger.jsonl",
+    "location": "line 2",
+    "example_url_abbreviated": "same demonstrated form as REQ-E1-WGS84-01, different IDBUTUR value"
+   },
+   "host": "gagnaveita.vegagerdin.is",
+   "method": "GET",
+   "path": "/geoserver/gis/ows",
+   "query": {
+    "service": "WFS",
+    "version": "1.0.0",
+    "request": "GetFeature",
+    "typeName": "gis:faerdferlar2017_1",
+    "CQL_FILTER": "IDBUTUR IN (911170037)",
+    "srsName": "EPSG:4326",
+    "outputFormat": "application/json",
+    "maxFeatures": 300
+   },
+   "body": null,
+   "required_layer_feature_fields_filter": "Same layer and full feature set as REQ-E1-WGS84-01.",
+   "crs": "EPSG:4326 (requested); compared against native EPSG:3057 from wfs93-raw.json per EP3's pairing rule -- no reprojection.",
+   "bounded_scope": "CQL_FILTER=IDBUTUR IN (911170037) -- a single administrative road unit, NOT a bbox and NOT a national download.",
+   "idbutur_scope_finding": "IDBUTUR 911170037 is confirmed (grep of road-links.csv) to belong to NO VEGNR=1 piece -- it covers exactly the 5 VEGNR=93 pieces already retained in full in wfs93-raw.json (3410, 3409, 2894, 2892, 2891), each with 4 NAKVAEMNIFERLIS tiers = 20 features. This includes piece 2891's own ferry-pier end (NAKVAEMNIFERLIS tier -1, 'end' role) incidentally, because it shares the same IDBUTUR as S2's own junction (2892/start) -- the ferry pier itself is explicitly out of this acquisition package per the approved prompt's own Verkefni §3 ('Ferjubryggja utan þessa acquisition-pakka'); this request is not scoped to exclude it (no demonstrated filter does that at the IDBUTUR level) and the plan does not propose using the pier-end feature for anything.",
+   "expected_feature_count": {
+    "confirmed_count": 20,
+    "confirmed_count_basis": "exactly 5 VEGNR=93 pieces x 4 NAKVAEMNIFERLIS tiers, already retained verbatim in wfs93-raw.json and independently confirmed by a fresh grep of road-links.csv showing zero VEGNR=1 overlap for this IDBUTUR.",
+    "registered_maximum_before_stop": 30,
+    "stop_rule": "if numberReturned/numberMatched exceeds 30, or the response is truncated, STOP and record the actual count as a new finding -- the live layer may have grown since the retained wfs93-raw.json snapshot; this is a plausible, not alarming, reason to STOP and report, not a reason to retry or widen scope."
+   },
+   "expected_bytes": {
+    "per_feature_bytes_precedent": 1429,
+    "reasoned_expected_bytes": 28580,
+    "max_response_bytes_cap": 262144,
+    "cap_basis": "~9x the confirmed expected byte estimate -- a reasoned margin, not the blanket 8 MiB default."
+   },
+   "max_calls": 1,
+   "redirects_rule": "STOP -- same rule as REQ-E1-WGS84-01.",
+   "what_response_proves": "The WGS84 coordinate pairs for the S2 junction and the rest of the retained road-93 chain, including (incidentally) the ferry pier end, PROVIDED the EP3 pairing rule is satisfied.",
+   "what_response_does_not_prove": "Driving access/direction (separate item); a confirmed, owner-approved ferry-pier endpoint (explicitly out of scope); S2's own final product status (still a candidate per endpoint-owner-decisions-2026-11-11.md); the (b) user-facing approach name (a separate EXACT_GAP, no source names it).",
+   "license_freshness_status": "Same as REQ-E1-WGS84-01.",
+   "stop_condition": "Same stop conditions as REQ-E1-WGS84-01.",
+   "precedent_status": "DEMONSTRATED_IN_RETAINED_LEDGER",
+   "precedent_reference": {"file": "docs/ai/tasks/ticket-493-north-data/samples/exchange-ledger.jsonl", "line": 2},
+   "forbidden_variants": ["bbox/BBOX filter", "unbounded or missing maxFeatures", "a different host", "typeName other than gis:faerdferlar2017_1", "ILIKE or any other undemonstrated CQL operator", "POST/write of any kind to this host", "following a redirect automatically", "treating the incidental ferry-pier feature as an authorised product decision"],
+   "authorised": false,
+   "authorisation_note": "NOT_AUTHORISED in this offline planning round."
+  },
+  {
+   "request_id": "REQ-META-DFT-01",
+   "place": "Shared (R1 / E1 / S2 driving-access question)",
+   "exact_data_gap": "No retained field in gis:faerdferlar2017_1's own known feature set (OBJECTID, STUTTNAFNLEIDAR, STADARLYSING, IDFERILL, IDBUTUR, VEGNR, KAFLANR, VEGHLUTI, weekday/opening flags, SNJOMOKSTURSREGLA, HELMINGAMOKSTUR, THJONUSTUFLOKKUR, NAKVAEMNIFERLIS, DAGSFERILS) describes direction, one-way status, turn restriction, or driving access of any kind -- confirmed against every retained feature-set citation in evidence-v4.md and the prompt-review's own sandbox check. This request asks the server itself, via its own schema-description operation, whether any OTHER field exists on this layer that was simply never requested in a prior round's own feature query (which would only return the fields it asked for, not necessarily the layer's full schema).",
+   "retained_source_demonstrating_host_endpoint_example": {
+    "note": "DescribeFeatureType is a standard OGC WFS operation on a host already used for GetFeature/GetCapabilities, but this EXACT operation is NOT itself present in any retained ledger -- see precedent_status below."
+   },
+   "host": "gagnaveita.vegagerdin.is",
+   "method": "GET",
+   "path": "/geoserver/gis/ows",
+   "query": {"service": "WFS", "version": "1.0.0", "request": "DescribeFeatureType", "typeName": "gis:faerdferlar2017_1"},
+   "body": null,
+   "required_layer_feature_fields_filter": "Schema (field list + types) for gis:faerdferlar2017_1 only -- not a feature query, no CQL_FILTER, no geometry returned.",
+   "crs": "Not applicable -- a schema document, not feature data.",
+   "bounded_scope": "A single named layer's own schema description -- not a server-wide capabilities listing (that is REQ-META-CAPS-01, a separate, conditional, lower-priority fallback).",
+   "expected_feature_count": {"not_applicable": true, "note": "returns an XML schema document, not features."},
+   "expected_bytes": {"reasoned_expected_bytes": "low KB to low tens of KB (a single-layer field-list schema)", "max_response_bytes_cap": 1048576, "cap_basis": "1 MiB -- generous margin over any plausible single-layer DescribeFeatureType document, while far below the 8 MiB default."},
+   "max_calls": 1,
+   "redirects_rule": "STOP -- same rule as the feature requests.",
+   "what_response_proves": "Whether the layer's own schema names any field beyond the already-known set; if it does, whether that field plausibly encodes direction/access (a judgement call for the NEXT prompt, not executed here).",
+   "what_response_does_not_prove": "Nothing about actual legal driving permission -- a schema field, even if found, would still need a separate interpretation step; absence of a new field in this response does not itself prove GetCapabilities would also find nothing (hence the conditional fallback below), but DOES mean the SAME layer's own GetFeature responses were not simply under-requesting known fields.",
+   "license_freshness_status": "Not applicable -- a schema document carries no feature data or population figures.",
+   "stop_condition": "No feature call of any kind is built from this response in this round, regardless of outcome -- per EP2, the result only informs what the NEXT (separate) approved prompt may propose. Any non-200 status, redirect, or byte-cap breach also STOPs per the standard rule.",
+   "precedent_status": "OPERATION_NOT_DEMONSTRATED_IN_RETAINED_LEDGER",
+   "precedent_reference": null,
+   "forbidden_variants": ["a feature/GetFeature call chained from this response within this same round", "a different typeName", "treating 'no new field found' as proof that driving access is unknowable -- it only means this specific operation did not resolve it"],
+   "authorised": false,
+   "authorisation_note": "NOT_AUTHORISED in this offline planning round."
+  },
+  {
+   "request_id": "REQ-META-CAPS-01",
+   "place": "Shared (R1 / E1 / S2 driving-access question) -- CONDITIONAL fallback",
+   "exact_data_gap": "Only sent if REQ-META-DFT-01's own response does not resolve the driving-access question (e.g. the layer schema alone does not make clear whether a related field/layer exists elsewhere on the service). GetCapabilities lists every layer the service exposes, which DescribeFeatureType (scoped to one layer) does not.",
+   "retained_source_demonstrating_host_endpoint_example": {
+    "file": "docs/ai/tasks/ticket-493-north-data/samples/exchange-ledger.jsonl",
+    "location": "line 1",
+    "note": "GetCapabilities WAS called once in a prior round (status 200 confirmed) but its body was discarded (curl -o /dev/null) and never retained or examined -- so the OPERATION's HTTP-level success is attested, but its own content/behaviour is not demonstrated. Marked OPERATION_NOT_DEMONSTRATED_IN_RETAINED_LEDGER per EP2's own explicit instruction, not DEMONSTRATED, because no retained content exists to compare against."
+   },
+   "host": "gagnaveita.vegagerdin.is",
+   "method": "GET",
+   "path": "/geoserver/gis/ows",
+   "query": {"service": "WFS", "version": "1.0.0", "request": "GetCapabilities"},
+   "body": null,
+   "required_layer_feature_fields_filter": "Server-wide layer/operation listing -- not scoped to gis:faerdferlar2017_1 alone (GetCapabilities has no typeName parameter).",
+   "crs": "Not applicable.",
+   "bounded_scope": "Whole-service capabilities document -- inherently not narrower than that; this is why it is the FALLBACK step (only sent if DescribeFeatureType does not suffice), per EP2's own ordering with STOP.",
+   "expected_feature_count": {"not_applicable": true},
+   "expected_bytes": {"reasoned_expected_bytes": "UNKNOWN -- the one prior attempt's body was discarded, so no retained byte count exists for this server's own capabilities document", "max_response_bytes_cap": 4194304, "cap_basis": "4 MiB -- half the project's own 8 MiB default, satisfying EP2's explicit 'lower cap than 8 MiB, reasoned' instruction; chosen because a capabilities document is bounded by this GeoServer instance's own (presumably modest, regional) layer count, not by any per-feature volume driver."},
+   "max_calls": 1,
+   "redirects_rule": "STOP -- same rule as all other requests.",
+   "what_response_proves": "Whether any other WFS layer on this same host/service plausibly encodes road direction/turn/access data not present in gis:faerdferlar2017_1.",
+   "what_response_does_not_prove": "Legal driving permission itself, even if a promising layer name is found -- that would need its own separate, future, scoped request.",
+   "license_freshness_status": "Not applicable.",
+   "stop_condition": "Sent ONLY if REQ-META-DFT-01 does not resolve the question (explicit STOP gate between the two steps, per EP2); no feature call is built from this response in this round either. Standard byte-cap/redirect/status STOP rules also apply.",
+   "precedent_status": "OPERATION_NOT_DEMONSTRATED_IN_RETAINED_LEDGER",
+   "precedent_reference": {"file": "docs/ai/tasks/ticket-493-north-data/samples/exchange-ledger.jsonl", "line": 1, "caveat": "status 200 attested; body discarded, not retained"},
+   "forbidden_variants": ["sending this before REQ-META-DFT-01 has actually been attempted and found insufficient", "a feature/GetFeature call chained from this response within this same round", "treating server uptime/200-status alone as proof the document's content is anything in particular"],
+   "authorised": false,
+   "authorisation_note": "NOT_AUTHORISED in this offline planning round; additionally gated on REQ-META-DFT-01's own outcome, not just on owner approval."
+  }
+ ]
+}

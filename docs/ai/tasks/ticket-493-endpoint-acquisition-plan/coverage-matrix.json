@@ -1,0 +1,122 @@
+{
+ "status_vocabulary": {
+  "RETAINED_SUFFICIENT": "A specific retained file, with path and key/line, contains exactly the fact this line requires -- a visit, naming, or geometric contact alone does not qualify.",
+  "NEEDS_REQUEST": "Only if a request exists in request-plan.json with a shown retained-precedent source.",
+  "EXACT_GAP": "Host/layer/filter/field cannot be derived from retained data (or, for R1's own exact point, the gap is a product/selection decision no request can resolve)."
+ },
+ "items": [
+  {
+   "place": "Reykjavík (R1)",
+   "item": "retained_raudavatn_candidates",
+   "status": "RETAINED_SUFFICIENT",
+   "authority": {"file": "docs/ai/tasks/ticket-493-access-points/endpoint-candidates-v3.json", "key": "reykjavik.raudavatn_candidate_ENTRY_stored_END / raudavatn_candidate_EXIT_stored_START"},
+   "request_ids": [],
+   "note": "Both ends of piece 1436 (365522.0175,402772.762 END; 367768.94,401667.09 START, EPSG:3057) are retained, unselected Rauðavatn comparison candidates -- piece_cost 2560.1497 m. Neither is a confirmed Reykjavík core (rey_core.coordinate_source=NO_COORDINATE_SOURCE). Listed here as an unselected possibility set, per EP1 -- not a selection or a derived candidate."
+  },
+  {
+   "place": "Reykjavík (R1)",
+   "item": "exact_node",
+   "status": "EXACT_GAP",
+   "authority": null,
+   "request_ids": [],
+   "note": "No retained file identifies a VEGNR=1 piece, node, or address as 'the Reykjavík approach'. This is a selection/product gap, not a data-availability gap -- no host/layer/filter can be planned to resolve WHICH point represents Reykjavík without first either (a) an owner-provided reference (a specific named junction/address in or near the city) to then locate in retained or newly-acquired geometry, or (b) a decision to use one of the two unselected Rauðavatn ends as the named approach (which would make this line RETAINED_SUFFICIENT with no request needed), or (c) a proposal for a new, currently-unretained in-city dataset/host (itself a separate authorisation step, not planned here). endpoint-owner-decisions-2026-11-11.md leaves this explicitly PENDING."
+  },
+  {
+   "place": "Reykjavík (R1)",
+   "item": "name",
+   "status": "EXACT_GAP",
+   "authority": null,
+   "request_ids": [],
+   "note": "Contingent on exact_node above -- no point, no name. Reykjavík's own Hagstofa place identity (code 50) is separately RETAINED_SUFFICIENT (not itemised here, since R1's own gap is the approach-point name, not the city's own Hagstofa name)."
+  },
+  {
+   "place": "Reykjavík (R1)",
+   "item": "both_ring_connections",
+   "status": "EXACT_GAP",
+   "authority": null,
+   "request_ids": [],
+   "note": "Showing connection to both ring directions requires a chosen node first (contingent on exact_node). Once chosen, the connection itself would be read from cw_long/road-links.csv (already-demonstrated retained method, no new request) -- the gap is the missing node, not a missing data-acquisition method."
+  },
+  {
+   "place": "Reykjavík (R1)",
+   "item": "driving_access_both_directions",
+   "status": "NEEDS_REQUEST",
+   "authority": {"file": "docs/ai/tasks/ticket-493-access-points/evidence-v4.md", "key": "direction_status regression-lock / H6-J6 scope note"},
+   "request_ids": ["REQ-META-DFT-01", "REQ-META-CAPS-01"],
+   "note": "Shared metadata question across R1/E1/S2 -- no retained field encodes direction/access (confirmed). The metadata requests may or may not resolve this; a likely EXACT_GAP outcome is not asserted in advance, per EP1's own 'EXACT_GAP is a valid finding, not a reason to guess'."
+  },
+  {
+   "place": "Egilsstaðir (E1)",
+   "item": "native_coord_origin",
+   "status": "RETAINED_SUFFICIENT",
+   "authority": {"file": "docs/ai/tasks/ticket-493-place-network/samples/road-links.csv", "key": "idferill=2345, end_x/end_y"},
+   "request_ids": [],
+   "note": "715153.74, 536679.93 (EPSG:3057) = stored END of piece 2345 = stored START of piece 2344 (0.0 m contact, already verified in access-points evidence-v4.md). Owner-approved per endpoint-owner-decisions-2026-11-11.md; this plan does not reopen the selection."
+  },
+  {
+   "place": "Egilsstaðir (E1)",
+   "item": "wgs84",
+   "status": "NEEDS_REQUEST",
+   "authority": {"file": "docs/ai/tasks/ticket-493-access-points/endpoint-candidates-v3.json", "key": "egilsstadir_seydisfjordur.wgs84_note"},
+   "request_ids": ["REQ-E1-WGS84-01"],
+   "note": "No retained WGS84 geometry exists for road 93 or this ring segment."
+  },
+  {
+   "place": "Egilsstaðir (E1)",
+   "item": "veg93_veg1_contact",
+   "status": "RETAINED_SUFFICIENT",
+   "authority": {"file": "docs/ai/tasks/ticket-493-place-data-phase2/samples/wfs93-raw.json", "key": "idferill=2344 (tier -1) coordinates[-1]; cross-checked against road-links.csv idferill=2345 end"},
+   "request_ids": [],
+   "note": "Already established in access-points evidence-v4.md as a VERIFIED 0.0 m contact -- re-cited here, not re-derived."
+  },
+  {
+   "place": "Egilsstaðir (E1)",
+   "item": "driving_access_both_directions",
+   "status": "NEEDS_REQUEST",
+   "authority": {"file": "docs/ai/tasks/ticket-493-access-points/evidence-v4.md", "key": "direction_status regression-lock / H6-J6 scope note"},
+   "request_ids": ["REQ-META-DFT-01", "REQ-META-CAPS-01"],
+   "note": "Same shared metadata question as R1 -- same layer, same confirmed absence of a direction/access field in the already-known schema."
+  },
+  {
+   "place": "Seyðisfjörður (S2)",
+   "item": "place_name",
+   "status": "RETAINED_SUFFICIENT",
+   "authority": {"file": "docs/ai/tasks/ticket-493-access-points/place-access-status-v3.csv", "key": "name=Seyðisfjörður, hagstofa_pairing=MATCHED, hagstofa_codes=900"},
+   "request_ids": [],
+   "note": "The settlement's own Hagstofa name/code is already retained and matched -- not the same gap as the (b) user-facing approach name below."
+  },
+  {
+   "place": "Seyðisfjörður (S2)",
+   "item": "user_facing_approach_name",
+   "status": "EXACT_GAP",
+   "authority": null,
+   "request_ids": [],
+   "note": "No retained file names a user-facing label for the approach itself. STADARLYSING is a road-segment description, not a place-name registry -- the retained spelling inconsistency between pieces 2894 ('Hánefsstaðavegur') and 2892 ('Hánesstaðavegur') is itself evidence of this, per EP1's explicit instruction. No source is named, so this stays EXACT_GAP rather than being filled by inference from STADARLYSING."
+  },
+  {
+   "place": "Seyðisfjörður (S2)",
+   "item": "wgs84",
+   "status": "NEEDS_REQUEST",
+   "authority": {"file": "docs/ai/tasks/ticket-493-access-points/endpoint-candidates-v3.json", "key": "egilsstadir_seydisfjordur.wgs84_note"},
+   "request_ids": ["REQ-S2-WGS84-01"],
+   "note": "Same road-93 WGS84 gap as E1."
+  },
+  {
+   "place": "Seyðisfjörður (S2)",
+   "item": "contact_2894_end_2892_start",
+   "status": "RETAINED_SUFFICIENT",
+   "authority": {"file": "docs/ai/tasks/ticket-493-place-data-phase2/samples/wfs93-raw.json", "key": "idferill=2894 (tier -1) coordinates[-1] == idferill=2892 (tier -1) coordinates[0] == (732875.674, 538207.0762)"},
+   "request_ids": [],
+   "note": "Coordinate equality already established in the access-points round's own G4 table construction -- native geometry contact only; this is NOT an owner-confirmed town boundary and NOT a driving-access claim (both separate lines)."
+  },
+  {
+   "place": "Seyðisfjörður (S2)",
+   "item": "driving_access_both_directions",
+   "status": "NEEDS_REQUEST",
+   "authority": {"file": "docs/ai/tasks/ticket-493-access-points/evidence-v4.md", "key": "direction_status regression-lock / H6-J6 scope note"},
+   "request_ids": ["REQ-META-DFT-01", "REQ-META-CAPS-01"],
+   "note": "Same shared metadata question as R1/E1."
+  }
+ ],
+ "scope_note_72_connections": "This plan covers only R1/E1/S2 (and, unchanged, Akureyri C). It does not assess any of the other 61 NODE_UNDETERMINED places or the full 72-place worklist; a comparable retained-first acquisition-planning method would need to be applied to that list separately in a future round, not assumed or extended here."
+}

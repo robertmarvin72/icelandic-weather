@@ -1,0 +1,8 @@
+23690bfa7539f6dbe43a5682d8c2a44263ef16272593cf39bc8378101920aa8c  docs/ai/tasks/ticket-493-endpoint-acquisition-plan/acquisition-plan.md
+591a8887de08d25cb413fdb2d3a10b59729f5dd8ab0ea7036aa9dab696cd93e1  docs/ai/tasks/ticket-493-endpoint-acquisition-plan/request-plan.json
+3df1b3a228482985ce64dd2dfc6c8d94a731aefeeb2041d7c84feae523dd3c69  docs/ai/tasks/ticket-493-endpoint-acquisition-plan/coverage-matrix.json
+e88f0689c7a84d433876fb5ee88b02a4697e1900cfd4cd5f7db98d329f17e9e1  docs/ai/tasks/ticket-493-endpoint-acquisition-plan/cc-report.md
+8adb8178a4286536803baf6b16602079e161cd999328c7a768bd459d4826efb5  docs/ai/tasks/ticket-493-endpoint-acquisition-plan/samples/snapshot_retained_inputs.py
+c27846621dadde69effe5b893c25478c6be4e14217a36b2787f389c75898f5bf  docs/ai/tasks/ticket-493-endpoint-acquisition-plan/samples/retained_inputs_baseline.json
+aeec0b6eceecf65fe54664f231e8747b4f9dd72b93d961eb303e1280fff27f9f  docs/ai/tasks/ticket-493-endpoint-acquisition-plan/samples/verify_plan.py
+b3c43f6c9d18549183e66ee315e267369e1218e5e181a230b45b6fbe63371814  docs/ai/tasks/ticket-493-endpoint-acquisition-plan/samples/verification_report.json
