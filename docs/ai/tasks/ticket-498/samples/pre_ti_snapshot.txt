@@ -1,0 +1,42 @@
+#498 Test-isolation/error-redaction round (RG1-RG4 / TI1-TI5) — read-only pre-change snapshot
+Taken 2026-11-12, CC, Windows-11-10.0.26200-SP0, Python 3.14.0, before any TI edit.
+Referenced-hash check (approved-prompt-v7.md), all four dedup-rules files confirmed unchanged:
+  dedup-rules.md            a23331cf69f568b5bdb5186f25a272071a073a381413facb7100dad549117b0a
+  dedup-rules-addendum-1.md 7c15bee361b4ec741099d4775c156e246d9676cd252509f4ffd7a7ea74d7de3e
+  dedup-rules-addendum-2.md 2137041ce2f6ec60b4f322b15057a8a1de74e8dfded71148ba4e02f14e24fe29
+  dedup-rules-addendum-3.md 1bdad6050baa78f82872b2e87a5587a540d91d4b15584d268621fafcb6c41004
+
+9a23a5d4a6edc307d6d37bcc2947e8eea8b434d05a9f9fff24f6f08a05772428 *scripts/dev-notify/dev_notify/__init__.py
+e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855 *scripts/dev-notify/dev_notify/adapters/__init__.py
+fd2c478908e938a123537e0c3627d14d0a995903ff37e17fdc5712ae83da4923 *scripts/dev-notify/dev_notify/adapters/claude_adapter.py
+6aa2ec59217f859dfcd59d3298adc01184142f2c3d2c6c6f8ad759cced21adf4 *scripts/dev-notify/dev_notify/adapters/codex_adapter.py
+d481420050dcf28be288bad2fd0f587a9b31dcfb6a6942fe5b8509dab9fb75cf *scripts/dev-notify/dev_notify/apply_config_patch.py
+258feea379c76b263dbd4444a660637c8be411236b408cd05161b16aa03390a8 *scripts/dev-notify/dev_notify/cli_claude.py
+b707c664cdfc669839da8b6cd2b2d8eb22b1c55d3db9db49c79b4b0b14b921ce *scripts/dev-notify/dev_notify/cli_codex.py
+d657ed5f5fb51058257754e714f3d1c295847281a2fd70cf971e19d9e98bcb86 *scripts/dev-notify/dev_notify/config.py
+a67f86592434413f56b06c81918b976133b68ddf86e6806d5decd2e216b7a903 *scripts/dev-notify/dev_notify/dispatch.py
+e8dea48079cb3b3b37e15251fc0e0b687db52dd2d407d4e65d0d7daa91a12fb0 *scripts/dev-notify/dev_notify/events.py
+8248d5ff1685914bd10ed51d1af26e50efffcca865765dfed91417469be81224 *scripts/dev-notify/dev_notify/ntfy_client.py
+f58fa69d768e6a26b303584e324635a65c49469236c0e28c0c7a7d25fd5b74e6 *scripts/dev-notify/dev_notify/secret_store.py
+19f2c8eadb997960a305dd1e518db6e7bd2d80728f2129630f58b2e31f1d21c9 *scripts/dev-notify/dev_notify/state.py
+e23d06433ad5d93a25ad1de505d5007af7f2e63e3a39c92c8bfd3fb79c09f079 *scripts/dev-notify/dev_notify/templates.py
+81bedac97ffd5488c0b6e391df590190c88ebd93c9d91f4ebb1672cfa0478030 *scripts/dev-notify/dev_notify/watchdog.py
+de91e6ed309ab8d2c639d072c2196b0927e745943c66ecf8989690abcabb6a16 *scripts/dev-notify/dev_notify/windows_toast.py
+09ac060b1b3c2cf706414505afc413ac42bd71642a6f13a7377b168b934cb210 *scripts/dev-notify/dev_notify/wrapper_detect.py
+<see full listing below for diagnostic_dry_run.py / run_tests_with_summary.py / tests/* — unchanged from pre_ps_snapshot.txt except the three files edited by the PS round and listed individually above/below>
+
+Files about to be touched this round (hashed individually just before editing):
+1c940e820b0a3a3b5131a7dcd9ddf6fac8ab58082de5c41da7c523abac9b2fb6 scripts/dev-notify/tests/test_diagnostic_dry_run.py
+d481420050dcf28be288bad2fd0f587a9b31dcfb6a6942fe5b8509dab9fb75cf scripts/dev-notify/dev_notify/apply_config_patch.py
+561534eb42aa6323c54cf1c8bb45585fea55bda463490305a007bdf4ab711fac scripts/dev-notify/tests/test_apply_config_patch.py
+b707c664cdfc669839da8b6cd2b2d8eb22b1c55d3db9db49c79b4b0b14b921ce scripts/dev-notify/dev_notify/cli_codex.py
+fac19e95bd011ccda8556f51e3817a56a92bb5efc75d4974e2fe095ac02cfa55 scripts/dev-notify/tests/test_cli_codex.py
+57e8467f26e2ac8e5e7050f92d2eede8c51fd415c53e444c735d189b64c0d9e3 docs/ai/tasks/ticket-498/activation-checklist.md
+
+Note: cli_codex.py and test_cli_codex.py hashes are identical to the
+pre_ps_snapshot.txt values above (b707c664.../fac19e95...) — neither
+file has changed since the Codex-chain-guard round; this round is the
+first to touch test_cli_codex.py (RG3/TI3) and the first to touch
+cli_codex.py only if TI3's test reveals a real runtime gap (expected
+not to, since is_wrapper_argv's fail-closed behavior already covers
+ambiguous shapes identically to wrapper matches).

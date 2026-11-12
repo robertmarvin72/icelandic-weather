@@ -36,3 +36,8 @@ Thumbs.db
 .claude/settings.local.json
 .env*.local
 .vercel
+
+# Ticket #498 — Python bytecode cache under the dev-notify notifier,
+# scoped narrowly (not a repo-wide *.pyc/__pycache__ rule) per RN6(c)/CV4.
+scripts/dev-notify/**/__pycache__/
+scripts/dev-notify/**/*.pyc

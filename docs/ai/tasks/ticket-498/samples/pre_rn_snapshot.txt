@@ -1,0 +1,51 @@
+#498 correction round (RN1-RN7 / CV1-CV5) — read-only pre-change snapshot
+Taken 2026-11-12, CC, Windows, before any RN1-RN7 edits.
+
+OS: Windows-11-10.0.26200-SP0
+Python: 3.14.0
+
+SHA-256 of all current scripts/dev-notify/*.py, tests/*.py, and ticket-498 docs/.sha256, docs/dev/dev-notify-setup.md:
+
+133f87428bd5c596512cd50a105d2f6f0d57279a564a045861a6d7dfe7267922 *docs/ai/tasks/ticket-498/approved-prompt-v1.md
+c9f35acd02cfaaacef318a922d9160968b2564d3f41e60f8ed3d9ff72fddc095 *docs/ai/tasks/ticket-498/approved-prompt-v2.md
+10e451a655b38f38cc199bb2913d8ddc62b427db09db91dc44644ee1fd005f56 *docs/ai/tasks/ticket-498/audit-report.md
+3d5552b9a6a03bec0a4c438cf9d3c4a2c640d6941611a2e40de5748aa7b1be84 *docs/ai/tasks/ticket-498/cc-report.md
+f646cb232e6d7250da4a561889a435c3e153b8eba4355d9fe5b20a8db76a0ef9 *docs/ai/tasks/ticket-498/correction-prompt-review.md
+a23331cf69f568b5bdb5186f25a272071a073a381413facb7100dad549117b0a *docs/ai/tasks/ticket-498/dedup-rules.md
+b2eac2e913b7e8c96fd1c0a404dce4ba410d1575bd3ba01af4e1cf0395d8d162 *docs/ai/tasks/ticket-498/dedup-rules.sha256
+49344051d771c3f39e0c4610bc317dd13c72b595559a2d577bc7c7f933db8d04 *docs/ai/tasks/ticket-498/patches/claude-settings-local-patch.md
+606e0751b6dd599823fea77c3ce534946ae56d745c05abb14617706a31e94a7a *docs/ai/tasks/ticket-498/patches/codex-config-toml-patch.md
+2c2385485320c6c460880fd5234dea97b2a4d20378ea02e615818327c45e4c22 *docs/ai/tasks/ticket-498/payload-allowlist.md
+0af84ba8ef2fee58347eac2497fe58b13f5cf7b6e260705dd904be6dd93f68a2 *docs/ai/tasks/ticket-498/payload-allowlist.sha256
+7859899571e28019ddf85ca44641e69a88f2ca5fa7b0df23d45a7bda5908d4ef *docs/ai/tasks/ticket-498/prompt-review.md
+455de0defc702dfafa929440a28e14b4939920d5802fc8ece514d89fa057456b *docs/ai/tasks/ticket-498/result-review.md
+083b15783ac47c1b5d52ab43f2843f09a53927bdc752ea4e04c9234567b42b26 *docs/dev/dev-notify-setup.md
+9a23a5d4a6edc307d6d37bcc2947e8eea8b434d05a9f9fff24f6f08a05772428 *scripts/dev-notify/dev_notify/__init__.py
+e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855 *scripts/dev-notify/dev_notify/adapters/__init__.py
+9e978cc05cc3d580feb266333813466449b839fa9c05d1178c91b0900f91db62 *scripts/dev-notify/dev_notify/adapters/claude_adapter.py
+de7d676313cbbf0527a8bd4b950b0d06953e69bee0c3978d1207019e168150e2 *scripts/dev-notify/dev_notify/adapters/codex_adapter.py
+e9869d8c9d97583783d88764c06fcc93b0ea8df9079ff7329a12e075fb793aca *scripts/dev-notify/dev_notify/apply_config_patch.py
+944d8481323cb9ae6de75172e2d11d4e977a720af544e8f3087ec5e998affde8 *scripts/dev-notify/dev_notify/cli_claude.py
+6641354763647efe89a598bf58c222b72f1ec940c625ef17e57ea839ceba61ee *scripts/dev-notify/dev_notify/cli_codex.py
+7e3ccfa2da4f9e4fe46cabfcbb6082009897a4f2bf50df82005e6267554580fb *scripts/dev-notify/dev_notify/config.py
+3455f5a50cb6482a555f436e870442fa392fc15177ffe0ed81c4a999a0532093 *scripts/dev-notify/dev_notify/dispatch.py
+e8dea48079cb3b3b37e15251fc0e0b687db52dd2d407d4e65d0d7daa91a12fb0 *scripts/dev-notify/dev_notify/events.py
+8248d5ff1685914bd10ed51d1af26e50efffcca865765dfed91417469be81224 *scripts/dev-notify/dev_notify/ntfy_client.py
+f58fa69d768e6a26b303584e324635a65c49469236c0e28c0c7a7d25fd5b74e6 *scripts/dev-notify/dev_notify/secret_store.py
+3ddddece35bd399cd79fe17cbfe4f78824b8c73adfd659e91e67c4a63379e278 *scripts/dev-notify/dev_notify/state.py
+e23d06433ad5d93a25ad1de505d5007af7f2e63e3a39c92c8bfd3fb79c09f079 *scripts/dev-notify/dev_notify/templates.py
+de91e6ed309ab8d2c639d072c2196b0927e745943c66ecf8989690abcabb6a16 *scripts/dev-notify/dev_notify/windows_toast.py
+e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855 *scripts/dev-notify/tests/__init__.py
+12e17cf973dcc5b40259ce95e6906353911e424b6a52defe7f71113794c368ad *scripts/dev-notify/tests/test_apply_config_patch.py
+fc8149a0f5ef1f8428ead69be22be11162e9d692421e962b14dca3df0154fc8e *scripts/dev-notify/tests/test_apply_config_patch_cli.py
+62b398c4601a959e0cfc9e86d45442408519c77f3368b3a8c3c3041d2760abe1 *scripts/dev-notify/tests/test_claude_adapter.py
+84be23a6f3aba681f846ff74b36e147e8cfc70eb23477938277b096695a39c02 *scripts/dev-notify/tests/test_cli_claude.py
+6d4713127b945777ac09a221ac8964318e8b83f27793b81bff8ead116f59e297 *scripts/dev-notify/tests/test_cli_codex.py
+7ef90520a6c4333efacb9f96ad042ea0058285cd1197441edcec611842c128e9 *scripts/dev-notify/tests/test_codex_adapter.py
+1be5c368df875579cf1ae53b56688fba0ff381dafaca2f78380a495c47c18372 *scripts/dev-notify/tests/test_config.py
+a180a83550718abf7d9842d161ccda16714584efc28f63ba4dc9956d29975dae *scripts/dev-notify/tests/test_dispatch.py
+c90943ded01edd8a5444e40b5245ca8f7ddc5db823c14ad8a246bab85f6519da *scripts/dev-notify/tests/test_ntfy_client.py
+c32e42beb13ef0beceb2ab9314c550a3ae51070041eba2e2d3ad96b3425df6f3 *scripts/dev-notify/tests/test_payload_allowlist_canary.py
+2aeb2d4bd1b55cae08859128a17879c0f4e58629018b94d7c273c5af11c92ebb *scripts/dev-notify/tests/test_state.py
+9cecacb436bd912f4536880f2fc047e691a1fa01e344c9600a22a77cbfed470d *scripts/dev-notify/tests/test_templates.py
+5d30ba44036cbe23a9122ec6bf0698244c44b63a359cfd75530dbee8a79d6b82 *scripts/dev-notify/tests/test_windows_toast.py
