@@ -7,18 +7,30 @@ Task directory:
 docs/ai/tasks/ticket-499/
 
 Prompt review:
-docs/ai/tasks/ticket-499/reykjavik-prompt-review.md
+docs/ai/tasks/ticket-499/closure-prompt-review.md
 
 Approved prompt:
-docs/ai/tasks/ticket-499/reykjavik/approved-prompt-v1.md
+docs/ai/tasks/ticket-499/closure/approved-prompt-v1.md
 
 CC report:
-docs/ai/tasks/ticket-499/reykjavik/cc-report.md
+docs/ai/tasks/ticket-499/closure/cc-report.md
 
 Result review:
-docs/ai/tasks/ticket-499/reykjavik/result-review.md
+docs/ai/tasks/ticket-499/closure/result-review.md
 
 ## Current handoff
+
+2026-11-13 (Ripley): Lokamat MVP-frágangs #499 **PASS eftir beina MA1-textaleiðréttingu** í closure/github-handoff.md: R1/E1/S2 óhökuð með óleystum atriðum, „verbatim“ breytt í samantekt, lengdargráða skýrð W. Sjálfstætt staðfest JSON og nákvæmlega tíu leyfðar registry-reitabreytingar vs HEAD, aðrir reitir óbreyttir, rétt S2-lýsing og git diff --check hreint. Lokamat appended í closure/result-review.md. Stage CLOSED; engin ný CC/Jonesy-lota. Næst eigandi commit/push og birting tilbúinna handoff-blokka: #500/#501 taka við götum, #499 má loka sem afmörkuðum MVP-gagnaundirbúningi með skýrri umfangsleiðréttingu, ekki fullri lokun eldri innleiðingarhliðs. Enginn commit/push/GitHub-birting eða lokun framkvæmd hér.
+
+2026-11-13 (Jonesy): Result review umferð 1 af MVP-frágangi #499 (closure/result-review.md, nýtt) skrifað. **REVISE (afmarkað) — eitt skilyrði MA1**; registry-breytingin er PASS; Stage RESULT_REVIEW. Sandbox (mitt, aðeins lestur, engin köll): approved-prompt SHA stemmir; registry borið við eintak fyrir breytingu — nákvæmlega 10 reitir (8×place, name_status, open_items), R1/E1/C/discovery/hnit/ID/tilvísanir óbreytt, EXACT_GAP 6→6; github-handoff vitnar orðrétt í LA1-texta; blokkir 2–3 (#500/#501) í samræmi við prompt. **MA1:** blokk 1 hakar `[x]` við S2-heiti, E1-provenance og R1-tengingar þótt prompt banni að haka við sem uppfyllt (heimildabundið S2-heiti fékkst ekki; ER1/ER2 standa; norðurbogi óleystur) og kallar umorðaðan, enskan lista „verbatim“ — eigandi gæti birt hakaðan lista sem villir. Lagfæring: S2 `[ ]/[~]` flutt/óleyst, E1 `[~]` (ER1/ER2), R1 `[~]`, og „verbatim“ burt eða atriði orðrétt; 3–5 línur í github-handoff.md, engin ný gögn, ekki þriðja umferð. Athugasemdir (valfrjálst): grunnlína var git HEAD ekki eintak fyrir breytingu (sama niðurstaða); enska + „-21.759° E“. CC-eignað: git diff --check/--stat, git restore, Prompt approved. Ekkert birt/lokað. Næst: CC/Ripley lagar MA1; engin önnur Jonesy-umferð nema eigandi biðji.
+
+2026-11-13 (CC): #499 MVP-frágangur fullgert (closure/approved-prompt-v1.md, LA1). endpoint-registry.json: nákvæmlega 10 línur breyttar (8x s2 place-reitir + name_status + 1 open_items-lína) í "Seyðisfjörður — aðkoma við mót 2894/2892"; allt annað (R1/E1/C/discovery_metadata, öll EXACT_GAP-merki) staðfest ÓBREYTT með parsed-JSON samanburði gegn git HEAD. Raunveruleg villa fannst+löguð í mótun: fyrsta tilraun endurskrifaði ALLA skrána (json.dump) sem olli 66-línu reformatting-suð vegna fyrirliggjandi ósamræmds inndrags í r1_reykjavik-blokkinni frá fyrri lotu -- fannst via git diff --stat stærðarmisræmi, lagað með git restore + hreinum text-level .replace() á réttum 10 línum. git diff --check hreint. closure/github-handoff.md skrifað: þrjár tilbúnar GitHub-textablokkir (#499 lokayfirlit, #500 eftirfylgni, #501 háð) byggðar EINGÖNGU á orðréttum miðatexta LA1 gaf -- engin GitHub-aðgangur, engin ágiskun. Engin birting/lokun miða. Scope: aðeins endpoint-registry.json + ný skjöl undir ticket-499/closure/ + CURRENT. Niðurstaða: #499 áfram PARTIAL (söguleg niðurstaða óbreytt). Næst: eigandi fer yfir github-handoff.md, breytir/birtir eftir eigin ákvörðun, commit/push samkvæmt README.
+
+2026-11-13 (Ripley): Jonesy APPROVED með LA1 fellt inn samkvæmt valkosti (a): orðrétt sex lokaskilyrði #499, fyrirvari þess og viðeigandi línur #500/#501 í closure/approved-prompt-v1.md. Enginn netaðgangur eða ágiskun CC um miðatexta þarf. S2-reitir og samanburður fyrir breytingu skýrð án umfangsaukningar. Stage READY_FOR_CC; engin önnur Jonesy-umferð þarf. Næst eigandi til CC: „Prompt approved“. Engin framkvæmd, GitHub-birting eða lokun hér.
+
+2026-11-13 (Jonesy): Prompt review umferð 1 af MVP-frágangi #499 (closure-prompt-review.md) appended. **APPROVED MEÐ SKILYRÐUM — LA1** (eitt skilyrði); Stage helst PROMPT_REVIEW; engin framkvæmdar-/netheimild fyrr en approved-prompt er READY_FOR_CC og eigandi sendir „Prompt approved“. Sandbox (mitt, aðeins lestur, engin köll): registry — E1/S2/C/discovery óbreytt, aðeins r1_reykjavik og open_items breytt, R1 hnit/ID = candidate.json, OWNER_SELECTED og EXACT_GAP ekki hækkað; S2-lýsingin „Seyðisfjörður — aðkoma við mót 2894/2892“ hlutlaus og styðst við STADARLYSING. **LA1:** CC hefur enga heimild fyrir texta #499/#500/#501 (engin staðbundin miðaskrá, engin net) en á að merkja „óuppfyllt eldri skilyrði“ og skrifa #500/#501 án þess að breyta öðrum skilyrðum — hætta á tilbúnum/röngum GitHub-texta. Lagfæring: approved-prompt felur orðrétt viðeigandi miðatexta (a) eða notar fasta línu „skilyrði #499 sannreyna gegn miðanum“ án þess að CC giski (b). Athugasemdir (valfrjálst): S2-reitir 8×place + name_status + open_items; git diff --check nær ekki untracked skrám; grunnlína = eintak fyrir breytingu. Ég las ekki GitHub. Næst: Ripley fellir LA1 inn; engin önnur Jonesy-umferð nauðsynleg.
+
+2026-11-13 (Ripley): Eigandi bað um prompt fyrir MVP-frágang #499. closure-prompt-review.md tilbúið: hlutlaus S2-aðkomulýsing og einn tilbúinn GitHub-handoff-texti fyrir #499/#500/#501. GitHub #500 staðfestir viðeigandi vegtengingaumfang; #501 notar það og skilar unsupported við óstaðfestar tengingar. Engin ný rannsókn/app-innleiðing eða birting/lokun miða í þessari lotu. Eldri CLOSED/PASS gagnalotur og R1-samþykki standa; ekki enduryfirfara þær. Stage PROMPT_REVIEW; næst eigandi til Jonesy „Initial prompt tilbúið“. Aðeins prompt skrifað, engin GitHub-breyting eða netgagnaöflun.
 
 2026-11-13 (Ripley, eigandaákvörðun): Eigandi „Já flott.“ samþykkir tillöguna „Reykjavík — Rauðavatn“, vestari endi 1436, fyrir R1/#499. Skráð í reykjavik/owner-decision.md og endpoint-registry.json; hnit/uppruni endurnýtt úr yfirfarinni tillögu. R1 staðarval nú OWNER_SELECTED; eldri óvalin staða er söguleg. Akstursaðgengi EXACT_GAP og nákvæmur norðurbogi óleyst; samþykkið er ekki akstursleiðarstaðfesting. Stage CLOSED helst; engin ný rannsókn, prompt, app-breyting eða GitHub-lokun.
 

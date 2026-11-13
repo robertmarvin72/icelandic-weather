@@ -90,11 +90,11 @@
  "s2_seydisfjordur": {
   "owner_choice": "Varðveitt vöruafmörkunartillaga samþykkt af eiganda (endpoint-decision-table-2026-11-11.md, owner 'já þetta er fínt' á endpoint-owner-decisions-2026-11-11.md): S2 = mót IDFERILL 2894 END / IDFERILL 2892 START, native EPSG:3057 (732875.6740, 538207.0762). Heiti/aðgengi/WGS84 voru PENDING fyrir þessa lotu; WGS84 er nú NÝLEGA SÓTT (þessi lota). Nákvæmt staðarheiti og akstursaðgengi eru ÁFRAM óstaðfest -- valið festir vöruafmörkun, ekki staðfest bæjarheiti eða heimild.",
   "status": "NEWLY ACQUIRED this round (S2-WGS84 call, 2026-11-13) -- real HTTPS GET to gagnaveita.vegagerdin.is, per this round's own fresh owner authorization.",
-  "name_status": "Described neutrally per approved-prompt-v1.md step 4: 'Seyðisfjörður (S2)' -- a selected approach at the junction of pieces 2894/2892, precise town-core name UNCONFIRMED. Not asserted as a confirmed place-core name.",
+  "name_status": "Described neutrally per approved-prompt-v1.md step 4, updated to this MVP closure's own phrasing (docs/ai/tasks/ticket-499/closure/approved-prompt-v1.md step 1): 'Seyðisfjörður — aðkoma við mót 2894/2892' -- describes the owner-selected junction the raw data supports (STADARLYSING-adjacent framing), never an official place name or a confirmed town boundary.",
   "entries": [
    {
     "role": "END",
-    "place": "Seyðisfjörður (S2)",
+    "place": "Seyðisfjörður — aðkoma við mót 2894/2892",
     "idferill": 2894,
     "nakvaemniferlis": -1,
     "objectid": 4980,
@@ -120,7 +120,7 @@
    },
    {
     "role": "END",
-    "place": "Seyðisfjörður (S2)",
+    "place": "Seyðisfjörður — aðkoma við mót 2894/2892",
     "idferill": 2894,
     "nakvaemniferlis": 0,
     "objectid": 3365,
@@ -146,7 +146,7 @@
    },
    {
     "role": "END",
-    "place": "Seyðisfjörður (S2)",
+    "place": "Seyðisfjörður — aðkoma við mót 2894/2892",
     "idferill": 2894,
     "nakvaemniferlis": 1,
     "objectid": 1854,
@@ -172,7 +172,7 @@
    },
    {
     "role": "END",
-    "place": "Seyðisfjörður (S2)",
+    "place": "Seyðisfjörður — aðkoma við mót 2894/2892",
     "idferill": 2894,
     "nakvaemniferlis": 2,
     "objectid": 259,
@@ -198,7 +198,7 @@
    },
    {
     "role": "START",
-    "place": "Seyðisfjörður (S2)",
+    "place": "Seyðisfjörður — aðkoma við mót 2894/2892",
     "idferill": 2892,
     "nakvaemniferlis": -1,
     "objectid": 4979,
@@ -224,7 +224,7 @@
    },
    {
     "role": "START",
-    "place": "Seyðisfjörður (S2)",
+    "place": "Seyðisfjörður — aðkoma við mót 2894/2892",
     "idferill": 2892,
     "nakvaemniferlis": 0,
     "objectid": 3364,
@@ -250,7 +250,7 @@
    },
    {
     "role": "START",
-    "place": "Seyðisfjörður (S2)",
+    "place": "Seyðisfjörður — aðkoma við mót 2894/2892",
     "idferill": 2892,
     "nakvaemniferlis": 1,
     "objectid": 1853,
@@ -276,7 +276,7 @@
    },
    {
     "role": "START",
-    "place": "Seyðisfjörður (S2)",
+    "place": "Seyðisfjörður — aðkoma við mót 2894/2892",
     "idferill": 2892,
     "nakvaemniferlis": 2,
     "objectid": 258,
@@ -416,7 +416,7 @@
  },
  "open_items": [
   "R1 Reykjavík — Rauðavatn: owner-selected 2026-11-13; exact northern interchange arc and driving access remain unresolved. See reykjavik/owner-decision.md.",
-  "S2 Seyðisfjörður: precise place-core name and driving access remain unconfirmed; discovery_candidate layers (28 of 61) are flagged but NOT investigated further this round (EA7: no further call triggered by classification alone).",
+  "S2 (Seyðisfjörður — aðkoma við mót 2894/2892): precise place-core name and driving access remain unconfirmed; discovery_candidate layers (28 of 61) are flagged but NOT investigated further this round (EA7: no further call triggered by classification alone).",
   "Akureyri C and Egilsstaðir E1: driving_access_both_directions remains EXACT_GAP (no retained or acquired field encodes it anywhere in this dataset).",
   "Full From/To routing, place naming beyond these four endpoints, and any UI/app change are OUT OF SCOPE for #499 (approved-prompt-v1.md's own 'Umfang og STOP')."
  ]
