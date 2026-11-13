@@ -1,0 +1,20 @@
+{
+ "data_stop_reason": null,
+ "transport_stop_reason": null,
+ "findings": {
+  "S2-WGS84": {
+   "number_matched": 20,
+   "number_returned": 20,
+   "total_features": 20,
+   "len_features": 20,
+   "expected_count": 20,
+   "missing_expected_keys": [],
+   "extra_keys_same_idbutur": [],
+   "extra_keys_other_idbutur_or_layer": [],
+   "duplicate_keys": [],
+   "crs_name": "urn:ogc:def:crs:EPSG::4326"
+  }
+ },
+ "calls_made": 2,
+ "bytes_received_total": 75359
+}

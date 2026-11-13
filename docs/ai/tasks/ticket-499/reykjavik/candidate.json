@@ -1,0 +1,67 @@
+{
+ "status": "PROPOSED_AWAITING_OWNER_SELECTION",
+ "note": "This candidate was resolved entirely from retained data -- no new network call was made this round (approved-prompt-v1.md step 1/2's own preference). It is NOT yet an approved R1 endpoint; the owner has approved Rauðavatn only for a DIFFERENT ticket's product (#491's own Rauðavatn-Vík winter route), not yet for #499's own R1 slot.",
+ "place_label": "Rauðavatn",
+ "name_source": {
+  "field": "STUTTNAFNLEIDAR",
+  "value": "Rauðavatn - Nesjavallaleið",
+  "file": "docs/ai/tasks/ticket-483/samples/wfs-vegnr1-all.json",
+  "file_sha256": "305f60d6f1f17918c058cbd047735681e56d6f9aad99f9e16f50de9419d6983a",
+  "note": "server-provided field, not informal prose. A secondary field on the same feature, STADARLYSING, reads 'Geirland - Norðlingavað' -- a different, more local description; not used as the headline name here."
+ },
+ "idferill": 1436,
+ "idbutur": 1410010037,
+ "latitude": 64.10152894,
+ "longitude": -21.75906405,
+ "role_in_this_candidate": "western end (toward Reykjavík city / Kjalarnes-Borgarnes fork)",
+ "other_end": {
+  "latitude": 64.09249225,
+  "longitude": -21.71204873,
+  "role": "eastern end (toward Vík via Hellisheiði)"
+ },
+ "coordinate_source": {
+  "file": "docs/ai/tasks/ticket-483/samples/wfs-chain-4326.json",
+  "file_sha256": "966848554f0ce205c919625c3e6209da1fe05bcc50e7e8084ae96840ad519af4",
+  "request_url": "https://gagnaveita.vegagerdin.is/geoserver/gis/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=gis:faerdferlar2017_1&CQL_FILTER=IDBUTUR%20IN%20(1410010037,903010037,253020037,252090037,902030037,902040037,901130037,901230037,901220037,901210037,901050037,901040037,801100037)&outputFormat=application/json&srsName=EPSG:4326&maxFeatures=300",
+  "request_time_utc": "2026-10-28T18:54:30Z",
+  "status": 200,
+  "note": "Server-side reprojection (srsName=EPSG:4326 in the request itself) -- never an offline/local coordinate transform. Values confirmed identical across all 4 NAKVAEMNIFERLIS tiers (-1,0,1,2)."
+ },
+ "native_reference": {
+  "crs": "EPSG:3057",
+  "native_xy_west_end": [365522.0175, 402772.762],
+  "native_xy_east_end": [367768.94, 401667.09],
+  "file": "docs/ai/tasks/ticket-483/samples/wfs-vegnr1-all.json",
+  "cross_dataset_confirmation": "The same native coordinates also appear, under a DIFFERENT ID scheme (road-links.csv 'piece 1436', not IDFERILL 1436), in docs/ai/tasks/ticket-493-access-points/endpoint-candidates-v3.json's own retained 'raudavatn_candidate' fields -- two independent retained datasets agree on the same physical point."
+ },
+ "connections": {
+  "toward_vik_clockwise": {
+   "grade": "VERIFIED",
+   "method": "ISN93 planar endpoint-to-endpoint adjacency, docs/ai/tasks/ticket-483/harness/01_chain_geometry_check.py",
+   "source_output": "docs/ai/tasks/ticket-483/harness/01_chain_geometry_check-output.txt",
+   "source_output_sha256": "495dda620317abcc37376430d1ae1e3f893d5f99f6bbd3a52c93a68d4c050e9e",
+   "measured_distances_m": [
+    {"from_idbutur": 1410010037, "to_idbutur": 903010037, "distance_m": 0.0},
+    {"from_idbutur": 903010037, "to_idbutur": 253020037, "distance_m": 0.2},
+    {"from_idbutur": 253020037, "to_idbutur": 252090037, "distance_m": 0.0}
+   ],
+   "note": "All 13 consecutive pairs of the full Rauðavatn-Vík chain are under 100m (most are 0.0m exact contact). This exact chain (same 13 IDBUTUR, same order) is the live, shipped production route in api/_lib/winterRoute/segments.js (ticket #486) -- real-world usage, not only a geometric claim. This is evidence the geometric chain is correct and already relied upon, not a fresh re-measurement performed this round."
+  },
+  "toward_reykjavik_city_and_kjalarnes_borgarnes_fork_counterclockwise": {
+   "grade": "CONNECTIVITY_VERIFIED_EXACT_ARC_UNKNOWN",
+   "method": "ISN93 planar endpoint-to-endpoint adjacency, same harness script as above",
+   "measured_distances_m": [
+    {"from_idbutur": 1410010037, "to_idbutur": 914020037, "distance_m": 1.3},
+    {"from_idbutur": 914020037, "to_idbutur": 903020037, "distance_m": 10.8},
+    {"from_idbutur": 903020037, "to_idbutur": 903030037, "distance_m": 20.9, "note": "903030037 is labelled 'Kjalarnes' -- the Reykjavík-Akureyri/Borgarnes corridor fork point, not further progress toward Vík."}
+   ],
+   "limitation": "914020037 and 903020037 are themselves 'multi-role interchange features' (ramps VEGHLUTI 3/4, a roundabout VEGHLUTI 5, both carriageway directions 6/7, plus undocumented 1/8) with 'connectivity CONFIRMED, length NOT COMPUTED' per the same harness output -- i.e. the real-world CONNECTION toward Kjalarnes/Borgarnes is confirmed to exist and is short (under 35m across three hops), but which specific ramp/arc represents 'the' through-route in each direction is not resolved by this data alone.",
+   "separate_cross_check": "docs/ai/tasks/ticket-491/evidence-owner-scope-2026-11-04.md item O5 (a DIFFERENT retained dataset, road-links.csv's own piece/roundabout IDs, not IDFERILL) found a similarly-close but separately-measured set of distances (1.3m/37.4m/38.3m) to a roundabout and two direction-segments near the same western end, with the same conclusion: 'Nákvæm leiðarstefna og bogaval áfram óleyst' (exact route direction and arc selection remain unresolved). Two independent retained datasets agree the point is really connected in this direction; neither resolves the exact arc.",
+   "source_file": "docs/ai/tasks/ticket-491/evidence-owner-scope-2026-11-04.md",
+   "source_file_sha256": "eaec601bca8b8f5ef4527aa7d801d1164f355ba0bfeef8fbd0297af879585550"
+  }
+ },
+ "driving_access_both_directions": "EXACT_GAP -- unchanged from the rest of this registry (endpoint-registry.json). Geometric/road-network connectivity is confirmed in both directions above; no retained or acquired field anywhere in this dataset encodes one-way/direction/driving-permission.",
+ "relationship_to_ticket_491": "The owner approved Rauðavatn/IDBUTUR 1410010037 on 2026-11-04 (docs/ai/tasks/ticket-491/evidence-owner-scope-2026-11-04.md) as the START point of a DIFFERENT, already-shipped product: the #486/#491 Rauðavatn-Vík winter route. That approval is real, strong precedent (same point, same coordinates, already in production), but it is NOT automatically the same as approving this point for #499's own R1 'Reykjavík approach for Frá/Til' slot -- ticket-493-access-points/endpoint-candidates-v3.json (dated a week later, 2026-11-11) explicitly still calls this an unselected comparison candidate for that separate purpose. This candidate.json asks the owner to decide whether to extend that same point to R1 too, not claiming that decision has already been made.",
+ "relationship_to_ticket_493": "docs/ai/tasks/ticket-493-access-points/endpoint-candidates-v3.json's own 'reykjavik.raudavatn_candidate_ENTRY_stored_END'/'_EXIT_stored_START' fields reference piece 1436 under the road-links.csv ID scheme, with status 'unselected comparison candidate (D6) -- never a confirmed Reykjavík core'. Native coordinates there are confirmed identical to this candidate's own (365522.0175,402772.762 / 367768.94,401667.09)."
+}

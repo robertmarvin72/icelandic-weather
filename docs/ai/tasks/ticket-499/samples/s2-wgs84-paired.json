@@ -1,0 +1,220 @@
+{
+ "entries": [
+  {
+   "role": "END",
+   "place": "Seyðisfjörður (S2)",
+   "idferill": 2894,
+   "nakvaemniferlis": -1,
+   "objectid": 4980,
+   "id": "faerdferlar2017_1.4980",
+   "latitude": 65.26021788,
+   "longitude": -14.00953135,
+   "tier_consistency_flag": true,
+   "null_reason": null,
+   "native_reference": {
+    "file_label": "wfs93-raw.json (phase2)",
+    "file_path": "docs/ai/tasks/ticket-499/samples/rp1_native_reference.json (byte-identical copy of ticket-493-endpoint-acquisition/samples/rp1_native_reference.json, SHA bc1a6dbc2b50cfb3020d6dca705e96b7809648e828de6b5802900a1731e036cf)",
+    "idferill": 2894,
+    "nakvaemniferlis": -1,
+    "native_xy": [
+     732875.674,
+     538207.0762
+    ],
+    "note": "native reference is the retained tier-2 vertex at the junction (first_xy for START, last_xy for END); the WGS84 value above is the server's own answer for this (idferill, tier) pair, not reprojected from this native value."
+   },
+   "raw_response_sha256": "b1b8aa63571d6377de742a02b4e2e4f35860182191846e4a88afabddf463628a",
+   "ledger_line": 1,
+   "dagsferils": "2026-10-07T00:00:00Z"
+  },
+  {
+   "role": "END",
+   "place": "Seyðisfjörður (S2)",
+   "idferill": 2894,
+   "nakvaemniferlis": 0,
+   "objectid": 3365,
+   "id": "faerdferlar2017_1.3365",
+   "latitude": 65.26021788,
+   "longitude": -14.00953135,
+   "tier_consistency_flag": true,
+   "null_reason": null,
+   "native_reference": {
+    "file_label": "wfs93-raw.json (phase2)",
+    "file_path": "docs/ai/tasks/ticket-499/samples/rp1_native_reference.json (byte-identical copy of ticket-493-endpoint-acquisition/samples/rp1_native_reference.json, SHA bc1a6dbc2b50cfb3020d6dca705e96b7809648e828de6b5802900a1731e036cf)",
+    "idferill": 2894,
+    "nakvaemniferlis": 0,
+    "native_xy": [
+     732875.674,
+     538207.0762
+    ],
+    "note": "native reference is the retained tier-2 vertex at the junction (first_xy for START, last_xy for END); the WGS84 value above is the server's own answer for this (idferill, tier) pair, not reprojected from this native value."
+   },
+   "raw_response_sha256": "b1b8aa63571d6377de742a02b4e2e4f35860182191846e4a88afabddf463628a",
+   "ledger_line": 1,
+   "dagsferils": "2026-10-07T00:00:00Z"
+  },
+  {
+   "role": "END",
+   "place": "Seyðisfjörður (S2)",
+   "idferill": 2894,
+   "nakvaemniferlis": 1,
+   "objectid": 1854,
+   "id": "faerdferlar2017_1.1854",
+   "latitude": 65.26021788,
+   "longitude": -14.00953135,
+   "tier_consistency_flag": true,
+   "null_reason": null,
+   "native_reference": {
+    "file_label": "wfs93-raw.json (phase2)",
+    "file_path": "docs/ai/tasks/ticket-499/samples/rp1_native_reference.json (byte-identical copy of ticket-493-endpoint-acquisition/samples/rp1_native_reference.json, SHA bc1a6dbc2b50cfb3020d6dca705e96b7809648e828de6b5802900a1731e036cf)",
+    "idferill": 2894,
+    "nakvaemniferlis": 1,
+    "native_xy": [
+     732875.674,
+     538207.0762
+    ],
+    "note": "native reference is the retained tier-2 vertex at the junction (first_xy for START, last_xy for END); the WGS84 value above is the server's own answer for this (idferill, tier) pair, not reprojected from this native value."
+   },
+   "raw_response_sha256": "b1b8aa63571d6377de742a02b4e2e4f35860182191846e4a88afabddf463628a",
+   "ledger_line": 1,
+   "dagsferils": "2026-10-07T00:00:00Z"
+  },
+  {
+   "role": "END",
+   "place": "Seyðisfjörður (S2)",
+   "idferill": 2894,
+   "nakvaemniferlis": 2,
+   "objectid": 259,
+   "id": "faerdferlar2017_1.259",
+   "latitude": 65.26021788,
+   "longitude": -14.00953135,
+   "tier_consistency_flag": true,
+   "null_reason": null,
+   "native_reference": {
+    "file_label": "wfs93-raw.json (phase2)",
+    "file_path": "docs/ai/tasks/ticket-499/samples/rp1_native_reference.json (byte-identical copy of ticket-493-endpoint-acquisition/samples/rp1_native_reference.json, SHA bc1a6dbc2b50cfb3020d6dca705e96b7809648e828de6b5802900a1731e036cf)",
+    "idferill": 2894,
+    "nakvaemniferlis": 2,
+    "native_xy": [
+     732875.674,
+     538207.0762
+    ],
+    "note": "native reference is the retained tier-2 vertex at the junction (first_xy for START, last_xy for END); the WGS84 value above is the server's own answer for this (idferill, tier) pair, not reprojected from this native value."
+   },
+   "raw_response_sha256": "b1b8aa63571d6377de742a02b4e2e4f35860182191846e4a88afabddf463628a",
+   "ledger_line": 1,
+   "dagsferils": "2026-10-07T00:00:00Z"
+  },
+  {
+   "role": "START",
+   "place": "Seyðisfjörður (S2)",
+   "idferill": 2892,
+   "nakvaemniferlis": -1,
+   "objectid": 4979,
+   "id": "faerdferlar2017_1.4979",
+   "latitude": 65.26021788,
+   "longitude": -14.00953135,
+   "tier_consistency_flag": true,
+   "null_reason": null,
+   "native_reference": {
+    "file_label": "wfs93-raw.json (phase2)",
+    "file_path": "docs/ai/tasks/ticket-499/samples/rp1_native_reference.json (byte-identical copy of ticket-493-endpoint-acquisition/samples/rp1_native_reference.json, SHA bc1a6dbc2b50cfb3020d6dca705e96b7809648e828de6b5802900a1731e036cf)",
+    "idferill": 2892,
+    "nakvaemniferlis": -1,
+    "native_xy": [
+     732875.674,
+     538207.0762
+    ],
+    "note": "native reference is the retained tier-2 vertex at the junction (first_xy for START, last_xy for END); the WGS84 value above is the server's own answer for this (idferill, tier) pair, not reprojected from this native value."
+   },
+   "raw_response_sha256": "b1b8aa63571d6377de742a02b4e2e4f35860182191846e4a88afabddf463628a",
+   "ledger_line": 1,
+   "dagsferils": "2026-10-07T00:00:00Z"
+  },
+  {
+   "role": "START",
+   "place": "Seyðisfjörður (S2)",
+   "idferill": 2892,
+   "nakvaemniferlis": 0,
+   "objectid": 3364,
+   "id": "faerdferlar2017_1.3364",
+   "latitude": 65.26021788,
+   "longitude": -14.00953135,
+   "tier_consistency_flag": true,
+   "null_reason": null,
+   "native_reference": {
+    "file_label": "wfs93-raw.json (phase2)",
+    "file_path": "docs/ai/tasks/ticket-499/samples/rp1_native_reference.json (byte-identical copy of ticket-493-endpoint-acquisition/samples/rp1_native_reference.json, SHA bc1a6dbc2b50cfb3020d6dca705e96b7809648e828de6b5802900a1731e036cf)",
+    "idferill": 2892,
+    "nakvaemniferlis": 0,
+    "native_xy": [
+     732875.674,
+     538207.0762
+    ],
+    "note": "native reference is the retained tier-2 vertex at the junction (first_xy for START, last_xy for END); the WGS84 value above is the server's own answer for this (idferill, tier) pair, not reprojected from this native value."
+   },
+   "raw_response_sha256": "b1b8aa63571d6377de742a02b4e2e4f35860182191846e4a88afabddf463628a",
+   "ledger_line": 1,
+   "dagsferils": "2026-10-07T00:00:00Z"
+  },
+  {
+   "role": "START",
+   "place": "Seyðisfjörður (S2)",
+   "idferill": 2892,
+   "nakvaemniferlis": 1,
+   "objectid": 1853,
+   "id": "faerdferlar2017_1.1853",
+   "latitude": 65.26021788,
+   "longitude": -14.00953135,
+   "tier_consistency_flag": true,
+   "null_reason": null,
+   "native_reference": {
+    "file_label": "wfs93-raw.json (phase2)",
+    "file_path": "docs/ai/tasks/ticket-499/samples/rp1_native_reference.json (byte-identical copy of ticket-493-endpoint-acquisition/samples/rp1_native_reference.json, SHA bc1a6dbc2b50cfb3020d6dca705e96b7809648e828de6b5802900a1731e036cf)",
+    "idferill": 2892,
+    "nakvaemniferlis": 1,
+    "native_xy": [
+     732875.674,
+     538207.0762
+    ],
+    "note": "native reference is the retained tier-2 vertex at the junction (first_xy for START, last_xy for END); the WGS84 value above is the server's own answer for this (idferill, tier) pair, not reprojected from this native value."
+   },
+   "raw_response_sha256": "b1b8aa63571d6377de742a02b4e2e4f35860182191846e4a88afabddf463628a",
+   "ledger_line": 1,
+   "dagsferils": "2026-10-07T00:00:00Z"
+  },
+  {
+   "role": "START",
+   "place": "Seyðisfjörður (S2)",
+   "idferill": 2892,
+   "nakvaemniferlis": 2,
+   "objectid": 258,
+   "id": "faerdferlar2017_1.258",
+   "latitude": 65.26021788,
+   "longitude": -14.00953135,
+   "tier_consistency_flag": true,
+   "null_reason": null,
+   "native_reference": {
+    "file_label": "wfs93-raw.json (phase2)",
+    "file_path": "docs/ai/tasks/ticket-499/samples/rp1_native_reference.json (byte-identical copy of ticket-493-endpoint-acquisition/samples/rp1_native_reference.json, SHA bc1a6dbc2b50cfb3020d6dca705e96b7809648e828de6b5802900a1731e036cf)",
+    "idferill": 2892,
+    "nakvaemniferlis": 2,
+    "native_xy": [
+     732875.674,
+     538207.0762
+    ],
+    "note": "native reference is the retained tier-2 vertex at the junction (first_xy for START, last_xy for END); the WGS84 value above is the server's own answer for this (idferill, tier) pair, not reprojected from this native value."
+   },
+   "raw_response_sha256": "b1b8aa63571d6377de742a02b4e2e4f35860182191846e4a88afabddf463628a",
+   "ledger_line": 1,
+   "dagsferils": "2026-10-07T00:00:00Z"
+  }
+ ],
+ "junction_cross_check": {
+  "end_idferill": 2894,
+  "start_idferill": 2892,
+  "native_xy_agree_within_0_0001m": true,
+  "wgs84_agree_within_1e-8deg": true,
+  "note": "EA5(c): same native junction point reached via two different pieces; construction/consistency check only, not independent proof of the WGS84 values (EA5d)."
+ },
+ "raw_response_sha256": "b1b8aa63571d6377de742a02b4e2e4f35860182191846e4a88afabddf463628a"
+}

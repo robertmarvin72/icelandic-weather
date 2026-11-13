@@ -1,5 +1,24 @@
 # CLAUDE.md — CampCast
 
+## Owner directive — early-stage product, working MVP
+
+This product is in its early stages. For EVERY task, deliver the minimum
+working implementation that correctly provides what the owner requested.
+This is a binding scope rule for implementation, prompts and reviews.
+
+- Minimum means limited scope, not defective code, incomplete requested
+  behavior, fabricated results or skipped essential correctness checks.
+- Prefer existing code/services and the simplest complete user flow.
+  Verify the requested behavior with focused tests or a real-world check.
+- Do not add speculative abstractions, configurability, extra platforms,
+  exhaustive hardening or commercial-release preparation by default.
+- A review blocker must demonstrate why the requested MVP is incorrect,
+  unsafe or unusable. Optional improvements are not blockers.
+- If a correct MVP requires work beyond the agreed task, explain the
+  concrete reason and ask the owner BEFORE doing that additional work.
+- Once the requested behavior works and the relevant checks pass, stop.
+  Protect the owner's time and paid token budget; do not create extra work.
+
 Weather forecasting web app for Icelandic campsites. Provides 7-day forecasts, campsite scoring/ranking, interactive map, and route planning. Freemium model (free/pro tier) with Paddle payments.
 
 ---

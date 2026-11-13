@@ -55,6 +55,57 @@ Jonesy must never implement anything during either review.
 
 ## Canonical workflow
 
+### Cost, scope and stopping review loops
+
+**Binding owner directive (2026-11-13): this is an early-stage product.
+Every task must deliver the minimum working solution that correctly
+provides the requested behavior. Minimum scope never excuses defective
+code or incomplete requested behavior.** This directive is recorded at
+the top of both AGENTS.md and CLAUDE.md and applies to Ripley, Jonesy and
+CC equally. Prompt acceptance criteria and result reviews must reflect it.
+Require focused evidence for correctness; do not require optional polish
+or exhaustive commercial-release readiness. Stop when the requested
+behavior works and relevant checks pass. Ask the owner before pursuing
+necessary work outside the agreed scope. Time and paid tokens are costs,
+not an unlimited resource.
+
+The workflow serves the user's requested outcome.
+All projects default to MVP scope: usable requested behavior, not a
+finished commercial package. Prompt and result reviews judge that scope;
+they must not promote optional polish, reuse infrastructure or exhaustive
+release preparation into mandatory acceptance criteria.
+
+If work appears to require a different task or broader scope, explain the
+concrete reason and ask the owner before pursuing it. A discovered
+opportunity or adjacent issue is not authorization to implement it.
+
+Start with the smallest
+authorized, reversible real-world check that can demonstrate that outcome
+(for example, one fixed-text notification to the destination the owner
+supplied). Do not require speculative architecture, documentation or
+hardening before that check. Existing explicit permissions and genuine
+safety requirements still apply; do not invent additional approval gates.
+
+Reviews must distinguish demonstrated blockers to the requested outcome
+from optional improvements. A blocker must identify a concrete failure,
+its effect on the requested outcome and the smallest necessary fix.
+Optional hardening and unrelated findings do not block delivery and must
+not automatically generate more work. Do not broaden acceptance criteria
+each round without the owner's explicit scope decision.
+
+Before starting a third review round for the same deliverable, stop the
+automatic loop. Tell the owner briefly what already works, what concrete
+blocker remains and the simplest path to completion. Further rounds need
+the owner's explicit choice to continue the loop; a routine handoff such
+as "Jonesy búinn" alone does not authorize an indefinitely expanding
+loop. This checkpoint is a short conversation, not a new document or
+review task. If the owner stops or simplifies the work, record that
+decision in CURRENT.md so another session does not revive the old loop.
+
+Report completion precisely: a successful manual send proves that send,
+not automatic hook installation. Once the requested scope is satisfied,
+stop; do not create follow-up work to justify previous effort.
+
 ```
 Ticket / task
     -> Ripley creates initial prompt

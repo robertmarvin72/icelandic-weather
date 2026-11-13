@@ -1,0 +1,537 @@
+{
+ "capabilities_status": "RECEIVED",
+ "reason": null,
+ "raw_response_sha256": "bd10b61e53902d01d9ba7c54d634805ee3b0f965a9baec6b5d88dcfec17a4a1d",
+ "feature_types_enumerated_count": 61,
+ "feature_types_enumerated": [
+  {
+   "name": "gis:borholur_2024_1",
+   "title": "Borholur",
+   "default_srs": null,
+   "other_srs": [],
+   "operations": [],
+   "discovery_candidate": false
+  },
+  {
+   "name": "gis:bru_bryr_2024_1",
+   "title": "Brýr",
+   "default_srs": null,
+   "other_srs": [],
+   "operations": [],
+   "discovery_candidate": false
+  },
+  {
+   "name": "gis:dufl_2024_1",
+   "title": "Dufl",
+   "default_srs": null,
+   "other_srs": [],
+   "operations": [],
+   "discovery_candidate": false
+  },
+  {
+   "name": "gis:framkvaemdir_brotlina_2024_1",
+   "title": "Framkvæmdir brotlína",
+   "default_srs": null,
+   "other_srs": [],
+   "operations": [],
+   "discovery_candidate": false
+  },
+  {
+   "name": "gis:framkvaemdir_umfang_2024_1",
+   "title": "Framkvæmdir umfang",
+   "default_srs": null,
+   "other_srs": [],
+   "operations": [],
+   "discovery_candidate": false
+  },
+  {
+   "name": "gis:hafnir_2024_1",
+   "title": "Hafnir",
+   "default_srs": null,
+   "other_srs": [],
+   "operations": [],
+   "discovery_candidate": false
+  },
+  {
+   "name": "gis:jardgong_2024_1",
+   "title": "Jarðgöng",
+   "default_srs": null,
+   "other_srs": [],
+   "operations": [],
+   "discovery_candidate": false
+  },
+  {
+   "name": "gis:TEST_FAERDFERLAR",
+   "title": "TEST_FAERDFERLAR",
+   "default_srs": null,
+   "other_srs": [],
+   "operations": [],
+   "discovery_candidate": true
+  },
+  {
+   "name": "gis:TEST_VEFMYNDAVEL",
+   "title": "TEST_VEFMYNDAVEL",
+   "default_srs": null,
+   "other_srs": [],
+   "operations": [],
+   "discovery_candidate": false
+  },
+  {
+   "name": "gis:vefmyndavel_2024_1",
+   "title": "Vefmyndavél",
+   "default_srs": null,
+   "other_srs": [],
+   "operations": [],
+   "discovery_candidate": false
+  },
+  {
+   "name": "gis:vegakerfi_ist120_2024_1",
+   "title": "Vegakerfi ist120",
+   "default_srs": null,
+   "other_srs": [],
+   "operations": [],
+   "discovery_candidate": true
+  },
+  {
+   "name": "gis:veggrennd_2024_1",
+   "title": "Veggrennd",
+   "default_srs": null,
+   "other_srs": [],
+   "operations": [],
+   "discovery_candidate": true
+  },
+  {
+   "name": "gis:vegrid_2024_1",
+   "title": "Vegrið",
+   "default_srs": null,
+   "other_srs": [],
+   "operations": [],
+   "discovery_candidate": true
+  },
+  {
+   "name": "gis:vitar_2024_1",
+   "title": "Vitar",
+   "default_srs": null,
+   "other_srs": [],
+   "operations": [],
+   "discovery_candidate": false
+  },
+  {
+   "name": "gis:yfirbordsmerki_flakar_2024_1",
+   "title": "Yfirborðsmerkingar flákar",
+   "default_srs": null,
+   "other_srs": [],
+   "operations": [],
+   "discovery_candidate": false
+  },
+  {
+   "name": "gis:yfirbordsmerki_linur_2024_1",
+   "title": "Yfirborðsmerkingar línur",
+   "default_srs": null,
+   "other_srs": [],
+   "operations": [],
+   "discovery_candidate": false
+  },
+  {
+   "name": "gis:fa_dufl",
+   "title": "fa_dufl",
+   "default_srs": null,
+   "other_srs": [],
+   "operations": [],
+   "discovery_candidate": false
+  },
+  {
+   "name": "gis:faerdferlar2017_1",
+   "title": "faerdferlar2017_1",
+   "default_srs": null,
+   "other_srs": [],
+   "operations": [],
+   "discovery_candidate": true
+  },
+  {
+   "name": "gis:faerdpunktar2017_1",
+   "title": "faerdpunktar2017_1",
+   "default_srs": null,
+   "other_srs": [],
+   "operations": [],
+   "discovery_candidate": true
+  },
+  {
+   "name": "gis:fastmerki_2022_1",
+   "title": "fastmerki_2022_1",
+   "default_srs": null,
+   "other_srs": [],
+   "operations": [],
+   "discovery_candidate": false
+  },
+  {
+   "name": "gis:fastmerki_2023_1",
+   "title": "fastmerki_2023_1",
+   "default_srs": null,
+   "other_srs": [],
+   "operations": [],
+   "discovery_candidate": false
+  },
+  {
+   "name": "gis:maelistod",
+   "title": "maelistod",
+   "default_srs": null,
+   "other_srs": [],
+   "operations": [],
+   "discovery_candidate": false
+  },
+  {
+   "name": "gis:namur_2022_1",
+   "title": "namur_2022_1",
+   "default_srs": null,
+   "other_srs": [],
+   "operations": [],
+   "discovery_candidate": false
+  },
+  {
+   "name": "gis:roadconditions_arealocation",
+   "title": "roadconditions_arealocation",
+   "default_srs": null,
+   "other_srs": [],
+   "operations": [],
+   "discovery_candidate": true
+  },
+  {
+   "name": "gis:roadconditions_lineincident",
+   "title": "roadconditions_lineincident",
+   "default_srs": null,
+   "other_srs": [],
+   "operations": [],
+   "discovery_candidate": true
+  },
+  {
+   "name": "gis:roadconditions_pointincident",
+   "title": "roadconditions_pointincident",
+   "default_srs": null,
+   "other_srs": [],
+   "operations": [],
+   "discovery_candidate": true
+  },
+  {
+   "name": "gis:samgongurisv50",
+   "title": "samgongurisv50",
+   "default_srs": null,
+   "other_srs": [],
+   "operations": [],
+   "discovery_candidate": true
+  },
+  {
+   "name": "gis:sgs_vegir",
+   "title": "sgs_vegir",
+   "default_srs": null,
+   "other_srs": [],
+   "operations": [],
+   "discovery_candidate": true
+  },
+  {
+   "name": "gis:takmarkanir_solmyrkvi",
+   "title": "takmarkanir_solmyrkvi",
+   "default_srs": null,
+   "other_srs": [],
+   "operations": [],
+   "discovery_candidate": false
+  },
+  {
+   "name": "gis:test_afmorkun",
+   "title": "test_afmorkun",
+   "default_srs": null,
+   "other_srs": [],
+   "operations": [],
+   "discovery_candidate": false
+  },
+  {
+   "name": "gis:test_arealocation",
+   "title": "test_arealocation",
+   "default_srs": null,
+   "other_srs": [],
+   "operations": [],
+   "discovery_candidate": false
+  },
+  {
+   "name": "gis:test_dufl",
+   "title": "test_dufl",
+   "default_srs": null,
+   "other_srs": [],
+   "operations": [],
+   "discovery_candidate": false
+  },
+  {
+   "name": "gis:test_faerd",
+   "title": "test_faerd",
+   "default_srs": null,
+   "other_srs": [],
+   "operations": [],
+   "discovery_candidate": true
+  },
+  {
+   "name": "gis:test_olduspa",
+   "title": "test_olduspa",
+   "default_srs": null,
+   "other_srs": [],
+   "operations": [],
+   "discovery_candidate": false
+  },
+  {
+   "name": "gis:test_roadconditions_lineincident",
+   "title": "test_roadconditions_lineincident",
+   "default_srs": null,
+   "other_srs": [],
+   "operations": [],
+   "discovery_candidate": true
+  },
+  {
+   "name": "gis:test_roadconditions_pointincident",
+   "title": "test_roadconditions_pointincident",
+   "default_srs": null,
+   "other_srs": [],
+   "operations": [],
+   "discovery_candidate": true
+  },
+  {
+   "name": "gis:test_traffic",
+   "title": "test_traffic",
+   "default_srs": null,
+   "other_srs": [],
+   "operations": [],
+   "discovery_candidate": true
+  },
+  {
+   "name": "gis:test_umferd",
+   "title": "test_umferd",
+   "default_srs": null,
+   "other_srs": [],
+   "operations": [],
+   "discovery_candidate": true
+  },
+  {
+   "name": "gis:test_umferdteljarar",
+   "title": "test_umferdteljarar",
+   "default_srs": null,
+   "other_srs": [],
+   "operations": [],
+   "discovery_candidate": true
+  },
+  {
+   "name": "gis:test_vedurstod2",
+   "title": "test_vedurstod",
+   "default_srs": null,
+   "other_srs": [],
+   "operations": [],
+   "discovery_candidate": false
+  },
+  {
+   "name": "gis:test_vefmyndavelar",
+   "title": "test_vefmyndavelar",
+   "default_srs": null,
+   "other_srs": [],
+   "operations": [],
+   "discovery_candidate": false
+  },
+  {
+   "name": "gis:umf_talningar_stefnugreint",
+   "title": "umf_talningar_stefnugreint",
+   "default_srs": null,
+   "other_srs": [],
+   "operations": [],
+   "discovery_candidate": false
+  },
+  {
+   "name": "gis:umf_talningar_stefnugreint_nyjast",
+   "title": "umf_talningar_stefnugreint_nyjast",
+   "default_srs": null,
+   "other_srs": [],
+   "operations": [],
+   "discovery_candidate": false
+  },
+  {
+   "name": "gis:umf_talningar_stefnugreint_stadir",
+   "title": "umf_talningar_stefnugreint_stadir",
+   "default_srs": null,
+   "other_srs": [],
+   "operations": [],
+   "discovery_candidate": false
+  },
+  {
+   "name": "gis:umferdinferlar2022_1",
+   "title": "umferdinferlar2022_1",
+   "default_srs": null,
+   "other_srs": [],
+   "operations": [],
+   "discovery_candidate": true
+  },
+  {
+   "name": "gis:umferdinslitlag_2022_1",
+   "title": "umferdinslitlag_2022_1",
+   "default_srs": null,
+   "other_srs": [],
+   "operations": [],
+   "discovery_candidate": true
+  },
+  {
+   "name": "gis:umferdinveggjald",
+   "title": "umferdinveggjald",
+   "default_srs": null,
+   "other_srs": [],
+   "operations": [],
+   "discovery_candidate": true
+  },
+  {
+   "name": "gis:umferdvika_2021_1",
+   "title": "umferdvika_2021_1",
+   "default_srs": null,
+   "other_srs": [],
+   "operations": [],
+   "discovery_candidate": true
+  },
+  {
+   "name": "gis:veghelgunarsvaedi_2026_1",
+   "title": "veghelgunarsvaedi_2026_1",
+   "default_srs": null,
+   "other_srs": [],
+   "operations": [],
+   "discovery_candidate": true
+  },
+  {
+   "name": "gis:vegirinatturuislands_2022_1",
+   "title": "vegirinatturuislands_2022_1",
+   "default_srs": null,
+   "other_srs": [],
+   "operations": [],
+   "discovery_candidate": true
+  },
+  {
+   "name": "gis:vegleid_landshluti",
+   "title": "vegleid_landshluti",
+   "default_srs": null,
+   "other_srs": [],
+   "operations": [],
+   "discovery_candidate": true
+  },
+  {
+   "name": "gis:vegleid_leid",
+   "title": "vegleid_leid",
+   "default_srs": null,
+   "other_srs": [],
+   "operations": [],
+   "discovery_candidate": true
+  },
+  {
+   "name": "gis:vegleid_leidsundurlidun",
+   "title": "vegleid_leidsundurlidun",
+   "default_srs": null,
+   "other_srs": [],
+   "operations": [],
+   "discovery_candidate": true
+  },
+  {
+   "name": "gis:vegleid_stadur",
+   "title": "vegleid_stadur",
+   "default_srs": null,
+   "other_srs": [],
+   "operations": [],
+   "discovery_candidate": true
+  },
+  {
+   "name": "gis:vegleid_upphaf_endir",
+   "title": "vegleid_upphaf_endir",
+   "default_srs": null,
+   "other_srs": [],
+   "operations": [],
+   "discovery_candidate": true
+  },
+  {
+   "name": "gis:vindhvidustadir_2026_1",
+   "title": "vindhvidustadir_2026_1",
+   "default_srs": null,
+   "other_srs": [],
+   "operations": [],
+   "discovery_candidate": false
+  },
+  {
+   "name": "gis:vs_afmorkungrunnslod",
+   "title": "vs_afmorkungrunnslod",
+   "default_srs": null,
+   "other_srs": [],
+   "operations": [],
+   "discovery_candidate": false
+  },
+  {
+   "name": "gis:vs_hofn",
+   "title": "vs_hofn",
+   "default_srs": null,
+   "other_srs": [],
+   "operations": [],
+   "discovery_candidate": false
+  },
+  {
+   "name": "gis:vs_vitar",
+   "title": "vs_vitar",
+   "default_srs": null,
+   "other_srs": [],
+   "operations": [],
+   "discovery_candidate": false
+  },
+  {
+   "name": "gis:vstest_afmorkun",
+   "title": "vstest_afmorkun",
+   "default_srs": null,
+   "other_srs": [],
+   "operations": [],
+   "discovery_candidate": false
+  },
+  {
+   "name": "gis:aningarstadir_2024_1",
+   "title": "Áningarstaðir",
+   "default_srs": null,
+   "other_srs": [],
+   "operations": [],
+   "discovery_candidate": false
+  }
+ ],
+ "discovery_candidates": [
+  "gis:TEST_FAERDFERLAR",
+  "gis:vegakerfi_ist120_2024_1",
+  "gis:veggrennd_2024_1",
+  "gis:vegrid_2024_1",
+  "gis:faerdferlar2017_1",
+  "gis:faerdpunktar2017_1",
+  "gis:roadconditions_arealocation",
+  "gis:roadconditions_lineincident",
+  "gis:roadconditions_pointincident",
+  "gis:samgongurisv50",
+  "gis:sgs_vegir",
+  "gis:test_faerd",
+  "gis:test_roadconditions_lineincident",
+  "gis:test_roadconditions_pointincident",
+  "gis:test_traffic",
+  "gis:test_umferd",
+  "gis:test_umferdteljarar",
+  "gis:umferdinferlar2022_1",
+  "gis:umferdinslitlag_2022_1",
+  "gis:umferdinveggjald",
+  "gis:umferdvika_2021_1",
+  "gis:veghelgunarsvaedi_2026_1",
+  "gis:vegirinatturuislands_2022_1",
+  "gis:vegleid_landshluti",
+  "gis:vegleid_leid",
+  "gis:vegleid_leidsundurlidun",
+  "gis:vegleid_stadur",
+  "gis:vegleid_upphaf_endir"
+ ],
+ "classification_rule_used": "metadata-classification-rule.md EA7 keyword list (lower-case, diacritics stripped, substring match)",
+ "classification_rule_file": "docs/ai/tasks/ticket-493-endpoint-acquisition/metadata-classification-rule.md",
+ "classification_rule_sha256": "b3c18d67d09d5aa37c037a3768c6a275298af45fc4205954416a7c95e617510f",
+ "driving_access_status": "EXACT_GAP",
+ "driving_access_authority": {
+  "file": "docs/ai/tasks/ticket-499/samples/raw-E1-WGS84.json is NOT retained here -- authority is the retained ticket-493 raw response at docs/ai/tasks/ticket-493-endpoint-acquisition/samples/raw-E1-WGS84.json",
+  "pointer": "features[].properties -- 24 properties per feature (confirmed by direct read this round, not 28 as an earlier #493 report stated -- see evidence.md's dated correction), none encoding direction/one-way/access"
+ },
+ "driving_access_note": "discovery_candidate=true on a layer name/title (e.g. containing 'veg', 'stefna', 'access') does NOT by itself establish content, licence, one-way status, or driving access of any kind (EA7's own explicit instruction). No metadata result changes this status. No further network call, DescribeFeatureType request, or feature query was made as a result of this classification, regardless of outcome.",
+ "r1_status": "No coordinate, no candidate, no connection claim resolved by this run. R1's own exact point remains PENDING (see endpoint-registry.json's own r1 entry for the retained-but-unselected Rauðavatn candidate and the proposed next owner decision).",
+ "license_note": "Vegagerðin's own 'Skilmálar vefþjónustur' CC BY 4.0 reference stands (retained from #493, unchanged). No licence inference is drawn from this round's own capabilities response (no Fees/AccessConstraints metadata was specifically examined this round)."
+}

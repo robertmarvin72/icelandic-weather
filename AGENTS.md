@@ -1,5 +1,24 @@
 # AGENTS.md — Eltum Veðrið
 
+## Owner directive — early-stage product, working MVP
+
+This product is in its early stages. For EVERY task, deliver the minimum
+working implementation that correctly provides what the owner requested.
+This is a binding scope rule for implementation, prompts and reviews.
+
+- Minimum means limited scope, not defective code, incomplete requested
+  behavior, fabricated results or skipped essential correctness checks.
+- Prefer existing code/services and the simplest complete user flow.
+  Verify the requested behavior with focused tests or a real-world check.
+- Do not add speculative abstractions, configurability, extra platforms,
+  exhaustive hardening or commercial-release preparation by default.
+- A review blocker must demonstrate why the requested MVP is incorrect,
+  unsafe or unusable. Optional improvements are not blockers.
+- If a correct MVP requires work beyond the agreed task, explain the
+  concrete reason and ask the owner BEFORE doing that additional work.
+- Once the requested behavior works and the relevant checks pass, stop.
+  Protect the owner's time and paid token budget; do not create extra work.
+
 Decision-first weather tool for campers, caravan owners and RV users in Iceland. Helps users decide whether to stay or move by comparing nearby campsite weather.
 
 ---
@@ -151,6 +170,20 @@ The shared candidate-selection/radius logic both surfaces rely on:
 ---
 
 ## UX Guardrails
+
+## Product scope — MVP by default
+
+All tasks target a usable MVP, not a polished commercial package. Deliver
+the smallest end-to-end behavior that satisfies the owner's request using
+existing code and services. Do not add general-purpose frameworks,
+configuration systems, exhaustive edge-case handling, extra platforms or
+release paperwork unless required for that behavior or explicitly asked
+for. Preserve essential correctness, privacy and safety; label real gaps
+honestly instead of claiming unsupported behavior. Optional polish and
+hardening stay optional and must not delay the requested MVP.
+If a task appears to need work outside its agreed scope, explain why and
+ask the owner before starting that work. Do not pursue adjacent tasks or
+side projects automatically.
 
 Prioritize:
 - hero clarity
@@ -346,6 +379,18 @@ Deployment is via Vercel Git integration — push to `main` deploys automaticall
 ---
 
 ## AI Collaboration Workflow
+
+Cost and scope discipline: start with the smallest authorized, reversible
+real-world check that can prove the user's requested outcome. Do not build
+an implementation or review system before verifying the basic integration.
+Keep validation proportional to actual impact. Separate demonstrated
+blockers from optional hardening; optional improvements must not prevent
+delivery or automatically create another prompt/review round. Before a
+third review round for the same deliverable, stop the automatic loop and
+give the owner a short account of what works, the concrete blocker, and
+the simplest path to completion. More rounds require the owner's explicit
+choice to continue that loop. Do not turn this checkpoint into another
+review artifact. See docs/ai/README.md for the canonical rule.
 
 Before acting on any "Ripley/Jonesy/Prompt approved/CC búinn"-style
 instruction, read docs/ai/README.md and docs/ai/CURRENT.md first.

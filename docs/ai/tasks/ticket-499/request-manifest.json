@@ -1,0 +1,109 @@
+{
+ "status": "ALL REQUESTS NOT_AUTHORISED until the owner's own \"Prompt approved\" handoff on READY_FOR_CC -- this file specifies, it does not itself authorise.",
+ "note": "S2-WGS84 and ACCESS-CAPABILITIES only; E1-WGS84 is retained from #493 and is NOT in this round's own call order -- its encoded_request_sha256 is cross-checked above but it is never requested.",
+ "host_allowlist": [
+  "gagnaveita.vegagerdin.is"
+ ],
+ "order": [
+  "S2-WGS84",
+  "ACCESS-CAPABILITIES"
+ ],
+ "max_total_calls": 2,
+ "max_total_bytes": 4456448,
+ "max_bytes_per_response_default": null,
+ "timeout_s_per_request_socket": 20,
+ "wall_clock_cap_s_per_request": 20,
+ "acquisition_window_minutes": 10,
+ "retries": 0,
+ "redirects_followed": 0,
+ "requests": [
+  {
+   "request_id": "S2-WGS84",
+   "host": "gagnaveita.vegagerdin.is",
+   "method": "GET",
+   "path": "/geoserver/gis/ows",
+   "decoded_params": [
+    {
+     "key": "service",
+     "value": "WFS"
+    },
+    {
+     "key": "version",
+     "value": "1.0.0"
+    },
+    {
+     "key": "request",
+     "value": "GetFeature"
+    },
+    {
+     "key": "typeName",
+     "value": "gis:faerdferlar2017_1"
+    },
+    {
+     "key": "CQL_FILTER",
+     "value": "IDBUTUR IN (911170037)"
+    },
+    {
+     "key": "srsName",
+     "value": "EPSG:4326"
+    },
+    {
+     "key": "outputFormat",
+     "value": "application/json"
+    },
+    {
+     "key": "maxFeatures",
+     "value": "300"
+    }
+   ],
+   "encoded_query": "service=WFS&version=1.0.0&request=GetFeature&typeName=gis%3Afaerdferlar2017_1&CQL_FILTER=IDBUTUR%20IN%20%28911170037%29&srsName=EPSG%3A4326&outputFormat=application%2Fjson&maxFeatures=300",
+   "encoded_path": "/geoserver/gis/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=gis%3Afaerdferlar2017_1&CQL_FILTER=IDBUTUR%20IN%20%28911170037%29&srsName=EPSG%3A4326&outputFormat=application%2Fjson&maxFeatures=300",
+   "full_url": "https://gagnaveita.vegagerdin.is/geoserver/gis/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=gis%3Afaerdferlar2017_1&CQL_FILTER=IDBUTUR%20IN%20%28911170037%29&srsName=EPSG%3A4326&outputFormat=application%2Fjson&maxFeatures=300",
+   "encoded_request_sha256": "0d57d61fad31c8c639e7255ec74b23ec608cab5435188321d1570aee8efead83",
+   "verbatim_reuse_of_prior_manifest": "docs/ai/tasks/ticket-493-endpoint-acquisition/request-manifest.json",
+   "encode_function": "request_encoding.encode_query (urllib.parse.urlencode, quote_via=urllib.parse.quote)",
+   "per_body_cap_bytes": 262144,
+   "max_calls": 1,
+   "timeout_s_socket": 20,
+   "wall_clock_cap_s": 20,
+   "redirects_allowed": 0,
+   "retries": 0,
+   "tls_verify": true,
+   "allow_insecure_for_local_test": false
+  },
+  {
+   "request_id": "ACCESS-CAPABILITIES",
+   "host": "gagnaveita.vegagerdin.is",
+   "method": "GET",
+   "path": "/geoserver/gis/ows",
+   "decoded_params": [
+    {
+     "key": "service",
+     "value": "WFS"
+    },
+    {
+     "key": "version",
+     "value": "1.0.0"
+    },
+    {
+     "key": "request",
+     "value": "GetCapabilities"
+    }
+   ],
+   "encoded_query": "service=WFS&version=1.0.0&request=GetCapabilities",
+   "encoded_path": "/geoserver/gis/ows?service=WFS&version=1.0.0&request=GetCapabilities",
+   "full_url": "https://gagnaveita.vegagerdin.is/geoserver/gis/ows?service=WFS&version=1.0.0&request=GetCapabilities",
+   "encoded_request_sha256": "b00320ca211c34a8c68cd4528d42f5a3b6d3f902142bd0db5469cbfcd15cba5c",
+   "verbatim_reuse_of_prior_manifest": "docs/ai/tasks/ticket-493-endpoint-acquisition/request-manifest.json",
+   "encode_function": "request_encoding.encode_query (urllib.parse.urlencode, quote_via=urllib.parse.quote)",
+   "per_body_cap_bytes": 4194304,
+   "max_calls": 1,
+   "timeout_s_socket": 20,
+   "wall_clock_cap_s": 20,
+   "redirects_allowed": 0,
+   "retries": 0,
+   "tls_verify": true,
+   "allow_insecure_for_local_test": false
+  }
+ ]
+}
