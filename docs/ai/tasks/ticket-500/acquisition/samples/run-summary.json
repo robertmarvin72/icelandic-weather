@@ -1,0 +1,280 @@
+{
+  "probe_passed": true,
+  "calls_made": 8,
+  "results": [
+    {
+      "entry_summary": {
+        "request_id": "PROBE-KEF",
+        "status": 200,
+        "bytes_received": 31781,
+        "stop_reasons": [],
+        "wall_clock_elapsed_s": 0.11204249999991589
+      },
+      "validation": {
+        "request_id": "PROBE-KEF",
+        "crs_name": "urn:ogc:def:crs:EPSG::4326",
+        "matched": 32,
+        "returned": 32,
+        "len_features": 32,
+        "seen_idbutur": [
+          341190037
+        ],
+        "unexpected_idbutur": [],
+        "missing_idbutur": [],
+        "bad_coords": [],
+        "bad_coords_count": 0,
+        "ok": true,
+        "reason": null
+      }
+    },
+    {
+      "entry_summary": {
+        "request_id": "BATCH-1",
+        "status": 200,
+        "bytes_received": 109322,
+        "stop_reasons": [],
+        "wall_clock_elapsed_s": 0.07174719999966328
+      },
+      "validation": {
+        "request_id": "BATCH-1",
+        "crs_name": "urn:ogc:def:crs:EPSG::4326",
+        "matched": 120,
+        "returned": 120,
+        "len_features": 120,
+        "seen_idbutur": [
+          238030037,
+          301000037,
+          301030037,
+          343020037,
+          506070037,
+          506170037,
+          561900037,
+          562070037,
+          662210037,
+          662220037,
+          707040037,
+          764540037
+        ],
+        "unexpected_idbutur": [],
+        "missing_idbutur": [],
+        "bad_coords": [],
+        "bad_coords_count": 0,
+        "ok": true,
+        "reason": null
+      }
+    },
+    {
+      "entry_summary": {
+        "request_id": "BATCH-2",
+        "status": 200,
+        "bytes_received": 191488,
+        "stop_reasons": [],
+        "wall_clock_elapsed_s": 0.05229390000022249
+      },
+      "validation": {
+        "request_id": "BATCH-2",
+        "crs_name": "urn:ogc:def:crs:EPSG::4326",
+        "matched": 152,
+        "returned": 152,
+        "len_features": 152,
+        "seen_idbutur": [
+          805030037,
+          806030037,
+          808170037,
+          814640037,
+          902060037,
+          902070037,
+          902160037,
+          902170037,
+          902280037,
+          902290037,
+          902370037,
+          903040037
+        ],
+        "unexpected_idbutur": [],
+        "missing_idbutur": [],
+        "bad_coords": [],
+        "bad_coords_count": 0,
+        "ok": true,
+        "reason": null
+      }
+    },
+    {
+      "entry_summary": {
+        "request_id": "BATCH-3",
+        "status": 200,
+        "bytes_received": 323885,
+        "stop_reasons": [],
+        "wall_clock_elapsed_s": 0.058385399999679066
+      },
+      "validation": {
+        "request_id": "BATCH-3",
+        "crs_name": "urn:ogc:def:crs:EPSG::4326",
+        "matched": 312,
+        "returned": 312,
+        "len_features": 312,
+        "seen_idbutur": [
+          903050037,
+          903110037,
+          903200037,
+          904020037,
+          904030037,
+          904300037,
+          904310037,
+          904320037,
+          904370037,
+          905070037,
+          905120037,
+          905280037
+        ],
+        "unexpected_idbutur": [],
+        "missing_idbutur": [],
+        "bad_coords": [],
+        "bad_coords_count": 0,
+        "ok": true,
+        "reason": null
+      }
+    },
+    {
+      "entry_summary": {
+        "request_id": "BATCH-4",
+        "status": 200,
+        "bytes_received": 250452,
+        "stop_reasons": [],
+        "wall_clock_elapsed_s": 0.05443199999990611
+      },
+      "validation": {
+        "request_id": "BATCH-4",
+        "crs_name": "urn:ogc:def:crs:EPSG::4326",
+        "matched": 156,
+        "returned": 156,
+        "len_features": 156,
+        "seen_idbutur": [
+          905290037,
+          906110037,
+          906120037,
+          906140037,
+          906150037,
+          906540037,
+          906710037,
+          907040037,
+          907070037,
+          907100037,
+          907110037,
+          907150037
+        ],
+        "unexpected_idbutur": [],
+        "missing_idbutur": [],
+        "bad_coords": [],
+        "bad_coords_count": 0,
+        "ok": true,
+        "reason": null
+      }
+    },
+    {
+      "entry_summary": {
+        "request_id": "BATCH-5",
+        "status": 200,
+        "bytes_received": 191259,
+        "stop_reasons": [],
+        "wall_clock_elapsed_s": 0.05078690000027564
+      },
+      "validation": {
+        "request_id": "BATCH-5",
+        "crs_name": "urn:ogc:def:crs:EPSG::4326",
+        "matched": 132,
+        "returned": 132,
+        "len_features": 132,
+        "seen_idbutur": [
+          907160037,
+          907210037,
+          907720037,
+          908020037,
+          908030037,
+          908050037,
+          908070037,
+          908110037,
+          908180037,
+          908190037,
+          908210037,
+          908740037
+        ],
+        "unexpected_idbutur": [],
+        "missing_idbutur": [],
+        "bad_coords": [],
+        "bad_coords_count": 0,
+        "ok": true,
+        "reason": null
+      }
+    },
+    {
+      "entry_summary": {
+        "request_id": "BATCH-6",
+        "status": 200,
+        "bytes_received": 214878,
+        "stop_reasons": [],
+        "wall_clock_elapsed_s": 0.048186600000008184
+      },
+      "validation": {
+        "request_id": "BATCH-6",
+        "crs_name": "urn:ogc:def:crs:EPSG::4326",
+        "matched": 172,
+        "returned": 172,
+        "len_features": 172,
+        "seen_idbutur": [
+          909150037,
+          909190037,
+          909310037,
+          909320037,
+          910120037,
+          910130037,
+          910220037,
+          910270037,
+          910410037,
+          911230037,
+          911420037,
+          912010037
+        ],
+        "unexpected_idbutur": [],
+        "missing_idbutur": [],
+        "bad_coords": [],
+        "bad_coords_count": 0,
+        "ok": true,
+        "reason": null
+      }
+    },
+    {
+      "entry_summary": {
+        "request_id": "BATCH-7",
+        "status": 200,
+        "bytes_received": 227181,
+        "stop_reasons": [],
+        "wall_clock_elapsed_s": 0.07323330000053829
+      },
+      "validation": {
+        "request_id": "BATCH-7",
+        "crs_name": "urn:ogc:def:crs:EPSG::4326",
+        "matched": 200,
+        "returned": 200,
+        "len_features": 200,
+        "seen_idbutur": [
+          912020037,
+          912040037,
+          912060037,
+          914500037,
+          976110037,
+          1008700037,
+          1209820037,
+          1344120037,
+          1441610037
+        ],
+        "unexpected_idbutur": [],
+        "missing_idbutur": [],
+        "bad_coords": [],
+        "bad_coords_count": 0,
+        "ok": true,
+        "reason": null
+      }
+    }
+  ]
+}

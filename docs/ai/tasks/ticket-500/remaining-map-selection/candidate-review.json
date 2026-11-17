@@ -1,0 +1,666 @@
+{
+  "schema_version": 1,
+  "note": "Ripley recommendation manifest only; no owner selection/product update. 27 source vertices inspected visually, 2 source gaps. Recorded 2026-11-16 after review; not a timestamp log of each navigation. No network acquisition of road geometry.",
+  "results": {
+    "kopavogur": {
+      "status": "RECOMMENDED_PRODUCT_POINT",
+      "source_file": "docs/ai/tasks/ticket-500/acquisition/samples/raw-BATCH-7.json",
+      "source_sha256": "35ea82930bf346e67f88da4dfeab5318cfb2228379d00787d7adf4dd02984c6c",
+      "idferill": 3073,
+      "objectid": 4911,
+      "tier": -1,
+      "stored_field": "start",
+      "source_crs": "EPSG:4326",
+      "source_vertex": [
+        -21.90418005,
+        64.10411666
+      ],
+      "wgs84": {
+        "latitude": 64.10411666,
+        "longitude": -21.90418005,
+        "crs": "EPSG:4326"
+      },
+      "approach_is": "Punktur á Hafnarfjarðarvegi við Kópavogsdal.",
+      "map_url": "https://www.openstreetmap.org/?mlat=64.10411666&mlon=-21.90418005#map=15/64.108/-21.906",
+      "map_observation": "Á gegnumvegi sunnan miðhluta Kópavogs við Kópavogsdal og íþróttasvæði; ekki gatnamót eða staðfest bæjaraðkoma.",
+      "source_role": "RIPLEY_VISUAL_CHECK",
+      "access_status": "EXACT_GAP"
+    },
+    "hafnarfjordur": {
+      "status": "RECOMMENDED_PRODUCT_POINT",
+      "source_file": "docs/ai/tasks/ticket-500/acquisition/samples/raw-BATCH-7.json",
+      "source_sha256": "35ea82930bf346e67f88da4dfeab5318cfb2228379d00787d7adf4dd02984c6c",
+      "idferill": 10287,
+      "objectid": 6251,
+      "tier": -1,
+      "stored_field": "start",
+      "source_crs": "EPSG:4326",
+      "source_vertex": [
+        -21.93959097,
+        64.07380373
+      ],
+      "wgs84": {
+        "latitude": 64.07380373,
+        "longitude": -21.93959097,
+        "crs": "EPSG:4326"
+      },
+      "approach_is": "Punktur við tengingu Hafnarfjarðarvegar og Reykjanesbrautar í Hafnarfirði.",
+      "map_url": "https://www.openstreetmap.org/?mlat=64.07380373&mlon=-21.93959097#map=15/64.071/-21.945",
+      "map_observation": "Við vegi40/41 innan byggðarsvæðis. Annar source-punktur en afturkallaði2807 START; ekki nákvæm graph-tenging staðfest.",
+      "source_role": "RIPLEY_VISUAL_CHECK",
+      "access_status": "EXACT_GAP"
+    },
+    "mosfellsbaer": {
+      "status": "RECOMMENDED_PRODUCT_POINT",
+      "source_file": "docs/ai/tasks/ticket-500/acquisition/samples/raw-BATCH-2.json",
+      "source_sha256": "7cc87498d632993e0b0c21f5fd0f68a488083bce0c397aaad6021d59546c571f",
+      "idferill": 2469,
+      "objectid": 5808,
+      "tier": -1,
+      "stored_field": "end",
+      "source_crs": "EPSG:4326",
+      "source_vertex": [
+        -21.67652824,
+        64.17602806
+      ],
+      "wgs84": {
+        "latitude": 64.17602806,
+        "longitude": -21.67652824,
+        "crs": "EPSG:4326"
+      },
+      "approach_is": "Punktur við Vesturlandsveg og Þingvallaveg í Mosfellsbæ.",
+      "map_url": "https://www.openstreetmap.org/?mlat=64.17602806&mlon=-21.67652824#map=15/64.175/-21.682",
+      "map_observation": "Við hringtorgið með merktum vegum1/36; source-endi við arminn, ekki miðja hringtorgsins.",
+      "source_role": "RIPLEY_VISUAL_CHECK",
+      "access_status": "EXACT_GAP"
+    },
+    "akranes": {
+      "status": "RECOMMENDED_PRODUCT_POINT",
+      "source_file": "docs/ai/tasks/ticket-500/acquisition/samples/raw-BATCH-3.json",
+      "source_sha256": "61567c561c19b539d83ae4d6544da4646578c781bf32d57b6a44df15e95cd7bd",
+      "idferill": 3797,
+      "objectid": 5538,
+      "tier": -1,
+      "stored_field": "end",
+      "source_crs": "EPSG:4326",
+      "source_vertex": [
+        -22.05256417,
+        64.32768822
+      ],
+      "wgs84": {
+        "latitude": 64.32768822,
+        "longitude": -22.05256417,
+        "crs": "EPSG:4326"
+      },
+      "approach_is": "Punktur við Akranesveg og innkomuhringtorgið við byggðina.",
+      "map_url": "https://www.openstreetmap.org/?mlat=64.32768822&mlon=-22.05256417#map=16/64.32768822/-22.05256417",
+      "map_observation": "Við hringtorg Akranesvegar/Kalmansbrautar/Þjóðbrautar. Eldra2,5m raw-bil að hring21441 helst; kortamat er ný stoð fyrir vörupunkt, ekki leiðrétting á eldri exact-seam-niðurstöðu.",
+      "source_role": "RIPLEY_VISUAL_CHECK",
+      "access_status": "EXACT_GAP"
+    },
+    "stykkisholmur": {
+      "status": "RECOMMENDED_PRODUCT_POINT",
+      "source_file": "docs/ai/tasks/ticket-500/acquisition/samples/raw-BATCH-3.json",
+      "source_sha256": "61567c561c19b539d83ae4d6544da4646578c781bf32d57b6a44df15e95cd7bd",
+      "idferill": 3466,
+      "objectid": 5423,
+      "tier": -1,
+      "stored_field": "start",
+      "source_crs": "EPSG:4326",
+      "source_vertex": [
+        -22.73935627,
+        65.06799806
+      ],
+      "wgs84": {
+        "latitude": 65.06799806,
+        "longitude": -22.73935627,
+        "crs": "EPSG:4326"
+      },
+      "approach_is": "Punktur við Aðalgötu og syðri byggð í Stykkishólmi.",
+      "map_url": "https://www.openstreetmap.org/?mlat=65.06799806&mlon=-22.73935627#map=15/65.071/-22.733",
+      "map_observation": "Pinninn á Aðalgötu58 við suðurjaðar samfelldrar byggðar, nálægt Tjarnarási.",
+      "source_role": "RIPLEY_VISUAL_CHECK",
+      "access_status": "EXACT_GAP"
+    },
+    "budardalur": {
+      "status": "RECOMMENDED_PRODUCT_POINT",
+      "source_file": "docs/ai/tasks/ticket-500/acquisition/samples/raw-BATCH-2.json",
+      "source_sha256": "7cc87498d632993e0b0c21f5fd0f68a488083bce0c397aaad6021d59546c571f",
+      "idferill": 2769,
+      "objectid": 4902,
+      "tier": -1,
+      "stored_field": "start",
+      "source_crs": "EPSG:4326",
+      "source_vertex": [
+        -21.76505686,
+        65.10591772
+      ],
+      "wgs84": {
+        "latitude": 65.10591772,
+        "longitude": -21.76505686,
+        "crs": "EPSG:4326"
+      },
+      "approach_is": "Punktur við Vestfjarðaveg og Brekkuhvamm í Búðardal.",
+      "map_url": "https://www.openstreetmap.org/?mlat=65.10591772&mlon=-21.76505686#map=15/65.108/-21.764",
+      "map_observation": "Á vegi60 við Brekkuhvamm og syðri byggð.",
+      "source_role": "RIPLEY_VISUAL_CHECK",
+      "access_status": "EXACT_GAP"
+    },
+    "reykholar": {
+      "status": "RECOMMENDED_PRODUCT_POINT",
+      "source_file": "docs/ai/tasks/ticket-500/acquisition/samples/raw-BATCH-3.json",
+      "source_sha256": "61567c561c19b539d83ae4d6544da4646578c781bf32d57b6a44df15e95cd7bd",
+      "idferill": 2662,
+      "objectid": 5263,
+      "tier": -1,
+      "stored_field": "end",
+      "source_crs": "EPSG:4326",
+      "source_vertex": [
+        -22.20532007,
+        65.44592572
+      ],
+      "wgs84": {
+        "latitude": 65.44592572,
+        "longitude": -22.20532007,
+        "crs": "EPSG:4326"
+      },
+      "approach_is": "Punktur á Karlseyjarvegi við Reykjabraut á Reykhólum.",
+      "map_url": "https://www.openstreetmap.org/?mlat=65.44592572&mlon=-22.20532007#map=15/65.446/-22.205",
+      "map_observation": "Vegur606 liggur við byggðina og Reykjabraut; ekki fjarri gatnamót607 í stað bæjarins.",
+      "source_role": "RIPLEY_VISUAL_CHECK",
+      "access_status": "EXACT_GAP"
+    },
+    "isafjordur": {
+      "status": "RECOMMENDED_PRODUCT_POINT",
+      "source_file": "docs/ai/tasks/ticket-500/acquisition/samples/raw-BATCH-4.json",
+      "source_sha256": "f39a5f68f96e85f93f08f3672f60d52ad1421dbffa727b03a09408fd71a95575",
+      "idferill": 3834,
+      "objectid": 5496,
+      "tier": -1,
+      "stored_field": "end",
+      "source_crs": "EPSG:4326",
+      "source_vertex": [
+        -23.12399231,
+        66.08035668
+      ],
+      "wgs84": {
+        "latitude": 66.08035668,
+        "longitude": -23.12399231,
+        "crs": "EPSG:4326"
+      },
+      "approach_is": "Punktur á Djúpvegi við norðurhluta byggðar á Ísafirði.",
+      "map_url": "https://www.openstreetmap.org/?mlat=66.08035668&mlon=-23.12399231#map=15/66.078/-23.129",
+      "map_observation": "Pinninn við norðurenda Urðarvegarbyggðar og Djúpveg61; ekki punktur við flugvöllinn.",
+      "source_role": "RIPLEY_VISUAL_CHECK",
+      "access_status": "EXACT_GAP"
+    },
+    "sudavik": {
+      "status": "RECOMMENDED_PRODUCT_POINT",
+      "source_file": "docs/ai/tasks/ticket-500/acquisition/samples/raw-BATCH-4.json",
+      "source_sha256": "f39a5f68f96e85f93f08f3672f60d52ad1421dbffa727b03a09408fd71a95575",
+      "idferill": 3535,
+      "objectid": 6124,
+      "tier": -1,
+      "stored_field": "start",
+      "source_crs": "EPSG:4326",
+      "source_vertex": [
+        -22.9922543,
+        66.02459271
+      ],
+      "wgs84": {
+        "latitude": 66.02459271,
+        "longitude": -22.9922543,
+        "crs": "EPSG:4326"
+      },
+      "approach_is": "Punktur á Aðalgötu við suðurhluta byggðar í Súðavík.",
+      "map_url": "https://www.openstreetmap.org/?mlat=66.02459271&mlon=-22.99225430#map=15/66.029/-22.991",
+      "map_observation": "Á vegi61 við suðurhluta núverandi byggðar; ekki aðeins svæðisheitið Súðavíkurhreppur.",
+      "source_role": "RIPLEY_VISUAL_CHECK",
+      "access_status": "EXACT_GAP"
+    },
+    "holmavik": {
+      "status": "RECOMMENDED_PRODUCT_POINT",
+      "source_file": "docs/ai/tasks/ticket-500/acquisition/samples/raw-BATCH-4.json",
+      "source_sha256": "f39a5f68f96e85f93f08f3672f60d52ad1421dbffa727b03a09408fd71a95575",
+      "idferill": 3883,
+      "objectid": 5936,
+      "tier": -1,
+      "stored_field": "end",
+      "source_crs": "EPSG:4326",
+      "source_vertex": [
+        -21.68414766,
+        65.70146962
+      ],
+      "wgs84": {
+        "latitude": 65.70146962,
+        "longitude": -21.68414766,
+        "crs": "EPSG:4326"
+      },
+      "approach_is": "Punktur við Hólmavíkurveg og Höfðagötu í byggðinni.",
+      "map_url": "https://www.openstreetmap.org/?mlat=65.70146962&mlon=-21.68414766#map=15/65.702/-21.682",
+      "map_observation": "Á vegi67 í syðri byggð, nær bænum en gatnamót67/61 utan byggðar.",
+      "source_role": "RIPLEY_VISUAL_CHECK",
+      "access_status": "EXACT_GAP"
+    },
+    "drangsnes": {
+      "status": "RECOMMENDED_PRODUCT_POINT",
+      "source_file": "docs/ai/tasks/ticket-500/acquisition/samples/raw-BATCH-4.json",
+      "source_sha256": "f39a5f68f96e85f93f08f3672f60d52ad1421dbffa727b03a09408fd71a95575",
+      "idferill": 3245,
+      "objectid": 6185,
+      "tier": -1,
+      "stored_field": "end",
+      "source_crs": "EPSG:4326",
+      "source_vertex": [
+        -21.44027942,
+        65.69125093
+      ],
+      "wgs84": {
+        "latitude": 65.69125093,
+        "longitude": -21.44027942,
+        "crs": "EPSG:4326"
+      },
+      "approach_is": "Punktur á Aðalbraut við norðurhluta byggðar á Drangsnesi.",
+      "map_url": "https://www.openstreetmap.org/?mlat=65.69125093&mlon=-21.44027942#map=15/65.69/-21.443",
+      "map_observation": "Pinninn þar sem Aðalbraut/Drangsnesvegur645 liggur við norðurhluta byggðar; ekki fullyrðing um aðalinnkomu frá Hólmavík.",
+      "source_role": "RIPLEY_VISUAL_CHECK",
+      "access_status": "EXACT_GAP"
+    },
+    "hvammstangi": {
+      "status": "RECOMMENDED_PRODUCT_POINT",
+      "source_file": "docs/ai/tasks/ticket-500/acquisition/samples/raw-BATCH-5.json",
+      "source_sha256": "51389c9224cdf898f858d639517d1240d5383738ab4229095d966b7d62fabbe6",
+      "idferill": 3487,
+      "objectid": 5929,
+      "tier": -1,
+      "stored_field": "start",
+      "source_crs": "EPSG:4326",
+      "source_vertex": [
+        -20.94389335,
+        65.39804115
+      ],
+      "wgs84": {
+        "latitude": 65.39804115,
+        "longitude": -20.94389335,
+        "crs": "EPSG:4326"
+      },
+      "approach_is": "Punktur á Norðurbraut við byggð á Hvammstanga.",
+      "map_url": "https://www.openstreetmap.org/?mlat=65.39804115&mlon=-20.94389335#map=15/65.398/-20.944",
+      "map_observation": "Við byggð og skipti vegar72/711, nálægt Hvammstangaheiti; ekki Hringvegsgatnamót fjarri bænum.",
+      "source_role": "RIPLEY_VISUAL_CHECK",
+      "access_status": "EXACT_GAP"
+    },
+    "blonduos": {
+      "status": "RECOMMENDED_PRODUCT_POINT",
+      "source_file": "docs/ai/tasks/ticket-500/acquisition/samples/raw-BATCH-5.json",
+      "source_sha256": "51389c9224cdf898f858d639517d1240d5383738ab4229095d966b7d62fabbe6",
+      "idferill": 2593,
+      "objectid": 5668,
+      "tier": -1,
+      "stored_field": "end",
+      "source_crs": "EPSG:4326",
+      "source_vertex": [
+        -20.28373541,
+        65.65634119
+      ],
+      "wgs84": {
+        "latitude": 65.65634119,
+        "longitude": -20.28373541,
+        "crs": "EPSG:4326"
+      },
+      "approach_is": "Punktur við Hringveg og Flóðabakka á Blönduósi.",
+      "map_url": "https://www.openstreetmap.org/?mlat=65.65634119&mlon=-20.28373541#map=15/65.659/-20.285",
+      "map_observation": "Pinninn við veg1/731 í byggð sunnan Blöndu.",
+      "source_role": "RIPLEY_VISUAL_CHECK",
+      "access_status": "EXACT_GAP"
+    },
+    "skagastrond": {
+      "status": "RECOMMENDED_PRODUCT_POINT",
+      "source_file": "docs/ai/tasks/ticket-500/acquisition/samples/raw-BATCH-5.json",
+      "source_sha256": "51389c9224cdf898f858d639517d1240d5383738ab4229095d966b7d62fabbe6",
+      "idferill": 2455,
+      "objectid": 5451,
+      "tier": -1,
+      "stored_field": "end",
+      "source_crs": "EPSG:4326",
+      "source_vertex": [
+        -20.29628289,
+        65.82381799
+      ],
+      "wgs84": {
+        "latitude": 65.82381799,
+        "longitude": -20.29628289,
+        "crs": "EPSG:4326"
+      },
+      "approach_is": "Punktur við Fellsbraut og austari byggð á Skagaströnd.",
+      "map_url": "https://www.openstreetmap.org/?mlat=65.82381799&mlon=-20.29628289#map=15/65.825/-20.302",
+      "map_observation": "Á Skagastrandarvegi74/Fellsbraut við byggðina, fremur en fjarlægri73/74-tengingu.",
+      "source_role": "RIPLEY_VISUAL_CHECK",
+      "access_status": "EXACT_GAP"
+    },
+    "dalvik": {
+      "status": "RECOMMENDED_PRODUCT_POINT",
+      "source_file": "docs/ai/tasks/ticket-500/acquisition/samples/raw-BATCH-6.json",
+      "source_sha256": "ae33e4644b94abc363514507522af5feaf3b4f9a829dce05db16f75c34800c7e",
+      "idferill": 3567,
+      "objectid": 5907,
+      "tier": -1,
+      "stored_field": "start",
+      "source_crs": "EPSG:4326",
+      "source_vertex": [
+        -18.52948806,
+        65.96755395
+      ],
+      "wgs84": {
+        "latitude": 65.96755395,
+        "longitude": -18.52948806,
+        "crs": "EPSG:4326"
+      },
+      "approach_is": "Punktur á Dalvíkurvegi við syðri byggð á Dalvík.",
+      "map_url": "https://www.openstreetmap.org/?mlat=65.96755395&mlon=-18.52948806#map=15/65.97/-18.531",
+      "map_observation": "Við skóla/íþróttasvæði sunnan byggðar. Er enn innri samskeyti sama vegar við3501; kortastaðsetning styður vörupunkt, ekki áður rangt ytra samskeyti.",
+      "source_role": "RIPLEY_VISUAL_CHECK",
+      "access_status": "EXACT_GAP"
+    },
+    "husavik": {
+      "status": "RECOMMENDED_PRODUCT_POINT",
+      "source_file": "docs/ai/tasks/ticket-500/acquisition/samples/raw-BATCH-6.json",
+      "source_sha256": "ae33e4644b94abc363514507522af5feaf3b4f9a829dce05db16f75c34800c7e",
+      "idferill": 3092,
+      "objectid": 5058,
+      "tier": -1,
+      "stored_field": "start",
+      "source_crs": "EPSG:4326",
+      "source_vertex": [
+        -17.34984614,
+        66.03234853
+      ],
+      "wgs84": {
+        "latitude": 66.03234853,
+        "longitude": -17.34984614,
+        "crs": "EPSG:4326"
+      },
+      "approach_is": "Punktur á Norðausturvegi við Kringlumýri á Húsavík.",
+      "map_url": "https://www.openstreetmap.org/?mlat=66.03234853&mlon=-17.34984614#map=15/66.036/-17.35",
+      "map_observation": "Pinninn á vegi85 við Kringlumýri, sunnan samfelldrar meginbyggðar.",
+      "source_role": "RIPLEY_VISUAL_CHECK",
+      "access_status": "EXACT_GAP"
+    },
+    "kopasker": {
+      "status": "RECOMMENDED_PRODUCT_POINT",
+      "source_file": "docs/ai/tasks/ticket-500/acquisition/samples/raw-BATCH-7.json",
+      "source_sha256": "35ea82930bf346e67f88da4dfeab5318cfb2228379d00787d7adf4dd02984c6c",
+      "idferill": 8674,
+      "objectid": 5335,
+      "tier": -1,
+      "stored_field": "start",
+      "source_crs": "EPSG:4326",
+      "source_vertex": [
+        -16.44081709,
+        66.30152838
+      ],
+      "wgs84": {
+        "latitude": 66.30152838,
+        "longitude": -16.44081709,
+        "crs": "EPSG:4326"
+      },
+      "approach_is": "Punktur við Sléttuveg og Austurtröð á Kópaskeri.",
+      "map_url": "https://www.openstreetmap.org/?mlat=66.30152838&mlon=-16.44081709#map=15/66.3015/-16.443",
+      "map_observation": "Við veg870 og Austurtröð við austurjaðar byggðar.",
+      "source_role": "RIPLEY_VISUAL_CHECK",
+      "access_status": "EXACT_GAP"
+    },
+    "raufarhofn": {
+      "status": "RECOMMENDED_PRODUCT_POINT",
+      "source_file": "docs/ai/tasks/ticket-500/acquisition/samples/raw-BATCH-6.json",
+      "source_sha256": "ae33e4644b94abc363514507522af5feaf3b4f9a829dce05db16f75c34800c7e",
+      "idferill": 3169,
+      "objectid": 6009,
+      "tier": -1,
+      "stored_field": "start",
+      "source_crs": "EPSG:4326",
+      "source_vertex": [
+        -15.94764087,
+        66.44545468
+      ],
+      "wgs84": {
+        "latitude": 66.44545468,
+        "longitude": -15.94764087,
+        "crs": "EPSG:4326"
+      },
+      "approach_is": "Punktur á Aðalbraut við syðri byggð á Raufarhöfn.",
+      "map_url": "https://www.openstreetmap.org/?mlat=66.44545468&mlon=-15.94764087#map=15/66.448/-15.948",
+      "map_observation": "Vegur874/Aðalbraut við syðri íbúðabyggð og íþróttasvæði.",
+      "source_role": "RIPLEY_VISUAL_CHECK",
+      "access_status": "EXACT_GAP"
+    },
+    "neskaupstadur": {
+      "status": "RECOMMENDED_PRODUCT_POINT",
+      "source_file": "docs/ai/tasks/ticket-500/acquisition/samples/raw-BATCH-6.json",
+      "source_sha256": "ae33e4644b94abc363514507522af5feaf3b4f9a829dce05db16f75c34800c7e",
+      "idferill": 2832,
+      "objectid": 5114,
+      "tier": -1,
+      "stored_field": "start",
+      "source_crs": "EPSG:4326",
+      "source_vertex": [
+        -13.71556128,
+        65.14719331
+      ],
+      "wgs84": {
+        "latitude": 65.14719331,
+        "longitude": -13.71556128,
+        "crs": "EPSG:4326"
+      },
+      "approach_is": "Punktur á Strandgötu við vestari byggð í Neskaupstað.",
+      "map_url": "https://www.openstreetmap.org/?mlat=65.14719331&mlon=-13.71556128#map=15/65.148/-13.709",
+      "map_observation": "Við Strandgötu92 og Urðarteigsbyggð; ekki ferjubryggjuendi hinum megin.",
+      "source_role": "RIPLEY_VISUAL_CHECK",
+      "access_status": "EXACT_GAP"
+    },
+    "eskifjordur": {
+      "status": "RECOMMENDED_PRODUCT_POINT",
+      "source_file": "docs/ai/tasks/ticket-500/acquisition/samples/raw-BATCH-6.json",
+      "source_sha256": "ae33e4644b94abc363514507522af5feaf3b4f9a829dce05db16f75c34800c7e",
+      "idferill": 2834,
+      "objectid": 5163,
+      "tier": -1,
+      "stored_field": "end",
+      "source_crs": "EPSG:4326",
+      "source_vertex": [
+        -14.02122438,
+        65.07554219
+      ],
+      "wgs84": {
+        "latitude": 65.07554219,
+        "longitude": -14.02122438,
+        "crs": "EPSG:4326"
+      },
+      "approach_is": "Punktur á Strandgötu við vestari byggð á Eskifirði.",
+      "map_url": "https://www.openstreetmap.org/?mlat=65.07554219&mlon=-14.02122438#map=15/65.075/-14.016",
+      "map_observation": "Pinninn á vegi950/Strandgötu við höfn/íbúðabyggð; ekki suðurmunna Norðfjarðarganga.",
+      "source_role": "RIPLEY_VISUAL_CHECK",
+      "access_status": "EXACT_GAP"
+    },
+    "djupivogur": {
+      "status": "RECOMMENDED_PRODUCT_POINT",
+      "source_file": "docs/ai/tasks/ticket-500/acquisition/samples/raw-BATCH-6.json",
+      "source_sha256": "ae33e4644b94abc363514507522af5feaf3b4f9a829dce05db16f75c34800c7e",
+      "idferill": 3761,
+      "objectid": 5568,
+      "tier": -1,
+      "stored_field": "end",
+      "source_crs": "EPSG:4326",
+      "source_vertex": [
+        -14.29799027,
+        64.65406062
+      ],
+      "wgs84": {
+        "latitude": 64.65406062,
+        "longitude": -14.29799027,
+        "crs": "EPSG:4326"
+      },
+      "approach_is": "Punktur á Djúpavogsvegi við byggðina á Djúpavogi.",
+      "map_url": "https://www.openstreetmap.org/?mlat=64.65406062&mlon=-14.29799027#map=15/64.655/-14.29",
+      "map_observation": "Á vegi98 þar sem hann liggur inn í byggð, nálægt Borgarlandi og íþróttasvæði.",
+      "source_role": "RIPLEY_VISUAL_CHECK",
+      "access_status": "EXACT_GAP"
+    },
+    "hofn": {
+      "status": "RECOMMENDED_PRODUCT_POINT",
+      "source_file": "docs/ai/tasks/ticket-500/acquisition/samples/raw-BATCH-7.json",
+      "source_sha256": "35ea82930bf346e67f88da4dfeab5318cfb2228379d00787d7adf4dd02984c6c",
+      "idferill": 3652,
+      "objectid": 5584,
+      "tier": -1,
+      "stored_field": "end",
+      "source_crs": "EPSG:4326",
+      "source_vertex": [
+        -15.19843537,
+        64.2784739
+      ],
+      "wgs84": {
+        "latitude": 64.2784739,
+        "longitude": -15.19843537,
+        "crs": "EPSG:4326"
+      },
+      "approach_is": "Punktur við Hringveg og Hafnarveg áleiðis til Hafnar.",
+      "map_url": "https://www.openstreetmap.org/?mlat=64.27847390&mlon=-15.19843537#map=14/64.278/-15.2",
+      "map_observation": "Pinninn við veg1/99/987-tengingu, Hafnarvegur99 heldur suður. Núverandi kortastoð; ekki Flugvallarvegur982 eða full staðfesting á nýrri Hornafjarðarleið.",
+      "source_role": "RIPLEY_VISUAL_CHECK",
+      "access_status": "EXACT_GAP"
+    },
+    "skaftafell": {
+      "status": "RECOMMENDED_PRODUCT_POINT",
+      "source_file": "docs/ai/tasks/ticket-483/samples/wfs-vegnr1-all.json",
+      "source_sha256": "305f60d6f1f17918c058cbd047735681e56d6f9aad99f9e16f50de9419d6983a",
+      "idferill": 3513,
+      "objectid": 5875,
+      "tier": -1,
+      "stored_field": "end",
+      "source_crs": "EPSG:3057",
+      "source_vertex": [
+        600573.7864,
+        390763.984
+      ],
+      "wgs84": {
+        "latitude": 64.00546696040198,
+        "longitude": -16.943978236220662,
+        "crs": "EPSG:4326"
+      },
+      "approach_is": "Punktur við Hringveg og Skaftafellsveg áleiðis til Skaftafells.",
+      "map_url": "https://www.openstreetmap.org/?mlat=64.00546696&mlon=-16.94397824#map=16/64.006/-16.946",
+      "map_observation": "Pinninn við grein Skaftafellsvegar norðvestur frá Hringvegi; ekki visitor-centre-hnit. Source endi endurnýttur úr stærra retained vegnr1-setti.",
+      "source_role": "RIPLEY_VISUAL_CHECK",
+      "access_status": "EXACT_GAP"
+    },
+    "kirkjubaejarklaustur": {
+      "status": "RECOMMENDED_PRODUCT_POINT",
+      "source_file": "docs/ai/tasks/ticket-483/samples/wfs-vegnr1-all.json",
+      "source_sha256": "305f60d6f1f17918c058cbd047735681e56d6f9aad99f9e16f50de9419d6983a",
+      "idferill": 2313,
+      "objectid": 5747,
+      "tier": -1,
+      "stored_field": "end",
+      "source_crs": "EPSG:3057",
+      "source_vertex": [
+        547336.4823,
+        365988.029
+      ],
+      "wgs84": {
+        "latitude": 63.79468083177732,
+        "longitude": -18.039733574570896,
+        "crs": "EPSG:4326"
+      },
+      "approach_is": "Punktur við Hringveg og Klausturveg áleiðis í Kirkjubæjarklaustur.",
+      "map_url": "https://www.openstreetmap.org/?mlat=63.79468083&mlon=-18.03973357#map=15/63.792/-18.045",
+      "map_observation": "Við hringtorg1/205 með203 til norðvesturs. Native-endi ekki færður í miðju hringtorgs; bil að2409 START er áfram source-bil.",
+      "source_role": "RIPLEY_VISUAL_CHECK",
+      "access_status": "EXACT_GAP"
+    },
+    "thorlakshofn": {
+      "status": "RECOMMENDED_PRODUCT_POINT",
+      "source_file": "docs/ai/tasks/ticket-500/acquisition/samples/raw-BATCH-1.json",
+      "source_sha256": "11ef45937cfcf473dc47f9d5167121502696fdeff4ea8ce1de217a9686c311da",
+      "idferill": 2280,
+      "objectid": 5390,
+      "tier": -1,
+      "stored_field": "end",
+      "source_crs": "EPSG:4326",
+      "source_vertex": [
+        -21.3913311,
+        63.86300272
+      ],
+      "wgs84": {
+        "latitude": 63.86300272,
+        "longitude": -21.3913311,
+        "crs": "EPSG:4326"
+      },
+      "approach_is": "Punktur við Þorlákshafnarveg og Suðurstrandarveg við byggðina.",
+      "map_url": "https://www.openstreetmap.org/?mlat=63.86300272&mlon=-21.39133110#map=15/63.859/-21.388",
+      "map_observation": "Pinninn við norðari hringtorg38/427/379; byggð og höfn sunnan/austan við.",
+      "source_role": "RIPLEY_VISUAL_CHECK",
+      "access_status": "EXACT_GAP"
+    },
+    "fludir": {
+      "status": "RECOMMENDED_PRODUCT_POINT",
+      "source_file": "docs/ai/tasks/ticket-500/acquisition/samples/raw-BATCH-2.json",
+      "source_sha256": "7cc87498d632993e0b0c21f5fd0f68a488083bce0c397aaad6021d59546c571f",
+      "idferill": 3548,
+      "objectid": 5918,
+      "tier": -1,
+      "stored_field": "start",
+      "source_crs": "EPSG:4326",
+      "source_vertex": [
+        -20.32143333,
+        64.13080082
+      ],
+      "wgs84": {
+        "latitude": 64.13080082,
+        "longitude": -20.32143333,
+        "crs": "EPSG:4326"
+      },
+      "approach_is": "Punktur við Skeiða- og Hrunamannaveg og Langholtsveg á Flúðum.",
+      "map_url": "https://www.openstreetmap.org/?mlat=64.13080082&mlon=-20.32143333#map=15/64.133/-20.323",
+      "map_observation": "Á vegi30 við miðhluta byggðar og Langholtsveg341; ekki norðlægt Brúarhlaðasvæði.",
+      "source_role": "RIPLEY_VISUAL_CHECK",
+      "access_status": "EXACT_GAP"
+    },
+    "laugarvatn": {
+      "status": "RECOMMENDED_PRODUCT_POINT",
+      "source_file": "docs/ai/tasks/ticket-500/acquisition/samples/raw-BATCH-2.json",
+      "source_sha256": "7cc87498d632993e0b0c21f5fd0f68a488083bce0c397aaad6021d59546c571f",
+      "idferill": 3252,
+      "objectid": 5952,
+      "tier": -1,
+      "stored_field": "start",
+      "source_crs": "EPSG:4326",
+      "source_vertex": [
+        -20.74278069,
+        64.21194753
+      ],
+      "wgs84": {
+        "latitude": 64.21194753,
+        "longitude": -20.74278069,
+        "crs": "EPSG:4326"
+      },
+      "approach_is": "Punktur við Laugarvatnsveg og Gjábakkaveg við Laugarvatn.",
+      "map_url": "https://www.openstreetmap.org/?mlat=64.21194753&mlon=-20.74278069#map=15/64.216/-20.738",
+      "map_observation": "Pinninn við hringtorg37/365 við suðvestari byggð; ekki fjarlæga35/37-tengingu.",
+      "source_role": "RIPLEY_VISUAL_CHECK",
+      "access_status": "EXACT_GAP"
+    },
+    "keflavik": {
+      "status": "NEEDS_SOURCE_GEOMETRY",
+      "candidate": null,
+      "reason": "Engin retained source-geometry/IDBUTUR-tilvísun fannst fyrir staðinn í núverandi acquired/coverage-grunni. Ekki valin kortahnit eða nearest endpoint; sértæk ný öflun þarf eigandaheimild.",
+      "map_checked": false
+    },
+    "thorshofn": {
+      "status": "NEEDS_SOURCE_GEOMETRY",
+      "candidate": null,
+      "reason": "Engin retained source-geometry/IDBUTUR-tilvísun fannst fyrir staðinn í núverandi acquired/coverage-grunni. Ekki valin kortahnit eða nearest endpoint; sértæk ný öflun þarf eigandaheimild.",
+      "map_checked": false
+    }
+  }
+}

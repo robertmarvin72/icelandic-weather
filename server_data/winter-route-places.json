@@ -1,0 +1,1172 @@
+{
+  "schema_version": 1,
+  "note": "Shared Winter Route place list (Frá/Til data source). Exactly the 56 owner-approved places from docs/ai/tasks/ticket-500/nationwide-owner-scope.md, 'Lokaður listi veljanlegra staða', same order/region grouping. This file is a place-selection contract only — no route engine, UI, or API wiring in this round. No place is routable/supported yet; connectionStatus records that honestly per place. Coordinates/approach are null (not invented) for places not yet reviewed for this contract. Uppfært 2026-11-16: 54 staðir hafa nú valinn vöruaðkomupunkt (4 eldri eigandavalin + 11 kortaráðlagðir + 10 retained-samþykktir + 2 kortastaðfestir bæjartengingar + 27 kortaafgreiddir vörupunktar úr remaining-map-selection, sjá winter-route-approach-selections.json), 2 óvalin (Keflavík bær, Þórshöfn -- engin retained source-geometry, engin ný öflun heimiluð hér).",
+  "places": [
+    {
+      "id": "reykjavik-raudavatn",
+      "name": "Reykjavík",
+      "region": "Höfuðborgarsvæði",
+      "aliases": [],
+      "coordinates": {
+        "latitude": 64.10152894,
+        "longitude": -21.75906405,
+        "crs": "EPSG:4326"
+      },
+      "approach": "R1 — eigandavalin hringvegaraðkoma við vestari enda IDFERILL 1436 (Rauðavatn), ekki borgarkjarni Reykjavíkur. Borgarkjarnaákvörðun er eigandaverkefni síðar (NB3), ekki hluti þessarar vöruskrár.",
+      "connectionStatus": {
+        "state": "ACCESS_POINT_SELECTED_ACCESS_UNCONFIRMED",
+        "reason": "Aðkomupunktur valinn (2026-11-13); akstursaðgengi/stefna EXACT_GAP í báðar áttir; norðurtenging að Kjalarnesi unsupported fyrir #501 (sjá ticket-500/r1-north-connection.json)."
+      },
+      "provenance": {
+        "source_file": "docs/ai/tasks/ticket-500/places-v1.json#reykjavik-raudavatn"
+      }
+    },
+    {
+      "id": "kopavogur",
+      "name": "Kópavogur",
+      "region": "Höfuðborgarsvæði",
+      "aliases": [],
+      "coordinates": {
+        "latitude": 64.10411666,
+        "longitude": -21.90418005,
+        "crs": "EPSG:4326"
+      },
+      "approach": "Punktur á Hafnarfjarðarvegi við Kópavogsdal.",
+      "connectionStatus": {
+        "state": "ACCESS_POINT_SELECTED_ACCESS_UNCONFIRMED",
+        "reason": "Vöruaðkoma valin eftir kortaráðleggingu (MAP_PRODUCT_APPROVED_VIA_PROMPT) -- ekki eigandavalin bæjarmiðja og ekki staðfest akstursaðgengi. Akstursaðgengi/stefna EXACT_GAP. Sjá server_data/winter-route-approach-selections.json#selections.kopavogur. Punktur er á gegnumvegi (Hafnarfjarðarvegur) sunnan Kópavogsdals; vegheiti/stykki tilheyrðu upphaflega sameiginlegu Hafnarfjarðar-IDBUTUR, tengingin við Kópavog er ný Ripley-kortaskoðun."
+      },
+      "coverageReference": "server_data/winter-route-remaining-coverage.json#coverage.kopavogur",
+      "acquiredGeometryReference": "server_data/winter-route-acquired-geometry.json#place_results.kopavogur",
+      "approachAnalysisReference": "server_data/winter-route-approach-analysis.json#place_results.kopavogur",
+      "placeEvidenceReference": "server_data/winter-route-place-evidence.json#place_results.kopavogur",
+      "selectionReference": "server_data/winter-route-approach-selections.json#selections.kopavogur",
+      "selection_basis": "MAP_PRODUCT_APPROVED_VIA_PROMPT"
+    },
+    {
+      "id": "hafnarfjordur",
+      "name": "Hafnarfjörður",
+      "region": "Höfuðborgarsvæði",
+      "aliases": [],
+      "coordinates": {
+        "latitude": 64.07380373,
+        "longitude": -21.93959097,
+        "crs": "EPSG:4326"
+      },
+      "approach": "Punktur við tengingu Hafnarfjarðarvegar og Reykjanesbrautar í Hafnarfirði.",
+      "connectionStatus": {
+        "state": "ACCESS_POINT_SELECTED_ACCESS_UNCONFIRMED",
+        "reason": "Ripley-kortastoð. Vöruaðkoma valin eftir kortaráðleggingu (MAP_PRODUCT_APPROVED_VIA_PROMPT) -- ekki eigandavalin bæjarmiðja og ekki staðfest akstursaðgengi. Akstursaðgengi/stefna EXACT_GAP. Sjá server_data/winter-route-approach-selections.json#selections.hafnarfjordur. Þessi punktur (IDFERILL 10287 START) er annar en áður afturkallaði 2807 START-tillaga; gamla tillagan er ekki endurvakin og óstaðfesta leitarvísbendingin er ekki notuð sem réttlæting."
+      },
+      "coverageReference": "server_data/winter-route-remaining-coverage.json#coverage.hafnarfjordur",
+      "acquiredGeometryReference": "server_data/winter-route-acquired-geometry.json#place_results.hafnarfjordur",
+      "approachAnalysisReference": "server_data/winter-route-approach-analysis.json#place_results.hafnarfjordur",
+      "placeEvidenceReference": "server_data/winter-route-place-evidence.json#place_results.hafnarfjordur",
+      "selectionReference": "server_data/winter-route-approach-selections.json#selections.hafnarfjordur",
+      "selection_basis": "MAP_PRODUCT_APPROVED_VIA_PROMPT"
+    },
+    {
+      "id": "mosfellsbaer",
+      "name": "Mosfellsbær",
+      "region": "Höfuðborgarsvæði",
+      "aliases": [],
+      "coordinates": {
+        "latitude": 64.17602806,
+        "longitude": -21.67652824,
+        "crs": "EPSG:4326"
+      },
+      "approach": "Punktur við Vesturlandsveg og Þingvallaveg í Mosfellsbæ.",
+      "connectionStatus": {
+        "state": "ACCESS_POINT_SELECTED_ACCESS_UNCONFIRMED",
+        "reason": "Ripley-kortastoð. Vöruaðkoma valin eftir kortaráðleggingu (MAP_PRODUCT_APPROVED_VIA_PROMPT) -- ekki eigandavalin bæjarmiðja og ekki staðfest akstursaðgengi. Akstursaðgengi/stefna EXACT_GAP. Sjá server_data/winter-route-approach-selections.json#selections.mosfellsbaer."
+      },
+      "coverageReference": "server_data/winter-route-remaining-coverage.json#coverage.mosfellsbaer",
+      "acquiredGeometryReference": "server_data/winter-route-acquired-geometry.json#place_results.mosfellsbaer",
+      "approachAnalysisReference": "server_data/winter-route-approach-analysis.json#place_results.mosfellsbaer",
+      "placeEvidenceReference": "server_data/winter-route-place-evidence.json#place_results.mosfellsbaer",
+      "selectionReference": "server_data/winter-route-approach-selections.json#selections.mosfellsbaer",
+      "selection_basis": "MAP_PRODUCT_APPROVED_VIA_PROMPT"
+    },
+    {
+      "id": "keflavik",
+      "name": "Keflavík",
+      "region": "Reykjanes",
+      "aliases": [],
+      "coordinates": null,
+      "approach": null,
+      "connectionStatus": {
+        "state": "NO_RETAINED_MATCH_CHECKED",
+        "reason": "Ekkert fannst í neinni athugaðri retained heimild (v3, stem-hints, færðarauðkenni, place-inventory) — yfirfarið, ekki óskoðað. Sjá server_data/winter-route-remaining-coverage.json#coverage.keflavik."
+      },
+      "coverageReference": "server_data/winter-route-remaining-coverage.json#coverage.keflavik",
+      "placeEvidenceReference": "server_data/winter-route-place-evidence.json#place_results.keflavik"
+    },
+    {
+      "id": "keflavikurflugvollur-kef",
+      "name": "Keflavíkurflugvöllur (KEF)",
+      "region": "Reykjanes",
+      "aliases": [
+        "KEF"
+      ],
+      "coordinates": {
+        "latitude": 63.99929831,
+        "longitude": -22.62803395,
+        "crs": "EPSG:4326"
+      },
+      "approach": "Vesturendi vegar 41 í keðjunni, nær flugstöðvarsvæðinu (ekki staðfest aðkoma við flugstöðvarbygginguna).",
+      "connectionStatus": {
+        "state": "ACCESS_POINT_SELECTED_ACCESS_UNCONFIRMED",
+        "reason": "Vöruaðkoma valin eftir kortaráðleggingu (MAP_RECOMMENDATION_APPROVED_VIA_PROMPT) -- ekki eigandavalin bæjarmiðja og ekki staðfest akstursaðgengi. Akstursaðgengi/stefna EXACT_GAP. Sjá server_data/winter-route-approach-selections.json#selections.keflavikurflugvollur-kef."
+      },
+      "coverageReference": "server_data/winter-route-remaining-coverage.json#coverage.keflavikurflugvollur-kef",
+      "acquiredGeometryReference": "server_data/winter-route-acquired-geometry.json#place_results.keflavikurflugvollur-kef",
+      "approachAnalysisReference": "server_data/winter-route-approach-analysis.json#place_results.keflavikurflugvollur-kef",
+      "selectionReference": "server_data/winter-route-approach-selections.json#selections.keflavikurflugvollur-kef",
+      "selection_basis": "MAP_RECOMMENDATION_APPROVED_VIA_PROMPT"
+    },
+    {
+      "id": "grindavik",
+      "name": "Grindavík",
+      "region": "Reykjanes",
+      "aliases": [],
+      "coordinates": {
+        "latitude": 63.85083976,
+        "longitude": -22.43242783,
+        "crs": "EPSG:4326"
+      },
+      "approach": "Punktur við samskeyti við Norðurljósavegur – Grindavík.",
+      "connectionStatus": {
+        "state": "ACCESS_POINT_SELECTED_ACCESS_UNCONFIRMED",
+        "reason": "Vöruaðkoma valin úr retained gögnum (RETAINED_CANDIDATE_APPROVED_VIA_PROMPT). Retained RECOMMENDED kandídat, samskeyti við nefndan tengiveg staðfest gegn raw tier -1. Engin fullyrðing um núverandi opnun eða færð. Akstursaðgengi/stefna EXACT_GAP. Sjá server_data/winter-route-approach-selections.json#selections.grindavik."
+      },
+      "coverageReference": "server_data/winter-route-remaining-coverage.json#coverage.grindavik",
+      "acquiredGeometryReference": "server_data/winter-route-acquired-geometry.json#place_results.grindavik",
+      "approachAnalysisReference": "server_data/winter-route-approach-analysis.json#place_results.grindavik",
+      "selectionReference": "server_data/winter-route-approach-selections.json#selections.grindavik",
+      "selection_basis": "RETAINED_CANDIDATE_APPROVED_VIA_PROMPT"
+    },
+    {
+      "id": "akranes",
+      "name": "Akranes",
+      "region": "Vesturland og Snæfellsnes",
+      "aliases": [],
+      "coordinates": {
+        "latitude": 64.32768822,
+        "longitude": -22.05256417,
+        "crs": "EPSG:4326"
+      },
+      "approach": "Punktur við Akranesveg og innkomuhringtorgið við byggðina.",
+      "connectionStatus": {
+        "state": "ACCESS_POINT_SELECTED_ACCESS_UNCONFIRMED",
+        "reason": "Ripley-kortastoð. Vöruaðkoma valin eftir kortaráðleggingu (MAP_PRODUCT_APPROVED_VIA_PROMPT) -- ekki eigandavalin bæjarmiðja og ekki staðfest akstursaðgengi. Akstursaðgengi/stefna EXACT_GAP. Sjá server_data/winter-route-approach-selections.json#selections.akranes. Eldra 2,5 m source-bil að hringtorgsstykki 21441 er áfram óleyst (ekki leiðrétt); kortamat er ný stoð fyrir vörupunkt, ekki leiðrétting á eldri exact-seam-niðurstöðu."
+      },
+      "coverageReference": "server_data/winter-route-remaining-coverage.json#coverage.akranes",
+      "acquiredGeometryReference": "server_data/winter-route-acquired-geometry.json#place_results.akranes",
+      "approachAnalysisReference": "server_data/winter-route-approach-analysis.json#place_results.akranes",
+      "placeEvidenceReference": "server_data/winter-route-place-evidence.json#place_results.akranes",
+      "selectionReference": "server_data/winter-route-approach-selections.json#selections.akranes",
+      "selection_basis": "MAP_PRODUCT_APPROVED_VIA_PROMPT"
+    },
+    {
+      "id": "borgarnes",
+      "name": "Borgarnes",
+      "region": "Vesturland og Snæfellsnes",
+      "aliases": [],
+      "coordinates": {
+        "latitude": 64.55996252,
+        "longitude": -21.89753371,
+        "crs": "EPSG:4326"
+      },
+      "approach": "Endapunktur Borgarnes–Baulan-vegkafla.",
+      "connectionStatus": {
+        "state": "ACCESS_POINT_SELECTED_ACCESS_UNCONFIRMED",
+        "reason": "Vöruaðkoma valin úr retained gögnum (RETAINED_CANDIDATE_APPROVED_VIA_PROMPT). Sama hnit og #491 P4/end_borgarnes, staðfest END-hnútur 2819 (OBJECTID 5082, tier -1) í retained WGS84 (wfs-vesturland-4326.json). Fyrri ccw_short/cw_long-fyrirvari (ekki validerað undir cw_long-grunni) helst óbreyttur; endurnýting er ekki ný leiðar-/aðgengissannprófun. Akstursaðgengi/stefna EXACT_GAP. Sjá server_data/winter-route-approach-selections.json#selections.borgarnes."
+      },
+      "coverageReference": "server_data/winter-route-remaining-coverage.json#coverage.borgarnes",
+      "selectionReference": "server_data/winter-route-approach-selections.json#selections.borgarnes",
+      "selection_basis": "RETAINED_CANDIDATE_APPROVED_VIA_PROMPT"
+    },
+    {
+      "id": "stykkisholmur",
+      "name": "Stykkishólmur",
+      "region": "Vesturland og Snæfellsnes",
+      "aliases": [],
+      "coordinates": {
+        "latitude": 65.06799806,
+        "longitude": -22.73935627,
+        "crs": "EPSG:4326"
+      },
+      "approach": "Punktur við Aðalgötu og syðri byggð í Stykkishólmi.",
+      "connectionStatus": {
+        "state": "ACCESS_POINT_SELECTED_ACCESS_UNCONFIRMED",
+        "reason": "Ripley-kortastoð. Vöruaðkoma valin eftir kortaráðleggingu (MAP_PRODUCT_APPROVED_VIA_PROMPT) -- ekki eigandavalin bæjarmiðja og ekki staðfest akstursaðgengi. Akstursaðgengi/stefna EXACT_GAP. Sjá server_data/winter-route-approach-selections.json#selections.stykkisholmur."
+      },
+      "coverageReference": "server_data/winter-route-remaining-coverage.json#coverage.stykkisholmur",
+      "acquiredGeometryReference": "server_data/winter-route-acquired-geometry.json#place_results.stykkisholmur",
+      "approachAnalysisReference": "server_data/winter-route-approach-analysis.json#place_results.stykkisholmur",
+      "placeEvidenceReference": "server_data/winter-route-place-evidence.json#place_results.stykkisholmur",
+      "selectionReference": "server_data/winter-route-approach-selections.json#selections.stykkisholmur",
+      "selection_basis": "MAP_PRODUCT_APPROVED_VIA_PROMPT"
+    },
+    {
+      "id": "grundarfjordur",
+      "name": "Grundarfjörður",
+      "region": "Vesturland og Snæfellsnes",
+      "aliases": [],
+      "coordinates": {
+        "latitude": 64.92345384,
+        "longitude": -23.27382147,
+        "crs": "EPSG:4326"
+      },
+      "approach": "Punktur við samskeyti við Grundarfjörður–Ólafsvík.",
+      "connectionStatus": {
+        "state": "ACCESS_POINT_SELECTED_ACCESS_UNCONFIRMED",
+        "reason": "Vöruaðkoma valin úr retained gögnum (RETAINED_CANDIDATE_APPROVED_VIA_PROMPT). 3774 START við 2059 (Grundarfjörður-Ólafsvík). Gamla END-tillagan (við Grundarfjörður-Vatnaleið) var innri framhaldspunktur og er ekki endurvakin. Akstursaðgengi/stefna EXACT_GAP. Sjá server_data/winter-route-approach-selections.json#selections.grundarfjordur."
+      },
+      "coverageReference": "server_data/winter-route-remaining-coverage.json#coverage.grundarfjordur",
+      "acquiredGeometryReference": "server_data/winter-route-acquired-geometry.json#place_results.grundarfjordur",
+      "approachAnalysisReference": "server_data/winter-route-approach-analysis.json#place_results.grundarfjordur",
+      "selectionReference": "server_data/winter-route-approach-selections.json#selections.grundarfjordur",
+      "selection_basis": "RETAINED_CANDIDATE_APPROVED_VIA_PROMPT"
+    },
+    {
+      "id": "olafsvik",
+      "name": "Ólafsvík",
+      "region": "Vesturland og Snæfellsnes",
+      "aliases": [],
+      "coordinates": {
+        "latitude": 64.90014373,
+        "longitude": -23.72850184,
+        "crs": "EPSG:4326"
+      },
+      "approach": "Punktur við samskeyti við Hellissandur–Ólafsvík.",
+      "connectionStatus": {
+        "state": "ACCESS_POINT_SELECTED_ACCESS_UNCONFIRMED",
+        "reason": "Vöruaðkoma valin úr retained gögnum (RETAINED_CANDIDATE_APPROVED_VIA_PROMPT). 2698 START við 2617 (Hellissandur-Ólafsvík). Gamla 2740 END-tillagan (við Grundarfjörður-Ólafsvík) er ekki endurvakin. Akstursaðgengi/stefna EXACT_GAP. Sjá server_data/winter-route-approach-selections.json#selections.olafsvik."
+      },
+      "coverageReference": "server_data/winter-route-remaining-coverage.json#coverage.olafsvik",
+      "acquiredGeometryReference": "server_data/winter-route-acquired-geometry.json#place_results.olafsvik",
+      "approachAnalysisReference": "server_data/winter-route-approach-analysis.json#place_results.olafsvik",
+      "selectionReference": "server_data/winter-route-approach-selections.json#selections.olafsvik",
+      "selection_basis": "RETAINED_CANDIDATE_APPROVED_VIA_PROMPT"
+    },
+    {
+      "id": "budardalur",
+      "name": "Búðardalur",
+      "region": "Vesturland og Snæfellsnes",
+      "aliases": [],
+      "coordinates": {
+        "latitude": 65.10591772,
+        "longitude": -21.76505686,
+        "crs": "EPSG:4326"
+      },
+      "approach": "Punktur við Vestfjarðaveg og Brekkuhvamm í Búðardal.",
+      "connectionStatus": {
+        "state": "ACCESS_POINT_SELECTED_ACCESS_UNCONFIRMED",
+        "reason": "Ripley-kortastoð. Vöruaðkoma valin eftir kortaráðleggingu (MAP_PRODUCT_APPROVED_VIA_PROMPT) -- ekki eigandavalin bæjarmiðja og ekki staðfest akstursaðgengi. Akstursaðgengi/stefna EXACT_GAP. Sjá server_data/winter-route-approach-selections.json#selections.budardalur."
+      },
+      "coverageReference": "server_data/winter-route-remaining-coverage.json#coverage.budardalur",
+      "acquiredGeometryReference": "server_data/winter-route-acquired-geometry.json#place_results.budardalur",
+      "approachAnalysisReference": "server_data/winter-route-approach-analysis.json#place_results.budardalur",
+      "placeEvidenceReference": "server_data/winter-route-place-evidence.json#place_results.budardalur",
+      "selectionReference": "server_data/winter-route-approach-selections.json#selections.budardalur",
+      "selection_basis": "MAP_PRODUCT_APPROVED_VIA_PROMPT"
+    },
+    {
+      "id": "reykholar",
+      "name": "Reykhólar",
+      "region": "Vestfirðir",
+      "aliases": [],
+      "coordinates": {
+        "latitude": 65.44592572,
+        "longitude": -22.20532007,
+        "crs": "EPSG:4326"
+      },
+      "approach": "Punktur á Karlseyjarvegi við Reykjabraut á Reykhólum.",
+      "connectionStatus": {
+        "state": "ACCESS_POINT_SELECTED_ACCESS_UNCONFIRMED",
+        "reason": "Ripley-kortastoð. Vöruaðkoma valin eftir kortaráðleggingu (MAP_PRODUCT_APPROVED_VIA_PROMPT) -- ekki eigandavalin bæjarmiðja og ekki staðfest akstursaðgengi. Akstursaðgengi/stefna EXACT_GAP. Sjá server_data/winter-route-approach-selections.json#selections.reykholar."
+      },
+      "coverageReference": "server_data/winter-route-remaining-coverage.json#coverage.reykholar",
+      "acquiredGeometryReference": "server_data/winter-route-acquired-geometry.json#place_results.reykholar",
+      "approachAnalysisReference": "server_data/winter-route-approach-analysis.json#place_results.reykholar",
+      "placeEvidenceReference": "server_data/winter-route-place-evidence.json#place_results.reykholar",
+      "selectionReference": "server_data/winter-route-approach-selections.json#selections.reykholar",
+      "selection_basis": "MAP_PRODUCT_APPROVED_VIA_PROMPT"
+    },
+    {
+      "id": "patreksfjordur",
+      "name": "Patreksfjörður",
+      "region": "Vestfirðir",
+      "aliases": [],
+      "coordinates": {
+        "latitude": 65.58993681,
+        "longitude": -23.97181157,
+        "crs": "EPSG:4326"
+      },
+      "approach": "Suðaustari aðkoma frá vegakerfinu utan bæjarins.",
+      "connectionStatus": {
+        "state": "ACCESS_POINT_SELECTED_ACCESS_UNCONFIRMED",
+        "reason": "Vöruaðkoma valin eftir kortaráðleggingu (MAP_RECOMMENDATION_APPROVED_VIA_PROMPT) -- ekki eigandavalin bæjarmiðja og ekki staðfest akstursaðgengi. Akstursaðgengi/stefna EXACT_GAP. Sjá server_data/winter-route-approach-selections.json#selections.patreksfjordur."
+      },
+      "coverageReference": "server_data/winter-route-remaining-coverage.json#coverage.patreksfjordur",
+      "acquiredGeometryReference": "server_data/winter-route-acquired-geometry.json#place_results.patreksfjordur",
+      "approachAnalysisReference": "server_data/winter-route-approach-analysis.json#place_results.patreksfjordur",
+      "selectionReference": "server_data/winter-route-approach-selections.json#selections.patreksfjordur",
+      "selection_basis": "MAP_RECOMMENDATION_APPROVED_VIA_PROMPT"
+    },
+    {
+      "id": "talknafjordur",
+      "name": "Tálknafjörður",
+      "region": "Vestfirðir",
+      "aliases": [],
+      "coordinates": {
+        "latitude": 65.62399623,
+        "longitude": -23.81359943,
+        "crs": "EPSG:4326"
+      },
+      "approach": "Punktur við suðausturjaðar byggðarinnar á Tálknafjarðarvegi.",
+      "connectionStatus": {
+        "state": "ACCESS_POINT_SELECTED_ACCESS_UNCONFIRMED",
+        "reason": "Vöruaðkoma valin eftir kortaráðleggingu (MAP_RECOMMENDATION_APPROVED_VIA_PROMPT) -- ekki eigandavalin bæjarmiðja og ekki staðfest akstursaðgengi. Akstursaðgengi/stefna EXACT_GAP. Sjá server_data/winter-route-approach-selections.json#selections.talknafjordur."
+      },
+      "coverageReference": "server_data/winter-route-remaining-coverage.json#coverage.talknafjordur",
+      "acquiredGeometryReference": "server_data/winter-route-acquired-geometry.json#place_results.talknafjordur",
+      "approachAnalysisReference": "server_data/winter-route-approach-analysis.json#place_results.talknafjordur",
+      "selectionReference": "server_data/winter-route-approach-selections.json#selections.talknafjordur",
+      "selection_basis": "MAP_RECOMMENDATION_APPROVED_VIA_PROMPT"
+    },
+    {
+      "id": "bildudalur",
+      "name": "Bíldudalur",
+      "region": "Vestfirðir",
+      "aliases": [],
+      "coordinates": {
+        "latitude": 65.67709936,
+        "longitude": -23.61288347,
+        "crs": "EPSG:4326"
+      },
+      "approach": "Syðri aðkoma frá Bíldudalsvegi, við upphaf vegarins inn í byggðina.",
+      "connectionStatus": {
+        "state": "ACCESS_POINT_SELECTED_ACCESS_UNCONFIRMED",
+        "reason": "Vöruaðkoma valin eftir kortaráðleggingu (MAP_RECOMMENDATION_APPROVED_VIA_PROMPT) -- ekki eigandavalin bæjarmiðja og ekki staðfest akstursaðgengi. Akstursaðgengi/stefna EXACT_GAP. Sjá server_data/winter-route-approach-selections.json#selections.bildudalur."
+      },
+      "coverageReference": "server_data/winter-route-remaining-coverage.json#coverage.bildudalur",
+      "acquiredGeometryReference": "server_data/winter-route-acquired-geometry.json#place_results.bildudalur",
+      "approachAnalysisReference": "server_data/winter-route-approach-analysis.json#place_results.bildudalur",
+      "selectionReference": "server_data/winter-route-approach-selections.json#selections.bildudalur",
+      "selection_basis": "MAP_RECOMMENDATION_APPROVED_VIA_PROMPT"
+    },
+    {
+      "id": "thingeyri",
+      "name": "Þingeyri",
+      "region": "Vestfirðir",
+      "aliases": [],
+      "coordinates": {
+        "latitude": 65.8665326,
+        "longitude": -23.47396873,
+        "crs": "EPSG:4326"
+      },
+      "approach": "Aðkoma sunnan við byggðina frá Vestfjarðavegi.",
+      "connectionStatus": {
+        "state": "ACCESS_POINT_SELECTED_ACCESS_UNCONFIRMED",
+        "reason": "Vöruaðkoma valin eftir kortaráðleggingu (MAP_RECOMMENDATION_APPROVED_VIA_PROMPT) -- ekki eigandavalin bæjarmiðja og ekki staðfest akstursaðgengi. Akstursaðgengi/stefna EXACT_GAP. Sjá server_data/winter-route-approach-selections.json#selections.thingeyri."
+      },
+      "coverageReference": "server_data/winter-route-remaining-coverage.json#coverage.thingeyri",
+      "acquiredGeometryReference": "server_data/winter-route-acquired-geometry.json#place_results.thingeyri",
+      "approachAnalysisReference": "server_data/winter-route-approach-analysis.json#place_results.thingeyri",
+      "selectionReference": "server_data/winter-route-approach-selections.json#selections.thingeyri",
+      "selection_basis": "MAP_RECOMMENDATION_APPROVED_VIA_PROMPT"
+    },
+    {
+      "id": "isafjordur",
+      "name": "Ísafjörður",
+      "region": "Vestfirðir",
+      "aliases": [],
+      "coordinates": {
+        "latitude": 66.08035668,
+        "longitude": -23.12399231,
+        "crs": "EPSG:4326"
+      },
+      "approach": "Punktur á Djúpvegi við norðurhluta byggðar á Ísafirði.",
+      "connectionStatus": {
+        "state": "ACCESS_POINT_SELECTED_ACCESS_UNCONFIRMED",
+        "reason": "Ripley-kortastoð. Vöruaðkoma valin eftir kortaráðleggingu (MAP_PRODUCT_APPROVED_VIA_PROMPT) -- ekki eigandavalin bæjarmiðja og ekki staðfest akstursaðgengi. Akstursaðgengi/stefna EXACT_GAP. Sjá server_data/winter-route-approach-selections.json#selections.isafjordur."
+      },
+      "coverageReference": "server_data/winter-route-remaining-coverage.json#coverage.isafjordur",
+      "acquiredGeometryReference": "server_data/winter-route-acquired-geometry.json#place_results.isafjordur",
+      "approachAnalysisReference": "server_data/winter-route-approach-analysis.json#place_results.isafjordur",
+      "placeEvidenceReference": "server_data/winter-route-place-evidence.json#place_results.isafjordur",
+      "selectionReference": "server_data/winter-route-approach-selections.json#selections.isafjordur",
+      "selection_basis": "MAP_PRODUCT_APPROVED_VIA_PROMPT"
+    },
+    {
+      "id": "bolungarvik",
+      "name": "Bolungarvík",
+      "region": "Vestfirðir",
+      "aliases": [],
+      "coordinates": {
+        "latitude": 66.14305273,
+        "longitude": -23.2225211,
+        "crs": "EPSG:4326"
+      },
+      "approach": "Punktur við tengingu Bolungarvíkurgangna.",
+      "connectionStatus": {
+        "state": "ACCESS_POINT_SELECTED_ACCESS_UNCONFIRMED",
+        "reason": "Vöruaðkoma valin úr retained gögnum (RETAINED_CANDIDATE_APPROVED_VIA_PROMPT). Source lýsir Bolungarvíkurgöng-Grundarkambur; einföld vöruaðkoma við tengingu gangakaflans, staðfest gegn raw tier -1. Akstursaðgengi/stefna EXACT_GAP. Sjá server_data/winter-route-approach-selections.json#selections.bolungarvik."
+      },
+      "coverageReference": "server_data/winter-route-remaining-coverage.json#coverage.bolungarvik",
+      "acquiredGeometryReference": "server_data/winter-route-acquired-geometry.json#place_results.bolungarvik",
+      "approachAnalysisReference": "server_data/winter-route-approach-analysis.json#place_results.bolungarvik",
+      "selectionReference": "server_data/winter-route-approach-selections.json#selections.bolungarvik",
+      "selection_basis": "RETAINED_CANDIDATE_APPROVED_VIA_PROMPT"
+    },
+    {
+      "id": "sudavik",
+      "name": "Súðavík",
+      "region": "Vestfirðir",
+      "aliases": [],
+      "coordinates": {
+        "latitude": 66.02459271,
+        "longitude": -22.9922543,
+        "crs": "EPSG:4326"
+      },
+      "approach": "Punktur á Aðalgötu við suðurhluta byggðar í Súðavík.",
+      "connectionStatus": {
+        "state": "ACCESS_POINT_SELECTED_ACCESS_UNCONFIRMED",
+        "reason": "Ripley-kortastoð. Vöruaðkoma valin eftir kortaráðleggingu (MAP_PRODUCT_APPROVED_VIA_PROMPT) -- ekki eigandavalin bæjarmiðja og ekki staðfest akstursaðgengi. Akstursaðgengi/stefna EXACT_GAP. Sjá server_data/winter-route-approach-selections.json#selections.sudavik."
+      },
+      "coverageReference": "server_data/winter-route-remaining-coverage.json#coverage.sudavik",
+      "acquiredGeometryReference": "server_data/winter-route-acquired-geometry.json#place_results.sudavik",
+      "approachAnalysisReference": "server_data/winter-route-approach-analysis.json#place_results.sudavik",
+      "placeEvidenceReference": "server_data/winter-route-place-evidence.json#place_results.sudavik",
+      "selectionReference": "server_data/winter-route-approach-selections.json#selections.sudavik",
+      "selection_basis": "MAP_PRODUCT_APPROVED_VIA_PROMPT"
+    },
+    {
+      "id": "holmavik",
+      "name": "Hólmavík",
+      "region": "Vestfirðir",
+      "aliases": [],
+      "coordinates": {
+        "latitude": 65.70146962,
+        "longitude": -21.68414766,
+        "crs": "EPSG:4326"
+      },
+      "approach": "Punktur við Hólmavíkurveg og Höfðagötu í byggðinni.",
+      "connectionStatus": {
+        "state": "ACCESS_POINT_SELECTED_ACCESS_UNCONFIRMED",
+        "reason": "Ripley-kortastoð. Vöruaðkoma valin eftir kortaráðleggingu (MAP_PRODUCT_APPROVED_VIA_PROMPT) -- ekki eigandavalin bæjarmiðja og ekki staðfest akstursaðgengi. Akstursaðgengi/stefna EXACT_GAP. Sjá server_data/winter-route-approach-selections.json#selections.holmavik."
+      },
+      "coverageReference": "server_data/winter-route-remaining-coverage.json#coverage.holmavik",
+      "acquiredGeometryReference": "server_data/winter-route-acquired-geometry.json#place_results.holmavik",
+      "approachAnalysisReference": "server_data/winter-route-approach-analysis.json#place_results.holmavik",
+      "placeEvidenceReference": "server_data/winter-route-place-evidence.json#place_results.holmavik",
+      "selectionReference": "server_data/winter-route-approach-selections.json#selections.holmavik",
+      "selection_basis": "MAP_PRODUCT_APPROVED_VIA_PROMPT"
+    },
+    {
+      "id": "drangsnes",
+      "name": "Drangsnes",
+      "region": "Vestfirðir",
+      "aliases": [],
+      "coordinates": {
+        "latitude": 65.69125093,
+        "longitude": -21.44027942,
+        "crs": "EPSG:4326"
+      },
+      "approach": "Punktur á Aðalbraut við norðurhluta byggðar á Drangsnesi.",
+      "connectionStatus": {
+        "state": "ACCESS_POINT_SELECTED_ACCESS_UNCONFIRMED",
+        "reason": "Ripley-kortastoð. Vöruaðkoma valin eftir kortaráðleggingu (MAP_PRODUCT_APPROVED_VIA_PROMPT) -- ekki eigandavalin bæjarmiðja og ekki staðfest akstursaðgengi. Akstursaðgengi/stefna EXACT_GAP. Sjá server_data/winter-route-approach-selections.json#selections.drangsnes."
+      },
+      "coverageReference": "server_data/winter-route-remaining-coverage.json#coverage.drangsnes",
+      "acquiredGeometryReference": "server_data/winter-route-acquired-geometry.json#place_results.drangsnes",
+      "approachAnalysisReference": "server_data/winter-route-approach-analysis.json#place_results.drangsnes",
+      "placeEvidenceReference": "server_data/winter-route-place-evidence.json#place_results.drangsnes",
+      "selectionReference": "server_data/winter-route-approach-selections.json#selections.drangsnes",
+      "selection_basis": "MAP_PRODUCT_APPROVED_VIA_PROMPT"
+    },
+    {
+      "id": "hvammstangi",
+      "name": "Hvammstangi",
+      "region": "Norðurland vestra",
+      "aliases": [],
+      "coordinates": {
+        "latitude": 65.39804115,
+        "longitude": -20.94389335,
+        "crs": "EPSG:4326"
+      },
+      "approach": "Punktur á Norðurbraut við byggð á Hvammstanga.",
+      "connectionStatus": {
+        "state": "ACCESS_POINT_SELECTED_ACCESS_UNCONFIRMED",
+        "reason": "Ripley-kortastoð. Vöruaðkoma valin eftir kortaráðleggingu (MAP_PRODUCT_APPROVED_VIA_PROMPT) -- ekki eigandavalin bæjarmiðja og ekki staðfest akstursaðgengi. Akstursaðgengi/stefna EXACT_GAP. Sjá server_data/winter-route-approach-selections.json#selections.hvammstangi."
+      },
+      "coverageReference": "server_data/winter-route-remaining-coverage.json#coverage.hvammstangi",
+      "acquiredGeometryReference": "server_data/winter-route-acquired-geometry.json#place_results.hvammstangi",
+      "approachAnalysisReference": "server_data/winter-route-approach-analysis.json#place_results.hvammstangi",
+      "placeEvidenceReference": "server_data/winter-route-place-evidence.json#place_results.hvammstangi",
+      "selectionReference": "server_data/winter-route-approach-selections.json#selections.hvammstangi",
+      "selection_basis": "MAP_PRODUCT_APPROVED_VIA_PROMPT"
+    },
+    {
+      "id": "blonduos",
+      "name": "Blönduós",
+      "region": "Norðurland vestra",
+      "aliases": [],
+      "coordinates": {
+        "latitude": 65.65634119,
+        "longitude": -20.28373541,
+        "crs": "EPSG:4326"
+      },
+      "approach": "Punktur við Hringveg og Flóðabakka á Blönduósi.",
+      "connectionStatus": {
+        "state": "ACCESS_POINT_SELECTED_ACCESS_UNCONFIRMED",
+        "reason": "Ripley-kortastoð. Vöruaðkoma valin eftir kortaráðleggingu (MAP_PRODUCT_APPROVED_VIA_PROMPT) -- ekki eigandavalin bæjarmiðja og ekki staðfest akstursaðgengi. Akstursaðgengi/stefna EXACT_GAP. Sjá server_data/winter-route-approach-selections.json#selections.blonduos."
+      },
+      "coverageReference": "server_data/winter-route-remaining-coverage.json#coverage.blonduos",
+      "acquiredGeometryReference": "server_data/winter-route-acquired-geometry.json#place_results.blonduos",
+      "approachAnalysisReference": "server_data/winter-route-approach-analysis.json#place_results.blonduos",
+      "placeEvidenceReference": "server_data/winter-route-place-evidence.json#place_results.blonduos",
+      "selectionReference": "server_data/winter-route-approach-selections.json#selections.blonduos",
+      "selection_basis": "MAP_PRODUCT_APPROVED_VIA_PROMPT"
+    },
+    {
+      "id": "skagastrond",
+      "name": "Skagaströnd",
+      "region": "Norðurland vestra",
+      "aliases": [],
+      "coordinates": {
+        "latitude": 65.82381799,
+        "longitude": -20.29628289,
+        "crs": "EPSG:4326"
+      },
+      "approach": "Punktur við Fellsbraut og austari byggð á Skagaströnd.",
+      "connectionStatus": {
+        "state": "ACCESS_POINT_SELECTED_ACCESS_UNCONFIRMED",
+        "reason": "Ripley-kortastoð. Vöruaðkoma valin eftir kortaráðleggingu (MAP_PRODUCT_APPROVED_VIA_PROMPT) -- ekki eigandavalin bæjarmiðja og ekki staðfest akstursaðgengi. Akstursaðgengi/stefna EXACT_GAP. Sjá server_data/winter-route-approach-selections.json#selections.skagastrond."
+      },
+      "coverageReference": "server_data/winter-route-remaining-coverage.json#coverage.skagastrond",
+      "acquiredGeometryReference": "server_data/winter-route-acquired-geometry.json#place_results.skagastrond",
+      "approachAnalysisReference": "server_data/winter-route-approach-analysis.json#place_results.skagastrond",
+      "placeEvidenceReference": "server_data/winter-route-place-evidence.json#place_results.skagastrond",
+      "selectionReference": "server_data/winter-route-approach-selections.json#selections.skagastrond",
+      "selection_basis": "MAP_PRODUCT_APPROVED_VIA_PROMPT"
+    },
+    {
+      "id": "saudarkrokur",
+      "name": "Sauðárkrókur",
+      "region": "Norðurland vestra",
+      "aliases": [],
+      "coordinates": {
+        "latitude": 65.74380077,
+        "longitude": -19.62028698,
+        "crs": "EPSG:4326"
+      },
+      "approach": "Syðri/austari aðkoma við Sauðárkróksbraut og tengingu við veg 75.",
+      "connectionStatus": {
+        "state": "ACCESS_POINT_SELECTED_ACCESS_UNCONFIRMED",
+        "reason": "Vöruaðkoma valin eftir kortaráðleggingu (MAP_RECOMMENDATION_APPROVED_VIA_PROMPT) -- ekki eigandavalin bæjarmiðja og ekki staðfest akstursaðgengi. Akstursaðgengi/stefna EXACT_GAP. Sjá server_data/winter-route-approach-selections.json#selections.saudarkrokur."
+      },
+      "coverageReference": "server_data/winter-route-remaining-coverage.json#coverage.saudarkrokur",
+      "acquiredGeometryReference": "server_data/winter-route-acquired-geometry.json#place_results.saudarkrokur",
+      "approachAnalysisReference": "server_data/winter-route-approach-analysis.json#place_results.saudarkrokur",
+      "selectionReference": "server_data/winter-route-approach-selections.json#selections.saudarkrokur",
+      "selection_basis": "MAP_RECOMMENDATION_APPROVED_VIA_PROMPT"
+    },
+    {
+      "id": "varmahlid",
+      "name": "Varmahlíð",
+      "region": "Norðurland vestra",
+      "aliases": [],
+      "coordinates": {
+        "latitude": 65.55340044,
+        "longitude": -19.44533505,
+        "crs": "EPSG:4326"
+      },
+      "approach": "Nyrðri punktur við gatnamót í byggðinni.",
+      "connectionStatus": {
+        "state": "ACCESS_POINT_SELECTED_ACCESS_UNCONFIRMED",
+        "reason": "Vöruaðkoma valin eftir kortaráðleggingu (MAP_RECOMMENDATION_APPROVED_VIA_PROMPT) -- ekki eigandavalin bæjarmiðja og ekki staðfest akstursaðgengi. Akstursaðgengi/stefna EXACT_GAP. Sjá server_data/winter-route-approach-selections.json#selections.varmahlid."
+      },
+      "coverageReference": "server_data/winter-route-remaining-coverage.json#coverage.varmahlid",
+      "acquiredGeometryReference": "server_data/winter-route-acquired-geometry.json#place_results.varmahlid",
+      "approachAnalysisReference": "server_data/winter-route-approach-analysis.json#place_results.varmahlid",
+      "selectionReference": "server_data/winter-route-approach-selections.json#selections.varmahlid",
+      "selection_basis": "MAP_RECOMMENDATION_APPROVED_VIA_PROMPT"
+    },
+    {
+      "id": "siglufjordur",
+      "name": "Siglufjörður",
+      "region": "Norðurland vestra",
+      "aliases": [],
+      "coordinates": {
+        "latitude": 66.1605843,
+        "longitude": -18.90330291,
+        "crs": "EPSG:4326"
+      },
+      "approach": "Punktur við tengingu Siglufjörður–Strákagöng.",
+      "connectionStatus": {
+        "state": "ACCESS_POINT_SELECTED_ACCESS_UNCONFIRMED",
+        "reason": "Vöruaðkoma valin úr retained gögnum (RETAINED_CANDIDATE_APPROVED_VIA_PROMPT). Source lýsir Hólavegur-Hafnarvegur, með tengingu við Siglufjörður-Strákagöng, staðfest gegn raw tier -1. Akstursaðgengi/stefna EXACT_GAP. Sjá server_data/winter-route-approach-selections.json#selections.siglufjordur."
+      },
+      "coverageReference": "server_data/winter-route-remaining-coverage.json#coverage.siglufjordur",
+      "acquiredGeometryReference": "server_data/winter-route-acquired-geometry.json#place_results.siglufjordur",
+      "approachAnalysisReference": "server_data/winter-route-approach-analysis.json#place_results.siglufjordur",
+      "selectionReference": "server_data/winter-route-approach-selections.json#selections.siglufjordur",
+      "selection_basis": "RETAINED_CANDIDATE_APPROVED_VIA_PROMPT"
+    },
+    {
+      "id": "olafsfjordur",
+      "name": "Ólafsfjörður",
+      "region": "Norðurland eystra",
+      "aliases": [],
+      "coordinates": {
+        "latitude": 66.06730376,
+        "longitude": -18.65429271,
+        "crs": "EPSG:4326"
+      },
+      "approach": "Punktur við tengingu Ólafsfjörður–Vermundarstaðir.",
+      "connectionStatus": {
+        "state": "ACCESS_POINT_SELECTED_ACCESS_UNCONFIRMED",
+        "reason": "Vöruaðkoma valin úr retained gögnum (RETAINED_CANDIDATE_APPROVED_VIA_PROMPT). Source lýsir Aðalgata-Hornbrekka og tengingu við Ólafsfjörður-Vermundarstaðir, staðfest gegn raw tier -1. Akstursaðgengi/stefna EXACT_GAP. Sjá server_data/winter-route-approach-selections.json#selections.olafsfjordur."
+      },
+      "coverageReference": "server_data/winter-route-remaining-coverage.json#coverage.olafsfjordur",
+      "acquiredGeometryReference": "server_data/winter-route-acquired-geometry.json#place_results.olafsfjordur",
+      "approachAnalysisReference": "server_data/winter-route-approach-analysis.json#place_results.olafsfjordur",
+      "selectionReference": "server_data/winter-route-approach-selections.json#selections.olafsfjordur",
+      "selection_basis": "RETAINED_CANDIDATE_APPROVED_VIA_PROMPT"
+    },
+    {
+      "id": "dalvik",
+      "name": "Dalvík",
+      "region": "Norðurland eystra",
+      "aliases": [],
+      "coordinates": {
+        "latitude": 65.96755395,
+        "longitude": -18.52948806,
+        "crs": "EPSG:4326"
+      },
+      "approach": "Punktur á Dalvíkurvegi við syðri byggð á Dalvík.",
+      "connectionStatus": {
+        "state": "ACCESS_POINT_SELECTED_ACCESS_UNCONFIRMED",
+        "reason": "Ripley-kortastoð. Vöruaðkoma valin eftir kortaráðleggingu (MAP_PRODUCT_APPROVED_VIA_PROMPT) -- ekki eigandavalin bæjarmiðja og ekki staðfest akstursaðgengi. Akstursaðgengi/stefna EXACT_GAP. Sjá server_data/winter-route-approach-selections.json#selections.dalvik. Punktur er áfram innri samskeyti sama vegar við IDFERILL 3501 (innri, ekki ytra samskeyti); kortastaðsetning styður aðeins vörupunktinn, ekki breytta greiningu."
+      },
+      "coverageReference": "server_data/winter-route-remaining-coverage.json#coverage.dalvik",
+      "acquiredGeometryReference": "server_data/winter-route-acquired-geometry.json#place_results.dalvik",
+      "approachAnalysisReference": "server_data/winter-route-approach-analysis.json#place_results.dalvik",
+      "placeEvidenceReference": "server_data/winter-route-place-evidence.json#place_results.dalvik",
+      "selectionReference": "server_data/winter-route-approach-selections.json#selections.dalvik",
+      "selection_basis": "MAP_PRODUCT_APPROVED_VIA_PROMPT"
+    },
+    {
+      "id": "akureyri",
+      "name": "Akureyri",
+      "region": "Norðurland eystra",
+      "aliases": [],
+      "coordinates": {
+        "latitude": 65.69570405,
+        "longitude": -18.12371406,
+        "crs": "EPSG:4326"
+      },
+      "approach": "C — eigandavalin mót: endi IDFERILL 2940 (IDBUTUR 909030037) = upphaf IDFERILL 3876 (IDBUTUR 909360037), varðveitt frá 2026-11-06.",
+      "connectionStatus": {
+        "state": "ACCESS_POINT_SELECTED_ACCESS_UNCONFIRMED",
+        "reason": "Aðkomupunktur valinn (2026-11-06); akstursaðgengi/stefna EXACT_GAP í báðar áttir."
+      },
+      "provenance": {
+        "source_file": "docs/ai/tasks/ticket-500/places-v1.json#akureyri"
+      }
+    },
+    {
+      "id": "husavik",
+      "name": "Húsavík",
+      "region": "Norðurland eystra",
+      "aliases": [],
+      "coordinates": {
+        "latitude": 66.03234853,
+        "longitude": -17.34984614,
+        "crs": "EPSG:4326"
+      },
+      "approach": "Punktur á Norðausturvegi við Kringlumýri á Húsavík.",
+      "connectionStatus": {
+        "state": "ACCESS_POINT_SELECTED_ACCESS_UNCONFIRMED",
+        "reason": "Ripley-kortastoð. Vöruaðkoma valin eftir kortaráðleggingu (MAP_PRODUCT_APPROVED_VIA_PROMPT) -- ekki eigandavalin bæjarmiðja og ekki staðfest akstursaðgengi. Akstursaðgengi/stefna EXACT_GAP. Sjá server_data/winter-route-approach-selections.json#selections.husavik."
+      },
+      "coverageReference": "server_data/winter-route-remaining-coverage.json#coverage.husavik",
+      "acquiredGeometryReference": "server_data/winter-route-acquired-geometry.json#place_results.husavik",
+      "approachAnalysisReference": "server_data/winter-route-approach-analysis.json#place_results.husavik",
+      "placeEvidenceReference": "server_data/winter-route-place-evidence.json#place_results.husavik",
+      "selectionReference": "server_data/winter-route-approach-selections.json#selections.husavik",
+      "selection_basis": "MAP_PRODUCT_APPROVED_VIA_PROMPT"
+    },
+    {
+      "id": "reykjahlid-myvatn",
+      "name": "Reykjahlíð (Mývatn)",
+      "region": "Norðurland eystra",
+      "aliases": [],
+      "coordinates": {
+        "latitude": 65.63990944593598,
+        "longitude": -16.910730687949837,
+        "crs": "EPSG:4326"
+      },
+      "approach": "Punktur við Hringveg og Mývatnssveitarveg, við byggðina.",
+      "connectionStatus": {
+        "state": "ACCESS_POINT_SELECTED_ACCESS_UNCONFIRMED",
+        "reason": "Vöruaðkoma valin eftir kortaráðleggingu (MAP_RECOMMENDATION_APPROVED_VIA_PROMPT) -- ekki eigandavalin bæjarmiðja og ekki staðfest akstursaðgengi. Akstursaðgengi/stefna EXACT_GAP. Sjá server_data/winter-route-approach-selections.json#selections.reykjahlid-myvatn."
+      },
+      "coverageReference": "server_data/winter-route-remaining-coverage.json#coverage.reykjahlid-myvatn",
+      "selectionReference": "server_data/winter-route-approach-selections.json#selections.reykjahlid-myvatn",
+      "selection_basis": "MAP_RECOMMENDATION_APPROVED_VIA_PROMPT",
+      "coordinateDerivationReference": "server_data/winter-route-approach-selections.json#selections.reykjahlid-myvatn.wgs84_derivation"
+    },
+    {
+      "id": "kopasker",
+      "name": "Kópasker",
+      "region": "Norðurland eystra",
+      "aliases": [],
+      "coordinates": {
+        "latitude": 66.30152838,
+        "longitude": -16.44081709,
+        "crs": "EPSG:4326"
+      },
+      "approach": "Punktur við Sléttuveg og Austurtröð á Kópaskeri.",
+      "connectionStatus": {
+        "state": "ACCESS_POINT_SELECTED_ACCESS_UNCONFIRMED",
+        "reason": "Ripley-kortastoð. Vöruaðkoma valin eftir kortaráðleggingu (MAP_PRODUCT_APPROVED_VIA_PROMPT) -- ekki eigandavalin bæjarmiðja og ekki staðfest akstursaðgengi. Akstursaðgengi/stefna EXACT_GAP. Sjá server_data/winter-route-approach-selections.json#selections.kopasker."
+      },
+      "coverageReference": "server_data/winter-route-remaining-coverage.json#coverage.kopasker",
+      "acquiredGeometryReference": "server_data/winter-route-acquired-geometry.json#place_results.kopasker",
+      "approachAnalysisReference": "server_data/winter-route-approach-analysis.json#place_results.kopasker",
+      "placeEvidenceReference": "server_data/winter-route-place-evidence.json#place_results.kopasker",
+      "selectionReference": "server_data/winter-route-approach-selections.json#selections.kopasker",
+      "selection_basis": "MAP_PRODUCT_APPROVED_VIA_PROMPT"
+    },
+    {
+      "id": "raufarhofn",
+      "name": "Raufarhöfn",
+      "region": "Norðurland eystra",
+      "aliases": [],
+      "coordinates": {
+        "latitude": 66.44545468,
+        "longitude": -15.94764087,
+        "crs": "EPSG:4326"
+      },
+      "approach": "Punktur á Aðalbraut við syðri byggð á Raufarhöfn.",
+      "connectionStatus": {
+        "state": "ACCESS_POINT_SELECTED_ACCESS_UNCONFIRMED",
+        "reason": "Ripley-kortastoð. Vöruaðkoma valin eftir kortaráðleggingu (MAP_PRODUCT_APPROVED_VIA_PROMPT) -- ekki eigandavalin bæjarmiðja og ekki staðfest akstursaðgengi. Akstursaðgengi/stefna EXACT_GAP. Sjá server_data/winter-route-approach-selections.json#selections.raufarhofn."
+      },
+      "coverageReference": "server_data/winter-route-remaining-coverage.json#coverage.raufarhofn",
+      "acquiredGeometryReference": "server_data/winter-route-acquired-geometry.json#place_results.raufarhofn",
+      "approachAnalysisReference": "server_data/winter-route-approach-analysis.json#place_results.raufarhofn",
+      "placeEvidenceReference": "server_data/winter-route-place-evidence.json#place_results.raufarhofn",
+      "selectionReference": "server_data/winter-route-approach-selections.json#selections.raufarhofn",
+      "selection_basis": "MAP_PRODUCT_APPROVED_VIA_PROMPT"
+    },
+    {
+      "id": "thorshofn",
+      "name": "Þórshöfn",
+      "region": "Norðurland eystra",
+      "aliases": [],
+      "coordinates": null,
+      "approach": null,
+      "connectionStatus": {
+        "state": "NO_RETAINED_MATCH_CHECKED",
+        "reason": "Ekkert fannst í neinni athugaðri retained heimild (v3, stem-hints, færðarauðkenni, place-inventory) — yfirfarið, ekki óskoðað. Sjá server_data/winter-route-remaining-coverage.json#coverage.thorshofn."
+      },
+      "coverageReference": "server_data/winter-route-remaining-coverage.json#coverage.thorshofn",
+      "placeEvidenceReference": "server_data/winter-route-place-evidence.json#place_results.thorshofn"
+    },
+    {
+      "id": "vopnafjordur",
+      "name": "Vopnafjörður",
+      "region": "Austurland",
+      "aliases": [],
+      "coordinates": {
+        "latitude": 65.7641206,
+        "longitude": -14.82399559,
+        "crs": "EPSG:4326"
+      },
+      "approach": "Punktur við tengingu Vopnafjörður–Skógavegur.",
+      "connectionStatus": {
+        "state": "ACCESS_POINT_SELECTED_ACCESS_UNCONFIRMED",
+        "reason": "Vöruaðkoma valin úr retained gögnum (RETAINED_CANDIDATE_APPROVED_VIA_PROMPT). Source lýsir Leiðarhafnarvegur-Norðausturvegur. END snertir bæði samnefnt stykki 3671 og Vopnafjörður-Skógavegur (3182); seam_with_name er 3182 (OI2), ekki fyrsta snertistykki eftir röðun. Akstursaðgengi/stefna EXACT_GAP. Sjá server_data/winter-route-approach-selections.json#selections.vopnafjordur."
+      },
+      "coverageReference": "server_data/winter-route-remaining-coverage.json#coverage.vopnafjordur",
+      "acquiredGeometryReference": "server_data/winter-route-acquired-geometry.json#place_results.vopnafjordur",
+      "approachAnalysisReference": "server_data/winter-route-approach-analysis.json#place_results.vopnafjordur",
+      "selectionReference": "server_data/winter-route-approach-selections.json#selections.vopnafjordur",
+      "selection_basis": "RETAINED_CANDIDATE_APPROVED_VIA_PROMPT"
+    },
+    {
+      "id": "egilsstadir",
+      "name": "Egilsstaðir",
+      "region": "Austurland",
+      "aliases": [],
+      "coordinates": {
+        "latitude": 65.25861764,
+        "longitude": -14.39028964,
+        "crs": "EPSG:4326"
+      },
+      "approach": "E1 — eigandavalin mót á hringvegi/Seyðisfjarðarvegi: endi IDFERILL 2345 / upphaf IDFERILL 2344, varðveitt frá #493.",
+      "connectionStatus": {
+        "state": "ACCESS_POINT_SELECTED_ACCESS_UNCONFIRMED",
+        "reason": "Aðkomupunktur valinn (varðveitt #493); akstursaðgengi/stefna EXACT_GAP í báðar áttir."
+      },
+      "provenance": {
+        "source_file": "docs/ai/tasks/ticket-500/places-v1.json#egilsstadir"
+      }
+    },
+    {
+      "id": "seydisfjordur",
+      "name": "Seyðisfjörður",
+      "region": "Austurland",
+      "aliases": [],
+      "coordinates": {
+        "latitude": 65.26021788,
+        "longitude": -14.00953135,
+        "crs": "EPSG:4326"
+      },
+      "approach": "S2 — hlutlaus MVP-mótalýsing (endi IDFERILL 2894 / upphaf IDFERILL 2892), ekki opinbert staðarheiti eða staðfest bæjarmörk.",
+      "connectionStatus": {
+        "state": "ACCESS_POINT_SELECTED_ACCESS_UNCONFIRMED",
+        "reason": "Mót valið (2026-11-11), WGS84 sótt 2026-11-13; akstursaðgengi/stefna EXACT_GAP í báðar áttir."
+      },
+      "provenance": {
+        "source_file": "docs/ai/tasks/ticket-500/places-v1.json#seydisfjordur"
+      }
+    },
+    {
+      "id": "neskaupstadur",
+      "name": "Neskaupstaður",
+      "region": "Austurland",
+      "aliases": [],
+      "coordinates": {
+        "latitude": 65.14719331,
+        "longitude": -13.71556128,
+        "crs": "EPSG:4326"
+      },
+      "approach": "Punktur á Strandgötu við vestari byggð í Neskaupstað.",
+      "connectionStatus": {
+        "state": "ACCESS_POINT_SELECTED_ACCESS_UNCONFIRMED",
+        "reason": "Ripley-kortastoð. Vöruaðkoma valin eftir kortaráðleggingu (MAP_PRODUCT_APPROVED_VIA_PROMPT) -- ekki eigandavalin bæjarmiðja og ekki staðfest akstursaðgengi. Akstursaðgengi/stefna EXACT_GAP. Sjá server_data/winter-route-approach-selections.json#selections.neskaupstadur."
+      },
+      "coverageReference": "server_data/winter-route-remaining-coverage.json#coverage.neskaupstadur",
+      "acquiredGeometryReference": "server_data/winter-route-acquired-geometry.json#place_results.neskaupstadur",
+      "approachAnalysisReference": "server_data/winter-route-approach-analysis.json#place_results.neskaupstadur",
+      "placeEvidenceReference": "server_data/winter-route-place-evidence.json#place_results.neskaupstadur",
+      "selectionReference": "server_data/winter-route-approach-selections.json#selections.neskaupstadur",
+      "selection_basis": "MAP_PRODUCT_APPROVED_VIA_PROMPT"
+    },
+    {
+      "id": "eskifjordur",
+      "name": "Eskifjörður",
+      "region": "Austurland",
+      "aliases": [],
+      "coordinates": {
+        "latitude": 65.07554219,
+        "longitude": -14.02122438,
+        "crs": "EPSG:4326"
+      },
+      "approach": "Punktur á Strandgötu við vestari byggð á Eskifirði.",
+      "connectionStatus": {
+        "state": "ACCESS_POINT_SELECTED_ACCESS_UNCONFIRMED",
+        "reason": "Ripley-kortastoð. Vöruaðkoma valin eftir kortaráðleggingu (MAP_PRODUCT_APPROVED_VIA_PROMPT) -- ekki eigandavalin bæjarmiðja og ekki staðfest akstursaðgengi. Akstursaðgengi/stefna EXACT_GAP. Sjá server_data/winter-route-approach-selections.json#selections.eskifjordur."
+      },
+      "coverageReference": "server_data/winter-route-remaining-coverage.json#coverage.eskifjordur",
+      "acquiredGeometryReference": "server_data/winter-route-acquired-geometry.json#place_results.eskifjordur",
+      "approachAnalysisReference": "server_data/winter-route-approach-analysis.json#place_results.eskifjordur",
+      "placeEvidenceReference": "server_data/winter-route-place-evidence.json#place_results.eskifjordur",
+      "selectionReference": "server_data/winter-route-approach-selections.json#selections.eskifjordur",
+      "selection_basis": "MAP_PRODUCT_APPROVED_VIA_PROMPT"
+    },
+    {
+      "id": "reydarfjordur",
+      "name": "Reyðarfjörður",
+      "region": "Austurland",
+      "aliases": [],
+      "coordinates": {
+        "latitude": 65.02999390726326,
+        "longitude": -14.266008824536579,
+        "crs": "EPSG:4326"
+      },
+      "approach": "Punktur við tengingu Hringvegar og Norðfjarðarvegar áleiðis til Reyðarfjarðar.",
+      "connectionStatus": {
+        "state": "ACCESS_POINT_SELECTED_ACCESS_UNCONFIRMED",
+        "reason": "Vöruaðkoma valin eftir retained gögnum + Ripley kortaskoðun (MAP_JUNCTION_APPROVED_VIA_PROMPT) -- ekki ný CC-/Jonesy-kortaskoðun, ekki staðfest ytri graph-tenging/stefna/opnun/bæjarmörk. Sjónrænt frávik 0-10m áætlað af Ripley, ekki mæld nákvæm snerting. Akstursaðgengi/stefna EXACT_GAP. Sjá server_data/winter-route-approach-selections.json#selections.reydarfjordur."
+      },
+      "coverageReference": "server_data/winter-route-remaining-coverage.json#coverage.reydarfjordur",
+      "selectionReference": "server_data/winter-route-approach-selections.json#selections.reydarfjordur",
+      "selection_basis": "MAP_JUNCTION_APPROVED_VIA_PROMPT",
+      "coordinateDerivationReference": "server_data/winter-route-approach-selections.json#selections.reydarfjordur.wgs84_derivation"
+    },
+    {
+      "id": "faskrudsfjordur",
+      "name": "Fáskrúðsfjörður",
+      "region": "Austurland",
+      "aliases": [],
+      "coordinates": {
+        "latitude": 64.93458924724804,
+        "longitude": -14.051426350254996,
+        "crs": "EPSG:4326"
+      },
+      "approach": "Punktur við tengingu Hringvegar og Búðavegar áleiðis til Fáskrúðsfjarðar.",
+      "connectionStatus": {
+        "state": "ACCESS_POINT_SELECTED_ACCESS_UNCONFIRMED",
+        "reason": "Vöruaðkoma valin eftir retained gögnum + Ripley kortaskoðun (MAP_JUNCTION_APPROVED_VIA_PROMPT) -- ekki ný CC-/Jonesy-kortaskoðun, ekki staðfest ytri graph-tenging/stefna/opnun/bæjarmörk. Sjónrænt frávik 0-10m áætlað af Ripley, ekki mæld nákvæm snerting. Akstursaðgengi/stefna EXACT_GAP. Sjá server_data/winter-route-approach-selections.json#selections.faskrudsfjordur."
+      },
+      "coverageReference": "server_data/winter-route-remaining-coverage.json#coverage.faskrudsfjordur",
+      "selectionReference": "server_data/winter-route-approach-selections.json#selections.faskrudsfjordur",
+      "selection_basis": "MAP_JUNCTION_APPROVED_VIA_PROMPT",
+      "coordinateDerivationReference": "server_data/winter-route-approach-selections.json#selections.faskrudsfjordur.wgs84_derivation"
+    },
+    {
+      "id": "djupivogur",
+      "name": "Djúpivogur",
+      "region": "Austurland",
+      "aliases": [],
+      "coordinates": {
+        "latitude": 64.65406062,
+        "longitude": -14.29799027,
+        "crs": "EPSG:4326"
+      },
+      "approach": "Punktur á Djúpavogsvegi við byggðina á Djúpavogi.",
+      "connectionStatus": {
+        "state": "ACCESS_POINT_SELECTED_ACCESS_UNCONFIRMED",
+        "reason": "Ripley-kortastoð. Vöruaðkoma valin eftir kortaráðleggingu (MAP_PRODUCT_APPROVED_VIA_PROMPT) -- ekki eigandavalin bæjarmiðja og ekki staðfest akstursaðgengi. Akstursaðgengi/stefna EXACT_GAP. Sjá server_data/winter-route-approach-selections.json#selections.djupivogur."
+      },
+      "coverageReference": "server_data/winter-route-remaining-coverage.json#coverage.djupivogur",
+      "acquiredGeometryReference": "server_data/winter-route-acquired-geometry.json#place_results.djupivogur",
+      "approachAnalysisReference": "server_data/winter-route-approach-analysis.json#place_results.djupivogur",
+      "placeEvidenceReference": "server_data/winter-route-place-evidence.json#place_results.djupivogur",
+      "selectionReference": "server_data/winter-route-approach-selections.json#selections.djupivogur",
+      "selection_basis": "MAP_PRODUCT_APPROVED_VIA_PROMPT"
+    },
+    {
+      "id": "hofn",
+      "name": "Höfn",
+      "region": "Suðurland",
+      "aliases": [],
+      "coordinates": {
+        "latitude": 64.2784739,
+        "longitude": -15.19843537,
+        "crs": "EPSG:4326"
+      },
+      "approach": "Punktur við Hringveg og Hafnarveg áleiðis til Hafnar.",
+      "connectionStatus": {
+        "state": "ACCESS_POINT_SELECTED_ACCESS_UNCONFIRMED",
+        "reason": "Ripley-kortastoð. Vöruaðkoma valin eftir kortaráðleggingu (MAP_PRODUCT_APPROVED_VIA_PROMPT) -- ekki eigandavalin bæjarmiðja og ekki staðfest akstursaðgengi. Akstursaðgengi/stefna EXACT_GAP. Sjá server_data/winter-route-approach-selections.json#selections.hofn. Flugvallarvegur (982/3170) var EKKI notaður sem bæjarpunktur; engin ný eða fullstaðfest Hornafjarðarleið er sýnd hér."
+      },
+      "coverageReference": "server_data/winter-route-remaining-coverage.json#coverage.hofn",
+      "acquiredGeometryReference": "server_data/winter-route-acquired-geometry.json#place_results.hofn",
+      "approachAnalysisReference": "server_data/winter-route-approach-analysis.json#place_results.hofn",
+      "placeEvidenceReference": "server_data/winter-route-place-evidence.json#place_results.hofn",
+      "selectionReference": "server_data/winter-route-approach-selections.json#selections.hofn",
+      "selection_basis": "MAP_PRODUCT_APPROVED_VIA_PROMPT"
+    },
+    {
+      "id": "skaftafell",
+      "name": "Skaftafell",
+      "region": "Suðurland",
+      "aliases": [],
+      "coordinates": {
+        "latitude": 64.00546696040198,
+        "longitude": -16.943978236220662,
+        "crs": "EPSG:4326"
+      },
+      "approach": "Punktur við Hringveg og Skaftafellsveg áleiðis til Skaftafells.",
+      "connectionStatus": {
+        "state": "ACCESS_POINT_SELECTED_ACCESS_UNCONFIRMED",
+        "reason": "Ripley-kortastoð. Vöruaðkoma valin eftir kortaráðleggingu (MAP_PRODUCT_APPROVED_VIA_PROMPT) -- ekki eigandavalin bæjarmiðja og ekki staðfest akstursaðgengi. Akstursaðgengi/stefna EXACT_GAP. Sjá server_data/winter-route-approach-selections.json#selections.skaftafell."
+      },
+      "coverageReference": "server_data/winter-route-remaining-coverage.json#coverage.skaftafell",
+      "placeEvidenceReference": "server_data/winter-route-place-evidence.json#place_results.skaftafell",
+      "selectionReference": "server_data/winter-route-approach-selections.json#selections.skaftafell",
+      "selection_basis": "MAP_PRODUCT_APPROVED_VIA_PROMPT",
+      "coordinateDerivationReference": "server_data/winter-route-approach-selections.json#selections.skaftafell.wgs84_derivation"
+    },
+    {
+      "id": "kirkjubaejarklaustur",
+      "name": "Kirkjubæjarklaustur",
+      "region": "Suðurland",
+      "aliases": [],
+      "coordinates": {
+        "latitude": 63.79468083177732,
+        "longitude": -18.039733574570896,
+        "crs": "EPSG:4326"
+      },
+      "approach": "Punktur við Hringveg og Klausturveg áleiðis í Kirkjubæjarklaustur.",
+      "connectionStatus": {
+        "state": "ACCESS_POINT_SELECTED_ACCESS_UNCONFIRMED",
+        "reason": "Ripley-kortastoð. Vöruaðkoma valin eftir kortaráðleggingu (MAP_PRODUCT_APPROVED_VIA_PROMPT) -- ekki eigandavalin bæjarmiðja og ekki staðfest akstursaðgengi. Akstursaðgengi/stefna EXACT_GAP. Sjá server_data/winter-route-approach-selections.json#selections.kirkjubaejarklaustur. Native-endi er ekki færður í miðju hringtorgs 1/205; source-bil að IDFERILL 2409 START er áfram óleyst."
+      },
+      "coverageReference": "server_data/winter-route-remaining-coverage.json#coverage.kirkjubaejarklaustur",
+      "placeEvidenceReference": "server_data/winter-route-place-evidence.json#place_results.kirkjubaejarklaustur",
+      "selectionReference": "server_data/winter-route-approach-selections.json#selections.kirkjubaejarklaustur",
+      "selection_basis": "MAP_PRODUCT_APPROVED_VIA_PROMPT",
+      "coordinateDerivationReference": "server_data/winter-route-approach-selections.json#selections.kirkjubaejarklaustur.wgs84_derivation"
+    },
+    {
+      "id": "vik",
+      "name": "Vík",
+      "region": "Suðurland",
+      "aliases": [],
+      "coordinates": {
+        "latitude": 63.41782798,
+        "longitude": -19.00028197,
+        "crs": "EPSG:4326"
+      },
+      "approach": "Punktur á þjóðvegi í Vík, við innri samskeyti vegkafla.",
+      "connectionStatus": {
+        "state": "ACCESS_POINT_SELECTED_ACCESS_UNCONFIRMED",
+        "reason": "Vöruaðkoma valin úr retained gögnum (RETAINED_CANDIDATE_APPROVED_VIA_PROMPT). Eini retained kandídat; innri samskeyti stykkja 3849/23041, ekki endapunktur núverandi föstu runtime-leiðar (segments.js) -- hún heldur um 629 m lengra austur. Meðvitað vöruval, ekki ný ytri tenging eða breyting á runtime-leiðinni. Akstursaðgengi/stefna EXACT_GAP. Sjá server_data/winter-route-approach-selections.json#selections.vik."
+      },
+      "candidateReference": "server_data/winter-route-south-connections.json#approach_candidates.vik",
+      "selectionReference": "server_data/winter-route-approach-selections.json#selections.vik",
+      "selection_basis": "RETAINED_CANDIDATE_APPROVED_VIA_PROMPT"
+    },
+    {
+      "id": "hvolsvollur",
+      "name": "Hvolsvöllur",
+      "region": "Suðurland",
+      "aliases": [],
+      "coordinates": {
+        "latitude": 63.75128586,
+        "longitude": -20.23549109,
+        "crs": "EPSG:4326"
+      },
+      "approach": "Punktur við Hvolsveg og Suðurlandsveg í byggðinni.",
+      "connectionStatus": {
+        "state": "ACCESS_POINT_SELECTED_ACCESS_UNCONFIRMED",
+        "reason": "Vöruaðkoma valin eftir kortaráðleggingu (MAP_RECOMMENDATION_APPROVED_VIA_PROMPT) -- ekki eigandavalin bæjarmiðja og ekki staðfest akstursaðgengi. Akstursaðgengi/stefna EXACT_GAP. Sjá server_data/winter-route-approach-selections.json#selections.hvolsvollur."
+      },
+      "candidateReference": "server_data/winter-route-south-connections.json#approach_candidates.hvolsvollur",
+      "selectionReference": "server_data/winter-route-approach-selections.json#selections.hvolsvollur",
+      "selection_basis": "MAP_RECOMMENDATION_APPROVED_VIA_PROMPT"
+    },
+    {
+      "id": "hella",
+      "name": "Hella",
+      "region": "Suðurland",
+      "aliases": [],
+      "coordinates": {
+        "latitude": 63.83460817,
+        "longitude": -20.40236144,
+        "crs": "EPSG:4326"
+      },
+      "approach": "Aðkoma inn í byggðina austan Ytri-Rangár. Þessi endi er merktur ALTERNATIVE_NOT_RECOMMENDED í eldri south-connections-greiningu (32,63 m source-bil að næsta kafla, óleyst).",
+      "connectionStatus": {
+        "state": "ACCESS_POINT_SELECTED_ACCESS_UNCONFIRMED",
+        "reason": "Vöruaðkoma valin eftir kortaráðleggingu (MAP_RECOMMENDATION_APPROVED_VIA_PROMPT) -- ekki eigandavalin bæjarmiðja og ekki staðfest akstursaðgengi. Akstursaðgengi/stefna EXACT_GAP. Sjá server_data/winter-route-approach-selections.json#selections.hella. Valinn START-endi er ALTERNATIVE_NOT_RECOMMENDED í eldri south-connections; valinn vegna nálægðar við byggð, ekki samfellu. Bil að næsta source-stykki er 32,63 m og áfram óleyst."
+      },
+      "candidateReference": "server_data/winter-route-south-connections.json#approach_candidates.hella",
+      "selectionReference": "server_data/winter-route-approach-selections.json#selections.hella",
+      "selection_basis": "MAP_RECOMMENDATION_APPROVED_VIA_PROMPT"
+    },
+    {
+      "id": "selfoss",
+      "name": "Selfoss",
+      "region": "Suðurland",
+      "aliases": [],
+      "coordinates": {
+        "latitude": 63.93759503,
+        "longitude": -21.00380428,
+        "crs": "EPSG:4326"
+      },
+      "approach": "Austari/syðri aðkoma við austurenda Austurvegar, nær byggðinni. Þessi endi er merktur ALTERNATIVE_NOT_RECOMMENDED í eldri south-connections-greiningu (30,1 m source-bil að næsta kafla, óleyst).",
+      "connectionStatus": {
+        "state": "ACCESS_POINT_SELECTED_ACCESS_UNCONFIRMED",
+        "reason": "Vöruaðkoma valin eftir kortaráðleggingu (MAP_RECOMMENDATION_APPROVED_VIA_PROMPT) -- ekki eigandavalin bæjarmiðja og ekki staðfest akstursaðgengi. Akstursaðgengi/stefna EXACT_GAP. Sjá server_data/winter-route-approach-selections.json#selections.selfoss. Valinn START-endi er ALTERNATIVE_NOT_RECOMMENDED í eldri south-connections; valinn vegna nálægðar við byggð, ekki samfellu. Bil að næsta source-stykki er 30,1 m og áfram óleyst."
+      },
+      "candidateReference": "server_data/winter-route-south-connections.json#approach_candidates.selfoss",
+      "selectionReference": "server_data/winter-route-approach-selections.json#selections.selfoss",
+      "selection_basis": "MAP_RECOMMENDATION_APPROVED_VIA_PROMPT"
+    },
+    {
+      "id": "hveragerdi",
+      "name": "Hveragerði",
+      "region": "Suðurland",
+      "aliases": [],
+      "coordinates": {
+        "latitude": 63.99538228,
+        "longitude": -21.19270972,
+        "crs": "EPSG:4326"
+      },
+      "approach": "Punktur vestast á varðveitta vegkaflanum við Hveragerði.",
+      "connectionStatus": {
+        "state": "ACCESS_POINT_SELECTED_ACCESS_UNCONFIRMED",
+        "reason": "Vöruaðkoma valin úr retained gögnum (RETAINED_CANDIDATE_APPROVED_VIA_PROMPT). Eini retained kandídat; nafnaályktun (NAME_MATCH_INFERRED) á vestasta enda retained suðurkaflans. 34,75 m bil að Hellisheiðarkafla (2117) áfram óleyst. Ekki miðbær eða staðfest bæjarmörk. Akstursaðgengi/stefna EXACT_GAP. Sjá server_data/winter-route-approach-selections.json#selections.hveragerdi."
+      },
+      "candidateReference": "server_data/winter-route-south-connections.json#approach_candidates.hveragerdi",
+      "selectionReference": "server_data/winter-route-approach-selections.json#selections.hveragerdi",
+      "selection_basis": "RETAINED_CANDIDATE_APPROVED_VIA_PROMPT"
+    },
+    {
+      "id": "thorlakshofn",
+      "name": "Þorlákshöfn",
+      "region": "Suðurland",
+      "aliases": [],
+      "coordinates": {
+        "latitude": 63.86300272,
+        "longitude": -21.3913311,
+        "crs": "EPSG:4326"
+      },
+      "approach": "Punktur við Þorlákshafnarveg og Suðurstrandarveg við byggðina.",
+      "connectionStatus": {
+        "state": "ACCESS_POINT_SELECTED_ACCESS_UNCONFIRMED",
+        "reason": "Ripley-kortastoð. Vöruaðkoma valin eftir kortaráðleggingu (MAP_PRODUCT_APPROVED_VIA_PROMPT) -- ekki eigandavalin bæjarmiðja og ekki staðfest akstursaðgengi. Akstursaðgengi/stefna EXACT_GAP. Sjá server_data/winter-route-approach-selections.json#selections.thorlakshofn."
+      },
+      "coverageReference": "server_data/winter-route-remaining-coverage.json#coverage.thorlakshofn",
+      "acquiredGeometryReference": "server_data/winter-route-acquired-geometry.json#place_results.thorlakshofn",
+      "approachAnalysisReference": "server_data/winter-route-approach-analysis.json#place_results.thorlakshofn",
+      "placeEvidenceReference": "server_data/winter-route-place-evidence.json#place_results.thorlakshofn",
+      "selectionReference": "server_data/winter-route-approach-selections.json#selections.thorlakshofn",
+      "selection_basis": "MAP_PRODUCT_APPROVED_VIA_PROMPT"
+    },
+    {
+      "id": "fludir",
+      "name": "Flúðir",
+      "region": "Suðurland",
+      "aliases": [],
+      "coordinates": {
+        "latitude": 64.13080082,
+        "longitude": -20.32143333,
+        "crs": "EPSG:4326"
+      },
+      "approach": "Punktur við Skeiða- og Hrunamannaveg og Langholtsveg á Flúðum.",
+      "connectionStatus": {
+        "state": "ACCESS_POINT_SELECTED_ACCESS_UNCONFIRMED",
+        "reason": "Ripley-kortastoð. Vöruaðkoma valin eftir kortaráðleggingu (MAP_PRODUCT_APPROVED_VIA_PROMPT) -- ekki eigandavalin bæjarmiðja og ekki staðfest akstursaðgengi. Akstursaðgengi/stefna EXACT_GAP. Sjá server_data/winter-route-approach-selections.json#selections.fludir."
+      },
+      "coverageReference": "server_data/winter-route-remaining-coverage.json#coverage.fludir",
+      "acquiredGeometryReference": "server_data/winter-route-acquired-geometry.json#place_results.fludir",
+      "approachAnalysisReference": "server_data/winter-route-approach-analysis.json#place_results.fludir",
+      "placeEvidenceReference": "server_data/winter-route-place-evidence.json#place_results.fludir",
+      "selectionReference": "server_data/winter-route-approach-selections.json#selections.fludir",
+      "selection_basis": "MAP_PRODUCT_APPROVED_VIA_PROMPT"
+    },
+    {
+      "id": "laugarvatn",
+      "name": "Laugarvatn",
+      "region": "Suðurland",
+      "aliases": [],
+      "coordinates": {
+        "latitude": 64.21194753,
+        "longitude": -20.74278069,
+        "crs": "EPSG:4326"
+      },
+      "approach": "Punktur við Laugarvatnsveg og Gjábakkaveg við Laugarvatn.",
+      "connectionStatus": {
+        "state": "ACCESS_POINT_SELECTED_ACCESS_UNCONFIRMED",
+        "reason": "Ripley-kortastoð. Vöruaðkoma valin eftir kortaráðleggingu (MAP_PRODUCT_APPROVED_VIA_PROMPT) -- ekki eigandavalin bæjarmiðja og ekki staðfest akstursaðgengi. Akstursaðgengi/stefna EXACT_GAP. Sjá server_data/winter-route-approach-selections.json#selections.laugarvatn."
+      },
+      "coverageReference": "server_data/winter-route-remaining-coverage.json#coverage.laugarvatn",
+      "acquiredGeometryReference": "server_data/winter-route-acquired-geometry.json#place_results.laugarvatn",
+      "approachAnalysisReference": "server_data/winter-route-approach-analysis.json#place_results.laugarvatn",
+      "placeEvidenceReference": "server_data/winter-route-place-evidence.json#place_results.laugarvatn",
+      "selectionReference": "server_data/winter-route-approach-selections.json#selections.laugarvatn",
+      "selection_basis": "MAP_PRODUCT_APPROVED_VIA_PROMPT"
+    }
+  ]
+}

@@ -1,0 +1,73 @@
+{
+  "schema_version": 1,
+  "place_ref": "reykjavik-raudavatn",
+  "place_ref_file": "docs/ai/tasks/ticket-500/places-v1.json",
+  "note": "Bounded extract of the ALREADY-RETAINED #491 29-piece chain, from R1 (western end of IDFERILL 1436, Rauðavatn) to the start of IDFERILL 3025 ('upphafi 3025'). This is a data-contract excerpt, not a new route search — no new call, no recomputation of the full Borgarnes route, no new candidate selection. Order/role/orientation/gap values are reused verbatim from the #491 final-validation source; per approved-prompt-v1.md step 3 this contract deliberately does NOT carry over #491's ETA figures, weather points (P2–P4), or planar cumulative-km product values — those belong to #491's own ETA/weather feature, not to this place/connection data contract.",
+  "source": {
+    "chain_data_file": "docs/ai/tasks/ticket-491/final-validation/route-data-candidate.json",
+    "chain_data_sha256": "ec56c43cbaf207bf1958b7b6e3bbfdad51c7dbb63bb50ff84bcd49d71f143087",
+    "evidence_file": "docs/ai/tasks/ticket-491/final-validation/evidence-table-final.md",
+    "evidence_sha256": "cee1b0185aeacbf037070b06d753bc2853bc394790cffe7fe99199824bdd91b4",
+    "final_review_file": "docs/ai/tasks/ticket-491/result-review-final-validation.md",
+    "final_review_note": "Ripley's own 2026-11-04 final assessment: chain data PASS under conditions C1-C4; 'Nákvæm leiðarstefna/hringakstur eru ekki fullstaðfest þótt gagnayfirferð fái PASS' — exact driving direction/roundabout traversal remain unconfirmed even though the data review itself passed."
+  },
+  "start_point": {
+    "label": "R1 — Rauðavatn, western end of IDFERILL 1436",
+    "idferill": 1436,
+    "idbutur": 1410010037,
+    "native_3057": [365522.0175, 402772.762],
+    "matches_places_v1": "Identical to reykjavik-raudavatn.provenance.native_reference.native_xy in places-v1.json — same point, confirmed by direct comparison, not re-derived."
+  },
+  "first_gap": {
+    "from_idferill": 1436,
+    "to_idferill": 1477,
+    "gap_m": 37.39,
+    "status": "GAP, not a touch/contact. This is a real recorded distance between two retained native vertices, not geometric adjacency.",
+    "role_filter_note": "Roundabout IDFERILL 8677 sits among the VEGHLUTI 3/4/5 ramps/roundabouts that evidence-table-final.md's own C1 role filter excludes as bridging connector points, not standalone chain pieces (see evidence-table-final.md, 'Útilokaðir hlutar' list). It is not itself a measured position within this specific 37.39 m gap — it is named here only because approved-prompt-v1.md step 3 requires noting that it is out of the C1 role filter, not because this extract measured its exact position."
+  },
+  "chain_segments": [
+    { "idferill": 1477,  "idbutur": 914020037, "veghluti": 6, "kaflanr": "e2", "orientation": "start->end", "gap_from_prev_m": 37.39, "piece_length_m": 786.643,  "native_entry_3057": [365511.185, 402808.546], "native_exit_3057": [364815.38, 403168.62] },
+    { "idferill": 1431,  "idbutur": 914020037, "veghluti": 1, "kaflanr": "e3", "orientation": "start->end", "gap_from_prev_m": 38.68, "piece_length_m": 912.476,  "native_entry_3057": [364783.23, 403190.12], "native_exit_3057": [364530.6014, 404024.6077] },
+    { "idferill": 42243, "idbutur": 914020037, "veghluti": 6, "kaflanr": "e3", "orientation": "start->end", "gap_from_prev_m": 3.6,  "piece_length_m": 1277.326, "native_entry_3057": [364529.8757, 404021.0839], "native_exit_3057": [364379.2145, 405263.0185] },
+    { "idferill": 49926, "idbutur": 914020037, "veghluti": 1, "kaflanr": "e3", "orientation": "start->end", "gap_from_prev_m": 3.71, "piece_length_m": 183.057,  "native_entry_3057": [364380.1477, 405259.4325], "native_exit_3057": [364310.0491, 405428.4975] },
+    { "idferill": 9923,  "idbutur": 903020037, "veghluti": 6, "kaflanr": "f2", "orientation": "start->end", "gap_from_prev_m": 10.83,"piece_length_m": 2165.854, "native_entry_3057": [364315.4588, 405419.1142], "native_exit_3057": [365750.07, 406920.23] },
+    { "idferill": 9925,  "idbutur": 903020037, "veghluti": 6, "kaflanr": "f3", "orientation": "start->end", "gap_from_prev_m": 34.16,"piece_length_m": 1907.978, "native_entry_3057": [365766.45, 406950.21], "native_exit_3057": [366832.5, 408500.08] },
+    { "idferill": 9927,  "idbutur": 903020037, "veghluti": 6, "kaflanr": "f3", "orientation": "start->end", "gap_from_prev_m": 26.55,"piece_length_m": 823.443,  "native_entry_3057": [366850.06, 408520], "native_exit_3057": [367470.347, 409052.717] },
+    { "idferill": 10242, "idbutur": 903020037, "veghluti": 6, "kaflanr": "f3", "orientation": "start->end", "gap_from_prev_m": 31.47,"piece_length_m": 1156.093, "native_entry_3057": [367496.736, 409069.855], "native_exit_3057": [368367.314, 409712.635] },
+    { "idferill": 2796,  "idbutur": 903020037, "veghluti": 1, "kaflanr": "f3", "orientation": "start->end", "gap_from_prev_m": 40.83,"piece_length_m": 676.449,  "native_entry_3057": [368406.315, 409700.5641], "native_exit_3057": [369050.488, 409740.261] },
+    { "idferill": 10247, "idbutur": 903020037, "veghluti": 6, "kaflanr": "f4", "orientation": "start->end", "gap_from_prev_m": 17.92,"piece_length_m": 529.84,   "native_entry_3057": [369058.623, 409756.227], "native_exit_3057": [369495.412, 409996.251] },
+    { "idferill": 2488,  "idbutur": 903020037, "veghluti": 6, "kaflanr": "f4", "orientation": "start->end", "gap_from_prev_m": 32.67,"piece_length_m": 975.361,  "native_entry_3057": [369524.519, 410011.082], "native_exit_3057": [369884.459, 410879.112] },
+    { "idferill": 2532,  "idbutur": 903030037, "veghluti": 1, "kaflanr": "f5", "orientation": "start->end", "gap_from_prev_m": 41.45,"piece_length_m": 6679.566, "native_entry_3057": [369876.9665, 410919.8825], "native_exit_3057": [365883.5639, 414670.5343],
+      "section_boundary_note": "IDBUTUR changes from 903020037 to 903030037 here. Per MB1 (Jonesy's binding wording correction on this ticket's approved prompt): the 'Kjalarnes' section label (IDBUTUR 903030037) BEGINS at this piece (2532), not at piece 3025 below. 3025 is a reference point further into this same section, not its entry." },
+    { "idferill": 30721, "idbutur": 903030037, "veghluti": 6, "kaflanr": "f5", "orientation": "start->end", "gap_from_prev_m": 7.09, "piece_length_m": 1185.592, "native_entry_3057": [365888.5528, 414665.5029], "native_exit_3057": [365003.333, 415441.989] },
+    { "idferill": 49281, "idbutur": 903030037, "veghluti": 6, "kaflanr": "f5", "orientation": "start->end", "gap_from_prev_m": 38.62,"piece_length_m": 2835.286, "native_entry_3057": [364977.488, 415470.693], "native_exit_3057": [363284.959, 417592.986] },
+    { "idferill": 49285, "idbutur": 903030037, "veghluti": 1, "kaflanr": "f5", "orientation": "start->end", "gap_from_prev_m": 2.88, "piece_length_m": 1169.516, "native_entry_3057": [363285.8088, 417590.2334], "native_exit_3057": [362804.64, 418651.23] }
+  ],
+  "terminal_reference_point": {
+    "id": "P1 (per #491 four_points)",
+    "label_is": "Kjalarnes — upphaf IDFERILL 3025",
+    "idferill": 3025,
+    "idbutur": 903030037,
+    "which": "start",
+    "native_3057": [362804.64, 418651.23],
+    "wgs84": { "lat": 64.24274349, "lon": -21.82931336 },
+    "gap_from_prev_m": 0.0,
+    "gap_note": "Exact native-coordinate match to the exit of piece 49285 immediately above — a real 0.0 m retained-data contact, not an assumption.",
+    "clarification": "This point is a MID-SECTION reference point (~12 km into the 'Kjalarnes' section that itself begins at piece 2532, ~11.7 km from R1 — 23.632 km minus 11.714 km ≈ 11.9 km, per #491's own source figures), not the section's entry point. The extract stops HERE, at the START of IDFERILL 3025; IDFERILL 3025's own length/exit (continuing further into the chain toward #491's Borgarnes end) is explicitly NOT part of this extract."
+  },
+  "excluded_from_this_extract": [
+    "Piece 3025's own extent beyond its start, and every chain piece after it (continuing toward Hvalfjarðargöng/Borgarnes) — out of scope for this contract.",
+    "#491's four_points P2/P3/P4 (weather points) and the full-route ETA/length figures — explicitly not transferred into this contract per approved-prompt-v1.md step 3.",
+    "#491's own planar cumulative-km product values — not carried into this contract as a computed field (cited only in prose above, for traceability of 'where 3025 sits', not as a contract field)."
+  ],
+  "driving_direction_and_access": {
+    "h1_status": "INFERRED, not proven legal traffic direction. route-data-candidate.json's own status field: 'H1 (VEGHLUTI6 stored-digital-direction=northbound) is INFERRED topology, not proven legal traffic direction.'",
+    "c1_c4_conditions": "This extract reuses chain data that passed #491's final validation only under conditions C1-C4 (role filter VEGHLUTI 1/6 only — confirmed: every piece above is VEGHLUTI 1 or 6; manual exception handling for ambiguous reverse-direction pieces; roundabout-length question explicitly UNRESOLVED and not relevant to this extract since no roundabout piece appears in it; haversine-based length method — not reused here since no cumulative length is computed in this contract).",
+    "status_for_501": "unsupported for #501 — this extract establishes that retained geometric chain data connects R1 toward the Kjalarnes section with measured proximity and 15 recorded gaps of about 2.9–41.5 m, plus an exact 0.0 m contact at the terminal point; this is not continuous geometric contact, but it does NOT establish permitted driving direction or which arc/interchange ramp a vehicle may legally use. A broken graph or unconfirmed connection must produce an explicit unsupported/data-gap result in #501, never a fabricated route.",
+    "no_reversal_claim": "This chain must not be reversed and read as a proven southbound (Reykjavík-to-Rauðavatn) driving route. Lack of confirmation is a data gap, not a claim that the road is actually closed in either direction."
+  },
+  "out_of_scope_this_contract": {
+    "eastern_vik_direction": "R1's eastern (Vík-direction) connection is not evaluated in this contract at all, per approved-prompt-v1.md step 3.",
+    "other_endpoints_access": "E1, S2, and C also carry EXACT_GAP driving-access status in places-v1.json — owner selection alone does not make any of the four points route-selectable; this is not specific to R1."
+  }
+}

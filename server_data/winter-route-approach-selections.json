@@ -1,0 +1,1336 @@
+{
+  "schema_version": 1,
+  "note": "Simple disposition list -- not a general selection framework. 50 SELECTED_PRODUCT_APPROACH entries fix a real existing/retained candidate as the chosen product approach point, each tagged with its own selection_basis (MAP_RECOMMENDATION_APPROVED_VIA_PROMPT for 11 map-reviewed picks, RETAINED_CANDIDATE_APPROVED_VIA_PROMPT for 10 retained-data picks, MAP_JUNCTION_APPROVED_VIA_PROMPT for 2 junction picks, MAP_PRODUCT_APPROVED_VIA_PROMPT for 27 further Ripley-map-reviewed product points added in the remaining-map-selection round). The 2 MAP_JUNCTION entries (Reyðarfjörður, Fáskrúðsfjörður) each retain their original CURRENT_CANDIDATE_NOT_SELECTED disposition verbatim under previous_disposition, about a DIFFERENT source endpoint (2520 START / 2536 START, both still correctly rejected) -- this round's new points (2553 START / 2536 END) were never previously rejected. Map review supports product selection only -- never official town boundaries, external graph connectivity, legal driving direction, or current road access. access_status EXACT_GAP on every entry; no place here is SUPPORTED/ROUTABLE.",
+  "selections": {
+    "thingeyri": {
+      "status": "SELECTED_PRODUCT_APPROACH",
+      "selection_basis": "MAP_RECOMMENDATION_APPROVED_VIA_PROMPT",
+      "source": {
+        "database": "approach-analysis",
+        "idferill": 2272,
+        "stored_field": "start"
+      },
+      "wgs84": {
+        "latitude": 65.8665326,
+        "longitude": -23.47396873,
+        "crs": "EPSG:4326"
+      },
+      "access_status": "EXACT_GAP",
+      "approach_is": "Aðkoma sunnan við byggðina frá Vestfjarðavegi.",
+      "approach_en": "Approach south of the settlement from Vestfjarðavegur.",
+      "map_recommendation_reason": "Aðkoman sunnan við byggðina frá Vestfjarðavegi, fremur en punkturinn við flugvallarhlið bæjarins.",
+      "map_reference": "docs/ai/tasks/ticket-500/approaches/plain-language-recommendations.md"
+    },
+    "bildudalur": {
+      "status": "SELECTED_PRODUCT_APPROACH",
+      "selection_basis": "MAP_RECOMMENDATION_APPROVED_VIA_PROMPT",
+      "source": {
+        "database": "approach-analysis",
+        "idferill": 2273,
+        "stored_field": "start"
+      },
+      "wgs84": {
+        "latitude": 65.67709936,
+        "longitude": -23.61288347,
+        "crs": "EPSG:4326"
+      },
+      "access_status": "EXACT_GAP",
+      "approach_is": "Syðri aðkoma frá Bíldudalsvegi, við upphaf vegarins inn í byggðina.",
+      "approach_en": "Southern approach from Bíldudalsvegur, at the start of the road into the settlement.",
+      "map_recommendation_reason": "Syðri aðkoman frá Bíldudalsvegi (63), við upphaf vegarins inn í byggðina. Nyrðri kosturinn er handan byggðarinnar.",
+      "map_reference": "docs/ai/tasks/ticket-500/approaches/plain-language-recommendations.md"
+    },
+    "saudarkrokur": {
+      "status": "SELECTED_PRODUCT_APPROACH",
+      "selection_basis": "MAP_RECOMMENDATION_APPROVED_VIA_PROMPT",
+      "source": {
+        "database": "approach-analysis",
+        "idferill": 2485,
+        "stored_field": "end"
+      },
+      "wgs84": {
+        "latitude": 65.74380077,
+        "longitude": -19.62028698,
+        "crs": "EPSG:4326"
+      },
+      "access_status": "EXACT_GAP",
+      "approach_is": "Syðri/austari aðkoma við Sauðárkróksbraut og tengingu við veg 75.",
+      "approach_en": "Southern/eastern approach at Sauðárkróksbraut, connecting to road 75.",
+      "map_recommendation_reason": "Syðri/austari aðkoman við Sauðárkróksbraut og tengingu við veg 75; hentugri fyrir komu frá Hringveginum en nyrðri kosturinn.",
+      "map_reference": "docs/ai/tasks/ticket-500/approaches/plain-language-recommendations.md"
+    },
+    "varmahlid": {
+      "status": "SELECTED_PRODUCT_APPROACH",
+      "selection_basis": "MAP_RECOMMENDATION_APPROVED_VIA_PROMPT",
+      "source": {
+        "database": "approach-analysis",
+        "idferill": 2477,
+        "stored_field": "end"
+      },
+      "wgs84": {
+        "latitude": 65.55340044,
+        "longitude": -19.44533505,
+        "crs": "EPSG:4326"
+      },
+      "access_status": "EXACT_GAP",
+      "approach_is": "Nyrðri punktur við gatnamót í byggðinni.",
+      "approach_en": "Northern point at the junction within the settlement.",
+      "map_recommendation_reason": "Nyrðri punkturinn við gatnamót í byggðinni, nær þjónustu og bæjarheitinu á korti.",
+      "map_reference": "docs/ai/tasks/ticket-500/approaches/plain-language-recommendations.md"
+    },
+    "patreksfjordur": {
+      "status": "SELECTED_PRODUCT_APPROACH",
+      "selection_basis": "MAP_RECOMMENDATION_APPROVED_VIA_PROMPT",
+      "source": {
+        "database": "approach-analysis",
+        "idferill": 53127,
+        "stored_field": "start"
+      },
+      "wgs84": {
+        "latitude": 65.58993681,
+        "longitude": -23.97181157,
+        "crs": "EPSG:4326"
+      },
+      "access_status": "EXACT_GAP",
+      "approach_is": "Suðaustari aðkoma frá vegakerfinu utan bæjarins.",
+      "approach_en": "Southeastern approach from the road network outside town.",
+      "map_recommendation_reason": "Suðaustari kosturinn við aðkomu frá vegakerfinu utan bæjarins, fremur en endapunkturinn við hafnarsvæðið í bænum.",
+      "map_reference": "docs/ai/tasks/ticket-500/approaches/plain-language-recommendations.md"
+    },
+    "talknafjordur": {
+      "status": "SELECTED_PRODUCT_APPROACH",
+      "selection_basis": "MAP_RECOMMENDATION_APPROVED_VIA_PROMPT",
+      "source": {
+        "database": "approach-analysis",
+        "idferill": 2889,
+        "stored_field": "end"
+      },
+      "wgs84": {
+        "latitude": 65.62399623,
+        "longitude": -23.81359943,
+        "crs": "EPSG:4326"
+      },
+      "access_status": "EXACT_GAP",
+      "approach_is": "Punktur við suðausturjaðar byggðarinnar á Tálknafjarðarvegi.",
+      "approach_en": "Point at the southeastern edge of the settlement on Tálknafjarðarvegur.",
+      "map_recommendation_reason": "Punkturinn við suðausturjaðar byggðarinnar á Tálknafjarðarvegi (617), fremur en fjarlægari gatnamótin utan bæjarins.",
+      "map_reference": "docs/ai/tasks/ticket-500/approaches/plain-language-recommendations.md"
+    },
+    "keflavikurflugvollur-kef": {
+      "status": "SELECTED_PRODUCT_APPROACH",
+      "selection_basis": "MAP_RECOMMENDATION_APPROVED_VIA_PROMPT",
+      "source": {
+        "database": "approach-analysis",
+        "idferill": 3488,
+        "stored_field": "end"
+      },
+      "wgs84": {
+        "latitude": 63.99929831,
+        "longitude": -22.62803395,
+        "crs": "EPSG:4326"
+      },
+      "access_status": "EXACT_GAP",
+      "approach_is": "Vesturendi vegar 41 í keðjunni, nær flugstöðvarsvæðinu (ekki staðfest aðkoma við flugstöðvarbygginguna).",
+      "approach_en": "Western end of road 41 in the chain, nearer the terminal area (not a confirmed approach at the terminal building itself).",
+      "map_recommendation_reason": "Vesturendi vegar 41 í keðjunni, nær flugstöðvarsvæðinu en hinn kosturinn. Ekki staðfest aðkoma við flugstöðvarbygginguna. Keflavík bær er áfram aðskilinn.",
+      "map_reference": "docs/ai/tasks/ticket-500/approaches/plain-language-recommendations.md"
+    },
+    "selfoss": {
+      "status": "SELECTED_PRODUCT_APPROACH",
+      "selection_basis": "MAP_RECOMMENDATION_APPROVED_VIA_PROMPT",
+      "source": {
+        "database": "south-connections",
+        "idferill": 2138,
+        "stored_field": "start"
+      },
+      "wgs84": {
+        "latitude": 63.93759503,
+        "longitude": -21.00380428,
+        "crs": "EPSG:4326"
+      },
+      "access_status": "EXACT_GAP",
+      "approach_is": "Austari/syðri aðkoma við austurenda Austurvegar, nær byggðinni. Þessi endi er merktur ALTERNATIVE_NOT_RECOMMENDED í eldri south-connections-greiningu (30,1 m source-bil að næsta kafla, óleyst).",
+      "approach_en": "Eastern/southern approach at the east end of Austurvegur, nearer the settlement. This end is marked ALTERNATIVE_NOT_RECOMMENDED in the earlier south-connections analysis (a 30.1 m source gap to the next segment, unresolved).",
+      "map_recommendation_reason": "Austari/syðri kosturinn við austurenda Austurvegar, nær byggðinni en vestari kosturinn utan bæjarins. Fyrirliggjandi 30,1 m bil að næsta source-kafla helst óleyst.",
+      "map_reference": "docs/ai/tasks/ticket-500/approaches/plain-language-recommendations.md"
+    },
+    "hella": {
+      "status": "SELECTED_PRODUCT_APPROACH",
+      "selection_basis": "MAP_RECOMMENDATION_APPROVED_VIA_PROMPT",
+      "source": {
+        "database": "south-connections",
+        "idferill": 3591,
+        "stored_field": "start"
+      },
+      "wgs84": {
+        "latitude": 63.83460817,
+        "longitude": -20.40236144,
+        "crs": "EPSG:4326"
+      },
+      "access_status": "EXACT_GAP",
+      "approach_is": "Aðkoma inn í byggðina austan Ytri-Rangár. Þessi endi er merktur ALTERNATIVE_NOT_RECOMMENDED í eldri south-connections-greiningu (32,63 m source-bil að næsta kafla, óleyst).",
+      "approach_en": "Approach into the settlement east of Ytri-Rangá. This end is marked ALTERNATIVE_NOT_RECOMMENDED in the earlier south-connections analysis (a 32.63 m source gap to the next segment, unresolved).",
+      "map_recommendation_reason": "Punkturinn við aðkomu inn í byggðina austan Ytri-Rangár, fremur en kosturinn utan byggðar vestan ár. Fyrirliggjandi 32,63 m source-bil helst óleyst.",
+      "map_reference": "docs/ai/tasks/ticket-500/approaches/plain-language-recommendations.md"
+    },
+    "hvolsvollur": {
+      "status": "SELECTED_PRODUCT_APPROACH",
+      "selection_basis": "MAP_RECOMMENDATION_APPROVED_VIA_PROMPT",
+      "source": {
+        "database": "south-connections",
+        "idferill": 3593,
+        "stored_field": "end"
+      },
+      "wgs84": {
+        "latitude": 63.75128586,
+        "longitude": -20.23549109,
+        "crs": "EPSG:4326"
+      },
+      "access_status": "EXACT_GAP",
+      "approach_is": "Punktur við Hvolsveg og Suðurlandsveg í byggðinni.",
+      "approach_en": "Point at Hvolsvegur and Suðurlandsvegur within the settlement.",
+      "map_recommendation_reason": "Punkturinn við Hvolsveg og Suðurlandsveg í byggðinni. Báðir kostir henta staðnum landfræðilega; þetta er einfalt vöruval, ekki sönnun að hinn sé rangur.",
+      "map_reference": "docs/ai/tasks/ticket-500/approaches/plain-language-recommendations.md"
+    },
+    "reykjahlid-myvatn": {
+      "status": "SELECTED_PRODUCT_APPROACH",
+      "selection_basis": "MAP_RECOMMENDATION_APPROVED_VIA_PROMPT",
+      "source": {
+        "database": "remaining-coverage",
+        "idferill": 3566,
+        "stored_field": "start"
+      },
+      "wgs84": {
+        "latitude": 65.63990944593598,
+        "longitude": -16.910730687949837,
+        "crs": "EPSG:4326"
+      },
+      "access_status": "EXACT_GAP",
+      "approach_is": "Punktur við Hringveg og Mývatnssveitarveg, við byggðina.",
+      "approach_en": "Point at Hringvegur and Mývatnssveitarvegur, at the settlement.",
+      "map_recommendation_reason": "Punkturinn við Hringveg og Mývatnssveitarveg (848), við byggðina. Native-hnit eldri tillögu passa staðsetningunni eftir vörpun.",
+      "map_reference": "docs/ai/tasks/ticket-500/approaches/plain-language-recommendations.md",
+      "native_xy": [
+        596178.6007,
+        572933.0514
+      ],
+      "native_crs": "EPSG:3057",
+      "wgs84_derivation": {
+        "method": "Inverse Lambert Conformal Conic (2 standard parallels)",
+        "ellipsoid": "GRS80",
+        "parameters": {
+          "lat_1": 64.25,
+          "lat_2": 65.75,
+          "lat_0": 65,
+          "lon_0": -19,
+          "x_0": 500000,
+          "y_0": 500000
+        },
+        "native_source": "docs/ai/tasks/ticket-493-place-network/samples/road-links.csv#idferill=3566;stored_field=start",
+        "validation": "Jonesy independently checked all 11 retained south pairs: maximum deviation 2.3e-8 degrees; this is coordinate derivation, not access verification."
+      }
+    },
+    "reydarfjordur": {
+      "status": "SELECTED_PRODUCT_APPROACH",
+      "selection_basis": "MAP_JUNCTION_APPROVED_VIA_PROMPT",
+      "source": {
+        "database": "road-links",
+        "idferill": 2553,
+        "stored_field": "start"
+      },
+      "native_xy": [
+        722850.6187,
+        511691.77
+      ],
+      "native_crs": "EPSG:3057",
+      "wgs84": {
+        "latitude": 65.02999390726326,
+        "longitude": -14.266008824536579,
+        "crs": "EPSG:4326"
+      },
+      "wgs84_derivation": {
+        "method": "Inverse Lambert Conformal Conic (2 standard parallels)",
+        "ellipsoid": "GRS80",
+        "parameters": {
+          "lat_1": 64.25,
+          "lat_2": 65.75,
+          "lat_0": 65,
+          "lon_0": -19,
+          "x_0": 500000,
+          "y_0": 500000
+        },
+        "native_source": "docs/ai/tasks/ticket-493-place-network/samples/road-links.csv#idferill=2553;stored_field=start",
+        "validation": "Recomputed independently this round with the same inverse-Lambert implementation verified in approach-selection/retained-selection against 5 retained native/WGS84 pairs (max deviation 2.3e-8 degrees); matches the approved prompt's own table value."
+      },
+      "access_status": "EXACT_GAP",
+      "approach_is": "Punktur við tengingu Hringvegar og Norðfjarðarvegar áleiðis til Reyðarfjarðar.",
+      "approach_en": "Point at the junction of Hringvegur and Norðfjarðarvegur, on the way to Reyðarfjörður.",
+      "map_recommendation_reason": "Retained source-hnútur (OBJECTID 5331, tier -1), samnýttur endi við IDFERILL 2813 (end), staðfestur beint gegn road-links.csv/wfs-vegnr1-all.json þessa lotu.",
+      "map_reference": "docs/ai/tasks/ticket-500/east-selection/map-check.md",
+      "map_observation": {
+        "source_role": "RIPLEY_VISUAL_CHECK",
+        "url": "https://www.openstreetmap.org/?mlat=65.02999391&mlon=-14.26600882#map=18/65.02999391/-14.26600882",
+        "observation": "Pinninn á T-gatnamótum; Hringvegur (1) kemur úr vestri og beygir suður, Norðfjarðarvegur (92) heldur austur.",
+        "estimated_offset_m": [
+          0,
+          10
+        ],
+        "offset_method": "visual_estimate_from_20m_scale"
+      },
+      "previous_disposition": {
+        "status": "CURRENT_CANDIDATE_NOT_SELECTED",
+        "source": {
+          "database": "remaining-coverage",
+          "idferill": 2520,
+          "stored_field": "start"
+        },
+        "reason_code": "GEGNUMVEGUR_UTAN_BAEJARTENGINGAR",
+        "reason_text": "Eldri 2520 START er á Hringvegi sunnan við fjörðinn, frá byggð, ekki við tengingu inn í bæinn. Vegheitið 'Reyðarfjörður - Fáskrúðsfjörður' var of veikt til að velja þennan punkt sem bæjaraðkomu. Réttari stefna: finna retained hnút við aðkomuna að byggðinni frá Hringvegi/Norðfjarðarvegi -- ekki gert hér.",
+        "map_reference": "docs/ai/tasks/ticket-500/approaches/plain-language-recommendations.md"
+      }
+    },
+    "faskrudsfjordur": {
+      "status": "SELECTED_PRODUCT_APPROACH",
+      "selection_basis": "MAP_JUNCTION_APPROVED_VIA_PROMPT",
+      "source": {
+        "database": "road-links",
+        "idferill": 2536,
+        "stored_field": "end"
+      },
+      "native_xy": [
+        733763.5297,
+        501861.908
+      ],
+      "native_crs": "EPSG:3057",
+      "wgs84": {
+        "latitude": 64.93458924724804,
+        "longitude": -14.051426350254996,
+        "crs": "EPSG:4326"
+      },
+      "wgs84_derivation": {
+        "method": "Inverse Lambert Conformal Conic (2 standard parallels)",
+        "ellipsoid": "GRS80",
+        "parameters": {
+          "lat_1": 64.25,
+          "lat_2": 65.75,
+          "lat_0": 65,
+          "lon_0": -19,
+          "x_0": 500000,
+          "y_0": 500000
+        },
+        "native_source": "docs/ai/tasks/ticket-493-place-network/samples/road-links.csv#idferill=2536;stored_field=end",
+        "validation": "Recomputed independently this round with the same inverse-Lambert implementation verified in approach-selection/retained-selection against 5 retained native/WGS84 pairs (max deviation 2.3e-8 degrees); matches the approved prompt's own table value."
+      },
+      "access_status": "EXACT_GAP",
+      "approach_is": "Punktur við tengingu Hringvegar og Búðavegar áleiðis til Fáskrúðsfjarðar.",
+      "approach_en": "Point at the junction of Hringvegur and Búðavegur, on the way to Fáskrúðsfjörður.",
+      "map_recommendation_reason": "Retained source-hnútur (OBJECTID 5271, tier -1), samnýttur endi við IDFERILL 3843 (start), staðfestur beint gegn road-links.csv/wfs-vegnr1-all.json þessa lotu.",
+      "map_reference": "docs/ai/tasks/ticket-500/east-selection/map-check.md",
+      "map_observation": {
+        "source_role": "RIPLEY_VISUAL_CHECK",
+        "url": "https://www.openstreetmap.org/?mlat=64.93458925&mlon=-14.05142635#map=18/64.93458925/-14.05142635",
+        "observation": "Pinninn á gatnamótum Hringvegar og Búðavegar (955); Hringvegur beygir suðvestur en Búðavegur heldur norðaustur að bæjarleiðinni.",
+        "estimated_offset_m": [
+          0,
+          10
+        ],
+        "offset_method": "visual_estimate_from_20m_scale"
+      },
+      "previous_disposition": {
+        "status": "CURRENT_CANDIDATE_NOT_SELECTED",
+        "source": {
+          "database": "remaining-coverage",
+          "idferill": 2536,
+          "stored_field": "start"
+        },
+        "reason_code": "GANGAMUNNI_UTAN_BYGGDAR",
+        "reason_text": "Eldri 2536 START er við suðurenda Fáskrúðsfjarðargangna, norðvestan við byggðina -- táknar göngin, ekki bæinn. Réttari stefna: retained hnútur við aðkomuveg bæjarins -- ekki gert hér.",
+        "map_reference": "docs/ai/tasks/ticket-500/approaches/plain-language-recommendations.md"
+      }
+    },
+    "grindavik": {
+      "status": "SELECTED_PRODUCT_APPROACH",
+      "selection_basis": "RETAINED_CANDIDATE_APPROVED_VIA_PROMPT",
+      "source": {
+        "database": "approach-analysis",
+        "idferill": 53459,
+        "stored_field": "start"
+      },
+      "wgs84": {
+        "latitude": 63.85083976,
+        "longitude": -22.43242783,
+        "crs": "EPSG:4326"
+      },
+      "access_status": "EXACT_GAP",
+      "approach_is": "Punktur við samskeyti við Norðurljósavegur – Grindavík.",
+      "approach_en": "Point at the seam with Norðurljósavegur – Grindavík.",
+      "map_recommendation_reason": "Retained RECOMMENDED kandídat, samskeyti við nefndan tengiveg staðfest gegn raw tier -1. Engin fullyrðing um núverandi opnun eða færð.",
+      "map_reference": "docs/ai/tasks/ticket-500/retained-selection/approved-prompt-v1.md"
+    },
+    "bolungarvik": {
+      "status": "SELECTED_PRODUCT_APPROACH",
+      "selection_basis": "RETAINED_CANDIDATE_APPROVED_VIA_PROMPT",
+      "source": {
+        "database": "approach-analysis",
+        "idferill": 2215,
+        "stored_field": "start"
+      },
+      "wgs84": {
+        "latitude": 66.14305273,
+        "longitude": -23.2225211,
+        "crs": "EPSG:4326"
+      },
+      "access_status": "EXACT_GAP",
+      "approach_is": "Punktur við tengingu Bolungarvíkurgangna.",
+      "approach_en": "Point at the connection to the Bolungarvík tunnel (Bolungarvíkurgöng).",
+      "map_recommendation_reason": "Source lýsir Bolungarvíkurgöng-Grundarkambur; einföld vöruaðkoma við tengingu gangakaflans, staðfest gegn raw tier -1.",
+      "map_reference": "docs/ai/tasks/ticket-500/retained-selection/approved-prompt-v1.md"
+    },
+    "siglufjordur": {
+      "status": "SELECTED_PRODUCT_APPROACH",
+      "selection_basis": "RETAINED_CANDIDATE_APPROVED_VIA_PROMPT",
+      "source": {
+        "database": "approach-analysis",
+        "idferill": 3564,
+        "stored_field": "start"
+      },
+      "wgs84": {
+        "latitude": 66.1605843,
+        "longitude": -18.90330291,
+        "crs": "EPSG:4326"
+      },
+      "access_status": "EXACT_GAP",
+      "approach_is": "Punktur við tengingu Siglufjörður–Strákagöng.",
+      "approach_en": "Point at the connection to the Siglufjörður–Strákagöng tunnel.",
+      "map_recommendation_reason": "Source lýsir Hólavegur-Hafnarvegur, með tengingu við Siglufjörður-Strákagöng, staðfest gegn raw tier -1.",
+      "map_reference": "docs/ai/tasks/ticket-500/retained-selection/approved-prompt-v1.md"
+    },
+    "olafsfjordur": {
+      "status": "SELECTED_PRODUCT_APPROACH",
+      "selection_basis": "RETAINED_CANDIDATE_APPROVED_VIA_PROMPT",
+      "source": {
+        "database": "approach-analysis",
+        "idferill": 15361,
+        "stored_field": "end"
+      },
+      "wgs84": {
+        "latitude": 66.06730376,
+        "longitude": -18.65429271,
+        "crs": "EPSG:4326"
+      },
+      "access_status": "EXACT_GAP",
+      "approach_is": "Punktur við tengingu Ólafsfjörður–Vermundarstaðir.",
+      "approach_en": "Point at the connection to Ólafsfjörður–Vermundarstaðir.",
+      "map_recommendation_reason": "Source lýsir Aðalgata-Hornbrekka og tengingu við Ólafsfjörður-Vermundarstaðir, staðfest gegn raw tier -1.",
+      "map_reference": "docs/ai/tasks/ticket-500/retained-selection/approved-prompt-v1.md"
+    },
+    "vopnafjordur": {
+      "status": "SELECTED_PRODUCT_APPROACH",
+      "selection_basis": "RETAINED_CANDIDATE_APPROVED_VIA_PROMPT",
+      "source": {
+        "database": "approach-analysis",
+        "idferill": 3707,
+        "stored_field": "end"
+      },
+      "wgs84": {
+        "latitude": 65.7641206,
+        "longitude": -14.82399559,
+        "crs": "EPSG:4326"
+      },
+      "access_status": "EXACT_GAP",
+      "approach_is": "Punktur við tengingu Vopnafjörður–Skógavegur.",
+      "approach_en": "Point at the connection to Vopnafjörður–Skógavegur.",
+      "map_recommendation_reason": "Source lýsir Leiðarhafnarvegur-Norðausturvegur. END snertir bæði samnefnt stykki 3671 og Vopnafjörður-Skógavegur (3182); seam_with_name er 3182 (OI2), ekki fyrsta snertistykki eftir röðun.",
+      "map_reference": "docs/ai/tasks/ticket-500/retained-selection/approved-prompt-v1.md"
+    },
+    "grundarfjordur": {
+      "status": "SELECTED_PRODUCT_APPROACH",
+      "selection_basis": "RETAINED_CANDIDATE_APPROVED_VIA_PROMPT",
+      "source": {
+        "database": "approach-analysis",
+        "idferill": 3774,
+        "stored_field": "start"
+      },
+      "wgs84": {
+        "latitude": 64.92345384,
+        "longitude": -23.27382147,
+        "crs": "EPSG:4326"
+      },
+      "access_status": "EXACT_GAP",
+      "approach_is": "Punktur við samskeyti við Grundarfjörður–Ólafsvík.",
+      "approach_en": "Point at the seam with Grundarfjörður–Ólafsvík.",
+      "map_recommendation_reason": "3774 START við 2059 (Grundarfjörður-Ólafsvík). Gamla END-tillagan (við Grundarfjörður-Vatnaleið) var innri framhaldspunktur og er ekki endurvakin.",
+      "map_reference": "docs/ai/tasks/ticket-500/retained-selection/approved-prompt-v1.md"
+    },
+    "olafsvik": {
+      "status": "SELECTED_PRODUCT_APPROACH",
+      "selection_basis": "RETAINED_CANDIDATE_APPROVED_VIA_PROMPT",
+      "source": {
+        "database": "approach-analysis",
+        "idferill": 2698,
+        "stored_field": "start"
+      },
+      "wgs84": {
+        "latitude": 64.90014373,
+        "longitude": -23.72850184,
+        "crs": "EPSG:4326"
+      },
+      "access_status": "EXACT_GAP",
+      "approach_is": "Punktur við samskeyti við Hellissandur–Ólafsvík.",
+      "approach_en": "Point at the seam with Hellissandur–Ólafsvík.",
+      "map_recommendation_reason": "2698 START við 2617 (Hellissandur-Ólafsvík). Gamla 2740 END-tillagan (við Grundarfjörður-Ólafsvík) er ekki endurvakin.",
+      "map_reference": "docs/ai/tasks/ticket-500/retained-selection/approved-prompt-v1.md"
+    },
+    "hveragerdi": {
+      "status": "SELECTED_PRODUCT_APPROACH",
+      "selection_basis": "RETAINED_CANDIDATE_APPROVED_VIA_PROMPT",
+      "source": {
+        "database": "south-connections",
+        "idferill": 2135,
+        "stored_field": "end"
+      },
+      "wgs84": {
+        "latitude": 63.99538228,
+        "longitude": -21.19270972,
+        "crs": "EPSG:4326"
+      },
+      "access_status": "EXACT_GAP",
+      "approach_is": "Punktur vestast á varðveitta vegkaflanum við Hveragerði.",
+      "approach_en": "Westernmost point on the retained road segment at Hveragerði.",
+      "map_recommendation_reason": "Eini retained kandídat; nafnaályktun (NAME_MATCH_INFERRED) á vestasta enda retained suðurkaflans. 34,75 m bil að Hellisheiðarkafla (2117) áfram óleyst. Ekki miðbær eða staðfest bæjarmörk.",
+      "map_reference": "docs/ai/tasks/ticket-500/retained-selection/approved-prompt-v1.md"
+    },
+    "vik": {
+      "status": "SELECTED_PRODUCT_APPROACH",
+      "selection_basis": "RETAINED_CANDIDATE_APPROVED_VIA_PROMPT",
+      "source": {
+        "database": "south-connections",
+        "idferill": 3849,
+        "stored_field": "start"
+      },
+      "wgs84": {
+        "latitude": 63.41782798,
+        "longitude": -19.00028197,
+        "crs": "EPSG:4326"
+      },
+      "access_status": "EXACT_GAP",
+      "approach_is": "Punktur á þjóðvegi í Vík, við innri samskeyti vegkafla.",
+      "approach_en": "Point on the national road in Vík, at an internal seam between road segments.",
+      "map_recommendation_reason": "Eini retained kandídat; innri samskeyti stykkja 3849/23041, ekki endapunktur núverandi föstu runtime-leiðar (segments.js) -- hún heldur um 629 m lengra austur. Meðvitað vöruval, ekki ný ytri tenging eða breyting á runtime-leiðinni.",
+      "map_reference": "docs/ai/tasks/ticket-500/retained-selection/approved-prompt-v1.md"
+    },
+    "borgarnes": {
+      "status": "SELECTED_PRODUCT_APPROACH",
+      "selection_basis": "RETAINED_CANDIDATE_APPROVED_VIA_PROMPT",
+      "source": {
+        "database": "remaining-coverage",
+        "idferill": 2819,
+        "stored_field": "end"
+      },
+      "wgs84": {
+        "latitude": 64.55996252,
+        "longitude": -21.89753371,
+        "crs": "EPSG:4326"
+      },
+      "access_status": "EXACT_GAP",
+      "approach_is": "Endapunktur Borgarnes–Baulan-vegkafla.",
+      "approach_en": "End point of the Borgarnes–Baulan road segment.",
+      "map_recommendation_reason": "Sama hnit og #491 P4/end_borgarnes, staðfest END-hnútur 2819 (OBJECTID 5082, tier -1) í retained WGS84 (wfs-vesturland-4326.json). Fyrri ccw_short/cw_long-fyrirvari (ekki validerað undir cw_long-grunni) helst óbreyttur; endurnýting er ekki ný leiðar-/aðgengissannprófun.",
+      "map_reference": "docs/ai/tasks/ticket-500/retained-selection/approved-prompt-v1.md"
+    },
+    "kopavogur": {
+      "status": "SELECTED_PRODUCT_APPROACH",
+      "selection_basis": "MAP_PRODUCT_APPROVED_VIA_PROMPT",
+      "source": {
+        "database": "acquisition-raw",
+        "idferill": 3073,
+        "stored_field": "start",
+        "file": "docs/ai/tasks/ticket-500/acquisition/samples/raw-BATCH-7.json",
+        "sha256": "35ea82930bf346e67f88da4dfeab5318cfb2228379d00787d7adf4dd02984c6c",
+        "objectid": 4911,
+        "tier": -1
+      },
+      "wgs84": {
+        "latitude": 64.10411666,
+        "longitude": -21.90418005,
+        "crs": "EPSG:4326"
+      },
+      "access_status": "EXACT_GAP",
+      "approach_is": "Punktur á Hafnarfjarðarvegi við Kópavogsdal.",
+      "approach_en": "Point on Hafnarfjarðarvegur at Kópavogsdalur.",
+      "map_recommendation_reason": "Vörupunktur valinn eftir Ripley kortaskoðun (MAP_PRODUCT_APPROVED_VIA_PROMPT); retained source-hnútur IDFERILL 3073 (OBJECTID 4911, tier -1, start). Kortastoð er fyrir vöruval, ekki staðfesting á ytri graph-tengingu, akstursstefnu eða bæjarmörkum. Access_status EXACT_GAP. Punktur er á gegnumvegi (Hafnarfjarðarvegur) sunnan Kópavogsdals; vegheiti/stykki tilheyrðu upphaflega sameiginlegu Hafnarfjarðar-IDBUTUR, tengingin við Kópavog er ný Ripley-kortaskoðun.",
+      "map_reference": "docs/ai/tasks/ticket-500/remaining-map-selection/map-review.md",
+      "map_observation": {
+        "source_role": "RIPLEY_VISUAL_CHECK",
+        "url": "https://www.openstreetmap.org/?mlat=64.10411666&mlon=-21.90418005#map=15/64.108/-21.906",
+        "observation": "Á gegnumvegi sunnan miðhluta Kópavogs við Kópavogsdal og íþróttasvæði; ekki gatnamót eða staðfest bæjaraðkoma."
+      }
+    },
+    "hafnarfjordur": {
+      "status": "SELECTED_PRODUCT_APPROACH",
+      "selection_basis": "MAP_PRODUCT_APPROVED_VIA_PROMPT",
+      "source": {
+        "database": "acquisition-raw",
+        "idferill": 10287,
+        "stored_field": "start",
+        "file": "docs/ai/tasks/ticket-500/acquisition/samples/raw-BATCH-7.json",
+        "sha256": "35ea82930bf346e67f88da4dfeab5318cfb2228379d00787d7adf4dd02984c6c",
+        "objectid": 6251,
+        "tier": -1
+      },
+      "wgs84": {
+        "latitude": 64.07380373,
+        "longitude": -21.93959097,
+        "crs": "EPSG:4326"
+      },
+      "access_status": "EXACT_GAP",
+      "approach_is": "Punktur við tengingu Hafnarfjarðarvegar og Reykjanesbrautar í Hafnarfirði.",
+      "approach_en": "Point at the connection of Hafnarfjarðarvegur and Reykjanesbraut in Hafnarfjörður.",
+      "map_recommendation_reason": "Vörupunktur valinn eftir Ripley kortaskoðun (MAP_PRODUCT_APPROVED_VIA_PROMPT); retained source-hnútur IDFERILL 10287 (OBJECTID 6251, tier -1, start). Kortastoð er fyrir vöruval, ekki staðfesting á ytri graph-tengingu, akstursstefnu eða bæjarmörkum. Access_status EXACT_GAP. Þessi punktur (IDFERILL 10287 START) er annar en áður afturkallaði 2807 START-tillaga; gamla tillagan er ekki endurvakin og óstaðfesta leitarvísbendingin er ekki notuð sem réttlæting.",
+      "map_reference": "docs/ai/tasks/ticket-500/remaining-map-selection/map-review.md",
+      "map_observation": {
+        "source_role": "RIPLEY_VISUAL_CHECK",
+        "url": "https://www.openstreetmap.org/?mlat=64.07380373&mlon=-21.93959097#map=15/64.071/-21.945",
+        "observation": "Við vegi40/41 innan byggðarsvæðis. Annar source-punktur en afturkallaði2807 START; ekki nákvæm graph-tenging staðfest."
+      }
+    },
+    "mosfellsbaer": {
+      "status": "SELECTED_PRODUCT_APPROACH",
+      "selection_basis": "MAP_PRODUCT_APPROVED_VIA_PROMPT",
+      "source": {
+        "database": "acquisition-raw",
+        "idferill": 2469,
+        "stored_field": "end",
+        "file": "docs/ai/tasks/ticket-500/acquisition/samples/raw-BATCH-2.json",
+        "sha256": "7cc87498d632993e0b0c21f5fd0f68a488083bce0c397aaad6021d59546c571f",
+        "objectid": 5808,
+        "tier": -1
+      },
+      "wgs84": {
+        "latitude": 64.17602806,
+        "longitude": -21.67652824,
+        "crs": "EPSG:4326"
+      },
+      "access_status": "EXACT_GAP",
+      "approach_is": "Punktur við Vesturlandsveg og Þingvallaveg í Mosfellsbæ.",
+      "approach_en": "Point at Vesturlandsvegur and Þingvallavegur in Mosfellsbær.",
+      "map_recommendation_reason": "Vörupunktur valinn eftir Ripley kortaskoðun (MAP_PRODUCT_APPROVED_VIA_PROMPT); retained source-hnútur IDFERILL 2469 (OBJECTID 5808, tier -1, end). Kortastoð er fyrir vöruval, ekki staðfesting á ytri graph-tengingu, akstursstefnu eða bæjarmörkum. Access_status EXACT_GAP.",
+      "map_reference": "docs/ai/tasks/ticket-500/remaining-map-selection/map-review.md",
+      "map_observation": {
+        "source_role": "RIPLEY_VISUAL_CHECK",
+        "url": "https://www.openstreetmap.org/?mlat=64.17602806&mlon=-21.67652824#map=15/64.175/-21.682",
+        "observation": "Við hringtorgið með merktum vegum1/36; source-endi við arminn, ekki miðja hringtorgsins."
+      }
+    },
+    "akranes": {
+      "status": "SELECTED_PRODUCT_APPROACH",
+      "selection_basis": "MAP_PRODUCT_APPROVED_VIA_PROMPT",
+      "source": {
+        "database": "acquisition-raw",
+        "idferill": 3797,
+        "stored_field": "end",
+        "file": "docs/ai/tasks/ticket-500/acquisition/samples/raw-BATCH-3.json",
+        "sha256": "61567c561c19b539d83ae4d6544da4646578c781bf32d57b6a44df15e95cd7bd",
+        "objectid": 5538,
+        "tier": -1
+      },
+      "wgs84": {
+        "latitude": 64.32768822,
+        "longitude": -22.05256417,
+        "crs": "EPSG:4326"
+      },
+      "access_status": "EXACT_GAP",
+      "approach_is": "Punktur við Akranesveg og innkomuhringtorgið við byggðina.",
+      "approach_en": "Point at Akranesvegur and the entrance roundabout at the settlement.",
+      "map_recommendation_reason": "Vörupunktur valinn eftir Ripley kortaskoðun (MAP_PRODUCT_APPROVED_VIA_PROMPT); retained source-hnútur IDFERILL 3797 (OBJECTID 5538, tier -1, end). Kortastoð er fyrir vöruval, ekki staðfesting á ytri graph-tengingu, akstursstefnu eða bæjarmörkum. Access_status EXACT_GAP. Eldra 2,5 m source-bil að hringtorgsstykki 21441 er áfram óleyst (ekki leiðrétt); kortamat er ný stoð fyrir vörupunkt, ekki leiðrétting á eldri exact-seam-niðurstöðu.",
+      "map_reference": "docs/ai/tasks/ticket-500/remaining-map-selection/map-review.md",
+      "map_observation": {
+        "source_role": "RIPLEY_VISUAL_CHECK",
+        "url": "https://www.openstreetmap.org/?mlat=64.32768822&mlon=-22.05256417#map=16/64.32768822/-22.05256417",
+        "observation": "Við hringtorg Akranesvegar/Kalmansbrautar/Þjóðbrautar. Eldra2,5m raw-bil að hring21441 helst; kortamat er ný stoð fyrir vörupunkt, ekki leiðrétting á eldri exact-seam-niðurstöðu."
+      }
+    },
+    "stykkisholmur": {
+      "status": "SELECTED_PRODUCT_APPROACH",
+      "selection_basis": "MAP_PRODUCT_APPROVED_VIA_PROMPT",
+      "source": {
+        "database": "acquisition-raw",
+        "idferill": 3466,
+        "stored_field": "start",
+        "file": "docs/ai/tasks/ticket-500/acquisition/samples/raw-BATCH-3.json",
+        "sha256": "61567c561c19b539d83ae4d6544da4646578c781bf32d57b6a44df15e95cd7bd",
+        "objectid": 5423,
+        "tier": -1
+      },
+      "wgs84": {
+        "latitude": 65.06799806,
+        "longitude": -22.73935627,
+        "crs": "EPSG:4326"
+      },
+      "access_status": "EXACT_GAP",
+      "approach_is": "Punktur við Aðalgötu og syðri byggð í Stykkishólmi.",
+      "approach_en": "Point at Aðalgata and the southern part of the settlement in Stykkishólmur.",
+      "map_recommendation_reason": "Vörupunktur valinn eftir Ripley kortaskoðun (MAP_PRODUCT_APPROVED_VIA_PROMPT); retained source-hnútur IDFERILL 3466 (OBJECTID 5423, tier -1, start). Kortastoð er fyrir vöruval, ekki staðfesting á ytri graph-tengingu, akstursstefnu eða bæjarmörkum. Access_status EXACT_GAP.",
+      "map_reference": "docs/ai/tasks/ticket-500/remaining-map-selection/map-review.md",
+      "map_observation": {
+        "source_role": "RIPLEY_VISUAL_CHECK",
+        "url": "https://www.openstreetmap.org/?mlat=65.06799806&mlon=-22.73935627#map=15/65.071/-22.733",
+        "observation": "Pinninn á Aðalgötu58 við suðurjaðar samfelldrar byggðar, nálægt Tjarnarási."
+      }
+    },
+    "budardalur": {
+      "status": "SELECTED_PRODUCT_APPROACH",
+      "selection_basis": "MAP_PRODUCT_APPROVED_VIA_PROMPT",
+      "source": {
+        "database": "acquisition-raw",
+        "idferill": 2769,
+        "stored_field": "start",
+        "file": "docs/ai/tasks/ticket-500/acquisition/samples/raw-BATCH-2.json",
+        "sha256": "7cc87498d632993e0b0c21f5fd0f68a488083bce0c397aaad6021d59546c571f",
+        "objectid": 4902,
+        "tier": -1
+      },
+      "wgs84": {
+        "latitude": 65.10591772,
+        "longitude": -21.76505686,
+        "crs": "EPSG:4326"
+      },
+      "access_status": "EXACT_GAP",
+      "approach_is": "Punktur við Vestfjarðaveg og Brekkuhvamm í Búðardal.",
+      "approach_en": "Point at Vestfjarðavegur and Brekkuhvammur in Búðardalur.",
+      "map_recommendation_reason": "Vörupunktur valinn eftir Ripley kortaskoðun (MAP_PRODUCT_APPROVED_VIA_PROMPT); retained source-hnútur IDFERILL 2769 (OBJECTID 4902, tier -1, start). Kortastoð er fyrir vöruval, ekki staðfesting á ytri graph-tengingu, akstursstefnu eða bæjarmörkum. Access_status EXACT_GAP.",
+      "map_reference": "docs/ai/tasks/ticket-500/remaining-map-selection/map-review.md",
+      "map_observation": {
+        "source_role": "RIPLEY_VISUAL_CHECK",
+        "url": "https://www.openstreetmap.org/?mlat=65.10591772&mlon=-21.76505686#map=15/65.108/-21.764",
+        "observation": "Á vegi60 við Brekkuhvamm og syðri byggð."
+      }
+    },
+    "reykholar": {
+      "status": "SELECTED_PRODUCT_APPROACH",
+      "selection_basis": "MAP_PRODUCT_APPROVED_VIA_PROMPT",
+      "source": {
+        "database": "acquisition-raw",
+        "idferill": 2662,
+        "stored_field": "end",
+        "file": "docs/ai/tasks/ticket-500/acquisition/samples/raw-BATCH-3.json",
+        "sha256": "61567c561c19b539d83ae4d6544da4646578c781bf32d57b6a44df15e95cd7bd",
+        "objectid": 5263,
+        "tier": -1
+      },
+      "wgs84": {
+        "latitude": 65.44592572,
+        "longitude": -22.20532007,
+        "crs": "EPSG:4326"
+      },
+      "access_status": "EXACT_GAP",
+      "approach_is": "Punktur á Karlseyjarvegi við Reykjabraut á Reykhólum.",
+      "approach_en": "Point on Karlseyjarvegur at Reykjabraut in Reykhólar.",
+      "map_recommendation_reason": "Vörupunktur valinn eftir Ripley kortaskoðun (MAP_PRODUCT_APPROVED_VIA_PROMPT); retained source-hnútur IDFERILL 2662 (OBJECTID 5263, tier -1, end). Kortastoð er fyrir vöruval, ekki staðfesting á ytri graph-tengingu, akstursstefnu eða bæjarmörkum. Access_status EXACT_GAP.",
+      "map_reference": "docs/ai/tasks/ticket-500/remaining-map-selection/map-review.md",
+      "map_observation": {
+        "source_role": "RIPLEY_VISUAL_CHECK",
+        "url": "https://www.openstreetmap.org/?mlat=65.44592572&mlon=-22.20532007#map=15/65.446/-22.205",
+        "observation": "Vegur606 liggur við byggðina og Reykjabraut; ekki fjarri gatnamót607 í stað bæjarins."
+      }
+    },
+    "isafjordur": {
+      "status": "SELECTED_PRODUCT_APPROACH",
+      "selection_basis": "MAP_PRODUCT_APPROVED_VIA_PROMPT",
+      "source": {
+        "database": "acquisition-raw",
+        "idferill": 3834,
+        "stored_field": "end",
+        "file": "docs/ai/tasks/ticket-500/acquisition/samples/raw-BATCH-4.json",
+        "sha256": "f39a5f68f96e85f93f08f3672f60d52ad1421dbffa727b03a09408fd71a95575",
+        "objectid": 5496,
+        "tier": -1
+      },
+      "wgs84": {
+        "latitude": 66.08035668,
+        "longitude": -23.12399231,
+        "crs": "EPSG:4326"
+      },
+      "access_status": "EXACT_GAP",
+      "approach_is": "Punktur á Djúpvegi við norðurhluta byggðar á Ísafirði.",
+      "approach_en": "Point on Djúpvegur at the northern part of the settlement in Ísafjörður.",
+      "map_recommendation_reason": "Vörupunktur valinn eftir Ripley kortaskoðun (MAP_PRODUCT_APPROVED_VIA_PROMPT); retained source-hnútur IDFERILL 3834 (OBJECTID 5496, tier -1, end). Kortastoð er fyrir vöruval, ekki staðfesting á ytri graph-tengingu, akstursstefnu eða bæjarmörkum. Access_status EXACT_GAP.",
+      "map_reference": "docs/ai/tasks/ticket-500/remaining-map-selection/map-review.md",
+      "map_observation": {
+        "source_role": "RIPLEY_VISUAL_CHECK",
+        "url": "https://www.openstreetmap.org/?mlat=66.08035668&mlon=-23.12399231#map=15/66.078/-23.129",
+        "observation": "Pinninn við norðurenda Urðarvegarbyggðar og Djúpveg61; ekki punktur við flugvöllinn."
+      }
+    },
+    "sudavik": {
+      "status": "SELECTED_PRODUCT_APPROACH",
+      "selection_basis": "MAP_PRODUCT_APPROVED_VIA_PROMPT",
+      "source": {
+        "database": "acquisition-raw",
+        "idferill": 3535,
+        "stored_field": "start",
+        "file": "docs/ai/tasks/ticket-500/acquisition/samples/raw-BATCH-4.json",
+        "sha256": "f39a5f68f96e85f93f08f3672f60d52ad1421dbffa727b03a09408fd71a95575",
+        "objectid": 6124,
+        "tier": -1
+      },
+      "wgs84": {
+        "latitude": 66.02459271,
+        "longitude": -22.9922543,
+        "crs": "EPSG:4326"
+      },
+      "access_status": "EXACT_GAP",
+      "approach_is": "Punktur á Aðalgötu við suðurhluta byggðar í Súðavík.",
+      "approach_en": "Point on Aðalgata at the southern part of the settlement in Súðavík.",
+      "map_recommendation_reason": "Vörupunktur valinn eftir Ripley kortaskoðun (MAP_PRODUCT_APPROVED_VIA_PROMPT); retained source-hnútur IDFERILL 3535 (OBJECTID 6124, tier -1, start). Kortastoð er fyrir vöruval, ekki staðfesting á ytri graph-tengingu, akstursstefnu eða bæjarmörkum. Access_status EXACT_GAP.",
+      "map_reference": "docs/ai/tasks/ticket-500/remaining-map-selection/map-review.md",
+      "map_observation": {
+        "source_role": "RIPLEY_VISUAL_CHECK",
+        "url": "https://www.openstreetmap.org/?mlat=66.02459271&mlon=-22.99225430#map=15/66.029/-22.991",
+        "observation": "Á vegi61 við suðurhluta núverandi byggðar; ekki aðeins svæðisheitið Súðavíkurhreppur."
+      }
+    },
+    "holmavik": {
+      "status": "SELECTED_PRODUCT_APPROACH",
+      "selection_basis": "MAP_PRODUCT_APPROVED_VIA_PROMPT",
+      "source": {
+        "database": "acquisition-raw",
+        "idferill": 3883,
+        "stored_field": "end",
+        "file": "docs/ai/tasks/ticket-500/acquisition/samples/raw-BATCH-4.json",
+        "sha256": "f39a5f68f96e85f93f08f3672f60d52ad1421dbffa727b03a09408fd71a95575",
+        "objectid": 5936,
+        "tier": -1
+      },
+      "wgs84": {
+        "latitude": 65.70146962,
+        "longitude": -21.68414766,
+        "crs": "EPSG:4326"
+      },
+      "access_status": "EXACT_GAP",
+      "approach_is": "Punktur við Hólmavíkurveg og Höfðagötu í byggðinni.",
+      "approach_en": "Point at Hólmavíkurvegur and Höfðagötu in the settlement.",
+      "map_recommendation_reason": "Vörupunktur valinn eftir Ripley kortaskoðun (MAP_PRODUCT_APPROVED_VIA_PROMPT); retained source-hnútur IDFERILL 3883 (OBJECTID 5936, tier -1, end). Kortastoð er fyrir vöruval, ekki staðfesting á ytri graph-tengingu, akstursstefnu eða bæjarmörkum. Access_status EXACT_GAP.",
+      "map_reference": "docs/ai/tasks/ticket-500/remaining-map-selection/map-review.md",
+      "map_observation": {
+        "source_role": "RIPLEY_VISUAL_CHECK",
+        "url": "https://www.openstreetmap.org/?mlat=65.70146962&mlon=-21.68414766#map=15/65.702/-21.682",
+        "observation": "Á vegi67 í syðri byggð, nær bænum en gatnamót67/61 utan byggðar."
+      }
+    },
+    "drangsnes": {
+      "status": "SELECTED_PRODUCT_APPROACH",
+      "selection_basis": "MAP_PRODUCT_APPROVED_VIA_PROMPT",
+      "source": {
+        "database": "acquisition-raw",
+        "idferill": 3245,
+        "stored_field": "end",
+        "file": "docs/ai/tasks/ticket-500/acquisition/samples/raw-BATCH-4.json",
+        "sha256": "f39a5f68f96e85f93f08f3672f60d52ad1421dbffa727b03a09408fd71a95575",
+        "objectid": 6185,
+        "tier": -1
+      },
+      "wgs84": {
+        "latitude": 65.69125093,
+        "longitude": -21.44027942,
+        "crs": "EPSG:4326"
+      },
+      "access_status": "EXACT_GAP",
+      "approach_is": "Punktur á Aðalbraut við norðurhluta byggðar á Drangsnesi.",
+      "approach_en": "Point on Aðalbraut at the northern part of the settlement in Drangsnes.",
+      "map_recommendation_reason": "Vörupunktur valinn eftir Ripley kortaskoðun (MAP_PRODUCT_APPROVED_VIA_PROMPT); retained source-hnútur IDFERILL 3245 (OBJECTID 6185, tier -1, end). Kortastoð er fyrir vöruval, ekki staðfesting á ytri graph-tengingu, akstursstefnu eða bæjarmörkum. Access_status EXACT_GAP.",
+      "map_reference": "docs/ai/tasks/ticket-500/remaining-map-selection/map-review.md",
+      "map_observation": {
+        "source_role": "RIPLEY_VISUAL_CHECK",
+        "url": "https://www.openstreetmap.org/?mlat=65.69125093&mlon=-21.44027942#map=15/65.69/-21.443",
+        "observation": "Pinninn þar sem Aðalbraut/Drangsnesvegur645 liggur við norðurhluta byggðar; ekki fullyrðing um aðalinnkomu frá Hólmavík."
+      }
+    },
+    "hvammstangi": {
+      "status": "SELECTED_PRODUCT_APPROACH",
+      "selection_basis": "MAP_PRODUCT_APPROVED_VIA_PROMPT",
+      "source": {
+        "database": "acquisition-raw",
+        "idferill": 3487,
+        "stored_field": "start",
+        "file": "docs/ai/tasks/ticket-500/acquisition/samples/raw-BATCH-5.json",
+        "sha256": "51389c9224cdf898f858d639517d1240d5383738ab4229095d966b7d62fabbe6",
+        "objectid": 5929,
+        "tier": -1
+      },
+      "wgs84": {
+        "latitude": 65.39804115,
+        "longitude": -20.94389335,
+        "crs": "EPSG:4326"
+      },
+      "access_status": "EXACT_GAP",
+      "approach_is": "Punktur á Norðurbraut við byggð á Hvammstanga.",
+      "approach_en": "Point on Norðurbraut at the settlement in Hvammstangi.",
+      "map_recommendation_reason": "Vörupunktur valinn eftir Ripley kortaskoðun (MAP_PRODUCT_APPROVED_VIA_PROMPT); retained source-hnútur IDFERILL 3487 (OBJECTID 5929, tier -1, start). Kortastoð er fyrir vöruval, ekki staðfesting á ytri graph-tengingu, akstursstefnu eða bæjarmörkum. Access_status EXACT_GAP.",
+      "map_reference": "docs/ai/tasks/ticket-500/remaining-map-selection/map-review.md",
+      "map_observation": {
+        "source_role": "RIPLEY_VISUAL_CHECK",
+        "url": "https://www.openstreetmap.org/?mlat=65.39804115&mlon=-20.94389335#map=15/65.398/-20.944",
+        "observation": "Við byggð og skipti vegar72/711, nálægt Hvammstangaheiti; ekki Hringvegsgatnamót fjarri bænum."
+      }
+    },
+    "blonduos": {
+      "status": "SELECTED_PRODUCT_APPROACH",
+      "selection_basis": "MAP_PRODUCT_APPROVED_VIA_PROMPT",
+      "source": {
+        "database": "acquisition-raw",
+        "idferill": 2593,
+        "stored_field": "end",
+        "file": "docs/ai/tasks/ticket-500/acquisition/samples/raw-BATCH-5.json",
+        "sha256": "51389c9224cdf898f858d639517d1240d5383738ab4229095d966b7d62fabbe6",
+        "objectid": 5668,
+        "tier": -1
+      },
+      "wgs84": {
+        "latitude": 65.65634119,
+        "longitude": -20.28373541,
+        "crs": "EPSG:4326"
+      },
+      "access_status": "EXACT_GAP",
+      "approach_is": "Punktur við Hringveg og Flóðabakka á Blönduósi.",
+      "approach_en": "Point at Hringvegur and Flóðabakki in Blönduós.",
+      "map_recommendation_reason": "Vörupunktur valinn eftir Ripley kortaskoðun (MAP_PRODUCT_APPROVED_VIA_PROMPT); retained source-hnútur IDFERILL 2593 (OBJECTID 5668, tier -1, end). Kortastoð er fyrir vöruval, ekki staðfesting á ytri graph-tengingu, akstursstefnu eða bæjarmörkum. Access_status EXACT_GAP.",
+      "map_reference": "docs/ai/tasks/ticket-500/remaining-map-selection/map-review.md",
+      "map_observation": {
+        "source_role": "RIPLEY_VISUAL_CHECK",
+        "url": "https://www.openstreetmap.org/?mlat=65.65634119&mlon=-20.28373541#map=15/65.659/-20.285",
+        "observation": "Pinninn við veg1/731 í byggð sunnan Blöndu."
+      }
+    },
+    "skagastrond": {
+      "status": "SELECTED_PRODUCT_APPROACH",
+      "selection_basis": "MAP_PRODUCT_APPROVED_VIA_PROMPT",
+      "source": {
+        "database": "acquisition-raw",
+        "idferill": 2455,
+        "stored_field": "end",
+        "file": "docs/ai/tasks/ticket-500/acquisition/samples/raw-BATCH-5.json",
+        "sha256": "51389c9224cdf898f858d639517d1240d5383738ab4229095d966b7d62fabbe6",
+        "objectid": 5451,
+        "tier": -1
+      },
+      "wgs84": {
+        "latitude": 65.82381799,
+        "longitude": -20.29628289,
+        "crs": "EPSG:4326"
+      },
+      "access_status": "EXACT_GAP",
+      "approach_is": "Punktur við Fellsbraut og austari byggð á Skagaströnd.",
+      "approach_en": "Point at Fellsbraut and the eastern part of the settlement in Skagaströnd.",
+      "map_recommendation_reason": "Vörupunktur valinn eftir Ripley kortaskoðun (MAP_PRODUCT_APPROVED_VIA_PROMPT); retained source-hnútur IDFERILL 2455 (OBJECTID 5451, tier -1, end). Kortastoð er fyrir vöruval, ekki staðfesting á ytri graph-tengingu, akstursstefnu eða bæjarmörkum. Access_status EXACT_GAP.",
+      "map_reference": "docs/ai/tasks/ticket-500/remaining-map-selection/map-review.md",
+      "map_observation": {
+        "source_role": "RIPLEY_VISUAL_CHECK",
+        "url": "https://www.openstreetmap.org/?mlat=65.82381799&mlon=-20.29628289#map=15/65.825/-20.302",
+        "observation": "Á Skagastrandarvegi74/Fellsbraut við byggðina, fremur en fjarlægri73/74-tengingu."
+      }
+    },
+    "dalvik": {
+      "status": "SELECTED_PRODUCT_APPROACH",
+      "selection_basis": "MAP_PRODUCT_APPROVED_VIA_PROMPT",
+      "source": {
+        "database": "acquisition-raw",
+        "idferill": 3567,
+        "stored_field": "start",
+        "file": "docs/ai/tasks/ticket-500/acquisition/samples/raw-BATCH-6.json",
+        "sha256": "ae33e4644b94abc363514507522af5feaf3b4f9a829dce05db16f75c34800c7e",
+        "objectid": 5907,
+        "tier": -1
+      },
+      "wgs84": {
+        "latitude": 65.96755395,
+        "longitude": -18.52948806,
+        "crs": "EPSG:4326"
+      },
+      "access_status": "EXACT_GAP",
+      "approach_is": "Punktur á Dalvíkurvegi við syðri byggð á Dalvík.",
+      "approach_en": "Point on Dalvíkurvegur at the southern part of the settlement in Dalvík.",
+      "map_recommendation_reason": "Vörupunktur valinn eftir Ripley kortaskoðun (MAP_PRODUCT_APPROVED_VIA_PROMPT); retained source-hnútur IDFERILL 3567 (OBJECTID 5907, tier -1, start). Kortastoð er fyrir vöruval, ekki staðfesting á ytri graph-tengingu, akstursstefnu eða bæjarmörkum. Access_status EXACT_GAP. Punktur er áfram innri samskeyti sama vegar við IDFERILL 3501 (innri, ekki ytra samskeyti); kortastaðsetning styður aðeins vörupunktinn, ekki breytta greiningu.",
+      "map_reference": "docs/ai/tasks/ticket-500/remaining-map-selection/map-review.md",
+      "map_observation": {
+        "source_role": "RIPLEY_VISUAL_CHECK",
+        "url": "https://www.openstreetmap.org/?mlat=65.96755395&mlon=-18.52948806#map=15/65.97/-18.531",
+        "observation": "Við skóla/íþróttasvæði sunnan byggðar. Er enn innri samskeyti sama vegar við3501; kortastaðsetning styður vörupunkt, ekki áður rangt ytra samskeyti."
+      }
+    },
+    "husavik": {
+      "status": "SELECTED_PRODUCT_APPROACH",
+      "selection_basis": "MAP_PRODUCT_APPROVED_VIA_PROMPT",
+      "source": {
+        "database": "acquisition-raw",
+        "idferill": 3092,
+        "stored_field": "start",
+        "file": "docs/ai/tasks/ticket-500/acquisition/samples/raw-BATCH-6.json",
+        "sha256": "ae33e4644b94abc363514507522af5feaf3b4f9a829dce05db16f75c34800c7e",
+        "objectid": 5058,
+        "tier": -1
+      },
+      "wgs84": {
+        "latitude": 66.03234853,
+        "longitude": -17.34984614,
+        "crs": "EPSG:4326"
+      },
+      "access_status": "EXACT_GAP",
+      "approach_is": "Punktur á Norðausturvegi við Kringlumýri á Húsavík.",
+      "approach_en": "Point on Norðausturvegur at Kringlumýri in Húsavík.",
+      "map_recommendation_reason": "Vörupunktur valinn eftir Ripley kortaskoðun (MAP_PRODUCT_APPROVED_VIA_PROMPT); retained source-hnútur IDFERILL 3092 (OBJECTID 5058, tier -1, start). Kortastoð er fyrir vöruval, ekki staðfesting á ytri graph-tengingu, akstursstefnu eða bæjarmörkum. Access_status EXACT_GAP.",
+      "map_reference": "docs/ai/tasks/ticket-500/remaining-map-selection/map-review.md",
+      "map_observation": {
+        "source_role": "RIPLEY_VISUAL_CHECK",
+        "url": "https://www.openstreetmap.org/?mlat=66.03234853&mlon=-17.34984614#map=15/66.036/-17.35",
+        "observation": "Pinninn á vegi85 við Kringlumýri, sunnan samfelldrar meginbyggðar."
+      }
+    },
+    "kopasker": {
+      "status": "SELECTED_PRODUCT_APPROACH",
+      "selection_basis": "MAP_PRODUCT_APPROVED_VIA_PROMPT",
+      "source": {
+        "database": "acquisition-raw",
+        "idferill": 8674,
+        "stored_field": "start",
+        "file": "docs/ai/tasks/ticket-500/acquisition/samples/raw-BATCH-7.json",
+        "sha256": "35ea82930bf346e67f88da4dfeab5318cfb2228379d00787d7adf4dd02984c6c",
+        "objectid": 5335,
+        "tier": -1
+      },
+      "wgs84": {
+        "latitude": 66.30152838,
+        "longitude": -16.44081709,
+        "crs": "EPSG:4326"
+      },
+      "access_status": "EXACT_GAP",
+      "approach_is": "Punktur við Sléttuveg og Austurtröð á Kópaskeri.",
+      "approach_en": "Point at Sléttuvegur and Austurtröð in Kópaskeri.",
+      "map_recommendation_reason": "Vörupunktur valinn eftir Ripley kortaskoðun (MAP_PRODUCT_APPROVED_VIA_PROMPT); retained source-hnútur IDFERILL 8674 (OBJECTID 5335, tier -1, start). Kortastoð er fyrir vöruval, ekki staðfesting á ytri graph-tengingu, akstursstefnu eða bæjarmörkum. Access_status EXACT_GAP.",
+      "map_reference": "docs/ai/tasks/ticket-500/remaining-map-selection/map-review.md",
+      "map_observation": {
+        "source_role": "RIPLEY_VISUAL_CHECK",
+        "url": "https://www.openstreetmap.org/?mlat=66.30152838&mlon=-16.44081709#map=15/66.3015/-16.443",
+        "observation": "Við veg870 og Austurtröð við austurjaðar byggðar."
+      }
+    },
+    "raufarhofn": {
+      "status": "SELECTED_PRODUCT_APPROACH",
+      "selection_basis": "MAP_PRODUCT_APPROVED_VIA_PROMPT",
+      "source": {
+        "database": "acquisition-raw",
+        "idferill": 3169,
+        "stored_field": "start",
+        "file": "docs/ai/tasks/ticket-500/acquisition/samples/raw-BATCH-6.json",
+        "sha256": "ae33e4644b94abc363514507522af5feaf3b4f9a829dce05db16f75c34800c7e",
+        "objectid": 6009,
+        "tier": -1
+      },
+      "wgs84": {
+        "latitude": 66.44545468,
+        "longitude": -15.94764087,
+        "crs": "EPSG:4326"
+      },
+      "access_status": "EXACT_GAP",
+      "approach_is": "Punktur á Aðalbraut við syðri byggð á Raufarhöfn.",
+      "approach_en": "Point on Aðalbraut at the southern part of the settlement in Raufarhöfn.",
+      "map_recommendation_reason": "Vörupunktur valinn eftir Ripley kortaskoðun (MAP_PRODUCT_APPROVED_VIA_PROMPT); retained source-hnútur IDFERILL 3169 (OBJECTID 6009, tier -1, start). Kortastoð er fyrir vöruval, ekki staðfesting á ytri graph-tengingu, akstursstefnu eða bæjarmörkum. Access_status EXACT_GAP.",
+      "map_reference": "docs/ai/tasks/ticket-500/remaining-map-selection/map-review.md",
+      "map_observation": {
+        "source_role": "RIPLEY_VISUAL_CHECK",
+        "url": "https://www.openstreetmap.org/?mlat=66.44545468&mlon=-15.94764087#map=15/66.448/-15.948",
+        "observation": "Vegur874/Aðalbraut við syðri íbúðabyggð og íþróttasvæði."
+      }
+    },
+    "neskaupstadur": {
+      "status": "SELECTED_PRODUCT_APPROACH",
+      "selection_basis": "MAP_PRODUCT_APPROVED_VIA_PROMPT",
+      "source": {
+        "database": "acquisition-raw",
+        "idferill": 2832,
+        "stored_field": "start",
+        "file": "docs/ai/tasks/ticket-500/acquisition/samples/raw-BATCH-6.json",
+        "sha256": "ae33e4644b94abc363514507522af5feaf3b4f9a829dce05db16f75c34800c7e",
+        "objectid": 5114,
+        "tier": -1
+      },
+      "wgs84": {
+        "latitude": 65.14719331,
+        "longitude": -13.71556128,
+        "crs": "EPSG:4326"
+      },
+      "access_status": "EXACT_GAP",
+      "approach_is": "Punktur á Strandgötu við vestari byggð í Neskaupstað.",
+      "approach_en": "Point on Strandgata at the western part of the settlement in Neskaupstaður.",
+      "map_recommendation_reason": "Vörupunktur valinn eftir Ripley kortaskoðun (MAP_PRODUCT_APPROVED_VIA_PROMPT); retained source-hnútur IDFERILL 2832 (OBJECTID 5114, tier -1, start). Kortastoð er fyrir vöruval, ekki staðfesting á ytri graph-tengingu, akstursstefnu eða bæjarmörkum. Access_status EXACT_GAP.",
+      "map_reference": "docs/ai/tasks/ticket-500/remaining-map-selection/map-review.md",
+      "map_observation": {
+        "source_role": "RIPLEY_VISUAL_CHECK",
+        "url": "https://www.openstreetmap.org/?mlat=65.14719331&mlon=-13.71556128#map=15/65.148/-13.709",
+        "observation": "Við Strandgötu92 og Urðarteigsbyggð; ekki ferjubryggjuendi hinum megin."
+      }
+    },
+    "eskifjordur": {
+      "status": "SELECTED_PRODUCT_APPROACH",
+      "selection_basis": "MAP_PRODUCT_APPROVED_VIA_PROMPT",
+      "source": {
+        "database": "acquisition-raw",
+        "idferill": 2834,
+        "stored_field": "end",
+        "file": "docs/ai/tasks/ticket-500/acquisition/samples/raw-BATCH-6.json",
+        "sha256": "ae33e4644b94abc363514507522af5feaf3b4f9a829dce05db16f75c34800c7e",
+        "objectid": 5163,
+        "tier": -1
+      },
+      "wgs84": {
+        "latitude": 65.07554219,
+        "longitude": -14.02122438,
+        "crs": "EPSG:4326"
+      },
+      "access_status": "EXACT_GAP",
+      "approach_is": "Punktur á Strandgötu við vestari byggð á Eskifirði.",
+      "approach_en": "Point on Strandgata at the western part of the settlement in Eskifjörður.",
+      "map_recommendation_reason": "Vörupunktur valinn eftir Ripley kortaskoðun (MAP_PRODUCT_APPROVED_VIA_PROMPT); retained source-hnútur IDFERILL 2834 (OBJECTID 5163, tier -1, end). Kortastoð er fyrir vöruval, ekki staðfesting á ytri graph-tengingu, akstursstefnu eða bæjarmörkum. Access_status EXACT_GAP.",
+      "map_reference": "docs/ai/tasks/ticket-500/remaining-map-selection/map-review.md",
+      "map_observation": {
+        "source_role": "RIPLEY_VISUAL_CHECK",
+        "url": "https://www.openstreetmap.org/?mlat=65.07554219&mlon=-14.02122438#map=15/65.075/-14.016",
+        "observation": "Pinninn á vegi950/Strandgötu við höfn/íbúðabyggð; ekki suðurmunna Norðfjarðarganga."
+      }
+    },
+    "djupivogur": {
+      "status": "SELECTED_PRODUCT_APPROACH",
+      "selection_basis": "MAP_PRODUCT_APPROVED_VIA_PROMPT",
+      "source": {
+        "database": "acquisition-raw",
+        "idferill": 3761,
+        "stored_field": "end",
+        "file": "docs/ai/tasks/ticket-500/acquisition/samples/raw-BATCH-6.json",
+        "sha256": "ae33e4644b94abc363514507522af5feaf3b4f9a829dce05db16f75c34800c7e",
+        "objectid": 5568,
+        "tier": -1
+      },
+      "wgs84": {
+        "latitude": 64.65406062,
+        "longitude": -14.29799027,
+        "crs": "EPSG:4326"
+      },
+      "access_status": "EXACT_GAP",
+      "approach_is": "Punktur á Djúpavogsvegi við byggðina á Djúpavogi.",
+      "approach_en": "Point on Djúpavogsvegur at the settlement in Djúpivogur.",
+      "map_recommendation_reason": "Vörupunktur valinn eftir Ripley kortaskoðun (MAP_PRODUCT_APPROVED_VIA_PROMPT); retained source-hnútur IDFERILL 3761 (OBJECTID 5568, tier -1, end). Kortastoð er fyrir vöruval, ekki staðfesting á ytri graph-tengingu, akstursstefnu eða bæjarmörkum. Access_status EXACT_GAP.",
+      "map_reference": "docs/ai/tasks/ticket-500/remaining-map-selection/map-review.md",
+      "map_observation": {
+        "source_role": "RIPLEY_VISUAL_CHECK",
+        "url": "https://www.openstreetmap.org/?mlat=64.65406062&mlon=-14.29799027#map=15/64.655/-14.29",
+        "observation": "Á vegi98 þar sem hann liggur inn í byggð, nálægt Borgarlandi og íþróttasvæði."
+      }
+    },
+    "hofn": {
+      "status": "SELECTED_PRODUCT_APPROACH",
+      "selection_basis": "MAP_PRODUCT_APPROVED_VIA_PROMPT",
+      "source": {
+        "database": "acquisition-raw",
+        "idferill": 3652,
+        "stored_field": "end",
+        "file": "docs/ai/tasks/ticket-500/acquisition/samples/raw-BATCH-7.json",
+        "sha256": "35ea82930bf346e67f88da4dfeab5318cfb2228379d00787d7adf4dd02984c6c",
+        "objectid": 5584,
+        "tier": -1
+      },
+      "wgs84": {
+        "latitude": 64.2784739,
+        "longitude": -15.19843537,
+        "crs": "EPSG:4326"
+      },
+      "access_status": "EXACT_GAP",
+      "approach_is": "Punktur við Hringveg og Hafnarveg áleiðis til Hafnar.",
+      "approach_en": "Point at Hringvegur and Hafnarvegur on the way to Höfn.",
+      "map_recommendation_reason": "Vörupunktur valinn eftir Ripley kortaskoðun (MAP_PRODUCT_APPROVED_VIA_PROMPT); retained source-hnútur IDFERILL 3652 (OBJECTID 5584, tier -1, end). Kortastoð er fyrir vöruval, ekki staðfesting á ytri graph-tengingu, akstursstefnu eða bæjarmörkum. Access_status EXACT_GAP. Flugvallarvegur (982/3170) var EKKI notaður sem bæjarpunktur; engin ný eða fullstaðfest Hornafjarðarleið er sýnd hér.",
+      "map_reference": "docs/ai/tasks/ticket-500/remaining-map-selection/map-review.md",
+      "map_observation": {
+        "source_role": "RIPLEY_VISUAL_CHECK",
+        "url": "https://www.openstreetmap.org/?mlat=64.27847390&mlon=-15.19843537#map=14/64.278/-15.2",
+        "observation": "Pinninn við veg1/99/987-tengingu, Hafnarvegur99 heldur suður. Núverandi kortastoð; ekki Flugvallarvegur982 eða full staðfesting á nýrri Hornafjarðarleið."
+      }
+    },
+    "skaftafell": {
+      "status": "SELECTED_PRODUCT_APPROACH",
+      "selection_basis": "MAP_PRODUCT_APPROVED_VIA_PROMPT",
+      "source": {
+        "database": "road-links",
+        "idferill": 3513,
+        "stored_field": "end",
+        "file": "docs/ai/tasks/ticket-483/samples/wfs-vegnr1-all.json",
+        "sha256": "305f60d6f1f17918c058cbd047735681e56d6f9aad99f9e16f50de9419d6983a",
+        "objectid": 5875,
+        "tier": -1
+      },
+      "native_xy": [
+        600573.7864,
+        390763.984
+      ],
+      "native_crs": "EPSG:3057",
+      "wgs84": {
+        "latitude": 64.00546696040198,
+        "longitude": -16.943978236220662,
+        "crs": "EPSG:4326"
+      },
+      "wgs84_derivation": {
+        "method": "Inverse Lambert Conformal Conic (2 standard parallels)",
+        "ellipsoid": "GRS80",
+        "parameters": {
+          "lat_1": 64.25,
+          "lat_2": 65.75,
+          "lat_0": 65,
+          "lon_0": -19,
+          "x_0": 500000,
+          "y_0": 500000
+        },
+        "native_source": "docs/ai/tasks/ticket-493-place-network/samples/road-links.csv#idferill=3513;stored_field=end",
+        "validation": "Recomputed independently this round with the same inverse-Lambert implementation verified in prior rounds against 5 retained native/WGS84 pairs (max deviation 2.3e-8 degrees); matches the approved prompt's own table value and the real retained wfs-vegnr1-all.json feature."
+      },
+      "access_status": "EXACT_GAP",
+      "approach_is": "Punktur við Hringveg og Skaftafellsveg áleiðis til Skaftafells.",
+      "approach_en": "Point at Hringvegur and Skaftafellsvegur on the way to Skaftafell.",
+      "map_recommendation_reason": "Vörupunktur valinn eftir Ripley kortaskoðun (MAP_PRODUCT_APPROVED_VIA_PROMPT); retained source-hnútur IDFERILL 3513 (OBJECTID 5875, tier -1, end). Kortastoð er fyrir vöruval, ekki staðfesting á ytri graph-tengingu, akstursstefnu eða bæjarmörkum. Access_status EXACT_GAP.",
+      "map_reference": "docs/ai/tasks/ticket-500/remaining-map-selection/map-review.md",
+      "map_observation": {
+        "source_role": "RIPLEY_VISUAL_CHECK",
+        "url": "https://www.openstreetmap.org/?mlat=64.00546696&mlon=-16.94397824#map=16/64.006/-16.946",
+        "observation": "Pinninn við grein Skaftafellsvegar norðvestur frá Hringvegi; ekki visitor-centre-hnit. Source endi endurnýttur úr stærra retained vegnr1-setti."
+      }
+    },
+    "kirkjubaejarklaustur": {
+      "status": "SELECTED_PRODUCT_APPROACH",
+      "selection_basis": "MAP_PRODUCT_APPROVED_VIA_PROMPT",
+      "source": {
+        "database": "road-links",
+        "idferill": 2313,
+        "stored_field": "end",
+        "file": "docs/ai/tasks/ticket-483/samples/wfs-vegnr1-all.json",
+        "sha256": "305f60d6f1f17918c058cbd047735681e56d6f9aad99f9e16f50de9419d6983a",
+        "objectid": 5747,
+        "tier": -1
+      },
+      "native_xy": [
+        547336.4823,
+        365988.029
+      ],
+      "native_crs": "EPSG:3057",
+      "wgs84": {
+        "latitude": 63.79468083177732,
+        "longitude": -18.039733574570896,
+        "crs": "EPSG:4326"
+      },
+      "wgs84_derivation": {
+        "method": "Inverse Lambert Conformal Conic (2 standard parallels)",
+        "ellipsoid": "GRS80",
+        "parameters": {
+          "lat_1": 64.25,
+          "lat_2": 65.75,
+          "lat_0": 65,
+          "lon_0": -19,
+          "x_0": 500000,
+          "y_0": 500000
+        },
+        "native_source": "docs/ai/tasks/ticket-493-place-network/samples/road-links.csv#idferill=2313;stored_field=end",
+        "validation": "Recomputed independently this round with the same inverse-Lambert implementation verified in prior rounds against 5 retained native/WGS84 pairs (max deviation 2.3e-8 degrees); matches the approved prompt's own table value and the real retained wfs-vegnr1-all.json feature."
+      },
+      "access_status": "EXACT_GAP",
+      "approach_is": "Punktur við Hringveg og Klausturveg áleiðis í Kirkjubæjarklaustur.",
+      "approach_en": "Point at Hringvegur and Klausturvegur on the way to Kirkjubæjarklaustur.",
+      "map_recommendation_reason": "Vörupunktur valinn eftir Ripley kortaskoðun (MAP_PRODUCT_APPROVED_VIA_PROMPT); retained source-hnútur IDFERILL 2313 (OBJECTID 5747, tier -1, end). Kortastoð er fyrir vöruval, ekki staðfesting á ytri graph-tengingu, akstursstefnu eða bæjarmörkum. Access_status EXACT_GAP. Native-endi er ekki færður í miðju hringtorgs 1/205; source-bil að IDFERILL 2409 START er áfram óleyst.",
+      "map_reference": "docs/ai/tasks/ticket-500/remaining-map-selection/map-review.md",
+      "map_observation": {
+        "source_role": "RIPLEY_VISUAL_CHECK",
+        "url": "https://www.openstreetmap.org/?mlat=63.79468083&mlon=-18.03973357#map=15/63.792/-18.045",
+        "observation": "Við hringtorg1/205 með203 til norðvesturs. Native-endi ekki færður í miðju hringtorgs; bil að2409 START er áfram source-bil."
+      }
+    },
+    "thorlakshofn": {
+      "status": "SELECTED_PRODUCT_APPROACH",
+      "selection_basis": "MAP_PRODUCT_APPROVED_VIA_PROMPT",
+      "source": {
+        "database": "acquisition-raw",
+        "idferill": 2280,
+        "stored_field": "end",
+        "file": "docs/ai/tasks/ticket-500/acquisition/samples/raw-BATCH-1.json",
+        "sha256": "11ef45937cfcf473dc47f9d5167121502696fdeff4ea8ce1de217a9686c311da",
+        "objectid": 5390,
+        "tier": -1
+      },
+      "wgs84": {
+        "latitude": 63.86300272,
+        "longitude": -21.3913311,
+        "crs": "EPSG:4326"
+      },
+      "access_status": "EXACT_GAP",
+      "approach_is": "Punktur við Þorlákshafnarveg og Suðurstrandarveg við byggðina.",
+      "approach_en": "Point at Þorlákshafnarvegur and Suðurstrandarvegur at the settlement.",
+      "map_recommendation_reason": "Vörupunktur valinn eftir Ripley kortaskoðun (MAP_PRODUCT_APPROVED_VIA_PROMPT); retained source-hnútur IDFERILL 2280 (OBJECTID 5390, tier -1, end). Kortastoð er fyrir vöruval, ekki staðfesting á ytri graph-tengingu, akstursstefnu eða bæjarmörkum. Access_status EXACT_GAP.",
+      "map_reference": "docs/ai/tasks/ticket-500/remaining-map-selection/map-review.md",
+      "map_observation": {
+        "source_role": "RIPLEY_VISUAL_CHECK",
+        "url": "https://www.openstreetmap.org/?mlat=63.86300272&mlon=-21.39133110#map=15/63.859/-21.388",
+        "observation": "Pinninn við norðari hringtorg38/427/379; byggð og höfn sunnan/austan við."
+      }
+    },
+    "fludir": {
+      "status": "SELECTED_PRODUCT_APPROACH",
+      "selection_basis": "MAP_PRODUCT_APPROVED_VIA_PROMPT",
+      "source": {
+        "database": "acquisition-raw",
+        "idferill": 3548,
+        "stored_field": "start",
+        "file": "docs/ai/tasks/ticket-500/acquisition/samples/raw-BATCH-2.json",
+        "sha256": "7cc87498d632993e0b0c21f5fd0f68a488083bce0c397aaad6021d59546c571f",
+        "objectid": 5918,
+        "tier": -1
+      },
+      "wgs84": {
+        "latitude": 64.13080082,
+        "longitude": -20.32143333,
+        "crs": "EPSG:4326"
+      },
+      "access_status": "EXACT_GAP",
+      "approach_is": "Punktur við Skeiða- og Hrunamannaveg og Langholtsveg á Flúðum.",
+      "approach_en": "Point at Skeiða- og Hrunamannavegur and Langholtsvegur in Flúðir.",
+      "map_recommendation_reason": "Vörupunktur valinn eftir Ripley kortaskoðun (MAP_PRODUCT_APPROVED_VIA_PROMPT); retained source-hnútur IDFERILL 3548 (OBJECTID 5918, tier -1, start). Kortastoð er fyrir vöruval, ekki staðfesting á ytri graph-tengingu, akstursstefnu eða bæjarmörkum. Access_status EXACT_GAP.",
+      "map_reference": "docs/ai/tasks/ticket-500/remaining-map-selection/map-review.md",
+      "map_observation": {
+        "source_role": "RIPLEY_VISUAL_CHECK",
+        "url": "https://www.openstreetmap.org/?mlat=64.13080082&mlon=-20.32143333#map=15/64.133/-20.323",
+        "observation": "Á vegi30 við miðhluta byggðar og Langholtsveg341; ekki norðlægt Brúarhlaðasvæði."
+      }
+    },
+    "laugarvatn": {
+      "status": "SELECTED_PRODUCT_APPROACH",
+      "selection_basis": "MAP_PRODUCT_APPROVED_VIA_PROMPT",
+      "source": {
+        "database": "acquisition-raw",
+        "idferill": 3252,
+        "stored_field": "start",
+        "file": "docs/ai/tasks/ticket-500/acquisition/samples/raw-BATCH-2.json",
+        "sha256": "7cc87498d632993e0b0c21f5fd0f68a488083bce0c397aaad6021d59546c571f",
+        "objectid": 5952,
+        "tier": -1
+      },
+      "wgs84": {
+        "latitude": 64.21194753,
+        "longitude": -20.74278069,
+        "crs": "EPSG:4326"
+      },
+      "access_status": "EXACT_GAP",
+      "approach_is": "Punktur við Laugarvatnsveg og Gjábakkaveg við Laugarvatn.",
+      "approach_en": "Point at Laugarvatnsvegur and Gjábakkavegur at Laugarvatn.",
+      "map_recommendation_reason": "Vörupunktur valinn eftir Ripley kortaskoðun (MAP_PRODUCT_APPROVED_VIA_PROMPT); retained source-hnútur IDFERILL 3252 (OBJECTID 5952, tier -1, start). Kortastoð er fyrir vöruval, ekki staðfesting á ytri graph-tengingu, akstursstefnu eða bæjarmörkum. Access_status EXACT_GAP.",
+      "map_reference": "docs/ai/tasks/ticket-500/remaining-map-selection/map-review.md",
+      "map_observation": {
+        "source_role": "RIPLEY_VISUAL_CHECK",
+        "url": "https://www.openstreetmap.org/?mlat=64.21194753&mlon=-20.74278069#map=15/64.216/-20.738",
+        "observation": "Pinninn við hringtorg37/365 við suðvestari byggð; ekki fjarlæga35/37-tengingu."
+      }
+    }
+  }
+}

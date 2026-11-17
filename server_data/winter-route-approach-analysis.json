@@ -1,0 +1,555 @@
+{
+  "schema_version": 1,
+  "note": "Offline approach analysis of the 39 place datasets acquired in docs/ai/tasks/ticket-500/acquisition/ (per docs/ai/tasks/ticket-500/approaches/approved-prompt-v1.md). No new network calls. Uses full line geometry (not just the start/end extract in winter-route-acquired-geometry.json), exact endpoint contacts between acquired pieces; nearby endpoints remain separate gaps, road name/STADARLYSING text, and -- only within the same EPSG:4326 CRS, never reprojected -- seams against retained wfs-north-4326.json/wfs-vesturland-4326.json (OC1). Closed-ring pieces (start==end, VEGHLUTI 5 roundabouts) are never used as a line candidate themselves (OC2); a closed feature needs a specific vertex reference; the Akranes near-ring proposal was withdrawn after review. STADARLYSING text is supporting evidence only, never proof on its own (OC3). `disposition` per place: RECOMMENDED (one real seam-grounded candidate, still NAME_MATCH_INFERRED/owner-unselected), AMBIGUOUS_TWO_OPTIONS (two equally-real candidates shown honestly, no invented preference), or PRECISE_GAP (geometry exists, no defensible single endpoint this round).",
+  "source": {
+    "acquired_geometry": "server_data/winter-route-acquired-geometry.json",
+    "raw_responses": "docs/ai/tasks/ticket-500/acquisition/samples/raw-*.json",
+    "retained_4326_cross_check": [
+      "docs/ai/tasks/ticket-493-north-data/samples/wfs-north-4326.json",
+      "docs/ai/tasks/ticket-491/final-validation/samples/wfs-vesturland-4326.json"
+    ]
+  },
+  "driving_access_and_direction": {
+    "status": "EXACT_GAP",
+    "note": "Unchanged by this round. Geometry/seam/branch analysis establishes real road-network structure; it proves nothing about legal driving direction or current access. No field in any response encodes it."
+  },
+  "place_results": {
+    "grindavik": {
+      "disposition": "RECOMMENDED",
+      "candidates": [
+        {
+          "idferill": 53459,
+          "idbutur": 343020037,
+          "stored_field": "start",
+          "wgs84": {
+            "latitude": 63.85083976,
+            "longitude": -22.43242783,
+            "crs": "EPSG:4326"
+          },
+          "seam_with_idferill": 2972,
+          "seam_with_name": "Norðurljósavegur - Grindavík",
+          "basis": "Real geometry seam (shared coordinate, same acquired dataset) between this piece's own start and Nordurljosavegur - Grindavik (IDFERILL 2972) -- a named connecting road out of town, not a guessed endpoint.",
+          "objectid": 5520,
+          "raw_source_file": "raw-BATCH-1.json",
+          "raw_source_sha256": "11ef45937cfcf473dc47f9d5167121502696fdeff4ea8ce1de217a9686c311da"
+        }
+      ]
+    },
+    "thingeyri": {
+      "disposition": "AMBIGUOUS_TWO_OPTIONS",
+      "candidates": [
+        {
+          "idferill": 2272,
+          "idbutur": 662210037,
+          "stored_field": "start",
+          "wgs84": {
+            "latitude": 65.8665326,
+            "longitude": -23.47396873,
+            "crs": "EPSG:4326"
+          },
+          "seam_with_idferill": 2399,
+          "seam_with_name": "Vestfjarðavegur-Þingeyri",
+          "basis": "Exact seam to the cited road; preference between the two approaches is an owner judgement, not established by geometry or the road name alone.",
+          "objectid": 5319,
+          "raw_source_file": "raw-BATCH-1.json",
+          "raw_source_sha256": "11ef45937cfcf473dc47f9d5167121502696fdeff4ea8ce1de217a9686c311da"
+        },
+        {
+          "idferill": 2759,
+          "idbutur": 662210037,
+          "stored_field": "end",
+          "wgs84": {
+            "latitude": 65.87976033,
+            "longitude": -23.50106733,
+            "crs": "EPSG:4326"
+          },
+          "seam_with_idferill": 2757,
+          "seam_with_name": "Þingeyri - Flugvöllur",
+          "basis": "Exact seam to the cited road; preference between the two approaches is an owner judgement, not established by geometry or the road name alone.",
+          "objectid": 4955,
+          "raw_source_file": "raw-BATCH-1.json",
+          "raw_source_sha256": "11ef45937cfcf473dc47f9d5167121502696fdeff4ea8ce1de217a9686c311da"
+        }
+      ],
+      "note": "Two real boundaries: Vestfjarðavegur-Þingeyri and Þingeyri-Flugvöllur. Neither is automatically primary for this product."
+    },
+    "bolungarvik": {
+      "disposition": "RECOMMENDED",
+      "candidates": [
+        {
+          "idferill": 2215,
+          "idbutur": 906110037,
+          "stored_field": "start",
+          "wgs84": {
+            "latitude": 66.14305273,
+            "longitude": -23.2225211,
+            "crs": "EPSG:4326"
+          },
+          "seam_with_idferill": 2216,
+          "seam_with_name": "Bolungarvíkurgöng",
+          "basis": "Real geometry seam (shared coordinate, same acquired dataset) between this piece's own start and Bolungarvikurgong (tunnel) (IDFERILL 2216) -- a named connecting road out of town, not a guessed endpoint.",
+          "objectid": 5566,
+          "raw_source_file": "raw-BATCH-4.json",
+          "raw_source_sha256": "f39a5f68f96e85f93f08f3672f60d52ad1421dbffa727b03a09408fd71a95575"
+        }
+      ]
+    },
+    "siglufjordur": {
+      "disposition": "RECOMMENDED",
+      "candidates": [
+        {
+          "idferill": 3564,
+          "idbutur": 909310037,
+          "stored_field": "start",
+          "wgs84": {
+            "latitude": 66.1605843,
+            "longitude": -18.90330291,
+            "crs": "EPSG:4326"
+          },
+          "seam_with_idferill": 3240,
+          "seam_with_name": "Siglufjörður-Strákagöng",
+          "basis": "Real geometry seam (shared coordinate, same acquired dataset) between this piece's own start and Siglufjordur-Strakagong (tunnel) (IDFERILL 3240) -- a named connecting road out of town, not a guessed endpoint.",
+          "objectid": 5871,
+          "raw_source_file": "raw-BATCH-6.json",
+          "raw_source_sha256": "ae33e4644b94abc363514507522af5feaf3b4f9a829dce05db16f75c34800c7e"
+        }
+      ]
+    },
+    "olafsfjordur": {
+      "disposition": "RECOMMENDED",
+      "candidates": [
+        {
+          "idferill": 15361,
+          "idbutur": 909320037,
+          "stored_field": "end",
+          "wgs84": {
+            "latitude": 66.06730376,
+            "longitude": -18.65429271,
+            "crs": "EPSG:4326"
+          },
+          "seam_with_idferill": 3362,
+          "seam_with_name": "Ólafsfjörður-Vermundarstaðir",
+          "basis": "Real geometry seam (shared coordinate, same acquired dataset) between this piece's own end and Olafsfjordur-Vermundarstadir (IDFERILL 3362) -- a named connecting road out of town, not a guessed endpoint.",
+          "objectid": 4803,
+          "raw_source_file": "raw-BATCH-6.json",
+          "raw_source_sha256": "ae33e4644b94abc363514507522af5feaf3b4f9a829dce05db16f75c34800c7e"
+        }
+      ]
+    },
+    "dalvik": {
+      "disposition": "PRECISE_GAP",
+      "candidates": [],
+      "note": "3567 START meets 3501 on the same Hjalteyrarvegur-Dalvík road, an internal seam, not a separately named connecting road. Loose chain ends are 3568 START and 3567 END; a justified town approach remains unresolved."
+    },
+    "vopnafjordur": {
+      "disposition": "RECOMMENDED",
+      "candidates": [
+        {
+          "idferill": 3707,
+          "idbutur": 910220037,
+          "stored_field": "end",
+          "wgs84": {
+            "latitude": 65.7641206,
+            "longitude": -14.82399559,
+            "crs": "EPSG:4326"
+          },
+          "seam_with_idferill": 3182,
+          "seam_with_name": "Vopnafjörður-Skógavegur",
+          "basis": "Real geometry seam (shared coordinate, same acquired dataset) between this piece's own end and Vopnafjordur-Skogavegur (IDFERILL 3182) -- a named connecting road out of town, not a guessed endpoint. Pieces 3707 and 3671 both end at this exact point (a real 3-way junction); only one is cited as the representative feature.",
+          "objectid": 5587,
+          "raw_source_file": "raw-BATCH-6.json",
+          "raw_source_sha256": "ae33e4644b94abc363514507522af5feaf3b4f9a829dce05db16f75c34800c7e"
+        }
+      ]
+    },
+    "akranes": {
+      "disposition": "PRECISE_GAP",
+      "candidates": [],
+      "note": "3797 END has no exact endpoint contact. Ring 21441 with the same Hringvegur-Akranesvegur name is about 2.5 m away; this is a measured gap, not a shared coordinate or proof of a town approach. STADARLYSING says Akranesvegur. Approach remains unresolved."
+    },
+    "grundarfjordur": {
+      "disposition": "RECOMMENDED",
+      "candidates": [
+        {
+          "idferill": 3774,
+          "idbutur": 904310037,
+          "stored_field": "start",
+          "wgs84": {
+            "latitude": 64.92345384,
+            "longitude": -23.27382147,
+            "crs": "EPSG:4326"
+          },
+          "seam_with_idferill": 2059,
+          "seam_with_name": "Grundarfjörður-Ólafsvík",
+          "objectid": 5524,
+          "raw_source_file": "raw-BATCH-3.json",
+          "raw_source_sha256": "61567c561c19b539d83ae4d6544da4646578c781bf32d57b6a44df15e95cd7bd"
+        }
+      ],
+      "note": "Piece 3774 is named Grundarfjörður-Vatnaleið. START has an exact seam to 2059 (Grundarfjörður-Ólafsvík). The former END option only continued the same named road via 3773 and is withdrawn as an independently grounded alternative. This structural boundary is a proposed approach, not a confirmed town centre."
+    },
+    "olafsvik": {
+      "disposition": "RECOMMENDED",
+      "candidates": [
+        {
+          "idferill": 2698,
+          "idbutur": 904300037,
+          "stored_field": "start",
+          "wgs84": {
+            "latitude": 64.90014373,
+            "longitude": -23.72850184,
+            "crs": "EPSG:4326"
+          },
+          "seam_with_idferill": 2617,
+          "seam_with_name": "Hellissandur-Ólafsvík",
+          "objectid": 5000,
+          "raw_source_file": "raw-BATCH-3.json",
+          "raw_source_sha256": "61567c561c19b539d83ae4d6544da4646578c781bf32d57b6a44df15e95cd7bd"
+        }
+      ],
+      "note": "Pieces 2698/2740 are named Grundarfjörður-Ólafsvík. 2698 START meets 2617 (Hellissandur-Ólafsvík). The former 2740 END option only continued the same named road via 2741 and is withdrawn. This structural boundary is a proposed approach, not a confirmed town centre."
+    },
+    "bildudalur": {
+      "disposition": "AMBIGUOUS_TWO_OPTIONS",
+      "candidates": [
+        {
+          "idferill": 2697,
+          "idbutur": 561900037,
+          "stored_field": "end",
+          "wgs84": {
+            "latitude": 65.69021883,
+            "longitude": -23.59693047,
+            "crs": "EPSG:4326"
+          },
+          "seam_with_idferill": 2100,
+          "seam_with_name": "Ketildalavegur",
+          "objectid": 5302,
+          "raw_source_file": "raw-BATCH-1.json",
+          "raw_source_sha256": "11ef45937cfcf473dc47f9d5167121502696fdeff4ea8ce1de217a9686c311da"
+        },
+        {
+          "idferill": 2273,
+          "idbutur": 561900037,
+          "stored_field": "start",
+          "wgs84": {
+            "latitude": 65.67709936,
+            "longitude": -23.61288347,
+            "crs": "EPSG:4326"
+          },
+          "seam_with_idferill": 3111,
+          "seam_with_name": "Bíldudalur-flugvöllur",
+          "objectid": 5320,
+          "raw_source_file": "raw-BATCH-1.json",
+          "raw_source_sha256": "11ef45937cfcf473dc47f9d5167121502696fdeff4ea8ce1de217a9686c311da"
+        }
+      ],
+      "note": "A 2-piece connected chain (2697-2273, both named Bildudalur). Neither loose-end seam is to a confirmed main highway in this acquired set -- one is a side valley road, the other the airport road; no basis to prefer one as the town approach."
+    },
+    "saudarkrokur": {
+      "disposition": "AMBIGUOUS_TWO_OPTIONS",
+      "candidates": [
+        {
+          "idferill": 2485,
+          "idbutur": 808170037,
+          "stored_field": "start",
+          "wgs84": {
+            "latitude": 65.75996091,
+            "longitude": -19.64960631,
+            "crs": "EPSG:4326"
+          },
+          "seam_with_idferill": 2931,
+          "seam_with_name": "Skagavegur-Sauðárkrókur",
+          "objectid": 5176,
+          "raw_source_file": "raw-BATCH-2.json",
+          "raw_source_sha256": "7cc87498d632993e0b0c21f5fd0f68a488083bce0c397aaad6021d59546c571f"
+        },
+        {
+          "idferill": 2485,
+          "idbutur": 808170037,
+          "stored_field": "end",
+          "wgs84": {
+            "latitude": 65.74380077,
+            "longitude": -19.62028698,
+            "crs": "EPSG:4326"
+          },
+          "seam_with_idferill": [
+            3067,
+            2715
+          ],
+          "seam_with_name": "Sauðárkrókur-Hofsós AND Varmahlíð-Sauðárkrókur",
+          "objectid": 5176,
+          "raw_source_file": "raw-BATCH-2.json",
+          "raw_source_sha256": "7cc87498d632993e0b0c21f5fd0f68a488083bce0c397aaad6021d59546c571f"
+        }
+      ],
+      "note": "Re-examined per the approved prompt's own OB4/step-4 instruction. The prior round's unjustified END pick is replaced here: END is a real 3-way junction (meets two other roads), START meets one road (from Skagastrond direction) -- a real difference in connectivity, but not proof either is the town centre. Both shown."
+    },
+    "varmahlid": {
+      "disposition": "AMBIGUOUS_TWO_OPTIONS",
+      "candidates": [
+        {
+          "idferill": 2477,
+          "idbutur": 908020037,
+          "stored_field": "start",
+          "wgs84": {
+            "latitude": 65.54703577,
+            "longitude": -19.44173885,
+            "crs": "EPSG:4326"
+          },
+          "seam_with_idferill": [
+            2714,
+            3238
+          ],
+          "seam_with_name": "Varmahlíð-Steinsstaðir AND Vatnsskarð",
+          "objectid": 5732,
+          "raw_source_file": "raw-BATCH-5.json",
+          "raw_source_sha256": "51389c9224cdf898f858d639517d1240d5383738ab4229095d966b7d62fabbe6"
+        },
+        {
+          "idferill": 2477,
+          "idbutur": 908020037,
+          "stored_field": "end",
+          "wgs84": {
+            "latitude": 65.55340044,
+            "longitude": -19.44533505,
+            "crs": "EPSG:4326"
+          },
+          "seam_with_idferill": [
+            2717,
+            2734
+          ],
+          "seam_with_name": "Varmahlíð-Sauðárkrókur AND Varmahlíð-Kjálkavegur",
+          "objectid": 5732,
+          "raw_source_file": "raw-BATCH-5.json",
+          "raw_source_sha256": "51389c9224cdf898f858d639517d1240d5383738ab4229095d966b7d62fabbe6"
+        }
+      ],
+      "note": "Piece 2477 is named Vatnsskarð (IDBUTUR 908020037). Each proposed endpoint has recorded contacts with the cited roads. The choice is not determined as a town approach by these contacts alone."
+    },
+    "patreksfjordur": {
+      "disposition": "AMBIGUOUS_TWO_OPTIONS",
+      "candidates": [
+        {
+          "idferill": 53127,
+          "idbutur": 562070037,
+          "stored_field": "start",
+          "wgs84": {
+            "latitude": 65.58993681,
+            "longitude": -23.97181157,
+            "crs": "EPSG:4326"
+          },
+          "seam_with_idferill": null,
+          "seam_with_name": null,
+          "objectid": 6264,
+          "raw_source_file": "raw-BATCH-1.json",
+          "raw_source_sha256": "11ef45937cfcf473dc47f9d5167121502696fdeff4ea8ce1de217a9686c311da"
+        },
+        {
+          "idferill": 53127,
+          "idbutur": 562070037,
+          "stored_field": "end",
+          "wgs84": {
+            "latitude": 65.59851455,
+            "longitude": -24.00201874,
+            "crs": "EPSG:4326"
+          },
+          "seam_with_idferill": null,
+          "seam_with_name": null,
+          "objectid": 6264,
+          "raw_source_file": "raw-BATCH-1.json",
+          "raw_source_sha256": "11ef45937cfcf473dc47f9d5167121502696fdeff4ea8ce1de217a9686c311da"
+        }
+      ],
+      "note": "Re-examined per the approved prompt's own OB4/step-4 instruction. This piece is isolated in the acquired dataset -- no seam to any other acquired or retained-4326 piece was found at either end. The prior round's unjustified END pick is retracted; both ends are shown with equal (lack of) evidence, not a continued default."
+    },
+    "talknafjordur": {
+      "disposition": "AMBIGUOUS_TWO_OPTIONS",
+      "candidates": [
+        {
+          "idferill": 2889,
+          "idbutur": 506170037,
+          "stored_field": "start",
+          "wgs84": {
+            "latitude": 65.60508239,
+            "longitude": -23.77520392,
+            "crs": "EPSG:4326"
+          },
+          "seam_with_idferill": null,
+          "seam_with_name": null,
+          "objectid": 5817,
+          "raw_source_file": "raw-BATCH-1.json",
+          "raw_source_sha256": "11ef45937cfcf473dc47f9d5167121502696fdeff4ea8ce1de217a9686c311da"
+        },
+        {
+          "idferill": 2889,
+          "idbutur": 506170037,
+          "stored_field": "end",
+          "wgs84": {
+            "latitude": 65.62399623,
+            "longitude": -23.81359943,
+            "crs": "EPSG:4326"
+          },
+          "seam_with_idferill": null,
+          "seam_with_name": null,
+          "textual_hint": "STADARLYSING reads 'Talknafjardarvegur ad 1sta ljosastaur' (to the 1st streetlight) -- suggestive of arrival at a town boundary marker at this end, but this is a textual description, not a geometry seam (OC3: supporting text, not proof).",
+          "objectid": 5817,
+          "raw_source_file": "raw-BATCH-1.json",
+          "raw_source_sha256": "11ef45937cfcf473dc47f9d5167121502696fdeff4ea8ce1de217a9686c311da"
+        }
+      ],
+      "note": "No geometry seam at either end (isolated piece). A textual hint favors END but is explicitly not promoted to RECOMMENDED per OC3."
+    },
+    "keflavikurflugvollur-kef": {
+      "disposition": "AMBIGUOUS_TWO_OPTIONS",
+      "candidates": [
+        {
+          "idferill": 3552,
+          "idbutur": 341190037,
+          "stored_field": "start",
+          "wgs84": {
+            "latitude": 63.97204952,
+            "longitude": -22.54106585,
+            "crs": "EPSG:4326"
+          },
+          "seam_with_idferill": null,
+          "seam_with_name": null,
+          "objectid": 5982,
+          "raw_source_file": "raw-PROBE-KEF.json",
+          "raw_source_sha256": "3abd5e422b8baf75f62db1b2727bce5d153c91daefd2d219d6bb5355c26e8590"
+        },
+        {
+          "idferill": 3488,
+          "idbutur": 341190037,
+          "stored_field": "end",
+          "wgs84": {
+            "latitude": 63.99929831,
+            "longitude": -22.62803395,
+            "crs": "EPSG:4326"
+          },
+          "seam_with_idferill": null,
+          "seam_with_name": null,
+          "objectid": 6000,
+          "raw_source_file": "raw-PROBE-KEF.json",
+          "raw_source_sha256": "3abd5e422b8baf75f62db1b2727bce5d153c91daefd2d219d6bb5355c26e8590"
+        }
+      ],
+      "note": "All 8 acquired pieces for this IDBUTUR are named Hafnavegur - Flugstod (terminal road) -- real evidence this serves the airport terminal specifically, even though the literal string doesn't match Keflavikurflugvollur/KEF. 5 of the 8 are closed-ring roundabout features (VEGHLUTI 5) per OC2 and excluded as line candidates. The remaining 3 form one connected chain (3552-3465-3488); its two loose ends are shown here. Neither touches an external connecting-road piece in this acquired set, so neither is preferred. This is a transport/method result (per approved-prompt-v1.md's own framing), not a confirmed KEF approach."
+    },
+    "hvammstangi": {
+      "disposition": "PRECISE_GAP",
+      "candidates": [],
+      "note": "No piece's own name matches 'Hvammstangi' exactly, but a real, specifically-relevant road exists in the acquired set: Hvammstangavegur (IDFERILL 3487/3585/3586, IDBUTUR 907720037) and Stadarskali-Hvammstangavegur (3824-3828, IDBUTUR 907150037). A real road literally named after the town exists in the acquired set, but it is a long multi-piece corridor (11 pieces total) with no piece sharing the exact town name and no clean single boundary node identified this round. Geometry exists; the approach point is undetermined, which is an honest result, not 'no data'."
+    },
+    "skagastrond": {
+      "disposition": "PRECISE_GAP",
+      "candidates": [],
+      "note": "No piece's own name matches 'Skagaströnd' exactly, but a real, specifically-relevant road exists in the acquired set: Skagastrandarvegur (IDFERILL 2422/2455/3394, IDBUTUR 908740037). A real road literally named after the town exists, but no single clean boundary node was identified this round among its own pieces. Geometry exists; the approach point is undetermined, which is an honest result, not 'no data'."
+    },
+    "kopasker": {
+      "disposition": "PRECISE_GAP",
+      "candidates": [],
+      "note": "No piece's own name matches 'Kópasker' exactly, but a real, specifically-relevant road exists in the acquired set: Kopaskersvegur (IDFERILL 3706/8674, IDBUTUR 1008700037). Only 2 pieces, both named the road to Kopasker rather than Kopasker itself; no external seam found in this acquired set. Geometry exists; the approach point is undetermined, which is an honest result, not 'no data'."
+    },
+    "raufarhofn": {
+      "disposition": "PRECISE_GAP",
+      "candidates": [],
+      "note": "No piece's own name matches 'Raufarhöfn' exactly, but a real, specifically-relevant road exists in the acquired set: Raufarhafnarvegur (IDFERILL 3133/3168/3169, IDBUTUR 910270037). Named after the town (genitive form); no external seam found in this acquired set to distinguish an approach point. Geometry exists; the approach point is undetermined, which is an honest result, not 'no data'."
+    },
+    "reykholar": {
+      "disposition": "PRECISE_GAP",
+      "candidates": [],
+      "note": "No piece's own name matches 'Reykhólar' exactly, but a real, specifically-relevant road exists in the acquired set: Reykholasveitarvegur (IDFERILL 2061/2062/2973/2035/2662/2328, IDBUTUR 506070037/905120037). Named after the district (Reykholasveit), not the settlement itself; no single clean boundary node identified this round. Geometry exists; the approach point is undetermined, which is an honest result, not 'no data'."
+    },
+    "sudavik": {
+      "disposition": "PRECISE_GAP",
+      "candidates": [],
+      "note": "No piece's own name matches 'Súðavík' exactly, but a real, specifically-relevant road exists in the acquired set: Sudavikurhlid (IDFERILL 3535/3392/3298, IDBUTUR 906140037). Named after the town (genitive form); no external seam found in this acquired set. Geometry exists; the approach point is undetermined, which is an honest result, not 'no data'."
+    },
+    "isafjordur": {
+      "disposition": "PRECISE_GAP",
+      "candidates": [],
+      "note": "No piece's own name matches 'Ísafjörður' exactly, but a real, specifically-relevant road exists in the acquired set: Djupvegur: Isafjordur (IDFERILL 2086/3195/3419/3605/3626, IDBUTUR 907070037). The description names Isafjordur directly, but across 5 pieces spanning a long stretch of the Djupvegur corridor; no single clean boundary node identified this round. Geometry exists; the approach point is undetermined, which is an honest result, not 'no data'."
+    },
+    "hofn": {
+      "disposition": "PRECISE_GAP",
+      "candidates": [],
+      "note": "No piece's own name matches 'Höfn' exactly, but a real, specifically-relevant road exists in the acquired set: Flugvallarvegur Hofn (IDFERILL 3170, IDBUTUR 1209820037). Names the town directly as the airport-road destination; no external seam found in this acquired set to this specific piece. Geometry exists; the approach point is undetermined, which is an honest result, not 'no data'."
+    },
+    "hafnarfjordur": {
+      "disposition": "PRECISE_GAP",
+      "candidates": [],
+      "note": "No piece's own name matches 'Hafnarfjörður' exactly, but a real, specifically-relevant road exists in the acquired set: Hafnarfjardarvegur (IDFERILL 3073/2910/2823, IDBUTUR 914500037) -- genitive form of the town name. A real road literally named after the town exists among the 32 acquired pieces for this place, but no single clean boundary node was identified this round. Geometry exists; the approach point is undetermined, which is an honest result, not 'no data'.",
+      "place_evidence_reference": "server_data/winter-route-place-evidence.json#place_results.hafnarfjordur"
+    },
+    "mosfellsbaer": {
+      "disposition": "PRECISE_GAP",
+      "candidates": [],
+      "note": "No piece's own name matches 'Mosfellsbær' exactly, but a real, specifically-relevant road exists in the acquired set: Mosfellsdalur (IDFERILL 3075/2469, IDBUTUR 903040037) -- the valley the town sits in. Names the valley/area, not the town itself; no clean town-boundary node identified this round. Geometry exists; the approach point is undetermined, which is an honest result, not 'no data'."
+    },
+    "blonduos": {
+      "disposition": "PRECISE_GAP",
+      "candidates": [],
+      "note": "Every acquired piece for this place's cited IDBUTUR(s) carries only a dash-pair connecting-road name (or a name for a different place/area), with no piece-level name tie to this place and no boundary-node seam identified in this round's own analysis. Geometry exists; the approach point is undetermined, which is an honest result, not 'no data'."
+    },
+    "budardalur": {
+      "disposition": "PRECISE_GAP",
+      "candidates": [],
+      "note": "Every acquired piece for this place's cited IDBUTUR(s) carries only a dash-pair connecting-road name (or a name for a different place/area), with no piece-level name tie to this place and no boundary-node seam identified in this round's own analysis. Geometry exists; the approach point is undetermined, which is an honest result, not 'no data'."
+    },
+    "djupivogur": {
+      "disposition": "PRECISE_GAP",
+      "candidates": [],
+      "note": "Every acquired piece for this place's cited IDBUTUR(s) carries only a dash-pair connecting-road name (or a name for a different place/area), with no piece-level name tie to this place and no boundary-node seam identified in this round's own analysis. Geometry exists; the approach point is undetermined, which is an honest result, not 'no data'."
+    },
+    "drangsnes": {
+      "disposition": "PRECISE_GAP",
+      "candidates": [],
+      "note": "Every acquired piece for this place's cited IDBUTUR(s) carries only a dash-pair connecting-road name (or a name for a different place/area), with no piece-level name tie to this place and no boundary-node seam identified in this round's own analysis. Geometry exists; the approach point is undetermined, which is an honest result, not 'no data'."
+    },
+    "eskifjordur": {
+      "disposition": "PRECISE_GAP",
+      "candidates": [],
+      "note": "Every acquired piece for this place's cited IDBUTUR(s) carries only a dash-pair connecting-road name (or a name for a different place/area), with no piece-level name tie to this place and no boundary-node seam identified in this round's own analysis. Geometry exists; the approach point is undetermined, which is an honest result, not 'no data'."
+    },
+    "fludir": {
+      "disposition": "PRECISE_GAP",
+      "candidates": [],
+      "note": "Every acquired piece for this place's cited IDBUTUR(s) carries only a dash-pair connecting-road name (or a name for a different place/area), with no piece-level name tie to this place and no boundary-node seam identified in this round's own analysis. Geometry exists; the approach point is undetermined, which is an honest result, not 'no data'."
+    },
+    "holmavik": {
+      "disposition": "PRECISE_GAP",
+      "candidates": [],
+      "note": "Every acquired piece for this place's cited IDBUTUR(s) carries only a dash-pair connecting-road name (or a name for a different place/area), with no piece-level name tie to this place and no boundary-node seam identified in this round's own analysis. Geometry exists; the approach point is undetermined, which is an honest result, not 'no data'."
+    },
+    "husavik": {
+      "disposition": "PRECISE_GAP",
+      "candidates": [],
+      "note": "Every acquired piece for this place's cited IDBUTUR(s) carries only a dash-pair connecting-road name (or a name for a different place/area), with no piece-level name tie to this place and no boundary-node seam identified in this round's own analysis. Geometry exists; the approach point is undetermined, which is an honest result, not 'no data'."
+    },
+    "kopavogur": {
+      "disposition": "PRECISE_GAP",
+      "candidates": [],
+      "note": "Every acquired piece for this place's cited IDBUTUR(s) carries only a dash-pair connecting-road name (or a name for a different place/area), with no piece-level name tie to this place and no boundary-node seam identified in this round's own analysis. Geometry exists; the approach point is undetermined, which is an honest result, not 'no data'."
+    },
+    "laugarvatn": {
+      "disposition": "PRECISE_GAP",
+      "candidates": [],
+      "note": "Every acquired piece for this place's cited IDBUTUR(s) carries only a dash-pair connecting-road name (or a name for a different place/area), with no piece-level name tie to this place and no boundary-node seam identified in this round's own analysis. Geometry exists; the approach point is undetermined, which is an honest result, not 'no data'."
+    },
+    "neskaupstadur": {
+      "disposition": "PRECISE_GAP",
+      "candidates": [],
+      "note": "Every acquired piece for this place's cited IDBUTUR(s) carries only a dash-pair connecting-road name (or a name for a different place/area), with no piece-level name tie to this place and no boundary-node seam identified in this round's own analysis. Geometry exists; the approach point is undetermined, which is an honest result, not 'no data'."
+    },
+    "stykkisholmur": {
+      "disposition": "PRECISE_GAP",
+      "candidates": [],
+      "note": "Every acquired piece for this place's cited IDBUTUR(s) carries only a dash-pair connecting-road name (or a name for a different place/area), with no piece-level name tie to this place and no boundary-node seam identified in this round's own analysis. Geometry exists; the approach point is undetermined, which is an honest result, not 'no data'."
+    },
+    "thorlakshofn": {
+      "disposition": "PRECISE_GAP",
+      "candidates": [],
+      "note": "Every acquired piece for this place's cited IDBUTUR(s) carries only a dash-pair connecting-road name (or a name for a different place/area), with no piece-level name tie to this place and no boundary-node seam identified in this round's own analysis. Geometry exists; the approach point is undetermined, which is an honest result, not 'no data'."
+    }
+  }
+}

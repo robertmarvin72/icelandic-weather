@@ -1,0 +1,209 @@
+{
+  "schema_version": 1,
+  "note": "Shared road corridor + approach candidates for the Hveragerði–Selfoss–Hella–Hvolsvöllur–Vík stretch, for docs/ai/tasks/ticket-500/south/approved-prompt-v1.md. Reused verbatim (order/entry/exit/gap/role) from the retained cw_long chain in docs/ai/tasks/ticket-493-place-network/samples/chain-walks-v4.json, steps 2135..23041 (25 pieces) — no new geometry acquisition, no new routing engine. `native_start`/`native_end` on each piece below are the chain-walk's own traversal entry/exit points (west-to-east order), copied verbatim from chain-walks-v4.json — NOT each piece's intrinsic stored native START/END field (which is flipped here, since every piece's own stored_direction is 'rev'). The approach_candidates section below uses the separate `stored_field` label ('START'/'END') when citing each piece's intrinsic native convention, matching how other retained files (e.g. place-access-status-v3.csv) cite the same pieces. Candidate coordinates are APPROACH_CANDIDATE (proposed, not owner-selected) except Vík, which has only a single retained candidate and is also still OWNER_SELECTION_PENDING. Driving access/direction is EXACT_GAP for every piece here — the retained WFS layer (faerdferlar2017_1) has no field encoding legal direction/one-way access; the digital stored direction of each piece ('direction': 'rev' below, i.e. stored westbound) is geometry only, never a traffic-direction proof.",
+  "corridor": {
+    "idbutur_sequence": [902030037, 902040037, 901130037, 901230037, 901220037, 901210037, 901050037, 901040037, 801100037],
+    "idbutur_sequence_note": "These are the same 9 IDBUTUR values (a subset, in the same order) already present in api/_lib/winterRoute/segments.js's WINTER_ROUTE_SEGMENTS — this corridor does not introduce a new IDBUTUR grouping, it is the piece-level detail within the already-fixed segments from 'Selfoss – Hveragerði' through 'Vík'.",
+    "source_file": "docs/ai/tasks/ticket-493-place-network/samples/chain-walks-v4.json",
+    "source_sha256": "640efec931a374ac3ddd95d0750980e97654fe1d166229dc579d355a082becd7",
+    "source_sha256_note": "Recomputed directly this round (sha256sum) against the file on disk — matches the prefix Jonesy cited in south-prompt-review.md (640efec931a3…) exactly.",
+    "native_crs": "EPSG:3057",
+    "wgs84_crs": "EPSG:4326",
+    "wgs84_source_file": "docs/ai/tasks/ticket-483/samples/wfs-chain-4326.json",
+    "wgs84_source_sha256": "966848554f0ce205c919625c3e6209da1fe05bcc50e7e8084ae96840ad519af4",
+    "native_source_file": "docs/ai/tasks/ticket-483/samples/wfs-vegnr1-all.json",
+    "native_source_sha256": "305f60d6f1f17918c058cbd047735681e56d6f9aad99f9e16f50de9419d6983a",
+    "wgs84_coverage_note": "Confirmed this round: all 5 approach-candidate pieces (2135, 2138, 3591, 3593, 3849) are present at every NAKVAEMNIFERLIS tier in both the native and WGS84 files, same OBJECTID per tier, native-vs-WGS84 START/END vertex correspondence verified directly (first geometry vertex = native START, last = native END, consistently) — not reprojected or guessed.",
+    "preceding_boundary_gap": {
+      "note": "Outside this corridor (west of piece 2135 / the Hveragerði candidate): piece 2117 ('Hellisheiði til austurs') ends 34.75 m from piece 2135's entry, bridged only by an excluded VEGHLUTI 5 roundabout piece (36807) under the project's own C1 role filter. Recorded for context per approved-prompt-v1.md's 'varðveita mæld bil' instruction; not part of this corridor's own internal continuity and not a place-approach candidate itself."
+    }
+  },
+  "pieces": [
+    { "idferill": 2135, "idbutur": 902030037, "veghluti": 1, "stored_direction": "rev", "piece_length_m": 10325.561, "gap_before_this_piece_m": null, "gap_before_note": "See corridor.preceding_boundary_gap (34.75 m, outside this corridor).",
+      "native_start": [392703.5, 389865.057], "native_end": [400974.332, 384785.129],
+      "place_node_at_start": { "place_id": "hveragerdi", "role": "APPROACH_CANDIDATE_RECOMMENDED" } },
+    { "idferill": 2138, "idbutur": 902030037, "veghluti": 1, "stored_direction": "rev", "piece_length_m": 2007.563, "gap_before_this_piece_m": 0.0,
+      "native_start": [400974.332, 384785.129], "native_end": [401739.85, 383119.047],
+      "place_node_at_start": { "place_id": "selfoss", "role": "APPROACH_CANDIDATE_RECOMMENDED" },
+      "place_node_at_end": { "place_id": "selfoss", "role": "APPROACH_CANDIDATE_ALTERNATIVE" } },
+    { "idferill": 3737, "idbutur": 902040037, "veghluti": 1, "stored_direction": "rev", "piece_length_m": 1279.498, "gap_before_this_piece_m": 30.097,
+      "native_start": [401763.6867, 383100.6726], "native_end": [403016.8402, 383178.3789] },
+    { "idferill": 3768, "idbutur": 902040037, "veghluti": 1, "stored_direction": "rev", "piece_length_m": 256.512, "gap_before_this_piece_m": 0.0,
+      "native_start": [403016.8402, 383178.3789], "native_end": [403269.528, 383219.0345] },
+    { "idferill": 3767, "idbutur": 902040037, "veghluti": 1, "stored_direction": "rev", "piece_length_m": 13636.697, "gap_before_this_piece_m": 42.302,
+      "native_start": [403311.6927, 383222.4427], "native_end": [416754.8471, 384396.104] },
+    { "idferill": 3781, "idbutur": 902040037, "veghluti": 1, "stored_direction": "rev", "piece_length_m": 3182.104, "gap_before_this_piece_m": 0.0,
+      "native_start": [416754.8471, 384396.104], "native_end": [418302.2477, 381814.9441] },
+    { "idferill": 3613, "idbutur": 901130037, "veghluti": 1, "stored_direction": "rev", "piece_length_m": 10239.941, "gap_before_this_piece_m": 0.0,
+      "native_start": [418302.2477, 381814.9441], "native_end": [426188.183, 375928.946] },
+    { "idferill": 3614, "idbutur": 901130037, "veghluti": 1, "stored_direction": "rev", "piece_length_m": 3500.727, "gap_before_this_piece_m": 0.0,
+      "native_start": [426188.183, 375928.946], "native_end": [429082.0653, 374156.5108] },
+    { "idferill": 3615, "idbutur": 901130037, "veghluti": 1, "stored_direction": "rev", "piece_length_m": 3029.445, "gap_before_this_piece_m": 0.0,
+      "native_start": [429082.0653, 374156.5108], "native_end": [430713.0138, 371613.8204] },
+    { "idferill": 3591, "idbutur": 901130037, "veghluti": 1, "stored_direction": "rev", "piece_length_m": 831.77, "gap_before_this_piece_m": 0.0,
+      "native_start": [430713.0138, 371613.8204], "native_end": [430972.1263, 370845.6043],
+      "place_node_at_start": { "place_id": "hella", "role": "APPROACH_CANDIDATE_RECOMMENDED" },
+      "place_node_at_end": { "place_id": "hella", "role": "APPROACH_CANDIDATE_ALTERNATIVE" } },
+    { "idferill": 3638, "idbutur": 901230037, "veghluti": 1, "stored_direction": "rev", "piece_length_m": 4963.401, "gap_before_this_piece_m": 32.63,
+      "native_start": [430988.4981, 370817.3787], "native_end": [434476.6203, 367463.5804] },
+    { "idferill": 3643, "idbutur": 901230037, "veghluti": 1, "stored_direction": "rev", "piece_length_m": 7609.315, "gap_before_this_piece_m": 0.0,
+      "native_start": [434476.6203, 367463.5804], "native_end": [439003.2622, 361386.4806] },
+    { "idferill": 3593, "idbutur": 901230037, "veghluti": 1, "stored_direction": "rev", "piece_length_m": 279.448, "gap_before_this_piece_m": 0.0,
+      "native_start": [439003.2622, 361386.4806], "native_end": [439152.9219, 361150.6361],
+      "place_node_at_start": { "place_id": "hvolsvollur", "role": "APPROACH_CANDIDATE_RECOMMENDED" },
+      "place_node_at_end": { "place_id": "hvolsvollur", "role": "APPROACH_CANDIDATE_ALTERNATIVE" },
+      "note": "Both candidates for this piece are 0.0 m continuous on their respective sides — unlike Selfoss/Hella, no measured gap distinguishes them; the RECOMMENDED choice here follows the same END-field convention as Selfoss/Hella for product consistency, not because the data itself favors one side." },
+    { "idferill": 3555, "idbutur": 901220037, "veghluti": 1, "stored_direction": "rev", "piece_length_m": 10125.719, "gap_before_this_piece_m": 0.0,
+      "native_start": [439152.9219, 361150.6361], "native_end": [443360.3903, 352811.4513] },
+    { "idferill": 3576, "idbutur": 901220037, "veghluti": 1, "stored_direction": "rev", "piece_length_m": 6010.71, "gap_before_this_piece_m": 0.0,
+      "native_start": [443360.3903, 352811.4513], "native_end": [447906.9689, 348976.5225] },
+    { "idferill": 3639, "idbutur": 901220037, "veghluti": 1, "stored_direction": "rev", "piece_length_m": 5901.872, "gap_before_this_piece_m": 0.0,
+      "native_start": [447906.9689, 348976.5225], "native_end": [451334.9263, 344299.0803] },
+    { "idferill": 3848, "idbutur": 901210037, "veghluti": 1, "stored_direction": "rev", "piece_length_m": 5901.897, "gap_before_this_piece_m": 0.0,
+      "native_start": [451334.9263, 344299.0803], "native_end": [456294.1714, 341230.2456] },
+    { "idferill": 3854, "idbutur": 901210037, "veghluti": 1, "stored_direction": "rev", "piece_length_m": 9727.952, "gap_before_this_piece_m": 0.0,
+      "native_start": [456294.1714, 341230.2456], "native_end": [465221.1912, 337777.3847] },
+    { "idferill": 3839, "idbutur": 901210037, "veghluti": 1, "stored_direction": "rev", "piece_length_m": 1819.465, "gap_before_this_piece_m": 0.0,
+      "native_start": [465221.1912, 337777.3847], "native_end": [467019.1662, 337720.6296] },
+    { "idferill": 3853, "idbutur": 901050037, "veghluti": 1, "stored_direction": "rev", "piece_length_m": 1529.619, "gap_before_this_piece_m": 0.0,
+      "native_start": [467019.1662, 337720.6296], "native_end": [468268.1562, 336866.5939] },
+    { "idferill": 3852, "idbutur": 901050037, "veghluti": 1, "stored_direction": "rev", "piece_length_m": 12457.144, "gap_before_this_piece_m": 0.0,
+      "native_start": [468268.1562, 336866.5939], "native_end": [479770.8197, 332810.4508] },
+    { "idferill": 3851, "idbutur": 901050037, "veghluti": 1, "stored_direction": "rev", "piece_length_m": 14203.157, "gap_before_this_piece_m": 0.0,
+      "native_start": [479770.8197, 332810.4508], "native_end": [490977.537, 325147.5638] },
+    { "idferill": 3850, "idbutur": 901040037, "veghluti": 1, "stored_direction": "rev", "piece_length_m": 12117.673, "gap_before_this_piece_m": 0.0,
+      "native_start": [490977.537, 325147.5638], "native_end": [499391.9569, 323996.9084] },
+    { "idferill": 3849, "idbutur": 801100037, "veghluti": 1, "stored_direction": "rev", "piece_length_m": 721.67, "gap_before_this_piece_m": 0.0,
+      "native_start": [499391.9569, 323996.9084], "native_end": [499985.9121, 323611.5093],
+      "place_node_at_end": { "place_id": "vik", "role": "APPROACH_CANDIDATE_RECOMMENDED" },
+      "note": "Single retained candidate (no second node to compare) — see approach_candidates.vik below for why this is still OWNER_SELECTION_PENDING, not just a two-option choice like Selfoss/Hella/Hvolsvöllur." },
+    { "idferill": 23041, "idbutur": 801100037, "veghluti": 1, "stored_direction": "rev", "piece_length_m": 629.448, "gap_before_this_piece_m": 0.0,
+      "native_start": [499985.9121, 323611.5093], "native_end": [500595.9636, 323618.2012] }
+  ],
+  "approach_candidates": {
+    "hveragerdi": {
+      "candidates": [
+        {
+          "label": "RECOMMENDED",
+          "status": "APPROACH_CANDIDATE",
+          "idferill": 2135,
+          "idbutur": 902030037,
+          "stored_field": "END",
+          "native_xy": [392703.5, 389865.057],
+          "wgs84": { "latitude": 63.99538228, "longitude": -21.19270972, "crs": "EPSG:4326" },
+          "objectid_tier_minus1": 4891,
+          "reason": "Only retained node for Hveragerði; a NAME_MATCH_INFERRED reading of piece 2135's own name 'Selfoss-Hveragerði' (not a dedicated Hveragerði node). This is also exactly the point where the corridor meets the 34.75 m boundary gap toward Hellisheiði (piece 2117) — i.e. the westernmost point of this corridor, not a town-center pick."
+        }
+      ],
+      "sources_differentiate_candidates": false,
+      "note": "No second candidate exists for this place in the retained data."
+    },
+    "selfoss": {
+      "candidates": [
+        {
+          "label": "RECOMMENDED",
+          "status": "APPROACH_CANDIDATE",
+          "idferill": 2138,
+          "idbutur": 902030037,
+          "stored_field": "END",
+          "role_in_v3": "ENTRY / PHASE1_REFERENCE",
+          "native_xy": [400974.332, 384785.129],
+          "wgs84": { "latitude": 63.9523133, "longitude": -21.02049034, "crs": "EPSG:4326" },
+          "objectid_tier_minus1": 4846,
+          "reason": "0.0 m continuous contact with piece 2135 (Hveragerði side) in the retained chain walk — the stronger-continuity side."
+        },
+        {
+          "label": "ALTERNATIVE_NOT_RECOMMENDED",
+          "status": "APPROACH_CANDIDATE",
+          "idferill": 2138,
+          "idbutur": 902030037,
+          "stored_field": "START",
+          "role_in_v3": "EXIT / PHASE2_V3_NODE, ROLE_SOURCE_DIVERGENCE",
+          "native_xy": [401739.85, 383119.047],
+          "wgs84": { "latitude": 63.93759503, "longitude": -21.00380428, "crs": "EPSG:4326" },
+          "reason": "30.1 m measured gap toward the next piece (3737, Þjórsá-Selfoss direction) — weaker continuity than the recommended candidate."
+        }
+      ],
+      "sources_differentiate_candidates": true
+    },
+    "hella": {
+      "candidates": [
+        {
+          "label": "RECOMMENDED",
+          "status": "APPROACH_CANDIDATE",
+          "idferill": 3591,
+          "idbutur": 901130037,
+          "stored_field": "END",
+          "role_in_v3": "ENTRY / PHASE1_REFERENCE",
+          "native_xy": [430713.0138, 371613.8204],
+          "wgs84": { "latitude": 63.84144538, "longitude": -20.40797134, "crs": "EPSG:4326" },
+          "objectid_tier_minus1": 5941,
+          "reason": "0.0 m continuous contact with piece 3615 (Selfoss/Þjórsá side) in the retained chain walk."
+        },
+        {
+          "label": "ALTERNATIVE_NOT_RECOMMENDED",
+          "status": "APPROACH_CANDIDATE",
+          "idferill": 3591,
+          "idbutur": 901130037,
+          "stored_field": "START",
+          "role_in_v3": "EXIT / PHASE2_V3_NODE, ROLE_SOURCE_DIVERGENCE",
+          "native_xy": [430972.1263, 370845.6043],
+          "wgs84": { "latitude": 63.83460817, "longitude": -20.40236144, "crs": "EPSG:4326" },
+          "reason": "32.63 m measured gap toward the next piece (3638, Hvolsvöllur direction) — weaker continuity than the recommended candidate."
+        }
+      ],
+      "sources_differentiate_candidates": true
+    },
+    "hvolsvollur": {
+      "candidates": [
+        {
+          "label": "RECOMMENDED",
+          "status": "APPROACH_CANDIDATE",
+          "idferill": 3593,
+          "idbutur": 901230037,
+          "stored_field": "END",
+          "role_in_v3": "ENTRY / PHASE1_REFERENCE",
+          "native_xy": [439003.2622, 361386.4806],
+          "wgs84": { "latitude": 63.75128586, "longitude": -20.23549109, "crs": "EPSG:4326" },
+          "objectid_tier_minus1": 6082,
+          "reason": "Chosen for consistency with the Selfoss/Hella END-field convention, NOT because the data differentiates it: both this point and the alternative below are 0.0 m continuous on their respective sides (confirmed directly in the chain walk). Sources do not favor either side here."
+        },
+        {
+          "label": "ALTERNATIVE_EQUALLY_SUPPORTED",
+          "status": "APPROACH_CANDIDATE",
+          "idferill": 3593,
+          "idbutur": 901230037,
+          "stored_field": "START",
+          "role_in_v3": "EXIT / PHASE2_V3_NODE, ROLE_SOURCE_DIVERGENCE",
+          "native_xy": [439152.9219, 361150.6361],
+          "wgs84": { "latitude": 63.74919708, "longitude": -20.23236739, "crs": "EPSG:4326" },
+          "reason": "Also 0.0 m continuous (toward piece 3555, Markarfljót direction) — equally supported by the retained data; not chosen only for the product-consistency reason above."
+        }
+      ],
+      "sources_differentiate_candidates": false,
+      "note": "Unlike Selfoss/Hella, no measured gap favors one candidate over the other; the recommendation here is a product-consistency choice, stated honestly, not a data-driven one."
+    },
+    "vik": {
+      "candidates": [
+        {
+          "label": "RECOMMENDED",
+          "status": "APPROACH_CANDIDATE",
+          "idferill": 3849,
+          "idbutur": 801100037,
+          "stored_field": "START",
+          "role_in_v3": "EXIT / PHASE1_ACCESS_NODE_END",
+          "native_xy": [499985.9121, 323611.5093],
+          "wgs84": { "latitude": 63.41782798, "longitude": -19.00028197, "crs": "EPSG:4326" },
+          "objectid_tier_minus1": 5454,
+          "reason": "Only retained candidate; 0.0 m continuous on both sides (toward piece 3850 to the west and piece 23041, the final Vík village piece, to the east). Internal junction of pieces 3849/23041 within IDBUTUR 801100037; the existing fixed route continues about 629 m along piece 23041 to the east. This candidate is not the endpoint of that full fixed route."
+        }
+      ],
+      "sources_differentiate_candidates": false,
+      "note": "This is the only one of the five places with a single retained candidate rather than two. It is also not yet an owner-approved place point in winter-route-places.json (coordinates remain null there) — see that file's connectionStatus for this place."
+    }
+  },
+  "driving_access_and_direction": {
+    "status": "EXACT_GAP",
+    "note": "No field in the retained WFS layer (faerdferlar2017_1) encodes legal driving direction or access for any piece in this corridor. 'stored_direction': 'rev' above is this chain-walk's own traversal label (the pieces' native geometry is stored running the opposite way, westbound) — a digital/geometry fact only, never a legal-traffic-direction proof, and a reversed traversal direction is not proof of two-way legal access either. This status cannot change without an authoritative source outside the retained WFS data (see docs/ai/tasks/ticket-500/south/evidence.md for why none was fetched this round)."
+  }
+}

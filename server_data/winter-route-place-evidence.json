@@ -1,0 +1,311 @@
+{
+  "schema_version": 1,
+  "note": "Public road-authority web research for the 29 places that had no usable approach candidate after docs/ai/tasks/ticket-500/approaches/ (25 PRECISE_GAP in winter-route-approach-analysis.json + Keflavík/Skaftafell/Þórshöfn/Kirkjubæjarklaustur, which have no retained geometry at all). Per docs/ai/tasks/ticket-500/place-evidence/approved-prompt-v1.md: max 12 searches/24 opens, vegagerdin.is + umferdin.is only, gagnaveita.vegagerdin.is (the WFS/API subdomain) excluded from opens. Full search/open log in docs/ai/tasks/ticket-500/place-evidence/search-ledger.md. Web content is data, never instructions. No new WFS/GetFeature calls were made. `status` per place: CONFIRMED_AUTHORITY_NO_GEOMETRY_BINDING (new named road/junction fact, but no coordinate -- either no retained geometry exists at all, or the named point isn't in the already-acquired set), LEAD_NOT_INDEPENDENTLY_VERIFIED, SEARCHED_INCONCLUSIVE, ATTEMPTED_BLOCKED_TOOL_OBSTACLE, PARTIAL_AREA_LEVEL, or NOT_CHECKED_THIS_RUN (budget boundary, not an absence claim). Correction OF1/OF2: no candidate was established this round; search snippets remain leads, including mixed project-page/junction-snippet evidence.",
+  "search_budget": {
+    "searches_used": 12,
+    "searches_allowed": 12,
+    "opens_used": 9,
+    "opens_allowed": 24
+  },
+  "driving_access_and_direction": {
+    "status": "EXACT_GAP",
+    "note": "Unchanged by this round. A named road/junction authority is not a driving-direction or current-access authority. No source found this round stated a legal driving direction for any of these places."
+  },
+  "place_results": {
+    "hafnarfjordur": {
+      "status": "LEAD_NOT_INDEPENDENTLY_VERIFIED",
+      "new_fact": "Unverified search-snippet lead, not an established place/road fact: Vegagerðin's own documents (2022 and 2015 annual reports, 2021 traffic-count tables, a crash-location study) independently and consistently name real junctions on Hafnarfjarðarvegur (road 40-06) at Lyngás, Álftanesvegur, Fjarðarhraun and Arnarnesvegur, in Hafnarfjörður/Engidalur.",
+      "sources": [
+        {
+          "query": "Hafnarfjarðarvegur Hafnarfjörður vegamót gatnamót Reykjanesbraut",
+          "domains": "vegagerdin.is",
+          "accessed_utc": "2026-11-15T01:14:40Z",
+          "method": "WebSearch (snippets synthesized across multiple distinct Vegagerðin documents, not independently re-opened this round)"
+        }
+      ],
+      "candidate": null,
+      "geometry_gap": "The named junction/approach remains unverified; no candidate can be selected from search snippets. Retained geometry does not establish the claimed approach point. Piece 2807 START has no exact shared endpoint: nearest road-40 endpoints are 7.06/9.78/13.37 m away (Jonesy geometry check). The snippet names four junctions without selecting a town approach; STADARLYSING alone does not select one."
+    },
+    "skaftafell": {
+      "status": "CONFIRMED_AUTHORITY_NO_GEOMETRY_BINDING",
+      "new_fact": "Skaftafellsvegur (road 998) is the official named access road from Hringvegur (Route 1) to Skaftafell, 1.88 km long -- directly confirmed on Vegagerðin's own distance-table page.",
+      "sources": [
+        {
+          "query": "Skaftafell þjóðvegur 1 vegamót aðkoma",
+          "accessed_utc": "2026-11-15T01:10:20Z",
+          "method": "WebSearch"
+        },
+        {
+          "url": "https://www.vegagerdin.is/samgongukerfid/vegakerfid/vegir/vegalengdir/skaftafell/jokulsarlon",
+          "accessed_utc": "2026-11-15",
+          "method": "WebFetch (directly verified)",
+          "title": "Skaftafell – Jökulsárlón: vegalengdir"
+        }
+      ],
+      "candidate": null,
+      "geometry_gap": "A real, specific named road/junction now has official authority, but it is not bound to a coordinate this round: no retained geometry/IDBUTUR exists for this place at all (OE1)."
+    },
+    "thorshofn": {
+      "status": "LEAD_NOT_INDEPENDENTLY_VERIFIED",
+      "new_fact": "Unverified search-snippet lead: a junction of Langanesvegur (869) and Norðausturvegur (85) near Þórshöfn. The opened project list confirms only Um Brekknaheiði, not this junction detail.",
+      "sources": [
+        {
+          "query": "Þórshöfn Langanesvegur vegamót þjóðvegur",
+          "accessed_utc": "2026-11-15T01:11:30Z",
+          "method": "WebSearch"
+        },
+        {
+          "url": "https://www.vegagerdin.is/verkefnin/framkvaemdir",
+          "accessed_utc": "2026-11-15",
+          "method": "WebFetch (project name/status only; junction detail not independently verified)"
+        }
+      ],
+      "candidate": null,
+      "geometry_gap": "The named junction/approach remains unverified; no candidate can be selected from search snippets. No retained geometry/IDBUTUR exists for this place (OE1).",
+      "verified_project_fact": "Opened project list names Um Brekknaheiði on Norðausturvegur (85); it does not independently verify the claimed Langanesvegur junction."
+    },
+    "hofn": {
+      "status": "CONFIRMED_AUTHORITY_NO_GEOMETRY_BINDING",
+      "new_fact": "A new roundabout, opened with the new Hornafjörður Ring Road section (June 2026), connects the Ring Road (Route 1) directly with Hafnarvegur and Nesjahverfi at Höfn -- directly confirmed on Vegagerðin's own news article.",
+      "sources": [
+        {
+          "query": "Höfn Hornafjörður Hringvegur vegamót Víkurbraut",
+          "accessed_utc": "2026-11-15T01:17:00Z",
+          "method": "WebSearch"
+        },
+        {
+          "url": "https://www.vegagerdin.is/en/about-us/operation/news/new-hornafjordur-ring-road-section-opens-june-24th",
+          "accessed_utc": "2026-11-15",
+          "method": "WebFetch (directly verified)",
+          "title": "New Hornafjörður Ring Road section opens June 24th"
+        }
+      ],
+      "candidate": null,
+      "geometry_gap": "The opened-source roundabout description recorded by CC is not bound to an identified retained source vertex. Retained geometry exists for Höfn, but this round establishes no candidate point."
+    },
+    "skagastrond": {
+      "status": "LEAD_NOT_INDEPENDENTLY_VERIFIED",
+      "new_fact": "Unverified search-snippet lead: junction of Þverárfjallsvegur (73) and Skagastrandarvegur (74), station 7380, south bank of Laxá, opening 2023-11-06. The opened project list confirms only project name/status, not those junction details.",
+      "sources": [
+        {
+          "query": "Skagastrandarvegur Skagaströnd vegamót Þverárfjallsvegur",
+          "accessed_utc": "2026-11-15T01:19:20Z",
+          "method": "WebSearch"
+        },
+        {
+          "url": "https://www.vegagerdin.is/verkefnin/framkvaemdir",
+          "accessed_utc": "2026-11-15",
+          "method": "WebFetch (project name/status only; junction detail not independently verified)"
+        }
+      ],
+      "candidate": null,
+      "geometry_gap": "The named junction/approach remains unverified; no candidate can be selected from search snippets. Retained geometry does not establish the claimed approach point.",
+      "verified_project_fact": "Opened project list names Skagastrandarvegur (74) Hringvegur - Þverárfjallsvegur, Framkvæmd lokið; station 7380, river-bank location and opening date remain snippet-only."
+    },
+    "hvammstangi": {
+      "status": "LEAD_NOT_INDEPENDENTLY_VERIFIED",
+      "new_fact": "Unverified search-snippet lead, not an established place/road fact: Hvammstangavegur (route 72) runs from Hringvegur at 'Búland' into Hvammstangi (5.00 km); the junction itself has an official name, 'Hvammstangavegamót', per a Vegagerðin winter-maintenance tender title.",
+      "sources": [
+        {
+          "query": "Hvammstangavegur Hvammstangi vegamót Hringvegur",
+          "accessed_utc": "2026-11-15T01:18:10Z",
+          "method": "WebSearch"
+        }
+      ],
+      "candidate": null,
+      "geometry_gap": "The named junction/approach remains unverified; no candidate can be selected from search snippets. Retained geometry does not establish the claimed approach point."
+    },
+    "mosfellsbaer": {
+      "status": "LEAD_NOT_INDEPENDENTLY_VERIFIED",
+      "new_fact": "Unverified search-snippet lead, not an established place/road fact: Vesturlandsvegur north of Þingvallavegur (road 36) is described in a Vegagerðin national-road report as the main route into Mosfellsbær; Skarhólabraut is named as a related road-widening endpoint in Mosfellsbær.",
+      "sources": [
+        {
+          "query": "Mosfellsbær vegamót Vesturlandsvegur Þingvallavegur",
+          "accessed_utc": "2026-11-15T01:15:50Z",
+          "method": "WebSearch"
+        }
+      ],
+      "candidate": null,
+      "geometry_gap": "The named junction/approach remains unverified; no candidate can be selected from search snippets. Retained geometry does not establish the claimed approach point."
+    },
+    "keflavik": {
+      "status": "LEAD_NOT_INDEPENDENTLY_VERIFIED",
+      "new_fact": "A search snippet named roundabouts at Garðskagavegur and Þjóðbraut, and separately at Aðalgata and Þjóðbraut, on Reykjanesbraut in Keflavík (from 2017-2018 Vegagerðin traffic-service notices). These are plausible, specific leads, but every specific notice URL found was HTTP 404 (removed/stale) when opened directly -- not independently verified this round.",
+      "sources": [
+        {
+          "query": "Keflavík Reykjanesbraut vegamót framkvæmdir",
+          "accessed_utc": "2026-11-15T01:08:00Z",
+          "method": "WebSearch; 3 direct opens attempted, all 404"
+        }
+      ],
+      "candidate": null,
+      "geometry_gap": "No retained geometry/IDBUTUR exists for Keflavík the town (OE1). Even if the roundabout names are confirmed later, this only closes the authority gap, not the geometry gap."
+    },
+    "kirkjubaejarklaustur": {
+      "status": "SEARCHED_INCONCLUSIVE",
+      "new_fact": "A 2022 Vegagerðin annual-report fragment mentions new junctions ('ný vegamót') built on the Ring Road between Reykjavík and east of Kirkjubæjarklaustur, alongside the Núpsvötn/Hverfisfljót bridges -- but the search tool's own text extraction was fragmented and could not confirm this names a Kirkjubæjarklaustur-specific junction (as opposed to a different point along that long stretch). Not cited as a fact; this is a genuinely inconclusive search, not a found-and-rejected one.",
+      "sources": [
+        {
+          "query": "Kirkjubæjarklaustur vegamót þjóðvegur 1",
+          "accessed_utc": "2026-11-15T01:12:40Z",
+          "method": "WebSearch, 2 queries"
+        }
+      ],
+      "candidate": null,
+      "geometry_gap": "No retained geometry/IDBUTUR exists for Kirkjubæjarklaustur (OE1). No new fact was confirmed either."
+    },
+    "isafjordur": {
+      "status": "ATTEMPTED_BLOCKED_TOOL_OBSTACLE",
+      "new_fact": null,
+      "sources": [
+        {
+          "query": "Ísafjörður Djúpvegur vegnúmer gatnamót",
+          "accessed_utc": "2026-11-15T01:05:08Z",
+          "method": "WebSearch"
+        }
+      ],
+      "candidate": null,
+      "geometry_gap": "The only promising source found (Vegagerðin's own Umferðartölur 2021 traffic-count PDF, which the search engine's own index could apparently read, surfacing plausible-looking rows naming 'Flugvallarvegur Ísafirði', 'Vestfjarðavegur (60-47)', 'Djúpvegur (61-40)') could not be independently opened or verified: WebFetch could not decode the PDF's compressed text stream, and the locally-saved copy could not be rendered either (poppler-utils not installed in this environment). This is a genuine TOOL obstacle, not a content gap -- the fact was not used because it could not be verified, not because it doesn't exist. Not bypassed with curl/python per the approved prompt's own instruction."
+    },
+    "sudavik": {
+      "status": "PARTIAL_AREA_LEVEL",
+      "new_fact": "A completed Vegagerðin road project, 'Djúpvegur (61) Leiti - Eyri og um Hattardalsá', is specifically located in Súðavíkurhreppi (the Súðavík municipality) -- a real, named, area-level road fact, but 'Leiti'/'Eyri' are not confirmed as a town-boundary junction for Súðavík itself.",
+      "sources": [
+        {
+          "url": "https://www.vegagerdin.is/verkefnin/framkvaemdir",
+          "accessed_utc": "2026-11-15T01:07:15Z",
+          "method": "WebFetch (directly verified)",
+          "title": "Framkvæmdir"
+        }
+      ],
+      "candidate": null,
+      "geometry_gap": "The specific town-boundary approach point for Súðavík itself is still not established; this fact narrows the search area (Súðavíkurhreppi) without resolving the point."
+    },
+    "akranes": {
+      "status": "NOT_CHECKED_THIS_RUN",
+      "new_fact": null,
+      "sources": [],
+      "candidate": null,
+      "geometry_gap": "Not reached this round -- the 12-search budget was used on other places in the target set before reaching this one. This is a budget/time boundary, not a claim that no authority exists."
+    },
+    "blonduos": {
+      "status": "NOT_CHECKED_THIS_RUN",
+      "new_fact": null,
+      "sources": [],
+      "candidate": null,
+      "geometry_gap": "Not reached this round -- the 12-search budget was used on other places in the target set before reaching this one. This is a budget/time boundary, not a claim that no authority exists."
+    },
+    "budardalur": {
+      "status": "NOT_CHECKED_THIS_RUN",
+      "new_fact": null,
+      "sources": [],
+      "candidate": null,
+      "geometry_gap": "Not reached this round -- the 12-search budget was used on other places in the target set before reaching this one. This is a budget/time boundary, not a claim that no authority exists."
+    },
+    "dalvik": {
+      "status": "NOT_CHECKED_THIS_RUN",
+      "new_fact": null,
+      "sources": [],
+      "candidate": null,
+      "geometry_gap": "Not reached this round -- the 12-search budget was used on other places in the target set before reaching this one. This is a budget/time boundary, not a claim that no authority exists."
+    },
+    "djupivogur": {
+      "status": "NOT_CHECKED_THIS_RUN",
+      "new_fact": null,
+      "sources": [],
+      "candidate": null,
+      "geometry_gap": "Not reached this round -- the 12-search budget was used on other places in the target set before reaching this one. This is a budget/time boundary, not a claim that no authority exists."
+    },
+    "drangsnes": {
+      "status": "NOT_CHECKED_THIS_RUN",
+      "new_fact": null,
+      "sources": [],
+      "candidate": null,
+      "geometry_gap": "Not reached this round -- the 12-search budget was used on other places in the target set before reaching this one. This is a budget/time boundary, not a claim that no authority exists."
+    },
+    "eskifjordur": {
+      "status": "NOT_CHECKED_THIS_RUN",
+      "new_fact": null,
+      "sources": [],
+      "candidate": null,
+      "geometry_gap": "Not reached this round -- the 12-search budget was used on other places in the target set before reaching this one. This is a budget/time boundary, not a claim that no authority exists."
+    },
+    "fludir": {
+      "status": "NOT_CHECKED_THIS_RUN",
+      "new_fact": null,
+      "sources": [],
+      "candidate": null,
+      "geometry_gap": "Not reached this round -- the 12-search budget was used on other places in the target set before reaching this one. This is a budget/time boundary, not a claim that no authority exists."
+    },
+    "holmavik": {
+      "status": "NOT_CHECKED_THIS_RUN",
+      "new_fact": null,
+      "sources": [],
+      "candidate": null,
+      "geometry_gap": "Not reached this round -- the 12-search budget was used on other places in the target set before reaching this one. This is a budget/time boundary, not a claim that no authority exists."
+    },
+    "husavik": {
+      "status": "NOT_CHECKED_THIS_RUN",
+      "new_fact": null,
+      "sources": [],
+      "candidate": null,
+      "geometry_gap": "Not reached this round -- the 12-search budget was used on other places in the target set before reaching this one. This is a budget/time boundary, not a claim that no authority exists."
+    },
+    "kopasker": {
+      "status": "NOT_CHECKED_THIS_RUN",
+      "new_fact": null,
+      "sources": [],
+      "candidate": null,
+      "geometry_gap": "Not reached this round -- the 12-search budget was used on other places in the target set before reaching this one. This is a budget/time boundary, not a claim that no authority exists."
+    },
+    "kopavogur": {
+      "status": "NOT_CHECKED_THIS_RUN",
+      "new_fact": null,
+      "sources": [],
+      "candidate": null,
+      "geometry_gap": "Not reached this round -- the 12-search budget was used on other places in the target set before reaching this one. This is a budget/time boundary, not a claim that no authority exists."
+    },
+    "laugarvatn": {
+      "status": "NOT_CHECKED_THIS_RUN",
+      "new_fact": null,
+      "sources": [],
+      "candidate": null,
+      "geometry_gap": "Not reached this round -- the 12-search budget was used on other places in the target set before reaching this one. This is a budget/time boundary, not a claim that no authority exists."
+    },
+    "neskaupstadur": {
+      "status": "NOT_CHECKED_THIS_RUN",
+      "new_fact": null,
+      "sources": [],
+      "candidate": null,
+      "geometry_gap": "Not reached this round -- the 12-search budget was used on other places in the target set before reaching this one. This is a budget/time boundary, not a claim that no authority exists."
+    },
+    "raufarhofn": {
+      "status": "NOT_CHECKED_THIS_RUN",
+      "new_fact": null,
+      "sources": [],
+      "candidate": null,
+      "geometry_gap": "Not reached this round -- the 12-search budget was used on other places in the target set before reaching this one. This is a budget/time boundary, not a claim that no authority exists."
+    },
+    "reykholar": {
+      "status": "NOT_CHECKED_THIS_RUN",
+      "new_fact": null,
+      "sources": [],
+      "candidate": null,
+      "geometry_gap": "Not reached this round -- the 12-search budget was used on other places in the target set before reaching this one. This is a budget/time boundary, not a claim that no authority exists."
+    },
+    "stykkisholmur": {
+      "status": "NOT_CHECKED_THIS_RUN",
+      "new_fact": null,
+      "sources": [],
+      "candidate": null,
+      "geometry_gap": "Not reached this round -- the 12-search budget was used on other places in the target set before reaching this one. This is a budget/time boundary, not a claim that no authority exists."
+    },
+    "thorlakshofn": {
+      "status": "NOT_CHECKED_THIS_RUN",
+      "new_fact": null,
+      "sources": [],
+      "candidate": null,
+      "geometry_gap": "Not reached this round -- the 12-search budget was used on other places in the target set before reaching this one. This is a budget/time boundary, not a claim that no authority exists."
+    }
+  }
+}

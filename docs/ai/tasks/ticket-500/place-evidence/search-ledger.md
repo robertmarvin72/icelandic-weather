@@ -1,0 +1,43 @@
+# #500 place-evidence — search/open ledger
+
+Budget: 12 searches, 24 page/document opens. `gagnaveita.vegagerdin.is`
+(including any `/geoserver`/`/ows`/`/api` path) is excluded from opens —
+treated as a disguised WFS call, never followed as a "page". Every row
+below is one real search or one real open, logged as it happens, in UTC.
+
+## Searches
+
+| # | UTC | Query | Domains | Result summary |
+|---|---|---|---|---|
+| 1 | 2026-11-15T01:05:08Z | "Ísafjörður Djúpvegur vegnúmer gatnamót" | vegagerdin.is, umferdin.is | Real hits: official Vegagerðin traffic-count PDFs (Umferðartölur 2020/2021) list named road-segment junctions at Ísafjörður, e.g. Flugvallarvegur Ísafirði (631-01) meeting Vestfjarðavegur (60-47) and Djúpvegur (61-40/61-42). `gagnaveita.vegagerdin.is` API links appeared in results but are excluded from opens (OE2). |
+| 2 | 2026-11-15T01:08:00Z | "Keflavík Reykjanesbraut vegamót framkvæmdir" | vegagerdin.is, umferdin.is | Leads: a 2018 notice describing roundabouts at Garðskagavegur and Þjóðbraut on Reykjanesbraut in Keflavík; a 2016 annual-report mention of a Hafnarvegur junction at Fitjar. Promising but unverified (see opens 3-4). |
+| 3 | 2026-11-15T01:09:10Z | "Reykjanesbraut Garðskagavegur Þjóðbraut hringtorg Keflavík" | vegagerdin.is, umferdin.is | Additional lead: a 2017 notice describing two roundabouts built on Reykjanesbraut, at Aðalgata and at Þjóðbraut. No page confirmed these are specifically in Keflavík town (vs. nearby). |
+| 4 | 2026-11-15T01:10:20Z | "Skaftafell þjóðvegur 1 vegamót aðkoma" | vegagerdin.is, umferdin.is | Real hit: Skaftafellsvegur (road 998), the named access road from Hringvegur to Skaftafell, 1.88 km — a Vegagerðin distance-table page. Distance-table rows verified (open 6). |
+| 5 | 2026-11-15T01:11:30Z | "Þórshöfn Langanesvegur vegamót þjóðvegur" | vegagerdin.is, umferdin.is | Real hit: a new junction where Langanesvegur (869) meets Norðausturvegur (85) near Þórshöfn, part of an active "Um Brekknaheiði" project. Project name verified (open 7); junction detail remains snippet-only. |
+| 6 | 2026-11-15T01:12:40Z | "Kirkjubæjarklaustur vegamót þjóðvegur 1" | vegagerdin.is, umferdin.is | Inconclusive: a fragmentary 2022 annual-report mention of "ný vegamót" near Kirkjubæjarklaustur, text too jumbled to confirm it names a specific junction there. |
+| 7 | 2026-11-15T01:13:30Z | "Kirkjubæjarklaustur Skaftárvegur eða Hringvegur framkvæmdir vegamót" | vegagerdin.is, umferdin.is | No improvement over search 6; still inconclusive. Not pursued further (diminishing returns on this specific place within budget). |
+| 8 | 2026-11-15T01:14:40Z | "Hafnarfjarðarvegur Hafnarfjörður vegamót gatnamót Reykjanesbraut" | vegagerdin.is, umferdin.is | Real hit, corroborated across multiple distinct Vegagerðin documents (2022/2015 annual reports, 2021 traffic counts, a crash-location study): Hafnarfjarðarvegur meets Lyngás, Álftanesvegur, Fjarðarhraun, Arnarnesvegur. Originally interpreted as matching piece 2807; withdrawn under OF1: no supported approach candidate. |
+| 9 | 2026-11-15T01:15:50Z | "Mosfellsbær vegamót Vesturlandsvegur Þingvallavegur" | vegagerdin.is, umferdin.is | Real hit: a 2007 national-road report names Vesturlandsvegur north of Þingvallavegur (road 36) as "the main route into Mosfellsbær"; Skarhólabraut named as a related endpoint. Not bound to acquired geometry this round. |
+| 10 | 2026-11-15T01:17:00Z | "Höfn Hornafjörður Hringvegur vegamót Víkurbraut" | vegagerdin.is, umferdin.is | Real hit: a new roundabout (opened June 2026) connects the Ring Road directly with Hafnarvegur and Nesjahverfi at Höfn. Verified directly (open 8). |
+| 11 | 2026-11-15T01:18:10Z | "Hvammstangavegur Hvammstangi vegamót Hringvegur" | vegagerdin.is, umferdin.is | Real hit, corroborated across two independent documents (traffic tables + a winter-maintenance tender title): Hvammstangavegur (route 72) runs from Hringvegur at "Búland" into Hvammstangi; the junction is officially named "Hvammstangavegamót". Not bound to acquired geometry this round. |
+| 12 | 2026-11-15T01:19:20Z | "Skagastrandarvegur Skagaströnd vegamót Þverárfjallsvegur" | vegagerdin.is, umferdin.is | Real hit: a new junction at station 7380, south bank of the Laxá river, connecting new Þverárfjallsvegur (73) and new Skagastrandarvegur (74), opened 2023-11-06. Project name/status verified (open 9); junction station/date remain snippet-only. This was the 12th and final search under this round's own 12-search cap. |
+
+## Opens
+
+| # | UTC | URL | Result |
+|---|---|---|---|
+| 1 | 2026-11-15T01:06:40Z | https://www.vegagerdin.is/media/2024/06/umferd_2021_utg_30112021.pdf | **Technical obstacle, not a content gap.** WebFetch could not decode the PDF's compressed text stream (confirmed: saved copy also fails to render locally — `pdftoppm`/poppler-utils not installed in this environment). The WebSearch snippet for this same document separately surfaced plausible table rows (e.g. "Flugvallarvegur Ísafirði (631-01)... Vestfjarðavegur (60-47)... Djúpvegur (61-40)"), but since I could not independently re-open and verify them myself, they are NOT used as a cited fact below — logged here for transparency only. Per approved-prompt-v1.md: not bypassed with curl/python; no further PDF opens attempted via this same method. |
+| 2 | 2026-11-15T01:07:15Z | https://www.vegagerdin.is/verkefnin/framkvaemdir | **Readable (HTML), real new fact for Súðavík.** Project card: "Djúpvegur (61) Leiti - Eyri og um Hattardalsá í Súðavíkurhreppi" (category Vegir, status Framkvæmd lokið) — names "Leiti" and "Eyri" as a real, completed road-project segment of Djúpvegur specifically in Súðavíkurhreppi. Not a town-centre junction, but a real, specific, citable road-segment fact in the right place-cluster. Confirms the method works for HTML pages; PDFs are a known tool-level obstacle going forward, not reattempted the same way. |
+| 3 | 2026-11-15T01:08:40Z | https://www.vegagerdin.is/tilkynningar/eldri-tilkynningar/umferdarthjonusta-tilkynning-1772018-2 | **404 Not Found.** Stale search-index link; the notice no longer exists at this URL. Keflavík roundabout-name lead not verified via this page. |
+| 4 | 2026-11-15T01:09:00Z | https://www.vegagerdin.is/tilkynningar/eldri-tilkynningar/umferdarthjonusta-tilkynning-2772017-1 | **404 Not Found.** Same pattern as open 3 — old "eldri tilkynningar" notice pages are systematically gone from their indexed URLs. |
+| 5 | 2026-11-15T01:09:40Z | https://www.vegagerdin.is/ferdaupplysingar/faerd-og-astand/umferdarthjonusta-tilkynning-672017-3 | **404 Not Found.** Third and last attempt at this URL pattern; not retried further per "ekki eyða öllum budgetinu í sömu aðferðina." Keflavík (town) roundabout leads remain unverified — logged as `LEAD_NOT_INDEPENDENTLY_VERIFIED`. |
+| 6 | 2026-11-15T01:10:50Z | https://www.vegagerdin.is/samgongukerfid/vegakerfid/vegir/vegalengdir/skaftafell/jokulsarlon | **Readable (HTML), real new fact for Skaftafell, directly verified.** Distance-table rows confirmed: "998 / Skaftafellsvegur / 1,88 km" and "1 / Hringvegur / 54,62 km / 0,22 km" in a Skaftafell→Jökulsárlón breakdown. |
+| 7 | 2026-11-15T01:12:00Z | https://www.vegagerdin.is/verkefnin/framkvaemdir | **Readable (HTML), project-name confirmation only for Þórshöfn** (cache reused from open 2's URL, fresh prompt). Confirms live project "Um Brekknaheiði" on Norðausturvegur (85), the junction detail remains snippet-only. |
+| 8 | 2026-11-15T01:16:40Z | https://www.vegagerdin.is/en/about-us/operation/news/new-hornafjordur-ring-road-section-opens-june-24th | **Readable (HTML), real new fact for Höfn, directly verified.** Quoted directly: "Roundabout connecting the Ring road with Hafnarvegur and Nesjahverfi"; "the new Höfn roundabout." |
+| 9 | 2026-11-15T01:19:50Z | https://www.vegagerdin.is/verkefnin/framkvaemdir | **Readable (HTML), project-name/status confirmation only for Skagaströnd** (same URL as opens 2/7, fresh prompt). Confirms project "Skagastrandarvegur (74) Hringvegur - Þverárfjallsvegur" status "Framkvæmd lokið." |
+
+**Totals: 12 searches used (of 12 allowed), 9 opens used (of 24 allowed).** Opens 7 and 9 re-fetch the same URL as open 2 (`.../verkefnin/framkvaemdir`) with a different prompt each time; each counted as its own open in this total.
+
+## Ripley correction — 2026-11-15
+
+No new searches or opens. Original result descriptions above are CC observations, not independent Ripley verification. Opens 7/9 confirm project names/status only, not the junction details in search snippets. Hafnarfjörður/Hvammstangi/Mosfellsbær snippets have no retained source URL and are leads only. Hafnarfjörður candidate withdrawn. Search timestamps are CC-recorded, not independently verified.

@@ -1,0 +1,184 @@
+{
+  "schema_version": 1,
+  "note": "First data-contract layer for #501 (Frá/Til), per docs/ai/tasks/ticket-500/approved-prompt-v1.md. Not an app-runtime connection and not a full national place list — four already-selected base points only. No new network call; all fields reused from #499/#493 retained deliverables. `null` + `null_reason` is used wherever this round has no real authority for a field — never a guess.",
+  "ids_are_stable_and_not_hagstofa": "All four `id` values below are internal stable slugs chosen for this contract. None is a Hagstofa Íslands municipality-merging ID (those merge/split over time and do not identify a road point).",
+  "places": [
+    {
+      "id": "reykjavik-raudavatn",
+      "display_name": { "is": "Reykjavík — Rauðavatn", "en": "Reykjavík — Rauðavatn" },
+      "region": "Reykjavík / Suðvesturland",
+      "approach_description": {
+        "is": "Eigandavalin hringvegaraðkoma við vestari enda IDFERILL 1436 (Rauðavatn). Staðarpunktur samþykktur fyrir MVP, ekki staðfest akstursleið eða fullgerð borgaraðkoma.",
+        "en": "Owner-selected ring-road approach at the western end of IDFERILL 1436 (Rauðavatn). The point is approved for MVP use; it is not a confirmed driving route or a finished city-core approach."
+      },
+      "owner_selection": {
+        "decided": "2026-11-13",
+        "by": "owner, direct reply \"Já flott.\" to Ripley's question",
+        "reference_file": "docs/ai/tasks/ticket-499/reykjavik/owner-decision.md",
+        "note": "Supersedes the earlier 2026-11-11 PRODUCT-SCOPE-ONLY record (docs/ai/tasks/ticket-493/endpoint-owner-decisions-2026-11-11.md), which explicitly left the exact point PENDING. That earlier record is retained in endpoint-registry.json's r1_reykjavik.prior_unselected_record for history, not reused as a selection here."
+      },
+      "coordinates": { "latitude": 64.10152894, "longitude": -21.75906405, "crs": "EPSG:4326" },
+      "road_reference": {
+        "idferill": 1436,
+        "idbutur": 1410010037,
+        "role": "western end / stored END",
+        "end_idferill": 1436,
+        "start_idferill": null,
+        "null_reason": "R1 is a single-piece endpoint (one stored END), not a two-piece junction like E1/S2 — there is no paired START IDFERILL to record."
+      },
+      "provenance": {
+        "coordinate_source": {
+          "file": "docs/ai/tasks/ticket-483/samples/wfs-chain-4326.json",
+          "sha256": "966848554f0ce205c919625c3e6209da1fe05bcc50e7e8084ae96840ad519af4",
+          "note": "Server-side reprojection (srsName=EPSG:4326 in the request itself), never an offline/local transform. Identical across all 4 NAKVAEMNIFERLIS tiers."
+        },
+        "name_source": {
+          "field": "STUTTNAFNLEIDAR",
+          "value": "Rauðavatn - Nesjavallaleið",
+          "file": "docs/ai/tasks/ticket-483/samples/wfs-vegnr1-all.json",
+          "sha256": "305f60d6f1f17918c058cbd047735681e56d6f9aad99f9e16f50de9419d6983a"
+        },
+        "native_reference": {
+          "crs": "EPSG:3057",
+          "native_xy": [365522.0175, 402772.762],
+          "file": "docs/ai/tasks/ticket-483/samples/wfs-vegnr1-all.json",
+          "sha256": "305f60d6f1f17918c058cbd047735681e56d6f9aad99f9e16f50de9419d6983a"
+        }
+      },
+      "status": {
+        "driving_access_both_directions": "EXACT_GAP",
+        "connection_south_vik": "Measured geometry only (piece 1436 runs ~2.56 km to a 0.0 m eastern-end adjacency with 903010037) — not a driving-access verification. Out of scope for this round per approved-prompt-v1.md step 3.",
+        "connection_north_kjalarnes_borgarnes": "See docs/ai/tasks/ticket-500/r1-north-connection.json — unsupported for #501 while H1/driving-direction/arc-selection remain unconfirmed.",
+        "routability": "NOT routable yet — owner selection alone does not make this point selectable by a routing feature."
+      }
+    },
+    {
+      "id": "egilsstadir",
+      "display_name": { "is": "Egilsstaðir (E1)", "en": "Egilsstaðir (E1)" },
+      "region": "Austurland",
+      "approach_description": {
+        "is": "Eigandavalin mót á hringvegi/Seyðisfjarðarvegi: endi IDFERILL 2345 / upphaf IDFERILL 2344. Varðveitt úr #493, ekki endurvalið eða endursótt í þessari lotu.",
+        "en": "Owner-selected ring-road/Seyðisfjörður-road junction: end of IDFERILL 2345 / start of IDFERILL 2344. Reused from #493, not re-selected or re-fetched this round."
+      },
+      "owner_selection": {
+        "decided": "retained from #493 acquisition round",
+        "reference_file": "docs/ai/tasks/ticket-499/endpoint-registry.json#e1_egilsstadir"
+      },
+      "coordinates": { "latitude": 65.25861764, "longitude": -14.39028964, "crs": "EPSG:4326" },
+      "road_reference": {
+        "idferill": null,
+        "idbutur": 911040037,
+        "role": "junction: END of 2345 ('Hringvegur að Seyðisfjarðarvegi') = START of 2344 ('Seyðisfjarðarvegur um Egilsstaði')",
+        "end_idferill": 2345,
+        "start_idferill": 2344
+      },
+      "provenance": {
+        "coordinate_source": {
+          "file": "docs/ai/tasks/ticket-493-endpoint-acquisition/endpoint-wgs84.json",
+          "sha256": "916ac90bbb9677dce8ea67bd1408d13ae22f139b864947d1294710a9c569fa6d",
+          "note": "Pulled directly from this file as instructed (not left coordinateless just because endpoint-registry.json only carries E1 in text form). Tier -1 (finest retained) used; identical across all 4 tiers."
+        },
+        "raw_response": {
+          "file": "docs/ai/tasks/ticket-493-endpoint-acquisition/samples/raw-E1-WGS84.json",
+          "sha256": "cb9382946098c2040dbc5c151985977974a1b7bf38aede520a7c1a312ee78355",
+          "ledger_file": "docs/ai/tasks/ticket-493-endpoint-acquisition/samples/exchange-ledger.jsonl",
+          "ledger_line": 1
+        },
+        "native_reference": {
+          "crs": "EPSG:3057",
+          "native_xy": [715153.74, 536679.93],
+          "file": "docs/ai/tasks/ticket-493-endpoint-acquisition/samples/rp1_native_reference.json",
+          "sha256": null,
+          "null_reason": "ER1 (carried-forward, retained #493 limitation): the native_reference block never recorded an independent native-file SHA or vertex index. Not fixed this round — approved-prompt-v1.md step 2 says not to backfill a missing field with a guess."
+        }
+      },
+      "status": {
+        "driving_access_both_directions": "EXACT_GAP",
+        "junction_check": "ER2 (carried forward): 2345-END = 2344-START is a construction/consistency check (EA5c/d) only, never independently re-verified by code.",
+        "routability": "NOT routable yet — owner selection alone does not make this point selectable by a routing feature."
+      }
+    },
+    {
+      "id": "seydisfjordur",
+      "display_name": { "is": "Seyðisfjörður — aðkoma við mót 2894/2892", "en": "Seyðisfjörður — approach at junction 2894/2892" },
+      "region": "Austurland",
+      "approach_description": {
+        "is": "Hlutlaus MVP-vörulýsing á eigandavöldu móti sem hrágögn styðja. Þetta er EKKI staðfest opinbert staðarheiti eða staðfest bæjarmörk.",
+        "en": "Neutral MVP product description of the owner-selected junction the raw data supports. This is NOT a confirmed official place name or a confirmed town boundary."
+      },
+      "owner_selection": {
+        "decided": "2026-11-11 (junction), WGS84 newly fetched 2026-11-13",
+        "reference_file": "docs/ai/tasks/ticket-493/endpoint-decision-table-2026-11-11.md / docs/ai/tasks/ticket-493/endpoint-owner-decisions-2026-11-11.md",
+        "note": "Owner approved the junction (native EPSG:3057 coordinates) on 2026-11-11; exact name/access/WGS84 were PENDING at that time and were resolved (WGS84 only — not name/access) in the #499 MVP round."
+      },
+      "coordinates": { "latitude": 65.26021788, "longitude": -14.00953135, "crs": "EPSG:4326" },
+      "road_reference": {
+        "idferill": null,
+        "idbutur": 911170037,
+        "role": "junction: END of 2894 ('Seyðirfj.v.: kirkjugarðshorn - Hánefsstaðavegur') = START of 2892 ('Hánesstaðavegur - Vestdalseyrarvegur')",
+        "end_idferill": 2894,
+        "start_idferill": 2892
+      },
+      "provenance": {
+        "raw_response": {
+          "file": "docs/ai/tasks/ticket-499/samples/raw-S2-WGS84.json",
+          "sha256": "b1b8aa63571d6377de742a02b4e2e4f35860182191846e4a88afabddf463628a",
+          "ledger_file": "docs/ai/tasks/ticket-499/samples/exchange-ledger.jsonl",
+          "ledger_line": 1
+        },
+        "native_reference": {
+          "crs": "EPSG:3057",
+          "native_xy": [732875.674, 538207.0762],
+          "file": "docs/ai/tasks/ticket-499/samples/rp1_native_reference.json",
+          "sha256": "bc1a6dbc2b50cfb3020d6dca705e96b7809648e828de6b5802900a1731e036cf"
+        },
+        "junction_cross_check": {
+          "native_xy_agree_within_0_0001m": true,
+          "wgs84_agree_within_1e-8deg": true,
+          "note": "EA5(c): same native junction reached via two different pieces; construction/consistency check only, not independent proof of the WGS84 values (EA5d)."
+        }
+      },
+      "status": {
+        "driving_access_both_directions": "EXACT_GAP",
+        "routability": "NOT routable yet — owner selection alone does not make this point selectable by a routing feature."
+      }
+    },
+    {
+      "id": "akureyri",
+      "display_name": { "is": "Akureyri (C)", "en": "Akureyri (C)" },
+      "region": "Norðurland eystra",
+      "approach_description": {
+        "is": "Eigandavalin mót: endi IDFERILL 2940 (IDBUTUR 909030037) = upphaf IDFERILL 3876 (IDBUTUR 909360037). Varðveitt, ekki endurvalið í þessari lotu.",
+        "en": "Owner-selected junction: end of IDFERILL 2940 (IDBUTUR 909030037) = start of IDFERILL 3876 (IDBUTUR 909360037). Retained, not re-selected this round."
+      },
+      "owner_selection": {
+        "decided": "2026-11-06",
+        "reference_file": "docs/ai/tasks/ticket-493/akureyri-endpoint-decision.md"
+      },
+      "coordinates": { "latitude": 65.69570405, "longitude": -18.12371406, "crs": "EPSG:4326" },
+      "road_reference": {
+        "idferill": null,
+        "idbutur": null,
+        "null_reason": "Two different IDBUTUR values meet at this junction (909030037 for 2940, 909360037 for 3876) — a single idbutur field would misrepresent it; both are given in `role` instead.",
+        "role": "junction: END of 2940 (IDBUTUR 909030037) = START of 3876 (IDBUTUR 909360037)",
+        "end_idferill": 2940,
+        "start_idferill": 3876
+      },
+      "provenance": {
+        "native_reference": {
+          "crs": "EPSG:3057",
+          "native_xy_end_2940": [540259.2615, 577843.7582],
+          "native_xy_start_3876": [540259.2615, 577843.7582],
+          "exact_xy_equal": true,
+          "file": "docs/ai/tasks/ticket-493-north-data/route-data-candidate.json",
+          "sha256": "094fb5d3615c1d5f0e7b372706d134bf48e9c5e954ab3ec7af61fa825b0fb4a8"
+        },
+        "provenance_chain": "docs/ai/tasks/ticket-493-north-data/evidence-north.md (sections 1,3,5,7) + route-data-candidate.json chain_pieces"
+      },
+      "status": {
+        "driving_access_both_directions": "EXACT_GAP",
+        "routability": "NOT routable yet — owner selection alone does not make this point selectable by a routing feature."
+      }
+    }
+  ]
+}

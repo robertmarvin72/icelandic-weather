@@ -1,0 +1,187 @@
+{
+  "source_path": "server_data/winter-route-remaining-coverage.json",
+  "source_sha256": "3792a090cef4de232d70a8b90784fcd7aa427854aca288a907d8d32e6ab08a0e",
+  "target_place_ids": [
+    "kopavogur",
+    "hafnarfjordur",
+    "mosfellsbaer",
+    "keflavikurflugvollur-kef",
+    "grindavik",
+    "akranes",
+    "stykkisholmur",
+    "grundarfjordur",
+    "olafsvik",
+    "budardalur",
+    "reykholar",
+    "patreksfjordur",
+    "talknafjordur",
+    "bildudalur",
+    "thingeyri",
+    "isafjordur",
+    "bolungarvik",
+    "sudavik",
+    "holmavik",
+    "drangsnes",
+    "hvammstangi",
+    "blonduos",
+    "skagastrond",
+    "saudarkrokur",
+    "varmahlid",
+    "siglufjordur",
+    "olafsfjordur",
+    "dalvik",
+    "husavik",
+    "kopasker",
+    "raufarhofn",
+    "vopnafjordur",
+    "neskaupstadur",
+    "eskifjordur",
+    "djupivogur",
+    "hofn",
+    "thorlakshofn",
+    "fludir",
+    "laugarvatn"
+  ],
+  "unique_idbutur_count": 82,
+  "note": "Draft request manifest, not execution authorization. Road-name association is not a verified place approach. Probe must pass before bulk calls.",
+  "requests": [
+    {
+      "request_id": "PROBE-KEF",
+      "idbutur": [
+        341190037
+      ],
+      "url": "https://gagnaveita.vegagerdin.is/geoserver/gis/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=gis%3Afaerdferlar2017_1&CQL_FILTER=IDBUTUR+IN+%28341190037%29&srsName=EPSG%3A4326&outputFormat=application%2Fjson&maxFeatures=5000",
+      "body_cap_bytes": 8388608
+    },
+    {
+      "request_id": "BATCH-1",
+      "idbutur": [
+        238030037,
+        301000037,
+        301030037,
+        343020037,
+        506070037,
+        506170037,
+        561900037,
+        562070037,
+        662210037,
+        662220037,
+        707040037,
+        764540037
+      ],
+      "url": "https://gagnaveita.vegagerdin.is/geoserver/gis/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=gis%3Afaerdferlar2017_1&CQL_FILTER=IDBUTUR+IN+%28238030037%2C301000037%2C301030037%2C343020037%2C506070037%2C506170037%2C561900037%2C562070037%2C662210037%2C662220037%2C707040037%2C764540037%29&srsName=EPSG%3A4326&outputFormat=application%2Fjson&maxFeatures=5000",
+      "body_cap_bytes": 8388608
+    },
+    {
+      "request_id": "BATCH-2",
+      "idbutur": [
+        805030037,
+        806030037,
+        808170037,
+        814640037,
+        902060037,
+        902070037,
+        902160037,
+        902170037,
+        902280037,
+        902290037,
+        902370037,
+        903040037
+      ],
+      "url": "https://gagnaveita.vegagerdin.is/geoserver/gis/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=gis%3Afaerdferlar2017_1&CQL_FILTER=IDBUTUR+IN+%28805030037%2C806030037%2C808170037%2C814640037%2C902060037%2C902070037%2C902160037%2C902170037%2C902280037%2C902290037%2C902370037%2C903040037%29&srsName=EPSG%3A4326&outputFormat=application%2Fjson&maxFeatures=5000",
+      "body_cap_bytes": 8388608
+    },
+    {
+      "request_id": "BATCH-3",
+      "idbutur": [
+        903050037,
+        903110037,
+        903200037,
+        904020037,
+        904030037,
+        904300037,
+        904310037,
+        904320037,
+        904370037,
+        905070037,
+        905120037,
+        905280037
+      ],
+      "url": "https://gagnaveita.vegagerdin.is/geoserver/gis/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=gis%3Afaerdferlar2017_1&CQL_FILTER=IDBUTUR+IN+%28903050037%2C903110037%2C903200037%2C904020037%2C904030037%2C904300037%2C904310037%2C904320037%2C904370037%2C905070037%2C905120037%2C905280037%29&srsName=EPSG%3A4326&outputFormat=application%2Fjson&maxFeatures=5000",
+      "body_cap_bytes": 8388608
+    },
+    {
+      "request_id": "BATCH-4",
+      "idbutur": [
+        905290037,
+        906110037,
+        906120037,
+        906140037,
+        906150037,
+        906540037,
+        906710037,
+        907040037,
+        907070037,
+        907100037,
+        907110037,
+        907150037
+      ],
+      "url": "https://gagnaveita.vegagerdin.is/geoserver/gis/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=gis%3Afaerdferlar2017_1&CQL_FILTER=IDBUTUR+IN+%28905290037%2C906110037%2C906120037%2C906140037%2C906150037%2C906540037%2C906710037%2C907040037%2C907070037%2C907100037%2C907110037%2C907150037%29&srsName=EPSG%3A4326&outputFormat=application%2Fjson&maxFeatures=5000",
+      "body_cap_bytes": 8388608
+    },
+    {
+      "request_id": "BATCH-5",
+      "idbutur": [
+        907160037,
+        907210037,
+        907720037,
+        908020037,
+        908030037,
+        908050037,
+        908070037,
+        908110037,
+        908180037,
+        908190037,
+        908210037,
+        908740037
+      ],
+      "url": "https://gagnaveita.vegagerdin.is/geoserver/gis/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=gis%3Afaerdferlar2017_1&CQL_FILTER=IDBUTUR+IN+%28907160037%2C907210037%2C907720037%2C908020037%2C908030037%2C908050037%2C908070037%2C908110037%2C908180037%2C908190037%2C908210037%2C908740037%29&srsName=EPSG%3A4326&outputFormat=application%2Fjson&maxFeatures=5000",
+      "body_cap_bytes": 8388608
+    },
+    {
+      "request_id": "BATCH-6",
+      "idbutur": [
+        909150037,
+        909190037,
+        909310037,
+        909320037,
+        910120037,
+        910130037,
+        910220037,
+        910270037,
+        910410037,
+        911230037,
+        911420037,
+        912010037
+      ],
+      "url": "https://gagnaveita.vegagerdin.is/geoserver/gis/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=gis%3Afaerdferlar2017_1&CQL_FILTER=IDBUTUR+IN+%28909150037%2C909190037%2C909310037%2C909320037%2C910120037%2C910130037%2C910220037%2C910270037%2C910410037%2C911230037%2C911420037%2C912010037%29&srsName=EPSG%3A4326&outputFormat=application%2Fjson&maxFeatures=5000",
+      "body_cap_bytes": 8388608
+    },
+    {
+      "request_id": "BATCH-7",
+      "idbutur": [
+        912020037,
+        912040037,
+        912060037,
+        914500037,
+        976110037,
+        1008700037,
+        1209820037,
+        1344120037,
+        1441610037
+      ],
+      "url": "https://gagnaveita.vegagerdin.is/geoserver/gis/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=gis%3Afaerdferlar2017_1&CQL_FILTER=IDBUTUR+IN+%28912020037%2C912040037%2C912060037%2C914500037%2C976110037%2C1008700037%2C1209820037%2C1344120037%2C1441610037%29&srsName=EPSG%3A4326&outputFormat=application%2Fjson&maxFeatures=5000",
+      "body_cap_bytes": 8388608
+    }
+  ]
+}

@@ -1,0 +1,1686 @@
+{
+  "schema_version": 1,
+  "note": "Combined retained-data review of the 47 places still PENDING in winter-route-places.json, per docs/ai/tasks/ticket-500/remaining/approved-prompt-v1.md. No new acquisition — every candidate/reference below is reused from the retained sources in `sources` below. The nine already-resolved places (R1/E1/S2/C and the five south-corridor candidates) are untouched and not re-assessed here. `road_condition_refs` are retained road-condition identifiers (IDBUTUR + name) from vegagerdin-faerd2017-1.json/legacy-faerd-fresh.json that name or serve this place — these carry NO geometry (confirmed: neither file has coordinate fields) and are not candidate points.",
+  "sources": {
+    "v3_csv": {
+      "path": "docs/ai/tasks/ticket-493-access-points/place-access-status-v3.csv",
+      "sha256": "d0bb7c7c3e4c968ccf5d0d373104c8aa1de5c5c034ba451aa3e813a1d95d215b"
+    },
+    "stem_search_hints_v3": {
+      "path": "docs/ai/tasks/ticket-493-access-points/samples/v3/stem_search_hints_v3.json",
+      "sha256": "0db96b9669636ff231011d6e8b718d4e4e5d20b85acc0c86673ca25a283a682c"
+    },
+    "road_condition_current": {
+      "path": "docs/ai/tasks/ticket-429/samples/vegagerdin-faerd2017-1.json",
+      "sha256": "a3134394ce378a5b413f89784ba2642c6520b1fcb6a9237db389ac97ff789bbb"
+    },
+    "road_condition_legacy": {
+      "path": "docs/ai/tasks/ticket-483/samples/legacy-faerd-fresh.json",
+      "sha256": "592d052e2c861de34d264421b944dfefae44a0f054bfd0b8c594f2b143d90a54"
+    },
+    "road_links": {
+      "path": "docs/ai/tasks/ticket-493-place-network/samples/road-links.csv",
+      "sha256": "bf25ff0f68f0d7e7b46f4beb3fa7619c6e91fd8a1ad7c3f8d71eb24937db10c7"
+    },
+    "place_inventory": {
+      "path": "docs/ai/tasks/ticket-493-place-network/place-inventory.csv",
+      "sha256": "e0acd2c2ae57c8313fb226fa47ab707571335de64748f96e80c7b1c5821af7a3"
+    },
+    "wfs_vesturland_4326": {
+      "path": "docs/ai/tasks/ticket-491/final-validation/samples/wfs-vesturland-4326.json",
+      "sha256": "5fb643b23ac83dc0df47e1ff5c482adb78d7a99bc567028133d8bfd6b140659f"
+    }
+  },
+  "coverage": {
+    "kopavogur": {
+      "name": "Kópavogur",
+      "status": "ACQUIRED_GEOMETRY_NO_CLEAN_NAME_MATCH",
+      "candidate": null,
+      "road_condition_refs": [
+        {
+          "idbutur": 903110037,
+          "name": "Kópavogur-Garðabær"
+        }
+      ],
+      "name_mention_ref": null,
+      "v3_reference": {
+        "outcome": "NO_NODE",
+        "gap_id": "GAP-003"
+      },
+      "gap": {
+        "fact_missing": "Real geometry acquired for the cited IDBUTUR, but every piece's own name is a dash-pair connecting-road name (e.g. 'A - B'), not a clean match to this place alone, so no approach point can be proposed without guessing which end is nearest.",
+        "effect": "Not routable; a future round would need either a different disambiguation method or a different retained/acquired source.",
+        "sources_checked": [
+          "v3_csv",
+          "road_condition_current",
+          "road_condition_legacy",
+          "acquisition_run_2026-11-14"
+        ]
+      },
+      "acquired_geometry_reference": "server_data/winter-route-acquired-geometry.json#place_results.kopavogur",
+      "approach_analysis_reference": "server_data/winter-route-approach-analysis.json#place_results.kopavogur",
+      "place_evidence_reference": "server_data/winter-route-place-evidence.json#place_results.kopavogur"
+    },
+    "hafnarfjordur": {
+      "name": "Hafnarfjörður",
+      "status": "ACQUIRED_GEOMETRY_NO_CLEAN_NAME_MATCH",
+      "candidate": null,
+      "road_condition_refs": [
+        {
+          "idbutur": 814640037,
+          "name": "Hafnarfjarðarv.-Jaðarsel"
+        },
+        {
+          "idbutur": 914500037,
+          "name": "Hafnarfjarðarvegur"
+        }
+      ],
+      "name_mention_ref": null,
+      "v3_reference": {
+        "outcome": "NO_NODE",
+        "gap_id": "GAP-005"
+      },
+      "gap": {
+        "fact_missing": "Real geometry acquired for the cited IDBUTUR, but every piece's own name is a dash-pair connecting-road name (e.g. 'A - B'), not a clean match to this place alone, so no approach point can be proposed without guessing which end is nearest.",
+        "effect": "Not routable; a future round would need either a different disambiguation method or a different retained/acquired source.",
+        "sources_checked": [
+          "v3_csv",
+          "stem_search_hints_v3",
+          "road_condition_current",
+          "road_condition_legacy",
+          "place_inventory",
+          "acquisition_run_2026-11-14"
+        ]
+      },
+      "acquired_geometry_reference": "server_data/winter-route-acquired-geometry.json#place_results.hafnarfjordur",
+      "approach_analysis_reference": "server_data/winter-route-approach-analysis.json#place_results.hafnarfjordur",
+      "place_evidence_reference": "server_data/winter-route-place-evidence.json#place_results.hafnarfjordur"
+    },
+    "mosfellsbaer": {
+      "name": "Mosfellsbær",
+      "status": "ACQUIRED_GEOMETRY_NO_CLEAN_NAME_MATCH",
+      "candidate": null,
+      "road_condition_refs": [
+        {
+          "idbutur": 903040037,
+          "name": "Mosfellsdalur"
+        },
+        {
+          "idbutur": 903050037,
+          "name": "Mosfellsheiði"
+        }
+      ],
+      "name_mention_ref": null,
+      "v3_reference": {
+        "outcome": "NO_NODE",
+        "gap_id": "GAP-002"
+      },
+      "gap": {
+        "fact_missing": "Real geometry acquired for the cited IDBUTUR, but every piece's own name is a dash-pair connecting-road name (e.g. 'A - B'), not a clean match to this place alone, so no approach point can be proposed without guessing which end is nearest.",
+        "effect": "Not routable; a future round would need either a different disambiguation method or a different retained/acquired source.",
+        "sources_checked": [
+          "v3_csv",
+          "stem_search_hints_v3",
+          "road_condition_current",
+          "road_condition_legacy",
+          "place_inventory",
+          "acquisition_run_2026-11-14"
+        ]
+      },
+      "acquired_geometry_reference": "server_data/winter-route-acquired-geometry.json#place_results.mosfellsbaer",
+      "approach_analysis_reference": "server_data/winter-route-approach-analysis.json#place_results.mosfellsbaer",
+      "place_evidence_reference": "server_data/winter-route-place-evidence.json#place_results.mosfellsbaer"
+    },
+    "keflavik": {
+      "name": "Keflavík",
+      "status": "NO_RETAINED_MATCH",
+      "candidate": null,
+      "road_condition_refs": null,
+      "name_mention_ref": null,
+      "v3_reference": {
+        "outcome": "NOT_IN_V3",
+        "gap_id": null
+      },
+      "gap": {
+        "fact_missing": "No VEGNR=1 node, no road-condition identifier, and no name mention found in any retained source checked this round (and no entry at all in place-access-status-v3.csv).",
+        "sources_checked": [
+          "v3_csv",
+          "stem_search_hints_v3",
+          "road_condition_current",
+          "road_condition_legacy",
+          "place_inventory"
+        ],
+        "effect": "Not routable; a future round would need a new, scoped retained-data check or an owner-approved acquisition."
+      },
+      "place_evidence_reference": "server_data/winter-route-place-evidence.json#place_results.keflavik"
+    },
+    "keflavikurflugvollur-kef": {
+      "name": "Keflavíkurflugvöllur",
+      "status": "ACQUIRED_GEOMETRY_NO_CLEAN_NAME_MATCH",
+      "candidate": null,
+      "road_condition_refs": [
+        {
+          "idbutur": 341190037,
+          "name": "Hafnavegur - Flugstöð"
+        }
+      ],
+      "name_mention_ref": null,
+      "v3_reference": {
+        "outcome": "NOT_IN_V3",
+        "gap_id": null
+      },
+      "gap": {
+        "fact_missing": "Real geometry acquired for the cited IDBUTUR, but every piece's own name is a dash-pair connecting-road name (e.g. 'A - B'), not a clean match to this place alone, so no approach point can be proposed without guessing which end is nearest.",
+        "effect": "Not routable; a future round would need either a different disambiguation method or a different retained/acquired source.",
+        "sources_checked": [
+          "v3_csv",
+          "stem_search_hints_v3",
+          "road_condition_current",
+          "road_condition_legacy",
+          "place_inventory",
+          "acquisition_run_2026-11-14"
+        ]
+      },
+      "acquired_geometry_reference": "server_data/winter-route-acquired-geometry.json#place_results.keflavikurflugvollur-kef",
+      "approach_analysis_reference": "server_data/winter-route-approach-analysis.json#place_results.keflavikurflugvollur-kef"
+    },
+    "grindavik": {
+      "name": "Grindavík",
+      "status": "ACQUIRED_GEOMETRY_MULTIPLE_PIECES_NO_SINGLE_CANDIDATE",
+      "candidate": null,
+      "road_condition_refs": [
+        {
+          "idbutur": 1441610037,
+          "name": "Grindavíkurvegur - Vogavegur"
+        },
+        {
+          "idbutur": 1344120037,
+          "name": "Norðurljósavegur - Grindavík"
+        },
+        {
+          "idbutur": 903200037,
+          "name": "Grindavíkurvegur - Hafnavegur"
+        },
+        {
+          "idbutur": 301000037,
+          "name": "Vogavegur – Grindavíkurvegur"
+        },
+        {
+          "idbutur": 301030037,
+          "name": "Hafnavegur-Grindavíkurvegur"
+        },
+        {
+          "idbutur": 343020037,
+          "name": "Grindavík"
+        }
+      ],
+      "name_mention_ref": null,
+      "v3_reference": {
+        "outcome": "NO_NODE",
+        "gap_id": "GAP-007"
+      },
+      "gap": {
+        "fact_missing": "Real geometry acquired (multiple pieces on the same IDBUTUR share the place's exact name) but no reliable rule in this round picks a single approach point among them without inventing one.",
+        "effect": "Not routable; a future round needs a specific disambiguation method (e.g. chain-walking the pieces to find the boundary with the connecting road) before a candidate can be proposed.",
+        "sources_checked": [
+          "v3_csv",
+          "road_condition_current",
+          "road_condition_legacy",
+          "acquisition_run_2026-11-14"
+        ]
+      },
+      "acquired_geometry_reference": "server_data/winter-route-acquired-geometry.json#place_results.grindavik",
+      "approach_analysis_reference": "server_data/winter-route-approach-analysis.json#place_results.grindavik"
+    },
+    "akranes": {
+      "name": "Akranes",
+      "status": "ACQUIRED_GEOMETRY_NO_CLEAN_NAME_MATCH",
+      "candidate": null,
+      "road_condition_refs": [
+        {
+          "idbutur": 904020037,
+          "name": "Hringvegur-Akranesvegur"
+        },
+        {
+          "idbutur": 904030037,
+          "name": "Norðan Akrafjalls"
+        }
+      ],
+      "name_mention_ref": null,
+      "v3_reference": {
+        "outcome": "NO_NODE",
+        "gap_id": "GAP-013"
+      },
+      "gap": {
+        "fact_missing": "Real geometry acquired for the cited IDBUTUR, but every piece's own name is a dash-pair connecting-road name (e.g. 'A - B'), not a clean match to this place alone, so no approach point can be proposed without guessing which end is nearest.",
+        "effect": "Not routable; a future round would need either a different disambiguation method or a different retained/acquired source.",
+        "sources_checked": [
+          "v3_csv",
+          "road_condition_current",
+          "road_condition_legacy",
+          "acquisition_run_2026-11-14"
+        ]
+      },
+      "acquired_geometry_reference": "server_data/winter-route-acquired-geometry.json#place_results.akranes",
+      "approach_analysis_reference": "server_data/winter-route-approach-analysis.json#place_results.akranes",
+      "place_evidence_reference": "server_data/winter-route-place-evidence.json#place_results.akranes"
+    },
+    "borgarnes": {
+      "name": "Borgarnes",
+      "status": "RETAINED_CANDIDATE_NAME_MATCH_INFERRED",
+      "candidate": {
+        "idferill": 2819,
+        "stored_field": "END",
+        "native_xy": [
+          361119.191,
+          454127.5752
+        ],
+        "crs": "EPSG:3057",
+        "source": "road_links",
+        "basis": "NAME_MATCH_INFERRED — the piece's own retained name/desc matches the place name; this was never an owner or phase-1 pick, only a construction artefact per v3's own notes.",
+        "direction_status": "UNKNOWN",
+        "wgs84": {
+          "latitude": 64.55996252,
+          "longitude": -21.89753371,
+          "crs": "EPSG:4326",
+          "objectid_tier_minus1": 5082,
+          "source": "wfs_vesturland_4326"
+        },
+        "also_used_by": "Same point as #491's own end_borgarnes / four_points P4 (entry_point_idferill 2819) — not a new coordinate.",
+        "scope_caveat": "v3 CSV leaves node_role/stored_field/cum empty deliberately: piece 2819 is on ccw_short, outside this round's cw_long-based validator scope; role/cum were never (re-)validated against that basis."
+      },
+      "road_condition_refs": [
+        {
+          "idbutur": 904260037,
+          "name": "Borgarnes-Hítará"
+        },
+        {
+          "idbutur": 904040037,
+          "name": "Borgarnes-Baulan"
+        }
+      ],
+      "name_mention_ref": {
+        "idferill": 2800,
+        "desc": "Borgarnes - Baulan",
+        "matched_token": "Borgarnes",
+        "matched_stem_variant": "Borgarnes",
+        "mention_category": "HOME_PIECE_OR_ROUTE_ENDPOINT"
+      },
+      "v3_reference": {
+        "outcome": "NOT_VALIDATED_OUTSIDE_CW_LONG",
+        "gap_id": "GAP-011"
+      },
+      "gap": {
+        "fact_missing": "Owner has not selected this candidate; driving access/direction is EXACT_GAP regardless.",
+        "sources_checked": [
+          "v3_csv",
+          "road_links",
+          "wfs_vesturland_4326"
+        ],
+        "effect": "Not routable; owner selection needed before #501 can use it, and even then driving access stays EXACT_GAP."
+      }
+    },
+    "stykkisholmur": {
+      "name": "Stykkishólmur",
+      "status": "ACQUIRED_GEOMETRY_NO_CLEAN_NAME_MATCH",
+      "candidate": null,
+      "road_condition_refs": [
+        {
+          "idbutur": 904320037,
+          "name": "Vatnaleið-Stykkishólmur"
+        }
+      ],
+      "name_mention_ref": null,
+      "v3_reference": {
+        "outcome": "NO_NODE",
+        "gap_id": "GAP-014"
+      },
+      "gap": {
+        "fact_missing": "Real geometry acquired for the cited IDBUTUR, but every piece's own name is a dash-pair connecting-road name (e.g. 'A - B'), not a clean match to this place alone, so no approach point can be proposed without guessing which end is nearest.",
+        "effect": "Not routable; a future round would need either a different disambiguation method or a different retained/acquired source.",
+        "sources_checked": [
+          "v3_csv",
+          "road_condition_current",
+          "road_condition_legacy",
+          "acquisition_run_2026-11-14"
+        ]
+      },
+      "acquired_geometry_reference": "server_data/winter-route-acquired-geometry.json#place_results.stykkisholmur",
+      "approach_analysis_reference": "server_data/winter-route-approach-analysis.json#place_results.stykkisholmur",
+      "place_evidence_reference": "server_data/winter-route-place-evidence.json#place_results.stykkisholmur"
+    },
+    "grundarfjordur": {
+      "name": "Grundarfjörður",
+      "status": "ACQUIRED_GEOMETRY_NO_CLEAN_NAME_MATCH",
+      "candidate": null,
+      "road_condition_refs": [
+        {
+          "idbutur": 904310037,
+          "name": "Grundarfjörður-Vatnaleið"
+        },
+        {
+          "idbutur": 904300037,
+          "name": "Grundarfjörður-Ólafsvík"
+        }
+      ],
+      "name_mention_ref": null,
+      "v3_reference": {
+        "outcome": "NO_NODE",
+        "gap_id": "GAP-015"
+      },
+      "gap": {
+        "fact_missing": "Real geometry acquired for the cited IDBUTUR, but every piece's own name is a dash-pair connecting-road name (e.g. 'A - B'), not a clean match to this place alone, so no approach point can be proposed without guessing which end is nearest.",
+        "effect": "Not routable; a future round would need either a different disambiguation method or a different retained/acquired source.",
+        "sources_checked": [
+          "v3_csv",
+          "road_condition_current",
+          "road_condition_legacy",
+          "acquisition_run_2026-11-14"
+        ]
+      },
+      "acquired_geometry_reference": "server_data/winter-route-acquired-geometry.json#place_results.grundarfjordur",
+      "approach_analysis_reference": "server_data/winter-route-approach-analysis.json#place_results.grundarfjordur"
+    },
+    "olafsvik": {
+      "name": "Ólafsvík",
+      "status": "ACQUIRED_GEOMETRY_NO_CLEAN_NAME_MATCH",
+      "candidate": null,
+      "road_condition_refs": [
+        {
+          "idbutur": 904370037,
+          "name": "Hellissandur-Ólafsvík"
+        },
+        {
+          "idbutur": 904300037,
+          "name": "Grundarfjörður-Ólafsvík"
+        }
+      ],
+      "name_mention_ref": null,
+      "v3_reference": {
+        "outcome": "NO_NODE",
+        "gap_id": "GAP-016"
+      },
+      "gap": {
+        "fact_missing": "Real geometry acquired for the cited IDBUTUR, but every piece's own name is a dash-pair connecting-road name (e.g. 'A - B'), not a clean match to this place alone, so no approach point can be proposed without guessing which end is nearest.",
+        "effect": "Not routable; a future round would need either a different disambiguation method or a different retained/acquired source.",
+        "sources_checked": [
+          "v3_csv",
+          "road_condition_current",
+          "road_condition_legacy",
+          "acquisition_run_2026-11-14"
+        ]
+      },
+      "acquired_geometry_reference": "server_data/winter-route-acquired-geometry.json#place_results.olafsvik",
+      "approach_analysis_reference": "server_data/winter-route-approach-analysis.json#place_results.olafsvik"
+    },
+    "budardalur": {
+      "name": "Búðardalur",
+      "status": "ACQUIRED_GEOMETRY_NO_CLEAN_NAME_MATCH",
+      "candidate": null,
+      "road_condition_refs": [
+        {
+          "idbutur": 805030037,
+          "name": "Skógstagl-Búðardalur"
+        },
+        {
+          "idbutur": 905070037,
+          "name": "Búðardalur-Laugar"
+        }
+      ],
+      "name_mention_ref": null,
+      "v3_reference": {
+        "outcome": "NO_NODE",
+        "gap_id": "GAP-018"
+      },
+      "gap": {
+        "fact_missing": "Real geometry acquired for the cited IDBUTUR, but every piece's own name is a dash-pair connecting-road name (e.g. 'A - B'), not a clean match to this place alone, so no approach point can be proposed without guessing which end is nearest.",
+        "effect": "Not routable; a future round would need either a different disambiguation method or a different retained/acquired source.",
+        "sources_checked": [
+          "v3_csv",
+          "road_condition_current",
+          "road_condition_legacy",
+          "acquisition_run_2026-11-14"
+        ]
+      },
+      "acquired_geometry_reference": "server_data/winter-route-acquired-geometry.json#place_results.budardalur",
+      "approach_analysis_reference": "server_data/winter-route-approach-analysis.json#place_results.budardalur",
+      "place_evidence_reference": "server_data/winter-route-place-evidence.json#place_results.budardalur"
+    },
+    "reykholar": {
+      "name": "Reykhólar",
+      "status": "ACQUIRED_GEOMETRY_NO_CLEAN_NAME_MATCH",
+      "candidate": null,
+      "road_condition_refs": [
+        {
+          "idbutur": 506070037,
+          "name": "Reykhólasveitarvegur"
+        },
+        {
+          "idbutur": 905120037,
+          "name": "Reykhólasveitarvegur"
+        }
+      ],
+      "name_mention_ref": null,
+      "v3_reference": {
+        "outcome": "NOT_IN_V3",
+        "gap_id": null
+      },
+      "gap": {
+        "fact_missing": "Real geometry acquired for the cited IDBUTUR, but every piece's own name is a dash-pair connecting-road name (e.g. 'A - B'), not a clean match to this place alone, so no approach point can be proposed without guessing which end is nearest.",
+        "effect": "Not routable; a future round would need either a different disambiguation method or a different retained/acquired source.",
+        "sources_checked": [
+          "v3_csv",
+          "road_condition_current",
+          "road_condition_legacy",
+          "acquisition_run_2026-11-14"
+        ]
+      },
+      "acquired_geometry_reference": "server_data/winter-route-acquired-geometry.json#place_results.reykholar",
+      "approach_analysis_reference": "server_data/winter-route-approach-analysis.json#place_results.reykholar",
+      "place_evidence_reference": "server_data/winter-route-place-evidence.json#place_results.reykholar"
+    },
+    "patreksfjordur": {
+      "name": "Patreksfjörður",
+      "status": "CANDIDATE_FROM_ACQUIRED_GEOMETRY",
+      "candidate": {
+        "idferill": 53127,
+        "idbutur": 562070037,
+        "stored_field": "END",
+        "wgs84": {
+          "latitude": 65.59851455,
+          "longitude": -24.00201874,
+          "crs": "EPSG:4326"
+        },
+        "objectid": 6264,
+        "basis": "Exactly one real acquired piece (VEGHLUTI 1) whose own name matches the place name exactly, and no second piece on the same IDBUTUR to disambiguate against — still NAME_MATCH_INFERRED, never an owner pick."
+      },
+      "road_condition_refs": [
+        {
+          "idbutur": 562070037,
+          "name": "Patreksfjörður"
+        }
+      ],
+      "name_mention_ref": null,
+      "v3_reference": {
+        "outcome": "NO_NODE",
+        "gap_id": "GAP-027"
+      },
+      "gap": {
+        "fact_missing": "Real geometry acquired and a single clean-name candidate proposed; owner has not selected it, and driving access/direction is EXACT_GAP regardless.",
+        "effect": "Not routable; owner selection needed before #501 can use it, and even then driving access stays EXACT_GAP.",
+        "sources_checked": [
+          "v3_csv",
+          "road_condition_current",
+          "road_condition_legacy",
+          "acquisition_run_2026-11-14"
+        ]
+      },
+      "acquired_geometry_reference": "server_data/winter-route-acquired-geometry.json#place_results.patreksfjordur",
+      "approach_analysis_reference": "server_data/winter-route-approach-analysis.json#place_results.patreksfjordur"
+    },
+    "talknafjordur": {
+      "name": "Tálknafjörður",
+      "status": "ACQUIRED_GEOMETRY_NO_CLEAN_NAME_MATCH",
+      "candidate": null,
+      "road_condition_refs": [
+        {
+          "idbutur": 506170037,
+          "name": "Tálknafjarðarvegur"
+        }
+      ],
+      "name_mention_ref": null,
+      "v3_reference": {
+        "outcome": "NO_NODE",
+        "gap_id": "GAP-026"
+      },
+      "gap": {
+        "fact_missing": "Real geometry acquired for the cited IDBUTUR, but every piece's own name is a dash-pair connecting-road name (e.g. 'A - B'), not a clean match to this place alone, so no approach point can be proposed without guessing which end is nearest.",
+        "effect": "Not routable; a future round would need either a different disambiguation method or a different retained/acquired source.",
+        "sources_checked": [
+          "v3_csv",
+          "road_condition_current",
+          "road_condition_legacy",
+          "acquisition_run_2026-11-14"
+        ]
+      },
+      "acquired_geometry_reference": "server_data/winter-route-acquired-geometry.json#place_results.talknafjordur",
+      "approach_analysis_reference": "server_data/winter-route-approach-analysis.json#place_results.talknafjordur"
+    },
+    "bildudalur": {
+      "name": "Bíldudalur",
+      "status": "ACQUIRED_GEOMETRY_MULTIPLE_PIECES_NO_SINGLE_CANDIDATE",
+      "candidate": null,
+      "road_condition_refs": [
+        {
+          "idbutur": 561900037,
+          "name": "Bíldudalur"
+        },
+        {
+          "idbutur": 905290037,
+          "name": "Bíldudalur-flugvöllur"
+        },
+        {
+          "idbutur": 905280037,
+          "name": "Ketildalavegur"
+        }
+      ],
+      "name_mention_ref": null,
+      "v3_reference": {
+        "outcome": "NO_NODE",
+        "gap_id": "GAP-025"
+      },
+      "gap": {
+        "fact_missing": "Real geometry acquired (multiple pieces on the same IDBUTUR share the place's exact name) but no reliable rule in this round picks a single approach point among them without inventing one.",
+        "effect": "Not routable; a future round needs a specific disambiguation method (e.g. chain-walking the pieces to find the boundary with the connecting road) before a candidate can be proposed.",
+        "sources_checked": [
+          "v3_csv",
+          "road_condition_current",
+          "road_condition_legacy",
+          "acquisition_run_2026-11-14"
+        ]
+      },
+      "acquired_geometry_reference": "server_data/winter-route-acquired-geometry.json#place_results.bildudalur",
+      "approach_analysis_reference": "server_data/winter-route-approach-analysis.json#place_results.bildudalur"
+    },
+    "thingeyri": {
+      "name": "Þingeyri",
+      "status": "ACQUIRED_GEOMETRY_MULTIPLE_PIECES_NO_SINGLE_CANDIDATE",
+      "candidate": null,
+      "road_condition_refs": [
+        {
+          "idbutur": 662210037,
+          "name": "Þingeyri"
+        },
+        {
+          "idbutur": 662220037,
+          "name": "Þingeyri - Flugvöllur"
+        },
+        {
+          "idbutur": 806030037,
+          "name": "Dýrafjarðargöng-Þingeyrarvegur"
+        },
+        {
+          "idbutur": 906540037,
+          "name": "Vestfjarðavegur-Þingeyri"
+        }
+      ],
+      "name_mention_ref": null,
+      "v3_reference": {
+        "outcome": "NO_NODE",
+        "gap_id": "GAP-024"
+      },
+      "gap": {
+        "fact_missing": "Real geometry acquired (multiple pieces on the same IDBUTUR share the place's exact name) but no reliable rule in this round picks a single approach point among them without inventing one.",
+        "effect": "Not routable; a future round needs a specific disambiguation method (e.g. chain-walking the pieces to find the boundary with the connecting road) before a candidate can be proposed.",
+        "sources_checked": [
+          "v3_csv",
+          "road_condition_current",
+          "road_condition_legacy",
+          "acquisition_run_2026-11-14"
+        ]
+      },
+      "acquired_geometry_reference": "server_data/winter-route-acquired-geometry.json#place_results.thingeyri",
+      "approach_analysis_reference": "server_data/winter-route-approach-analysis.json#place_results.thingeyri"
+    },
+    "isafjordur": {
+      "name": "Ísafjörður",
+      "status": "ACQUIRED_GEOMETRY_NO_CLEAN_NAME_MATCH",
+      "candidate": null,
+      "road_condition_refs": [
+        {
+          "idbutur": 906120037,
+          "name": "Flugvöllur-Ísafjörður"
+        },
+        {
+          "idbutur": 907070037,
+          "name": "Djúpvegur: Ísafjörður"
+        }
+      ],
+      "name_mention_ref": null,
+      "v3_reference": {
+        "outcome": "NO_NODE",
+        "gap_id": "GAP-019"
+      },
+      "gap": {
+        "fact_missing": "Real geometry acquired for the cited IDBUTUR, but every piece's own name is a dash-pair connecting-road name (e.g. 'A - B'), not a clean match to this place alone, so no approach point can be proposed without guessing which end is nearest.",
+        "effect": "Not routable; a future round would need either a different disambiguation method or a different retained/acquired source.",
+        "sources_checked": [
+          "v3_csv",
+          "road_condition_current",
+          "road_condition_legacy",
+          "acquisition_run_2026-11-14"
+        ]
+      },
+      "acquired_geometry_reference": "server_data/winter-route-acquired-geometry.json#place_results.isafjordur",
+      "approach_analysis_reference": "server_data/winter-route-approach-analysis.json#place_results.isafjordur",
+      "place_evidence_reference": "server_data/winter-route-place-evidence.json#place_results.isafjordur"
+    },
+    "bolungarvik": {
+      "name": "Bolungarvík",
+      "status": "ACQUIRED_GEOMETRY_MULTIPLE_PIECES_NO_SINGLE_CANDIDATE",
+      "candidate": null,
+      "road_condition_refs": [
+        {
+          "idbutur": 906110037,
+          "name": "Bolungarvík"
+        },
+        {
+          "idbutur": 906710037,
+          "name": "Bolungarvíkurgöng"
+        }
+      ],
+      "name_mention_ref": null,
+      "v3_reference": {
+        "outcome": "NO_NODE",
+        "gap_id": "GAP-020"
+      },
+      "gap": {
+        "fact_missing": "Real geometry acquired (multiple pieces on the same IDBUTUR share the place's exact name) but no reliable rule in this round picks a single approach point among them without inventing one.",
+        "effect": "Not routable; a future round needs a specific disambiguation method (e.g. chain-walking the pieces to find the boundary with the connecting road) before a candidate can be proposed.",
+        "sources_checked": [
+          "v3_csv",
+          "road_condition_current",
+          "road_condition_legacy",
+          "acquisition_run_2026-11-14"
+        ]
+      },
+      "acquired_geometry_reference": "server_data/winter-route-acquired-geometry.json#place_results.bolungarvik",
+      "approach_analysis_reference": "server_data/winter-route-approach-analysis.json#place_results.bolungarvik"
+    },
+    "sudavik": {
+      "name": "Súðavík",
+      "status": "ACQUIRED_GEOMETRY_NO_CLEAN_NAME_MATCH",
+      "candidate": null,
+      "road_condition_refs": [
+        {
+          "idbutur": 906140037,
+          "name": "Súðavíkurhlíð"
+        },
+        {
+          "idbutur": 906150037,
+          "name": "Súðavík-Hjallar"
+        }
+      ],
+      "name_mention_ref": null,
+      "v3_reference": {
+        "outcome": "NO_NODE",
+        "gap_id": "GAP-021"
+      },
+      "gap": {
+        "fact_missing": "Real geometry acquired for the cited IDBUTUR, but every piece's own name is a dash-pair connecting-road name (e.g. 'A - B'), not a clean match to this place alone, so no approach point can be proposed without guessing which end is nearest.",
+        "effect": "Not routable; a future round would need either a different disambiguation method or a different retained/acquired source.",
+        "sources_checked": [
+          "v3_csv",
+          "road_condition_current",
+          "road_condition_legacy",
+          "acquisition_run_2026-11-14"
+        ]
+      },
+      "acquired_geometry_reference": "server_data/winter-route-acquired-geometry.json#place_results.sudavik",
+      "approach_analysis_reference": "server_data/winter-route-approach-analysis.json#place_results.sudavik",
+      "place_evidence_reference": "server_data/winter-route-place-evidence.json#place_results.sudavik"
+    },
+    "holmavik": {
+      "name": "Hólmavík",
+      "status": "ACQUIRED_GEOMETRY_NO_CLEAN_NAME_MATCH",
+      "candidate": null,
+      "road_condition_refs": [
+        {
+          "idbutur": 707040037,
+          "name": "Hrófá-Hólmavík"
+        },
+        {
+          "idbutur": 907040037,
+          "name": "Hólmavík-Drangsnesvegur"
+        }
+      ],
+      "name_mention_ref": null,
+      "v3_reference": {
+        "outcome": "NO_NODE",
+        "gap_id": "GAP-028"
+      },
+      "gap": {
+        "fact_missing": "Real geometry acquired for the cited IDBUTUR, but every piece's own name is a dash-pair connecting-road name (e.g. 'A - B'), not a clean match to this place alone, so no approach point can be proposed without guessing which end is nearest.",
+        "effect": "Not routable; a future round would need either a different disambiguation method or a different retained/acquired source.",
+        "sources_checked": [
+          "v3_csv",
+          "road_condition_current",
+          "road_condition_legacy",
+          "acquisition_run_2026-11-14"
+        ]
+      },
+      "acquired_geometry_reference": "server_data/winter-route-acquired-geometry.json#place_results.holmavik",
+      "approach_analysis_reference": "server_data/winter-route-approach-analysis.json#place_results.holmavik",
+      "place_evidence_reference": "server_data/winter-route-place-evidence.json#place_results.holmavik"
+    },
+    "drangsnes": {
+      "name": "Drangsnes",
+      "status": "ACQUIRED_GEOMETRY_NO_CLEAN_NAME_MATCH",
+      "candidate": null,
+      "road_condition_refs": [
+        {
+          "idbutur": 764540037,
+          "name": "Drangsnes - Bakki"
+        },
+        {
+          "idbutur": 907110037,
+          "name": "Drangsnes - Kaldrananes"
+        },
+        {
+          "idbutur": 907100037,
+          "name": "Djúpvegur-Drangsnes"
+        },
+        {
+          "idbutur": 907040037,
+          "name": "Hólmavík-Drangsnesvegur"
+        }
+      ],
+      "name_mention_ref": null,
+      "v3_reference": {
+        "outcome": "NOT_IN_V3",
+        "gap_id": null
+      },
+      "gap": {
+        "fact_missing": "Real geometry acquired for the cited IDBUTUR, but every piece's own name is a dash-pair connecting-road name (e.g. 'A - B'), not a clean match to this place alone, so no approach point can be proposed without guessing which end is nearest.",
+        "effect": "Not routable; a future round would need either a different disambiguation method or a different retained/acquired source.",
+        "sources_checked": [
+          "v3_csv",
+          "road_condition_current",
+          "road_condition_legacy",
+          "acquisition_run_2026-11-14"
+        ]
+      },
+      "acquired_geometry_reference": "server_data/winter-route-acquired-geometry.json#place_results.drangsnes",
+      "approach_analysis_reference": "server_data/winter-route-approach-analysis.json#place_results.drangsnes",
+      "place_evidence_reference": "server_data/winter-route-place-evidence.json#place_results.drangsnes"
+    },
+    "hvammstangi": {
+      "name": "Hvammstangi",
+      "status": "ACQUIRED_GEOMETRY_NO_CLEAN_NAME_MATCH",
+      "candidate": null,
+      "road_condition_refs": [
+        {
+          "idbutur": 907720037,
+          "name": "Hvammstangavegur"
+        },
+        {
+          "idbutur": 907150037,
+          "name": "Staðarskáli-Hvammstangavegur"
+        },
+        {
+          "idbutur": 907160037,
+          "name": "Hvammstangavegur-Víðigerði"
+        }
+      ],
+      "name_mention_ref": {
+        "idferill": 3570,
+        "desc": "Hvammstangav. - Víðigerði",
+        "matched_token": "Hvammstangav",
+        "matched_stem_variant": "Hvammstang",
+        "mention_category": "HOME_PIECE_OR_ROUTE_ENDPOINT"
+      },
+      "v3_reference": {
+        "outcome": "NO_NODE",
+        "gap_id": "GAP-029"
+      },
+      "gap": {
+        "fact_missing": "Real geometry acquired for the cited IDBUTUR, but every piece's own name is a dash-pair connecting-road name (e.g. 'A - B'), not a clean match to this place alone, so no approach point can be proposed without guessing which end is nearest.",
+        "effect": "Not routable; a future round would need either a different disambiguation method or a different retained/acquired source.",
+        "sources_checked": [
+          "v3_csv",
+          "road_condition_current",
+          "road_condition_legacy",
+          "acquisition_run_2026-11-14"
+        ]
+      },
+      "acquired_geometry_reference": "server_data/winter-route-acquired-geometry.json#place_results.hvammstangi",
+      "approach_analysis_reference": "server_data/winter-route-approach-analysis.json#place_results.hvammstangi",
+      "place_evidence_reference": "server_data/winter-route-place-evidence.json#place_results.hvammstangi"
+    },
+    "blonduos": {
+      "name": "Blönduós",
+      "status": "ACQUIRED_GEOMETRY_NO_CLEAN_NAME_MATCH",
+      "candidate": null,
+      "road_condition_refs": [
+        {
+          "idbutur": 907210037,
+          "name": "Gljúfurá-Blönduós"
+        }
+      ],
+      "name_mention_ref": {
+        "idferill": 2423,
+        "desc": "Blönduós (Efstabraut) - Skagastrandarvegur",
+        "matched_token": "Blönduós",
+        "matched_stem_variant": "Blönduós",
+        "mention_category": "HOME_PIECE_OR_ROUTE_ENDPOINT"
+      },
+      "v3_reference": {
+        "outcome": "NO_NODE",
+        "gap_id": "GAP-030"
+      },
+      "gap": {
+        "fact_missing": "Real geometry acquired for the cited IDBUTUR, but every piece's own name is a dash-pair connecting-road name (e.g. 'A - B'), not a clean match to this place alone, so no approach point can be proposed without guessing which end is nearest.",
+        "effect": "Not routable; a future round would need either a different disambiguation method or a different retained/acquired source.",
+        "sources_checked": [
+          "v3_csv",
+          "road_condition_current",
+          "road_condition_legacy",
+          "acquisition_run_2026-11-14"
+        ]
+      },
+      "acquired_geometry_reference": "server_data/winter-route-acquired-geometry.json#place_results.blonduos",
+      "approach_analysis_reference": "server_data/winter-route-approach-analysis.json#place_results.blonduos",
+      "place_evidence_reference": "server_data/winter-route-place-evidence.json#place_results.blonduos"
+    },
+    "skagastrond": {
+      "name": "Skagaströnd",
+      "status": "ACQUIRED_GEOMETRY_NO_CLEAN_NAME_MATCH",
+      "candidate": null,
+      "road_condition_refs": [
+        {
+          "idbutur": 908740037,
+          "name": "Skagastrandarvegur"
+        },
+        {
+          "idbutur": 908190037,
+          "name": "Þverárfjall"
+        },
+        {
+          "idbutur": 908210037,
+          "name": "Skagastrandarvegur-sýslumörk"
+        }
+      ],
+      "name_mention_ref": {
+        "idferill": 2423,
+        "desc": "Blönduós (Efstabraut) - Skagastrandarvegur",
+        "matched_token": "Skagastrandarvegur",
+        "matched_stem_variant": "Skagastrand",
+        "mention_category": "HOME_PIECE_OR_ROUTE_ENDPOINT"
+      },
+      "v3_reference": {
+        "outcome": "NO_NODE",
+        "gap_id": "GAP-032"
+      },
+      "gap": {
+        "fact_missing": "Real geometry acquired for the cited IDBUTUR, but every piece's own name is a dash-pair connecting-road name (e.g. 'A - B'), not a clean match to this place alone, so no approach point can be proposed without guessing which end is nearest.",
+        "effect": "Not routable; a future round would need either a different disambiguation method or a different retained/acquired source.",
+        "sources_checked": [
+          "v3_csv",
+          "road_condition_current",
+          "road_condition_legacy",
+          "acquisition_run_2026-11-14"
+        ]
+      },
+      "acquired_geometry_reference": "server_data/winter-route-acquired-geometry.json#place_results.skagastrond",
+      "approach_analysis_reference": "server_data/winter-route-approach-analysis.json#place_results.skagastrond",
+      "place_evidence_reference": "server_data/winter-route-place-evidence.json#place_results.skagastrond"
+    },
+    "saudarkrokur": {
+      "name": "Sauðárkrókur",
+      "status": "CANDIDATE_FROM_ACQUIRED_GEOMETRY",
+      "candidate": {
+        "idferill": 2485,
+        "idbutur": 808170037,
+        "stored_field": "END",
+        "wgs84": {
+          "latitude": 65.74380077,
+          "longitude": -19.62028698,
+          "crs": "EPSG:4326"
+        },
+        "objectid": 5176,
+        "basis": "Exactly one real acquired piece (VEGHLUTI 1) whose own name matches the place name exactly, and no second piece on the same IDBUTUR to disambiguate against — still NAME_MATCH_INFERRED, never an owner pick."
+      },
+      "road_condition_refs": [
+        {
+          "idbutur": 808170037,
+          "name": "Sauðárkrókur"
+        },
+        {
+          "idbutur": 908180037,
+          "name": "Skagavegur-Sauðárkrókur"
+        },
+        {
+          "idbutur": 908070037,
+          "name": "Varmahlíð-Sauðárkrókur"
+        },
+        {
+          "idbutur": 908110037,
+          "name": "Sauðárkrókur-Hofsós"
+        }
+      ],
+      "name_mention_ref": null,
+      "v3_reference": {
+        "outcome": "NO_NODE",
+        "gap_id": "GAP-033"
+      },
+      "gap": {
+        "fact_missing": "Real geometry acquired and a single clean-name candidate proposed; owner has not selected it, and driving access/direction is EXACT_GAP regardless.",
+        "effect": "Not routable; owner selection needed before #501 can use it, and even then driving access stays EXACT_GAP.",
+        "sources_checked": [
+          "v3_csv",
+          "road_condition_current",
+          "road_condition_legacy",
+          "acquisition_run_2026-11-14"
+        ]
+      },
+      "acquired_geometry_reference": "server_data/winter-route-acquired-geometry.json#place_results.saudarkrokur",
+      "approach_analysis_reference": "server_data/winter-route-approach-analysis.json#place_results.saudarkrokur"
+    },
+    "varmahlid": {
+      "name": "Varmahlíð",
+      "status": "ACQUIRED_GEOMETRY_NO_CLEAN_NAME_MATCH",
+      "candidate": null,
+      "road_condition_refs": [
+        {
+          "idbutur": 908050037,
+          "name": "Varmahlíð-Steinsstaðir"
+        },
+        {
+          "idbutur": 908020037,
+          "name": "Vatnsskarð"
+        },
+        {
+          "idbutur": 908030037,
+          "name": "Varmahlíð-Kjálkavegur"
+        },
+        {
+          "idbutur": 908070037,
+          "name": "Varmahlíð-Sauðárkrókur"
+        }
+      ],
+      "name_mention_ref": {
+        "idferill": 2477,
+        "desc": "Varmahlíð",
+        "matched_token": "Varmahlíð",
+        "matched_stem_variant": "Varmahlíð",
+        "mention_category": "HOME_PIECE_OR_ROUTE_ENDPOINT"
+      },
+      "v3_reference": {
+        "outcome": "NO_NODE",
+        "gap_id": "GAP-031"
+      },
+      "gap": {
+        "fact_missing": "Real geometry acquired for the cited IDBUTUR, but every piece's own name is a dash-pair connecting-road name (e.g. 'A - B'), not a clean match to this place alone, so no approach point can be proposed without guessing which end is nearest.",
+        "effect": "Not routable; a future round would need either a different disambiguation method or a different retained/acquired source.",
+        "sources_checked": [
+          "v3_csv",
+          "road_condition_current",
+          "road_condition_legacy",
+          "acquisition_run_2026-11-14"
+        ]
+      },
+      "acquired_geometry_reference": "server_data/winter-route-acquired-geometry.json#place_results.varmahlid",
+      "approach_analysis_reference": "server_data/winter-route-approach-analysis.json#place_results.varmahlid"
+    },
+    "siglufjordur": {
+      "name": "Siglufjörður",
+      "status": "ACQUIRED_GEOMETRY_MULTIPLE_PIECES_NO_SINGLE_CANDIDATE",
+      "candidate": null,
+      "road_condition_refs": [
+        {
+          "idbutur": 909310037,
+          "name": "Siglufjörður"
+        },
+        {
+          "idbutur": 976110037,
+          "name": "Siglufjörður-Strákagöng"
+        }
+      ],
+      "name_mention_ref": null,
+      "v3_reference": {
+        "outcome": "NO_NODE",
+        "gap_id": "GAP-035"
+      },
+      "gap": {
+        "fact_missing": "Real geometry acquired (multiple pieces on the same IDBUTUR share the place's exact name) but no reliable rule in this round picks a single approach point among them without inventing one.",
+        "effect": "Not routable; a future round needs a specific disambiguation method (e.g. chain-walking the pieces to find the boundary with the connecting road) before a candidate can be proposed.",
+        "sources_checked": [
+          "v3_csv",
+          "road_condition_current",
+          "road_condition_legacy",
+          "acquisition_run_2026-11-14"
+        ]
+      },
+      "acquired_geometry_reference": "server_data/winter-route-acquired-geometry.json#place_results.siglufjordur",
+      "approach_analysis_reference": "server_data/winter-route-approach-analysis.json#place_results.siglufjordur"
+    },
+    "olafsfjordur": {
+      "name": "Ólafsfjörður",
+      "status": "ACQUIRED_GEOMETRY_MULTIPLE_PIECES_NO_SINGLE_CANDIDATE",
+      "candidate": null,
+      "road_condition_refs": [
+        {
+          "idbutur": 909320037,
+          "name": "Ólafsfjörður"
+        },
+        {
+          "idbutur": 909190037,
+          "name": "Ólafsfjörður-Vermundarstaðir"
+        }
+      ],
+      "name_mention_ref": null,
+      "v3_reference": {
+        "outcome": "NO_NODE",
+        "gap_id": "GAP-040"
+      },
+      "gap": {
+        "fact_missing": "Real geometry acquired (multiple pieces on the same IDBUTUR share the place's exact name) but no reliable rule in this round picks a single approach point among them without inventing one.",
+        "effect": "Not routable; a future round needs a specific disambiguation method (e.g. chain-walking the pieces to find the boundary with the connecting road) before a candidate can be proposed.",
+        "sources_checked": [
+          "v3_csv",
+          "road_condition_current",
+          "road_condition_legacy",
+          "acquisition_run_2026-11-14"
+        ]
+      },
+      "acquired_geometry_reference": "server_data/winter-route-acquired-geometry.json#place_results.olafsfjordur",
+      "approach_analysis_reference": "server_data/winter-route-approach-analysis.json#place_results.olafsfjordur"
+    },
+    "dalvik": {
+      "name": "Dalvík",
+      "status": "ACQUIRED_GEOMETRY_NO_CLEAN_NAME_MATCH",
+      "candidate": null,
+      "road_condition_refs": [
+        {
+          "idbutur": 909150037,
+          "name": "Hjalteyrarvegur-Dalvík"
+        }
+      ],
+      "name_mention_ref": null,
+      "v3_reference": {
+        "outcome": "NO_NODE",
+        "gap_id": "GAP-039"
+      },
+      "gap": {
+        "fact_missing": "Real geometry acquired for the cited IDBUTUR, but every piece's own name is a dash-pair connecting-road name (e.g. 'A - B'), not a clean match to this place alone, so no approach point can be proposed without guessing which end is nearest.",
+        "effect": "Not routable; a future round would need either a different disambiguation method or a different retained/acquired source.",
+        "sources_checked": [
+          "v3_csv",
+          "road_condition_current",
+          "road_condition_legacy",
+          "acquisition_run_2026-11-14"
+        ]
+      },
+      "acquired_geometry_reference": "server_data/winter-route-acquired-geometry.json#place_results.dalvik",
+      "approach_analysis_reference": "server_data/winter-route-approach-analysis.json#place_results.dalvik",
+      "place_evidence_reference": "server_data/winter-route-place-evidence.json#place_results.dalvik"
+    },
+    "husavik": {
+      "name": "Húsavík",
+      "status": "ACQUIRED_GEOMETRY_NO_CLEAN_NAME_MATCH",
+      "candidate": null,
+      "road_condition_refs": [
+        {
+          "idbutur": 910130037,
+          "name": "Húsavík-Máná"
+        },
+        {
+          "idbutur": 910120037,
+          "name": "Flugvöllur-Húsavík"
+        }
+      ],
+      "name_mention_ref": null,
+      "v3_reference": {
+        "outcome": "NO_NODE",
+        "gap_id": "GAP-042"
+      },
+      "gap": {
+        "fact_missing": "Real geometry acquired for the cited IDBUTUR, but every piece's own name is a dash-pair connecting-road name (e.g. 'A - B'), not a clean match to this place alone, so no approach point can be proposed without guessing which end is nearest.",
+        "effect": "Not routable; a future round would need either a different disambiguation method or a different retained/acquired source.",
+        "sources_checked": [
+          "v3_csv",
+          "road_condition_current",
+          "road_condition_legacy",
+          "acquisition_run_2026-11-14"
+        ]
+      },
+      "acquired_geometry_reference": "server_data/winter-route-acquired-geometry.json#place_results.husavik",
+      "approach_analysis_reference": "server_data/winter-route-approach-analysis.json#place_results.husavik",
+      "place_evidence_reference": "server_data/winter-route-place-evidence.json#place_results.husavik"
+    },
+    "reykjahlid-myvatn": {
+      "name": "Reykjahlíð",
+      "status": "RETAINED_CANDIDATE_NAME_MATCH_INFERRED",
+      "candidate": {
+        "idferill": 3566,
+        "stored_field": "START",
+        "native_xy": [
+          596178.6007,
+          572933.0514
+        ],
+        "crs": "EPSG:3057",
+        "source": "road_links",
+        "basis": "NAME_MATCH_INFERRED — the piece's own retained name/desc matches the place name; this was never an owner or phase-1 pick, only a construction artefact per v3's own notes.",
+        "direction_status": "INFERRED",
+        "wgs84": null,
+        "wgs84_gap": "No WGS84 file found for this IDFERILL in any retained source checked this round — native EPSG:3057 only."
+      },
+      "road_condition_refs": [
+        {
+          "idbutur": 810040037,
+          "name": "Reykjahlíð"
+        }
+      ],
+      "name_mention_ref": null,
+      "v3_reference": {
+        "outcome": "VALIDATED",
+        "gap_id": "GAP-036"
+      },
+      "gap": {
+        "fact_missing": "Owner has not selected this candidate; driving access/direction is EXACT_GAP regardless.",
+        "sources_checked": [
+          "v3_csv",
+          "road_links"
+        ],
+        "effect": "Not routable; owner selection needed before #501 can use it, and even then driving access stays EXACT_GAP."
+      }
+    },
+    "kopasker": {
+      "name": "Kópasker",
+      "status": "ACQUIRED_GEOMETRY_NO_CLEAN_NAME_MATCH",
+      "candidate": null,
+      "road_condition_refs": [
+        {
+          "idbutur": 1008700037,
+          "name": "Kópaskersvegur"
+        }
+      ],
+      "name_mention_ref": null,
+      "v3_reference": {
+        "outcome": "NO_NODE",
+        "gap_id": "GAP-043"
+      },
+      "gap": {
+        "fact_missing": "Real geometry acquired for the cited IDBUTUR, but every piece's own name is a dash-pair connecting-road name (e.g. 'A - B'), not a clean match to this place alone, so no approach point can be proposed without guessing which end is nearest.",
+        "effect": "Not routable; a future round would need either a different disambiguation method or a different retained/acquired source.",
+        "sources_checked": [
+          "v3_csv",
+          "road_condition_current",
+          "road_condition_legacy",
+          "acquisition_run_2026-11-14"
+        ]
+      },
+      "acquired_geometry_reference": "server_data/winter-route-acquired-geometry.json#place_results.kopasker",
+      "approach_analysis_reference": "server_data/winter-route-approach-analysis.json#place_results.kopasker",
+      "place_evidence_reference": "server_data/winter-route-place-evidence.json#place_results.kopasker"
+    },
+    "raufarhofn": {
+      "name": "Raufarhöfn",
+      "status": "ACQUIRED_GEOMETRY_NO_CLEAN_NAME_MATCH",
+      "candidate": null,
+      "road_condition_refs": [
+        {
+          "idbutur": 910270037,
+          "name": "Raufarhafnarvegur"
+        }
+      ],
+      "name_mention_ref": null,
+      "v3_reference": {
+        "outcome": "NO_NODE",
+        "gap_id": "GAP-044"
+      },
+      "gap": {
+        "fact_missing": "Real geometry acquired for the cited IDBUTUR, but every piece's own name is a dash-pair connecting-road name (e.g. 'A - B'), not a clean match to this place alone, so no approach point can be proposed without guessing which end is nearest.",
+        "effect": "Not routable; a future round would need either a different disambiguation method or a different retained/acquired source.",
+        "sources_checked": [
+          "v3_csv",
+          "road_condition_current",
+          "road_condition_legacy",
+          "acquisition_run_2026-11-14"
+        ]
+      },
+      "acquired_geometry_reference": "server_data/winter-route-acquired-geometry.json#place_results.raufarhofn",
+      "approach_analysis_reference": "server_data/winter-route-approach-analysis.json#place_results.raufarhofn",
+      "place_evidence_reference": "server_data/winter-route-place-evidence.json#place_results.raufarhofn"
+    },
+    "thorshofn": {
+      "name": "Þórshöfn",
+      "status": "NO_RETAINED_MATCH",
+      "candidate": null,
+      "road_condition_refs": null,
+      "name_mention_ref": null,
+      "v3_reference": {
+        "outcome": "NO_NODE",
+        "gap_id": "GAP-045"
+      },
+      "gap": {
+        "fact_missing": "No VEGNR=1 node, no road-condition identifier, and no name mention found in any retained source checked this round.",
+        "sources_checked": [
+          "v3_csv",
+          "stem_search_hints_v3",
+          "road_condition_current",
+          "road_condition_legacy",
+          "place_inventory"
+        ],
+        "effect": "Not routable; a future round would need a new, scoped retained-data check or an owner-approved acquisition."
+      },
+      "place_evidence_reference": "server_data/winter-route-place-evidence.json#place_results.thorshofn"
+    },
+    "vopnafjordur": {
+      "name": "Vopnafjörður",
+      "status": "ACQUIRED_GEOMETRY_MULTIPLE_PIECES_NO_SINGLE_CANDIDATE",
+      "candidate": null,
+      "road_condition_refs": [
+        {
+          "idbutur": 910410037,
+          "name": "Vopnafjörður-Skógavegur"
+        },
+        {
+          "idbutur": 910220037,
+          "name": "Vopnafjörður"
+        }
+      ],
+      "name_mention_ref": null,
+      "v3_reference": {
+        "outcome": "NO_NODE",
+        "gap_id": "GAP-052"
+      },
+      "gap": {
+        "fact_missing": "Real geometry acquired (multiple pieces on the same IDBUTUR share the place's exact name) but no reliable rule in this round picks a single approach point among them without inventing one.",
+        "effect": "Not routable; a future round needs a specific disambiguation method (e.g. chain-walking the pieces to find the boundary with the connecting road) before a candidate can be proposed.",
+        "sources_checked": [
+          "v3_csv",
+          "road_condition_current",
+          "road_condition_legacy",
+          "acquisition_run_2026-11-14"
+        ]
+      },
+      "acquired_geometry_reference": "server_data/winter-route-acquired-geometry.json#place_results.vopnafjordur",
+      "approach_analysis_reference": "server_data/winter-route-approach-analysis.json#place_results.vopnafjordur"
+    },
+    "neskaupstadur": {
+      "name": "Neskaupstaður",
+      "status": "ACQUIRED_GEOMETRY_NO_CLEAN_NAME_MATCH",
+      "candidate": null,
+      "road_condition_refs": [
+        {
+          "idbutur": 911420037,
+          "name": "Norðfjarðargöng-Neskaupstaður"
+        }
+      ],
+      "name_mention_ref": null,
+      "v3_reference": {
+        "outcome": "NO_NODE",
+        "gap_id": "GAP-056"
+      },
+      "gap": {
+        "fact_missing": "Real geometry acquired for the cited IDBUTUR, but every piece's own name is a dash-pair connecting-road name (e.g. 'A - B'), not a clean match to this place alone, so no approach point can be proposed without guessing which end is nearest.",
+        "effect": "Not routable; a future round would need either a different disambiguation method or a different retained/acquired source.",
+        "sources_checked": [
+          "v3_csv",
+          "road_condition_current",
+          "road_condition_legacy",
+          "acquisition_run_2026-11-14"
+        ]
+      },
+      "acquired_geometry_reference": "server_data/winter-route-acquired-geometry.json#place_results.neskaupstadur",
+      "approach_analysis_reference": "server_data/winter-route-approach-analysis.json#place_results.neskaupstadur",
+      "place_evidence_reference": "server_data/winter-route-place-evidence.json#place_results.neskaupstadur"
+    },
+    "eskifjordur": {
+      "name": "Eskifjörður",
+      "status": "ACQUIRED_GEOMETRY_NO_CLEAN_NAME_MATCH",
+      "candidate": null,
+      "road_condition_refs": [
+        {
+          "idbutur": 911230037,
+          "name": "Reyðarfjörður-Eskifjörður"
+        }
+      ],
+      "name_mention_ref": null,
+      "v3_reference": {
+        "outcome": "NO_NODE",
+        "gap_id": "GAP-055"
+      },
+      "gap": {
+        "fact_missing": "Real geometry acquired for the cited IDBUTUR, but every piece's own name is a dash-pair connecting-road name (e.g. 'A - B'), not a clean match to this place alone, so no approach point can be proposed without guessing which end is nearest.",
+        "effect": "Not routable; a future round would need either a different disambiguation method or a different retained/acquired source.",
+        "sources_checked": [
+          "v3_csv",
+          "road_condition_current",
+          "road_condition_legacy",
+          "acquisition_run_2026-11-14"
+        ]
+      },
+      "acquired_geometry_reference": "server_data/winter-route-acquired-geometry.json#place_results.eskifjordur",
+      "approach_analysis_reference": "server_data/winter-route-approach-analysis.json#place_results.eskifjordur",
+      "place_evidence_reference": "server_data/winter-route-place-evidence.json#place_results.eskifjordur"
+    },
+    "reydarfjordur": {
+      "name": "Reyðarfjörður",
+      "status": "RETAINED_CANDIDATE_NAME_MATCH_INFERRED",
+      "candidate": {
+        "idferill": 2520,
+        "stored_field": "START",
+        "native_xy": [
+          723714.2197,
+          511018.4862
+        ],
+        "crs": "EPSG:3057",
+        "source": "road_links",
+        "basis": "NAME_MATCH_INFERRED — the piece's own retained name/desc matches the place name; this was never an owner or phase-1 pick, only a construction artefact per v3's own notes.",
+        "direction_status": "INFERRED",
+        "wgs84": null,
+        "wgs84_gap": "No WGS84 file found for this IDFERILL in any retained source checked this round — native EPSG:3057 only."
+      },
+      "road_condition_refs": [
+        {
+          "idbutur": 911430037,
+          "name": "Reyðarfjörður"
+        },
+        {
+          "idbutur": 911230037,
+          "name": "Reyðarfjörður-Eskifjörður"
+        }
+      ],
+      "name_mention_ref": {
+        "idferill": 2426,
+        "desc": "Reyðarfjörður - Egilsstaðir",
+        "matched_token": "Reyðarfjörður",
+        "matched_stem_variant": "Reyðarfjörður",
+        "mention_category": "HOME_PIECE_OR_ROUTE_ENDPOINT"
+      },
+      "v3_reference": {
+        "outcome": "VALIDATED",
+        "gap_id": "GAP-047"
+      },
+      "gap": {
+        "fact_missing": "Owner has not selected this candidate; driving access/direction is EXACT_GAP regardless.",
+        "sources_checked": [
+          "v3_csv",
+          "road_links"
+        ],
+        "effect": "Not routable; owner selection needed before #501 can use it, and even then driving access stays EXACT_GAP."
+      }
+    },
+    "faskrudsfjordur": {
+      "name": "Fáskrúðsfjörður",
+      "status": "RETAINED_CANDIDATE_NAME_MATCH_INFERRED",
+      "candidate": {
+        "idferill": 2536,
+        "stored_field": "START",
+        "native_xy": [
+          727817.225,
+          504290.235
+        ],
+        "crs": "EPSG:3057",
+        "source": "road_links",
+        "basis": "NAME_MATCH_INFERRED — the piece's own retained name/desc matches the place name; this was never an owner or phase-1 pick, only a construction artefact per v3's own notes.",
+        "direction_status": "INFERRED",
+        "wgs84": null,
+        "wgs84_gap": "No WGS84 file found for this IDFERILL in any retained source checked this round — native EPSG:3057 only."
+      },
+      "road_condition_refs": [
+        {
+          "idbutur": 911340037,
+          "name": "Fáskrúðsfjörður-Kolfreyjustaður"
+        },
+        {
+          "idbutur": 911440037,
+          "name": "Fáskrúðsfjörður"
+        },
+        {
+          "idbutur": 911270037,
+          "name": "Fáskrúðsfjörður-Stöðvarfjörður"
+        }
+      ],
+      "name_mention_ref": {
+        "idferill": 2520,
+        "desc": "Reyðarfjörður - Fáskrúðsfjörður",
+        "matched_token": "Fáskrúðsfjörður",
+        "matched_stem_variant": "Fáskrúðsfjörður",
+        "mention_category": "HOME_PIECE_OR_ROUTE_ENDPOINT"
+      },
+      "v3_reference": {
+        "outcome": "VALIDATED",
+        "gap_id": "GAP-048"
+      },
+      "gap": {
+        "fact_missing": "Owner has not selected this candidate; driving access/direction is EXACT_GAP regardless.",
+        "sources_checked": [
+          "v3_csv",
+          "road_links"
+        ],
+        "effect": "Not routable; owner selection needed before #501 can use it, and even then driving access stays EXACT_GAP."
+      }
+    },
+    "djupivogur": {
+      "name": "Djúpivogur",
+      "status": "ACQUIRED_GEOMETRY_NO_CLEAN_NAME_MATCH",
+      "candidate": null,
+      "road_condition_refs": [
+        {
+          "idbutur": 912010037,
+          "name": "Streiti - Djúpivogur"
+        },
+        {
+          "idbutur": 912020037,
+          "name": "Djúpivogur-Þvottá"
+        }
+      ],
+      "name_mention_ref": {
+        "idferill": 3106,
+        "desc": "Fossgerði - Djúpivogur",
+        "matched_token": "Djúpivogur",
+        "matched_stem_variant": "Djúpivogur",
+        "mention_category": "HOME_PIECE_OR_ROUTE_ENDPOINT"
+      },
+      "v3_reference": {
+        "outcome": "NO_NODE",
+        "gap_id": "GAP-051"
+      },
+      "gap": {
+        "fact_missing": "Real geometry acquired for the cited IDBUTUR, but every piece's own name is a dash-pair connecting-road name (e.g. 'A - B'), not a clean match to this place alone, so no approach point can be proposed without guessing which end is nearest.",
+        "effect": "Not routable; a future round would need either a different disambiguation method or a different retained/acquired source.",
+        "sources_checked": [
+          "v3_csv",
+          "road_condition_current",
+          "road_condition_legacy",
+          "acquisition_run_2026-11-14"
+        ]
+      },
+      "acquired_geometry_reference": "server_data/winter-route-acquired-geometry.json#place_results.djupivogur",
+      "approach_analysis_reference": "server_data/winter-route-approach-analysis.json#place_results.djupivogur",
+      "place_evidence_reference": "server_data/winter-route-place-evidence.json#place_results.djupivogur"
+    },
+    "hofn": {
+      "name": "Höfn",
+      "status": "ACQUIRED_GEOMETRY_NO_CLEAN_NAME_MATCH",
+      "candidate": null,
+      "road_condition_refs": [
+        {
+          "idbutur": 1209820037,
+          "name": "Flugvallarvegur Höfn"
+        },
+        {
+          "idbutur": 912040037,
+          "name": "Hvalnes-Höfn"
+        },
+        {
+          "idbutur": 912060037,
+          "name": "Jökulsá-Höfn"
+        }
+      ],
+      "name_mention_ref": null,
+      "v3_reference": {
+        "outcome": "NO_NODE",
+        "gap_id": "GAP-057"
+      },
+      "gap": {
+        "fact_missing": "Real geometry acquired for the cited IDBUTUR, but every piece's own name is a dash-pair connecting-road name (e.g. 'A - B'), not a clean match to this place alone, so no approach point can be proposed without guessing which end is nearest.",
+        "effect": "Not routable; a future round would need either a different disambiguation method or a different retained/acquired source.",
+        "sources_checked": [
+          "v3_csv",
+          "road_condition_current",
+          "road_condition_legacy",
+          "acquisition_run_2026-11-14"
+        ]
+      },
+      "acquired_geometry_reference": "server_data/winter-route-acquired-geometry.json#place_results.hofn",
+      "approach_analysis_reference": "server_data/winter-route-approach-analysis.json#place_results.hofn",
+      "place_evidence_reference": "server_data/winter-route-place-evidence.json#place_results.hofn"
+    },
+    "skaftafell": {
+      "name": "Skaftafell",
+      "status": "NO_RETAINED_MATCH",
+      "candidate": null,
+      "road_condition_refs": null,
+      "name_mention_ref": null,
+      "v3_reference": {
+        "outcome": "NOT_IN_V3",
+        "gap_id": null
+      },
+      "gap": {
+        "fact_missing": "No VEGNR=1 node, no road-condition identifier, and no name mention found in any retained source checked this round (and no entry at all in place-access-status-v3.csv).",
+        "sources_checked": [
+          "v3_csv",
+          "stem_search_hints_v3",
+          "road_condition_current",
+          "road_condition_legacy",
+          "place_inventory"
+        ],
+        "effect": "Not routable; a future round would need a new, scoped retained-data check or an owner-approved acquisition."
+      },
+      "place_evidence_reference": "server_data/winter-route-place-evidence.json#place_results.skaftafell"
+    },
+    "kirkjubaejarklaustur": {
+      "name": "Kirkjubæjarklaustur",
+      "status": "NAME_MENTION_ONLY_NO_GEOMETRY",
+      "candidate": null,
+      "road_condition_refs": null,
+      "name_mention_ref": {
+        "idferill": 1964,
+        "desc": "Kirkjubæjarklaustur - Skeiðarársandur",
+        "matched_token": "Kirkjubæjarklaustur",
+        "matched_stem_variant": "Kirkjubæjarklaustur",
+        "mention_category": "HOME_PIECE_OR_ROUTE_ENDPOINT"
+      },
+      "v3_reference": {
+        "outcome": "NO_NODE",
+        "gap_id": "GAP-058"
+      },
+      "gap": {
+        "fact_missing": "Only an INFERRED text mention of the place name inside another piece's description (not a dedicated node, not geometry for this place itself).",
+        "sources_checked": [
+          "v3_csv",
+          "stem_search_hints_v3"
+        ],
+        "effect": "Not routable; a text mention is not a candidate per approved-prompt-v1.md's own NE3 instruction."
+      },
+      "place_evidence_reference": "server_data/winter-route-place-evidence.json#place_results.kirkjubaejarklaustur"
+    },
+    "thorlakshofn": {
+      "name": "Þorlákshöfn",
+      "status": "ACQUIRED_GEOMETRY_NO_CLEAN_NAME_MATCH",
+      "candidate": null,
+      "road_condition_refs": [
+        {
+          "idbutur": 238030037,
+          "name": "Eyrarbakkavegur-Þorlákshöfn"
+        },
+        {
+          "idbutur": 902370037,
+          "name": "Þorlákshöfn-Selvogur"
+        }
+      ],
+      "name_mention_ref": {
+        "idferill": 22722,
+        "desc": "Þrengslavegur m/ að- og fráreinum: Hringvegur - Þorlákshafnarvegur",
+        "matched_token": "Þorlákshafnarvegur",
+        "matched_stem_variant": "Þorlákshafn",
+        "mention_category": "HOME_PIECE_OR_ROUTE_ENDPOINT"
+      },
+      "v3_reference": {
+        "outcome": "NO_NODE",
+        "gap_id": "GAP-064"
+      },
+      "gap": {
+        "fact_missing": "Real geometry acquired for the cited IDBUTUR, but every piece's own name is a dash-pair connecting-road name (e.g. 'A - B'), not a clean match to this place alone, so no approach point can be proposed without guessing which end is nearest.",
+        "effect": "Not routable; a future round would need either a different disambiguation method or a different retained/acquired source.",
+        "sources_checked": [
+          "v3_csv",
+          "road_condition_current",
+          "road_condition_legacy",
+          "acquisition_run_2026-11-14"
+        ]
+      },
+      "acquired_geometry_reference": "server_data/winter-route-acquired-geometry.json#place_results.thorlakshofn",
+      "approach_analysis_reference": "server_data/winter-route-approach-analysis.json#place_results.thorlakshofn",
+      "place_evidence_reference": "server_data/winter-route-place-evidence.json#place_results.thorlakshofn"
+    },
+    "fludir": {
+      "name": "Flúðir",
+      "status": "ACQUIRED_GEOMETRY_NO_CLEAN_NAME_MATCH",
+      "candidate": null,
+      "road_condition_refs": [
+        {
+          "idbutur": 902070037,
+          "name": "Flúðir-Biskupstungnabraut"
+        },
+        {
+          "idbutur": 902060037,
+          "name": "Þjórsárdalsvegur-Flúðir"
+        }
+      ],
+      "name_mention_ref": null,
+      "v3_reference": {
+        "outcome": "NO_NODE",
+        "gap_id": "GAP-067"
+      },
+      "gap": {
+        "fact_missing": "Real geometry acquired for the cited IDBUTUR, but every piece's own name is a dash-pair connecting-road name (e.g. 'A - B'), not a clean match to this place alone, so no approach point can be proposed without guessing which end is nearest.",
+        "effect": "Not routable; a future round would need either a different disambiguation method or a different retained/acquired source.",
+        "sources_checked": [
+          "v3_csv",
+          "road_condition_current",
+          "road_condition_legacy",
+          "acquisition_run_2026-11-14"
+        ]
+      },
+      "acquired_geometry_reference": "server_data/winter-route-acquired-geometry.json#place_results.fludir",
+      "approach_analysis_reference": "server_data/winter-route-approach-analysis.json#place_results.fludir",
+      "place_evidence_reference": "server_data/winter-route-place-evidence.json#place_results.fludir"
+    },
+    "laugarvatn": {
+      "name": "Laugarvatn",
+      "status": "ACQUIRED_GEOMETRY_NO_CLEAN_NAME_MATCH",
+      "candidate": null,
+      "road_condition_refs": [
+        {
+          "idbutur": 902160037,
+          "name": "Hringvegur-Laugarvatnsvegur"
+        },
+        {
+          "idbutur": 902290037,
+          "name": "Laugarvatn-Múli"
+        },
+        {
+          "idbutur": 902170037,
+          "name": "Laugarvatnsvegur-Múli"
+        },
+        {
+          "idbutur": 902280037,
+          "name": "Svínavatn-Laugarvatn"
+        }
+      ],
+      "name_mention_ref": null,
+      "v3_reference": {
+        "outcome": "NO_NODE",
+        "gap_id": "GAP-068"
+      },
+      "gap": {
+        "fact_missing": "Real geometry acquired for the cited IDBUTUR, but every piece's own name is a dash-pair connecting-road name (e.g. 'A - B'), not a clean match to this place alone, so no approach point can be proposed without guessing which end is nearest.",
+        "effect": "Not routable; a future round would need either a different disambiguation method or a different retained/acquired source.",
+        "sources_checked": [
+          "v3_csv",
+          "road_condition_current",
+          "road_condition_legacy",
+          "acquisition_run_2026-11-14"
+        ]
+      },
+      "acquired_geometry_reference": "server_data/winter-route-acquired-geometry.json#place_results.laugarvatn",
+      "approach_analysis_reference": "server_data/winter-route-approach-analysis.json#place_results.laugarvatn",
+      "place_evidence_reference": "server_data/winter-route-place-evidence.json#place_results.laugarvatn"
+    }
+  }
+}
