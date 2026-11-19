@@ -1,0 +1,289 @@
+﻿Stadarrod,Stadur,IdButur,FulltNafnButs,Vegnumer,Fjarlaegd_m,Rod_nalaegdar,Adferd,Stada
+1,Reykjavík,915010037,Lækjargata - Njarðargata,0000,148,1,nalaegd_eingongu,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+1,Reykjavík,1404550037,Reykjavíkurhöfn,41;455,401,2,nafn_og_nalaegd,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+1,Reykjavík,903310037,Hringbraut,49,445,3,nalaegd_eingongu,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+2,Mosfellsbær,903020037,Hringvegur: Vesturlandsvegur,1,166,1,nalaegd_eingongu,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+2,Mosfellsbær,903030037,Hringvegur: Þingvallavegur - Hvalfjarðargöng,1,1519,2,nalaegd_eingongu,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+2,Mosfellsbær,903040037,Þingvallavegur: Mosfellsdalur,36,1559,3,nalaegd_eingongu,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+3,Hvalfjarðargöng,904000037,Hringvegur. Hvalfjarðargöng - Grundartangi,1;506,21,1,nafn_og_nalaegd,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+3,Hvalfjarðargöng,904690037,Hvalfjarðargöng,1,303,2,nafn_og_nalaegd,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+3,Hvalfjarðargöng,814700037,Hvalfjarðargöng til suðurs,1,439,3,nafn_og_nalaegd,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+4,Akranes,904020037,Akrafjallsvegur: Hringvegur - Akranesvegur,509;51,1283,1,nafn_og_nalaegd,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+4,Akranes,405030037,Innnesvegur,503,1853,2,nalaegd_eingongu,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+5,Borgarnes,804020037,Hafnarfjall,1,681,1,nalaegd_eingongu,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+5,Borgarnes,904040037,Hringvegur: Borgarnes - Baulan,1,798,2,nafn_og_nalaegd,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+6,Snorrastaðir,454040037,Snæfellsnesvegur Hítará - Heydalsvegur,54,1810,1,nalaegd_eingongu,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+8,Gerðuberg,904270037,Snæfellsnesvegur: Heydalur - Vegamót,54,1397,1,nalaegd_eingongu,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+9,Heydalsvegur við Kolbeinsstaði,904270037,Snæfellsnesvegur: Heydalur - Vegamót,54,493,1,nalaegd_eingongu,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+9,Heydalsvegur við Kolbeinsstaði,905010037,Heydalsvegur,55,1688,2,nalaegd_eingongu,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+9,Heydalsvegur við Kolbeinsstaði,454040037,Snæfellsnesvegur Hítará - Heydalsvegur,54,1688,3,nalaegd_eingongu,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+11,Vegamót,904270037,Snæfellsnesvegur: Heydalur - Vegamót,54,32,1,nafn_og_nalaegd,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+13,Ytri-Tunga,904280037,"Snæfellsnesv.: Vegamót, Vatnaleið - Fróðárheiði",54,786,1,nalaegd_eingongu,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+14,Bjarnarfoss,904280037,"Snæfellsnesv.: Vegamót, Vatnaleið - Fróðárheiði",54,378,1,nalaegd_eingongu,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+14,Bjarnarfoss,904290037,Snæfellsnesvegur um Fróðárheiði,54,401,2,nalaegd_eingongu,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+14,Bjarnarfoss,904350037,Útnesvegur: Búðir - Hellnar,5710;574,401,3,nalaegd_eingongu,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+15,Búðir og Búðakirkja,904350037,Útnesvegur: Búðir - Hellnar,5710;574,1840,1,nafn_og_nalaegd,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+16,Fróðárheiði,904290037,Snæfellsnesvegur um Fróðárheiði,54,148,1,nafn_og_nalaegd,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+17,Arnarstapi,904350037,Útnesvegur: Búðir - Hellnar,5710;574,196,1,nalaegd_eingongu,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+17,Arnarstapi,913230037,Jökulhálsleið,570,1518,2,nalaegd_eingongu,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+19,Hellnar,904350037,Útnesvegur: Búðir - Hellnar,5710;574,1681,1,nafn_og_nalaegd,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+20,Lóndrangar,904360037,Útnesvegur: Hellnar - Hellissandur,574,461,1,nalaegd_eingongu,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+21,Malarrif,904360037,Útnesvegur: Hellnar - Hellissandur,574,1235,1,nalaegd_eingongu,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+22,Djúpalónssandur,904360037,Útnesvegur: Hellnar - Hellissandur,574,1934,1,nalaegd_eingongu,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+23,Saxhóll,904360037,Útnesvegur: Hellnar - Hellissandur,574,765,1,nalaegd_eingongu,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+23,Saxhóll,405750037,Eysteinsdalsleið,F575,1561,2,nalaegd_eingongu,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+24,Skarðsvík,405790037,Öndverðarnesvegur,579,667,1,nalaegd_eingongu,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+24,Skarðsvík,904360037,Útnesvegur: Hellnar - Hellissandur,574,1059,2,nalaegd_eingongu,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+25,Hellissandur,904370037,Útnesvegur: Hellissandur - Ólafsvík,574,248,1,nafn_og_nalaegd,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+25,Hellissandur,904360037,Útnesvegur: Hellnar - Hellissandur,574,385,2,nafn_og_nalaegd,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+26,Rif,904370037,Útnesvegur: Hellissandur - Ólafsvík,574,484,1,nalaegd_eingongu,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+27,Ólafsvík,904300037,Grundarfjörður - Ólafsvík,54;574,190,1,nafn_og_nalaegd,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+27,Ólafsvík,904370037,Útnesvegur: Hellissandur - Ólafsvík,574,1108,2,nafn_og_nalaegd,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+27,Ólafsvík,913230037,Jökulhálsleið,570,1759,3,nalaegd_eingongu,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+28,Kirkjufell og Kirkjufellsfoss,904300037,Grundarfjörður - Ólafsvík,54;574,183,1,nalaegd_eingongu,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+28,Kirkjufell og Kirkjufellsfoss,904310037,Snæfellsnesvegur: Grundarfjörður - Vatnaleið,54,1888,2,nalaegd_eingongu,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+29,Grundarfjörður,904310037,Snæfellsnesvegur: Grundarfjörður - Vatnaleið,54,100,1,nafn_og_nalaegd,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+29,Grundarfjörður,904300037,Grundarfjörður - Ólafsvík,54;574,654,2,nafn_og_nalaegd,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+30,Berserkjahraun,904310037,Snæfellsnesvegur: Grundarfjörður - Vatnaleið,54,641,1,nalaegd_eingongu,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+31,Stykkishólmur,904320037,Vatnaleið - Stykkishólmur,54;58,57,1,nafn_og_nalaegd,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+32,Álftafjörður,904340037,Snæfellsnesvegur: Stykkishólmsvegur - Narfeyri,54,648,1,nafn_og_nalaegd,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+33,Skógarströnd,905000037,Snæfellsnesvegur: Narfeyri - Heydalsvegur,54,260,1,nalaegd_eingongu,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+34,Búðardalur,805030037,Vestfjarðavegur í Miðdölum: Skógstagl - Búðardalur,60,160,1,nafn_og_nalaegd,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+34,Búðardalur,905070037,Vestfjarðavegur: Búðardalur - Laugar,60,260,2,nafn_og_nalaegd,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+34,Búðardalur,505870037,Hjarðarholtsvegur,587,922,3,nalaegd_eingongu,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+35,Brattabrekka,505820037,Hálsbæjavegur,582,115,1,nalaegd_eingongu,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+35,Brattabrekka,905030037,Vestfjarðavegur í Miðdölum: Breiðabólstaður - Skógstagl,60,563,2,nalaegd_eingongu,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+39,Króksfjarðarnes,805090037,Klofningsvegur - Djúpvegur,60,591,1,nalaegd_eingongu,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+39,Króksfjarðarnes,506020037,Garpsdalsvegur,602,633,2,nalaegd_eingongu,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+40,Reykhólar,905120037,Reykhólasveitarvegur,606;607,151,1,nalaegd_eingongu,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+40,Reykhólar,506070037,Reykhólasveitarvegur,607,976,2,nalaegd_eingongu,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+41,Þröskuldar,907000037,Djúpvegur: Þröskuldar,61,807,1,nafn_og_nalaegd,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+42,Flókalundur,905170037,Skálmarsdalsá  - Flókalundur,60,51,1,nafn_og_nalaegd,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+42,Flókalundur,660350037,Vestfjarðavegur: Flókalundur - Bíldudalsvegur,60,343,2,nafn_og_nalaegd,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+42,Flókalundur,905180037,Barðastrandarvegur: Flókalundur - Brjánslækur,610;62,343,3,nafn_og_nalaegd,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+43,Brjánslækur,905180037,Barðastrandarvegur: Flókalundur - Brjánslækur,610;62,113,1,nafn_og_nalaegd,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+43,Brjánslækur,905190037,Barðastrandarvegur: Brjánslækur - Siglunesvegur,62,361,2,nafn_og_nalaegd,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+45,Barðaströnd,905190037,Barðastrandarvegur: Brjánslækur - Siglunesvegur,62,1271,1,nalaegd_eingongu,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+46,Breiðavík,905230037,Örlygshafnarvegur: Örlygshöfn - Hvallátur,612,569,1,nalaegd_eingongu,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+47,Látrabjarg,905530037,Hvallátur - Bjargtangar,612,152,1,nalaegd_eingongu,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+48,Patreksfjörður,562070037,Patreksfjörður,62,9,1,nafn_og_nalaegd,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+48,Patreksfjörður,905250037,Barðastrandarvegur: Raknadalshlíð,62,1291,2,nalaegd_eingongu,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+48,Patreksfjörður,905260037,Bíldudalsvegur: Miklidalur,63,1291,3,nalaegd_eingongu,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+49,Tálknafjörður,506170037,Tálknafjarðarvegur,617,992,1,nalaegd_eingongu,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+50,Bíldudalur,561900037,Bíldudalur,619,12,1,nafn_og_nalaegd,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+50,Bíldudalur,905280037,Ketildalavegur: Bíldudalur - Feigsdalur,619,490,2,nafn_og_nalaegd,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+50,Bíldudalur,905290037,Bíldudalsvegur: Bíldudalur - flugvöllur,620;63,901,3,nafn_og_nalaegd,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+51,Dynjandi,606210037,Dynjandavegur,621,91,1,nalaegd_eingongu,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+51,Dynjandi,905310037,Vestfjarðavegur: Dynjandisheiði,60,771,2,nafn_og_nalaegd,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+51,Dynjandi,906010037,Dynjandavegur - Dýrafjarðargöng,60,771,3,nalaegd_eingongu,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+52,Dýrafjarðargöng,906020037,Hrafnseyrarvegur: Hrafnseyrarheiði,626,433,1,nalaegd_eingongu,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+53,Þingeyri,662210037,Þingeyri,622,126,1,nafn_og_nalaegd,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+53,Þingeyri,662220037,Svalvogavegur: Þingeyri - Flugvöllur,622,376,2,nafn_og_nalaegd,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+53,Þingeyri,906020037,Hrafnseyrarvegur: Hrafnseyrarheiði,626,1016,3,nalaegd_eingongu,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+54,Flateyri,906090037,Flateyrarvegur,64,413,1,nalaegd_eingongu,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+55,Suðureyri,665030037,ofan Súgandafjarðar,65,321,1,nalaegd_eingongu,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+55,Suðureyri,906100037,Súgandafjarðarvegur,65,327,2,nalaegd_eingongu,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+56,Ísafjörður,906120037,Djúpvegur: Flugvöllur - Ísafjörður,61;631,164,1,nafn_og_nalaegd,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+56,Ísafjörður,906130037,Djúpvegur: Eyrarhlíð,61,720,2,nalaegd_eingongu,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+56,Ísafjörður,906140037,Djúpvegur: Flugvallarvegur Ísafirði - Súðavík (Súðavíkurhlíð),61,1076,3,nalaegd_eingongu,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+57,Hnífsdalur,906130037,Djúpvegur: Eyrarhlíð,61,174,1,nalaegd_eingongu,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+57,Hnífsdalur,906710037,Bolungarvíkurgöng,61,846,2,nalaegd_eingongu,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+58,Bolungarvík,906580037,Skálavíkurvegur,4100;630,260,1,nalaegd_eingongu,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+58,Bolungarvík,906110037,"Djúpvegur: Gangamunni Ós - Bolungarvík, ráðhús",61,595,2,nafn_og_nalaegd,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+59,Súðavík,906140037,Djúpvegur: Flugvallarvegur Ísafirði - Súðavík (Súðavíkurhlíð),61,283,1,nafn_og_nalaegd,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+59,Súðavík,906150037,Djúpvegur: Súðavík - Hjallar,61,1274,2,nafn_og_nalaegd,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+60,Steingrímsfjarðarheiði,907050037,Djúpvegur: Steingrímsfjarðarheiði,61,958,1,nafn_og_nalaegd,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+61,Hólmavík,907040037,Djúpvegur: Hólmavík - Drangsnesvegur,61;67,436,1,nafn_og_nalaegd,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+61,Hólmavík,707040037,Djúpvegur: Hrófá - Hólmavík,61,797,2,nafn_og_nalaegd,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+62,Drangsnes,907100037,Strandavegur og Drangsnesvegur: Djúpvegur - Drangsnes,643;645,167,1,nafn_og_nalaegd,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+62,Drangsnes,907110037,Drangsnes - Kaldrananes,645,257,2,nafn_og_nalaegd,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+63,Norðurfjörður,907140037,Strandavegur: Gjögur (flugvöllur) - Norðurfjörður,643;646,742,1,nafn_og_nalaegd,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+63,Norðurfjörður,907600037,Ófeigsfjarðarvegur,649;F649,1992,2,nalaegd_eingongu,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+64,Hrútafjörður,907350037,Innstrandavegur sunnan Laxárdalsheiðar,68,402,1,nalaegd_eingongu,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+64,Hrútafjörður,904060037,Holtavörðuheiði,1,1074,2,nalaegd_eingongu,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+64,Hrútafjörður,907150037,Hringvegur: Staðarskáli - Hvammstangavegur,1;7020;704,1094,3,nalaegd_eingongu,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+65,Laugarbakki,907150037,Hringvegur: Staðarskáli - Hvammstangavegur,1;7020;704,160,1,nalaegd_eingongu,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+65,Laugarbakki,907170037,Miðfjarðarvegur,704,576,2,nalaegd_eingongu,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+65,Laugarbakki,907180037,Heggstaðanesvegur,702,1306,3,nalaegd_eingongu,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+66,Hvammstangi,907720037,Hvammstangavegur,711;72,4,1,nalaegd_eingongu,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+66,Hvammstangi,907200037,Vatnsnesvegur vestari,711,583,2,nalaegd_eingongu,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+67,Blönduós,908010037,Hringvegur: Langidalur,1,47,1,nalaegd_eingongu,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+67,Blönduós,907210037,Hringvegur: Gljúfurá - Blönduós,1;731,321,2,nafn_og_nalaegd,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+67,Blönduós,773110037,Svínvetningabraut að Reykjabraut,731,379,3,nalaegd_eingongu,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+68,Skagaströnd,908740037,Skagastrandarvegur,74,164,1,nalaegd_eingongu,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+68,Skagaströnd,908210037,Skagavegur: Skagastrandarvegur - sýslumörk,745,1429,2,nalaegd_eingongu,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+69,Sauðárkrókur,808170037,Sauðárkrókur,73,71,1,nafn_og_nalaegd,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+69,Sauðárkrókur,908070037,Sauðárkróksbraut: Varmahlíð - Sauðárkrókur,75,968,2,nafn_og_nalaegd,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+69,Sauðárkrókur,908110037,Sauðárkróksbraut og Siglufjarðarvegur: Sauðárkrókur - Hofsós,75;76;77,968,3,nafn_og_nalaegd,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+70,Varmahlíð,908020037,Vatnsskarð: Svínvetningabraut - Varmahlíð,1,220,1,nafn_og_nalaegd,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+70,Varmahlíð,908050037,Skagafjarðarvegur - Varmahlíð - Steinsstaðir,752;754,224,2,nafn_og_nalaegd,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+70,Varmahlíð,908030037,Hringvegur: Varmahlíð - Kjálkavegur,1,601,3,nafn_og_nalaegd,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+71,Hólar í Hjaltadal,908120037,Hólavegur: Ásavegur - Hólar,767,103,1,nalaegd_eingongu,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+72,Hofsós,908110037,Sauðárkróksbraut og Siglufjarðarvegur: Sauðárkrókur - Hofsós,75;76;77,232,1,nafn_og_nalaegd,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+72,Hofsós,908130037,Siglufjarðarvegur: Hofsós - Ketilás,76,947,2,nafn_og_nalaegd,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+72,Hofsós,807830037,Höfðastrandarvegur,783,949,3,nalaegd_eingongu,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+73,Siglufjörður,909310037,Siglufjörður,76;792,45,1,nafn_og_nalaegd,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+73,Siglufjörður,976110037,Siglufjörður - Strákagöng,76,1096,2,nafn_og_nalaegd,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+74,Ólafsfjörður,909320037,Ólafsfjörður,76;82,372,1,nafn_og_nalaegd,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+74,Ólafsfjörður,909190037,Ólafsfjarðarvegur: Ólafsfjörður - Vermundarstaðir,82,382,2,nafn_og_nalaegd,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+74,Ólafsfjörður,982070037,Múlagöng - Brimnes,82,1254,3,nalaegd_eingongu,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+75,Dalvík,909150037,Ólafsfjarðarvegur: Hjalteyrarvegur - Dalvík,82,47,1,nafn_og_nalaegd,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+75,Dalvík,909330037,Ólafsfjarðarvegur: Ólafsfjarðarmúli,82,909,2,nalaegd_eingongu,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+75,Dalvík,909170037,Svarfaðardalsvegur,805,994,3,nalaegd_eingongu,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+77,Árskógssandur,998080037,Árskógssandsvegur,808,482,1,nalaegd_eingongu,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+79,Hauganes,998090037,Hauganesvegur,809,193,1,nafn_og_nalaegd,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+79,Hauganes,909150037,Ólafsfjarðarvegur: Hjalteyrarvegur - Dalvík,82,1601,2,nalaegd_eingongu,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+80,Hjalteyri,909140037,Hjalteyrarvegur,811,422,1,nalaegd_eingongu,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+80,Hjalteyri,998120037,Bakkavegur,812,1206,2,nalaegd_eingongu,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+81,Akureyri,909360037,Hringvegur: Akureyri,1,106,1,nafn_og_nalaegd,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+81,Akureyri,909080037,Eyjafjarðarbraut vestri: Akureyri - Hrafnagil,820;821;822;8310,1467,2,nafn_og_nalaegd,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+81,Akureyri,909350037,"Hringvegur: Akureyri, Leirunesti - Vaðlaheiðargöng",1,1467,3,nafn_og_nalaegd,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+82,Hrafnagil,909090037,Eyjafjarðarbraut vestri: Innan Miðbrautar,821,5,1,nalaegd_eingongu,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+82,Hrafnagil,909070037,Eyjafjarðarbraut eystri: Hringvegur - Hrafnagil,823;829,305,2,nafn_og_nalaegd,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+82,Hrafnagil,909080037,Eyjafjarðarbraut vestri: Akureyri - Hrafnagil,820;821;822;8310,307,3,nafn_og_nalaegd,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+83,Svalbarðseyri,909040037,Grenivíkurvegur: Svalbarðsströnd,83;830,122,1,nalaegd_eingongu,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+84,Grenivík,909200037,"Víkurskarðsvegur - Grenivík, Túngata",83,262,1,nafn_og_nalaegd,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+85,Laugar í Reykjadal,910020037,Mývatnsheiði: Aðaldalsvegur - Mývatnsvegur,1,373,1,nalaegd_eingongu,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+86,Skútustaðir,910070037,Mývatnssveitarvegur,848,80,1,nalaegd_eingongu,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+87,Reykjahlíð,910030037,Hringvegur: Mývatnssveit,1,12,1,nalaegd_eingongu,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+87,Reykjahlíð,810040037,Mývatnsöræfi: Mývatnsvegur - Jarðbaðsvegur,1,359,2,nafn_og_nalaegd,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+87,Reykjahlíð,910070037,Mývatnssveitarvegur,848,359,3,nalaegd_eingongu,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+88,Húsavík,910120037,Norðausturvegur: Flugvöllur - Húsavík,85;859,130,1,nafn_og_nalaegd,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+88,Húsavík,910130037,Norðausturvegur: Húsavík-Máná,85,699,2,nafn_og_nalaegd,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+89,Tjörnes,910130037,Norðausturvegur: Húsavík-Máná,85,903,1,nalaegd_eingongu,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+90,Kópasker,1008700037,Kópaskersvegur,870,73,1,nafn_og_nalaegd,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+90,Kópasker,910290037,Melrakkaslétta,870,223,2,nalaegd_eingongu,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+91,Raufarhöfn,910270037,Raufarhafnarvegur,874,74,1,nalaegd_eingongu,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+91,Raufarhöfn,910290037,Melrakkaslétta,870,595,2,nalaegd_eingongu,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+92,Þórshöfn,910180037,Norðausturvegur: Þistilfjörður,85;869;871,10,1,nalaegd_eingongu,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+92,Þórshöfn,910190037,Norðausturvegur: Brekknaheiði,85,732,2,nalaegd_eingongu,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+93,Bakkafjörður,910910037,Hafnarvegur í Bakkafirði,91,391,1,nalaegd_eingongu,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+94,Vopnafjörður,910220037,Norðausturvegur: Vopnafjörður,85;916;917,27,1,nafn_og_nalaegd,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+94,Vopnafjörður,910410037,Norðausturvegur: Vopnafjörður - Skógavegur,85,651,2,nafn_og_nalaegd,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+95,Hellisheiði eystri,911130037,Hlíðarvegur: Hringvegur - Ketilsstaðir,917,1173,1,nalaegd_eingongu,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+96,Fellabær,911040037,Þéttbýli við Lagarfljót,1;93;931;941;95,48,1,nalaegd_eingongu,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+96,Fellabær,911190037,Upphéraðsvegur: Fellabær - Hjarðarból,931,291,2,nafn_og_nalaegd,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+96,Fellabær,911140037,Hróarstunguvegur,925,1939,3,nalaegd_eingongu,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+97,Egilsstaðir,911040037,Þéttbýli við Lagarfljót,1;93;931;941;95,474,1,nafn_og_nalaegd,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+97,Egilsstaðir,911210037,Hringvegur: Fagridalur,1,957,2,nalaegd_eingongu,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+97,Egilsstaðir,811140037,Borgarfjarðarvegur: Egilsstaðir - Eiðar,94,1082,3,nafn_og_nalaegd,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+98,"Borgarfjörður eystri, Bakkagerði",911350037,Hólalandsvegur að Hvannstóð,946,227,1,nalaegd_eingongu,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+98,"Borgarfjörður eystri, Bakkagerði",911160037,Borgarfjarðarvegur: Unaós - Borgarfjörður (Vatnsskarð),94,345,2,nalaegd_eingongu,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+98,"Borgarfjörður eystri, Bakkagerði",911530037,Hafnarhólmavegur: Borgarfjörður eystri,947,453,3,nafn_og_nalaegd,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+99,Fjarðarheiði,911170037,Seyðisfjarðarvegur: Fjarðarheiði,93,595,1,nafn_og_nalaegd,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+100,Seyðisfjörður,911170037,Seyðisfjarðarvegur: Fjarðarheiði,93,12,1,nalaegd_eingongu,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+101,Hallormsstaður,911180037,Upphéraðsvegur: Úlfsstaðir - Hjarðarból,931,148,1,nalaegd_eingongu,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+103,Öxi,912110037,Axarvegur,939,1039,1,nafn_og_nalaegd,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+104,Fagridalur,911210037,Hringvegur: Fagridalur,1,1648,1,nafn_og_nalaegd,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+105,"Mjóifjörður, Brekka",911220037,Mjóafjarðarvegur: Hringvegur - Brekka,953,243,1,nalaegd_eingongu,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+106,Reyðarfjörður,911430037,Hringvegur: Reyðarfjörður - Fáskrúðsfjarðargöng,1;92,230,1,nafn_og_nalaegd,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+106,Reyðarfjörður,911230037,Norðfjarðarvegur: Reyðarfjörður - Eskifjörður,92;950,1177,2,nafn_og_nalaegd,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+106,Reyðarfjörður,911320037,Vattarnesvegur: Suðurfjarðavegur - Vattarnesbær,955,1783,3,nalaegd_eingongu,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+107,Eskifjörður,911410037,Oddsskarðsvegur,9549,171,1,nalaegd_eingongu,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+107,Eskifjörður,911230037,Norðfjarðarvegur: Reyðarfjörður - Eskifjörður,92;950,620,2,nafn_og_nalaegd,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+107,Eskifjörður,911420037,Norðfjarðarvegur: Norðfjarðargöng - Neskaupstaður,92,1465,3,nalaegd_eingongu,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+108,Neskaupstaður,911420037,Norðfjarðarvegur: Norðfjarðargöng - Neskaupstaður,92,64,1,nafn_og_nalaegd,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+110,Fáskrúðsfjörður,911440037,Hringvegur: Fáskrúðsfjarðargöng - Fáskrúðsfjörður,1;955,93,1,nafn_og_nalaegd,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+110,Fáskrúðsfjörður,911340037,Vattarnesvegur: Fáskrúðsfjöðrur - Kolfreyjustaður,955,1217,2,nafn_og_nalaegd,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+110,Fáskrúðsfjörður,911270037,Hringvegur: Fáskrúðsfjörður - Stöðvarfjörður,1,1384,3,nafn_og_nalaegd,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+111,Stöðvarfjörður,911400037,Hringvegur: Stöðvarfjörður -  Skriðdals- og Breiðdalsvegur,1,123,1,nafn_og_nalaegd,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+111,Stöðvarfjörður,911270037,Hringvegur: Fáskrúðsfjörður - Stöðvarfjörður,1,538,2,nafn_og_nalaegd,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+112,Breiðdalsvík,911080037,Hringvegur: Breiðdalsvík - Streiti,1,1004,1,nafn_og_nalaegd,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+112,Breiðdalsvík,911400037,Hringvegur: Stöðvarfjörður -  Skriðdals- og Breiðdalsvegur,1,1008,2,nafn_og_nalaegd,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+112,Breiðdalsvík,911070037,Skriðdals- og Breiðdalsvegur: Innri-Kleifarvegur - Hringvegur,95,1008,3,nalaegd_eingongu,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+113,Berufjarðarbotn,912010037,Hringvegur: Streiti - Djúpivogur,1;98,448,1,nalaegd_eingongu,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+113,Berufjarðarbotn,912110037,Axarvegur,939,937,2,nalaegd_eingongu,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+114,Djúpivogur,912010037,Hringvegur: Streiti - Djúpivogur,1;98,274,1,nafn_og_nalaegd,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+114,Djúpivogur,912020037,Hringvegur: Djúpivogur - Þvottá,1,1367,2,nafn_og_nalaegd,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+115,Lón,912040037,Hringvegur: Hvalnes - Hafnarvegur,1,1951,1,nalaegd_eingongu,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+117,Nesjahverfi,1298720037,Hólmur - Nesjahverfi,987,709,1,nafn_og_nalaegd,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+118,Höfn í Hornafirði,912990037,Hafnarvegur,99,131,1,nalaegd_eingongu,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+120,Hali í Suðursveit,912060037,Hringvegur: Hornafjarðarvegur (Hólmur) - Jökulsá,1,152,1,nalaegd_eingongu,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+122,Fjallsárlón,912070037,Hringvegur um Breiðamerkursand: Jökulsá - Kvíá,1,592,1,nalaegd_eingongu,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+123,"Öræfi, Hof",812090037,Hringvegur: Fagurhólsmýri - Freysnes,1,253,1,nalaegd_eingongu,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+124,Skaftafell,912090037,Hringvegur um Skeiðarársand,1;998,57,1,nalaegd_eingongu,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+126,Kirkjubæjarklaustur,901020037,Hringvegur um Eldhraun,1,772,1,nalaegd_eingongu,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+126,Kirkjubæjarklaustur,901010037,Hringvegur um Síðu,1;205,950,2,nalaegd_eingongu,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+126,Kirkjubæjarklaustur,102030037,Geirlandsvegur að slitlagsenda,203,1083,3,nalaegd_eingongu,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+127,Vík í Mýrdal,801100037,Vík,1,9,1,nalaegd_eingongu,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+127,Vík í Mýrdal,901040037,Hringvegur um Reynisfjall,1,438,2,nalaegd_eingongu,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+127,Vík í Mýrdal,901030037,Hringvegur um Mýrdalssand,1;214,851,3,nalaegd_eingongu,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+128,Reynisfjara,901100037,Reynishverfisvegur,215,102,1,nalaegd_eingongu,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+129,Dyrhólaey,121820037,"Dyrhólaey, viti",218,88,1,nafn_og_nalaegd,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+129,Dyrhólaey,901410037,Dyrhólavegur,218,834,2,nalaegd_eingongu,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+130,Skógar og Skógafoss,124200037,Skógar,2420;2440,512,1,nafn_og_nalaegd,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+130,Skógar og Skógafoss,901050037,Hringvegur: Dyrhólavegur - Steinar,1,1258,2,nalaegd_eingongu,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+131,Landeyjahöfn,901240037,Landeyjahafnarvegur,254,149,1,nalaegd_eingongu,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+133,Seljalandsfoss,901190037,Þórsmerkurvegur að Seljalandsfossi,249,482,1,nafn_og_nalaegd,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+133,Seljalandsfoss,901220037,Hringvegur: Markarfljót - Hvolsvöllur,1,763,2,nalaegd_eingongu,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+133,Seljalandsfoss,901200037,Þórsmerkurvegur: Seljalandsfoss - Merkurvegur,249,1194,3,nafn_og_nalaegd,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+134,Hvolsvöllur,901230037,Hringvegur: Hvolsvöllur - Hella,1;261,327,1,nafn_og_nalaegd,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+134,Hvolsvöllur,901220037,Hringvegur: Markarfljót - Hvolsvöllur,1,674,2,nafn_og_nalaegd,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+134,Hvolsvöllur,102620037,Vallarvegur,262,840,3,nalaegd_eingongu,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+135,Þykkvibær,901310037,Þykkvabæjarvegur: Hringvegur - Ásvegur,25,942,1,nalaegd_eingongu,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+136,Hella,901130037,Hringvegur: Hella - Þjórsá,1,72,1,nafn_og_nalaegd,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+136,Hella,901230037,Hringvegur: Hvolsvöllur - Hella,1;261,87,2,nafn_og_nalaegd,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+136,Hella,901310037,Þykkvabæjarvegur: Hringvegur - Ásvegur,25,686,3,nalaegd_eingongu,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+137,Rauðalækur,901130037,Hringvegur: Hella - Þjórsá,1,1140,1,nalaegd_eingongu,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+138,Selfoss,902040037,"Hringvegur : Þjórsá - Selfoss, Laugardælavegur",1;33,471,1,nafn_og_nalaegd,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+138,Selfoss,902150037,Selfoss - Eyrarbakki - að Þorlákshafnarvegi,34,561,2,nafn_og_nalaegd,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+138,Selfoss,902030037,Hringvegur: Selfoss - Hveragerði,1,584,3,nafn_og_nalaegd,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+139,Stokkseyri,233030037,Stokkseyri að vestan,33,178,1,nafn_og_nalaegd,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+139,Stokkseyri,233020037,Gaulverjabæjarvegur: Hamarsvegur - Stokkseyri,33,916,2,nafn_og_nalaegd,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+140,Eyrarbakki,902150037,Selfoss - Eyrarbakki - að Þorlákshafnarvegi,34,397,1,nafn_og_nalaegd,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+140,Eyrarbakki,233030037,Stokkseyri að vestan,33,1912,2,nalaegd_eingongu,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+141,Þorlákshöfn,902370037,Suðurstrandarvegur: Þorlákshöfn - Selvogur,427,947,1,nafn_og_nalaegd,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+141,Þorlákshöfn,238030037,Þorlákshafnarv.: Eyrarbakkavegur – Þorlákshöfn,38,979,2,nafn_og_nalaegd,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+142,Hveragerði,902030037,Hringvegur: Selfoss - Hveragerði,1,584,1,nafn_og_nalaegd,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+142,Hveragerði,902020037,Hringvegur um Hellisheiði: Þorlákshafnarvegur - Þrengslavegur,1,591,2,nalaegd_eingongu,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+142,Hveragerði,252090037,Hringvegur um Hellisheiði: Þrengslavegur - Þorlákshafnarvegur,1,607,3,nalaegd_eingongu,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+143,Hellisheiði,902020037,Hringvegur um Hellisheiði: Þorlákshafnarvegur - Þrengslavegur,1,581,1,nafn_og_nalaegd,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+143,Hellisheiði,252090037,Hringvegur um Hellisheiði: Þrengslavegur - Þorlákshafnarvegur,1,590,2,nafn_og_nalaegd,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+144,Borg í Grímsnesi,902260037,"Sólheimavegur, allur",354,96,1,nalaegd_eingongu,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+144,Borg í Grímsnesi,902160037,Biskupstungnabraut: Hringvegur - Laugarvatnsvegur,35,195,2,nalaegd_eingongu,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+145,Sólheimar í Grímsnesi,902260037,"Sólheimavegur, allur",354,101,1,nalaegd_eingongu,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+146,Árnes í Gnúpverjahreppi,902100037,Þjórsárdalsvegur: Árnes - Búrfell,32,0,1,nalaegd_eingongu,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+146,Árnes í Gnúpverjahreppi,902090037,Þjórsárdalsvegur: Skeiðavegur - Árnes,32,90,2,nalaegd_eingongu,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+147,Brautarholt á Skeiðum,902050037,Skeiðavegur: Hringvegur - Þjórsárdalsvegur,30,112,1,nalaegd_eingongu,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+148,Flúðir,902060037,Skeiðavegur: Þjórsárdalsvegur - Flúðir,30,24,1,nafn_og_nalaegd,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+148,Flúðir,902440037,Auðsholtsvegur að Langholtsvegi og Langholtsvegur,340;341,147,2,nalaegd_eingongu,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+148,Flúðir,902270037,Bræðratunguvegur,359,852,3,nalaegd_eingongu,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+149,Reykholt í Biskupstungum,902170037,Biskupstungnabraut: Laugarvatnsvegur - Múli,35,215,1,nalaegd_eingongu,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+150,Laugarás,902080037,Skálholtsvegur,31,753,1,nalaegd_eingongu,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+151,Gullfoss,203340037,Gullfossvegur,334,389,1,nafn_og_nalaegd,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+151,Gullfoss,913120037,Kjalvegur: Gullfoss - Hagavatnsvegur,35,409,2,nafn_og_nalaegd,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+151,Gullfoss,902180037,Biskupstungnabraut: Múli - Gullfoss,35,539,3,nafn_og_nalaegd,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+152,Geysir,902180037,Biskupstungnabraut: Múli - Gullfoss,35,8,1,nalaegd_eingongu,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+153,Laugarvatn,902280037,Laugarvatnsvegur: Svínavatn - Laugarvatn,37,196,1,nafn_og_nalaegd,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+153,Laugarvatn,902290037,Laugarvatnsvegur: Laugarvatn - Múli,37,560,2,nafn_og_nalaegd,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+153,Laugarvatn,902250037,Lyngdalsheiðarvegur,365,652,3,nalaegd_eingongu,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+154,Þingvellir,903070037,Þingvallavegur: Grafningsvegur efri - Þingvellir,36,460,1,nafn_og_nalaegd,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+154,Þingvellir,902400037,Vallavegur,361,722,2,nalaegd_eingongu,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+154,Þingvellir,902420037,Vatnsvik,361,740,3,nalaegd_eingongu,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+155,Krýsuvík,342030037,Seltún - Suðurstrandarvegur,42,211,1,nalaegd_eingongu,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+155,Krýsuvík,903230037,Krýsuvíkurvegur: Vigdísarvallavegur - Seltún,42,292,2,nafn_og_nalaegd,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+156,Grindavík,903440037,Suðurstrandarvegur: Festarfjall,427,34,1,nalaegd_eingongu,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+156,Grindavík,343020037,Grindavík,43,62,2,nafn_og_nalaegd,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+156,Grindavík,1342790037,Hópsnes,427,471,3,nalaegd_eingongu,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+157,Reykjanesviti,304430037,Reykjanesvitavegur,443,74,1,nalaegd_eingongu,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+157,Reykjanesviti,342520037,Nesvegur: Saltverksmiðja - Brimketill,425,1950,2,nalaegd_eingongu,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+157,Reykjanesviti,1342590037,Eldvarpahraun,425,1950,3,nalaegd_eingongu,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+158,Hafnir,344030037,Hafnarvegur: Stafnesvegur - Nesvegur,44,989,1,nalaegd_eingongu,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+158,Hafnir,903180037,Nesvegur: Hafnir - Saltverksmiðja,425,1190,2,nafn_og_nalaegd,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+159,Sandgerði,304290037,Sandgerðisvegur,429;45,41,1,nafn_og_nalaegd,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+159,Sandgerði,903420037,Sandgerði - Stafnes,45,511,2,nafn_og_nalaegd,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+159,Sandgerði,345030037,Garður - Sandgerði,45,725,3,nafn_og_nalaegd,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+160,Garður,903160037,"Garðskagavegur, Miðnesheiðarvegur og Helguvíkurvegur",423;45;46,76,1,nalaegd_eingongu,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+160,Garður,345030037,Garður - Sandgerði,45,528,2,nafn_og_nalaegd,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+161,Ásbrú,903170037,Hafnarvegur: Reykjanesbraut - Stafnesvegur,44,311,1,nalaegd_eingongu,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+161,Ásbrú,341190037,Reykjanesbraut: Hafnavegur - Flugstöð,41,946,2,nalaegd_eingongu,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+161,Ásbrú,1344110037,Pípuleiðin,44,988,3,nalaegd_eingongu,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+162,Njarðvík,301030037,Reykjanesbraut: Hafnavegur - Grindavíkurvegur,2000;41,202,1,nalaegd_eingongu,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+162,Njarðvík,903200037,Reykjanesbraut: Grindavíkurvegur - Hafnavegur,41,222,2,nalaegd_eingongu,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+162,Njarðvík,1344110037,Pípuleiðin,44,684,3,nalaegd_eingongu,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+163,Vogar,304200037,Vogavegur,421,598,1,nalaegd_eingongu,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+163,Vogar,903150037,Vatnsleysustrandarvegur,420,598,2,nalaegd_eingongu,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+163,Vogar,301000037,Reykjanesbraut: Vogavegur - Grindavíkurvegur,41,1315,3,nalaegd_eingongu,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+164,Hafnarfjörður,1404700037,Strandgata,470,627,1,nalaegd_eingongu,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+164,Hafnarfjörður,903110037,Reykjanesbraut: Kópavogur og Garðabær,41;412;419,915,2,nalaegd_eingongu,TILLAGA_EKKI_STADFEST_LEIDARTENGING
+164,Hafnarfjörður,914360037,Reykjanesbraut frá Lækjargötu að Rauðamel,41,929,3,nalaegd_eingongu,TILLAGA_EKKI_STADFEST_LEIDARTENGING

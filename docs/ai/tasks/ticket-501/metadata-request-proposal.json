@@ -1,0 +1,19 @@
+{
+  "status": "PROPOSED_NOT_AUTHORISED_OWNER_APPROVAL_REQUIRED",
+  "request_id": "ROAD-REGISTER-SCHEMA",
+  "method": "GET",
+  "url": "https://gagnaveita.vegagerdin.is/geoserver/gis/ows?service=WFS&version=1.0.0&request=DescribeFeatureType&typeName=gis%3Avegakerfi_ist120_2024_1",
+  "source": "ticket-499/samples/raw-ACCESS-CAPABILITIES.xml; retained Abstract points to vegaskra. Schema availability is not driving-authority proof.",
+  "purpose": "Read field names/types for road-register layer; determine whether any documented topology/direction/access fields warrant a separately scoped next step.",
+  "expected": "WFS 1.0.0 XML Schema describing only gis:vegakerfi_ist120_2024_1. No GetFeature, geometry or live road-state request.",
+  "max_total_http_calls": 1,
+  "max_response_bytes": 262144,
+  "wall_timeout_seconds": 20,
+  "retries": 0,
+  "redirects_followed": 0,
+  "skipped": "GetCapabilities retained #499; DescribeFeatureType faerdferlar2017_1 retained #429; optional documentation GET NOT PLANNED",
+  "stop": "Unexpected schema/layer, redirect, auth, HTTP failure/429, byte/time cap: record and stop; no alternative URL or retry.",
+  "output": "Task-local raw XML + headers + UTC client/server-time ledger + SHA256 and short conclusion; no code/product-data changes.",
+  "decision": "Field found: record exact definition or UNKNOWN semantics, no automatic implementation. No relevant field: record result and owner question, no further search.",
+  "exclusions": "No net acquisition yet; no Phase G geometry, graph, routeId/UI, server_data/#500 edits, commits/push/deploy/GitHub."
+}

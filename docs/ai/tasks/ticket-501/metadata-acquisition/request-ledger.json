@@ -1,0 +1,26 @@
+{
+  "request_id": "ROAD-REGISTER-SCHEMA",
+  "method": "GET",
+  "url": "https://gagnaveita.vegagerdin.is/geoserver/gis/ows?service=WFS&version=1.0.0&request=DescribeFeatureType&typeName=gis%3Avegakerfi_ist120_2024_1",
+  "user_agent": "EltumVedridResearch/1.0 (ticket-501 metadata-acquisition; contact: research-only)",
+  "client_start_utc": "2026-11-17T18:10:16.879Z",
+  "client_end_utc": "2026-11-17T18:10:16.917Z",
+  "http_status": 200,
+  "server_date_header": "Tue, 17 Nov 2026 18:10:16 GMT",
+  "headers": {
+    "server": "nginx/1.20.1",
+    "date": "Tue, 17 Nov 2026 18:10:16 GMT",
+    "content-type": "text/xml",
+    "transfer-encoding": "chunked",
+    "connection": "keep-alive",
+    "x-frame-options": "SAMEORIGIN",
+    "content-disposition": "inline; filename=gis-vegakerfi_ist120_2024_1.xsd"
+  },
+  "byte_count": 3815,
+  "max_bytes": 262144,
+  "outcome": "complete",
+  "failure_reason": null,
+  "sha256_of_retained_bytes": "33b7405c11b4272382dcfd9f31e82f4ab0f15cab8d03ce25128a6af0468b72cb",
+  "body_file": "raw-ROAD-REGISTER-SCHEMA.xml",
+  "wall_time_ms": 37
+}

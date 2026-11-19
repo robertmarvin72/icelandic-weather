@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="is">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="referrer" content="strict-origin-when-cross-origin" />
+<title>#501 Egilsstaðir ↔ Seyðisfjörður (vegur 93) MVP — kortasýn til yfirferðar</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<style>
+  html, body { margin: 0; padding: 0; height: 100%; font-family: system-ui, sans-serif; }
+  #map { position: absolute; top: 0; bottom: 0; left: 0; right: 320px; }
+  #panel { position: absolute; top: 0; bottom: 0; right: 0; width: 320px; overflow-y: auto; padding: 12px; box-sizing: border-box; background: #fafafa; border-left: 1px solid #ccc; font-size: 13px; line-height: 1.4; }
+  h1 { font-size: 15px; margin: 0 0 8px; }
+  h2 { font-size: 13px; margin: 14px 0 4px; }
+  .swatch { display: inline-block; width: 12px; height: 12px; border-radius: 2px; margin-right: 6px; vertical-align: middle; }
+  .note { color: #a00; font-weight: 600; }
+  ul, ol { padding-left: 18px; margin: 4px 0; }
+  code { background: #eee; padding: 1px 4px; border-radius: 3px; }
+</style>
+</head>
+<body>
+<div id="map"></div>
+<div id="panel">
+  <h1>#501 Egilsstaðir ↔ Seyðisfjörður (vegur 93) MVP — task-local review view</h1>
+  <p id="local-file-note" hidden style="background:#fff3cd;padding:10px">
+    Opnaðu <a href="http://127.0.0.1:8767/map-view.html">staðbundnu vefútgáfuna</a>
+    í gegnum localhost -- file:// birtir ekki bakgrunnskortið rétt
+    (Referer/attribution).
+  </p>
+  <p class="note">CC did not and cannot visually confirm this map — this
+  session has no image/screenshot capability. This is an openable
+  artifact for the owner's own visual review, not a claimed PASS
+  (approved-prompt-v1.md P4).</p>
+
+  <h2>Litir / Colors</h2>
+  <ul>
+    <li><span class="swatch" style="background:#1d6fe0"></span> Eastbound (Egilsstaðir → Seyðisfjörður), 24,148.861 m</li>
+    <li><span class="swatch" style="background:#d6232a"></span> Westbound (Seyðisfjörður → Egilsstaðir), same reversed chain</li>
+  </ul>
+
+  <h2>Not a new MVP policy -- see this round's cc-report.md</h2>
+  <p>Unlike the Rauðavatn↔Selfoss/Hella pilot, this pair uses the
+  <strong>plain, pre-existing undirected geometry API contract</strong> —
+  no <code>mode</code>, no <code>policyVersion</code>, no estimated
+  connector. "Vegur 93 is two-way" is this round's own MVP
+  <em>assumption</em> for reading the map, not something the API
+  response marks in any way — it is simply the single shortest
+  undirected path, traversed in each query's own requested direction.</p>
+
+  <h2>Review points (P4, Jonesy)</h2>
+  <ol>
+    <li>The route crosses <strong>Fjarðarheiði</strong> between the two
+      correct ends.</li>
+    <li>It <strong>stops at S2</strong> (Seyðisfjörður's own pinned
+      endpoint) — it must <strong>not</strong> continue toward the
+      ferry pier (IDFERILL 2891/2892, deliberately excluded).</li>
+    <li>No roundabout/detour loop.</li>
+  </ol>
+
+  <h2>Takmörk / Limits</h2>
+  <ul>
+    <li>Coordinates are the literal retained ISN93 (EPSG:3057) vertices,
+      converted to WGS84 by the same transform validated in the
+      Rauðavatn rounds (±0.003 m there; cross-checked again here against
+      Jonesy's own cited E1/S2 WGS84 values, matching to within
+      <0.00001°).</li>
+    <li>24,148.861 m is endpoint-to-endpoint (E1's own vertex 0 ↔ S2's
+      own end vertex) — <strong>not</strong> town-center-to-ferry-pier.</li>
+    <li>Tile basemap loads live from OpenStreetMap when opened via
+      <code>http://127.0.0.1:8767/</code> — no Vegagerðin network call
+      is made by or for this page.</li>
+  </ul>
+</div>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+const DATA = {"eastbound": {"lengthM": 24148.860880942146, "points": [{"lat": 65.2586176, "lon": -14.3902896}, {"lat": 65.2713337, "lon": -14.3741827}, {"lat": 65.2667407, "lon": -14.3372116}, {"lat": 65.2789156, "lon": -14.3062808}, {"lat": 65.2691494, "lon": -14.2998753}, {"lat": 65.2739684, "lon": -14.2898973}, {"lat": 65.2595096, "lon": -14.2254024}, {"lat": 65.2528296, "lon": -14.1962632}, {"lat": 65.2411839, "lon": -14.1775229}, {"lat": 65.2306651, "lon": -14.1208648}, {"lat": 65.2369817, "lon": -14.1094092}, {"lat": 65.2307141, "lon": -14.0807534}, {"lat": 65.2412631, "lon": -14.067276}, {"lat": 65.2413904, "lon": -14.0454656}, {"lat": 65.2547622, "lon": -14.0138427}, {"lat": 65.2602179, "lon": -14.0095313}]}, "westbound": {"lengthM": 24148.860880942146, "points": [{"lat": 65.2602179, "lon": -14.0095313}, {"lat": 65.2547622, "lon": -14.0138427}, {"lat": 65.2413904, "lon": -14.0454656}, {"lat": 65.2412631, "lon": -14.067276}, {"lat": 65.2307141, "lon": -14.0807534}, {"lat": 65.2369817, "lon": -14.1094092}, {"lat": 65.2306651, "lon": -14.1208648}, {"lat": 65.2411839, "lon": -14.1775229}, {"lat": 65.2528296, "lon": -14.1962632}, {"lat": 65.2595096, "lon": -14.2254024}, {"lat": 65.2739684, "lon": -14.2898973}, {"lat": 65.2691494, "lon": -14.2998753}, {"lat": 65.2789156, "lon": -14.3062808}, {"lat": 65.2667407, "lon": -14.3372116}, {"lat": 65.2713337, "lon": -14.3741827}, {"lat": 65.2586176, "lon": -14.3902896}]}, "e1": {"lat": 65.2586176, "lon": -14.3902896}, "s2": {"lat": 65.2602179, "lon": -14.0095313}};
+
+const map = L.map("map");
+document.getElementById("local-file-note").hidden = location.protocol !== "file:";
+L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+  maxZoom: 18,
+  attribution: "&copy; OpenStreetMap contributors",
+}).addTo(map);
+
+function toLatLngs(points) {
+  return points.map((p) => [p.lat, p.lon]);
+}
+
+const eastLine = L.polyline(toLatLngs(DATA.eastbound.points), { color: "#1d6fe0", weight: 5, opacity: 0.85 }).addTo(map);
+eastLine.bindPopup("Eastbound Egilsstaðir → Seyðisfjörður: " + DATA.eastbound.lengthM.toFixed(1) + " m");
+
+const westLine = L.polyline(toLatLngs(DATA.westbound.points), { color: "#d6232a", weight: 3, opacity: 0.7, dashArray: "1,8" }).addTo(map);
+westLine.bindPopup("Westbound Seyðisfjörður → Egilsstaðir: " + DATA.westbound.lengthM.toFixed(1) + " m");
+
+L.marker([DATA.e1.lat, DATA.e1.lon]).addTo(map).bindPopup("egilsstadir (E1, pinned native endpoint -- 2344/2345/2814 junction)");
+L.marker([DATA.s2.lat, DATA.s2.lon]).addTo(map).bindPopup("seydisfjordur (S2, pinned native endpoint -- stops here, not the ferry pier)");
+
+const allPoints = toLatLngs(DATA.eastbound.points);
+map.fitBounds(allPoints, { padding: [20, 20] });
+</script>
+</body>
+</html>

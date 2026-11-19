@@ -1,0 +1,29 @@
+{
+  "status": "REVIEW_ONLY_OWNER_AUTHORISED_ONE_NEW_ATTEMPT_AFTER_LOCAL_FIX",
+  "request_id": "B2-LOCAL-GEOMETRY-ATTEMPT-2",
+  "method": "GET",
+  "url": "https://gagnaveita.vegagerdin.is/geoserver/gis/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=gis%3Afaerdferlar2017_1&bbox=392624.357%2C389796.132%2C392753.5%2C389915.057%2CEPSG%3A3057&srsName=EPSG%3A3057&outputFormat=application%2Fjson&maxFeatures=100",
+  "decoded_params": {
+    "service": "WFS",
+    "version": "1.0.0",
+    "request": "GetFeature",
+    "typeName": "gis:faerdferlar2017_1",
+    "bbox": "392624.357,389796.132,392753.5,389915.057,EPSG:3057",
+    "srsName": "EPSG:3057",
+    "outputFormat": "application/json",
+    "maxFeatures": "100"
+  },
+  "max_total_calls": 1,
+  "max_body_bytes": 1048576,
+  "wall_seconds": 20,
+  "retries": 0,
+  "redirects": 0,
+  "geometry_feature_cap": 100,
+  "bbox_reason": "50 m pad around both native endpoints; search envelope, not snapping tolerance; no IDBUTUR/VEGNR/VEGHLUTI filter so retained excluded connectors may appear",
+  "source": "retained #499 WFS 1.0.0 contract; #429 DescribeFeatureType SHAPE; cw_long 2117 exit and 2135 entry EPSG:3057",
+  "scope": "B2 only, all returned features intersecting bbox allowed within response caps; no pagination, alternate URL, scope widening or follow-up call",
+  "encoded_request_sha256": "8719083019b69903c97ca78a56b863ec44d0fc78ca762f56f97704c31df935fe",
+  "encoded_request_sha256_basis": "UTF-8 bytes of GET + single space + exact full encoded URL, no trailing newline",
+  "per_body_cap": 1048576,
+  "previous_attempt": "../b2-geometry/dispatch-marker-B2-LOCAL-GEOMETRY.json; consumed, response lost, immutable"
+}

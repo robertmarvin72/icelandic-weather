@@ -1,0 +1,25 @@
+{
+  "retrieved_utc": "2026-11-19T16:43:11.442923+00:00",
+  "condition_export_times": [
+    "2026-11-19T16:40:00Z"
+  ],
+  "sources": [
+    "https://gagnaveita.vegagerdin.is/api/faerd2017_1",
+    "https://gagnaveita.vegagerdin.is/geoserver/gis/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=gis:faerdferlar2017_1&srsName=EPSG:4326&cql_filter=NAKVAEMNIFERLIS%3D0&outputFormat=application/json"
+  ],
+  "points": 164,
+  "segment_ids": 708,
+  "geometry_features": 1564,
+  "candidate_links": 288,
+  "point_states": {
+    "tillaga_tharf_leidarsamhengi": 147,
+    "gongustadur_akstursadkoma_othrifin": 2,
+    "engin_naerlaeg_samsvorun_innan_2km": 11,
+    "undanskilid_ferja": 4
+  },
+  "source_sha256": {
+    "faerdferlar.json": "cab197ad1bdff7d020a782418bb7dfbd7f44297d1e3875d13c36a8a9f57488f2",
+    "faerd.xml": "44b2cadbdda9da6441f61cfa7ff9b376ffb7823db4126c0e94da190cfcb49497",
+    "Island-akstursrod-og-GPS.csv": "c26e9c60c96be1ecedb3e8692930e4ee82dccddefdef6673a964ac757b6eb638"
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "received": "2026-11-19",
+  "packages": [
+    {
+      "file": "Island-verkefnispakki.zip",
+      "source": "C:\\Users\\Notandi\\Downloads\\Island-verkefnispakki.zip",
+      "sha256": "f92c33df503ab2da8be20a16fa3a623205e31dd85e5d65124ca52a267065d7e0",
+      "extracted_directory": "project"
+    },
+    {
+      "file": "Island-med-Vegagerdar-ID-2026-11-19.zip",
+      "source": "C:\\Users\\Notandi\\Downloads\\Island-med-Vegagerdar-ID-2026-11-19.zip",
+      "sha256": "fbd5862ec7e53a6d0559d09d1cfda8535e97ceae7fbf225a9c52842413517cc2",
+      "extracted_directory": "vegagerdin-ids"
+    }
+  ],
+  "original_tables_byte_identical": true,
+  "original_table_sha256": "c26e9c60c96be1ecedb3e8692930e4ee82dccddefdef6673a964ac757b6eb638"
+}

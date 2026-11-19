@@ -1,0 +1,29 @@
+{
+  "request_url": "https://gagnaveita.vegagerdin.is/geoserver/gis/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=gis%3Afaerdferlar2017_1&bbox=392624.357%2C389796.132%2C392753.5%2C389915.057%2CEPSG%3A3057&srsName=EPSG%3A3057&outputFormat=application%2Fjson&maxFeatures=100",
+  "client_start_utc": "2026-11-17T19:17:50Z",
+  "client_end_utc": "2026-11-17T19:17:50Z",
+  "http_status": 200,
+  "headers": {
+    "Server": "nginx/1.20.1",
+    "Date": "Tue, 17 Nov 2026 19:17:49 GMT",
+    "Content-Type": "application/json;charset=utf-8",
+    "Transfer-Encoding": "chunked",
+    "Connection": "keep-alive",
+    "X-Frame-Options": "SAMEORIGIN",
+    "Content-Disposition": "inline; filename=faerdferlar2017_1.json"
+  },
+  "server_date_header": "Tue, 17 Nov 2026 19:17:49 GMT",
+  "content_length_header": null,
+  "byte_count": 36267,
+  "outcome": "complete_usable",
+  "failure_reason": null,
+  "parsed_info": {
+    "crs_name": "urn:ogc:def:crs:EPSG::3057",
+    "number_returned": 20,
+    "number_matched_or_total_features": 20,
+    "features_len": 20
+  },
+  "sha256_of_retained_bytes": "34bd1d011ee5a5433ee1394825650c212951c611847393cb68337d0765a70123",
+  "body_file": "raw-B2-LOCAL-GEOMETRY-ATTEMPT-3.bin",
+  "wall_time_ms": 70.5
+}

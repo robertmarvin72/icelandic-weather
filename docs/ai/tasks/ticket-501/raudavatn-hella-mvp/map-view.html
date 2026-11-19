@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="is">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="referrer" content="strict-origin-when-cross-origin" />
+<title>#501 Rauðavatn ↔ Hella MVP — kortasýn til yfirferðar</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<style>
+  html, body { margin: 0; padding: 0; height: 100%; font-family: system-ui, sans-serif; }
+  #map { position: absolute; top: 0; bottom: 0; left: 0; right: 320px; }
+  #panel { position: absolute; top: 0; bottom: 0; right: 0; width: 320px; overflow-y: auto; padding: 12px; box-sizing: border-box; background: #fafafa; border-left: 1px solid #ccc; font-size: 13px; line-height: 1.4; }
+  h1 { font-size: 15px; margin: 0 0 8px; }
+  h2 { font-size: 13px; margin: 14px 0 4px; }
+  .swatch { display: inline-block; width: 12px; height: 12px; border-radius: 2px; margin-right: 6px; vertical-align: middle; }
+  .note { color: #a00; font-weight: 600; }
+  ul, ol { padding-left: 18px; margin: 4px 0; }
+  code { background: #eee; padding: 1px 4px; border-radius: 3px; }
+</style>
+</head>
+<body>
+<div id="map"></div>
+<div id="panel">
+  <h1>#501 Rauðavatn ↔ Hella MVP — task-local review view</h1>
+  <p id="local-file-note" hidden style="background:#fff3cd;padding:10px">
+    Opnaðu <a href="http://127.0.0.1:8766/map-view.html">staðbundnu vefútgáfuna</a>
+    í gegnum localhost -- file:// birtir ekki bakgrunnskortið rétt
+    (Referer/attribution).
+  </p>
+  <p class="note">CC did not and cannot visually confirm this map — this
+  session has no image/screenshot capability. This is an openable
+  artifact for the owner's own visual review, not a claimed PASS
+  (approved-prompt-v1.md P6 / raudavatn-hella-mvp P6 pointer).</p>
+
+  <h2>Litir / Colors</h2>
+  <ul>
+    <li><span class="swatch" style="background:#1d6fe0"></span> Eastbound (R1 → Hella), 80,681.312 m</li>
+    <li><span class="swatch" style="background:#d6232a"></span> Westbound (Hella → R1), 80,747.987 m</li>
+    <li><span class="swatch" style="background:#9b59b6"></span> "New part": the Selfoss↔Hella sub-segment of this R1→Hella route (click for detail)</li>
+    <li><span class="swatch" style="background:#f2a900"></span> Ring 16641 (Hella roundabout, near the pinned endpoint)</li>
+    <li><span class="swatch" style="background:#00a86b; border:2px dashed #006b44"></span> Estimated pilot connector (44.21 m, dashed, Rauðavatn side -- used westbound only)</li>
+  </ul>
+
+  <h2>Review points (P3/P6, Jonesy)</h2>
+  <ol>
+    <li><strong>Hella endpoint on a roundabout</strong>: the pinned
+      endpoint (3591 vertex 0) sits on ring 16641's own north arc. The
+      eastbound route's final ~3.2 m (3591, vertices 2→1→0) runs
+      <em>against</em> ring 16641's own drawn direction right at this
+      point — documented, not corrected (P3). Click the ring/line-3591
+      markers.</li>
+    <li><strong>"New part" (Selfoss↔Hella)</strong>: purple segment.
+      This is part of the Rauðavatn→Hella route only — the standalone
+      <code>selfoss↔hella</code> API pair is unaffected and still
+      returns the plain undirected contract (different length:
+      35,646.177 m undirected vs. 35,696.542 m if this same policy were
+      wrongly applied there — it is not).</li>
+    <li><strong>Connector</strong> (Rauðavatn side, reused unchanged
+      from the Selfoss round) — used only westbound here, same as in
+      the Selfoss pilot.</li>
+  </ol>
+
+  <h2>Takmörk / Limits</h2>
+  <ul>
+    <li>Coordinates are the literal retained ISN93 (EPSG:3057) vertices,
+      converted to WGS84 by the same transform validated in the
+      Rauðavatn↔Selfoss round (±0.003 m against Vegagerðin's own
+      server-side reprojection) — reused unchanged here.</li>
+    <li>Not a driving-direction authority. Every direction shown here is
+      the owner-approved MVP assumption
+      (<code>OWNER_APPROVED_MVP_ASSUMPTION</code>), never an official
+      confirmation.</li>
+    <li>Tile basemap loads live from OpenStreetMap when opened in a
+      browser via <code>http://127.0.0.1:8766/</code> — no Vegagerðin
+      network call is made by or for this page.</li>
+  </ul>
+</div>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+const DATA = {"eastbound": {"lengthM": 80681.31193354058, "points": [{"lat": 64.1015289, "lon": -21.7590641, "sourceId": 1436, "estimated": false}, {"lat": 64.1015211, "lon": -21.7590843, "sourceId": 1436, "estimated": false}, {"lat": 64.0962494, "lon": -21.7395444, "sourceId": 1436, "estimated": false}, {"lat": 64.0924922, "lon": -21.7120487, "sourceId": 1436, "estimated": false}, {"lat": 64.08841, "lon": -21.6951531, "sourceId": 1735, "estimated": false}, {"lat": 64.083747, "lon": -21.6787466, "sourceId": 1735, "estimated": false}, {"lat": 64.0781347, "lon": -21.6574066, "sourceId": 2071, "estimated": false}, {"lat": 64.072892, "lon": -21.6350875, "sourceId": 2071, "estimated": false}, {"lat": 64.0591, "lon": -21.5338927, "sourceId": 2071, "estimated": false}, {"lat": 64.0579875, "lon": -21.5045115, "sourceId": 2024, "estimated": false}, {"lat": 64.0424613, "lon": -21.4611228, "sourceId": 2024, "estimated": false}, {"lat": 64.038769, "lon": -21.4551864, "sourceId": 2024, "estimated": false}, {"lat": 64.0361383, "lon": -21.4505781, "sourceId": 2117, "estimated": false}, {"lat": 64.0230817, "lon": -21.4148048, "sourceId": 2117, "estimated": false}, {"lat": 64.0203431, "lon": -21.4101052, "sourceId": 2117, "estimated": false}, {"lat": 64.0187548, "lon": -21.4027026, "sourceId": 2117, "estimated": false}, {"lat": 64.0220354, "lon": -21.3023775, "sourceId": 2117, "estimated": false}, {"lat": 64.0103054, "lon": -21.2428923, "sourceId": 2117, "estimated": false}, {"lat": 64.0161453, "lon": -21.2294485, "sourceId": 2117, "estimated": false}, {"lat": 64.0070776, "lon": -21.2172925, "sourceId": 2117, "estimated": false}, {"lat": 64.0010948, "lon": -21.2252819, "sourceId": 2117, "estimated": false}, {"lat": 63.9952035, "lon": -21.1932914, "sourceId": 2117, "estimated": false}, {"lat": 63.9950798, "lon": -21.1931082, "sourceId": 36807, "estimated": false}, {"lat": 63.9951457, "lon": -21.1925451, "sourceId": 36807, "estimated": false}, {"lat": 63.9863434, "lon": -21.1622637, "sourceId": 2135, "estimated": false}, {"lat": 63.9609513, "lon": -21.1175056, "sourceId": 2135, "estimated": false}, {"lat": 63.9582172, "lon": -21.0987063, "sourceId": 2135, "estimated": false}, {"lat": 63.9522289, "lon": -21.0211244, "sourceId": 2135, "estimated": false}, {"lat": 63.9518847, "lon": -21.0208875, "sourceId": 52492, "estimated": false}, {"lat": 63.9505401, "lon": -21.0210677, "sourceId": 2138, "estimated": false}, {"lat": 63.9480007, "lon": -21.0138404, "sourceId": 2138, "estimated": false}, {"lat": 63.9478211, "lon": -21.0139137, "sourceId": 52491, "estimated": false}, {"lat": 63.9477772, "lon": -21.0134868, "sourceId": 52491, "estimated": false}, {"lat": 63.937595, "lon": -21.0038043, "sourceId": 2138, "estimated": false}, {"lat": 63.9373547, "lon": -21.0039943, "sourceId": 8676, "estimated": false}, {"lat": 63.9374121, "lon": -21.0033119, "sourceId": 8676, "estimated": false}, {"lat": 63.9384876, "lon": -20.9778178, "sourceId": 3737, "estimated": false}, {"lat": 63.9389229, "lon": -20.9726938, "sourceId": 3768, "estimated": false}, {"lat": 63.9387192, "lon": -20.9722089, "sourceId": 3454, "estimated": false}, {"lat": 63.9389448, "lon": -20.9718255, "sourceId": 3454, "estimated": false}, {"lat": 63.9436477, "lon": -20.8382247, "sourceId": 3767, "estimated": false}, {"lat": 63.9431724, "lon": -20.780681, "sourceId": 3767, "estimated": false}, {"lat": 63.9529882, "lon": -20.6984658, "sourceId": 3767, "estimated": false}, {"lat": 63.9425334, "lon": -20.6739692, "sourceId": 3781, "estimated": false}, {"lat": 63.9325958, "lon": -20.6677272, "sourceId": 3781, "estimated": false}, {"lat": 63.9302133, "lon": -20.6655215, "sourceId": 3781, "estimated": false}, {"lat": 63.9194642, "lon": -20.6482464, "sourceId": 3613, "estimated": false}, {"lat": 63.9097134, "lon": -20.5975766, "sourceId": 3613, "estimated": false}, {"lat": 63.9000916, "lon": -20.5864286, "sourceId": 3613, "estimated": false}, {"lat": 63.8792061, "lon": -20.5019693, "sourceId": 3613, "estimated": false}, {"lat": 63.8639167, "lon": -20.4422809, "sourceId": 3614, "estimated": false}, {"lat": 63.8433849, "lon": -20.4098584, "sourceId": 3615, "estimated": false}, {"lat": 63.8414454, "lon": -20.4079713, "sourceId": 3615, "estimated": false}, {"lat": 63.8346042, "lon": -20.4024255, "sourceId": 3591, "estimated": false}, {"lat": 63.8346073, "lon": -20.4023868, "sourceId": 3591, "estimated": false}, {"lat": 63.8346082, "lon": -20.4023614, "sourceId": 3591, "estimated": false}]}, "westbound": {"lengthM": 80747.98695209449, "points": [{"lat": 63.8346082, "lon": -20.4023614, "sourceId": 3591, "estimated": false}, {"lat": 63.8346073, "lon": -20.4023868, "sourceId": 3591, "estimated": false}, {"lat": 63.8346042, "lon": -20.4024255, "sourceId": 3591, "estimated": false}, {"lat": 63.8414454, "lon": -20.4079713, "sourceId": 3591, "estimated": false}, {"lat": 63.8433849, "lon": -20.4098584, "sourceId": 3615, "estimated": false}, {"lat": 63.8639167, "lon": -20.4422809, "sourceId": 3615, "estimated": false}, {"lat": 63.8792061, "lon": -20.5019693, "sourceId": 3614, "estimated": false}, {"lat": 63.9000916, "lon": -20.5864286, "sourceId": 3613, "estimated": false}, {"lat": 63.9097134, "lon": -20.5975766, "sourceId": 3613, "estimated": false}, {"lat": 63.9194642, "lon": -20.6482464, "sourceId": 3613, "estimated": false}, {"lat": 63.9302133, "lon": -20.6655215, "sourceId": 3613, "estimated": false}, {"lat": 63.9325958, "lon": -20.6677272, "sourceId": 3781, "estimated": false}, {"lat": 63.9425334, "lon": -20.6739692, "sourceId": 3781, "estimated": false}, {"lat": 63.9529882, "lon": -20.6984658, "sourceId": 3781, "estimated": false}, {"lat": 63.9431724, "lon": -20.780681, "sourceId": 3767, "estimated": false}, {"lat": 63.9436477, "lon": -20.8382247, "sourceId": 3767, "estimated": false}, {"lat": 63.9389448, "lon": -20.9718255, "sourceId": 3767, "estimated": false}, {"lat": 63.9389567, "lon": -20.9718308, "sourceId": 3454, "estimated": false}, {"lat": 63.9389229, "lon": -20.9726938, "sourceId": 3454, "estimated": false}, {"lat": 63.9384876, "lon": -20.9778178, "sourceId": 3768, "estimated": false}, {"lat": 63.9374121, "lon": -21.0033119, "sourceId": 3737, "estimated": false}, {"lat": 63.9374291, "lon": -21.003307, "sourceId": 3737, "estimated": false}, {"lat": 63.937595, "lon": -21.0038043, "sourceId": 8676, "estimated": false}, {"lat": 63.9477772, "lon": -21.0134868, "sourceId": 2138, "estimated": false}, {"lat": 63.9479649, "lon": -21.0133869, "sourceId": 2138, "estimated": false}, {"lat": 63.9480007, "lon": -21.0138404, "sourceId": 2138, "estimated": false}, {"lat": 63.9505401, "lon": -21.0210677, "sourceId": 2138, "estimated": false}, {"lat": 63.9518847, "lon": -21.0208875, "sourceId": 2138, "estimated": false}, {"lat": 63.9523133, "lon": -21.0204903, "sourceId": 2138, "estimated": false}, {"lat": 63.9522289, "lon": -21.0211244, "sourceId": 2135, "estimated": false}, {"lat": 63.9582172, "lon": -21.0987063, "sourceId": 2135, "estimated": false}, {"lat": 63.9609513, "lon": -21.1175056, "sourceId": 2135, "estimated": false}, {"lat": 63.9863434, "lon": -21.1622637, "sourceId": 2135, "estimated": false}, {"lat": 63.9951457, "lon": -21.1925451, "sourceId": 2135, "estimated": false}, {"lat": 63.9953823, "lon": -21.1927097, "sourceId": 2135, "estimated": false}, {"lat": 63.9953922, "lon": -21.193033, "sourceId": 36807, "estimated": false}, {"lat": 64.0011843, "lon": -21.2251603, "sourceId": 2134, "estimated": false}, {"lat": 64.0054283, "lon": -21.2185388, "sourceId": 2134, "estimated": false}, {"lat": 64.0072235, "lon": -21.2171206, "sourceId": 2134, "estimated": false}, {"lat": 64.0162277, "lon": -21.2292865, "sourceId": 2134, "estimated": false}, {"lat": 64.0104006, "lon": -21.2429952, "sourceId": 2134, "estimated": false}, {"lat": 64.0220974, "lon": -21.3021116, "sourceId": 2134, "estimated": false}, {"lat": 64.0188586, "lon": -21.4030141, "sourceId": 2134, "estimated": false}, {"lat": 64.0388032, "lon": -21.4550619, "sourceId": 2134, "estimated": false}, {"lat": 64.0393137, "lon": -21.4558727, "sourceId": 2116, "estimated": false}, {"lat": 64.0407412, "lon": -21.4581381, "sourceId": 2116, "estimated": false}, {"lat": 64.0421714, "lon": -21.4604396, "sourceId": 2116, "estimated": false}, {"lat": 64.0433993, "lon": -21.4627613, "sourceId": 2116, "estimated": false}, {"lat": 64.0578042, "lon": -21.5033409, "sourceId": 2116, "estimated": false}, {"lat": 64.0585099, "lon": -21.506936, "sourceId": 2116, "estimated": false}, {"lat": 64.0588792, "lon": -21.51083, "sourceId": 2116, "estimated": false}, {"lat": 64.0593144, "lon": -21.5338327, "sourceId": 2116, "estimated": false}, {"lat": 64.0730258, "lon": -21.63471, "sourceId": 2021, "estimated": false}, {"lat": 64.0839627, "lon": -21.6795072, "sourceId": 2021, "estimated": false}, {"lat": 64.083747, "lon": -21.6787466, "sourceId": -1, "estimated": true}, {"lat": 64.08841, "lon": -21.6951531, "sourceId": 1735, "estimated": false}, {"lat": 64.0924922, "lon": -21.7120487, "sourceId": 1735, "estimated": false}, {"lat": 64.0962494, "lon": -21.7395444, "sourceId": 1436, "estimated": false}, {"lat": 64.1015211, "lon": -21.7590843, "sourceId": 1436, "estimated": false}, {"lat": 64.1015289, "lon": -21.7590641, "sourceId": 1436, "estimated": false}]}, "selfossHellaPart": [{"lat": 63.9518847, "lon": -21.0208875, "sourceId": 2138}, {"lat": 63.9505401, "lon": -21.0210677, "sourceId": 2138}, {"lat": 63.9480007, "lon": -21.0138404, "sourceId": 2138}, {"lat": 63.9478211, "lon": -21.0139137, "sourceId": 52491}, {"lat": 63.9477772, "lon": -21.0134868, "sourceId": 52491}, {"lat": 63.937595, "lon": -21.0038043, "sourceId": 2138}, {"lat": 63.9373547, "lon": -21.0039943, "sourceId": 8676}, {"lat": 63.9374121, "lon": -21.0033119, "sourceId": 8676}, {"lat": 63.9384876, "lon": -20.9778178, "sourceId": 3737}, {"lat": 63.9389229, "lon": -20.9726938, "sourceId": 3768}, {"lat": 63.9387192, "lon": -20.9722089, "sourceId": 3454}, {"lat": 63.9389448, "lon": -20.9718255, "sourceId": 3454}, {"lat": 63.9436477, "lon": -20.8382247, "sourceId": 3767}, {"lat": 63.9431724, "lon": -20.780681, "sourceId": 3767}, {"lat": 63.9529882, "lon": -20.6984658, "sourceId": 3767}, {"lat": 63.9425334, "lon": -20.6739692, "sourceId": 3781}, {"lat": 63.9325958, "lon": -20.6677272, "sourceId": 3781}, {"lat": 63.9302133, "lon": -20.6655215, "sourceId": 3781}, {"lat": 63.9194642, "lon": -20.6482464, "sourceId": 3613}, {"lat": 63.9097134, "lon": -20.5975766, "sourceId": 3613}, {"lat": 63.9000916, "lon": -20.5864286, "sourceId": 3613}, {"lat": 63.8792061, "lon": -20.5019693, "sourceId": 3613}, {"lat": 63.8639167, "lon": -20.4422809, "sourceId": 3614}, {"lat": 63.8433849, "lon": -20.4098584, "sourceId": 3615}, {"lat": 63.8414454, "lon": -20.4079713, "sourceId": 3615}, {"lat": 63.8346042, "lon": -20.4024255, "sourceId": 3591}, {"lat": 63.8346073, "lon": -20.4023868, "sourceId": 3591}, {"lat": 63.8346082, "lon": -20.4023614, "sourceId": 3591}], "ring16641": [{"lat": 63.8343219, "lon": -20.4020817}, {"lat": 63.8343482, "lon": -20.4020304}, {"lat": 63.8343629, "lon": -20.4020097}, {"lat": 63.8345288, "lon": -20.402018}, {"lat": 63.8346086, "lon": -20.4023476}, {"lat": 63.8346073, "lon": -20.4023868}, {"lat": 63.8346042, "lon": -20.4024255}, {"lat": 63.8343219, "lon": -20.4020817}], "line3591": [{"lat": 63.8346082, "lon": -20.4023614}, {"lat": 63.8346073, "lon": -20.4023868}, {"lat": 63.8346042, "lon": -20.4024255}, {"lat": 63.8414454, "lon": -20.4079713}], "connector": [{"lat": 64.0839627, "lon": -21.6795072}, {"lat": 64.083747, "lon": -21.6787466}], "r1": {"lat": 64.1015289, "lon": -21.7590641}, "hella": {"lat": 63.8346082, "lon": -20.4023614}, "selfoss": {"lat": 63.937595, "lon": -21.0038043}};
+
+const map = L.map("map");
+document.getElementById("local-file-note").hidden = location.protocol !== "file:";
+L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+  maxZoom: 18,
+  attribution: "&copy; OpenStreetMap contributors",
+}).addTo(map);
+
+function toLatLngs(points) {
+  return points.map((p) => [p.lat, p.lon]);
+}
+
+const eastLine = L.polyline(toLatLngs(DATA.eastbound.points), { color: "#1d6fe0", weight: 4, opacity: 0.8 }).addTo(map);
+eastLine.bindPopup("Eastbound R1 → Hella: " + DATA.eastbound.lengthM.toFixed(1) + " m");
+
+const westLine = L.polyline(toLatLngs(DATA.westbound.points), { color: "#d6232a", weight: 3, opacity: 0.7, dashArray: "1,6" }).addTo(map);
+westLine.bindPopup("Westbound Hella → R1: " + DATA.westbound.lengthM.toFixed(1) + " m");
+
+const selfossHellaPart = L.polyline(toLatLngs(DATA.selfossHellaPart), { color: "#9b59b6", weight: 6, opacity: 0.55 }).addTo(map);
+selfossHellaPart.bindPopup(
+  "\"New part\" -- the Selfoss<->Hella sub-segment of THIS R1->Hella route.<br>" +
+  "The standalone selfoss<->hella API pair is unaffected (stays undirected, 35,646.177 m)."
+);
+
+const ringLine = L.polyline(toLatLngs(DATA.ring16641), { color: "#f2a900", weight: 5, opacity: 0.9 }).addTo(map);
+ringLine.bindPopup("Ring 16641 (Hella roundabout)");
+
+const line3591 = L.polyline(toLatLngs(DATA.line3591), { color: "#e67e22", weight: 4, dashArray: "4,4" }).addTo(map);
+line3591.bindPopup(
+  "IDFERILL 3591 -- its own vertex 0 is the pinned Hella endpoint.<br>" +
+  "Eastbound's final ~3.2 m (vertices 2&rarr;1&rarr;0) run AGAINST ring 16641's own drawn direction here -- documented (P3), not corrected."
+);
+
+const connectorLine = L.polyline(toLatLngs(DATA.connector), { color: "#00a86b", weight: 5, dashArray: "6,6" }).addTo(map);
+connectorLine.bindPopup(
+  "Estimated pilot connector (reused from the Selfoss round, unchanged) -- NOT a Vegagerðin source feature.<br>" +
+  "44.2147 m, one-way, used westbound only in this Hella pair."
+);
+
+L.marker([DATA.r1.lat, DATA.r1.lon]).addTo(map).bindPopup("reykjavik-raudavatn (R1, pinned native endpoint)");
+L.marker([DATA.hella.lat, DATA.hella.lon]).addTo(map).bindPopup("hella (pinned native endpoint, on ring 16641)");
+L.marker([DATA.selfoss.lat, DATA.selfoss.lon]).addTo(map).bindPopup("selfoss (pinned native endpoint, passed through en route)");
+
+const allPoints = toLatLngs(DATA.eastbound.points).concat(toLatLngs(DATA.westbound.points));
+map.fitBounds(allPoints, { padding: [20, 20] });
+</script>
+</body>
+</html>

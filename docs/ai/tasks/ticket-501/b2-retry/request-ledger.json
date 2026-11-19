@@ -1,0 +1,22 @@
+{
+  "request_url": "https://gagnaveita.vegagerdin.is/geoserver/gis/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=gis%3Afaerdferlar2017_1&bbox=392624.357%2C389796.132%2C392753.5%2C389915.057%2CEPSG%3A3057&srsName=EPSG%3A3057&outputFormat=application%2Fjson&maxFeatures=100",
+  "client_start_utc": "2026-11-17T19:01:22Z",
+  "client_end_utc": "2026-11-17T19:01:22Z",
+  "http_status": 400,
+  "headers": {
+    "Server": "nginx/1.20.1",
+    "Date": "Tue, 17 Nov 2026 19:01:21 GMT",
+    "Content-Type": "text/html",
+    "Content-Length": "157",
+    "Connection": "close"
+  },
+  "server_date_header": "Tue, 17 Nov 2026 19:01:21 GMT",
+  "content_length_header": "157",
+  "byte_count": 157,
+  "outcome": "failed",
+  "failure_reason": "http_status_400",
+  "parsed_info": null,
+  "sha256_of_retained_bytes": "261c4ca72e7bec9b49794d577e7fc9a6348f97af405a24b05bce341dbd3786b0",
+  "body_file": "raw-B2-LOCAL-GEOMETRY-ATTEMPT-2.bin",
+  "wall_time_ms": 38.9
+}

@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="is">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="referrer" content="strict-origin-when-cross-origin" />
+<title>#501 Vestfjarðatenging — vegamót 1/60 ↔ Búðardalur — kortasýn til yfirferðar</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<style>
+  html, body { margin: 0; padding: 0; height: 100%; font-family: system-ui, sans-serif; }
+  #map { position: absolute; top: 0; bottom: 0; left: 0; right: 340px; }
+  #panel { position: absolute; top: 0; bottom: 0; right: 0; width: 340px; overflow-y: auto; padding: 12px; box-sizing: border-box; background: #fafafa; border-left: 1px solid #ccc; font-size: 13px; line-height: 1.4; }
+  h1 { font-size: 15px; margin: 0 0 8px; }
+  h2 { font-size: 13px; margin: 14px 0 4px; }
+  .swatch { display: inline-block; width: 12px; height: 12px; border-radius: 2px; margin-right: 6px; vertical-align: middle; }
+  .note { color: #a00; font-weight: 600; }
+  ul, ol { padding-left: 18px; margin: 4px 0; }
+  code { background: #eee; padding: 1px 4px; border-radius: 3px; }
+</style>
+</head>
+<body>
+<div id="map"></div>
+<div id="panel">
+  <h1>#501 Vestfjarðatenging — vegamót 1/60 ↔ Búðardalur</h1>
+  <p id="local-file-note" hidden style="background:#fff3cd;padding:10px">
+    Opnaðu <a href="http://127.0.0.1:8770/map-view.html">staðbundnu vefútgáfuna</a>
+    í gegnum localhost -- file:// birtir ekki bakgrunnskortið rétt.
+  </p>
+  <p class="note">CC did not and cannot visually confirm this map — this
+  session has no image/screenshot capability. This is an openable
+  artifact for the owner's own visual review, not a claimed PASS
+  (westfjords-entry-mvp/approved-prompt-v1.md P8).</p>
+
+  <h2>Litir / Colors</h2>
+  <ul>
+    <li><span class="swatch" style="background:#1d6fe0"></span> The real route (junction → Búðardalur), 42,155.203 m, tier 0</li>
+    <li><span class="swatch" style="background:#333"></span> J: the literal Hringvegur/60 junction (3544's own vertex 0)</li>
+    <li><span class="swatch" style="background:#00a86b"></span> Búðardalur -- inserted route endpoint (on real retained geometry)</li>
+    <li><span class="swatch" style="background:#999"></span> Búðardalur -- the old, unchanged runtime node (option (a), still 2769's own vertex 0)</li>
+    <li><span class="swatch" style="background:#d6232a"></span> "Dalsmynni" -- owner CSV point, REJECTED as a junction candidate (not shown as a road feature)</li>
+  </ul>
+
+  <h2>Review points (P8, Jonesy)</h2>
+  <ol>
+    <li><strong>The junction</strong> at Baulan/Norðurá on Hringvegur — is this really where vegur 60 branches off?</li>
+    <li><strong>Brattabrekka → Miðdalir/Breiðabólstaður → Búðardalur</strong> — does the blue line follow a real, continuous road with no detour/loop?</li>
+    <li><strong>Búðardalur's own end</strong> — the green inserted point (160 m from the owner's own coordinate) vs. the grey old node — do either/both look like a sensible road approach to the town?</li>
+    <li><strong>The Dalsmynni point</strong> (red) is 7.8 km from the real junction and is explicitly NOT treated as one — does that look right on the map?</li>
+  </ol>
+
+  <h2>Takmörk / Limits</h2>
+  <ul>
+    <li>This is <strong>tier 0</strong> geometry (the finest precision tier), offline-reprojected from the owner-provided WGS84 source — not the tier-2 Hringvegur pilot, never mixed with it in one call.</li>
+    <li>Not a driving-direction authority. VEGHLUTI is 1 throughout (undirected, like vegur 93) -- "two-way" is this round's own MVP reading assumption, not an API-level claim.</li>
+    <li>The 160.1 m gap between the owner's own coordinate and the literal route endpoint is shown here and in the API response's own <code>accessApproach</code> field — never counted in <code>lengthM</code>.</li>
+    <li>Tile basemap loads live from OpenStreetMap when opened via
+      <code>http://127.0.0.1:8770/</code> — no Vegagerðin network call
+      is made by or for this page.</li>
+  </ul>
+</div>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+const DATA = {"route": {"lengthM": 42155.20284701861, "points": [{"lat": 64.801008, "lon": -21.465022}, {"lat": 64.802408, "lon": -21.468611}, {"lat": 64.802952, "lon": -21.471822}, {"lat": 64.803216, "lon": -21.472775}, {"lat": 64.803682, "lon": -21.473723}, {"lat": 64.804152, "lon": -21.47422}, {"lat": 64.804676, "lon": -21.47441}, {"lat": 64.805224, "lon": -21.474264}, {"lat": 64.806786, "lon": -21.472488}, {"lat": 64.807799, "lon": -21.471979}, {"lat": 64.808832, "lon": -21.472178}, {"lat": 64.810357, "lon": -21.473389}, {"lat": 64.811224, "lon": -21.473479}, {"lat": 64.812059, "lon": -21.472931}, {"lat": 64.813192, "lon": -21.471314}, {"lat": 64.813888, "lon": -21.470661}, {"lat": 64.814778, "lon": -21.470334}, {"lat": 64.815521, "lon": -21.470477}, {"lat": 64.816633, "lon": -21.471418}, {"lat": 64.818038, "lon": -21.473993}, {"lat": 64.818822, "lon": -21.474987}, {"lat": 64.820959, "lon": -21.476283}, {"lat": 64.822921, "lon": -21.478686}, {"lat": 64.824633, "lon": -21.479437}, {"lat": 64.825489, "lon": -21.480153}, {"lat": 64.826267, "lon": -21.481279}, {"lat": 64.827509, "lon": -21.483866}, {"lat": 64.828521, "lon": -21.485221}, {"lat": 64.829792, "lon": -21.486023}, {"lat": 64.831723, "lon": -21.48626}, {"lat": 64.832585, "lon": -21.486907}, {"lat": 64.833552, "lon": -21.488449}, {"lat": 64.834625, "lon": -21.49157}, {"lat": 64.835366, "lon": -21.492588}, {"lat": 64.835938, "lon": -21.492843}, {"lat": 64.836667, "lon": -21.492637}, {"lat": 64.838521, "lon": -21.49046}, {"lat": 64.839656, "lon": -21.489687}, {"lat": 64.840682, "lon": -21.489449}, {"lat": 64.84155, "lon": -21.489772}, {"lat": 64.842212, "lon": -21.490526}, {"lat": 64.843129, "lon": -21.49224}, {"lat": 64.843645, "lon": -21.492889}, {"lat": 64.844217, "lon": -21.493279}, {"lat": 64.845954, "lon": -21.49383}, {"lat": 64.847662, "lon": -21.495858}, {"lat": 64.849588, "lon": -21.497626}, {"lat": 64.85028, "lon": -21.498896}, {"lat": 64.851049, "lon": -21.501012}, {"lat": 64.852127, "lon": -21.50343}, {"lat": 64.85295, "lon": -21.507582}, {"lat": 64.853657, "lon": -21.509413}, {"lat": 64.854541, "lon": -21.510723}, {"lat": 64.855482, "lon": -21.511753}, {"lat": 64.858152, "lon": -21.513631}, {"lat": 64.859234, "lon": -21.514705}, {"lat": 64.860234, "lon": -21.516122}, {"lat": 64.861994, "lon": -21.519232}, {"lat": 64.862983, "lon": -21.519937}, {"lat": 64.864024, "lon": -21.519847}, {"lat": 64.864736, "lon": -21.51928}, {"lat": 64.866049, "lon": -21.517564}, {"lat": 64.866845, "lon": -21.517036}, {"lat": 64.867682, "lon": -21.516953}, {"lat": 64.868423, "lon": -21.517265}, {"lat": 64.869116, "lon": -21.517941}, {"lat": 64.870652, "lon": -21.520159}, {"lat": 64.871354, "lon": -21.520648}, {"lat": 64.872086, "lon": -21.520789}, {"lat": 64.872821, "lon": -21.520574}, {"lat": 64.873673, "lon": -21.519836}, {"lat": 64.874449, "lon": -21.518537}, {"lat": 64.875728, "lon": -21.515468}, {"lat": 64.876369, "lon": -21.514745}, {"lat": 64.877054, "lon": -21.514441}, {"lat": 64.87793, "lon": -21.514649}, {"lat": 64.880023, "lon": -21.516326}, {"lat": 64.881371, "lon": -21.516555}, {"lat": 64.883279, "lon": -21.515776}, {"lat": 64.886202, "lon": -21.513334}, {"lat": 64.887207, "lon": -21.513163}, {"lat": 64.888426, "lon": -21.513856}, {"lat": 64.890004, "lon": -21.516003}, {"lat": 64.890856, "lon": -21.516784}, {"lat": 64.891841, "lon": -21.517259}, {"lat": 64.893431, "lon": -21.517422}, {"lat": 64.900164, "lon": -21.517007}, {"lat": 64.901181, "lon": -21.516382}, {"lat": 64.903548, "lon": -21.513808}, {"lat": 64.9044, "lon": -21.513522}, {"lat": 64.905154, "lon": -21.513679}, {"lat": 64.906039, "lon": -21.514364}, {"lat": 64.906799, "lon": -21.515523}, {"lat": 64.908202, "lon": -21.519555}, {"lat": 64.909102, "lon": -21.52134}, {"lat": 64.909901, "lon": -21.522285}, {"lat": 64.9123, "lon": -21.524271}, {"lat": 64.914905, "lon": -21.528403}, {"lat": 64.91591, "lon": -21.529201}, {"lat": 64.922911, "lon": -21.532286}, {"lat": 64.923951, "lon": -21.532951}, {"lat": 64.925153, "lon": -21.534461}, {"lat": 64.931771, "lon": -21.546015}, {"lat": 64.932943, "lon": -21.546899}, {"lat": 64.935022, "lon": -21.546894}, {"lat": 64.936299, "lon": -21.546938}, {"lat": 64.937196, "lon": -21.547298}, {"lat": 64.942128, "lon": -21.551197}, {"lat": 64.946446, "lon": -21.551988}, {"lat": 64.948314, "lon": -21.551815}, {"lat": 64.950992, "lon": -21.550102}, {"lat": 64.951871, "lon": -21.549763}, {"lat": 64.960728, "lon": -21.549271}, {"lat": 64.961649, "lon": -21.549048}, {"lat": 64.963889, "lon": -21.547561}, {"lat": 64.965029, "lon": -21.547139}, {"lat": 64.966475, "lon": -21.547246}, {"lat": 64.967726, "lon": -21.548075}, {"lat": 64.968518, "lon": -21.54906}, {"lat": 64.96913, "lon": -21.550153}, {"lat": 64.974908, "lon": -21.562776}, {"lat": 64.976065, "lon": -21.566083}, {"lat": 64.976931, "lon": -21.569339}, {"lat": 64.977705, "lon": -21.57333}, {"lat": 64.978782, "lon": -21.581158}, {"lat": 64.979239, "lon": -21.583168}, {"lat": 64.980108, "lon": -21.585869}, {"lat": 64.98254, "lon": -21.591648}, {"lat": 64.985348, "lon": -21.596781}, {"lat": 64.990167, "lon": -21.608096}, {"lat": 64.995524, "lon": -21.621327}, {"lat": 64.996438, "lon": -21.62333}, {"lat": 64.997488, "lon": -21.624934}, {"lat": 65.002259, "lon": -21.630275}, {"lat": 65.004006, "lon": -21.632467}, {"lat": 65.012491, "lon": -21.640961}, {"lat": 65.015119, "lon": -21.644727}, {"lat": 65.01873, "lon": -21.650808}, {"lat": 65.021469, "lon": -21.655569}, {"lat": 65.029982, "lon": -21.67407}, {"lat": 65.038638, "lon": -21.691993}, {"lat": 65.039238, "lon": -21.692785}, {"lat": 65.040534, "lon": -21.693833}, {"lat": 65.044264, "lon": -21.695816}, {"lat": 65.050984, "lon": -21.698975}, {"lat": 65.052582, "lon": -21.69991}, {"lat": 65.053498, "lon": -21.70157}, {"lat": 65.054109, "lon": -21.703772}, {"lat": 65.055888, "lon": -21.712705}, {"lat": 65.056622, "lon": -21.71744}, {"lat": 65.057068, "lon": -21.724257}, {"lat": 65.058017, "lon": -21.732232}, {"lat": 65.060093, "lon": -21.743684}, {"lat": 65.061843, "lon": -21.752549}, {"lat": 65.063636, "lon": -21.764328}, {"lat": 65.064083, "lon": -21.765718}, {"lat": 65.064648, "lon": -21.766739}, {"lat": 65.069005, "lon": -21.772317}, {"lat": 65.074324, "lon": -21.776212}, {"lat": 65.07524, "lon": -21.776237}, {"lat": 65.076076, "lon": -21.775559}, {"lat": 65.076864, "lon": -21.774028}, {"lat": 65.083382, "lon": -21.756662}, {"lat": 65.084985, "lon": -21.75282}, {"lat": 65.088532, "lon": -21.745743}, {"lat": 65.089289, "lon": -21.744895}, {"lat": 65.090174, "lon": -21.744649}, {"lat": 65.091292, "lon": -21.745335}, {"lat": 65.095746, "lon": -21.750556}, {"lat": 65.104626, "lon": -21.76412}, {"lat": 65.105091, "lon": -21.764677}, {"lat": 65.105918, "lon": -21.765057}, {"lat": 65.106546, "lon": -21.764958}, {"lat": 65.107098, "lon": -21.764563}, {"lat": 65.109371, "lon": -21.761935}]}, "junction": {"lat": 64.801008, "lon": -21.465022}, "budardalurOld": {"lat": 65.105918, "lon": -21.765057}, "budardalurInserted": {"lat": 65.109371, "lon": -21.761935}, "dalsmynni": {"lat": 64.847, "lon": -21.589}, "offsetM": 160.1476178502974};
+
+const map = L.map("map");
+document.getElementById("local-file-note").hidden = location.protocol !== "file:";
+L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+  maxZoom: 18,
+  attribution: "&copy; OpenStreetMap contributors",
+}).addTo(map);
+
+function toLatLngs(points) { return points.map((p) => [p.lat, p.lon]); }
+
+const routeLine = L.polyline(toLatLngs(DATA.route.points), { color: "#1d6fe0", weight: 5, opacity: 0.85 }).addTo(map);
+routeLine.bindPopup("junction-1-60-baulan → budardalur: " + DATA.route.lengthM.toFixed(1) + " m (tier 0)");
+
+L.circleMarker([DATA.junction.lat, DATA.junction.lon], { radius: 8, color: "#333", fillColor: "#333", fillOpacity: 0.9 }).addTo(map)
+  .bindPopup("J: Hringvegur/vegur 60 junction -- IDFERILL 3544's own vertex 0 (= 2753's own end = 3103's own start)");
+
+L.circleMarker([DATA.budardalurInserted.lat, DATA.budardalurInserted.lon], { radius: 8, color: "#00a86b", fillColor: "#00a86b", fillOpacity: 0.9 }).addTo(map)
+  .bindPopup("Búðardalur -- inserted route endpoint, a literal point on 2769's own real geometry (" + DATA.offsetM.toFixed(1) + " m from the owner's own coordinate, never counted in lengthM)");
+
+L.circleMarker([DATA.budardalurOld.lat, DATA.budardalurOld.lon], { radius: 6, color: "#999", fillColor: "#999", fillOpacity: 0.7 }).addTo(map)
+  .bindPopup("Búðardalur -- the OLD, unchanged runtime node (winter-route-places.json, option (a)) -- still 2769's own vertex 0");
+
+L.circleMarker([DATA.dalsmynni.lat, DATA.dalsmynni.lon], { radius: 8, color: "#d6232a", fillColor: "#d6232a", fillOpacity: 0.7, dashArray: "2,2" }).addTo(map)
+  .bindPopup("\"Dalsmynni\" -- owner CSV point (64.847, -21.589), labeled \"Tenging 60 við þjóðveg 1\" in the source table -- REJECTED as the literal junction: 7.8 km from it, 3.7 km from the nearest real line. Shown here only as a reference point, never as a road feature.");
+
+// Ripley: show the unchanged owner product point separately from the road approach.
+L.circleMarker([65.110, -21.765], { radius: 7, color: "#7c3aed", fillColor: "#7c3aed", fillOpacity: 0.8 }).addTo(map)
+  .bindPopup("Búðardalur — eigandapunktur úr uppruna-CSV (65.110, -21.765). Vegaðkoman er græni punkturinn, um 160 m frá. Enginn akvegur eða færðartenging er ályktuð á milli þeirra.");
+
+map.fitBounds(toLatLngs(DATA.route.points).concat([[DATA.dalsmynni.lat, DATA.dalsmynni.lon]]), { padding: [30, 30] });
+</script>
+</body>
+</html>
