@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="is">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="referrer" content="strict-origin-when-cross-origin" />
+<title>#501 Vestfjarðatenging — closure-implementation — 10 nýjar þvertengingar — kortasýn til yfirferðar</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<style>
+  html, body { margin: 0; padding: 0; height: 100%; font-family: system-ui, sans-serif; }
+  #map { position: absolute; top: 0; bottom: 0; left: 0; right: 360px; }
+  #panel { position: absolute; top: 0; bottom: 0; right: 0; width: 360px; overflow-y: auto; padding: 12px; box-sizing: border-box; background: #fafafa; border-left: 1px solid #ccc; font-size: 13px; line-height: 1.4; }
+  h1 { font-size: 15px; margin: 0 0 8px; }
+  h2 { font-size: 13px; margin: 14px 0 4px; }
+  .swatch { display: inline-block; width: 12px; height: 12px; border-radius: 2px; margin-right: 6px; vertical-align: middle; }
+  .note { color: #a00; font-weight: 600; }
+  select { width: 100%; font-size: 14px; padding: 6px; margin: 6px 0; }
+  ul, ol { padding-left: 18px; margin: 4px 0; }
+  code { background: #eee; padding: 1px 4px; border-radius: 3px; }
+  .primary { font-weight: 600; }
+</style>
+</head>
+<body>
+<div id="map"></div>
+<div id="panel">
+  <h1>#501 Vestfjarðatenging — closure-implementation — 10 nýjar þvertengingar</h1>
+  <p id="local-file-note" hidden style="background:#fff3cd;padding:10px">
+    Opnaðu <a href="http://127.0.0.1:8778/map-view.html">staðbundnu vefútgáfuna</a>
+    í gegnum localhost -- file:// birtir ekki bakgrunnskortið rétt.
+  </p>
+  <p class="note">CC did not and cannot visually confirm this map — this
+  session has no image/screenshot capability. This is an openable
+  artifact for the owner's own visual review, not a claimed PASS.
+  Map approval here confirms this round's own 10 new cross-leg
+  Westfjords pairs -- it must NOT be read as confirmation of winter
+  closure, driving conditions, or current access for any of them.</p>
+
+  <h2>Pair (select to switch)</h2>
+  <select id="pair-select"></select>
+  <p id="pair-info"></p>
+
+  <h2>Litir / Colors</h2>
+  <ul>
+    <li><span class="swatch" style="background:#1d6fe0"></span> The selected real route, tier 0 (both directions are available in the selector)</li>
+    <li><span class="swatch" style="background:#e07b00"></span> Estimated connector(s) actually present on this pair (-4 ~5mm Búðardalur↔Flókalundur, and/or -5 ~4.39m Patreksfjörður approach)</li>
+    <li><span class="swatch" style="background:#00a86b"></span> Route endpoints (both ends of the selected pair)</li>
+    <li><span class="swatch" style="background:#7c3aed"></span> Owner coordinates for all six supported places (not necessarily reached by every route -- Tálknafjörður's own owner point is never reached)</li>
+  </ul>
+
+  <h2>Primary review cases (Jonesy)</h2>
+  <ol>
+    <li class="primary">Búðardalur ↔ Hólmavík -- reuses the known Þröskuldar chain</li>
+    <li class="primary">Flókalundur ↔ Tálknafjörður -- shortest new pair, no connector used at all</li>
+    <li class="primary">Hólmavík ↔ Patreksfjörður -- uses BOTH estimated connectors (-4 and -5)</li>
+    <li class="primary">Ísafjörður ↔ Patreksfjörður -- passes through the 3834 roundabout</li>
+  </ol>
+
+  <h2>Takmörk / Limits</h2>
+  <ul>
+    <li>All 10 pairs are <strong>tier 0</strong> geometry, composed on the merged <code>server_data/westfjords-region-combined.json</code> (a byte-identical sourceId merge of the eight already-approved Westfjords region files -- no new acquisition, no new transform).</li>
+    <li>Tálknafjörður's own endpoint never reaches its owner coordinate (~995 m short, town continuation not included) -- same gap already approved in the westfjords-talknafjordur-mvp round, reused byte-identical here.</li>
+    <li>Estimated connector lengths (~5 mm and/or ~4.39 m) are surfaced separately in <code>estimatedConnectorLengthM</code>, never silently folded into the visible route without a popup label.</li>
+    <li>Tile basemap loads live from OpenStreetMap when opened via
+      <code>http://127.0.0.1:8778/</code> -- no Vegagerðin network call
+      is made by or for this page.</li>
+  </ul>
+</div>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+document.getElementById("local-file-note").hidden = location.protocol !== "file:";
+
+const map = L.map("map");
+L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+  maxZoom: 18,
+  attribution: "&copy; OpenStreetMap contributors",
+}).addTo(map);
+
+function toLatLngs(points) { return points.map((p) => [p.lat, p.lon]); }
+
+let currentLayers = [];
+function clearLayers() { currentLayers.forEach((l) => map.removeLayer(l)); currentLayers = []; }
+
+function drawPair(data, key) {
+  clearLayers();
+  const r = data.routes[key];
+
+  const routeLine = L.polyline(toLatLngs(r.route), { color: "#1d6fe0", weight: 5, opacity: 0.85 }).addTo(map);
+  routeLine.bindPopup(r.from + " -> " + r.to + ": " + r.lengthM.toFixed(1) + " m (tier 0)");
+  currentLayers.push(routeLine);
+
+  r.connectors.forEach(function (connector) {
+    const connLine = L.polyline(toLatLngs(connector.points), { color: "#e07b00", weight: 7, opacity: 0.95, dashArray: "4,4" }).addTo(map);
+    connLine.bindPopup("Estimated connector " + connector.sourceId + ": " + connector.lengthM.toFixed(4) + " m");
+    currentLayers.push(connLine);
+  });
+
+  const epFrom = data.endpoints[r.from];
+  const epTo = data.endpoints[r.to];
+  const mFrom = L.circleMarker([epFrom.lat, epFrom.lon], { radius: 8, color: "#00a86b", fillColor: "#00a86b", fillOpacity: 0.9 }).addTo(map).bindPopup(r.from + " (route endpoint), owner offset " + epFrom.offsetM.toFixed(2) + " m" + (epFrom.routeEndsShortOfOwnerCoordinate ? " — Retained geometry ends here; town continuation not included" : ""));
+  const mTo = L.circleMarker([epTo.lat, epTo.lon], { radius: 8, color: "#00a86b", fillColor: "#00a86b", fillOpacity: 0.9 }).addTo(map).bindPopup(r.to + " (route endpoint), owner offset " + epTo.offsetM.toFixed(2) + " m" + (epTo.routeEndsShortOfOwnerCoordinate ? " — Retained geometry ends here; town continuation not included" : ""));
+  currentLayers.push(mFrom, mTo);
+
+  Object.keys(data.owners).forEach(function (id) {
+    const o = data.owners[id];
+    const m = L.circleMarker([o.lat, o.lon], { radius: 6, color: "#7c3aed", fillColor: "#7c3aed", fillOpacity: 0.75 }).addTo(map).bindPopup(o.label);
+    currentLayers.push(m);
+  });
+
+  document.getElementById("pair-info").textContent =
+    r.from + " -> " + r.to + ": " + r.lengthM.toFixed(1) + " m, estimated connector(s) " + r.estimatedConnectorLengthM.toFixed(4) + " m, " + r.sliceSourceIds.length + " slices. Owner offsets: " + epFrom.offsetM.toFixed(2) + " m / " + epTo.offsetM.toFixed(2) + " m." + ((epFrom.routeEndsShortOfOwnerCoordinate || epTo.routeEndsShortOfOwnerCoordinate) ? " Retained geometry ends here; town continuation not included (Tálknafjörður ~995 m)." : "") + (r.sliceSourceIds.includes(3834) ? " Ísafjörður roundabout caveat: towards Ísafjörður follows stored direction; departing Ísafjörður goes against it. Driving access UNVERIFIED." : "");
+
+  const allPoints = toLatLngs(r.route);
+  map.fitBounds(allPoints, { padding: [30, 30] });
+}
+
+fetch("map-data.json").then(function (resp) { return resp.json(); }).then(function (data) {
+  const PRIMARY_FIRST = ["budardalur|holmavik", "flokalundur|talknafjordur", "holmavik|patreksfjordur", "isafjordur|patreksfjordur"];
+  const keys = Object.keys(data.routes);
+  const ordered = PRIMARY_FIRST.concat(keys.filter(function (k) { return PRIMARY_FIRST.indexOf(k) === -1; }));
+
+  const select = document.getElementById("pair-select");
+  ordered.forEach(function (key) {
+    const r = data.routes[key];
+    const opt = document.createElement("option");
+    opt.value = key;
+    opt.textContent = r.from + " -> " + r.to + (PRIMARY_FIRST.indexOf(key) !== -1 ? " (primary review case)" : "");
+    select.appendChild(opt);
+  });
+
+  select.addEventListener("change", function () { drawPair(data, select.value); });
+  drawPair(data, ordered[0]);
+});
+</script>
+</body>
+</html>

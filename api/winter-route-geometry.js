@@ -29,6 +29,10 @@ import { loadWestfjordsFlokalundurRegionDataset } from "./_lib/winterRoute/westf
 import { loadWestfjordsFlokalundurIsafjordurRegionDataset } from "./_lib/winterRoute/westfjordsFlokalundurIsafjordurRegionDataset.js";
 import { loadWestfjordsIsafjordurHolmavikRegionDataset } from "./_lib/winterRoute/westfjordsIsafjordurHolmavikRegionDataset.js";
 import { loadWestfjordsRoad68HolmavikRegionDataset } from "./_lib/winterRoute/westfjordsRoad68HolmavikRegionDataset.js";
+import { loadWestfjordsThroskuldarHolmavikRegionDataset } from "./_lib/winterRoute/westfjordsThroskuldarHolmavikRegionDataset.js";
+import { loadWestfjordsFlokalundurPatreksfjordurRegionDataset } from "./_lib/winterRoute/westfjordsFlokalundurPatreksfjordurRegionDataset.js";
+import { loadWestfjordsPatreksfjordurTalknafjordurRegionDataset } from "./_lib/winterRoute/westfjordsPatreksfjordurTalknafjordurRegionDataset.js";
+import { loadWestfjordsCombinedRegionDataset } from "./_lib/winterRoute/westfjordsCombinedRegionDataset.js";
 
 const SCHEMA_VERSION = 1;
 
@@ -103,6 +107,81 @@ function isWestfjordsIsafjordurHolmavikPair(from, to) {
 const JUNCTION_68_PLACE_ID = "junction-1-68-stadarskali";
 function isWestfjordsRoad68HolmavikPair(from, to) {
   return (from === "holmavik" && to === JUNCTION_68_PLACE_ID) || (from === JUNCTION_68_PLACE_ID && to === "holmavik");
+}
+
+// Ticket #501 westfjords-throskuldar-mvp: a SIXTH, independent Westfjords
+// region/pair (Hólmavík<->the real vegamót 60/61 junction at Gilsfjörður,
+// near Þröskuldar). This new junction id is never added to
+// KNOWN_PLACE_IDS (same convention as the other junction-* ids) -- any
+// other pair involving it, including the other junction-* ids, falls
+// through to the general known-place-id gate below and is rejected the
+// same as any other unrecognized string (400).
+const JUNCTION_THROSKULDAR_PLACE_ID = "junction-60-61-throskuldar";
+function isWestfjordsThroskuldarHolmavikPair(from, to) {
+  return (from === "holmavik" && to === JUNCTION_THROSKULDAR_PLACE_ID) || (from === JUNCTION_THROSKULDAR_PLACE_ID && to === "holmavik");
+}
+
+// Ticket #501 westfjords-patreksfjordur-mvp: an EIGHTH, independent
+// Westfjords region/pair (Flókalundur<->Patreksfjörður via vegur 62).
+// `patreksfjordur` is already a known place id (like `isafjordur`/
+// `holmavik`), with no entry in the main tier-2 pilot's own endpoints, so
+// every OTHER pair involving it keeps the existing
+// `endpoint_mapping_unavailable` behavior unchanged. This branch is
+// checked only for the one exact pair with `flokalundur`.
+function isWestfjordsFlokalundurPatreksfjordurPair(from, to) {
+  return (from === FLOKALUNDUR_PLACE_ID && to === "patreksfjordur") || (from === "patreksfjordur" && to === FLOKALUNDUR_PLACE_ID);
+}
+
+// Ticket #501 westfjords-talknafjordur-mvp: a TENTH, independent
+// Westfjords region/pair (Patreksfjörður<->Tálknafjörður via Miklidalur).
+// `patreksfjordur` and `talknafjordur` are both already known place ids,
+// with no entry in the main tier-2 pilot's own endpoints, so every OTHER
+// pair involving either one keeps the existing `endpoint_mapping_unavailable`
+// behavior unchanged. This branch is checked only for the one exact pair.
+function isWestfjordsPatreksfjordurTalknafjordurPair(from, to) {
+  return (from === "patreksfjordur" && to === "talknafjordur") || (from === "talknafjordur" && to === "patreksfjordur");
+}
+
+// Ticket #501 closure-implementation (step 2): the ten new cross-leg
+// Westfjords place pairs, composed from the merged `westfjords-region-combined.json`
+// (a sourceId-level merge of the eight region files above -- never a
+// replacement for them; each of the five existing direct place-pair
+// branches above is checked FIRST and keeps using its own existing
+// region file/loader, byte-identical). `budardalur<->flokalundur`,
+// `flokalundur<->isafjordur`, `isafjordur<->holmavik`,
+// `flokalundur<->patreksfjordur`, and `patreksfjordur<->talknafjordur`
+// are deliberately NOT in this allowlist (they already have their own
+// branch above). Junction ids (`junction-1-60-baulan`,
+// `junction-1-68-stadarskali`, `junction-60-61-throskuldar`) are
+// deliberately excluded -- composing a junction-to-junction pair on this
+// merged, Ring-Road-line-free network silently returns a plausible but
+// wrong long detour (confirmed in the closure-scope round: 219,478 m
+// instead of the real 51,571 m), so junction ids are never added here.
+const WESTFJORDS_COMBINED_ALLOWLIST = new Set([
+  "budardalur|holmavik", "holmavik|budardalur",
+  "budardalur|isafjordur", "isafjordur|budardalur",
+  "budardalur|patreksfjordur", "patreksfjordur|budardalur",
+  "budardalur|talknafjordur", "talknafjordur|budardalur",
+  "flokalundur|holmavik", "holmavik|flokalundur",
+  "flokalundur|talknafjordur", "talknafjordur|flokalundur",
+  "isafjordur|patreksfjordur", "patreksfjordur|isafjordur",
+  "isafjordur|talknafjordur", "talknafjordur|isafjordur",
+  "holmavik|patreksfjordur", "patreksfjordur|holmavik",
+  "holmavik|talknafjordur", "talknafjordur|holmavik",
+]);
+function isWestfjordsCombinedPair(from, to) {
+  return WESTFJORDS_COMBINED_ALLOWLIST.has(`${from}|${to}`);
+}
+
+// Ticket #501 closure-implementation (step 2, B1): same_place for the six
+// supported Westfjords place endpoints, including `flokalundur` (which is
+// still never added to the general 56-list / KNOWN_PLACE_IDS -- only
+// `flokalundur->flokalundur` becomes same_place, every other previously-400
+// flokalundur pair is unchanged). Junction ids are deliberately excluded
+// (`junction-*->junction-*` keeps its own existing behavior, never same_place).
+const WESTFJORDS_SAME_PLACE_IDS = new Set(["budardalur", "flokalundur", "isafjordur", "holmavik", "patreksfjordur", "talknafjordur"]);
+function isSupportedWestfjordsSamePlace(from, to) {
+  return from === to && WESTFJORDS_SAME_PLACE_IDS.has(from);
 }
 
 // Own-key, strict-string param read -- never an inherited prototype
@@ -679,6 +758,426 @@ export default async function handler(req, res) {
         accessApproach,
         coordinates,
         slices: buildResponseSlices(result.slices, road68LinesById),
+      });
+    }
+
+    // Ticket #501 westfjords-throskuldar-mvp: checked before the general
+    // known-place-id gate, same reasoning as the other westfjords
+    // branches above. A completely separate tier-0 region dataset/file
+    // (P8); no connector is used or permitted in this round -- the
+    // 4-line chain is literally connected end-to-end.
+    if (isWestfjordsThroskuldarHolmavikPair(from, to)) {
+      let region;
+      try {
+        region = loadWestfjordsThroskuldarHolmavikRegionDataset();
+      } catch {
+        console.error("winter-route-geometry: westfjords throskuldar-holmavik region dataset load error");
+        return res.status(500).json({ error: "geometry_dataset_error" });
+      }
+
+      const fromPoint = from === JUNCTION_THROSKULDAR_PLACE_ID ? region.junction.endpoint : region.holmavik.endpoint;
+      const toPoint = to === JUNCTION_THROSKULDAR_PLACE_ID ? region.junction.endpoint : region.holmavik.endpoint;
+      const result = composeGeometryPath({
+        crs: region.crs,
+        tier: region.tier,
+        lines: region.lines,
+        from: { placeId: from, x: fromPoint.x, y: fromPoint.y },
+        to: { placeId: to, x: toPoint.x, y: toPoint.y },
+      });
+
+      const throskuldarEnvelope = {
+        schemaVersion: SCHEMA_VERSION,
+        compositionVersion: GEOMETRY_COMPOSITION_VERSION,
+        regionVersion: region.regionVersion,
+        from,
+        to,
+        crs: region.crs,
+        tier: region.tier,
+        drivingAccess: "UNVERIFIED",
+      };
+
+      if (result.status !== "geometry_only") {
+        return res.status(200).json({ ...throskuldarEnvelope, status: result.status, reason: result.reason ?? null });
+      }
+
+      const throskuldarLinesById = new Map(region.lines.map((l) => [l.sourceId, l]));
+      const coordinates = buildCoordinates(result.slices, throskuldarLinesById);
+
+      const idButurIds = [];
+      for (const s of result.slices) {
+        if (s.idbutur == null) continue;
+        if (idButurIds[idButurIds.length - 1] !== s.idbutur) idButurIds.push(s.idbutur);
+      }
+
+      // P5: via fixed to exactly ["Þröskuldar"] -- the real retained name
+      // of 3321/3324. Deliberately EXCLUDES "Djúpvegur" (ambiguous --
+      // also names the Ísafjörður approach), "Hólmavík", "Gilsfjörður",
+      // "Geiradalsvegur", "Innstrandavegur", "Þorskafjarðarheiði", and
+      // "Ísafjörður" -- none of these are ever via candidates here.
+      const viaCandidates = [{ label: "Þröskuldar", match: "Þröskuldar" }];
+      const realNames = new Set(result.slices.map((s) => throskuldarLinesById.get(s.sourceId)?.name).filter(Boolean));
+      const via = viaCandidates.filter((c) => [...realNames].some((n) => n.includes(c.match))).map((c) => c.label);
+
+      // P2: no ownerCoordinateOffsetM for the junction end (the owner's
+      // own Þröskuldar reference point is never this endpoint); only
+      // Hólmavík's own, pre-existing offset is reported.
+      const accessApproach = {
+        ownerCoordinateOffsetM: region.holmavik.offsetM,
+        note: "The owner's own Hólmavík coordinate sits this far from the literal route endpoint (3883's own existing vertex 3, byte-identical to the existing winter-route-places.json coordinate) -- shown for transparency, never counted in lengthM. The junction end has no owner-coordinate offset of its own: it represents the real vegamót 60/61 junction at Gilsfjörður (3321's own literal vertex 0), not the owner's separate Þröskuldar reference point on the mountain pass itself.",
+      };
+
+      return res.status(200).json({
+        ...throskuldarEnvelope,
+        status: result.status,
+        geometryId: result.geometryId,
+        lengthM: result.lengthM,
+        lengthNote: "Tier-0 planar geometry length (EPSG:3057), reprojected offline from WGS84 -- not a driving-distance contract. No roundabout or split-carriageway segment on this chain (VEGHLUTI 1 throughout); the Ísafjörður roundabout caveat from the isafjordur<->holmavik pair does not apply here (3834 is not on this route). Þröskuldar is a mountain pass -- this response makes no claim about winter closure, driving conditions, or current access.",
+        via,
+        idButurIds,
+        accessApproach,
+        coordinates,
+        slices: buildResponseSlices(result.slices, throskuldarLinesById),
+      });
+    }
+
+    // Ticket #501 westfjords-patreksfjordur-mvp: checked before the
+    // general known-place-id gate, same reasoning as the other
+    // westfjords branches above. A completely separate tier-0 region
+    // dataset/file (P9); the one real ~4.39 m gap in this chain
+    // (2271<->53127) is bridged by exactly one reserved-negative-
+    // sourceId estimated connector line, included directly in the
+    // composed `lines` array (P2).
+    if (isWestfjordsFlokalundurPatreksfjordurPair(from, to)) {
+      let region;
+      try {
+        region = loadWestfjordsFlokalundurPatreksfjordurRegionDataset();
+      } catch {
+        console.error("winter-route-geometry: westfjords flokalundur-patreksfjordur region dataset load error");
+        return res.status(500).json({ error: "geometry_dataset_error" });
+      }
+
+      const fromPoint = from === FLOKALUNDUR_PLACE_ID ? region.flokalundur.insertedNode : region.patreksfjordur.insertedNode;
+      const toPoint = to === FLOKALUNDUR_PLACE_ID ? region.flokalundur.insertedNode : region.patreksfjordur.insertedNode;
+      const patLines = [...region.lines, region.connector];
+      const result = composeGeometryPath({
+        crs: region.crs,
+        tier: region.tier,
+        lines: patLines,
+        from: { placeId: from, x: fromPoint.x, y: fromPoint.y },
+        to: { placeId: to, x: toPoint.x, y: toPoint.y },
+      });
+
+      const patEnvelope = {
+        schemaVersion: SCHEMA_VERSION,
+        compositionVersion: GEOMETRY_COMPOSITION_VERSION,
+        regionVersion: region.regionVersion,
+        from,
+        to,
+        crs: region.crs,
+        tier: region.tier,
+        drivingAccess: "UNVERIFIED",
+      };
+
+      if (result.status !== "geometry_only") {
+        return res.status(200).json({ ...patEnvelope, status: result.status, reason: result.reason ?? null });
+      }
+
+      const patLinesById = new Map(patLines.map((l) => [l.sourceId, l]));
+      const coordinates = buildCoordinates(result.slices, patLinesById);
+      const estimatedConnectorLengthM = result.slices.filter((s) => s.sourceId < 0).reduce((sum, s) => sum + s.lengthM, 0);
+
+      const idButurIds = [];
+      for (const s of result.slices) {
+        if (s.idbutur == null) continue;
+        if (idButurIds[idButurIds.length - 1] !== s.idbutur) idButurIds.push(s.idbutur);
+      }
+
+      // P6: via fixed to exactly ["Brjánslækur", "Kleifaheiði"] -- real
+      // retained names on the chain ("Flókalundur-Brjánslækur",
+      // "Brjánslækur-Siglunesvegur", "Kleifaheiði"). Deliberately
+      // EXCLUDES "Siglunesvegur", "Flókalundur", "Patreksfjörður" (the
+      // endpoints themselves), "Raknadalshlíð", "Dynjandisheiði",
+      // "Bíldudalur", "Tálknafjörður", "Miklidalur", and any ferry name
+      // (Flatey/Baldur) -- the road via Brjánslækur is distinct from the
+      // Baldur ferry, never implied here.
+      const viaCandidates = [{ label: "Brjánslækur", match: "Brjánslækur" }, { label: "Kleifaheiði", match: "Kleifaheiði" }];
+      const realNames = new Set(result.slices.map((s) => patLinesById.get(s.sourceId)?.name).filter(Boolean));
+      const via = viaCandidates.filter((c) => [...realNames].some((n) => n.includes(c.match))).map((c) => c.label);
+
+      return res.status(200).json({
+        ...patEnvelope,
+        status: result.status,
+        geometryId: result.geometryId,
+        lengthM: result.lengthM,
+        lengthNote:
+          "Tier-0 planar geometry length (EPSG:3057), reprojected offline from WGS84 -- not a driving-distance contract. This chain includes one real ~4.39 m gap (between the retained lines 2271 and 53127) bridged by a single estimated connector, surfaced separately as estimatedConnectorLengthM -- not a confirmed WFS/driving connection. Kleifaheiði is a mountain pass; this response makes no claim about winter closure, driving conditions, or current access. The Baldur ferry from Brjánslækur is out of scope and never implied by this road route.",
+        estimatedConnectorLengthM,
+        via,
+        idButurIds,
+        accessApproach: {
+          ownerCoordinateOffsetM: region.patreksfjordur.offsetM,
+          note: "The owner's own Patreksfjörður coordinate sits this far from the literal route endpoint (a real point inserted into 53127's own retained geometry, never a straight line to the owner point) -- shown for transparency, never counted in lengthM. The Flókalundur endpoint reuses the same inserted node already established for the budardalur<->flokalundur pair.",
+        },
+        coordinates,
+        slices: buildResponseSlices(result.slices, patLinesById),
+      });
+    }
+
+    // Ticket #501 westfjords-talknafjordur-mvp: checked before the
+    // general known-place-id gate, same reasoning as the other
+    // westfjords branches above. A completely separate tier-0 region
+    // dataset/file (P4); reuses 53127 and the existing -5 connector
+    // byte-identical from the flokalundur-patreksfjordur region (P2),
+    // included directly in the composed `lines` array.
+    if (isWestfjordsPatreksfjordurTalknafjordurPair(from, to)) {
+      let region;
+      try {
+        region = loadWestfjordsPatreksfjordurTalknafjordurRegionDataset();
+      } catch {
+        console.error("winter-route-geometry: westfjords patreksfjordur-talknafjordur region dataset load error");
+        return res.status(500).json({ error: "geometry_dataset_error" });
+      }
+
+      const fromPoint = from === "patreksfjordur" ? region.patreksfjordur.insertedNode : region.talknafjordur.endpoint;
+      const toPoint = to === "patreksfjordur" ? region.patreksfjordur.insertedNode : region.talknafjordur.endpoint;
+      const talLines = [...region.lines, region.connector];
+      const result = composeGeometryPath({
+        crs: region.crs,
+        tier: region.tier,
+        lines: talLines,
+        from: { placeId: from, x: fromPoint.x, y: fromPoint.y },
+        to: { placeId: to, x: toPoint.x, y: toPoint.y },
+      });
+
+      const talEnvelope = {
+        schemaVersion: SCHEMA_VERSION,
+        compositionVersion: GEOMETRY_COMPOSITION_VERSION,
+        regionVersion: region.regionVersion,
+        from,
+        to,
+        crs: region.crs,
+        tier: region.tier,
+        drivingAccess: "UNVERIFIED",
+      };
+
+      if (result.status !== "geometry_only") {
+        return res.status(200).json({ ...talEnvelope, status: result.status, reason: result.reason ?? null });
+      }
+
+      const talLinesById = new Map(talLines.map((l) => [l.sourceId, l]));
+      const coordinates = buildCoordinates(result.slices, talLinesById);
+      const estimatedConnectorLengthM = result.slices.filter((s) => s.sourceId < 0).reduce((sum, s) => sum + s.lengthM, 0);
+
+      const idButurIds = [];
+      for (const s of result.slices) {
+        if (s.idbutur == null) continue;
+        if (idButurIds[idButurIds.length - 1] !== s.idbutur) idButurIds.push(s.idbutur);
+      }
+
+      // P6: via fixed to exactly ["Miklidalur"] -- the real retained name
+      // of 3361. Deliberately EXCLUDES "Bíldudalur" (only ever appears in
+      // 3361's own STADARLYSING, never a via candidate), "Hálfdán",
+      // "Kleifaheiði", "Raknadalshlíð", and the endpoints themselves
+      // ("Patreksfjörður"/"Tálknafjörður"/"Tálknafjarðarvegur").
+      const viaCandidates = [{ label: "Miklidalur", match: "Miklidalur" }];
+      const realNames = new Set(result.slices.map((s) => talLinesById.get(s.sourceId)?.name).filter(Boolean));
+      const via = viaCandidates.filter((c) => [...realNames].some((n) => n.includes(c.match))).map((c) => c.label);
+
+      return res.status(200).json({
+        ...talEnvelope,
+        status: result.status,
+        geometryId: result.geometryId,
+        lengthM: result.lengthM,
+        lengthNote:
+          "Tier-0 planar geometry length (EPSG:3057), reprojected offline from WGS84 -- not a driving-distance contract. This chain reuses the ~4.39 m estimated connector between the start of 3361 (same coordinates as the end of 2271) and 53127, surfaced separately as estimatedConnectorLengthM. The route ends at the end of the retained vegur 617 (Tálknafjarðarvegur) geometry and does not reach the owner's own Tálknafjörður coordinate -- town continuation into Tálknafjörður itself is not included. Bíldudalur, the Hálfdán branch, and any ferry connection are out of scope. This response makes no claim about winter closure, driving conditions, current access, or whether any road or service is open.",
+        estimatedConnectorLengthM,
+        via,
+        idButurIds,
+        accessApproach: {
+          patreksfjordur: { ownerCoordinateOffsetM: region.patreksfjordur.offsetM },
+          talknafjordur: { ownerCoordinateOffsetM: region.talknafjordur.ownerCoordinateOffsetM, routeEndsShortOfOwnerCoordinate: region.talknafjordur.routeEndsShortOfOwnerCoordinate },
+          note: "Both offsets are planar straight-line distances from each route endpoint to that place's own owner coordinate, never driving distances, never counted in lengthM. The Patreksfjörður endpoint is a real inserted point on retained road geometry; the Tálknafjörður endpoint is the retained vegur 617 geometry's own literal end, which does not reach the owner's own coordinate -- routeEndsShortOfOwnerCoordinate is true for that reason, not an error.",
+        },
+        coordinates,
+        slices: buildResponseSlices(result.slices, talLinesById),
+      });
+    }
+
+    // Ticket #501 closure-implementation (step 2, B1): same_place for the
+    // six supported Westfjords endpoints, checked before the general
+    // known-place-id gate (so it also catches `flokalundur`, which is
+    // never in that gate's own list). Every other id's own same_place
+    // behavior (the five ring-pilot ids) and every other pair's own
+    // existing contract is unaffected.
+    if (isSupportedWestfjordsSamePlace(from, to)) {
+      let region;
+      try {
+        region = loadWestfjordsCombinedRegionDataset();
+      } catch {
+        console.error("winter-route-geometry: westfjords combined region dataset load error (same_place)");
+        return res.status(500).json({ error: "geometry_dataset_error" });
+      }
+      const endpoint = region.endpoints[from];
+      const geometryId = crypto.createHash("sha256").update(`same_place:${from}:${endpoint.x}:${endpoint.y}:${endpoint.z ?? "null"}`).digest("hex").slice(0, 32);
+      const accessApproach = {
+        [from]: {
+          ownerCoordinateOffsetM: endpoint.offsetM,
+          ...(from === "talknafjordur" ? { routeEndsShortOfOwnerCoordinate: true } : {}),
+        },
+        note:
+          from === "talknafjordur"
+            ? "This is the same vegur 617 approach point used by every other Tálknafjörður pair (2889's own vertex 12), not the owner's own town coordinate -- town continuation into Tálknafjörður itself is not included. Never counted in lengthM (lengthM is 0 here because from and to are the same literal point)."
+            : "The owner's own coordinate offset for this endpoint, shown for transparency, never counted in lengthM (lengthM is 0 here because from and to are the same literal point).",
+      };
+      return res.status(200).json({
+        schemaVersion: SCHEMA_VERSION,
+        compositionVersion: GEOMETRY_COMPOSITION_VERSION,
+        regionVersion: region.regionVersion,
+        from,
+        to,
+        crs: region.crs,
+        tier: region.tier,
+        drivingAccess: "UNVERIFIED",
+        status: "same_place",
+        geometryId,
+        lengthM: 0,
+        lengthNote: "Tier-0 planar geometry (EPSG:3057) -- from and to are the same literal point, so lengthM is 0. This is not a new claim about town access, driving conditions, or current road status.",
+        via: [],
+        idButurIds: [],
+        estimatedConnectorLengthM: 0,
+        coordinates: [{ x: endpoint.x, y: endpoint.y, z: endpoint.z ?? null }],
+        slices: [],
+        accessApproach,
+      });
+    }
+
+    // Ticket #501 closure-implementation (step 2, B2): the ten new
+    // cross-leg Westfjords pairs, composed on the merged
+    // westfjords-region-combined.json. Checked after every existing
+    // specific Westfjords branch (so those five pairs keep using their
+    // own existing, byte-identical branch above) and before the general
+    // known-place-id gate.
+    if (isWestfjordsCombinedPair(from, to)) {
+      let region;
+      try {
+        region = loadWestfjordsCombinedRegionDataset();
+      } catch {
+        console.error("winter-route-geometry: westfjords combined region dataset load error");
+        return res.status(500).json({ error: "geometry_dataset_error" });
+      }
+
+      const fromPoint = region.endpoints[from];
+      const toPoint = region.endpoints[to];
+      const combinedLines = [...region.lines, ...region.connectors];
+      const result = composeGeometryPath({
+        crs: region.crs,
+        tier: region.tier,
+        lines: combinedLines,
+        from: { placeId: from, x: fromPoint.x, y: fromPoint.y },
+        to: { placeId: to, x: toPoint.x, y: toPoint.y },
+      });
+
+      const combinedEnvelope = {
+        schemaVersion: SCHEMA_VERSION,
+        compositionVersion: GEOMETRY_COMPOSITION_VERSION,
+        regionVersion: region.regionVersion,
+        from,
+        to,
+        crs: region.crs,
+        tier: region.tier,
+        drivingAccess: "UNVERIFIED",
+      };
+
+      if (result.status !== "geometry_only") {
+        return res.status(200).json({ ...combinedEnvelope, status: result.status, reason: result.reason ?? null });
+      }
+
+      const combinedLinesById = new Map(combinedLines.map((l) => [l.sourceId, l]));
+      const coordinates = buildCoordinates(result.slices, combinedLinesById);
+      const estimatedConnectorLengthM = result.slices.filter((s) => s.sourceId < 0).reduce((sum, s) => sum + s.lengthM, 0);
+
+      const idButurIds = [];
+      for (const s of result.slices) {
+        if (s.idbutur == null) continue;
+        if (idButurIds[idButurIds.length - 1] !== s.idbutur) idButurIds.push(s.idbutur);
+      }
+
+      // P5: via from exactly these eight real retained names, substring
+      // match in real travel order, first occurrence only -- the same
+      // established pattern as every earlier branch, just with a longer
+      // candidate list (this corridor spans every earlier round's own
+      // via vocabulary). Deliberately EXCLUDES "Bíldudalur"/"Hálfdán"/
+      // "Súðavík"/"Steingrímsfjarðarheiði"/"Innstrandavegur"/"Broddanes"/
+      // "Djúpvegur" (ambiguous) and every endpoint's own town name.
+      // 3611's own extra `idbuturName` metadata field is never read here
+      // -- only the real `name` field drives via, exactly as before.
+      const viaCandidates = [
+        { label: "Gilsfjörður", match: "Gilsfjörður" },
+        { label: "Þorskafjörður", match: "Þorskafjörður" },
+        { label: "Klettsháls", match: "Klettsháls" },
+        { label: "Þröskuldar", match: "Þröskuldar" },
+        { label: "Brjánslækur", match: "Brjánslækur" },
+        { label: "Kleifaheiði", match: "Kleifaheiði" },
+        { label: "Dýrafjarðargöng", match: "Dýrafjarðargöng" },
+        { label: "Miklidalur", match: "Miklidalur" },
+      ];
+      const via = [];
+      for (const slice of result.slices) {
+        const name = combinedLinesById.get(slice.sourceId)?.name;
+        if (!name) continue;
+        for (const candidate of viaCandidates) {
+          if (name.includes(candidate.match) && !via.includes(candidate.label)) via.push(candidate.label);
+        }
+      }
+
+      // P6: lengthNote assembled from the real slices actually on THIS
+      // result -- never reused from another pair. Each connector that is
+      // actually present contributes its own sentence; the Ísafjörður
+      // roundabout caveat appears only when isafjordur is an endpoint,
+      // with the direction read from the real 3834 slice; the
+      // Tálknafjörður coverage-gap caveat appears only when talknafjordur
+      // is an endpoint; the Kleifaheiði/Brjánslækur corridor caveat
+      // appears only when the real result actually uses one of those
+      // corridor's own lines.
+      const noteParts = ["Tier-0 planar geometry length (EPSG:3057), reprojected offline from WGS84 -- not a driving-distance contract."];
+      if (result.slices.some((s) => s.sourceId === -4)) noteParts.push("This chain includes the ~5 mm estimated connector (sourceId -4) bridging the Búðardalur<->Flókalundur gap, surfaced separately in estimatedConnectorLengthM.");
+      if (result.slices.some((s) => s.sourceId === -5)) noteParts.push("This chain includes the ~4.39 m estimated connector (sourceId -5) bridging the Patreksfjörður approach gap, surfaced separately in estimatedConnectorLengthM.");
+      const slice3834 = result.slices.find((s) => s.sourceId === 3834);
+      if (slice3834) {
+        noteParts.push(
+          `This chain passes through a roundabout (3834, VEGHLUTI 1, undirected): this direction traverses its own arc ${slice3834.direction === "reverse" ? "against" : "in"} the line's own forward direction (the core does not split a line into direction-dependent portions) -- a visible MVP caveat, not corrected here.`
+        );
+      }
+      if (from === "talknafjordur" || to === "talknafjordur") {
+        noteParts.push("The route ends at the retained vegur 617 (Tálknafjarðarvegur) geometry's own literal end and does not reach the owner's own Tálknafjörður coordinate -- town continuation into Tálknafjörður itself is not included.");
+      }
+      const ROAD_62_CORRIDOR_SOURCE_IDS = new Set([3698, 3339, 3334, 3332, 2271, 3361, 2889, 53127, -5]);
+      if (result.slices.some((s) => ROAD_62_CORRIDOR_SOURCE_IDS.has(s.sourceId))) {
+        noteParts.push("Kleifaheiði is a mountain pass; the Baldur ferry from Brjánslækur is out of scope and never implied by this road route.");
+      }
+      noteParts.push("This response makes no claim about winter closure, driving conditions, current access, or whether any road or service is open.");
+
+      const accessApproachEntry = (placeId) => ({
+        ownerCoordinateOffsetM: region.endpoints[placeId].offsetM,
+        ...(placeId === "talknafjordur" ? { routeEndsShortOfOwnerCoordinate: true } : {}),
+      });
+
+      return res.status(200).json({
+        ...combinedEnvelope,
+        status: result.status,
+        geometryId: result.geometryId,
+        lengthM: result.lengthM,
+        lengthNote: noteParts.join(" "),
+        estimatedConnectorLengthM,
+        via,
+        idButurIds,
+        accessApproach: {
+          [from]: accessApproachEntry(from),
+          [to]: accessApproachEntry(to),
+          note: "Each offset is a planar straight-line distance from that endpoint's own route point to that place's own owner coordinate, never a driving distance, never counted in lengthM.",
+        },
+        coordinates,
+        slices: buildResponseSlices(result.slices, combinedLinesById),
       });
     }
 

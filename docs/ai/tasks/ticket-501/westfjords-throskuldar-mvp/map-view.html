@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="is">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="referrer" content="strict-origin-when-cross-origin" />
+<title>#501 Vestfjarðatenging — Hólmavík ↔ Vegamót 60/61 um Þröskulda — kortasýn til yfirferðar</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<style>
+  html, body { margin: 0; padding: 0; height: 100%; font-family: system-ui, sans-serif; }
+  #map { position: absolute; top: 0; bottom: 0; left: 0; right: 340px; }
+  #panel { position: absolute; top: 0; bottom: 0; right: 0; width: 340px; overflow-y: auto; padding: 12px; box-sizing: border-box; background: #fafafa; border-left: 1px solid #ccc; font-size: 13px; line-height: 1.4; }
+  h1 { font-size: 15px; margin: 0 0 8px; }
+  h2 { font-size: 13px; margin: 14px 0 4px; }
+  .swatch { display: inline-block; width: 12px; height: 12px; border-radius: 2px; margin-right: 6px; vertical-align: middle; }
+  .note { color: #a00; font-weight: 600; }
+  ul, ol { padding-left: 18px; margin: 4px 0; }
+  code { background: #eee; padding: 1px 4px; border-radius: 3px; }
+</style>
+</head>
+<body>
+<div id="map"></div>
+<div id="panel">
+  <h1>#501 Vestfjarðatenging — Hólmavík ↔ Vegamót 60/61 um Þröskulda</h1>
+  <p id="local-file-note" hidden style="background:#fff3cd;padding:10px">
+    Opnaðu <a href="http://127.0.0.1:8775/map-view.html">staðbundnu vefútgáfuna</a>
+    í gegnum localhost -- file:// birtir ekki bakgrunnskortið rétt.
+  </p>
+  <p class="note">CC did not and cannot visually confirm this map — this
+  session has no image/screenshot capability. This is an openable
+  artifact for the owner's own visual review, not a claimed PASS
+  (westfjords-throskuldar-mvp/approved-prompt-v1.md P9).</p>
+
+  <h2>Litir / Colors</h2>
+  <ul>
+    <li><span class="swatch" style="background:#1d6fe0"></span> The real route (Þröskuldar, via 3321/3324/3611), tier 0, no connector needed</li>
+    <li><span class="swatch" style="background:#00a86b"></span> Route endpoints: junction-60-61-throskuldar (3321 vertex 0), Hólmavík (3883 vertex 3, = places.json)</li>
+    <li><span class="swatch" style="background:#7c3aed"></span> Owner points: Hólmavík coordinate, Þröskuldar reference (both shown separately from the road approach, never the endpoint)</li>
+    <li><span class="swatch" style="background:#999"></span> Branch points (vegamót 60/61, 605 Geiradalsvegur, 61/68, J/3347) -- possible future connections, NOT confirmed, never part of this route; vegur 60/68 are never shown as part of the selected route</li>
+  </ul>
+
+  <h2>Review points (P9, Jonesy)</h2>
+  <ol>
+    <li><strong>The route itself</strong> -- does the blue line follow Þröskuldar (3321 then 3324) with no detour via vegur 605 (grey)?</li>
+    <li><strong>The junction endpoint</strong> -- the green point at 3321's own vertex 0 is the real vegamót 60/61 at Gilsfjörður, not the owner's own Þröskuldar reference point (purple, ~810 m from the nearest line point, map-only).</li>
+    <li><strong>J (3347)</strong> -- an internal node of this route (where 3611 ends and 3883/the final town stub begins), not a separate endpoint and not a future-connection candidate in its own right here.</li>
+    <li><strong>The branch points</strong> (grey) -- shown only as advisory "possible future connection" markers, never composed into this route. Do they look correctly placed?</li>
+  </ol>
+
+  <h2>Takmörk / Limits</h2>
+  <ul>
+    <li>This is <strong>tier 0</strong> geometry (the finest precision tier), offline-reprojected from the owner-provided WGS84 source -- never mixed with the tier-2 Hringvegur pilot in one call.</li>
+    <li>No connector was needed or used in this round -- the 4-line chain is literally connected end-to-end.</li>
+    <li>No roundabout or split-carriageway segment on this chain (VEGHLUTI 1 throughout) -- the Ísafjörður roundabout caveat from the isafjordur<->holmavik pair does not apply here.</li>
+    <li>Þröskuldar is a mountain pass -- this map and the API response make no claim about winter closure, driving conditions, or current access.</li>
+    <li>Tile basemap loads live from OpenStreetMap when opened via
+      <code>http://127.0.0.1:8775/</code> -- no Vegagerðin network call
+      is made by or for this page.</li>
+  </ul>
+</div>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+const DATA = {"route":[{"lon":-21.933629079999996,"lat":65.47846693000001},{"lon":-21.9232995,"lat":65.48219442},{"lon":-21.9212985,"lat":65.48279646000003},{"lon":-21.91808684,"lat":65.48341345999998},{"lon":-21.91118827,"lat":65.48414896000001},{"lon":-21.90735883,"lat":65.48499510000002},{"lon":-21.90405699,"lat":65.48619487},{"lon":-21.90114379,"lat":65.48786493999998},{"lon":-21.8965486,"lat":65.49003917000002},{"lon":-21.89455455,"lat":65.49142606},{"lon":-21.893287630000003,"lat":65.49294283000002},{"lon":-21.89194722,"lat":65.49610655},{"lon":-21.89007427,"lat":65.49800624000001},{"lon":-21.88790194,"lat":65.49934981},{"lon":-21.8841249,"lat":65.50106467},{"lon":-21.88292769,"lat":65.50195027},{"lon":-21.88223723,"lat":65.50292322},{"lon":-21.88193026,"lat":65.50466832},{"lon":-21.88119964,"lat":65.50580049999999},{"lon":-21.877004139999997,"lat":65.50933248000001},{"lon":-21.87380313,"lat":65.51143685},{"lon":-21.87285424,"lat":65.51237674},{"lon":-21.87239687,"lat":65.51351807},{"lon":-21.87260708,"lat":65.51526459},{"lon":-21.87247761,"lat":65.51613864000001},{"lon":-21.8719574,"lat":65.51714181000001},{"lon":-21.87104869,"lat":65.51809538},{"lon":-21.869945,"lat":65.51884603},{"lon":-21.86824088,"lat":65.51958454},{"lon":-21.8665002,"lat":65.52008266},{"lon":-21.86303432,"lat":65.52080830000001},{"lon":-21.86064971,"lat":65.5216703},{"lon":-21.859114290000004,"lat":65.52264777},{"lon":-21.85765979,"lat":65.52429283999997},{"lon":-21.85666979,"lat":65.52506962000001},{"lon":-21.85272842,"lat":65.52693166000002},{"lon":-21.85129091,"lat":65.52776391},{"lon":-21.845260519999997,"lat":65.53288766999998},{"lon":-21.843787320000004,"lat":65.53436567},{"lon":-21.842481949999996,"lat":65.5361824},{"lon":-21.841235730000005,"lat":65.53920689},{"lon":-21.84026653,"lat":65.54046258},{"lon":-21.83840322,"lat":65.54171101999998},{"lon":-21.83351594,"lat":65.54381796},{"lon":-21.83191685,"lat":65.54493886},{"lon":-21.83108342,"lat":65.54604183},{"lon":-21.830833679999998,"lat":65.54720012999998},{"lon":-21.83224971,"lat":65.5523516},{"lon":-21.83193791,"lat":65.55348319},{"lon":-21.83115118,"lat":65.55447549},{"lon":-21.82988345,"lat":65.55540696},{"lon":-21.82820027,"lat":65.55621486},{"lon":-21.81267412,"lat":65.56074635},{"lon":-21.80758158,"lat":65.56210701999998},{"lon":-21.80617207,"lat":65.56261891999998},{"lon":-21.80481027,"lat":65.56334791},{"lon":-21.80397103,"lat":65.56403432999998},{"lon":-21.80342593,"lat":65.56475942},{"lon":-21.8028889,"lat":65.56704738000002},{"lon":-21.802167100000002,"lat":65.5685161},{"lon":-21.8011111,"lat":65.56979039},{"lon":-21.79971667,"lat":65.57099107},{"lon":-21.795860209999997,"lat":65.57342397},{"lon":-21.79285032,"lat":65.57561081999998},{"lon":-21.78864639,"lat":65.57759605},{"lon":-21.785202109999997,"lat":65.57983214},{"lon":-21.7805953,"lat":65.58177742999999},{"lon":-21.77920908,"lat":65.5826945},{"lon":-21.77748303,"lat":65.58435272},{"lon":-21.77639998,"lat":65.58510758999999},{"lon":-21.771882470000005,"lat":65.58713006},{"lon":-21.76995727,"lat":65.58820387000002},{"lon":-21.7679264,"lat":65.58985483},{"lon":-21.765559380000003,"lat":65.59276922},{"lon":-21.761443130000004,"lat":65.59532729000001},{"lon":-21.75975361,"lat":65.5966099},{"lon":-21.75777837,"lat":65.59878989999999},{"lon":-21.755724579999995,"lat":65.60324747},{"lon":-21.75459126,"lat":65.60478857},{"lon":-21.75327357,"lat":65.6061493},{"lon":-21.74983752,"lat":65.60872937999997},{"lon":-21.7446456,"lat":65.61151470999998},{"lon":-21.742654750000003,"lat":65.61273113000001},{"lon":-21.74093043,"lat":65.61402426},{"lon":-21.73938728,"lat":65.61548288},{"lon":-21.73752563,"lat":65.61815838},{"lon":-21.73623071,"lat":65.62192134},{"lon":-21.73544389,"lat":65.62289822},{"lon":-21.734360779999996,"lat":65.62382212},{"lon":-21.73278071,"lat":65.62479593},{"lon":-21.73112162,"lat":65.62556178},{"lon":-21.72363092,"lat":65.62803094000002},{"lon":-21.72136301,"lat":65.62894961999999},{"lon":-21.71985012,"lat":65.62975601},{"lon":-21.71845543,"lat":65.63094287},{"lon":-21.71668221,"lat":65.63379943},{"lon":-21.7146765,"lat":65.63597522999999},{"lon":-21.71177169,"lat":65.6381769},{"lon":-21.70817083,"lat":65.64017835},{"lon":-21.70475294,"lat":65.64165159},{"lon":-21.7009121,"lat":65.64295977},{"lon":-21.69763446,"lat":65.6438623},{"lon":-21.691158329999997,"lat":65.64537878},{"lon":-21.687398769999998,"lat":65.64650823000002},{"lon":-21.68400817,"lat":65.64780499},{"lon":-21.68059615,"lat":65.6494911},{"lon":-21.67712383,"lat":65.6518587},{"lon":-21.67271988,"lat":65.65602694000002},{"lon":-21.67013954,"lat":65.65810911},{"lon":-21.669050360000004,"lat":65.65964551},{"lon":-21.66881151,"lat":65.66128096},{"lon":-21.66953104,"lat":65.66357058},{"lon":-21.66815398,"lat":65.66761554},{"lon":-21.66738184,"lat":65.66859316},{"lon":-21.664841480000003,"lat":65.67007578},{"lon":-21.66422716,"lat":65.67087676},{"lon":-21.664418160000004,"lat":65.67145269},{"lon":-21.66571709,"lat":65.67282953},{"lon":-21.6668816,"lat":65.67467163},{"lon":-21.6667744,"lat":65.6753979},{"lon":-21.66580109,"lat":65.67677783},{"lon":-21.665863930000004,"lat":65.67750042},{"lon":-21.66695177,"lat":65.67826613},{"lon":-21.67083617,"lat":65.67973077},{"lon":-21.67226039,"lat":65.68040925},{"lon":-21.67342548,"lat":65.68114385},{"lon":-21.67535483,"lat":65.682709},{"lon":-21.67710308,"lat":65.68362011},{"lon":-21.679045899999995,"lat":65.68424316},{"lon":-21.685233939999996,"lat":65.68568692},{"lon":-21.69089701,"lat":65.68721738999999},{"lon":-21.69397969,"lat":65.68842159},{"lon":-21.69640555,"lat":65.6898591},{"lon":-21.69727407,"lat":65.69082982},{"lon":-21.69747047,"lat":65.69199395999999},{"lon":-21.69705417,"lat":65.69449796},{"lon":-21.6952318,"lat":65.70152975999999},{"lon":-21.69181348,"lat":65.70184594},{"lon":-21.68767875,"lat":65.70147842000002},{"lon":-21.68414766,"lat":65.70146962}],"owners":{"holmavik":{"lon":-21.68,"lat":65.705,"label":"Hólmavík (owner coordinate)"},"throskuldar":{"lon":-21.784999999999997,"lat":65.592,"label":"Þröskuldar (owner reference point, map-only, never this pair's endpoint)"}},"endpoints":{"junction":{"lon":-21.933629079999996,"lat":65.47846693000001,"label":"junction-60-61-throskuldar (3321's own vertex 0 -- the real vegamót 60/61 at Gilsfjörður)"},"holmavik":{"lon":-21.68414766,"lat":65.70146962,"label":"Hólmavík (route endpoint -- 3883's own existing vertex 3, byte-identical to places.json)"}},"branchPoints":[{"label":"Vegamót 60/61 (3321 v0 ↔ 3754/3755)","lon":-21.933629079999996,"lat":65.47846693000001,"note":"possible future connection, not confirmed -- same point as this pair's own junction endpoint; vegur 60 is never shown as part of this route"},{"label":"605 Geiradalsvegur (3321 v7 = 2109 v17)","lon":-21.90114379,"lat":65.48786493999998,"note":"possible future connection, not confirmed"},{"label":"61/68 (3324 v63 = 3611 v0 = 2690 v74)","lon":-21.66881151,"lat":65.66128096,"note":"possible future connection, not confirmed -- vegur 68 is never shown as part of this route"},{"label":"J/3347 (3611 v26)","lon":-21.6952318,"lat":65.70152976,"note":"possible future connection, not confirmed -- J is an internal node of THIS pair's own route, not a separate endpoint"}],"lengthM":30555.315457176555,"ownerOffsetFromNearestLineM":809.5062630555802};
+
+const map = L.map("map");
+document.getElementById("local-file-note").hidden = location.protocol !== "file:";
+L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+  maxZoom: 18,
+  attribution: "&copy; OpenStreetMap contributors",
+}).addTo(map);
+
+function toLatLngs(points) { return points.map((p) => [p.lat, p.lon]); }
+
+const routeLine = L.polyline(toLatLngs(DATA.route), { color: "#1d6fe0", weight: 5, opacity: 0.85 }).addTo(map);
+routeLine.bindPopup("junction-60-61-throskuldar → holmavik: " + DATA.lengthM.toFixed(1) + " m (tier 0, no connector)");
+
+L.circleMarker([DATA.endpoints.junction.lat, DATA.endpoints.junction.lon], { radius: 8, color: "#00a86b", fillColor: "#00a86b", fillOpacity: 0.9 }).addTo(map)
+  .bindPopup(DATA.endpoints.junction.label);
+
+L.circleMarker([DATA.endpoints.holmavik.lat, DATA.endpoints.holmavik.lon], { radius: 8, color: "#00a86b", fillColor: "#00a86b", fillOpacity: 0.9 }).addTo(map)
+  .bindPopup(DATA.endpoints.holmavik.label);
+
+L.circleMarker([DATA.owners.holmavik.lat, DATA.owners.holmavik.lon], { radius: 7, color: "#7c3aed", fillColor: "#7c3aed", fillOpacity: 0.8 }).addTo(map)
+  .bindPopup("Hólmavík -- eigandapunktur (" + DATA.owners.holmavik.lat + ", " + DATA.owners.holmavik.lon + ").");
+
+L.circleMarker([DATA.owners.throskuldar.lat, DATA.owners.throskuldar.lon], { radius: 7, color: "#7c3aed", fillColor: "#7c3aed", fillOpacity: 0.8 }).addTo(map)
+  .bindPopup(DATA.owners.throskuldar.label + " (" + DATA.ownerOffsetFromNearestLineM.toFixed(1) + " m frá næstu línu, ekki endapunktur)");
+
+DATA.branchPoints.forEach(function (bp) {
+  L.circleMarker([bp.lat, bp.lon], { radius: 6, color: "#999", fillColor: "#999", fillOpacity: 0.7, dashArray: "2,2" }).addTo(map)
+    .bindPopup(bp.label + " -- " + bp.note);
+});
+
+const allPoints = toLatLngs(DATA.route).concat(DATA.branchPoints.map(function (bp) { return [bp.lat, bp.lon]; })).concat([[DATA.owners.throskuldar.lat, DATA.owners.throskuldar.lon]]);
+map.fitBounds(allPoints, { padding: [30, 30] });
+</script>
+</body>
+</html>

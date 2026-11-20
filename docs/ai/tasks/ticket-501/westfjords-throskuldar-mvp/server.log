@@ -1,0 +1,10 @@
+127.0.0.1 - - [20/Nov/2026 18:08:14] "GET /map-view.html HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 18:08:18] "GET /map-view.html HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 18:19:05] "GET /map-view.html HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 18:19:06] code 404, message File not found
+127.0.0.1 - - [20/Nov/2026 18:19:06] "GET /favicon.ico HTTP/1.1" 404 -
+127.0.0.1 - - [20/Nov/2026 18:19:13] "GET /map-view.html HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 18:19:13] code 404, message File not found
+127.0.0.1 - - [20/Nov/2026 18:19:13] "GET /favicon.ico HTTP/1.1" 404 -
+127.0.0.1 - - [20/Nov/2026 18:35:54] "GET /map-view.html HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 19:05:06] "GET /map-view.html HTTP/1.1" 200 -
