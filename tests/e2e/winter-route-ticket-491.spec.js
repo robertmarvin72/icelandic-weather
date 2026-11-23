@@ -137,10 +137,14 @@ async function primePageState(page, { lang = "is", theme = "light" } = {}) {
   );
 }
 
+// Ticket #502 — same mechanical adaptation as winter-route-ticket-486's
+// own gotoPage (and src/pages/WinterRoute.test.jsx, P1c): switch into
+// "Fastar veðurleiðir" since this suite exercises the legacy flow.
 async function gotoPage(page) {
   await page.clock.install({ time: FIXED_NOW });
   await page.goto("/winter-route");
   await expect(page.locator("h1")).toBeVisible();
+  await page.getByRole("button", { name: /Fastar veðurleiðir|Fixed weather routes/ }).click();
 }
 
 test.describe("WinterRoute (/winter-route) — Ticket #491 route selector real-browser verification", () => {

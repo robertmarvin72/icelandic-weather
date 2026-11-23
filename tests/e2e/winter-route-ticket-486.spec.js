@@ -138,10 +138,16 @@ async function primePageState(page, { lang = "is", theme = "light" } = {}) {
   );
 }
 
+// Ticket #502 — the page now defaults to "Velja staði" (geometry mode);
+// this real-browser suite's own subject is the legacy fixed-route flow,
+// so it switches into "Fastar veðurleiðir" immediately after load. One
+// mechanical adaptation point, no assertions weakened, matching the same
+// approach used in src/pages/WinterRoute.test.jsx (P1c).
 async function gotoPage(page) {
   await page.clock.install({ time: FIXED_NOW });
   await page.goto("/winter-route");
   await expect(page.locator("h1")).toBeVisible();
+  await page.getByRole("button", { name: /Fastar veðurleiðir|Fixed weather routes/ }).click();
 }
 
 // Ticket #493 removed the #490 departure-time comparison area entirely,

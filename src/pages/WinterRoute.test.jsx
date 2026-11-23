@@ -94,12 +94,28 @@ function makePayload(overrides = {}) {
   };
 }
 
-function renderPage() {
-  return render(
+// Ticket #502, P1(c) — the page now defaults to "Velja staði" (geometry
+// mode); every existing legacy-flow test below still needs the legacy
+// fixed-route UI, so it switches into "Fastar veðurleiðir" immediately
+// after rendering. This is the ONE helper-function adaptation point for
+// every pre-existing test in this file (no assertions weakened, no tests
+// removed) — matched by accessible name in either language so it works
+// under both the IS and EN tests without needing to know which language
+// is active.
+async function switchToLegacyMode() {
+  const { fireEvent } = await import("@testing-library/react");
+  const legacyButton = await screen.findByRole("button", { name: /Fastar veðurleiðir|Fixed weather routes/ });
+  fireEvent.click(legacyButton);
+}
+
+async function renderPage() {
+  const result = render(
     <MemoryRouter initialEntries={["/winter-route"]}>
       <WinterRoute />
     </MemoryRouter>
   );
+  await switchToLegacyMode();
+  return result;
 }
 
 // Scope a query to the summary's own <section> (found via its stable
@@ -118,7 +134,7 @@ describe("WinterRoute page", () => {
     const fetchMock = vi.fn().mockResolvedValue({ ok: true, json: async () => makePayload() });
     vi.stubGlobal("fetch", fetchMock);
 
-    renderPage();
+    await renderPage();
 
     // Ticket #491, V1 — h1 comes from the selected WINTER_ROUTE_OPTIONS
     // entry (Vík is the default), not a fixed translation key. Checked via
@@ -138,7 +154,7 @@ describe("WinterRoute page", () => {
 
   it("renders all 13 segments once loaded", async () => {
     vi.stubGlobal("fetch", vi.fn().mockResolvedValue({ ok: true, json: async () => makePayload() }));
-    renderPage();
+    await renderPage();
 
     await waitFor(() => expect(screen.getAllByText(/Kafli 1/).length).toBeGreaterThan(0));
     for (let i = 0; i < 13; i++) {
@@ -150,7 +166,7 @@ describe("WinterRoute page", () => {
     const payload = makePayload();
     payload.segments[3] = makeSegment(999, { category: "closed", positiveStyleEligible: false });
     vi.stubGlobal("fetch", vi.fn().mockResolvedValue({ ok: true, json: async () => payload }));
-    renderPage();
+    await renderPage();
 
     await waitFor(() => expect(screen.getByText("Kafli 999")).toBeInTheDocument());
     const row = screen.getByText("Kafli 999").closest("li");
@@ -160,7 +176,7 @@ describe("WinterRoute page", () => {
   it("selecting a different hour in the picker does not trigger a second fetch", async () => {
     const fetchMock = vi.fn().mockResolvedValue({ ok: true, json: async () => makePayload() });
     vi.stubGlobal("fetch", fetchMock);
-    renderPage();
+    await renderPage();
 
     const select = await screen.findByLabelText(translations.is.winterRouteHourLabel);
     // Wait for the auto-select-first-hour effect to actually settle (one
@@ -179,7 +195,7 @@ describe("WinterRoute page", () => {
   it("shows the forecast-unavailable message and no hour picker when forecast.available is false", async () => {
     const payload = makePayload({ forecast: { available: false, reason: "key_missing", points: [] } });
     vi.stubGlobal("fetch", vi.fn().mockResolvedValue({ ok: true, json: async () => payload }));
-    renderPage();
+    await renderPage();
 
     await waitFor(() => expect(screen.getByText(translations.is.winterRouteForecastUnavailable)).toBeInTheDocument());
     expect(screen.queryByLabelText(translations.is.winterRouteHourLabel)).toBeNull();
@@ -196,7 +212,7 @@ describe("WinterRoute page", () => {
       p.series.temperature_2m = [i, i + 100];
     });
     vi.stubGlobal("fetch", vi.fn().mockResolvedValue({ ok: true, json: async () => payload }));
-    renderPage();
+    await renderPage();
 
     await screen.findByLabelText(translations.is.winterRouteHourLabel);
     // Every point's value at hour INDEX 0 (the auto-selected first hour)
@@ -216,7 +232,7 @@ describe("WinterRoute page", () => {
     // path (N1) rather than trusting that contract blindly.
     payload.forecast.points[0].hours = [futureHourString(10), futureHourString(11)];
     vi.stubGlobal("fetch", vi.fn().mockResolvedValue({ ok: true, json: async () => payload }));
-    renderPage();
+    await renderPage();
 
     const dict = translations.is;
     await waitFor(() =>
@@ -238,7 +254,7 @@ describe("WinterRoute page", () => {
       },
     });
     vi.stubGlobal("fetch", vi.fn().mockResolvedValue({ ok: true, json: async () => payload }));
-    renderPage();
+    await renderPage();
 
     const dict = translations.is;
     await waitFor(() => expect(screen.getByText(dict.winterRouteNoHoursAvailable)).toBeInTheDocument());
@@ -249,7 +265,7 @@ describe("WinterRoute page", () => {
     const payload = makePayload();
     payload.forecast.points[0].series.wind_gusts_10m = [null, 7.9];
     vi.stubGlobal("fetch", vi.fn().mockResolvedValue({ ok: true, json: async () => payload }));
-    renderPage();
+    await renderPage();
 
     const card = await screen.findByText("Punktur P1").then((el) => el.closest(".rounded-xl"));
     await waitFor(() => {
@@ -263,7 +279,7 @@ describe("WinterRoute page", () => {
     // resolution renders a real icon; a crash or an unmapped hour would
     // instead fall back to the "unknown weather symbol" text.
     vi.stubGlobal("fetch", vi.fn().mockResolvedValue({ ok: true, json: async () => makePayload() }));
-    renderPage();
+    await renderPage();
 
     await screen.findByLabelText(translations.is.winterRouteHourLabel);
     await waitFor(() => {
@@ -277,7 +293,7 @@ describe("WinterRoute page", () => {
     expect(translations.en.winterRouteHourLabel).toBe("Forecast time");
 
     vi.stubGlobal("fetch", vi.fn().mockResolvedValue({ ok: true, json: async () => makePayload() }));
-    renderPage();
+    await renderPage();
 
     await waitFor(() =>
       expect(screen.getByText(translations.is.winterRouteSameForecastTimeNote)).toBeInTheDocument()
@@ -288,7 +304,7 @@ describe("WinterRoute page", () => {
     const payload = makePayload();
     payload.roadMeta.pointsFeedUnavailableOrStale = true;
     vi.stubGlobal("fetch", vi.fn().mockResolvedValue({ ok: true, json: async () => payload }));
-    renderPage();
+    await renderPage();
 
     await waitFor(() =>
       expect(screen.getByText(translations.is.winterRoutePointsFeedUnavailable)).toBeInTheDocument()
@@ -299,7 +315,7 @@ describe("WinterRoute page", () => {
 
   it("does not show the points-feed warning when the points feed is fine", async () => {
     vi.stubGlobal("fetch", vi.fn().mockResolvedValue({ ok: true, json: async () => makePayload() }));
-    renderPage();
+    await renderPage();
 
     await waitFor(() => expect(screen.getByText("Kafli 100000000")).toBeInTheDocument());
     expect(screen.queryByText(translations.is.winterRoutePointsFeedUnavailable)).toBeNull();
@@ -310,7 +326,7 @@ describe("WinterRoute page", () => {
     payload.forecast.stale = true;
     payload.forecast.cacheAgeMs = 20 * 60 * 1000;
     vi.stubGlobal("fetch", vi.fn().mockResolvedValue({ ok: true, json: async () => payload }));
-    renderPage();
+    await renderPage();
 
     // Wait for the state that settles LAST (the hour-select effect, one
     // render pass after `data` itself arrives) rather than the stale
@@ -329,7 +345,7 @@ describe("WinterRoute page", () => {
 
   it("does not show the stale-forecast line when forecast.stale is false", async () => {
     vi.stubGlobal("fetch", vi.fn().mockResolvedValue({ ok: true, json: async () => makePayload() }));
-    renderPage();
+    await renderPage();
 
     await screen.findByLabelText(translations.is.winterRouteHourLabel);
     expect(screen.queryByText(/winterRouteForecastStaleServed/)).toBeNull();
@@ -343,7 +359,7 @@ describe("WinterRoute page", () => {
   it("renders in English when lang is set to en", async () => {
     localStorage.setItem("lang", JSON.stringify("en"));
     vi.stubGlobal("fetch", vi.fn().mockResolvedValue({ ok: true, json: async () => makePayload() }));
-    renderPage();
+    await renderPage();
 
     // Ticket #491, V1 — h1 in English comes from nameEn, not a fixed key.
     // Checked via role/level since the EN <option> text is identical.
@@ -377,7 +393,7 @@ describe("WinterRoute page", () => {
         ],
       });
       vi.stubGlobal("fetch", vi.fn().mockResolvedValue({ ok: true, json: async () => payload }));
-      const { unmount } = renderPage();
+      const { unmount } = await renderPage();
 
       const dict = translations[lang];
       await waitFor(() => expect(screen.getByText(dict.winterRouteExpiredClosureNoticeProminent)).toBeInTheDocument());
@@ -405,7 +421,7 @@ describe("WinterRoute page", () => {
       ],
     });
     vi.stubGlobal("fetch", vi.fn().mockResolvedValue({ ok: true, json: async () => payload }));
-    renderPage();
+    await renderPage();
 
     const row = await screen.findByText("Kafli 100000000").then((el) => el.closest("li"));
     expect(within(row).getByText(translations.is.winterRouteCategoryClosed)).toBeInTheDocument();
@@ -421,7 +437,7 @@ describe("WinterRoute page", () => {
     const payload = makePayload();
     payload.roadMeta.pointsFeedUnavailableOrStale = true;
     vi.stubGlobal("fetch", vi.fn().mockResolvedValue({ ok: true, json: async () => payload }));
-    renderPage();
+    await renderPage();
 
     const warningText = await screen.findByText(translations.is.winterRoutePointsFeedUnavailable);
     const warningBox = warningText.closest("div");
@@ -553,6 +569,7 @@ describe("WinterRoute page", () => {
           </React.Profiler>
         </MemoryRouter>
       );
+      await switchToLegacyMode();
 
       // Healthy state reached first: a real selected hour with real values.
       await waitFor(() => expect(screen.getAllByText(`${formatDecimal(-9, "is", 1)} °C`)).toHaveLength(6));
@@ -583,6 +600,13 @@ describe("WinterRoute page", () => {
       expect(badCommit).toBeUndefined();
     });
 
+    // Ticket #502 — this test is already close to the default 5000ms
+    // budget on its own real work (fake timers + a frame-level Profiler
+    // probe); the mechanical switchToLegacyMode() step every test now
+    // performs pushes the FULL-FILE run (58 tests sharing one process)
+    // over that budget intermittently, even though the test itself takes
+    // well under 5s in isolation. An explicit longer timeout is the
+    // minimal fix — no assertion here is weakened or removed.
     it("(b) a minute tick that ages out only the FIRST of three hours never commits a real value for the expired hour, before falling back to the next available one", async () => {
       vi.useFakeTimers({ toFake: ["setInterval", "Date"] });
       const base = new Date();
@@ -612,6 +636,7 @@ describe("WinterRoute page", () => {
           </React.Profiler>
         </MemoryRouter>
       );
+      await switchToLegacyMode();
 
       await waitFor(() => expect(screen.getAllByText(`${formatDecimal(-1, "is", 1)} °C`)).toHaveLength(6));
       commits.length = 0;
@@ -629,13 +654,13 @@ describe("WinterRoute page", () => {
       // Regression guard: once the tick lands, no commit ever shows the
       // now-expired first hour's real value again.
       expect(commits.every((c) => c.hasH1Temp === 0)).toBe(true);
-    });
+    }, 10000);
   });
 
   describe("#489 — route-level summary", () => {
     it("renders the three weather extrema with point label and resolved time, and the notice count with its fixed scope wording", async () => {
       vi.stubGlobal("fetch", vi.fn().mockResolvedValue({ ok: true, json: async () => makePayload() }));
-      renderPage();
+      await renderPage();
 
       await screen.findByLabelText(translations.is.winterRouteHourLabel);
 
@@ -671,7 +696,7 @@ describe("WinterRoute page", () => {
 
     it("S3: the summary shows the same generatedAt acquisition time as the attribution section, with the existing formatter/key", async () => {
       vi.stubGlobal("fetch", vi.fn().mockResolvedValue({ ok: true, json: async () => makePayload() }));
-      renderPage();
+      await renderPage();
 
       const expected = translations.is.winterRouteAcquiredAt.replace("{time}", "2026-11-03 18:00");
       // Appears twice by design — once in the new summary, once (unchanged)
@@ -689,7 +714,7 @@ describe("WinterRoute page", () => {
       });
       const fetchMock = vi.fn().mockResolvedValue({ ok: true, json: async () => payload });
       vi.stubGlobal("fetch", fetchMock);
-      renderPage();
+      await renderPage();
 
       const select = await screen.findByLabelText(translations.is.winterRouteHourLabel);
       await waitFor(() => expect(select.value).toBe(FUTURE_HOURS[0]));
@@ -725,7 +750,7 @@ describe("WinterRoute page", () => {
       const payload = makePayload();
       payload.segments[0].notices = [{ idPunktur: 1, astand: "VEGAVINNA", status: "active" }];
       vi.stubGlobal("fetch", vi.fn().mockResolvedValue({ ok: true, json: async () => payload }));
-      renderPage();
+      await renderPage();
 
       const select = await screen.findByLabelText(translations.is.winterRouteHourLabel);
       await waitFor(() => expect(screen.getByText("Kaflar með gildar tilkynningar: 1")).toBeInTheDocument());
@@ -744,7 +769,7 @@ describe("WinterRoute page", () => {
       ];
       payload.segments[1].notices = [{ idPunktur: 3, astand: "VEGAVINNA", status: "active" }];
       vi.stubGlobal("fetch", vi.fn().mockResolvedValue({ ok: true, json: async () => payload }));
-      renderPage();
+      await renderPage();
 
       await waitFor(() => expect(screen.getByText("Kaflar með gildar tilkynningar: 2")).toBeInTheDocument());
     });
@@ -754,7 +779,7 @@ describe("WinterRoute page", () => {
       payload.segments[0].notices = [{ idPunktur: 1, astand: "ALLUR_AKSTUR_BANN", status: "expired" }];
       payload.segments[1] = makeSegment(100000001, { category: "closed", positiveStyleEligible: false, notices: [] });
       vi.stubGlobal("fetch", vi.fn().mockResolvedValue({ ok: true, json: async () => payload }));
-      renderPage();
+      await renderPage();
 
       const countLine = await screen.findByText("Kaflar með gildar tilkynningar: 0");
       expect(countLine).toBeInTheDocument();
@@ -766,7 +791,7 @@ describe("WinterRoute page", () => {
       const payload = makePayload();
       payload.roadMeta.pointsFeedUnavailableOrStale = true;
       vi.stubGlobal("fetch", vi.fn().mockResolvedValue({ ok: true, json: async () => payload }));
-      renderPage();
+      await renderPage();
 
       await waitFor(() =>
         expect(screen.getByText(translations.is.winterRouteSummaryNoticeCountUnconfirmed)).toBeInTheDocument()
@@ -778,7 +803,7 @@ describe("WinterRoute page", () => {
     it("missing weather data for a metric shows the dedicated missing text, never a guessed 0", async () => {
       const payload = makePayload({ forecast: { available: false, reason: "key_missing", points: [] } });
       vi.stubGlobal("fetch", vi.fn().mockResolvedValue({ ok: true, json: async () => payload }));
-      renderPage();
+      await renderPage();
 
       await waitFor(() => {
         expect(screen.getByText(translations.is.winterRouteSummaryGustMissing)).toBeInTheDocument();
@@ -830,7 +855,7 @@ describe("WinterRoute page", () => {
 
     it("renders the route select with Vík as the default value and both options present, in both languages", async () => {
       vi.stubGlobal("fetch", routeAwareFetch());
-      renderPage();
+      await renderPage();
 
       const select = await screen.findByLabelText(translations.is.winterRouteRouteSelectLabel);
       expect(select.value).toBe("raudavatn-vik");
@@ -843,7 +868,7 @@ describe("WinterRoute page", () => {
     it("the default Vík request stays exactly /api/winter-route, with no query string", async () => {
       const fetchMock = routeAwareFetch();
       vi.stubGlobal("fetch", fetchMock);
-      renderPage();
+      await renderPage();
 
       await waitFor(() => expect(fetchMock).toHaveBeenCalledTimes(1));
       expect(fetchMock.mock.calls[0][0]).toBe("/api/winter-route");
@@ -852,7 +877,7 @@ describe("WinterRoute page", () => {
     it("switching to Borgarnes requests ?routeId=raudavatn-borgarnes and renders its own 4 points / 8 segments", async () => {
       const fetchMock = routeAwareFetch();
       vi.stubGlobal("fetch", fetchMock);
-      renderPage();
+      await renderPage();
 
       const routeSelect = await screen.findByLabelText(translations.is.winterRouteRouteSelectLabel);
       await waitFor(() => expect(screen.getByText("Kafli 100000000")).toBeInTheDocument());
@@ -871,7 +896,7 @@ describe("WinterRoute page", () => {
     it("switching routes clears the previous route's cards/segments immediately — never one frame of stale data under the new selection", async () => {
       const fetchMock = routeAwareFetch({ delayBorgarnesMs: 20 });
       vi.stubGlobal("fetch", fetchMock);
-      renderPage();
+      await renderPage();
 
       const routeSelect = await screen.findByLabelText(translations.is.winterRouteRouteSelectLabel);
       await waitFor(() => expect(screen.getByText("Kafli 100000000")).toBeInTheDocument());
@@ -888,7 +913,7 @@ describe("WinterRoute page", () => {
     it("A→B→A: switching back to Vík after Borgarnes re-fetches Vík fresh and shows Vík's own data again, not stale Borgarnes data", async () => {
       const fetchMock = routeAwareFetch();
       vi.stubGlobal("fetch", fetchMock);
-      renderPage();
+      await renderPage();
 
       const routeSelect = await screen.findByLabelText(translations.is.winterRouteRouteSelectLabel);
       await waitFor(() => expect(screen.getByText("Kafli 100000000")).toBeInTheDocument());
@@ -909,7 +934,7 @@ describe("WinterRoute page", () => {
       // the stale Borgarnes response must be ignored on arrival.
       const fetchMock = routeAwareFetch({ delayBorgarnesMs: 50 });
       vi.stubGlobal("fetch", fetchMock);
-      renderPage();
+      await renderPage();
 
       const routeSelect = await screen.findByLabelText(translations.is.winterRouteRouteSelectLabel);
       await waitFor(() => expect(screen.getByText("Kafli 100000000")).toBeInTheDocument());
@@ -932,7 +957,7 @@ describe("WinterRoute page", () => {
         return Promise.resolve({ ok: true, json: async () => makePayload() });
       });
       vi.stubGlobal("fetch", fetchMock);
-      renderPage();
+      await renderPage();
 
       const routeSelect = await screen.findByLabelText(translations.is.winterRouteRouteSelectLabel);
       await waitFor(() => expect(screen.getByText("Kafli 100000000")).toBeInTheDocument());
@@ -947,7 +972,7 @@ describe("WinterRoute page", () => {
     it("a response whose routeId doesn't match what was requested is a route-scoped contract-mismatch error, not a silently-wrong view", async () => {
       const fetchMock = vi.fn().mockResolvedValue({ ok: true, json: async () => makePayload() }); // always Vík's payload
       vi.stubGlobal("fetch", fetchMock);
-      renderPage();
+      await renderPage();
 
       const routeSelect = await screen.findByLabelText(translations.is.winterRouteRouteSelectLabel);
       await waitFor(() => expect(screen.getByText("Kafli 100000000")).toBeInTheDocument());
@@ -963,7 +988,7 @@ describe("WinterRoute page", () => {
     it("a response whose expectedPointCount doesn't match the UI's own fixed table is a contract-mismatch error", async () => {
       const fetchMock = routeAwareFetch({ borgarnes: makeBorgarnesPayload({ expectedPointCount: 6 }) });
       vi.stubGlobal("fetch", fetchMock);
-      renderPage();
+      await renderPage();
 
       const routeSelect = await screen.findByLabelText(translations.is.winterRouteRouteSelectLabel);
       await waitFor(() => expect(screen.getByText("Kafli 100000000")).toBeInTheDocument());
@@ -976,7 +1001,7 @@ describe("WinterRoute page", () => {
 
     it("the forecast section title uses the route's own point count (4), never a hardcoded 6", async () => {
       vi.stubGlobal("fetch", routeAwareFetch());
-      renderPage();
+      await renderPage();
 
       const routeSelect = await screen.findByLabelText(translations.is.winterRouteRouteSelectLabel);
       await waitFor(() => expect(screen.getByText("Kafli 100000000")).toBeInTheDocument());
@@ -999,13 +1024,14 @@ describe("WinterRoute page", () => {
           </MemoryRouter>
         </React.StrictMode>
       );
+      await switchToLegacyMode();
 
       await waitFor(() => expect(screen.getByText("Kafli 100000000")).toBeInTheDocument());
     });
 
     it("the route select's own onChange keeps native focus on itself (no focus-stealing side effect, same discipline as the hour select's R1 fix)", async () => {
       vi.stubGlobal("fetch", routeAwareFetch());
-      renderPage();
+      await renderPage();
 
       const routeSelect = await screen.findByLabelText(translations.is.winterRouteRouteSelectLabel);
       await waitFor(() => expect(screen.getByText("Kafli 100000000")).toBeInTheDocument());
@@ -1022,7 +1048,7 @@ describe("WinterRoute page", () => {
     it("selecting a departure hour never triggers an extra fetch on the currently-selected route", async () => {
       const fetchMock = routeAwareFetch();
       vi.stubGlobal("fetch", fetchMock);
-      renderPage();
+      await renderPage();
 
       const { fireEvent } = await import("@testing-library/react");
       const routeSelect = await screen.findByLabelText(translations.is.winterRouteRouteSelectLabel);
@@ -1044,7 +1070,7 @@ describe("WinterRoute page", () => {
     describe("V1 — h1/title follow the selected route", () => {
       it("Borgarnes h1 reads its own name, in Icelandic, once selected", async () => {
         vi.stubGlobal("fetch", routeAwareFetch());
-        renderPage();
+        await renderPage();
 
         const routeSelect = await screen.findByLabelText(translations.is.winterRouteRouteSelectLabel);
         await waitFor(() => expect(screen.getByText("Kafli 100000000")).toBeInTheDocument());
@@ -1059,7 +1085,7 @@ describe("WinterRoute page", () => {
       it("Borgarnes h1 reads its own name, in English, once selected", async () => {
         localStorage.setItem("lang", JSON.stringify("en"));
         vi.stubGlobal("fetch", routeAwareFetch());
-        renderPage();
+        await renderPage();
 
         const routeSelect = await screen.findByLabelText(translations.en.winterRouteRouteSelectLabel);
         await waitFor(() => expect(screen.getByRole("heading", { level: 1 }).textContent).toBe(VIK_OPTION.nameEn));
@@ -1073,7 +1099,7 @@ describe("WinterRoute page", () => {
       it("the h1 switches to the new route's name immediately, before that route's own data has arrived", async () => {
         const fetchMock = routeAwareFetch({ delayBorgarnesMs: 30 });
         vi.stubGlobal("fetch", fetchMock);
-        renderPage();
+        await renderPage();
 
         const routeSelect = await screen.findByLabelText(translations.is.winterRouteRouteSelectLabel);
         await waitFor(() => expect(screen.getByText("Kafli 100000000")).toBeInTheDocument());
@@ -1093,7 +1119,7 @@ describe("WinterRoute page", () => {
           return Promise.resolve({ ok: true, json: async () => makePayload() });
         });
         vi.stubGlobal("fetch", fetchMock);
-        renderPage();
+        await renderPage();
 
         const routeSelect = await screen.findByLabelText(translations.is.winterRouteRouteSelectLabel);
         await waitFor(() => expect(screen.getByText("Kafli 100000000")).toBeInTheDocument());
@@ -1160,7 +1186,7 @@ describe("WinterRoute page", () => {
         const borgarnes = payloadWithHours(makeBorgarnesPayload(), [h2, h3, h4], [55, 66, 77]);
         const fetchMock = routeAwareFetch({ vik, borgarnes });
         vi.stubGlobal("fetch", fetchMock);
-        renderPage();
+        await renderPage();
 
         const routeSelect = await screen.findByLabelText(translations.is.winterRouteRouteSelectLabel);
         const hourSelect = await screen.findByLabelText(translations.is.winterRouteHourLabel);
@@ -1192,7 +1218,7 @@ describe("WinterRoute page", () => {
         const borgarnes = payloadWithHours(makeBorgarnesPayload(), [h2, h3, h4], [55, 66, 77]);
         const fetchMock = routeAwareFetch({ vik, borgarnes });
         vi.stubGlobal("fetch", fetchMock);
-        renderPage();
+        await renderPage();
 
         const routeSelect = await screen.findByLabelText(translations.is.winterRouteRouteSelectLabel);
         const hourSelect = await screen.findByLabelText(translations.is.winterRouteHourLabel);
@@ -1242,6 +1268,7 @@ describe("WinterRoute page", () => {
             </React.Profiler>
           </MemoryRouter>
         );
+        await switchToLegacyMode();
 
         await waitFor(() => expect(screen.getByText("Kafli 100000000")).toBeInTheDocument());
         commits.length = 0;
@@ -1278,6 +1305,7 @@ describe("WinterRoute page", () => {
             </React.Profiler>
           </MemoryRouter>
         );
+        await switchToLegacyMode();
 
         await waitFor(() => expect(screen.getByText(translations.is.winterRouteRoadFeedUnavailable)).toBeInTheDocument());
         commits.length = 0;
@@ -1304,6 +1332,7 @@ describe("WinterRoute page", () => {
             </React.Profiler>
           </MemoryRouter>
         );
+        await switchToLegacyMode();
 
         await waitFor(() => expect(screen.getByText("Kafli 100000000")).toBeInTheDocument());
         commits.length = 0;
@@ -1363,6 +1392,7 @@ describe("WinterRoute page", () => {
             </React.Profiler>
           </MemoryRouter>
         );
+        await switchToLegacyMode();
 
         await waitFor(() => expect(screen.getAllByText(`${formatDecimal(-7, "is", 1)} °C`)).toHaveLength(6));
         commits.length = 0;
@@ -1381,5 +1411,446 @@ describe("WinterRoute page", () => {
         expect(badCommit).toBeUndefined();
       });
     });
+  });
+
+  // Ticket #502 — "Velja staði" Frá/Til search/select + route-base result
+  // flow (approved-prompt-v1.md P1-P9). This is the NEW default mode on
+  // /winter-route; the legacy flow's own tests above are unaffected (one
+  // mechanical switchToLegacyMode() adaptation only, per P1c).
+  describe("Ticket #502 — Velja staði Frá/Til geometry flow", () => {
+    function geometryUrlToKey(url) {
+      const q = new URL(String(url), "http://localhost").searchParams;
+      return `${q.get("from")}|${q.get("to")}|${q.get("option") ?? ""}`;
+    }
+
+    // `responses` maps "from|to|option" (option "" when none) to either a
+    // real-shaped 200 payload object, or an explicit { httpStatus, body }
+    // for non-200 cases. `httpStatus` (not `status`) is deliberate: a real
+    // 200 payload's own field is itself called `status` (geometry_only/
+    // same_place/unsupported) -- using the same key here would collide.
+    function geometryAwareFetch(responses) {
+      return vi.fn().mockImplementation((url) => {
+        const key = geometryUrlToKey(url);
+        const entry = responses[key];
+        if (!entry) return Promise.reject(new Error(`no fixture for ${key}`));
+        if (entry.httpStatus) return Promise.resolve({ ok: entry.httpStatus < 400, status: entry.httpStatus, json: async () => entry.body });
+        return Promise.resolve({ ok: true, status: 200, json: async () => entry });
+      });
+    }
+
+    const RVK = "reykjavik-raudavatn";
+    const BUDARDALUR_HOLMAVIK_FIXTURE = {
+      schemaVersion: 1, compositionVersion: 1, regionVersion: "x", from: "budardalur", to: "holmavik",
+      crs: "EPSG:3057", tier: 0, drivingAccess: "UNVERIFIED", status: "geometry_only", geometryId: "g1",
+      lengthM: 78697.77, lengthNote: "Tier-0 planar geometry length (EPSG:3057) ...", estimatedConnectorLengthM: 0,
+      via: ["Gilsfjörður", "Þröskuldar"], idButurIds: [1, 2, 3],
+      accessApproach: { budardalur: { ownerCoordinateOffsetM: 160.1 }, holmavik: { ownerCoordinateOffsetM: 437.3 } },
+      coordinates: [{ x: 1, y: 2, z: 3 }], slices: [{ sourceId: 1, idbutur: 1 }],
+    };
+    const BUDARDALUR_TALKNAFJORDUR_FIXTURE = {
+      schemaVersion: 1, tier: 0, status: "geometry_only", from: "budardalur", to: "talknafjordur",
+      estimatedConnectorLengthM: 0.005, via: ["Miklidalur"],
+      accessApproach: { budardalur: { ownerCoordinateOffsetM: 160.1 }, talknafjordur: { ownerCoordinateOffsetM: 995.4, routeEndsShortOfOwnerCoordinate: true } },
+    };
+    const RVK_SELFOSS_OPTIONS_FIXTURE = {
+      schemaVersion: 1, tier: 2, status: "geometry_only", from: RVK, to: "selfoss",
+      selectedOption: "south", estimatedConnectorLengthM: 0,
+      options: [
+        { id: "south", label: "Short route via Hellisheiði", lengthM: 1, via: [], routeId: "a" },
+        { id: "north", label: "Long route via the Route 1 ring", lengthM: 2, via: ["Borgarnes", "Akureyri", "Egilsstaðir", "Vík"], routeId: "b" },
+      ],
+    };
+    const RVK_SELFOSS_NORTH_FIXTURE = { ...RVK_SELFOSS_OPTIONS_FIXTURE, selectedOption: "north" };
+    const TALKNAFJORDUR_SAME_PLACE_FIXTURE = {
+      schemaVersion: 1, tier: 0, status: "same_place", from: "talknafjordur", to: "talknafjordur",
+      estimatedConnectorLengthM: 0, via: [],
+      accessApproach: { talknafjordur: { ownerCoordinateOffsetM: 995.4, routeEndsShortOfOwnerCoordinate: true } },
+    };
+    const UNSUPPORTED_FIXTURE = { schemaVersion: 1, tier: 2, status: "unsupported", from: RVK, to: "budardalur", reason: "endpoint_mapping_unavailable" };
+
+    it("P1(a): defaults to 'Velja staði' and fires no request at all on mount (no fetch to either endpoint)", async () => {
+      const fetchMock = vi.fn();
+      vi.stubGlobal("fetch", fetchMock);
+      render(<MemoryRouter initialEntries={["/winter-route"]}><WinterRoute /></MemoryRouter>);
+
+      await screen.findByLabelText(translations.is.winterRouteFromLabel);
+      expect(fetchMock).not.toHaveBeenCalled();
+    });
+
+    it("P1(b): /api/winter-route is never fetched while in geometry mode, but is fetched exactly once after switching to 'Fastar veðurleiðir'", async () => {
+      const fetchMock = vi.fn().mockResolvedValue({ ok: true, json: async () => makePayload() });
+      vi.stubGlobal("fetch", fetchMock);
+      render(<MemoryRouter initialEntries={["/winter-route"]}><WinterRoute /></MemoryRouter>);
+
+      await screen.findByLabelText(translations.is.winterRouteFromLabel);
+      expect(fetchMock).not.toHaveBeenCalled();
+
+      await switchToLegacyMode();
+      await waitFor(() => expect(fetchMock).toHaveBeenCalledTimes(1));
+      expect(fetchMock.mock.calls[0][0]).toBe("/api/winter-route");
+    });
+
+    it("P2(b)/(c): from/to selects share the same 11-place list grouped by network, and the access-point disclaimer is shown on a real result", async () => {
+      vi.stubGlobal("fetch", geometryAwareFetch({ "budardalur|holmavik|": BUDARDALUR_HOLMAVIK_FIXTURE }));
+      render(<MemoryRouter initialEntries={["/winter-route"]}><WinterRoute /></MemoryRouter>);
+
+      const fromSelect = await screen.findByLabelText(translations.is.winterRouteFromLabel);
+      const toSelect = screen.getByLabelText(translations.is.winterRouteToLabel);
+      for (const select of [fromSelect, toSelect]) {
+        for (const place of WINTER_ROUTE_OPTIONS_PLACES()) {
+          expect(within(select).getByText(place)).toBeInTheDocument();
+        }
+      }
+
+      const { fireEvent } = await import("@testing-library/react");
+      fireEvent.change(fromSelect, { target: { value: "budardalur" } });
+      fireEvent.change(toSelect, { target: { value: "holmavik" } });
+      fireEvent.click(screen.getByRole("button", { name: translations.is.winterRouteShowRouteButton }));
+
+      await waitFor(() => expect(screen.getByText(translations.is.winterRouteAccessPointDisclaimer)).toBeInTheDocument());
+    });
+
+    function WINTER_ROUTE_OPTIONS_PLACES() {
+      return ["Reykjavík (Rauðavatn)", "Selfoss", "Hella", "Egilsstaðir", "Seyðisfjörður", "Búðardalur", "Flókalundur", "Ísafjörður", "Hólmavík", "Patreksfjörður", "Tálknafjörður"];
+    }
+
+    it("P3(a): searching for a place by its plain-ASCII (accent-stripped) name filters the select to that place, in both fields", async () => {
+      vi.stubGlobal("fetch", vi.fn());
+      render(<MemoryRouter initialEntries={["/winter-route"]}><WinterRoute /></MemoryRouter>);
+
+      const fromSearch = await screen.findByLabelText(translations.is.winterRouteFromSearchLabel);
+      const fromSelect = screen.getByLabelText(translations.is.winterRouteFromLabel);
+      const { fireEvent } = await import("@testing-library/react");
+      fireEvent.change(fromSearch, { target: { value: "isafjordur" } });
+
+      expect(within(fromSelect).getByText("Ísafjörður")).toBeInTheDocument();
+      expect(within(fromSelect).queryByText("Selfoss")).toBeNull();
+    });
+
+    it("P3(b): a search that excludes the currently selected place never removes it from the select, and shows the no-results text", async () => {
+      vi.stubGlobal("fetch", vi.fn());
+      render(<MemoryRouter initialEntries={["/winter-route"]}><WinterRoute /></MemoryRouter>);
+
+      const fromSearch = await screen.findByLabelText(translations.is.winterRouteFromSearchLabel);
+      const fromSelect = screen.getByLabelText(translations.is.winterRouteFromLabel);
+      expect(fromSelect.value).toBe(RVK);
+
+      const { fireEvent } = await import("@testing-library/react");
+      fireEvent.change(fromSearch, { target: { value: "akureyri" } }); // matches no place in the 11-list
+
+      // The selected value (Reykjavík/Rauðavatn) is still present/selected.
+      expect(fromSelect.value).toBe(RVK);
+      expect(within(fromSelect).getByText("Reykjavík (Rauðavatn)")).toBeInTheDocument();
+      await waitFor(() => expect(screen.getByText(translations.is.winterRouteNoSearchResults)).toBeInTheDocument());
+    });
+
+    it("P3(d): the swap button exchanges From/To without submitting a request", async () => {
+      const fetchMock = vi.fn();
+      vi.stubGlobal("fetch", fetchMock);
+      render(<MemoryRouter initialEntries={["/winter-route"]}><WinterRoute /></MemoryRouter>);
+
+      const fromSelect = await screen.findByLabelText(translations.is.winterRouteFromLabel);
+      const toSelect = screen.getByLabelText(translations.is.winterRouteToLabel);
+      expect(fromSelect.value).toBe(RVK);
+      expect(toSelect.value).toBe("selfoss");
+
+      const { fireEvent } = await import("@testing-library/react");
+      fireEvent.click(screen.getByRole("button", { name: translations.is.winterRouteSwapLabel }));
+
+      expect(fromSelect.value).toBe("selfoss");
+      expect(toSelect.value).toBe(RVK);
+      expect(fetchMock).not.toHaveBeenCalled();
+    });
+
+    it("P3(c): From/To labels are properly associated (htmlFor), reachable via getByLabelText", async () => {
+      vi.stubGlobal("fetch", vi.fn());
+      render(<MemoryRouter initialEntries={["/winter-route"]}><WinterRoute /></MemoryRouter>);
+
+      expect(await screen.findByLabelText(translations.is.winterRouteFromLabel)).toBeInTheDocument();
+      expect(screen.getByLabelText(translations.is.winterRouteToLabel)).toBeInTheDocument();
+      expect(screen.getByLabelText(translations.is.winterRouteFromSearchLabel)).toBeInTheDocument();
+      expect(screen.getByLabelText(translations.is.winterRouteToSearchLabel)).toBeInTheDocument();
+    });
+
+    it("P4(a)/(b): submitting fires /api/winter-route-geometry with from/to via URLSearchParams, and changing the draft afterwards hides the old result behind the 'selection changed' notice", async () => {
+      vi.stubGlobal("fetch", geometryAwareFetch({ "budardalur|holmavik|": BUDARDALUR_HOLMAVIK_FIXTURE }));
+      render(<MemoryRouter initialEntries={["/winter-route"]}><WinterRoute /></MemoryRouter>);
+
+      const fromSelect = await screen.findByLabelText(translations.is.winterRouteFromLabel);
+      const toSelect = screen.getByLabelText(translations.is.winterRouteToLabel);
+      const { fireEvent } = await import("@testing-library/react");
+      fireEvent.change(fromSelect, { target: { value: "budardalur" } });
+      fireEvent.change(toSelect, { target: { value: "holmavik" } });
+      fireEvent.click(screen.getByRole("button", { name: translations.is.winterRouteShowRouteButton }));
+
+      await waitFor(() => expect(screen.getByText(translations.is.winterRouteBaseDisclaimer)).toBeInTheDocument());
+      expect(fetch.mock.calls[0][0]).toMatch(/^\/api\/winter-route-geometry\?from=budardalur&to=holmavik$/);
+
+      // Now change the draft without resubmitting -- old result must hide.
+      fireEvent.change(toSelect, { target: { value: "isafjordur" } });
+      await waitFor(() => expect(screen.getByText(translations.is.winterRouteSelectionChangedNotice)).toBeInTheDocument());
+    });
+
+    it("P4(d): a 200 unsupported response shows the generic 'no route yet' text, never the raw reason", async () => {
+      vi.stubGlobal("fetch", geometryAwareFetch({ [`${RVK}|budardalur|`]: UNSUPPORTED_FIXTURE }));
+      render(<MemoryRouter initialEntries={["/winter-route"]}><WinterRoute /></MemoryRouter>);
+
+      const toSelect = await screen.findByLabelText(translations.is.winterRouteToLabel);
+      const { fireEvent } = await import("@testing-library/react");
+      fireEvent.change(toSelect, { target: { value: "budardalur" } });
+      fireEvent.click(screen.getByRole("button", { name: translations.is.winterRouteShowRouteButton }));
+
+      await waitFor(() => expect(screen.getByText(translations.is.winterRouteNoRouteYet)).toBeInTheDocument());
+      expect(screen.queryByText(/endpoint_mapping_unavailable/)).toBeNull();
+    });
+
+    it("P4(d): a 400 unknown_place_id for a legal UI pair (flokalundur<->ring) is the SAME 'no route yet' text, never a technical error", async () => {
+      vi.stubGlobal("fetch", geometryAwareFetch({ "flokalundur|selfoss|": { httpStatus: 400, body: { error: "unknown_place_id", field: "from" } } }));
+      render(<MemoryRouter initialEntries={["/winter-route"]}><WinterRoute /></MemoryRouter>);
+
+      const fromSelect = await screen.findByLabelText(translations.is.winterRouteFromLabel);
+      const { fireEvent } = await import("@testing-library/react");
+      fireEvent.change(fromSelect, { target: { value: "flokalundur" } });
+      fireEvent.click(screen.getByRole("button", { name: translations.is.winterRouteShowRouteButton }));
+
+      await waitFor(() => expect(screen.getByText(translations.is.winterRouteNoRouteYet)).toBeInTheDocument());
+      expect(screen.queryByText(translations.is.winterRouteGenericError)).toBeNull();
+    });
+
+    it("P4(d): a network failure shows the generic error with a retry button, and retry re-sends the same request", async () => {
+      let callCount = 0;
+      vi.stubGlobal(
+        "fetch",
+        vi.fn().mockImplementation(() => {
+          callCount += 1;
+          if (callCount === 1) return Promise.reject(new Error("network down"));
+          return Promise.resolve({ ok: true, status: 200, json: async () => BUDARDALUR_HOLMAVIK_FIXTURE });
+        })
+      );
+      render(<MemoryRouter initialEntries={["/winter-route"]}><WinterRoute /></MemoryRouter>);
+
+      const fromSelect = await screen.findByLabelText(translations.is.winterRouteFromLabel);
+      const toSelect = screen.getByLabelText(translations.is.winterRouteToLabel);
+      const { fireEvent } = await import("@testing-library/react");
+      fireEvent.change(fromSelect, { target: { value: "budardalur" } });
+      fireEvent.change(toSelect, { target: { value: "holmavik" } });
+      fireEvent.click(screen.getByRole("button", { name: translations.is.winterRouteShowRouteButton }));
+
+      await waitFor(() => expect(screen.getByText(translations.is.winterRouteGenericError)).toBeInTheDocument());
+      fireEvent.click(screen.getByRole("button", { name: translations.is.winterRouteRetryButton }));
+
+      await waitFor(() => expect(screen.getByText(translations.is.winterRouteBaseDisclaimer)).toBeInTheDocument());
+      expect(callCount).toBe(2);
+    });
+
+    it("P4(e): an earlier, slower response for an abandoned pair never overwrites the current pair's result (reverse-order resolution)", async () => {
+      const fetchMock = vi.fn().mockImplementation((url) => {
+        const key = geometryUrlToKey(url);
+        if (key === "budardalur|holmavik|") {
+          return new Promise((resolve) => setTimeout(() => resolve({ ok: true, status: 200, json: async () => BUDARDALUR_HOLMAVIK_FIXTURE }), 50));
+        }
+        if (key === "budardalur|talknafjordur|") {
+          return Promise.resolve({ ok: true, status: 200, json: async () => BUDARDALUR_TALKNAFJORDUR_FIXTURE });
+        }
+        return Promise.reject(new Error(`no fixture for ${key}`));
+      });
+      vi.stubGlobal("fetch", fetchMock);
+      render(<MemoryRouter initialEntries={["/winter-route"]}><WinterRoute /></MemoryRouter>);
+
+      const fromSelect = await screen.findByLabelText(translations.is.winterRouteFromLabel);
+      const toSelect = screen.getByLabelText(translations.is.winterRouteToLabel);
+      const { fireEvent } = await import("@testing-library/react");
+      fireEvent.change(fromSelect, { target: { value: "budardalur" } });
+      fireEvent.change(toSelect, { target: { value: "holmavik" } });
+      fireEvent.click(screen.getByRole("button", { name: translations.is.winterRouteShowRouteButton })); // slow (50ms)
+
+      fireEvent.change(toSelect, { target: { value: "talknafjordur" } });
+      fireEvent.click(screen.getByRole("button", { name: translations.is.winterRouteShowRouteButton })); // fast, resolves first
+
+      await waitFor(() => expect(screen.getByText(translations.is.winterRouteApproachShortNote)).toBeInTheDocument());
+      // Wait past the slow, now-abandoned Hólmavík response's own delay.
+      await new Promise((resolve) => setTimeout(resolve, 80));
+      expect(screen.getByText(translations.is.winterRouteApproachShortNote)).toBeInTheDocument();
+      expect(screen.queryByText(translations.is.winterRouteViaLabel.replace("{via}", "Gilsfjörður, Þröskuldar"))).toBeNull();
+    });
+
+    it("P5(d)/(e)/(g): shows the estimated-connector and short-approach notes when applicable, and never renders raw lengthNote/options[].label/geometryId/coordinates/slices", async () => {
+      vi.stubGlobal("fetch", geometryAwareFetch({ "budardalur|talknafjordur|": BUDARDALUR_TALKNAFJORDUR_FIXTURE }));
+      render(<MemoryRouter initialEntries={["/winter-route"]}><WinterRoute /></MemoryRouter>);
+
+      const fromSelect = await screen.findByLabelText(translations.is.winterRouteFromLabel);
+      const toSelect = screen.getByLabelText(translations.is.winterRouteToLabel);
+      const { fireEvent } = await import("@testing-library/react");
+      fireEvent.change(fromSelect, { target: { value: "budardalur" } });
+      fireEvent.change(toSelect, { target: { value: "talknafjordur" } });
+      fireEvent.click(screen.getByRole("button", { name: translations.is.winterRouteShowRouteButton }));
+
+      await waitFor(() => expect(screen.getByText(translations.is.winterRouteEstimatedConnectorNote)).toBeInTheDocument());
+      expect(screen.getByText(translations.is.winterRouteApproachShortNote)).toBeInTheDocument();
+      expect(screen.queryByText(/Tier-0 planar geometry length/)).toBeNull();
+      expect(screen.queryByText("g1")).toBeNull();
+      expect(screen.queryByText(/EPSG:3057/)).toBeNull();
+    });
+
+    it("P5(h): a same_place result shows the dedicated message, with the short-approach note when the flag is set", async () => {
+      vi.stubGlobal("fetch", geometryAwareFetch({ "talknafjordur|talknafjordur|": TALKNAFJORDUR_SAME_PLACE_FIXTURE }));
+      render(<MemoryRouter initialEntries={["/winter-route"]}><WinterRoute /></MemoryRouter>);
+
+      const fromSelect = await screen.findByLabelText(translations.is.winterRouteFromLabel);
+      const toSelect = screen.getByLabelText(translations.is.winterRouteToLabel);
+      const { fireEvent } = await import("@testing-library/react");
+      fireEvent.change(fromSelect, { target: { value: "talknafjordur" } });
+      fireEvent.change(toSelect, { target: { value: "talknafjordur" } });
+      fireEvent.click(screen.getByRole("button", { name: translations.is.winterRouteShowRouteButton }));
+
+      await waitFor(() => expect(screen.getByText(translations.is.winterRouteSamePlaceMessage)).toBeInTheDocument());
+      expect(screen.getByText(translations.is.winterRouteApproachShortNote)).toBeInTheDocument();
+    });
+
+    it("P6(a)/(b)/(c): options only render for a pair with >1 real options, labeled via i18n (never the raw API label), and selecting one issues a new request", async () => {
+      const fetchMock = geometryAwareFetch({
+        [`${RVK}|selfoss|`]: RVK_SELFOSS_OPTIONS_FIXTURE,
+        [`${RVK}|selfoss|north`]: RVK_SELFOSS_NORTH_FIXTURE,
+      });
+      vi.stubGlobal("fetch", fetchMock);
+      render(<MemoryRouter initialEntries={["/winter-route"]}><WinterRoute /></MemoryRouter>);
+
+      await screen.findByLabelText(translations.is.winterRouteFromLabel);
+      const { fireEvent } = await import("@testing-library/react");
+      fireEvent.click(screen.getByRole("button", { name: translations.is.winterRouteShowRouteButton }));
+
+      const southButton = await screen.findByRole("radio", { name: translations.is.winterRouteOptionSouth });
+      expect(screen.getByRole("radio", { name: translations.is.winterRouteOptionNorth })).toBeInTheDocument();
+      expect(southButton).toHaveAttribute("aria-checked", "true");
+      // Never the raw English API label.
+      expect(screen.queryByText("Short route via Hellisheiði")).toBeNull();
+
+      fireEvent.click(screen.getByRole("radio", { name: translations.is.winterRouteOptionNorth }));
+      await waitFor(() => expect(screen.getByText(translations.is.winterRouteViaLabel.replace("{via}", "Borgarnes, Akureyri, Egilsstaðir, Vík"))).toBeInTheDocument());
+      expect(fetchMock.mock.calls.at(-1)[0]).toMatch(/option=north/);
+    });
+
+    it("P6(a): a pair without real options (e.g. Hella<->Selfoss shape) never renders an option control", async () => {
+      vi.stubGlobal("fetch", geometryAwareFetch({ "budardalur|holmavik|": BUDARDALUR_HOLMAVIK_FIXTURE }));
+      render(<MemoryRouter initialEntries={["/winter-route"]}><WinterRoute /></MemoryRouter>);
+
+      const fromSelect = await screen.findByLabelText(translations.is.winterRouteFromLabel);
+      const toSelect = screen.getByLabelText(translations.is.winterRouteToLabel);
+      const { fireEvent } = await import("@testing-library/react");
+      fireEvent.change(fromSelect, { target: { value: "budardalur" } });
+      fireEvent.change(toSelect, { target: { value: "holmavik" } });
+      fireEvent.click(screen.getByRole("button", { name: translations.is.winterRouteShowRouteButton }));
+
+      await waitFor(() => expect(screen.getByText(translations.is.winterRouteBaseDisclaimer)).toBeInTheDocument());
+      expect(screen.queryByRole("radiogroup")).toBeNull();
+    });
+
+    it("renders in English with the same keys/behavior", async () => {
+      localStorage.setItem("lang", JSON.stringify("en"));
+      vi.stubGlobal("fetch", geometryAwareFetch({ "budardalur|holmavik|": BUDARDALUR_HOLMAVIK_FIXTURE }));
+      render(<MemoryRouter initialEntries={["/winter-route"]}><WinterRoute /></MemoryRouter>);
+
+      const fromSelect = await screen.findByLabelText(translations.en.winterRouteFromLabel);
+      const toSelect = screen.getByLabelText(translations.en.winterRouteToLabel);
+      const { fireEvent } = await import("@testing-library/react");
+      fireEvent.change(fromSelect, { target: { value: "budardalur" } });
+      fireEvent.change(toSelect, { target: { value: "holmavik" } });
+      fireEvent.click(screen.getByRole("button", { name: translations.en.winterRouteShowRouteButton }));
+
+      await waitFor(() => expect(screen.getByText(translations.en.winterRouteAccessPointDisclaimer)).toBeInTheDocument());
+    });
+
+    it("P1(e): the h1/<title> read the applied pair once a result is shown, never a mismatched legacy name", async () => {
+      vi.stubGlobal("fetch", geometryAwareFetch({ "budardalur|holmavik|": BUDARDALUR_HOLMAVIK_FIXTURE }));
+      render(<MemoryRouter initialEntries={["/winter-route"]}><WinterRoute /></MemoryRouter>);
+
+      const fromSelect = await screen.findByLabelText(translations.is.winterRouteFromLabel);
+      const toSelect = screen.getByLabelText(translations.is.winterRouteToLabel);
+      expect(screen.getByRole("heading", { level: 1 }).textContent).toBe(translations.is.winterRouteModeChooseLabel);
+
+      const { fireEvent } = await import("@testing-library/react");
+      fireEvent.change(fromSelect, { target: { value: "budardalur" } });
+      fireEvent.change(toSelect, { target: { value: "holmavik" } });
+      fireEvent.click(screen.getByRole("button", { name: translations.is.winterRouteShowRouteButton }));
+
+      await waitFor(() => expect(screen.getByRole("heading", { level: 1 }).textContent).toBe("Búðardalur → Hólmavík"));
+    });
+
+    it("unmounting while a request is in flight never triggers a post-unmount state update (no React act warning, request is aborted)", async () => {
+      vi.stubGlobal("fetch", vi.fn().mockImplementation(() => new Promise(() => {}))); // never resolves
+      const { unmount } = render(<MemoryRouter initialEntries={["/winter-route"]}><WinterRoute /></MemoryRouter>);
+
+      const fromSelect = await screen.findByLabelText(translations.is.winterRouteFromLabel);
+      const toSelect = screen.getByLabelText(translations.is.winterRouteToLabel);
+      const { fireEvent } = await import("@testing-library/react");
+      fireEvent.change(fromSelect, { target: { value: "budardalur" } });
+      fireEvent.change(toSelect, { target: { value: "holmavik" } });
+      fireEvent.click(screen.getByRole("button", { name: translations.is.winterRouteShowRouteButton }));
+
+      expect(() => unmount()).not.toThrow();
+    });
+    it("P3/P6: arrow-key option selection restores focus after loading, and swap resets the option", async () => {
+      let finishNorth;
+      const fetchMock = vi.fn().mockImplementation((url) => geometryUrlToKey(url).endsWith("|north")
+        ? new Promise((resolve) => { finishNorth = resolve; })
+        : Promise.resolve({ status: 200, json: async () => RVK_SELFOSS_OPTIONS_FIXTURE }));
+      vi.stubGlobal("fetch", fetchMock);
+      render(<MemoryRouter initialEntries={["/winter-route"]}><WinterRoute /></MemoryRouter>);
+      const { fireEvent } = await import("@testing-library/react");
+      fireEvent.click(screen.getByRole("button", { name: translations.is.winterRouteShowRouteButton }));
+      const south = await screen.findByRole("radio", { name: translations.is.winterRouteOptionSouth });
+      south.focus();
+      fireEvent.keyDown(south, { key: "ArrowRight" });
+      expect(fetchMock.mock.calls.at(-1)[0]).toMatch(/option=north/);
+      await act(async () => finishNorth({ status: 200, json: async () => RVK_SELFOSS_NORTH_FIXTURE }));
+      expect(screen.getByRole("radio", { name: translations.is.winterRouteOptionNorth })).toHaveFocus();
+      fireEvent.click(screen.getByRole("button", { name: translations.is.winterRouteSwapLabel }));
+      expect(screen.queryByRole("radio")).toBeNull();
+      fireEvent.click(screen.getByRole("button", { name: translations.is.winterRouteShowRouteButton }));
+      expect(fetchMock.mock.calls.at(-1)[0]).not.toMatch(/option=/);
+    });
+
+    it("P3: a retry restores a stable focus target without stealing focus from a search field", async () => {
+      let finish;
+      const fetchMock = vi.fn().mockRejectedValueOnce(new Error("offline")).mockImplementation(() => new Promise((resolve) => { finish = resolve; }));
+      vi.stubGlobal("fetch", fetchMock);
+      render(<MemoryRouter initialEntries={["/winter-route"]}><WinterRoute /></MemoryRouter>);
+      const { fireEvent } = await import("@testing-library/react");
+      const submit = screen.getByRole("button", { name: translations.is.winterRouteShowRouteButton });
+      fireEvent.click(submit);
+      const retry = await screen.findByRole("button", { name: translations.is.winterRouteRetryButton });
+      retry.focus();
+      fireEvent.click(retry);
+      await act(async () => finish({ status: 200, json: async () => RVK_SELFOSS_OPTIONS_FIXTURE }));
+      expect(submit).toHaveFocus();
+      const north = screen.getByRole("radio", { name: translations.is.winterRouteOptionNorth });
+      north.focus();
+      fireEvent.click(north);
+      const search = screen.getByLabelText(translations.is.winterRouteFromSearchLabel);
+      search.focus();
+      await act(async () => finish({ status: 200, json: async () => RVK_SELFOSS_NORTH_FIXTURE }));
+      expect(search).toHaveFocus();
+    });
+
+    it("P4: duplicate submit is disabled only during that request and geometry has no stale draft frame", async () => {
+      let finish;
+      vi.stubGlobal("fetch", vi.fn().mockImplementation(() => new Promise((resolve) => { finish = resolve; })));
+      const commits = [];
+      const { container } = render(<React.Profiler id="geometry" onRender={() => {
+        const result = document.querySelector('[data-route-option="south"]');
+        const from = document.getElementById("winter-route-from-select");
+        commits.push({ from: from?.value, options: Boolean(result) });
+      }}><MemoryRouter initialEntries={["/winter-route"]}><WinterRoute /></MemoryRouter></React.Profiler>);
+      const { fireEvent } = await import("@testing-library/react");
+      const submit = screen.getByRole("button", { name: translations.is.winterRouteShowRouteButton });
+      fireEvent.submit(submit.closest("form"));
+      expect(submit).toBeDisabled();
+      await act(async () => finish({ status: 200, json: async () => RVK_SELFOSS_OPTIONS_FIXTURE }));
+      expect(submit).not.toBeDisabled();
+      fireEvent.change(screen.getByLabelText(translations.is.winterRouteFromLabel), { target: { value: "budardalur" } });
+      expect(container.querySelector('[data-route-option="south"]')).toBeNull();
+      expect(commits.some((c) => c.from === "budardalur" && c.options)).toBe(false);
+    });
+
   });
 });

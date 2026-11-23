@@ -38,6 +38,32 @@ import {
 } from "../lib/winterRoutePresentation";
 import { computeWeatherExtremaSummary, computeActiveNoticeSegmentCount } from "../lib/winterRouteSummary";
 import { WINTER_ROUTE_OPTIONS, DEFAULT_WINTER_ROUTE_ID, expectedPointCountForRoute } from "../lib/winterRouteRoutes";
+import {
+  WINTER_ROUTE_PLACES,
+  WINTER_ROUTE_GROUP_RING,
+  WINTER_ROUTE_GROUP_WESTFJORDS,
+  winterRoutePlaceName,
+  winterRoutePlaceMatchesSearch,
+} from "../lib/winterRoutePlaces";
+import {
+  WINTER_ROUTE_OUTCOME,
+  classifyWinterRouteGeometryResponse,
+  winterRouteHasSelectableOptions,
+  winterRouteGeometryOptions,
+  winterRouteDisplayVia,
+  winterRouteShowsEstimatedConnectorNote,
+  winterRouteAccessPointShortFlag,
+  winterRouteOptionLabelKey,
+} from "../lib/winterRouteGeometryResponse";
+
+// Ticket #502 — "Velja staði" default pre-filled pair (the existing ring-
+// pilot MVP short route), never auto-requested on mount (P1a): only
+// "Sýna leið" fires the first /api/winter-route-geometry request.
+const DEFAULT_GEOMETRY_FROM = "reykjavik-raudavatn";
+const DEFAULT_GEOMETRY_TO = "selfoss";
+
+const WINTER_ROUTE_MODE_CHOOSE = "choose";
+const WINTER_ROUTE_MODE_LEGACY = "legacy";
 
 const VEGAGERDIN_LINKS = {
   is: "https://www.vegagerdin.is/upplysingar-og-utgafa/gagnaveita-vegagerdarinnar/",
@@ -304,9 +330,342 @@ function RouteSummary({ data, effectiveHour, t, lang }) {
   );
 }
 
+// Ticket #502, P3 — one labelled search input + one labelled native
+// <select> per endpoint (no custom combobox framework/dependency). The
+// currently selected id is ALWAYS included in the rendered option list,
+// even when the search text would otherwise filter it out (P3b: a valid
+// selection is never silently lost). Grouped via <optgroup> by network
+// membership (P2b) so the user can see ring-pilot and Westfjords ids are
+// never mixed. The search input never changes `value` itself — only an
+// actual <select> change does — so Enter/typing can never send a
+// half-typed non-place string.
+function PlaceField({ idPrefix, label, searchLabel, noResultsText, value, onChange, search, onSearchChange, lang, t }) {
+  const matches = WINTER_ROUTE_PLACES.filter((p) => winterRoutePlaceMatchesSearch(p, lang, search));
+  const visiblePlaces = matches.some((p) => p.id === value)
+    ? matches
+    : [...WINTER_ROUTE_PLACES.filter((p) => p.id === value), ...matches];
+  const hasNoRealMatches = matches.length === 0;
+  const ringPlaces = visiblePlaces.filter((p) => p.group === WINTER_ROUTE_GROUP_RING);
+  const westfjordsPlaces = visiblePlaces.filter((p) => p.group === WINTER_ROUTE_GROUP_WESTFJORDS);
+
+  return (
+    <div>
+      <label htmlFor={`${idPrefix}-select`} className="text-sm font-medium text-slate-700 dark:text-slate-200">
+        {label}
+      </label>
+      <div className="mt-1 flex flex-col gap-1 sm:flex-row sm:items-center">
+        <div>
+          <label htmlFor={`${idPrefix}-search`} className="sr-only">
+            {searchLabel}
+          </label>
+          <input
+            id={`${idPrefix}-search`}
+            type="text"
+            placeholder={searchLabel}
+            value={search}
+            onChange={(e) => onSearchChange(e.target.value)}
+            className="block w-full max-w-xs rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 dark:border-slate-700 dark:bg-slate-900"
+          />
+        </div>
+        <select
+          id={`${idPrefix}-select`}
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
+          className="block w-full max-w-xs rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 dark:border-slate-700 dark:bg-slate-900"
+        >
+          {ringPlaces.length > 0 ? (
+            <optgroup label={t("winterRouteGroupRingLabel")}>
+              {ringPlaces.map((p) => (
+                <option key={p.id} value={p.id}>
+                  {lang === "en" ? p.nameEn : p.nameIs}
+                </option>
+              ))}
+            </optgroup>
+          ) : null}
+          {westfjordsPlaces.length > 0 ? (
+            <optgroup label={t("winterRouteGroupWestfjordsLabel")}>
+              {westfjordsPlaces.map((p) => (
+                <option key={p.id} value={p.id}>
+                  {lang === "en" ? p.nameEn : p.nameIs}
+                </option>
+              ))}
+            </optgroup>
+          ) : null}
+        </select>
+      </div>
+      <p role="status" aria-live="polite" className="mt-1 text-xs text-slate-500 dark:text-slate-400">
+        {hasNoRealMatches ? noResultsText : ""}
+      </p>
+    </div>
+  );
+}
+
+// Ticket #502, P5/P6 — the result body for a `geometry_only`/`same_place`
+// outcome. Deliberately never renders `lengthNote`/`options[].label`/
+// `coordinates`/`slices`/`idButurIds`/`geometryId`/`regionVersion`/
+// `datasetVersion` (P5g) — only the small set of fields this function
+// itself reads below ever reaches the DOM.
+function GeometryResultView({ outcome, payload, applied, t, lang, onSelectOption }) {
+  const fromName = winterRoutePlaceName(applied.from, lang);
+  const toName = winterRoutePlaceName(applied.to, lang);
+
+  if (outcome === WINTER_ROUTE_OUTCOME.SAME_PLACE) {
+    const shortFlag = winterRouteAccessPointShortFlag(payload, applied.from);
+    return (
+      <div>
+        <p className="font-medium text-slate-800 dark:text-slate-100">{fromName}</p>
+        <p className="mt-1 text-sm text-slate-600 dark:text-slate-300">{t("winterRouteSamePlaceMessage")}</p>
+        {shortFlag ? <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">{t("winterRouteApproachShortNote")}</p> : null}
+        <p className="mt-2 text-xs text-slate-500 dark:text-slate-400">{t("winterRouteAccessPointDisclaimer")}</p>
+      </div>
+    );
+  }
+
+  // GEOMETRY_ONLY
+  const hasOptions = winterRouteHasSelectableOptions(payload);
+  const options = winterRouteGeometryOptions(payload);
+  const via = winterRouteDisplayVia(payload);
+  const showConnectorNote = winterRouteShowsEstimatedConnectorNote(payload);
+  const fromShort = winterRouteAccessPointShortFlag(payload, applied.from);
+  const toShort = winterRouteAccessPointShortFlag(payload, applied.to);
+
+  return (
+    <div>
+      <p className="font-medium text-slate-800 dark:text-slate-100">
+        {fromName} → {toName}
+      </p>
+
+      {hasOptions ? (
+        <div className="mt-2">
+          <span className="text-sm font-medium text-slate-700 dark:text-slate-200">{t("winterRouteOptionsLabel")}</span>
+          <div role="radiogroup" aria-label={t("winterRouteOptionsLabel")} className="mt-1 flex flex-wrap gap-2">
+            {options.map((opt) => (
+              <button
+                key={opt.id}
+                type="button"
+                role="radio"
+                data-route-option={opt.id}
+                tabIndex={payload.selectedOption === opt.id ? 0 : -1}
+                onKeyDown={(e) => {
+                  const moves = { ArrowRight: 1, ArrowDown: 1, ArrowLeft: -1, ArrowUp: -1 };
+                  if (!moves[e.key]) return;
+                  e.preventDefault();
+                  const next = options[(options.indexOf(opt) + moves[e.key] + options.length) % options.length];
+                  e.currentTarget.parentElement.querySelector(`[data-route-option="${next.id}"]`)?.focus();
+                  onSelectOption(next.id);
+                }}
+                aria-checked={payload.selectedOption === opt.id}
+                onClick={() => onSelectOption(opt.id)}
+                className={`rounded-lg border px-3 py-1.5 text-sm ${
+                  payload.selectedOption === opt.id
+                    ? "border-sky-500 bg-sky-50 text-sky-800 dark:border-sky-500 dark:bg-sky-950/40 dark:text-sky-200"
+                    : "border-slate-300 bg-white text-slate-700 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200"
+                }`}
+              >
+                {t(winterRouteOptionLabelKey(opt.id))}
+              </button>
+            ))}
+          </div>
+        </div>
+      ) : null}
+
+      {via.length > 0 ? (
+        <p className="mt-2 text-sm text-slate-600 dark:text-slate-300">{t("winterRouteViaLabel").replace("{via}", via.join(", "))}</p>
+      ) : null}
+
+      <p className="mt-2 text-sm text-slate-600 dark:text-slate-300">{t("winterRouteBaseDisclaimer")}</p>
+      {showConnectorNote ? <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">{t("winterRouteEstimatedConnectorNote")}</p> : null}
+      {fromShort || toShort ? <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">{t("winterRouteApproachShortNote")}</p> : null}
+      <p className="mt-2 text-xs text-slate-500 dark:text-slate-400">{t("winterRouteAccessPointDisclaimer")}</p>
+    </div>
+  );
+}
+
+// Ticket #502 — the new primary "Velja staði" Frá/Til search/select +
+// route-base result flow (approved-prompt-v1.md). Request lifecycle
+// (abort/generation-guard/draft-vs-applied) follows the same proven
+// pattern as the legacy routeId effect above, adapted for an explicit
+// submit-handler request instead of a mount/dependency-driven effect
+// (P4a: no mount-effect-fetch here at all — only "Sýna leið" fetches).
+function WinterRouteGeometrySection({ t, lang, onAppliedChange }) {
+  const [draftFrom, setDraftFrom] = useState(DEFAULT_GEOMETRY_FROM);
+  const [draftTo, setDraftTo] = useState(DEFAULT_GEOMETRY_TO);
+  const [searchFrom, setSearchFrom] = useState("");
+  const [searchTo, setSearchTo] = useState("");
+  const [applied, setApplied] = useState(null); // { from, to } | null -- null until first "Sýna leið"
+  const [requestState, setRequestState] = useState({ key: null, loading: false, result: null });
+
+  const sectionRef = useRef(null);
+  const submitRef = useRef(null);
+  const pendingFocusRef = useRef(null);
+  const requestIdRef = useRef(0);
+  const controllerRef = useRef(null);
+  useEffect(() => () => controllerRef.current?.abort(), []);
+  useEffect(() => {
+    onAppliedChange?.(applied);
+  }, [applied, onAppliedChange]);
+
+  function runRequest(from, to, option, focusTarget = null) {
+    pendingFocusRef.current = focusTarget ? { target: focusTarget, from, to } : null;
+    controllerRef.current?.abort();
+    const controller = new AbortController();
+    controllerRef.current = controller;
+    const thisRequestId = ++requestIdRef.current;
+    const key = `${from}|${to}|${option ?? ""}`;
+    setRequestState({ key, loading: true, result: null });
+
+    const params = new URLSearchParams({ from, to });
+    if (option) params.set("option", option);
+
+    fetch(`/api/winter-route-geometry?${params.toString()}`, { signal: controller.signal })
+      .then(async (res) => {
+        let payload = null;
+        try {
+          payload = await res.json();
+        } catch {
+          payload = null;
+        }
+        return { httpStatus: res.status, payload };
+      })
+      .catch((err) => {
+        if (err?.name === "AbortError") return undefined;
+        return { httpStatus: null, payload: null };
+      })
+      .then((resolved) => {
+        if (!resolved) return; // aborted -- superseded request, nothing to apply
+        if (requestIdRef.current !== thisRequestId) return; // superseded by a later request
+        const classified = classifyWinterRouteGeometryResponse({
+          httpStatus: resolved.httpStatus,
+          payload: resolved.payload,
+          applied: { from, to, option: option ?? null },
+        });
+        setRequestState({ key, loading: false, result: classified });
+      });
+  }
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    setApplied({ from: draftFrom, to: draftTo });
+    runRequest(draftFrom, draftTo, null);
+  }
+
+  function handleSwap() {
+    setDraftFrom(draftTo);
+    setDraftTo(draftFrom);
+  }
+
+  function handleSelectOption(optionId) {
+    if (!applied) return;
+    runRequest(applied.from, applied.to, optionId, optionId);
+  }
+
+  const draftMatchesApplied = Boolean(applied) && draftFrom === applied.from && draftTo === applied.to;
+  // The CURRENT applied key reflects whichever option (if any) the result
+  // currently on screen was fetched for -- read from the in-flight/last
+  // settled request's own key, never re-derived from `applied` alone, so
+  // an option switch's own loading/result is tracked correctly too.
+  const currentOption = requestState.key && applied ? requestState.key.slice(`${applied.from}|${applied.to}|`.length) || null : null;
+  const currentKey = applied ? `${applied.from}|${applied.to}|${currentOption ?? ""}` : null;
+  const isCurrentLoading = requestState.loading && requestState.key === currentKey;
+  const view = !requestState.loading && requestState.key === currentKey ? requestState.result : null;
+  const submitDisabled = requestState.loading && requestState.key === `${draftFrom}|${draftTo}|`;
+
+  useEffect(() => {
+    const intent = pendingFocusRef.current;
+    if (!intent || requestState.loading) return;
+    pendingFocusRef.current = null;
+    // Restore only the control removed by the user's own option/retry action.
+    // A user who moved elsewhere during the request keeps their focus.
+    if (draftFrom !== intent.from || draftTo !== intent.to || sectionRef.current?.closest("[hidden]") || document.activeElement !== document.body) return;
+    const option = sectionRef.current?.querySelector(`[data-route-option="${intent.target}"]`);
+    (option ?? sectionRef.current?.querySelector("[data-route-retry]") ?? submitRef.current)?.focus();
+  }, [requestState, draftFrom, draftTo]);
+
+  return (
+    <div ref={sectionRef} className="mt-6">
+      <form onSubmit={handleSubmit} className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+        <PlaceField
+          idPrefix="winter-route-from"
+          label={t("winterRouteFromLabel")}
+          searchLabel={t("winterRouteFromSearchLabel")}
+          noResultsText={t("winterRouteNoSearchResults")}
+          value={draftFrom}
+          onChange={setDraftFrom}
+          search={searchFrom}
+          onSearchChange={setSearchFrom}
+          lang={lang}
+          t={t}
+        />
+        <PlaceField
+          idPrefix="winter-route-to"
+          label={t("winterRouteToLabel")}
+          searchLabel={t("winterRouteToSearchLabel")}
+          noResultsText={t("winterRouteNoSearchResults")}
+          value={draftTo}
+          onChange={setDraftTo}
+          search={searchTo}
+          onSearchChange={setSearchTo}
+          lang={lang}
+          t={t}
+        />
+        <div className="flex items-center gap-3 sm:col-span-2">
+          <button
+            type="button"
+            onClick={handleSwap}
+            aria-label={t("winterRouteSwapLabel")}
+            className="rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-700 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200"
+          >
+            ⇄
+          </button>
+          <button
+            ref={submitRef}
+            type="submit"
+            disabled={submitDisabled}
+            className="rounded-lg bg-sky-600 px-4 py-2 text-sm font-medium text-white disabled:opacity-60"
+          >
+            {t("winterRouteShowRouteButton")}
+          </button>
+        </div>
+      </form>
+
+      <div role="status" aria-live="polite" className="mt-4 rounded-xl border border-slate-200/70 bg-white/70 px-4 py-3 dark:border-slate-800/70 dark:bg-slate-900/70">
+        {!applied ? (
+          <p className="text-sm text-slate-500 dark:text-slate-400">{t("winterRouteIdleHint")}</p>
+        ) : !draftMatchesApplied ? (
+          <p className="text-sm text-slate-600 dark:text-slate-300">{t("winterRouteSelectionChangedNotice")}</p>
+        ) : isCurrentLoading ? (
+          <p className="text-sm text-slate-500 dark:text-slate-400">{t("winterRouteGeometryLoading")}</p>
+        ) : view?.outcome === WINTER_ROUTE_OUTCOME.ERROR ? (
+          <div>
+            <p className="text-sm text-red-700 dark:text-red-300">{t("winterRouteGenericError")}</p>
+            <button
+              type="button"
+              data-route-retry
+              onClick={() => runRequest(applied.from, applied.to, currentOption, "retry")}
+              className="mt-2 rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-sm text-slate-700 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200"
+            >
+              {t("winterRouteRetryButton")}
+            </button>
+          </div>
+        ) : view?.outcome === WINTER_ROUTE_OUTCOME.NO_ROUTE ? (
+          <p className="text-sm text-slate-600 dark:text-slate-300">{t("winterRouteNoRouteYet")}</p>
+        ) : view?.outcome === WINTER_ROUTE_OUTCOME.SAME_PLACE || view?.outcome === WINTER_ROUTE_OUTCOME.GEOMETRY_ONLY ? (
+          <GeometryResultView outcome={view.outcome} payload={view.payload} applied={applied} t={t} lang={lang} onSelectOption={handleSelectOption} />
+        ) : null}
+      </div>
+    </div>
+  );
+}
+
 export default function WinterRoute() {
   const { t, lang, theme } = usePageRouteProps();
   useThemeClass(theme === "dark");
+
+  // Ticket #502, P1(a) — "Velja staði" (geometry mode) is the default,
+  // primary mode; the legacy fixed-route weather flow below is opt-in via
+  // "Fastar veðurleiðir". Switching modes never clears the other mode's
+  // own state (routeId/data stay put if the user switches back).
+  const [mode, setMode] = useState(WINTER_ROUTE_MODE_CHOOSE);
 
   const [routeId, setRouteId] = useState(DEFAULT_WINTER_ROUTE_ID);
   const [data, setData] = useState(null);
@@ -373,6 +732,15 @@ export default function WinterRoute() {
   const controllerRef = useRef(null);
   const lastRequestedRouteIdRef = useRef(null);
   useEffect(() => {
+    // Ticket #502, P1(b) — the legacy fixed-route fetch must never start
+    // while "Velja staði" (geometry mode) is active; it begins the first
+    // time the user actually switches to "Fastar veðurleiðir" and then
+    // keeps the existing "once per routeId" semantics from then on (this
+    // early return, not the ref assignment below, is what gates it —
+    // toggling back to legacy mode again never re-fetches the same
+    // routeId it already fetched once).
+    if (mode !== WINTER_ROUTE_MODE_LEGACY) return undefined;
+
     if (lastRequestedRouteIdRef.current === routeId) {
       // StrictMode's synthetic re-invocation for the SAME routeId a fetch
       // was already started for this render cycle — do nothing.
@@ -418,7 +786,7 @@ export default function WinterRoute() {
       });
 
     return undefined;
-  }, [routeId]);
+  }, [routeId, mode]);
 
   // Ticket #491, V2 — route-bound view of `data`/`loadError`, derived at
   // render time (not via a setData(null)/setLoadError(null) call inside
@@ -459,10 +827,21 @@ export default function WinterRoute() {
   // one render before that effect would otherwise fire.
   const effectiveHour = selectedHour && availableHours.includes(selectedHour) ? selectedHour : null;
 
+  // Ticket #502, P1(e) — in geometry mode, the h1/<title> follow the
+  // applied Frá/Til result (e.g. "Reykjavík (Rauðavatn) → Selfoss"), never
+  // the legacy routeName, and never a drawn-out draft (only the APPLIED
+  // pair, reported up by the section itself once "Sýna leið" is pressed).
+  // Before any pair has been applied, a neutral generic heading is shown.
+  const [geometryApplied, setGeometryApplied] = useState(null);
+  const geometryTitle = geometryApplied
+    ? `${winterRoutePlaceName(geometryApplied.from, lang)} → ${winterRoutePlaceName(geometryApplied.to, lang)}`
+    : t("winterRouteModeChooseLabel");
+  const pageTitle = mode === WINTER_ROUTE_MODE_LEGACY ? routeName : geometryTitle;
+
   return (
     <>
       <Helmet>
-        <title>{routeName} · {lang === "en" ? "Chase the Weather" : "Eltum Veðrið"}</title>
+        <title>{pageTitle} · {lang === "en" ? "Chase the Weather" : "Eltum Veðrið"}</title>
       </Helmet>
 
       <div className="min-h-screen bg-soft-grid text-slate-900 dark:bg-slate-950 dark:text-slate-100">
@@ -473,8 +852,53 @@ export default function WinterRoute() {
         </header>
 
         <main className="mx-auto max-w-4xl px-4 py-8 sm:px-6">
-          <h1 className="text-2xl font-black tracking-tight md:text-3xl">{routeName}</h1>
-          <p className="mt-1 text-sm text-slate-600 dark:text-slate-400">{t("winterRouteSubtitle")}</p>
+          <h1 className="text-2xl font-black tracking-tight md:text-3xl">{pageTitle}</h1>
+
+          {/* Ticket #502, P1(a)/P6 — mode toggle. "Velja staði" is the
+              primary/default mode; "Fastar veðurleiðir" is the existing
+              #486/#491 flow, now opt-in. Switching modes is a plain state
+              change, never a request by itself. */}
+          <div role="group" aria-label={t("winterRouteModeGroupLabel")} className="mt-3 inline-flex rounded-lg border border-slate-300 p-1 dark:border-slate-700">
+            <button
+              type="button"
+              aria-pressed={mode === WINTER_ROUTE_MODE_CHOOSE}
+              onClick={() => setMode(WINTER_ROUTE_MODE_CHOOSE)}
+              className={`rounded-md px-3 py-1.5 text-sm font-medium ${
+                mode === WINTER_ROUTE_MODE_CHOOSE
+                  ? "bg-sky-600 text-white"
+                  : "text-slate-600 dark:text-slate-300"
+              }`}
+            >
+              {t("winterRouteModeChooseLabel")}
+            </button>
+            <button
+              type="button"
+              aria-pressed={mode === WINTER_ROUTE_MODE_LEGACY}
+              onClick={() => setMode(WINTER_ROUTE_MODE_LEGACY)}
+              className={`rounded-md px-3 py-1.5 text-sm font-medium ${
+                mode === WINTER_ROUTE_MODE_LEGACY
+                  ? "bg-sky-600 text-white"
+                  : "text-slate-600 dark:text-slate-300"
+              }`}
+            >
+              {t("winterRouteModeLegacyLabel")}
+            </button>
+          </div>
+
+          {/* Ticket #502 — both mode sections stay mounted at all times
+              (never conditionally unmounted via a ternary), hidden with
+              the native `hidden` attribute instead: this is what lets
+              each mode's own in-progress state (the geometry section's
+              draft/applied/request; the legacy section's routeId/data/
+              lastRequestedRouteIdRef dedup) survive round-tripping through
+              the other mode, exactly like switching back to an already-
+              fetched legacy route never re-fetches it. */}
+          <div hidden={mode !== WINTER_ROUTE_MODE_CHOOSE}>
+            <WinterRouteGeometrySection t={t} lang={lang} onAppliedChange={setGeometryApplied} />
+          </div>
+
+          <div hidden={mode !== WINTER_ROUTE_MODE_LEGACY}>
+          <p className="mt-4 text-sm text-slate-600 dark:text-slate-400">{t("winterRouteSubtitle")}</p>
           <p className="mt-1 text-xs italic text-slate-500 dark:text-slate-400">{t("winterRouteLatestStatusNote")}</p>
 
           {/* Ticket #491 — native IS/EN route select, Vík default, single
@@ -643,6 +1067,7 @@ export default function WinterRoute() {
           ) : !viewErrorKey ? (
             <p className="mt-6 text-sm text-slate-500 dark:text-slate-400">…</p>
           ) : null}
+          </div>
         </main>
 
         <Footer t={t} />
