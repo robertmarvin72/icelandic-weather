@@ -122,6 +122,15 @@ export const winterRouteTranslations = {
     winterRouteOptionSouth: "Short route",
     winterRouteOptionNorth: "Long route via the Ring Road",
     winterRouteOptionGeneric: "Option",
+
+    // Ticket #503 — the first B<->H (Búðardalur<->Hólmavík) weather/road
+    // data binding, layered under a geometry_only result in "Velja
+    // staði" mode. T3: no departure/arrival/ETA/70km/koma wording.
+    winterRouteDataConnectedDisclaimer: "Weather and road conditions are connected at four defined points/sections for this route.",
+    winterRouteDataLoading: "Fetching weather and road data…",
+    winterRouteNoCoveragePointsNote: "Weather at four selected points; Svínadalur and Gilsfjörður have no point of their own.",
+    winterRouteEdgeSegmentNote: "This section covers only a short part of the route ({percent}%).",
+    winterRouteDataForecastHeading: "Weather at four points",
   },
 
   is: {
@@ -227,5 +236,12 @@ export const winterRouteTranslations = {
     winterRouteOptionSouth: "Stutta leiðin",
     winterRouteOptionNorth: "Langa leiðin um Hringveginn",
     winterRouteOptionGeneric: "Valkostur",
+
+    // Ticket #503 — sjá samsvarandi EN athugasemd að ofan.
+    winterRouteDataConnectedDisclaimer: "Veður og færð eru tengd á fjórum skilgreindum punktum/köflum fyrir þessa leið.",
+    winterRouteDataLoading: "Sæki veður og færð…",
+    winterRouteNoCoveragePointsNote: "Veður á fjórum völdum punktum; Svínadalur/Gilsfjörður hafa engan eigin punkt.",
+    winterRouteEdgeSegmentNote: "Þessi kafli nær aðeins yfir stuttan hluta leiðarinnar ({percent}%).",
+    winterRouteDataForecastHeading: "Veður á fjórum punktum",
   },
 };

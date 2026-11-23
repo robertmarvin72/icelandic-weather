@@ -1428,8 +1428,19 @@ describe("WinterRoute page", () => {
     // for non-200 cases. `httpStatus` (not `status`) is deliberate: a real
     // 200 payload's own field is itself called `status` (geometry_only/
     // same_place/unsupported) -- using the same key here would collide.
+    // Ticket #503 — a budardalur<->holmavik geometry_only result now also
+    // triggers a SEPARATE /api/winter-route-data request (own effect, own
+    // aria-live region). This helper's own fixtures are keyed by from/to/
+    // option and know nothing about URL path, so without this guard a
+    // winter-route-data call would wrongly match a winter-route-geometry
+    // fixture (same from/to query params) and crash the data view on a
+    // malformed shape. Tests that actually exercise winter-route-data use
+    // their own dedicated fetch mock (see the Ticket #503 describe block).
     function geometryAwareFetch(responses) {
       return vi.fn().mockImplementation((url) => {
+        if (String(url).includes("/api/winter-route-data")) {
+          return Promise.reject(new Error("winter-route-data not stubbed by this helper"));
+        }
         const key = geometryUrlToKey(url);
         const entry = responses[key];
         if (!entry) return Promise.reject(new Error(`no fixture for ${key}`));
@@ -1618,13 +1629,20 @@ describe("WinterRoute page", () => {
     });
 
     it("P4(d): a network failure shows the generic error with a retry button, and retry re-sends the same request", async () => {
+      // Deliberately NOT budardalur<->holmavik here (ticket #503 would
+      // also fire its own separate /api/winter-route-data request for
+      // that specific pair once the geometry result succeeds, which this
+      // generic path-unaware mock can't distinguish) -- isafjordur<->
+      // patreksfjordur is a real geometry_only pair with no options,
+      // unaffected by #503, keeping this test's own scope (geometry
+      // retry) focused.
       let callCount = 0;
       vi.stubGlobal(
         "fetch",
         vi.fn().mockImplementation(() => {
           callCount += 1;
           if (callCount === 1) return Promise.reject(new Error("network down"));
-          return Promise.resolve({ ok: true, status: 200, json: async () => BUDARDALUR_HOLMAVIK_FIXTURE });
+          return Promise.resolve({ ok: true, status: 200, json: async () => ({ ...BUDARDALUR_HOLMAVIK_FIXTURE, from: "isafjordur", to: "patreksfjordur" }) });
         })
       );
       render(<MemoryRouter initialEntries={["/winter-route"]}><WinterRoute /></MemoryRouter>);
@@ -1632,8 +1650,8 @@ describe("WinterRoute page", () => {
       const fromSelect = await screen.findByLabelText(translations.is.winterRouteFromLabel);
       const toSelect = screen.getByLabelText(translations.is.winterRouteToLabel);
       const { fireEvent } = await import("@testing-library/react");
-      fireEvent.change(fromSelect, { target: { value: "budardalur" } });
-      fireEvent.change(toSelect, { target: { value: "holmavik" } });
+      fireEvent.change(fromSelect, { target: { value: "isafjordur" } });
+      fireEvent.change(toSelect, { target: { value: "patreksfjordur" } });
       fireEvent.click(screen.getByRole("button", { name: translations.is.winterRouteShowRouteButton }));
 
       await waitFor(() => expect(screen.getByText(translations.is.winterRouteGenericError)).toBeInTheDocument());
@@ -1852,5 +1870,260 @@ describe("WinterRoute page", () => {
       expect(commits.some((c) => c.from === "budardalur" && c.options)).toBe(false);
     });
 
+  });
+
+  // Ticket #503 — the first B<->H (Búðardalur<->Hólmavík) weather/road
+  // data binding, layered under a confirmed geometry_only result.
+  describe("Ticket #503 — Búðardalur<->Hólmavík weather/road data", () => {
+    // Local copy — the "Ticket #502" describe block's own geometryUrlToKey
+    // is scoped to that block's own closure, not visible here (a sibling
+    // describe, not nested inside it).
+    function geometryUrlToKey(url) {
+      const q = new URL(String(url), "http://localhost").searchParams;
+      return `${q.get("from")}|${q.get("to")}|${q.get("option") ?? ""}`;
+    }
+
+    const FORWARD_GEOMETRY_ID = "forward-geometry-id-abc";
+    const REVERSE_GEOMETRY_ID = "reverse-geometry-id-xyz";
+    const DATA_HOURS = [futureHourString(2), futureHourString(3)];
+
+    function geometryFixture(from, to, geometryId) {
+      return {
+        schemaVersion: 1, tier: 0, status: "geometry_only", from, to, geometryId,
+      };
+    }
+
+    function dataFixture(from, to, geometryId, overrides = {}) {
+      return {
+        from, to, geometryId, regionVersion: "r1", routeLengthM: 78697.77,
+        generatedAt: "2026-11-23T17:00:00.000Z",
+        roadSections: [
+          { idButur: 805030037, nameIs: "Skógstagl-Búðardalur", nameEn: "Skógstagl–Búðardalur", routeLengthM: 205, routeLengthFraction: 0.0026, isEdgeSegment: true, segmentDataAvailable: true, category: "passable", positiveStyleEligible: true, astandYfirbord: "GREIDFAERT", astandLysing: "Greiðfært", astandLysingEn: "Easily passable", export: { isStale: false }, registration: { isOld: false }, notices: [] },
+          { idButur: 907040037, nameIs: "Hólmavík-Drangsnesvegur", nameEn: "Hólmavík–Drangsnesvegur", routeLengthM: 517, routeLengthFraction: 0.0066, isEdgeSegment: true, segmentDataAvailable: true, category: "closed", positiveStyleEligible: false, astandYfirbord: "LOKAD", astandLysing: "Lokað", astandLysingEn: "Closed", export: { isStale: false }, registration: { isOld: false }, notices: [] },
+        ],
+        roadMeta: { available: true, stale: false, cacheAgeMs: 0, segmentsAvailable: true, pointsAvailable: true, pointsFeedUnavailableOrStale: false },
+        forecast: {
+          available: true,
+          window: { startHour: DATA_HOURS[0], endHour: DATA_HOURS[1], expectedHours: DATA_HOURS },
+          points: [
+            { id: "budardalur-route", labelIs: "Búðardalur", labelEn: "Búðardalur", available: true, returnedLatitude: 65.1, returnedLongitude: -21.7, elevation: 22, hours: DATA_HOURS, series: { temperature_2m: [-1, -2], wind_speed_10m: [1, 1], wind_gusts_10m: [1, 1], precipitation: [0, 0], weather_code: [3, 3] } },
+            { id: "throskuldar-south-route", labelIs: "Þröskuldar — sunnanverð leið", labelEn: "Þröskuldar — south side", available: true, returnedLatitude: 65.4, returnedLongitude: -21.9, elevation: 41, hours: DATA_HOURS, series: { temperature_2m: [-2, -3], wind_speed_10m: [2, 2], wind_gusts_10m: [2, 2], precipitation: [0, 0], weather_code: [3, 3] } },
+            { id: "throskuldar-pass-route", labelIs: "Þröskuldar", labelEn: "Þröskuldar", available: true, returnedLatitude: 65.5, returnedLongitude: -21.8, elevation: 369, hours: DATA_HOURS, series: { temperature_2m: [-5, -6], wind_speed_10m: [5, 5], wind_gusts_10m: [8, 8], precipitation: [1, 1], weather_code: [71, 71] } },
+            { id: "holmavik-route", labelIs: "Hólmavík", labelEn: "Hólmavík", available: true, returnedLatitude: 65.7, returnedLongitude: -21.68, elevation: 20, hours: DATA_HOURS, series: { temperature_2m: [0, -1], wind_speed_10m: [3, 3], wind_gusts_10m: [4, 4], precipitation: [0, 0], weather_code: [3, 3] } },
+          ],
+          stale: false, cacheAgeMs: 0,
+        },
+        ...overrides,
+      };
+    }
+
+    function dualEndpointFetch({ onDataRequest } = {}) {
+      return vi.fn().mockImplementation((url) => {
+        const u = String(url);
+        if (u.includes("/api/winter-route-data")) {
+          onDataRequest?.(u);
+          const params = new URL(u, "http://localhost").searchParams;
+          const from = params.get("from"), to = params.get("to"), geometryId = params.get("geometryId");
+          return Promise.resolve({ status: 200, json: async () => dataFixture(from, to, geometryId) });
+        }
+        const key = geometryUrlToKey(u);
+        if (key === "budardalur|holmavik|") return Promise.resolve({ status: 200, json: async () => geometryFixture("budardalur", "holmavik", FORWARD_GEOMETRY_ID) });
+        if (key === "holmavik|budardalur|") return Promise.resolve({ status: 200, json: async () => geometryFixture("holmavik", "budardalur", REVERSE_GEOMETRY_ID) });
+        if (key === "reykjavik-raudavatn|selfoss|") {
+          return Promise.resolve({
+            status: 200,
+            json: async () => ({ schemaVersion: 1, tier: 2, status: "geometry_only", from: "reykjavik-raudavatn", to: "selfoss" }),
+          });
+        }
+        return Promise.reject(new Error(`no fixture for ${key}`));
+      });
+    }
+
+    async function submitBudardalurHolmavik() {
+      const fromSelect = await screen.findByLabelText(translations.is.winterRouteFromLabel, { selector: "select" });
+      const toSelect = screen.getByLabelText(translations.is.winterRouteToLabel, { selector: "select" });
+      const { fireEvent } = await import("@testing-library/react");
+      fireEvent.change(fromSelect, { target: { value: "budardalur" } });
+      fireEvent.change(toSelect, { target: { value: "holmavik" } });
+      fireEvent.click(screen.getByRole("button", { name: translations.is.winterRouteShowRouteButton }));
+    }
+
+    it("P6(a): fires /api/winter-route-data exactly once, only after the B<->H geometry_only result is confirmed, with the real geometryId", async () => {
+      let dataCalls = 0;
+      const fetchMock = dualEndpointFetch({ onDataRequest: () => { dataCalls += 1; } });
+      vi.stubGlobal("fetch", fetchMock);
+      render(<MemoryRouter initialEntries={["/winter-route"]}><WinterRoute /></MemoryRouter>);
+
+      await submitBudardalurHolmavik();
+      expect(dataCalls).toBe(0); // not yet -- geometry request still in flight on the very first tick
+
+      await waitFor(() => expect(dataCalls).toBe(1));
+      const dataCall = fetchMock.mock.calls.find((c) => String(c[0]).includes("/api/winter-route-data"));
+      expect(dataCall[0]).toContain(`geometryId=${FORWARD_GEOMETRY_ID}`);
+    });
+
+    it("P6(a): never fires for same_place/unsupported/other pairs", async () => {
+      const fetchMock = dualEndpointFetch();
+      vi.stubGlobal("fetch", fetchMock);
+      render(<MemoryRouter initialEntries={["/winter-route"]}><WinterRoute /></MemoryRouter>);
+
+      const { fireEvent } = await import("@testing-library/react");
+      fireEvent.click(screen.getByRole("button", { name: translations.is.winterRouteShowRouteButton }));
+      await waitFor(() => expect(screen.getByText(translations.is.winterRouteBaseDisclaimer)).toBeInTheDocument());
+
+      expect(fetchMock.mock.calls.some((c) => String(c[0]).includes("/api/winter-route-data"))).toBe(false);
+    });
+
+    it("shows loading, then the connected disclaimer, 4 forecast cards, road sections, and the edge-segment note — never raw technical fields", async () => {
+      vi.stubGlobal("fetch", dualEndpointFetch());
+      render(<MemoryRouter initialEntries={["/winter-route"]}><WinterRoute /></MemoryRouter>);
+      await submitBudardalurHolmavik();
+
+      // Note: the data fetch's own "loading" text is not asserted here --
+      // this test's mock resolves it essentially synchronously, so the
+      // intermediate loading state is not reliably observable; the
+      // dedicated unmount/abort tests below use a never-resolving promise
+      // and assert the loading text there instead, where it IS reliable.
+      await waitFor(() => expect(screen.getByText(translations.is.winterRouteDataConnectedDisclaimer)).toBeInTheDocument());
+      // The generic "not yet connected" text must NOT also be shown once connected.
+      expect(screen.queryByText(translations.is.winterRouteBaseDisclaimer)).toBeNull();
+
+      // Scoped to the data section's own status region (the second of the
+      // two role="status" regions) -- "Búðardalur"/"Þröskuldar" etc. are
+      // ambiguous page-wide (they're also real <option> text in both
+      // Frá/Til selects).
+      const dataRegion = screen.getByTestId("winter-route-data");
+      const data = within(dataRegion);
+      expect(data.getByText("Búðardalur")).toBeInTheDocument();
+      expect(data.getByText("Þröskuldar — sunnanverð leið")).toBeInTheDocument();
+      expect(data.getAllByText("Þröskuldar").length).toBeGreaterThan(0);
+      expect(data.getByText("Hólmavík")).toBeInTheDocument();
+      expect(data.getByText(translations.is.winterRouteNoCoveragePointsNote)).toBeInTheDocument();
+
+      expect(data.getByText("Skógstagl-Búðardalur")).toBeInTheDocument();
+      expect(data.getByText("Hólmavík-Drangsnesvegur")).toBeInTheDocument();
+      const edgeNotes = data.getAllByText(/nær aðeins yfir stuttan hluta leiðarinnar/);
+      expect(edgeNotes).toHaveLength(2); // both 805030037 and 907040037 are edge segments
+
+      expect(screen.queryByText(/regionVersion/)).toBeNull();
+      expect(screen.queryByText("r1")).toBeNull();
+    });
+
+    it("keeps cards and the local hour select outside live status regions", async () => {
+      vi.stubGlobal("fetch", dualEndpointFetch());
+      render(<MemoryRouter><WinterRoute /></MemoryRouter>);
+      await submitBudardalurHolmavik();
+      const select = await screen.findByLabelText(translations.is.winterRouteHourLabel);
+      expect(select.closest('[role="status"], [aria-live]')).toBeNull();
+      expect(within(screen.getByTestId("winter-route-data")).getByText("Þröskuldar — sunnanverð leið").closest('[role="status"], [aria-live]')).toBeNull();
+    });
+
+    it("marks stale and unavailable feeds and excludes elapsed hours", async () => {
+      const base = dualEndpointFetch();
+      vi.stubGlobal("fetch", vi.fn((url) => {
+        if (!String(url).includes("/api/winter-route-data")) return base(url);
+        const d = dataFixture("budardalur", "holmavik", FORWARD_GEOMETRY_ID);
+        d.forecast.stale = true; d.forecast.cacheAgeMs = 600000;
+        d.forecast.window.expectedHours = ["2000-01-01T00:00", ...DATA_HOURS];
+        d.roadMeta = { ...d.roadMeta, available: false, stale: true, cacheAgeMs: 300000 };
+        return Promise.resolve({ status: 200, json: async () => d });
+      }));
+      render(<MemoryRouter><WinterRoute /></MemoryRouter>);
+      await submitBudardalurHolmavik();
+      const select = await screen.findByLabelText(translations.is.winterRouteHourLabel);
+      expect(select.value).toBe(DATA_HOURS[0]);
+      expect([...select.options].some((o) => o.value.startsWith("2000"))).toBe(false);
+      expect(screen.getByText(translations.is.winterRouteForecastStaleServed.replace("{minutes}", "10"))).toBeInTheDocument();
+      expect(screen.getByText(translations.is.winterRouteRoadStaleServed.replace("{minutes}", "5"))).toBeInTheDocument();
+      expect(screen.getByText(translations.is.winterRouteRoadFeedUnavailable)).toBeInTheDocument();
+    });
+
+    it.each(["missing forecast", "wrong identity", "missing roads", "missing series"])("rejects malformed successful data: %s", async (kind) => {
+      const base = dualEndpointFetch();
+      vi.stubGlobal("fetch", vi.fn((url) => {
+        if (!String(url).includes("/api/winter-route-data")) return base(url);
+        const d = dataFixture("budardalur", "holmavik", FORWARD_GEOMETRY_ID);
+        if (kind === "missing forecast") delete d.forecast;
+        if (kind === "wrong identity") d.from = "holmavik";
+        if (kind === "missing roads") delete d.roadSections;
+        if (kind === "missing series") delete d.forecast.points[0].series;
+        return Promise.resolve({ status: 200, json: async () => d });
+      }));
+      render(<MemoryRouter><WinterRoute /></MemoryRouter>);
+      await submitBudardalurHolmavik();
+      await screen.findByText(translations.is.winterRouteGenericError);
+      expect(screen.queryByLabelText(translations.is.winterRouteHourLabel)).toBeNull();
+    });
+
+    it("H->B: the reverse direction fetches with the reverse geometryId", async () => {
+      vi.stubGlobal("fetch", dualEndpointFetch());
+      render(<MemoryRouter initialEntries={["/winter-route"]}><WinterRoute /></MemoryRouter>);
+
+      const fromSelect = await screen.findByLabelText(translations.is.winterRouteFromLabel, { selector: "select" });
+      const toSelect = screen.getByLabelText(translations.is.winterRouteToLabel, { selector: "select" });
+      const { fireEvent } = await import("@testing-library/react");
+      fireEvent.change(fromSelect, { target: { value: "holmavik" } });
+      fireEvent.change(toSelect, { target: { value: "budardalur" } });
+      fireEvent.click(screen.getByRole("button", { name: translations.is.winterRouteShowRouteButton }));
+
+      await waitFor(() => expect(screen.getByText(translations.is.winterRouteDataConnectedDisclaimer)).toBeInTheDocument());
+    });
+
+    it("changing the draft away from B<->H aborts the in-flight data request and never shows it under the new pair", async () => {
+      let resolveData;
+      const fetchMock = vi.fn().mockImplementation((url) => {
+        const u = String(url);
+        if (u.includes("/api/winter-route-data")) return new Promise((resolve) => { resolveData = resolve; });
+        const key = geometryUrlToKey(u);
+        if (key === "budardalur|holmavik|") return Promise.resolve({ status: 200, json: async () => geometryFixture("budardalur", "holmavik", FORWARD_GEOMETRY_ID) });
+        if (key === "budardalur|isafjordur|") return Promise.resolve({ status: 200, json: async () => ({ schemaVersion: 1, tier: 0, status: "geometry_only", from: "budardalur", to: "isafjordur", geometryId: "other-id" }) });
+        return Promise.reject(new Error(`no fixture for ${key}`));
+      });
+      vi.stubGlobal("fetch", fetchMock);
+      render(<MemoryRouter initialEntries={["/winter-route"]}><WinterRoute /></MemoryRouter>);
+      await submitBudardalurHolmavik();
+      await waitFor(() => expect(screen.getByText(translations.is.winterRouteDataLoading)).toBeInTheDocument());
+
+      const toSelect = screen.getByLabelText(translations.is.winterRouteToLabel, { selector: "select" });
+      const { fireEvent } = await import("@testing-library/react");
+      fireEvent.change(toSelect, { target: { value: "isafjordur" } });
+      fireEvent.click(screen.getByRole("button", { name: translations.is.winterRouteShowRouteButton }));
+      await waitFor(() => expect(screen.getByText(translations.is.winterRouteBaseDisclaimer)).toBeInTheDocument());
+
+      // The abandoned B<->H data request resolving late must never surface.
+      await act(async () => resolveData?.({ status: 200, json: async () => dataFixture("budardalur", "holmavik", FORWARD_GEOMETRY_ID) }));
+      expect(screen.queryByText(translations.is.winterRouteDataConnectedDisclaimer)).toBeNull();
+    });
+
+    it("a geometry_mismatch / non-200 response from winter-route-data shows the generic error, never a crash or fabricated data", async () => {
+      const fetchMock = vi.fn().mockImplementation((url) => {
+        const u = String(url);
+        if (u.includes("/api/winter-route-data")) return Promise.resolve({ status: 400, json: async () => ({ error: "geometry_mismatch" }) });
+        const key = geometryUrlToKey(u);
+        if (key === "budardalur|holmavik|") return Promise.resolve({ status: 200, json: async () => geometryFixture("budardalur", "holmavik", FORWARD_GEOMETRY_ID) });
+        return Promise.reject(new Error(`no fixture for ${key}`));
+      });
+      vi.stubGlobal("fetch", fetchMock);
+      render(<MemoryRouter initialEntries={["/winter-route"]}><WinterRoute /></MemoryRouter>);
+      await submitBudardalurHolmavik();
+
+      await waitFor(() => expect(screen.getAllByText(translations.is.winterRouteGenericError).length).toBeGreaterThan(0));
+      expect(screen.getByText(translations.is.winterRouteBaseDisclaimer)).toBeInTheDocument(); // geometry result itself still shown, unaffected
+    });
+
+    it("unmounting while the data request is in flight never triggers a post-unmount state update", async () => {
+      vi.stubGlobal("fetch", vi.fn().mockImplementation((url) => {
+        const u = String(url);
+        if (u.includes("/api/winter-route-data")) return new Promise(() => {});
+        const key = geometryUrlToKey(u);
+        if (key === "budardalur|holmavik|") return Promise.resolve({ status: 200, json: async () => geometryFixture("budardalur", "holmavik", FORWARD_GEOMETRY_ID) });
+        return Promise.reject(new Error(`no fixture for ${key}`));
+      }));
+      const { unmount } = render(<MemoryRouter initialEntries={["/winter-route"]}><WinterRoute /></MemoryRouter>);
+      await submitBudardalurHolmavik();
+      await waitFor(() => expect(screen.getByText(translations.is.winterRouteDataLoading)).toBeInTheDocument());
+
+      expect(() => unmount()).not.toThrow();
+    });
   });
 });

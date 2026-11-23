@@ -32,13 +32,15 @@ import { fetchWinterRouteForecast } from "./_lib/winterRoute/forecastFetch.js";
 import { resolveRouteId } from "./_lib/winterRoute/routes.js";
 import {
   classifySegment,
-  categorizePointAstand,
-  categorizePointAstandWithStatus,
   isEligibleForPositiveStyle,
-  worstCategory,
   SEGMENT_CATEGORY,
 } from "./_lib/winterRoute/roadConditionCodes.js";
 import { exportFreshness, segmentRegistrationFreshness, pointNoticeStatus } from "./_lib/winterRoute/freshness.js";
+// Ticket #503, P5(a) — extracted to a shared module so the new
+// api/winter-route-data.js can reuse the exact same classification/notice
+// logic; this is a relocation, not a logic change (own tests confirm
+// byte-identical output).
+import { computePointsFeedUnavailableOrStale, buildNoticePayload, classifySegmentAmbiguous } from "./_lib/winterRoute/roadSegmentPresentation.js";
 
 const UPSTREAM_FETCH_OPTIONS = { timeoutMs: 15000, maxBytes: 2 * 1024 * 1024 };
 
@@ -52,17 +54,6 @@ async function fetchCombinedRoadData(idButurList) {
     return { ok: false, reason: "both_road_feeds_failed" };
   }
   return { ok: true, segments, points };
-}
-
-// Round 2 correction (R1a): closures/roadworks are reported via the point
-// feed — if it is down, missing a usable export time, or stale, we cannot
-// actually confirm a segment has no closure, so NO segment anywhere may
-// render with positive/"good" styling while this is true, regardless of
-// what the segment feed itself says. Computed once per request/cache-read,
-// not per segment.
-function computePointsFeedUnavailableOrStale(pointsResult, now) {
-  if (!pointsResult?.ok) return true;
-  return exportFreshness(pointsResult.feedDagsKeyrtUt ?? null, now).isStale;
 }
 
 function buildSegmentPayload(def, roadData, now, pointsFeedUnavailableOrStale) {
@@ -125,29 +116,6 @@ function buildSegmentPayload(def, roadData, now, pointsFeedUnavailableOrStale) {
     export: { dagsKeyrtUt: row.dagsKeyrtUt, ageMinutes: exp.ageMinutes, isStale: exp.isStale },
     registration: { dagsSkrad: row.dagsSkrad, ageHours: reg.ageHours, isOld: reg.isOld },
     notices: notices.map(buildNoticePayload),
-  };
-}
-
-// R2: an ambiguous duplicate's final category is the forced closure (if
-// any duplicate confirmed one) escalated further by point notices (N2:
-// still respecting expired-only closure notices), or UNKNOWN_UNCLASSIFIED
-// (also escalatable by point notices) otherwise.
-function classifySegmentAmbiguous(row, notices) {
-  const base = row.forcedCategory ?? SEGMENT_CATEGORY.UNKNOWN_UNCLASSIFIED;
-  const noticeCategories = notices.map((n) => categorizePointAstandWithStatus(n.astand, n.status));
-  return worstCategory([base, ...noticeCategories]);
-}
-
-function buildNoticePayload(notice) {
-  return {
-    idPunktur: notice.idPunktur,
-    astand: notice.astand,
-    category: categorizePointAstand(notice.astand),
-    lysing: notice.lysing,
-    lysingEn: notice.lysingEn,
-    dagsSkrad: notice.dagsSkrad,
-    gildirTil: notice.gildirTil,
-    status: notice.status,
   };
 }
 

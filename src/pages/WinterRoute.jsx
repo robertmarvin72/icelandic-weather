@@ -96,7 +96,12 @@ function useNowTicking(intervalMs = 60000) {
   return now;
 }
 
-function SegmentRow({ segment, t, lang }) {
+// Ticket #503, P3(b) — `edgeSegmentNote` is an optional extra line (never
+// passed by the existing Vík/Borgarnes callers, so their own rendering
+// stays byte-identical): a short-section caveat so a closure/notice on a
+// section carrying under 1% of the route's own total length never reads
+// as the whole route's own status.
+function SegmentRow({ segment, t, lang, edgeSegmentNote = null }) {
   const name = lang === "en" ? segment.nameEn : segment.nameIs;
   const pillClass = categoryPillClass(segment.category, segment.positiveStyleEligible);
   const categoryLabel = t(SEGMENT_CATEGORY_LABEL_KEY[segment.category] || SEGMENT_CATEGORY_LABEL_KEY.unknown_unclassified);
@@ -108,6 +113,8 @@ function SegmentRow({ segment, t, lang }) {
         <span className="font-medium text-slate-800 dark:text-slate-100">{name}</span>
         <span className={`rounded-full px-2.5 py-0.5 text-xs font-semibold ${pillClass}`}>{categoryLabel}</span>
       </div>
+
+      {edgeSegmentNote ? <p className="mt-1 text-xs font-medium text-amber-700 dark:text-amber-300">{edgeSegmentNote}</p> : null}
 
       {!segment.segmentDataAvailable ? (
         <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">{t("winterRouteSegmentDataUnavailable")}</p>
@@ -405,7 +412,7 @@ function PlaceField({ idPrefix, label, searchLabel, noResultsText, value, onChan
 // `coordinates`/`slices`/`idButurIds`/`geometryId`/`regionVersion`/
 // `datasetVersion` (P5g) — only the small set of fields this function
 // itself reads below ever reaches the DOM.
-function GeometryResultView({ outcome, payload, applied, t, lang, onSelectOption }) {
+function GeometryResultView({ outcome, payload, applied, t, lang, onSelectOption, dataConnected = false }) {
   const fromName = winterRoutePlaceName(applied.from, lang);
   const toName = winterRoutePlaceName(applied.to, lang);
 
@@ -473,10 +480,113 @@ function GeometryResultView({ outcome, payload, applied, t, lang, onSelectOption
         <p className="mt-2 text-sm text-slate-600 dark:text-slate-300">{t("winterRouteViaLabel").replace("{via}", via.join(", "))}</p>
       ) : null}
 
-      <p className="mt-2 text-sm text-slate-600 dark:text-slate-300">{t("winterRouteBaseDisclaimer")}</p>
+      <p className="mt-2 text-sm text-slate-600 dark:text-slate-300">
+        {dataConnected ? t("winterRouteDataConnectedDisclaimer") : t("winterRouteBaseDisclaimer")}
+      </p>
       {showConnectorNote ? <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">{t("winterRouteEstimatedConnectorNote")}</p> : null}
       {fromShort || toShort ? <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">{t("winterRouteApproachShortNote")}</p> : null}
       <p className="mt-2 text-xs text-slate-500 dark:text-slate-400">{t("winterRouteAccessPointDisclaimer")}</p>
+    </div>
+  );
+}
+
+const BUDARDALUR_HOLMAVIK_PLACE_IDS = new Set(["budardalur", "holmavik"]);
+function isBudardalurHolmavikPair(from, to) {
+  return from !== to && BUDARDALUR_HOLMAVIK_PLACE_IDS.has(from) && BUDARDALUR_HOLMAVIK_PLACE_IDS.has(to);
+}
+
+// Validate the fields consumed by the data view before accepting a response.
+function validRouteData(data, from, to, geometryId) {
+  if (!data || data.from !== from || data.to !== to || data.geometryId !== geometryId ||
+      !Array.isArray(data.roadSections) || !data.roadMeta || typeof data.roadMeta.available !== "boolean" ||
+      !data.forecast || typeof data.forecast.available !== "boolean") return false;
+  if (!data.roadSections.every((section) => section && Array.isArray(section.notices) && section.export && section.registration)) return false;
+  const forecast = data.forecast;
+  return !forecast.available || (Array.isArray(forecast.window?.expectedHours) &&
+    forecast.window.expectedHours.every((h) => typeof h === "string" && Number.isFinite(Date.parse(`${h}:00Z`))) &&
+    Array.isArray(forecast.points) && forecast.points.every((point) => point && typeof point.available === "boolean" &&
+      (!point.available || (Array.isArray(point.hours) && point.series &&
+        ["temperature_2m", "wind_speed_10m", "wind_gusts_10m", "precipitation", "weather_code"].every((key) => Array.isArray(point.series[key]))))));
+}
+
+// Ticket #503 — the actual weather/road body for a confirmed B<->H
+// /api/winter-route-data response. Reuses the existing ForecastCard/
+// SegmentRow components verbatim (same field shapes), own local-only
+// (no-fetch) shared hour selection — same #490 R1 discipline as every
+// other <select> in this file (plain onChange, no focus-moving ref/
+// effect). The data body is outside live status regions (P6c).
+function BudardalurHolmavikDataView({ data, t, lang }) {
+  const now = useNowTicking();
+  const availableHours = useMemo(() => {
+    const hours = data.forecast.available ? data.forecast.window.expectedHours : [];
+    return hours.filter((h) => new Date(`${h}:00Z`).getTime() > now.getTime());
+  }, [data, now]);
+  const [selectedHour, setSelectedHour] = useState(availableHours[0] ?? null);
+  const effectiveHour = selectedHour && availableHours.includes(selectedHour) ? selectedHour : (availableHours[0] ?? null);
+
+  return (
+    <div className="mt-4">
+      <section>
+        <h3 className="text-sm font-semibold text-slate-700 dark:text-slate-200">{t("winterRouteDataForecastHeading")}</h3>
+        <p className="mt-1 text-xs italic text-slate-500 dark:text-slate-400">{t("winterRouteNoCoveragePointsNote")}</p>
+
+        {data.forecast.available && availableHours.length > 0 ? (
+          <div className="mt-2">
+            <label htmlFor="winter-route-data-hour" className="text-sm font-medium text-slate-700 dark:text-slate-200">
+              {t("winterRouteHourLabel")}
+            </label>
+            <select
+              id="winter-route-data-hour"
+              className="mt-1 block w-full max-w-xs rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 dark:border-slate-700 dark:bg-slate-900"
+              value={effectiveHour ?? ""}
+              onChange={(e) => setSelectedHour(e.target.value)}
+            >
+              {availableHours.map((h) => (
+                <option key={h} value={h}>
+                  {formatHourLabel(h)}
+                </option>
+              ))}
+            </select>
+            <p className="mt-1 text-xs italic text-slate-500 dark:text-slate-400">{t("winterRouteSameForecastTimeNote")}</p>
+          </div>
+        ) : (
+          <p className="mt-2 text-sm text-slate-500 dark:text-slate-400">{t("winterRouteForecastUnavailable")}</p>
+        )}
+
+        {data.forecast.available && data.forecast.stale ? (
+          <p className="mt-2 text-xs text-amber-600 dark:text-amber-300">{t("winterRouteForecastStaleServed").replace("{minutes}", String(Math.round((data.forecast.cacheAgeMs || 0) / 60000)))}</p>
+        ) : null}
+
+        {data.forecast.available ? (
+          <div className="mt-3 grid grid-cols-1 gap-3 sm:grid-cols-2">
+            {data.forecast.points.map((point) => (
+              <ForecastCard key={point.id} point={point} effectiveHour={effectiveHour} t={t} lang={lang} />
+            ))}
+          </div>
+        ) : null}
+      </section>
+
+      <section className="mt-6">
+        <h3 className="text-sm font-semibold text-slate-700 dark:text-slate-200">{t("winterRouteRoadSectionTitle")}</h3>
+        {!data.roadMeta.available ? <p className="mt-2 text-sm text-slate-500">{t("winterRouteRoadFeedUnavailable")}</p> : null}
+        {data.roadMeta.stale ? <p className="mt-2 text-xs text-amber-600 dark:text-amber-300">{t("winterRouteRoadStaleServed").replace("{minutes}", String(Math.round((data.roadMeta.cacheAgeMs || 0) / 60000)))}</p> : null}
+        {data.roadMeta.pointsFeedUnavailableOrStale ? (
+          <p className="mt-2 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-xs font-medium text-amber-800 dark:border-amber-900/50 dark:bg-amber-950/30 dark:text-amber-200">
+            {t("winterRoutePointsFeedUnavailable")}
+          </p>
+        ) : null}
+        <ol className="mt-3 space-y-2">
+          {data.roadSections.map((section) => (
+            <SegmentRow
+              key={section.idButur}
+              segment={section}
+              t={t}
+              lang={lang}
+              edgeSegmentNote={section.isEdgeSegment ? t("winterRouteEdgeSegmentNote").replace("{percent}", formatDecimal(section.routeLengthFraction * 100, lang, 1)) : null}
+            />
+          ))}
+        </ol>
+      </section>
     </div>
   );
 }
@@ -504,6 +614,18 @@ function WinterRouteGeometrySection({ t, lang, onAppliedChange }) {
   useEffect(() => {
     onAppliedChange?.(applied);
   }, [applied, onAppliedChange]);
+
+  // Ticket #503, P6(a) — the B<->H weather/road data fetch, a SEPARATE
+  // request lifecycle from the geometry one above (own AbortController/
+  // requestId), gated strictly on: applied pair is B<->H, draft still
+  // matches applied, and the geometry result currently on screen is a
+  // real geometry_only response (never fired for same_place/unsupported/
+  // other pairs/while the geometry request itself is loading).
+  const [dataRequestState, setDataRequestState] = useState({ key: null, loading: false, result: null });
+  const dataRequestIdRef = useRef(0);
+  const dataControllerRef = useRef(null);
+  const lastDataKeyRef = useRef(null);
+  useEffect(() => () => dataControllerRef.current?.abort(), []);
 
   function runRequest(from, to, option, focusTarget = null) {
     pendingFocusRef.current = focusTarget ? { target: focusTarget, from, to } : null;
@@ -569,6 +691,59 @@ function WinterRouteGeometrySection({ t, lang, onAppliedChange }) {
   const isCurrentLoading = requestState.loading && requestState.key === currentKey;
   const view = !requestState.loading && requestState.key === currentKey ? requestState.result : null;
   const submitDisabled = requestState.loading && requestState.key === `${draftFrom}|${draftTo}|`;
+
+  const isDataEligible =
+    Boolean(applied) &&
+    draftMatchesApplied &&
+    !isCurrentLoading &&
+    view?.outcome === WINTER_ROUTE_OUTCOME.GEOMETRY_ONLY &&
+    isBudardalurHolmavikPair(applied.from, applied.to);
+  const dataGeometryId = isDataEligible ? view.payload.geometryId : null;
+  const currentDataKey = isDataEligible && dataGeometryId ? `${applied.from}|${applied.to}|${dataGeometryId}` : null;
+  const isDataLoading = dataRequestState.loading && dataRequestState.key === currentDataKey;
+  const dataView = !dataRequestState.loading && dataRequestState.key === currentDataKey ? dataRequestState.result : null;
+
+  useEffect(() => {
+    if (!isDataEligible || !dataGeometryId) {
+      if (lastDataKeyRef.current !== null) {
+        dataControllerRef.current?.abort();
+        lastDataKeyRef.current = null;
+        setDataRequestState({ key: null, loading: false, result: null });
+      }
+      return undefined;
+    }
+
+    const key = `${applied.from}|${applied.to}|${dataGeometryId}`;
+    if (lastDataKeyRef.current === key) return undefined; // StrictMode double-invoke / already current
+    lastDataKeyRef.current = key;
+
+    dataControllerRef.current?.abort();
+    const controller = new AbortController();
+    dataControllerRef.current = controller;
+    const thisRequestId = ++dataRequestIdRef.current;
+    setDataRequestState({ key, loading: true, result: null });
+
+    const params = new URLSearchParams({ from: applied.from, to: applied.to, geometryId: dataGeometryId });
+    fetch(`/api/winter-route-data?${params.toString()}`, { signal: controller.signal })
+      .then(async (res) => {
+        let payload = null;
+        try {
+          payload = await res.json();
+        } catch {
+          payload = null;
+        }
+        return { httpStatus: res.status, payload };
+      })
+      .catch((err) => (err?.name === "AbortError" ? undefined : { httpStatus: null, payload: null }))
+      .then((resolved) => {
+        if (!resolved) return;
+        if (dataRequestIdRef.current !== thisRequestId) return;
+        const ok = resolved.httpStatus === 200 && validRouteData(resolved.payload, applied.from, applied.to, dataGeometryId);
+        setDataRequestState({ key, loading: false, result: ok ? { ok: true, payload: resolved.payload } : { ok: false } });
+      });
+
+    return undefined;
+  }, [isDataEligible, dataGeometryId, applied?.from, applied?.to]);
 
   useEffect(() => {
     const intent = pendingFocusRef.current;
@@ -650,9 +825,27 @@ function WinterRouteGeometrySection({ t, lang, onAppliedChange }) {
         ) : view?.outcome === WINTER_ROUTE_OUTCOME.NO_ROUTE ? (
           <p className="text-sm text-slate-600 dark:text-slate-300">{t("winterRouteNoRouteYet")}</p>
         ) : view?.outcome === WINTER_ROUTE_OUTCOME.SAME_PLACE || view?.outcome === WINTER_ROUTE_OUTCOME.GEOMETRY_ONLY ? (
-          <GeometryResultView outcome={view.outcome} payload={view.payload} applied={applied} t={t} lang={lang} onSelectOption={handleSelectOption} />
+          <GeometryResultView
+            outcome={view.outcome}
+            payload={view.payload}
+            applied={applied}
+            t={t}
+            lang={lang}
+            onSelectOption={handleSelectOption}
+            dataConnected={Boolean(dataView?.ok)}
+          />
         ) : null}
       </div>
+
+      {/* Only request status is live; hour changes do not announce all cards. */}
+      {isDataEligible ? (
+        <div data-testid="winter-route-data" className="mt-4 rounded-xl border border-slate-200/70 bg-white/70 px-4 py-3 dark:border-slate-800/70 dark:bg-slate-900/70">
+          <p role="status" aria-live="polite" className="text-sm">
+            {isDataLoading ? t("winterRouteDataLoading") : dataView?.ok === false ? t("winterRouteGenericError") : dataView?.ok ? t("winterRouteDataForecastHeading") : ""}
+          </p>
+          {dataView?.ok ? <BudardalurHolmavikDataView data={dataView.payload} t={t} lang={lang} /> : null}
+        </div>
+      ) : null}
     </div>
   );
 }
