@@ -495,6 +495,22 @@ function isBudardalurHolmavikPair(from, to) {
   return from !== to && BUDARDALUR_HOLMAVIK_PLACE_IDS.has(from) && BUDARDALUR_HOLMAVIK_PLACE_IDS.has(to);
 }
 
+// Ticket #503 westfjords-batch -- frontend-only duplicate of the backend's
+// own pair allowlist (api/_lib/winterRoute/westfjordsBatchRoute.js). src/
+// must not import api/ code directly (bundler boundary), same convention
+// already used for winterRoutePlaces.js/winterRouteRoutes.js.
+const WESTFJORDS_BATCH_PAIRS = [
+  ["budardalur", "flokalundur"], ["budardalur", "patreksfjordur"], ["budardalur", "talknafjordur"],
+  ["flokalundur", "patreksfjordur"], ["flokalundur", "talknafjordur"], ["patreksfjordur", "talknafjordur"],
+];
+const WESTFJORDS_BATCH_PAIR_KEYS = new Set(WESTFJORDS_BATCH_PAIRS.flatMap(([a, b]) => [`${a}|${b}`, `${b}|${a}`]));
+function isWestfjordsBatchPair(from, to) {
+  return from !== to && WESTFJORDS_BATCH_PAIR_KEYS.has(`${from}|${to}`);
+}
+function isWinterRouteDataPair(from, to) {
+  return isBudardalurHolmavikPair(from, to) || isWestfjordsBatchPair(from, to);
+}
+
 // Validate the fields consumed by the data view before accepting a response.
 function validRouteData(data, from, to, geometryId) {
   if (!data || data.from !== from || data.to !== to || data.geometryId !== geometryId ||
@@ -509,13 +525,17 @@ function validRouteData(data, from, to, geometryId) {
         ["temperature_2m", "wind_speed_10m", "wind_gusts_10m", "precipitation", "weather_code"].every((key) => Array.isArray(point.series[key]))))));
 }
 
-// Ticket #503 — the actual weather/road body for a confirmed B<->H
-// /api/winter-route-data response. Reuses the existing ForecastCard/
-// SegmentRow components verbatim (same field shapes), own local-only
-// (no-fetch) shared hour selection — same #490 R1 discipline as every
-// other <select> in this file (plain onChange, no focus-moving ref/
-// effect). The data body is outside live status regions (P6c).
-function BudardalurHolmavikDataView({ data, t, lang }) {
+// Ticket #503 (B<->H) / westfjords-batch — the actual weather/road body for
+// a confirmed /api/winter-route-data response, for any of the 7 connected
+// pairs. Reuses the existing ForecastCard/SegmentRow components verbatim
+// (same field shapes), own local-only (no-fetch) shared hour selection —
+// same #490 R1 discipline as every other <select> in this file (plain
+// onChange, no focus-moving ref/effect). The data body is outside live
+// status regions (P6c). Point count (3-8) and the largest-gap caveat are
+// computed from the actual response (P6a) via approxDistanceFromStartKm,
+// which is only present for westfjords-batch pairs; B<->H has none, so it
+// keeps its own generic coverage note with no computed gap line.
+function WinterRouteDataView({ data, t, lang }) {
   const now = useNowTicking();
   const availableHours = useMemo(() => {
     const hours = data.forecast.available ? data.forecast.window.expectedHours : [];
@@ -524,11 +544,34 @@ function BudardalurHolmavikDataView({ data, t, lang }) {
   const [selectedHour, setSelectedHour] = useState(availableHours[0] ?? null);
   const effectiveHour = selectedHour && availableHours.includes(selectedHour) ? selectedHour : (availableHours[0] ?? null);
 
+  const pointCount = data.forecast.available ? data.forecast.points.length : 0;
+  const largestGap = useMemo(() => {
+    if (!data.forecast.available) return null;
+    const pts = data.forecast.points.filter((p) => Number.isFinite(p.approxDistanceFromStartKm));
+    if (pts.length < 2) return null;
+    let best = null;
+    for (let i = 1; i < pts.length; i++) {
+      const km = pts[i].approxDistanceFromStartKm - pts[i - 1].approxDistanceFromStartKm;
+      if (!best || km > best.km) best = { km, a: pts[i - 1], b: pts[i] };
+    }
+    return best;
+  }, [data]);
+
   return (
     <div className="mt-4">
       <section>
-        <h3 className="text-sm font-semibold text-slate-700 dark:text-slate-200">{t("winterRouteDataForecastHeading")}</h3>
-        <p className="mt-1 text-xs italic text-slate-500 dark:text-slate-400">{t("winterRouteNoCoveragePointsNote")}</p>
+        <h3 className="text-sm font-semibold text-slate-700 dark:text-slate-200">
+          {data.forecast.available ? t("winterRouteDataForecastHeading").replace("{count}", String(pointCount)) : t("winterRouteForecastUnavailable")}
+        </h3>
+        {data.forecast.available ? <p className="mt-1 text-xs italic text-slate-500 dark:text-slate-400">{t("winterRouteNoCoveragePointsNote")}</p> : null}
+        {largestGap ? (
+          <p className="mt-1 text-xs italic text-slate-500 dark:text-slate-400">
+            {t("winterRouteLargestGapNote")
+              .replace("{km}", formatDecimal(largestGap.km, lang, 1))
+              .replace("{pointA}", lang === "is" ? largestGap.a.labelIs : largestGap.a.labelEn)
+              .replace("{pointB}", lang === "is" ? largestGap.b.labelIs : largestGap.b.labelEn)}
+          </p>
+        ) : null}
 
         {data.forecast.available && availableHours.length > 0 ? (
           <div className="mt-2">
@@ -697,7 +740,7 @@ function WinterRouteGeometrySection({ t, lang, onAppliedChange }) {
     draftMatchesApplied &&
     !isCurrentLoading &&
     view?.outcome === WINTER_ROUTE_OUTCOME.GEOMETRY_ONLY &&
-    isBudardalurHolmavikPair(applied.from, applied.to);
+    isWinterRouteDataPair(applied.from, applied.to);
   const dataGeometryId = isDataEligible ? view.payload.geometryId : null;
   const currentDataKey = isDataEligible && dataGeometryId ? `${applied.from}|${applied.to}|${dataGeometryId}` : null;
   const isDataLoading = dataRequestState.loading && dataRequestState.key === currentDataKey;
@@ -840,10 +883,18 @@ function WinterRouteGeometrySection({ t, lang, onAppliedChange }) {
       {/* Only request status is live; hour changes do not announce all cards. */}
       {isDataEligible ? (
         <div data-testid="winter-route-data" className="mt-4 rounded-xl border border-slate-200/70 bg-white/70 px-4 py-3 dark:border-slate-800/70 dark:bg-slate-900/70">
-          <p role="status" aria-live="polite" className="text-sm">
-            {isDataLoading ? t("winterRouteDataLoading") : dataView?.ok === false ? t("winterRouteGenericError") : dataView?.ok ? t("winterRouteDataForecastHeading") : ""}
+          <p role="status" aria-live="polite" className="sr-only">
+            {isDataLoading
+              ? t("winterRouteDataLoading")
+              : dataView?.ok === false
+                ? t("winterRouteGenericError")
+                : dataView?.ok
+                  ? (dataView.payload.forecast.available
+                      ? t("winterRouteDataForecastHeading").replace("{count}", String(dataView.payload.forecast.points.length))
+                      : t("winterRouteForecastUnavailable"))
+                  : ""}
           </p>
-          {dataView?.ok ? <BudardalurHolmavikDataView data={dataView.payload} t={t} lang={lang} /> : null}
+          {dataView?.ok ? <WinterRouteDataView data={dataView.payload} t={t} lang={lang} /> : null}
         </div>
       ) : null}
     </div>

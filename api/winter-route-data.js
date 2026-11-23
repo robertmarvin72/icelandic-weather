@@ -37,17 +37,31 @@ import {
 import { exportFreshness, segmentRegistrationFreshness, pointNoticeStatus } from "./_lib/winterRoute/freshness.js";
 import { computePointsFeedUnavailableOrStale, buildNoticePayload, classifySegmentAmbiguous } from "./_lib/winterRoute/roadSegmentPresentation.js";
 import {
+  BUDARDALUR_HOLMAVIK_PLACE_IDS,
   BUDARDALUR_HOLMAVIK_FORECAST_POINTS,
   resolveBudardalurHolmavikGeometry,
   orderedForecastPoints,
 } from "./_lib/winterRoute/budardalurHolmavikRoute.js";
+// Ticket #503 westfjords-batch — six more pairs, own separate resolver/
+// registry (B<->H's own above is untouched). See that module's own
+// header for why point membership/order is computed dynamically rather
+// than duplicated here as a table.
+import {
+  isWestfjordsBatchPair,
+  westfjordsBatchCacheKey,
+  resolveWestfjordsBatchGeometry,
+  westfjordsBatchForecastPoints,
+} from "./_lib/winterRoute/westfjordsBatchRoute.js";
 
 const UPSTREAM_FETCH_OPTIONS = { timeoutMs: 15000, maxBytes: 2 * 1024 * 1024 };
 
 // Fixed, direction-independent cache key (P5c) -- never built from
 // client-supplied from/to, so it can never be redirected into an
-// unrelated bucket.
-const CACHE_ROUTE_KEY = "winter-route-data:budardalur-holmavik";
+// unrelated bucket. B<->H keeps its own original fixed key unchanged
+// (own cache-sharing tests stay valid); the six new pairs each get their
+// own fixed per-UNORDERED-pair key (P5b(i): a fixed bucket per pair, not
+// a shared national bucket across pairs).
+const BUDARDALUR_HOLMAVIK_CACHE_KEY = "winter-route-data:budardalur-holmavik";
 
 async function fetchCombinedRoadData(idButurList) {
   const [segments, points] = await Promise.all([
@@ -115,24 +129,32 @@ function buildRoadSectionPayload(idButurSection, roadData, now, pointsFeedUnavai
   };
 }
 
-// `forecastResult.points` is indexed to the FIXED canonical (B->H) fetch
-// order (so both directions share one cache bucket); this maps it to the
-// requested direction's own DISPLAY order without a second fetch.
-function buildForecastPayload(forecastResult, from) {
+// `forecastResult.points` is indexed to a FIXED canonical fetch order
+// (so both directions of the same pair share one cache bucket); this maps
+// it to the requested direction's own DISPLAY order (`displayPoints`,
+// already direction-ordered by the caller) without a second fetch, by id
+// -- never by position, since canonical and display order can differ.
+// `chainageKm` (P4c, westfjords-batch pairs only -- absent/undefined for
+// B<->H, which keeps its own existing fixed coverage text unchanged) is
+// each point's own real planar distance from THIS request's own `from`,
+// letting the UI compute the largest point-to-point gap generically for
+// any pair, never a hardcoded per-pair table.
+function buildForecastPayload(forecastResult, displayPoints, canonicalPoints, chainageKm) {
   if (!forecastResult.ok) {
     return { available: false, reason: forecastResult.reason, points: [] };
   }
 
-  const displayPoints = orderedForecastPoints(from);
-  const canonicalIndexById = new Map(BUDARDALUR_HOLMAVIK_FORECAST_POINTS.map((p, i) => [p.id, i]));
+  const canonicalIndexById = new Map(canonicalPoints.map((p, i) => [p.id, i]));
 
   const points = displayPoints.map((def) => {
     const i = canonicalIndexById.get(def.id);
     const validated = forecastResult.points[i];
+    const approxDistanceFromStartKm = chainageKm ? chainageKm[def.id] : undefined;
     if (!validated || !validated.ok) {
       return {
         id: def.id, labelIs: def.labelIs, labelEn: def.labelEn,
         available: false, reason: validated?.reason ?? "missing_point",
+        approxDistanceFromStartKm,
       };
     }
     return {
@@ -142,6 +164,7 @@ function buildForecastPayload(forecastResult, from) {
       returnedLatitude: validated.latitude, returnedLongitude: validated.longitude,
       elevation: validated.elevation,
       routeZ: def.nativeZ,
+      approxDistanceFromStartKm,
       hours: validated.hours,
       series: validated.series,
     };
@@ -177,7 +200,33 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: "missing_param", field: "geometryId" });
     }
 
-    const geo = resolveBudardalurHolmavikGeometry(from, to);
+    // Dispatch: B<->H keeps its own original, untouched resolver/cache
+    // key; the six new westfjords-batch pairs use their own separate
+    // resolver and a fixed per-unordered-pair cache key (P5b(i)). Neither
+    // path duplicates the other's geometry-selection logic -- both call
+    // the same underlying composeGeometryPath/combined-region-dataset
+    // core, just via their own small resolver module.
+    const isBudardalurHolmavik =
+      from !== to && BUDARDALUR_HOLMAVIK_PLACE_IDS.includes(from) && BUDARDALUR_HOLMAVIK_PLACE_IDS.includes(to);
+    let geo, cacheKey, canonicalPoints, displayPoints;
+    if (isBudardalurHolmavik) {
+      geo = resolveBudardalurHolmavikGeometry(from, to);
+      cacheKey = BUDARDALUR_HOLMAVIK_CACHE_KEY;
+      canonicalPoints = BUDARDALUR_HOLMAVIK_FORECAST_POINTS;
+      displayPoints = geo.ok ? orderedForecastPoints(from) : [];
+    } else if (isWestfjordsBatchPair(from, to)) {
+      geo = resolveWestfjordsBatchGeometry(from, to);
+      cacheKey = westfjordsBatchCacheKey(from, to);
+      if (geo.ok) {
+        const [canonicalFrom, canonicalTo] = [from, to].sort();
+        const canonicalGeo = from === canonicalFrom ? geo : resolveWestfjordsBatchGeometry(canonicalFrom, canonicalTo);
+        canonicalPoints = westfjordsBatchForecastPoints(canonicalGeo.pointIds);
+        displayPoints = westfjordsBatchForecastPoints(geo.pointIds);
+      }
+    } else {
+      return res.status(400).json({ error: "unsupported", reason: "unsupported_pair" });
+    }
+
     if (!geo.ok) {
       return res.status(400).json({ error: "unsupported", reason: geo.reason });
     }
@@ -192,10 +241,10 @@ export default async function handler(req, res) {
     const now = new Date();
 
     const [roadData, forecastResult] = await Promise.all([
-      getRoadData(() => fetchCombinedRoadData(geo.idButurList), { routeId: CACHE_ROUTE_KEY }),
+      getRoadData(() => fetchCombinedRoadData(geo.idButurList), { routeId: cacheKey }),
       getForecastData(
-        () => fetchWinterRouteForecast({ now, fetchOptions: UPSTREAM_FETCH_OPTIONS, forecastPoints: BUDARDALUR_HOLMAVIK_FORECAST_POINTS }),
-        { routeId: CACHE_ROUTE_KEY }
+        () => fetchWinterRouteForecast({ now, fetchOptions: UPSTREAM_FETCH_OPTIONS, forecastPoints: canonicalPoints }),
+        { routeId: cacheKey }
       ),
     ]);
 
@@ -211,6 +260,7 @@ export default async function handler(req, res) {
       geometryId: geo.geometryId,
       regionVersion: geo.regionVersion,
       routeLengthM: geo.lengthM,
+      unmappedLengthM: geo.unmappedLengthM ?? 0,
       generatedAt: now.toISOString(),
       roadSections,
       roadMeta: {
@@ -221,7 +271,7 @@ export default async function handler(req, res) {
         pointsAvailable: !!roadData?.points?.ok,
         pointsFeedUnavailableOrStale,
       },
-      forecast: buildForecastPayload(forecastResult, from),
+      forecast: buildForecastPayload(forecastResult, displayPoints, canonicalPoints, geo.pointChainageKm),
     });
   } catch {
     // Never the raw error/message/stack — same discipline as

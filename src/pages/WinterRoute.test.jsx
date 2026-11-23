@@ -2055,6 +2055,25 @@ describe("WinterRoute page", () => {
       expect(screen.queryByLabelText(translations.is.winterRouteHourLabel)).toBeNull();
     });
 
+    it.each(["holmavik", "flokalundur"])("announces missing forecast without claiming zero points: B to %s", async (to) => {
+      vi.stubGlobal("fetch", vi.fn((url) => {
+        const u = String(url);
+        if (u.includes("/api/winter-route-data")) return Promise.resolve({ status: 200, json: async () => dataFixture("budardalur", to, FORWARD_GEOMETRY_ID, { forecast: { available: false, reason: "key_missing", points: [] } }) });
+        return Promise.resolve({ status: 200, json: async () => geometryFixture("budardalur", to, FORWARD_GEOMETRY_ID) });
+      }));
+      render(<MemoryRouter><WinterRoute /></MemoryRouter>);
+      const { fireEvent } = await import("@testing-library/react");
+      fireEvent.change(screen.getByLabelText(translations.is.winterRouteFromLabel, { selector: "select" }), { target: { value: "budardalur" } });
+      fireEvent.change(screen.getByLabelText(translations.is.winterRouteToLabel, { selector: "select" }), { target: { value: to } });
+      fireEvent.click(screen.getByRole("button", { name: translations.is.winterRouteShowRouteButton }));
+      const region = await screen.findByTestId("winter-route-data");
+      await waitFor(() => expect(within(region).getByRole("heading", { name: translations.is.winterRouteForecastUnavailable })).toBeInTheDocument());
+      expect(within(region).getByRole("status")).toHaveClass("sr-only");
+      expect(within(region).getByRole("status")).toHaveTextContent(translations.is.winterRouteForecastUnavailable);
+      expect(within(region).queryByText(translations.is.winterRouteDataForecastHeading.replace("{count}", "0"))).toBeNull();
+      expect(within(region).queryByText(translations.is.winterRouteNoCoveragePointsNote)).toBeNull();
+    });
+
     it("H->B: the reverse direction fetches with the reverse geometryId", async () => {
       vi.stubGlobal("fetch", dualEndpointFetch());
       render(<MemoryRouter initialEntries={["/winter-route"]}><WinterRoute /></MemoryRouter>);
@@ -2124,6 +2143,114 @@ describe("WinterRoute page", () => {
       await waitFor(() => expect(screen.getByText(translations.is.winterRouteDataLoading)).toBeInTheDocument());
 
       expect(() => unmount()).not.toThrow();
+    });
+
+    // Ticket #503 westfjords-batch, P6(a)/P7(c) -- the same request-gate/
+    // data-view flow generalized to a non-B<->H connected pair. Uses its
+    // own 5-point fixture (with approxDistanceFromStartKm, unlike B<->H's
+    // fixture above) so the dynamic point-count heading and the computed
+    // largest-gap note are exercised against real varying data.
+    const FLOKALUNDUR_GEOMETRY_ID = "flokalundur-geometry-id-def";
+    function flokalundurDataFixture(from, to, geometryId) {
+      return dataFixture(from, to, geometryId, {
+        roadSections: [
+          { idButur: 905070037, nameIs: "Klettsháls", nameEn: "Klettsháls", routeLengthM: 5230, routeLengthFraction: 0.03, isEdgeSegment: false, segmentDataAvailable: true, category: "passable", positiveStyleEligible: true, astandYfirbord: "GREIDFAERT", astandLysing: "Greiðfært", astandLysingEn: "Easily passable", export: { isStale: false }, registration: { isOld: false }, notices: [] },
+        ],
+        forecast: {
+          available: true,
+          window: { startHour: DATA_HOURS[0], endHour: DATA_HOURS[1], expectedHours: DATA_HOURS },
+          points: [
+            { id: "budardalur-route", labelIs: "Búðardalur", labelEn: "Búðardalur", available: true, approxDistanceFromStartKm: 0, returnedLatitude: 65.1, returnedLongitude: -21.7, elevation: 22, hours: DATA_HOURS, series: { temperature_2m: [-1, -2], wind_speed_10m: [1, 1], wind_gusts_10m: [1, 1], precipitation: [0, 0], weather_code: [3, 3] } },
+            { id: "svinadalur-route", labelIs: "Svínadalur", labelEn: "Svínadalur", available: true, approxDistanceFromStartKm: 24.1, returnedLatitude: 65.2, returnedLongitude: -21.9, elevation: 100, hours: DATA_HOURS, series: { temperature_2m: [-2, -2], wind_speed_10m: [2, 2], wind_gusts_10m: [2, 2], precipitation: [0, 0], weather_code: [3, 3] } },
+            { id: "gilsfjordur-route", labelIs: "Gilsfjörður", labelEn: "Gilsfjörður", available: true, approxDistanceFromStartKm: 38.7, returnedLatitude: 65.3, returnedLongitude: -22.0, elevation: 50, hours: DATA_HOURS, series: { temperature_2m: [-2, -3], wind_speed_10m: [2, 2], wind_gusts_10m: [3, 3], precipitation: [0, 0], weather_code: [3, 3] } },
+            { id: "klettshals-route", labelIs: "Klettsháls", labelEn: "Klettsháls", available: true, approxDistanceFromStartKm: 122.4, returnedLatitude: 65.4, returnedLongitude: -22.5, elevation: 400, hours: DATA_HOURS, series: { temperature_2m: [-5, -6], wind_speed_10m: [5, 5], wind_gusts_10m: [8, 8], precipitation: [1, 1], weather_code: [71, 71] } },
+            { id: "flokalundur-route", labelIs: "Flókalundur", labelEn: "Flókalundur", available: true, approxDistanceFromStartKm: 172.5, returnedLatitude: 65.5, returnedLongitude: -23.0, elevation: 10, hours: DATA_HOURS, series: { temperature_2m: [0, -1], wind_speed_10m: [3, 3], wind_gusts_10m: [4, 4], precipitation: [0, 0], weather_code: [3, 3] } },
+          ],
+          stale: false, cacheAgeMs: 0,
+        },
+      });
+    }
+
+    function batchAwareFetch() {
+      return vi.fn().mockImplementation((url) => {
+        const u = String(url);
+        if (u.includes("/api/winter-route-data")) {
+          const params = new URL(u, "http://localhost").searchParams;
+          const from = params.get("from"), to = params.get("to"), geometryId = params.get("geometryId");
+          const fixture = geometryId === FLOKALUNDUR_GEOMETRY_ID ? flokalundurDataFixture(from, to, geometryId) : dataFixture(from, to, geometryId);
+          return Promise.resolve({ status: 200, json: async () => fixture });
+        }
+        const key = geometryUrlToKey(u);
+        if (key === "budardalur|holmavik|") return Promise.resolve({ status: 200, json: async () => geometryFixture("budardalur", "holmavik", FORWARD_GEOMETRY_ID) });
+        if (key === "budardalur|flokalundur|") return Promise.resolve({ status: 200, json: async () => geometryFixture("budardalur", "flokalundur", FLOKALUNDUR_GEOMETRY_ID) });
+        if (key === "budardalur|isafjordur|") return Promise.resolve({ status: 200, json: async () => ({ schemaVersion: 1, tier: 0, status: "geometry_only", from: "budardalur", to: "isafjordur", geometryId: "unconnected-id" }) });
+        return Promise.reject(new Error(`no fixture for ${key}`));
+      });
+    }
+
+    async function chooseAndSubmit(from, to) {
+      const fromSelect = screen.getByLabelText(translations.is.winterRouteFromLabel, { selector: "select" });
+      const toSelect = screen.getByLabelText(translations.is.winterRouteToLabel, { selector: "select" });
+      const { fireEvent } = await import("@testing-library/react");
+      fireEvent.change(fromSelect, { target: { value: from } });
+      fireEvent.change(toSelect, { target: { value: to } });
+      fireEvent.click(screen.getByRole("button", { name: translations.is.winterRouteShowRouteButton }));
+    }
+
+    it("westfjords-batch pair (B<->F): fires /api/winter-route-data same as B<->H, with a dynamic 5-point heading and the computed largest-gap note", async () => {
+      vi.stubGlobal("fetch", batchAwareFetch());
+      render(<MemoryRouter initialEntries={["/winter-route"]}><WinterRoute /></MemoryRouter>);
+      await chooseAndSubmit("budardalur", "flokalundur");
+
+      await waitFor(() => expect(screen.getByText(translations.is.winterRouteDataConnectedDisclaimer)).toBeInTheDocument());
+      const dataRegion = screen.getByTestId("winter-route-data");
+      const data = within(dataRegion);
+      expect(data.getByRole("heading", { name: translations.is.winterRouteDataForecastHeading.replace("{count}", "5") })).toBeInTheDocument();
+      expect(data.getByText(translations.is.winterRouteNoCoveragePointsNote)).toBeInTheDocument();
+      // Largest gap is Gilsfjörður (38.7km) -> Klettsháls (122.4km) = 83,7 km.
+      expect(
+        data.getByText(
+          translations.is.winterRouteLargestGapNote.replace("{km}", "83,7").replace("{pointA}", "Gilsfjörður").replace("{pointB}", "Klettsháls")
+        )
+      ).toBeInTheDocument();
+      expect(data.getByText("Svínadalur")).toBeInTheDocument();
+      expect(data.getByText("Flókalundur")).toBeInTheDocument();
+    });
+
+    it("B<->H shows no computed largest-gap note (its own fixture carries no approxDistanceFromStartKm)", async () => {
+      vi.stubGlobal("fetch", batchAwareFetch());
+      render(<MemoryRouter initialEntries={["/winter-route"]}><WinterRoute /></MemoryRouter>);
+      await submitBudardalurHolmavik();
+      await waitFor(() => expect(screen.getByText(translations.is.winterRouteDataConnectedDisclaimer)).toBeInTheDocument());
+
+      const dataRegion = screen.getByTestId("winter-route-data");
+      const data = within(dataRegion);
+      expect(data.getByRole("heading", { name: translations.is.winterRouteDataForecastHeading.replace("{count}", "4") })).toBeInTheDocument();
+      expect(screen.queryByText(/km/)).toBeNull();
+    });
+
+    it("P6(c): B<->H -> westfjords-batch pair -> an unconnected pair -> the same batch pair again never shows stale data under the wrong header", async () => {
+      // Place names ("Hólmavík"/"Flókalundur") are ambiguous page-wide --
+      // they're also real <option> text in both Frá/Til selects -- so every
+      // check below is scoped to the data region itself (same discipline as
+      // the "never raw technical fields" test above).
+      vi.stubGlobal("fetch", batchAwareFetch());
+      render(<MemoryRouter initialEntries={["/winter-route"]}><WinterRoute /></MemoryRouter>);
+
+      await chooseAndSubmit("budardalur", "holmavik");
+      await waitFor(() => expect(within(screen.getByTestId("winter-route-data")).getByText("Hólmavík")).toBeInTheDocument());
+
+      await chooseAndSubmit("budardalur", "flokalundur");
+      await waitFor(() => expect(within(screen.getByTestId("winter-route-data")).getByText("Flókalundur")).toBeInTheDocument());
+      expect(within(screen.getByTestId("winter-route-data")).queryByText("Hólmavík")).toBeNull();
+
+      await chooseAndSubmit("budardalur", "isafjordur");
+      await waitFor(() => expect(screen.getByText(translations.is.winterRouteBaseDisclaimer)).toBeInTheDocument());
+      expect(screen.queryByTestId("winter-route-data")).toBeNull();
+
+      await chooseAndSubmit("budardalur", "flokalundur");
+      await waitFor(() => expect(within(screen.getByTestId("winter-route-data")).getByText("Flókalundur")).toBeInTheDocument());
+      expect(screen.queryByText(translations.is.winterRouteBaseDisclaimer)).toBeNull();
     });
   });
 });

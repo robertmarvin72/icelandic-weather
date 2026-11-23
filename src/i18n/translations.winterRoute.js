@@ -126,11 +126,12 @@ export const winterRouteTranslations = {
     // Ticket #503 — the first B<->H (Búðardalur<->Hólmavík) weather/road
     // data binding, layered under a geometry_only result in "Velja
     // staði" mode. T3: no departure/arrival/ETA/70km/koma wording.
-    winterRouteDataConnectedDisclaimer: "Weather and road conditions are connected at four defined points/sections for this route.",
+    winterRouteDataConnectedDisclaimer: "Weather and road conditions are connected at defined points and road sections for this route.",
     winterRouteDataLoading: "Fetching weather and road data…",
-    winterRouteNoCoveragePointsNote: "Weather at four selected points; Svínadalur and Gilsfjörður have no point of their own.",
+    winterRouteNoCoveragePointsNote: "Weather at selected points along the route; sections between them have no point of their own.",
+    winterRouteLargestGapNote: "The largest gap without a point is about {km} km, between {pointA} and {pointB}.",
     winterRouteEdgeSegmentNote: "This section covers only a short part of the route ({percent}%).",
-    winterRouteDataForecastHeading: "Weather at four points",
+    winterRouteDataForecastHeading: "Weather at {count} points",
   },
 
   is: {
@@ -238,10 +239,11 @@ export const winterRouteTranslations = {
     winterRouteOptionGeneric: "Valkostur",
 
     // Ticket #503 — sjá samsvarandi EN athugasemd að ofan.
-    winterRouteDataConnectedDisclaimer: "Veður og færð eru tengd á fjórum skilgreindum punktum/köflum fyrir þessa leið.",
+    winterRouteDataConnectedDisclaimer: "Veður og færð eru tengd á skilgreindum punktum og vegköflum fyrir þessa leið.",
     winterRouteDataLoading: "Sæki veður og færð…",
-    winterRouteNoCoveragePointsNote: "Veður á fjórum völdum punktum; Svínadalur/Gilsfjörður hafa engan eigin punkt.",
+    winterRouteNoCoveragePointsNote: "Veður á völdum punktum leiðarinnar; kaflar á milli þeirra hafa engan eigin punkt.",
+    winterRouteLargestGapNote: "Stærsta bilið án punkts er um {km} km, milli {pointA} og {pointB}.",
     winterRouteEdgeSegmentNote: "Þessi kafli nær aðeins yfir stuttan hluta leiðarinnar ({percent}%).",
-    winterRouteDataForecastHeading: "Veður á fjórum punktum",
+    winterRouteDataForecastHeading: "Veður á {count} punktum",
   },
 };
