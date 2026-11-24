@@ -70,6 +70,15 @@ import {
   ringOptionCacheKey,
   ringOptionForecastPoints,
 } from "./_lib/winterRoute/ringOptionsRoute.js";
+// Ticket #503 ring-completion — the last 8 Ring Road pairs (no south/north
+// option at all), own separate resolver/cache-key/identity shape
+// (datasetVersion only, never selectedOption/policyVersion/regionVersion).
+import {
+  isRingCompletionPair,
+  resolveRingCompletionGeometry,
+  ringCompletionCacheKey,
+  ringCompletionForecastPoints,
+} from "./_lib/winterRoute/ringCompletionRoute.js";
 
 const UPSTREAM_FETCH_OPTIONS = { timeoutMs: 15000, maxBytes: 2 * 1024 * 1024 };
 
@@ -266,6 +275,17 @@ export default async function handler(req, res) {
       if (geo.ok) {
         cacheKey = ringOptionCacheKey(from, to, rawOption, geo.geometryId);
         canonicalPoints = ringOptionForecastPoints(geo.pointIds);
+        displayPoints = canonicalPoints;
+      }
+    } else if (isRingCompletionPair(from, to)) {
+      // P4 — `option` (stray or valid-looking) is simply ignored for
+      // these pairs, exactly like the geometry handler's own plain
+      // branch; no reverse-sharing here either (own direction-specific
+      // bucket, same convention as ring-options).
+      geo = resolveRingCompletionGeometry(from, to);
+      if (geo.ok) {
+        cacheKey = ringCompletionCacheKey(from, to, geo.geometryId, geo.datasetVersion);
+        canonicalPoints = ringCompletionForecastPoints(geo.pointIds);
         displayPoints = canonicalPoints;
       }
     } else {

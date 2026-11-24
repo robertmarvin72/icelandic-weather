@@ -55,6 +55,12 @@ import {
   winterRouteAccessPointShortFlag,
   winterRouteOptionLabelKey,
 } from "../lib/winterRouteGeometryResponse";
+import {
+  isWinterRouteDataPair,
+  isRingOptionPair,
+  isRingCompletionPair,
+  identityKindFor,
+} from "./winterRoutePairClassification";
 
 // Ticket #502 — "Velja staði" default pre-filled pair (the existing ring-
 // pilot MVP short route), never auto-requested on mount (P1a): only
@@ -490,51 +496,10 @@ function GeometryResultView({ outcome, payload, applied, t, lang, onSelectOption
   );
 }
 
-const BUDARDALUR_HOLMAVIK_PLACE_IDS = new Set(["budardalur", "holmavik"]);
-function isBudardalurHolmavikPair(from, to) {
-  return from !== to && BUDARDALUR_HOLMAVIK_PLACE_IDS.has(from) && BUDARDALUR_HOLMAVIK_PLACE_IDS.has(to);
-}
-
-// Ticket #503 westfjords-batch -- frontend-only duplicate of the backend's
-// own pair allowlist (api/_lib/winterRoute/westfjordsBatchRoute.js). src/
-// must not import api/ code directly (bundler boundary), same convention
-// already used for winterRoutePlaces.js/winterRouteRoutes.js.
-const WESTFJORDS_BATCH_PAIRS = [
-  ["budardalur", "flokalundur"], ["budardalur", "patreksfjordur"], ["budardalur", "talknafjordur"],
-  ["flokalundur", "patreksfjordur"], ["flokalundur", "talknafjordur"], ["patreksfjordur", "talknafjordur"],
-];
-const WESTFJORDS_BATCH_PAIR_KEYS = new Set(WESTFJORDS_BATCH_PAIRS.flatMap(([a, b]) => [`${a}|${b}`, `${b}|${a}`]));
-function isWestfjordsBatchPair(from, to) {
-  return from !== to && WESTFJORDS_BATCH_PAIR_KEYS.has(`${from}|${to}`);
-}
-
-// Ticket #503 westfjords-completion -- frontend-only duplicate of the
-// backend's own pair allowlist (api/_lib/winterRoute/westfjordsCompletionRoute.js).
-const WESTFJORDS_COMPLETION_PAIRS = [
-  ["budardalur", "isafjordur"], ["flokalundur", "isafjordur"], ["isafjordur", "holmavik"],
-  ["isafjordur", "patreksfjordur"], ["isafjordur", "talknafjordur"], ["flokalundur", "holmavik"],
-  ["holmavik", "patreksfjordur"], ["holmavik", "talknafjordur"],
-];
-const WESTFJORDS_COMPLETION_PAIR_KEYS = new Set(WESTFJORDS_COMPLETION_PAIRS.flatMap(([a, b]) => [`${a}|${b}`, `${b}|${a}`]));
-function isWestfjordsCompletionPair(from, to) {
-  return from !== to && WESTFJORDS_COMPLETION_PAIR_KEYS.has(`${from}|${to}`);
-}
-function isWinterRouteDataPair(from, to) {
-  return isBudardalurHolmavikPair(from, to) || isWestfjordsBatchPair(from, to) || isWestfjordsCompletionPair(from, to);
-}
-
-// Ticket #503 ring-options -- frontend-only duplicate of the backend's own
-// pair allowlist (api/_lib/winterRoute/ringOptionsRoute.js). Unlike the
-// Westfjords pairs, these two ALSO require a valid `option` (south|north)
-// taken from the geometry response's own `selectedOption` -- never
-// hardcoded, never re-derived client-side (P8a).
-const RING_OPTION_PAIR_KEYS = new Set([
-  "reykjavik-raudavatn|selfoss", "selfoss|reykjavik-raudavatn",
-  "reykjavik-raudavatn|hella", "hella|reykjavik-raudavatn",
-]);
-function isRingOptionPair(from, to) {
-  return from !== to && RING_OPTION_PAIR_KEYS.has(`${from}|${to}`);
-}
+// Pair classification (Westfjords/ring-option/ring-completion) lives in its
+// own module, not here -- see winterRoutePairClassification.js's own
+// header for why (keeps this file exporting only the page component, and
+// lets the repo-checked front/back parity test import it directly).
 
 // P4(c) ring-options -- an edge segment's own percent-of-route can round
 // to "0.0%" on a ~1200km route (the ring absolute-length rule flags
@@ -548,9 +513,26 @@ function edgeSegmentNoteFor(section, t, lang) {
   return t("winterRouteEdgeSegmentNote").replace("{percent}", percentText);
 }
 
+// P3 -- exactly one of three identity shapes may be present, matching
+// what this specific pair is classified as; never a blended/mismatched
+// response (e.g. a generic ring-completion pair must never carry
+// selectedOption/policyVersion/regionVersion, even if datasetVersion is
+// also correct).
+function hasValidIdentityShape(data, from, to) {
+  const kind = identityKindFor(from, to);
+  const nonEmpty = (value) => typeof value === "string" && value.trim().length > 0;
+  const noRegion = data.regionVersion === undefined;
+  const noOption = data.selectedOption === undefined && data.policyVersion === undefined;
+  if (kind === "region") return nonEmpty(data.regionVersion) && noOption && data.datasetVersion === undefined;
+  if (kind === "option") return noRegion && nonEmpty(data.datasetVersion) && nonEmpty(data.policyVersion) && (data.selectedOption === "south" || data.selectedOption === "north");
+  if (kind === "generic") return nonEmpty(data.datasetVersion) && noRegion && noOption;
+  return false;
+}
+
 // Validate the fields consumed by the data view before accepting a response.
 function validRouteData(data, from, to, geometryId) {
   if (!data || data.from !== from || data.to !== to || data.geometryId !== geometryId ||
+      !hasValidIdentityShape(data, from, to) ||
       !Array.isArray(data.roadSections) || !data.roadMeta || typeof data.roadMeta.available !== "boolean" ||
       !data.forecast || typeof data.forecast.available !== "boolean") return false;
   if (!data.roadSections.every((section) => section && Array.isArray(section.notices) && section.export && section.registration)) return false;
@@ -794,6 +776,7 @@ function WinterRouteGeometrySection({ t, lang, onAppliedChange }) {
     !isCurrentLoading &&
     view?.outcome === WINTER_ROUTE_OUTCOME.GEOMETRY_ONLY &&
     (isWinterRouteDataPair(applied.from, applied.to) ||
+      isRingCompletionPair(applied.from, applied.to) ||
       (isRingPair && (ringSelectedOption === "south" || ringSelectedOption === "north")));
   const dataGeometryId = isDataEligible ? view.payload.geometryId : null;
   const dataOption = isDataEligible && isRingPair ? ringSelectedOption : null;

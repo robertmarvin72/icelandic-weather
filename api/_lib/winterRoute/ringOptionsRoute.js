@@ -114,7 +114,10 @@ const VARIANT_POINT_IDS = {
 // and 909350037 "Akureyri-Vaðlaheiðargöng", both ordinary roads). None of
 // the frozen points above resolve to one of these three lines; this is a
 // defensive invariant check, not expected to ever trigger.
-const TUNNEL_IDBUTUR_IDS = new Set([904690037, 909000037, 911260037]);
+// Exported (not just used locally) so ticket #503 ring-completion's own
+// generic-pair module can reuse the exact same tunnel-id set and EN name
+// table, rather than a second, possibly-drifting copy.
+export const TUNNEL_IDBUTUR_IDS = new Set([904690037, 909000037, 911260037]);
 
 // P3(c) -- fixed, reviewed EN translations for all 72 real IdButur names
 // touched across the eight variants (0 of 72 existed in any prior table).
@@ -124,7 +127,7 @@ const TUNNEL_IDBUTUR_IDS = new Set([904690037, 909000037, 911260037]);
 // include one of those tunnel names, e.g. "Hvalfjarðargöng-Grundartangi",
 // for display consistency -- this does NOT change tunnel-guard matching,
 // which stays a fixed-id check against the three tunnel segments only).
-const IDBUTUR_NAME_EN = {
+export const IDBUTUR_NAME_EN = {
   "Hellisheiði til austurs": "Hellisheiði eastbound",
   "Fossvellir-Þrengslavegur": "Fossvellir–Þrengslavegur",
   "Víðigerði-Gljúfurá": "Víðigerði–Gljúfurá",
@@ -202,14 +205,14 @@ const IDBUTUR_NAME_EN = {
 // P3(c) -- the one IS display string that is also expanded (not merely
 // translated to EN): "Suðurlandsv." -> "Suðurlandsvegur" (the raw
 // retained name is an abbreviation, never shown verbatim in the UI).
-const IDBUTUR_NAME_IS_DISPLAY_OVERRIDE = {
+export const IDBUTUR_NAME_IS_DISPLAY_OVERRIDE = {
   "Suðurlandsv. um Hádegismóa": "Suðurlandsvegur um Hádegismóa",
 };
 
 // P4(c) -- ring routes use an ABSOLUTE length threshold, not the 1% used
 // by the Westfjords modules (which would wrongly flag 19-20 perfectly
 // normal ~1000 km-route sections, e.g. Hvalfjarðargöng at 0.46%).
-const RING_EDGE_SEGMENT_LENGTH_THRESHOLD_M = 100;
+export const RING_EDGE_SEGMENT_LENGTH_THRESHOLD_M = 100;
 
 const RING_PAIR_KEYS = new Set([
   "reykjavik-raudavatn|selfoss", "selfoss|reykjavik-raudavatn",

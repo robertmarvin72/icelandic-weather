@@ -2056,6 +2056,37 @@ describe("WinterRoute page", () => {
       expect(screen.queryByLabelText(translations.is.winterRouteHourLabel)).toBeNull();
     });
 
+    it.each([
+      ["generic", { selectedOption: "south" }], ["generic", { policyVersion: "p" }],
+      ["generic", { regionVersion: "r" }], ["generic", { datasetVersion: undefined }],
+      ["region", { selectedOption: "south" }], ["region", { policyVersion: "p" }],
+      ["region", { datasetVersion: "d" }], ["region", { regionVersion: undefined }],
+      ["option", { datasetVersion: undefined }], ["option", { policyVersion: undefined }],
+      ["option", { selectedOption: undefined }], ["option", { regionVersion: "r" }],
+    ])("rejects a mixed or missing %s response identity: %j", async (kind, overrides) => {
+      const from = kind === "region" ? "budardalur" : kind === "option" ? "reykjavik-raudavatn" : "egilsstadir";
+      const to = kind === "region" ? "holmavik" : kind === "option" ? "selfoss" : "seydisfjordur";
+      vi.stubGlobal("fetch", vi.fn((url) => {
+        const d = dataFixture(from, to, FORWARD_GEOMETRY_ID);
+        delete d.regionVersion;
+        Object.assign(d, kind === "region" ? { regionVersion: "r" } : kind === "option" ? { datasetVersion: "d", policyVersion: "p", selectedOption: "south" } : { datasetVersion: "d" }, overrides);
+        if (String(url).includes("/api/winter-route-data")) return Promise.resolve({ status: 200, json: async () => d });
+        const geo = geometryFixture(from, to, FORWARD_GEOMETRY_ID);
+        if (kind === "option") Object.assign(geo, { selectedOption: "south", options: [
+          { id: "south", label: "south", lengthM: 1, via: [], routeId: "s" },
+          { id: "north", label: "north", lengthM: 2, via: [], routeId: "n" },
+        ] });
+        return Promise.resolve({ status: 200, json: async () => geo });
+      }));
+      render(<MemoryRouter><WinterRoute /></MemoryRouter>);
+      const { fireEvent } = await import("@testing-library/react");
+      fireEvent.change(screen.getByLabelText(translations.is.winterRouteFromLabel, { selector: "select" }), { target: { value: from } });
+      fireEvent.change(screen.getByLabelText(translations.is.winterRouteToLabel, { selector: "select" }), { target: { value: to } });
+      fireEvent.click(screen.getByRole("button", { name: translations.is.winterRouteShowRouteButton }));
+      await screen.findByText(translations.is.winterRouteGenericError);
+      expect(screen.queryByLabelText(translations.is.winterRouteHourLabel)).toBeNull();
+    });
+
     it.each(["holmavik", "flokalundur"])("announces missing forecast without claiming zero points: B to %s", async (to) => {
       vi.stubGlobal("fetch", vi.fn((url) => {
         const u = String(url);
@@ -2484,6 +2515,122 @@ describe("WinterRoute page", () => {
       await waitFor(() => expect(screen.getByText(translations.is.winterRouteEdgeSegmentNoteShort)).toBeInTheDocument());
       expect(screen.queryByText(/0,0%/)).toBeNull();
       expect(screen.queryByText(/0\.0%/)).toBeNull();
+    });
+  });
+
+  // Ticket #503 ring-completion — the last 8 Ring Road pairs, no option at
+  // all, a third (datasetVersion-only) identity shape.
+  describe("Ticket #503 — ring-completion (generic Ring Road pairs, no option) weather/road data", () => {
+    const RVK = "reykjavik-raudavatn";
+    const DATA_HOURS = [futureHourString(2), futureHourString(3)];
+
+    function completionGeometryFixture(from, to) {
+      return { schemaVersion: 1, tier: 2, status: "geometry_only", from, to, geometryId: `${from}-${to}-geo`, datasetVersion: "ds1" };
+    }
+
+    function completionDataFixture({ from, to, geometryId, routeLengthM, points }) {
+      return {
+        from, to, geometryId, datasetVersion: "ds1",
+        routeLengthM, unmappedLengthM: 0,
+        generatedAt: "2026-11-24T09:00:00.000Z",
+        roadSections: [
+          { idButur: 1, nameIs: "Dæmiskafli", nameEn: "Example section", routeLengthM, routeLengthFraction: 1, isEdgeSegment: false, segmentDataAvailable: true, category: "passable", positiveStyleEligible: true, astandYfirbord: "GREIDFAERT", astandLysing: "Greiðfært", astandLysingEn: "Easily passable", export: { isStale: false }, registration: { isOld: false }, notices: [] },
+        ],
+        roadMeta: { available: true, stale: false, cacheAgeMs: 0, segmentsAvailable: true, pointsAvailable: true, pointsFeedUnavailableOrStale: false },
+        forecast: {
+          available: true,
+          window: { startHour: DATA_HOURS[0], endHour: DATA_HOURS[1], expectedHours: DATA_HOURS },
+          points,
+          stale: false, cacheAgeMs: 0,
+        },
+      };
+    }
+
+    const ES_POINTS = ["egilsstadir-route", "fjardarheidi-route", "seydisfjordur-route"].map((id, i) => ({
+      id, labelIs: id, labelEn: id, available: true, returnedLatitude: 65.26, returnedLongitude: -14.2, elevation: 100, hours: DATA_HOURS,
+      series: { temperature_2m: [i, i], wind_speed_10m: [1, 1], wind_gusts_10m: [1, 1], precipitation: [0, 0], weather_code: [3, 3] },
+    }));
+
+    function completionFetch() {
+      return vi.fn().mockImplementation((url) => {
+        const u = String(url);
+        const params = new URL(u, "http://localhost").searchParams;
+        if (u.includes("/api/winter-route-data")) {
+          const from = params.get("from"), to = params.get("to"), geometryId = params.get("geometryId");
+          if ((from === "egilsstadir" && to === "seydisfjordur") || (from === "seydisfjordur" && to === "egilsstadir")) {
+            return Promise.resolve({ status: 200, json: async () => completionDataFixture({ from, to, geometryId, routeLengthM: 24148.9, points: from === "egilsstadir" ? ES_POINTS : [...ES_POINTS].reverse() }) });
+          }
+          return Promise.resolve({ status: 200, json: async () => completionDataFixture({ from, to, geometryId, routeLengthM: 615333.3, points: ES_POINTS }) });
+        }
+        const from = params.get("from"), to = params.get("to");
+        if ((from === RVK && to === "egilsstadir") || (from === "egilsstadir" && to === RVK) || (from === "egilsstadir" && to === "seydisfjordur") || (from === "seydisfjordur" && to === "egilsstadir")) {
+          return Promise.resolve({ status: 200, json: async () => completionGeometryFixture(from, to) });
+        }
+        return Promise.reject(new Error(`no fixture for ${u}`));
+      });
+    }
+
+    async function chooseAndSubmit(from, to) {
+      const fromSelect = screen.getByLabelText(translations.is.winterRouteFromLabel, { selector: "select" });
+      const toSelect = screen.getByLabelText(translations.is.winterRouteToLabel, { selector: "select" });
+      const { fireEvent } = await import("@testing-library/react");
+      fireEvent.change(fromSelect, { target: { value: from } });
+      fireEvent.change(toSelect, { target: { value: to } });
+      fireEvent.click(screen.getByRole("button", { name: translations.is.winterRouteShowRouteButton }));
+    }
+
+    it("egilsstadir<->seydisfjordur: data fetch URL carries NO option param, 3 points, no long-route note (<400km)", async () => {
+      vi.stubGlobal("fetch", completionFetch());
+      render(<MemoryRouter initialEntries={["/winter-route"]}><WinterRoute /></MemoryRouter>);
+      await chooseAndSubmit("egilsstadir", "seydisfjordur");
+
+      await waitFor(() => expect(screen.getByText(translations.is.winterRouteDataConnectedDisclaimer)).toBeInTheDocument());
+      const dataCall = global.fetch.mock.calls.find((c) => String(c[0]).includes("/api/winter-route-data"));
+      expect(dataCall[0]).not.toMatch(/option=/);
+      const dataRegion = screen.getByTestId("winter-route-data");
+      expect(within(dataRegion).getByRole("heading", { name: translations.is.winterRouteDataForecastHeading.replace("{count}", "3") })).toBeInTheDocument();
+      expect(screen.queryByText(translations.is.winterRouteLongRouteComparisonNote)).toBeNull();
+    });
+
+    it("reykjavik-raudavatn<->egilsstadir (615km): shows the ≥400km long-route comparison note", async () => {
+      vi.stubGlobal("fetch", completionFetch());
+      render(<MemoryRouter initialEntries={["/winter-route"]}><WinterRoute /></MemoryRouter>);
+      await chooseAndSubmit(RVK, "egilsstadir");
+
+      await waitFor(() => expect(screen.getByText(translations.is.winterRouteDataConnectedDisclaimer)).toBeInTheDocument());
+      expect(screen.getByText(translations.is.winterRouteLongRouteComparisonNote)).toBeInTheDocument();
+    });
+
+    it("P8 race: a ring-option pair's own selectedOption never leaks into a subsequent generic ring-completion pair's data fetch/identity", async () => {
+      const geometryFetch = vi.fn().mockImplementation((url) => {
+        const u = String(url);
+        if (u.includes("/api/winter-route-data")) {
+          const params = new URL(u, "http://localhost").searchParams;
+          const from = params.get("from"), to = params.get("to"), geometryId = params.get("geometryId");
+          if (from === RVK && to === "selfoss") {
+            return Promise.resolve({ status: 200, json: async () => ({ from, to, geometryId, selectedOption: "south", datasetVersion: "ds1", policyVersion: "south-policy", unmappedLengthM: 0, routeLengthM: 44984.8, generatedAt: "2026-11-24T09:00:00.000Z", roadSections: [], roadMeta: { available: true, stale: false, cacheAgeMs: 0, segmentsAvailable: true, pointsAvailable: true, pointsFeedUnavailableOrStale: false }, forecast: { available: true, window: { startHour: DATA_HOURS[0], endHour: DATA_HOURS[1], expectedHours: DATA_HOURS }, points: [], stale: false, cacheAgeMs: 0 } }) });
+          }
+          return Promise.resolve({ status: 200, json: async () => completionDataFixture({ from, to, geometryId, routeLengthM: 615333.3, points: ES_POINTS }) });
+        }
+        const params = new URL(u, "http://localhost").searchParams;
+        const from = params.get("from"), to = params.get("to");
+        if (from === RVK && to === "selfoss") return Promise.resolve({ status: 200, json: async () => ({ schemaVersion: 1, tier: 2, status: "geometry_only", from, to, selectedOption: "south", geometryId: `${from}-${to}-south`, options: [{ id: "south", label: "x", lengthM: 1, via: [], routeId: "a" }, { id: "north", label: "y", lengthM: 2, via: [], routeId: "b" }] }) });
+        if (from === RVK && to === "egilsstadir") return Promise.resolve({ status: 200, json: async () => completionGeometryFixture(from, to) });
+        return Promise.reject(new Error(`no fixture for ${u}`));
+      });
+      vi.stubGlobal("fetch", geometryFetch);
+      render(<MemoryRouter initialEntries={["/winter-route"]}><WinterRoute /></MemoryRouter>);
+
+      await chooseAndSubmit(RVK, "selfoss");
+      await waitFor(() => expect(screen.getByRole("radio", { name: translations.is.winterRouteOptionSouth })).toBeInTheDocument());
+
+      await chooseAndSubmit(RVK, "egilsstadir");
+      await waitFor(() => expect(screen.getByText(translations.is.winterRouteDataConnectedDisclaimer)).toBeInTheDocument());
+      // The generic pair's own data request must never have carried the
+      // prior pair's own "south" option.
+      const lastDataCall = [...geometryFetch.mock.calls].reverse().find((c) => String(c[0]).includes("/api/winter-route-data"));
+      expect(lastDataCall[0]).not.toMatch(/option=/);
+      expect(screen.queryByRole("radiogroup")).toBeNull();
     });
   });
 });

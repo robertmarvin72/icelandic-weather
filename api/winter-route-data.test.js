@@ -8,6 +8,7 @@ import { resolveBudardalurHolmavikGeometry, BUDARDALUR_HOLMAVIK_FORECAST_POINTS 
 import { resolveWestfjordsBatchGeometry } from "./_lib/winterRoute/westfjordsBatchRoute.js";
 import { resolveWestfjordsCompletionGeometry } from "./_lib/winterRoute/westfjordsCompletionRoute.js";
 import { resolveRingOptionGeometry } from "./_lib/winterRoute/ringOptionsRoute.js";
+import { resolveRingCompletionGeometry } from "./_lib/winterRoute/ringCompletionRoute.js";
 
 const EXPECTED_IDBUTUR = [805030037, 905070037, 905080037, 805090037, 907000037, 707040037, 907040037];
 const FORWARD_GEOMETRY_ID = resolveBudardalurHolmavikGeometry("budardalur", "holmavik").geometryId;
@@ -958,6 +959,196 @@ describe("GET /api/winter-route-data — ring-options pairs (reykjavik-raudavatn
     global.fetch = stub.fn;
     const res = makeRes();
     await handler(makeReq("GET", { from: "reykjavik-raudavatn", to: "hella", option: "south", geometryId: geo.geometryId }), res);
+
+    expect(res.body.forecast.available).toBe(false);
+    expect(res.body.forecast.reason).toBe("key_missing");
+    expect(stub.calls.forecast).toBe(0);
+    process.env.OPEN_METEO_API_KEY = "test-key";
+  });
+});
+
+describe("GET /api/winter-route-data — ring-completion pairs (no option, datasetVersion-only identity)", () => {
+  const RE_FWD = resolveRingCompletionGeometry("reykjavik-raudavatn", "egilsstadir").geometryId;
+  const RE_REV = resolveRingCompletionGeometry("egilsstadir", "reykjavik-raudavatn").geometryId;
+  const ES_FWD = resolveRingCompletionGeometry("egilsstadir", "seydisfjordur").geometryId;
+  const SH_FWD = resolveRingCompletionGeometry("selfoss", "hella").geometryId;
+
+  function completionForecastApiResponse(pointCount, window) {
+    return Array.from({ length: pointCount }, (_, i) => ({
+      latitude: window.coordinates?.[i]?.lat ?? 65, longitude: window.coordinates?.[i]?.lon ?? -15, elevation: 10 + i, utc_offset_seconds: 0,
+      hourly_units: { temperature_2m: "°C", wind_speed_10m: "m/s", wind_gusts_10m: "m/s", precipitation: "mm", weather_code: "wmo code" },
+      hourly: {
+        time: window.expectedHours,
+        temperature_2m: window.expectedHours.map(() => i),
+        wind_speed_10m: window.expectedHours.map(() => 1),
+        wind_gusts_10m: window.expectedHours.map(() => 1),
+        precipitation: window.expectedHours.map(() => 0),
+        weather_code: window.expectedHours.map(() => 0),
+      },
+    }));
+  }
+  function completionStubFetch({ segmentIds, forecastPointCount } = {}) {
+    const calls = { segments: 0, points: 0, forecast: 0 };
+    return {
+      calls,
+      fn: vi.fn().mockImplementation((url) => {
+        const u = String(url);
+        if (u.includes("faerdpunktar")) { calls.points += 1; return Promise.resolve(okJsonResponse([])); }
+        if (u.includes("faerd2017_1")) { calls.segments += 1; return Promise.resolve(okJsonResponse((segmentIds ?? []).map((id) => validSegmentRow(id)))); }
+        calls.forecast += 1;
+        return Promise.resolve(okJsonResponse(completionForecastApiResponse(forecastPointCount ?? 3, { ...computeForecastWindow(), coordinates: new URL(u).searchParams.get("latitude").split(",").map((lat, i) => ({ lat: Number(lat), lon: Number(new URL(u).searchParams.get("longitude").split(",")[i]) })) })));
+      }),
+    };
+  }
+
+  it("egilsstadir<->seydisfjordur (3 points via Fjarðarheiði): identity is datasetVersion only, never selectedOption/policyVersion/regionVersion", async () => {
+    const geo = resolveRingCompletionGeometry("egilsstadir", "seydisfjordur");
+    const stub = completionStubFetch({ segmentIds: geo.idButurList, forecastPointCount: 3 });
+    global.fetch = stub.fn;
+    const res = makeRes();
+    await handler(makeReq("GET", { from: "egilsstadir", to: "seydisfjordur", geometryId: ES_FWD }), res);
+
+    expect(res.statusCode).toBe(200);
+    expect(typeof res.body.datasetVersion).toBe("string");
+    expect(res.body.selectedOption).toBeUndefined();
+    expect(res.body.policyVersion).toBeUndefined();
+    expect(res.body.regionVersion).toBeUndefined();
+    expect(res.body.roadSections).toHaveLength(2);
+    expect(res.body.forecast.points.map((p) => p.id)).toEqual(["egilsstadir-route", "fjardarheidi-route", "seydisfjordur-route"]);
+  });
+
+  it("a stray option=north is ignored: same 200 response, same geometryId, as without it", async () => {
+    const geo = resolveRingCompletionGeometry("reykjavik-raudavatn", "egilsstadir");
+    const stub = completionStubFetch({ segmentIds: geo.idButurList, forecastPointCount: 14 });
+    global.fetch = stub.fn;
+    const resWith = makeRes();
+    await handler(makeReq("GET", { from: "reykjavik-raudavatn", to: "egilsstadir", option: "north", geometryId: RE_FWD }), resWith);
+    expect(resWith.statusCode).toBe(200);
+    expect(resWith.body.geometryId).toBe(RE_FWD);
+    expect(resWith.body.selectedOption).toBeUndefined();
+  });
+
+  it("selfoss<->hella (shortest new pair): 2 road sections, 2 points", async () => {
+    const geo = resolveRingCompletionGeometry("selfoss", "hella");
+    const stub = completionStubFetch({ segmentIds: geo.idButurList, forecastPointCount: 2 });
+    global.fetch = stub.fn;
+    const res = makeRes();
+    await handler(makeReq("GET", { from: "selfoss", to: "hella", geometryId: SH_FWD }), res);
+    expect(res.statusCode).toBe(200);
+    expect(res.body.roadSections).toHaveLength(2);
+    expect(res.body.forecast.points.map((p) => p.id)).toEqual(["selfoss-route", "hella-route"]);
+  });
+
+  it("maps distinct validated forecasts to the correct point for all 16 directions (auðkennd spá)", async () => {
+    const variants = [
+      ["reykjavik-raudavatn", "egilsstadir"], ["egilsstadir", "reykjavik-raudavatn"],
+      ["reykjavik-raudavatn", "seydisfjordur"], ["seydisfjordur", "reykjavik-raudavatn"],
+      ["selfoss", "hella"], ["hella", "selfoss"],
+      ["selfoss", "egilsstadir"], ["egilsstadir", "selfoss"],
+      ["selfoss", "seydisfjordur"], ["seydisfjordur", "selfoss"],
+      ["hella", "egilsstadir"], ["egilsstadir", "hella"],
+      ["hella", "seydisfjordur"], ["seydisfjordur", "hella"],
+      ["egilsstadir", "seydisfjordur"], ["seydisfjordur", "egilsstadir"],
+    ];
+    for (const [from, to] of variants) {
+      __resetWinterRouteCacheForTests();
+      const geo = resolveRingCompletionGeometry(from, to);
+      const stub = completionStubFetch({ segmentIds: geo.idButurList, forecastPointCount: geo.pointIds.length });
+      global.fetch = stub.fn;
+      const res = makeRes();
+      await handler(makeReq("GET", { from, to, geometryId: geo.geometryId }), res);
+      expect(res.statusCode).toBe(200);
+      const points = res.body.forecast.points;
+      expect(points).toHaveLength(geo.pointIds.length);
+      points.forEach((point, i) => {
+        expect(point.available).toBe(true);
+        expect(point.id).toBe(geo.pointIds[i]);
+        expect(point.series.temperature_2m[0]).toBe(i);
+      });
+      expect(stub.calls).toEqual({ segments: 1, points: 1, forecast: 1 });
+    }
+  });
+
+  it("geometry_mismatch when the client geometryId doesn't match the real recomputed one", async () => {
+    const res = makeRes();
+    await handler(makeReq("GET", { from: "reykjavik-raudavatn", to: "egilsstadir", geometryId: "not-real" }), res);
+    expect(res.statusCode).toBe(400);
+    expect(res.body.error).toBe("geometry_mismatch");
+  });
+
+  it("400 unsupported for a mixed Ring<->Westfjords pair and for same-place, zero network calls", async () => {
+    const fetchMock = vi.fn();
+    global.fetch = fetchMock;
+    const res1 = makeRes();
+    await handler(makeReq("GET", { from: "selfoss", to: "isafjordur", geometryId: "x" }), res1);
+    expect(res1.statusCode).toBe(400);
+    expect(res1.body.error).toBe("unsupported");
+
+    const res2 = makeRes();
+    await handler(makeReq("GET", { from: "egilsstadir", to: "egilsstadir", geometryId: "x" }), res2);
+    expect(res2.statusCode).toBe(400);
+    expect(fetchMock).not.toHaveBeenCalled();
+  });
+
+  it("P4: concurrent forward+reverse share NO bucket (direction-specific) -- 6 upstream calls", async () => {
+    const stub = completionStubFetch({ segmentIds: resolveRingCompletionGeometry("reykjavik-raudavatn", "egilsstadir").idButurList, forecastPointCount: 14 });
+    global.fetch = stub.fn;
+    await Promise.all([
+      handler(makeReq("GET", { from: "reykjavik-raudavatn", to: "egilsstadir", geometryId: RE_FWD }), makeRes()),
+      handler(makeReq("GET", { from: "egilsstadir", to: "reykjavik-raudavatn", geometryId: RE_REV }), makeRes()),
+    ]);
+    expect(stub.calls.segments).toBe(2);
+    expect(stub.calls.points).toBe(2);
+    expect(stub.calls.forecast).toBe(2);
+  });
+
+  it("cache isolation: a ring-completion bucket never shares with a ring-option pair's own bucket or a Westfjords pair's own bucket", async () => {
+    const stubOption = vi.fn().mockImplementation((url) => {
+      const u = String(url);
+      if (u.includes("faerdpunktar")) return Promise.resolve(okJsonResponse([]));
+      if (u.includes("faerd2017_1")) return Promise.resolve(okJsonResponse([]));
+      return Promise.resolve(okJsonResponse(completionForecastApiResponse(3, computeForecastWindow())));
+    });
+    global.fetch = stubOption;
+    await handler(makeReq("GET", { from: "reykjavik-raudavatn", to: "selfoss", option: "south", geometryId: resolveRingOptionGeometry("reykjavik-raudavatn", "selfoss", "south").geometryId }), makeRes());
+
+    const stubCompletion = completionStubFetch({ segmentIds: resolveRingCompletionGeometry("reykjavik-raudavatn", "egilsstadir").idButurList, forecastPointCount: 14 });
+    global.fetch = stubCompletion.fn;
+    await handler(makeReq("GET", { from: "reykjavik-raudavatn", to: "egilsstadir", geometryId: RE_FWD }), makeRes());
+    expect(stubCompletion.calls.segments).toBe(1); // fresh fetch, not reused from the option pair's own bucket
+
+    const stubBH = fullStubFetch({});
+    global.fetch = stubBH.fn;
+    await handler(makeReq("GET", { from: "budardalur", to: "holmavik", geometryId: FORWARD_GEOMETRY_ID }), makeRes());
+    expect(stubBH.calls.segments).toBe(1); // fresh fetch, not reused from any ring bucket
+  });
+
+  it("warm cache: a second identical request makes zero new upstream calls", async () => {
+    const stub = completionStubFetch({ segmentIds: resolveRingCompletionGeometry("selfoss", "hella").idButurList, forecastPointCount: 2 });
+    global.fetch = stub.fn;
+    await handler(makeReq("GET", { from: "selfoss", to: "hella", geometryId: SH_FWD }), makeRes());
+    const callsAfterFirst = stub.fn.mock.calls.length;
+    await handler(makeReq("GET", { from: "selfoss", to: "hella", geometryId: SH_FWD }), makeRes());
+    expect(stub.fn.mock.calls.length).toBe(callsAfterFirst); // nothing new within TTL
+  });
+
+  it("edge segments are flagged with the absolute threshold: 1410010037 on R<->Egilsstaðir", async () => {
+    const geo = resolveRingCompletionGeometry("reykjavik-raudavatn", "egilsstadir");
+    const stub = completionStubFetch({ segmentIds: geo.idButurList, forecastPointCount: 14 });
+    global.fetch = stub.fn;
+    const res = makeRes();
+    await handler(makeReq("GET", { from: "reykjavik-raudavatn", to: "egilsstadir", geometryId: RE_FWD }), res);
+    const byId = new Map(res.body.roadSections.map((s) => [s.idButur, s]));
+    expect(byId.get(1410010037).isEdgeSegment).toBe(true);
+  });
+
+  it("key_missing: zero forecast calls, road data unaffected, for a ring-completion pair too", async () => {
+    delete process.env.OPEN_METEO_API_KEY;
+    const geo = resolveRingCompletionGeometry("selfoss", "hella");
+    const stub = completionStubFetch({ segmentIds: geo.idButurList, forecastPointCount: 2 });
+    global.fetch = stub.fn;
+    const res = makeRes();
+    await handler(makeReq("GET", { from: "selfoss", to: "hella", geometryId: SH_FWD }), res);
 
     expect(res.body.forecast.available).toBe(false);
     expect(res.body.forecast.reason).toBe("key_missing");
