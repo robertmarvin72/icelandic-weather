@@ -2633,4 +2633,143 @@ describe("WinterRoute page", () => {
       expect(screen.queryByRole("radiogroup")).toBeNull();
     });
   });
+
+  // Ticket #503 source-time — attribution/legal text + response-time
+  // display in WinterRouteDataView, shared by all 25 connected pairs. One
+  // fixture (budardalur<->holmavik, the Westfjords `regionVersion`
+  // identity) is enough per the approved prompt's own instruction; the
+  // block itself is pair-agnostic.
+  describe("Ticket #503 source-time — attribution and response-time display", () => {
+    const DATA_HOURS = [futureHourString(2), futureHourString(3)];
+    const FORWARD_GEOMETRY_ID = "bh-source-time-geo";
+
+    function sourceTimeDataFixture(overrides = {}) {
+      return {
+        from: "budardalur", to: "holmavik", geometryId: FORWARD_GEOMETRY_ID, regionVersion: "r1", routeLengthM: 78697.77,
+        generatedAt: "2026-11-24T12:00:00.000Z",
+        roadSections: [makeSegment(805030037, { export: { dagsKeyrtUt: "2026-11-24T11:58:00.000Z", ageMinutes: 2, isStale: false } })],
+        roadMeta: { available: true, stale: false, cacheAgeMs: 0, segmentsAvailable: true, pointsAvailable: true, pointsFeedUnavailableOrStale: false },
+        forecast: {
+          available: true,
+          window: { startHour: DATA_HOURS[0], endHour: DATA_HOURS[1], expectedHours: DATA_HOURS },
+          points: [
+            { id: "budardalur-route", labelIs: "Búðardalur", labelEn: "Búðardalur", available: true, returnedLatitude: 65.1, returnedLongitude: -21.7, elevation: 22, hours: DATA_HOURS, series: { temperature_2m: [-1, -2], wind_speed_10m: [1, 1], wind_gusts_10m: [1, 1], precipitation: [0, 0], weather_code: [3, 3] } },
+          ],
+          stale: false, cacheAgeMs: 0,
+        },
+        ...overrides,
+      };
+    }
+
+    function sourceTimeFetch(fixture) {
+      return vi.fn().mockImplementation((url) => {
+        const u = String(url);
+        if (u.includes("/api/winter-route-data")) return Promise.resolve({ status: 200, json: async () => fixture });
+        return Promise.resolve({ status: 200, json: async () => ({ schemaVersion: 1, tier: 0, status: "geometry_only", from: "budardalur", to: "holmavik", geometryId: FORWARD_GEOMETRY_ID }) });
+      });
+    }
+
+    async function submitBudardalurHolmavik() {
+      const fromSelect = await screen.findByLabelText(translations.is.winterRouteFromLabel, { selector: "select" });
+      const toSelect = screen.getByLabelText(translations.is.winterRouteToLabel, { selector: "select" });
+      const { fireEvent } = await import("@testing-library/react");
+      fireEvent.change(fromSelect, { target: { value: "budardalur" } });
+      fireEvent.change(toSelect, { target: { value: "holmavik" } });
+      fireEvent.click(screen.getByRole("button", { name: translations.is.winterRouteShowRouteButton }));
+    }
+
+    async function renderWith(fixture) {
+      vi.stubGlobal("fetch", sourceTimeFetch(fixture));
+      render(<MemoryRouter initialEntries={["/winter-route"]}><WinterRoute /></MemoryRouter>);
+      await submitBudardalurHolmavik();
+      await waitFor(() => expect(screen.getByText(translations.is.winterRouteDataConnectedDisclaimer)).toBeInTheDocument());
+      return within(screen.getByTestId("winter-route-data"));
+    }
+
+    it("P1: the same four legal/safety lines + two attribution lines + two links as the legacy view are shown, scoped outside role=status", async () => {
+      const data = await renderWith(sourceTimeDataFixture());
+      expect(data.getByText(translations.is.winterRouteModifiedBy)).toBeInTheDocument();
+      expect(data.getByText(translations.is.winterRouteNoEndorsement)).toBeInTheDocument();
+      expect(data.getByText(translations.is.winterRouteOfficialOverride)).toBeInTheDocument();
+      expect(data.getByText(translations.is.winterRouteNotSafetyAdvice)).toBeInTheDocument();
+      expect(data.getByText(translations.is.winterRouteAttributionRoadLine)).toBeInTheDocument();
+      expect(data.getByText(translations.is.winterRouteAttributionWeatherLine)).toBeInTheDocument();
+      expect(data.getByRole("link", { name: translations.is.winterRouteOfficialSourceLinkRoad })).toBeInTheDocument();
+      expect(data.getByRole("link", { name: translations.is.winterRouteOfficialSourceLinkWeather })).toBeInTheDocument();
+      // Outside role="status": the status region only ever has the heading text.
+      expect(data.getByText(translations.is.winterRouteModifiedBy).closest('[role="status"]')).toBeNull();
+    });
+
+    it("(1) fresh 0/0: both cache-age lines read 'under a minute', and the P2 road-export-time line is shown", async () => {
+      const data = await renderWith(sourceTimeDataFixture());
+      expect(data.getByText(translations.is.winterRouteRoadCacheAgeUnderMinuteLine)).toBeInTheDocument();
+      expect(data.getByText(translations.is.winterRouteForecastCacheAgeUnderMinuteLine)).toBeInTheDocument();
+      expect(data.getByText(translations.is.winterRouteRoadExportedAtLine.replace("{time}", "2026-11-24 11:58"))).toBeInTheDocument();
+      expect(data.getByText(translations.is.winterRouteDataGeneratedAtLine.replace("{time}", "2026-11-24 12:00"))).toBeInTheDocument();
+    });
+
+    it("(2) distinct road/forecast cache ages (4 min vs 9 min) are never swapped", async () => {
+      const data = await renderWith(sourceTimeDataFixture({
+        roadMeta: { available: true, stale: false, cacheAgeMs: 240000, segmentsAvailable: true, pointsAvailable: true, pointsFeedUnavailableOrStale: false },
+        forecast: { available: true, window: { startHour: DATA_HOURS[0], endHour: DATA_HOURS[1], expectedHours: DATA_HOURS }, points: [{ id: "budardalur-route", labelIs: "Búðardalur", labelEn: "Búðardalur", available: true, returnedLatitude: 65.1, returnedLongitude: -21.7, elevation: 22, hours: DATA_HOURS, series: { temperature_2m: [-1, -2], wind_speed_10m: [1, 1], wind_gusts_10m: [1, 1], precipitation: [0, 0], weather_code: [3, 3] } }], stale: false, cacheAgeMs: 540000 },
+      }));
+      expect(data.getByText(translations.is.winterRouteRoadCacheAgeLine.replace("{minutes}", "4"))).toBeInTheDocument();
+      expect(data.getByText(translations.is.winterRouteForecastCacheAgeLine.replace("{minutes}", "9"))).toBeInTheDocument();
+    });
+
+    it("(3) stale road and stale forecast: the existing amber stale text and the new cache-age line agree on the same rounded minute figure", async () => {
+      const data = await renderWith(sourceTimeDataFixture({
+        roadMeta: { available: true, stale: true, cacheAgeMs: 2100000, segmentsAvailable: true, pointsAvailable: true, pointsFeedUnavailableOrStale: false },
+        forecast: { available: true, window: { startHour: DATA_HOURS[0], endHour: DATA_HOURS[1], expectedHours: DATA_HOURS }, points: [{ id: "budardalur-route", labelIs: "Búðardalur", labelEn: "Búðardalur", available: true, returnedLatitude: 65.1, returnedLongitude: -21.7, elevation: 22, hours: DATA_HOURS, series: { temperature_2m: [-1, -2], wind_speed_10m: [1, 1], wind_gusts_10m: [1, 1], precipitation: [0, 0], weather_code: [3, 3] } }], stale: true, cacheAgeMs: 4800000 },
+      }));
+      expect(data.getByText(translations.is.winterRouteRoadStaleServed.replace("{minutes}", "35"))).toBeInTheDocument();
+      expect(data.getByText(translations.is.winterRouteRoadCacheAgeLine.replace("{minutes}", "35"))).toBeInTheDocument();
+      expect(data.getByText(translations.is.winterRouteForecastStaleServed.replace("{minutes}", "80"))).toBeInTheDocument();
+      expect(data.getByText(translations.is.winterRouteForecastCacheAgeLine.replace("{minutes}", "80"))).toBeInTheDocument();
+    });
+
+    it("(4) road unavailable WITH cacheAgeMs:0 (the real ??0 shape the backend can produce): no false 'under a minute'/P2 line, existing unavailable text and attribution still shown", async () => {
+      const data = await renderWith(sourceTimeDataFixture({
+        roadMeta: { available: false, stale: false, cacheAgeMs: 0, segmentsAvailable: false, pointsAvailable: false, pointsFeedUnavailableOrStale: false },
+        roadSections: [],
+      }));
+      expect(data.queryByText(translations.is.winterRouteRoadCacheAgeUnderMinuteLine)).toBeNull();
+      expect(data.queryByText(/^Færð: aldur gagna í skyndiminni/)).toBeNull();
+      expect(data.queryByText(translations.is.winterRouteRoadExportedAtLine.replace("{time}", "2026-11-24 11:58"))).toBeNull();
+      expect(data.getByText(translations.is.winterRouteRoadFeedUnavailable)).toBeInTheDocument();
+      expect(data.getByText(translations.is.winterRouteAttributionRoadLine)).toBeInTheDocument();
+    });
+
+    it("(5) forecast unavailable without a cacheAgeMs key at all: no forecast cache-age line, no crash", async () => {
+      const data = await renderWith(sourceTimeDataFixture({
+        forecast: { available: false, reason: "key_missing", points: [] },
+      }));
+      expect(data.queryByText(translations.is.winterRouteForecastCacheAgeUnderMinuteLine)).toBeNull();
+      expect(data.getAllByText(translations.is.winterRouteForecastUnavailable).length).toBeGreaterThan(0);
+      expect(data.getByText(translations.is.winterRouteAttributionWeatherLine)).toBeInTheDocument();
+    });
+
+    it("(6) both road and forecast unavailable: no cache-age lines at all, attribution/legal text still shown, no crash", async () => {
+      const data = await renderWith(sourceTimeDataFixture({
+        roadMeta: { available: false, stale: false, cacheAgeMs: 0, segmentsAvailable: false, pointsAvailable: false, pointsFeedUnavailableOrStale: false },
+        roadSections: [],
+        forecast: { available: false, reason: "key_missing", points: [] },
+      }));
+      expect(data.queryByText(/aldur gagna í skyndiminni/)).toBeNull();
+      expect(data.getByText(translations.is.winterRouteModifiedBy)).toBeInTheDocument();
+    });
+
+    it("(7) invalid/missing/negative generatedAt and cacheAgeMs, and garbage export.dagsKeyrtUt: every affected line is simply omitted, attribution unaffected, no throw", async () => {
+      const data = await renderWith(sourceTimeDataFixture({
+        generatedAt: "not-a-real-timestamp-but-16-chars-plus",
+        roadSections: [makeSegment(805030037, { export: { dagsKeyrtUt: null, ageMinutes: null, isStale: false } })],
+        roadMeta: { available: true, stale: false, cacheAgeMs: -500, segmentsAvailable: true, pointsAvailable: true, pointsFeedUnavailableOrStale: false },
+        forecast: { available: true, window: { startHour: DATA_HOURS[0], endHour: DATA_HOURS[1], expectedHours: DATA_HOURS }, points: [{ id: "budardalur-route", labelIs: "Búðardalur", labelEn: "Búðardalur", available: true, returnedLatitude: 65.1, returnedLongitude: -21.7, elevation: 22, hours: DATA_HOURS, series: { temperature_2m: [-1, -2], wind_speed_10m: [1, 1], wind_gusts_10m: [1, 1], precipitation: [0, 0], weather_code: [3, 3] } }], stale: false, cacheAgeMs: NaN },
+      }));
+      expect(data.queryByText(/UTC\./)).toBeNull(); // no generatedAt/export line rendered at all
+      expect(data.queryByText(/aldur gagna í skyndiminni/)).toBeNull();
+      expect(data.getByText(translations.is.winterRouteAttributionRoadLine)).toBeInTheDocument();
+      expect(data.getByText(translations.is.winterRouteAttributionWeatherLine)).toBeInTheDocument();
+    });
+  });
 });

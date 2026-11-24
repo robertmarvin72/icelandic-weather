@@ -34,6 +34,8 @@ import {
   formatDecimal,
   formatHourLabel,
   formatTimestamp,
+  formatValidatedUtcTimestamp,
+  cacheAgeMinutesDisplay,
   hourOfDayFromHourString,
 } from "../lib/winterRoutePresentation";
 import { computeWeatherExtremaSummary, computeActiveNoticeSegmentCount } from "../lib/winterRouteSummary";
@@ -586,6 +588,31 @@ function WinterRouteDataView({ data, t, lang }) {
     return best;
   }, [data]);
 
+  // Ticket #503 source-time -- P4: the server stamp taken BEFORE road/
+  // forecast is awaited, never a derived fetch time; invalid/missing
+  // input simply omits the line (never "— UTC").
+  const generatedAtText = formatValidatedUtcTimestamp(data.generatedAt);
+
+  // P2 -- the OLDEST valid upstream export timestamp among road sections
+  // (more conservative than the first; all sections share one feed's own
+  // export time in practice), only when segmentsAvailable is true. This
+  // is the real Vegagerðin export time, never a derived fetchedAt.
+  const roadExportedAtText = useMemo(() => {
+    if (!data.roadMeta?.segmentsAvailable) return null;
+    const validTimestamps = (data.roadSections ?? [])
+      .map((s) => s.export?.dagsKeyrtUt)
+      .filter((ts) => typeof ts === "string" && Number.isFinite(Date.parse(ts)));
+    if (validTimestamps.length === 0) return null;
+    const oldest = validTimestamps.reduce((a, b) => (Date.parse(a) <= Date.parse(b) ? a : b));
+    return formatValidatedUtcTimestamp(oldest);
+  }, [data]);
+
+  // P3 -- cache age at response time, never a ticking "current" age; gated
+  // on each data part's own `available` flag so an unavailable feed's
+  // `cacheAgeMs: 0` is never shown as a confident "under a minute".
+  const roadCacheAge = data.roadMeta?.available ? cacheAgeMinutesDisplay(data.roadMeta.cacheAgeMs) : null;
+  const forecastCacheAge = data.forecast.available ? cacheAgeMinutesDisplay(data.forecast.cacheAgeMs) : null;
+
   return (
     <div className="mt-4">
       <section>
@@ -659,6 +686,48 @@ function WinterRouteDataView({ data, t, lang }) {
             />
           ))}
         </ol>
+      </section>
+
+      {/* Ticket #503 source-time -- same attribution/legal text the
+          legacy fixed-route view already shows (P1: no new wording),
+          plus this response's own server timestamp, the real Vegagerðin
+          road-data export time (P2), and cache age at response time
+          (P3), for all 25 connected pairs via this one shared component.
+          Outside role="status" (P5): the sr-only status line above only
+          ever announces the heading, never this block. */}
+      <section className="mt-8 rounded-xl border border-slate-200/70 bg-white/60 px-4 py-4 text-xs leading-relaxed text-slate-500 dark:border-slate-800/70 dark:bg-slate-900/60 dark:text-slate-400">
+        <p>{t("winterRouteAttributionRoadLine")}</p>
+        {roadExportedAtText ? <p>{t("winterRouteRoadExportedAtLine").replace("{time}", roadExportedAtText)}</p> : null}
+        {roadCacheAge ? (
+          <p>{roadCacheAge.underOneMinute ? t("winterRouteRoadCacheAgeUnderMinuteLine") : t("winterRouteRoadCacheAgeLine").replace("{minutes}", String(roadCacheAge.minutes))}</p>
+        ) : null}
+        <p>{t("winterRouteAttributionWeatherLine")}</p>
+        {forecastCacheAge ? (
+          <p>{forecastCacheAge.underOneMinute ? t("winterRouteForecastCacheAgeUnderMinuteLine") : t("winterRouteForecastCacheAgeLine").replace("{minutes}", String(forecastCacheAge.minutes))}</p>
+        ) : null}
+        {generatedAtText ? <p>{t("winterRouteDataGeneratedAtLine").replace("{time}", generatedAtText)}</p> : null}
+        <p>{t("winterRouteModifiedBy")}</p>
+        <p>{t("winterRouteNoEndorsement")}</p>
+        <p className="font-medium">{t("winterRouteOfficialOverride")}</p>
+        <p>{t("winterRouteNotSafetyAdvice")}</p>
+        <p className="mt-2 flex flex-wrap gap-3">
+          <a
+            href={VEGAGERDIN_LINKS[lang === "en" ? "en" : "is"]}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-sky-600 hover:text-sky-700 dark:text-sky-400 dark:hover:text-sky-300 underline-offset-4 hover:underline"
+          >
+            {t("winterRouteOfficialSourceLinkRoad")}
+          </a>
+          <a
+            href={OPEN_METEO_TERMS_LINK}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-sky-600 hover:text-sky-700 dark:text-sky-400 dark:hover:text-sky-300 underline-offset-4 hover:underline"
+          >
+            {t("winterRouteOfficialSourceLinkWeather")}
+          </a>
+        </p>
       </section>
     </div>
   );

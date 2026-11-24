@@ -134,6 +134,15 @@ export const winterRouteTranslations = {
     winterRouteEdgeSegmentNoteShort: "This section is a very short part of the route.",
     winterRouteLongRouteComparisonNote: "Weather is compared at the same time across selected points along the route. This is not a forecast for the whole trip.",
     winterRouteDataForecastHeading: "Weather at {count} points",
+    // Ticket #503 source-time -- narrowly scoped to the new "Velja staði"
+    // data view (WinterRouteDataView); the legacy winterRouteAcquiredAt
+    // key/text is unchanged (see src/pages/WinterRoute.jsx's own notes).
+    winterRouteDataGeneratedAtLine: "Response generated {time} UTC.",
+    winterRouteRoadExportedAtLine: "Road data: Vegagerðin exported this at {time} UTC.",
+    winterRouteRoadCacheAgeLine: "Road: cache age when the response was generated: {minutes} min.",
+    winterRouteRoadCacheAgeUnderMinuteLine: "Road: cache age when the response was generated: under a minute.",
+    winterRouteForecastCacheAgeLine: "Weather: cache age when the response was generated: {minutes} min.",
+    winterRouteForecastCacheAgeUnderMinuteLine: "Weather: cache age when the response was generated: under a minute.",
   },
 
   is: {
@@ -249,5 +258,11 @@ export const winterRouteTranslations = {
     winterRouteEdgeSegmentNoteShort: "Þessi kafli er örstuttur hluti leiðarinnar.",
     winterRouteLongRouteComparisonNote: "Veður er borið saman á sama tíma á völdum punktum leiðarinnar. Þetta er ekki spá fyrir ferðina í heild.",
     winterRouteDataForecastHeading: "Veður á {count} punktum",
+    winterRouteDataGeneratedAtLine: "Svar útbúið {time} UTC.",
+    winterRouteRoadExportedAtLine: "Færð: Vegagerðin keyrði gögnin út {time} UTC.",
+    winterRouteRoadCacheAgeLine: "Færð: aldur gagna í skyndiminni þegar svarið var útbúið: {minutes} mín.",
+    winterRouteRoadCacheAgeUnderMinuteLine: "Færð: aldur gagna í skyndiminni þegar svarið var útbúið: innan við mínútu.",
+    winterRouteForecastCacheAgeLine: "Veður: aldur gagna í skyndiminni þegar svarið var útbúið: {minutes} mín.",
+    winterRouteForecastCacheAgeUnderMinuteLine: "Veður: aldur gagna í skyndiminni þegar svarið var útbúið: innan við mínútu.",
   },
 };
