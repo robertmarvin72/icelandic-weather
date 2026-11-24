@@ -7,6 +7,7 @@ import { computeForecastWindow } from "./_lib/winterRoute/forecastFetch.js";
 import { resolveBudardalurHolmavikGeometry, BUDARDALUR_HOLMAVIK_FORECAST_POINTS } from "./_lib/winterRoute/budardalurHolmavikRoute.js";
 import { resolveWestfjordsBatchGeometry } from "./_lib/winterRoute/westfjordsBatchRoute.js";
 import { resolveWestfjordsCompletionGeometry } from "./_lib/winterRoute/westfjordsCompletionRoute.js";
+import { resolveRingOptionGeometry } from "./_lib/winterRoute/ringOptionsRoute.js";
 
 const EXPECTED_IDBUTUR = [805030037, 905070037, 905080037, 805090037, 907000037, 707040037, 907040037];
 const FORWARD_GEOMETRY_ID = resolveBudardalurHolmavikGeometry("budardalur", "holmavik").geometryId;
@@ -743,6 +744,220 @@ describe("GET /api/winter-route-data — westfjords-completion pairs (isafjordur
     global.fetch = stub.fn;
     const res = makeRes();
     await handler(makeReq("GET", { from: "flokalundur", to: "holmavik", geometryId: FH_FORWARD }), res);
+
+    expect(res.body.forecast.available).toBe(false);
+    expect(res.body.forecast.reason).toBe("key_missing");
+    expect(stub.calls.forecast).toBe(0);
+    process.env.OPEN_METEO_API_KEY = "test-key";
+  });
+});
+
+describe("GET /api/winter-route-data — ring-options pairs (reykjavik-raudavatn<->selfoss/hella, option=south|north)", () => {
+  const RS_SOUTH_FWD = resolveRingOptionGeometry("reykjavik-raudavatn", "selfoss", "south").geometryId;
+  const RS_SOUTH_REV = resolveRingOptionGeometry("selfoss", "reykjavik-raudavatn", "south").geometryId;
+  const RS_NORTH_FWD = resolveRingOptionGeometry("reykjavik-raudavatn", "selfoss", "north").geometryId;
+  const RS_NORTH_REV = resolveRingOptionGeometry("selfoss", "reykjavik-raudavatn", "north").geometryId;
+  const RH_NORTH_FWD = resolveRingOptionGeometry("reykjavik-raudavatn", "hella", "north").geometryId;
+
+  function ringForecastApiResponse(pointCount, window) {
+    return Array.from({ length: pointCount }, (_, i) => ({
+      latitude: window.coordinates?.[i]?.lat ?? 65, longitude: window.coordinates?.[i]?.lon ?? -20, elevation: 10 + i, utc_offset_seconds: 0,
+      hourly_units: { temperature_2m: "°C", wind_speed_10m: "m/s", wind_gusts_10m: "m/s", precipitation: "mm", weather_code: "wmo code" },
+      hourly: {
+        time: window.expectedHours,
+        temperature_2m: window.expectedHours.map(() => i),
+        wind_speed_10m: window.expectedHours.map(() => 1),
+        wind_gusts_10m: window.expectedHours.map(() => 1),
+        precipitation: window.expectedHours.map(() => 0),
+        weather_code: window.expectedHours.map(() => 0),
+      },
+    }));
+  }
+  function ringStubFetch({ segmentIds, forecastPointCount } = {}) {
+    const calls = { segments: 0, points: 0, forecast: 0 };
+    return {
+      calls,
+      fn: vi.fn().mockImplementation((url) => {
+        const u = String(url);
+        if (u.includes("faerdpunktar")) { calls.points += 1; return Promise.resolve(okJsonResponse([])); }
+        if (u.includes("faerd2017_1")) { calls.segments += 1; return Promise.resolve(okJsonResponse((segmentIds ?? []).map((id) => validSegmentRow(id)))); }
+        calls.forecast += 1;
+        return Promise.resolve(okJsonResponse(ringForecastApiResponse(forecastPointCount ?? 3, { ...computeForecastWindow(), coordinates: new URL(u).searchParams.get("latitude").split(",").map((lat, i) => ({ lat: Number(lat), lon: Number(new URL(u).searchParams.get("longitude").split(",")[i]) })) })));
+      }),
+    };
+  }
+
+  it("missing option: 400 invalid_option, zero network calls", async () => {
+    const fetchMock = vi.fn();
+    global.fetch = fetchMock;
+    const res = makeRes();
+    await handler(makeReq("GET", { from: "reykjavik-raudavatn", to: "selfoss", geometryId: "x" }), res);
+    expect(res.statusCode).toBe(400);
+    expect(res.body.error).toBe("invalid_option");
+    expect(fetchMock).not.toHaveBeenCalled();
+  });
+
+  it("invalid option string: 400 invalid_option, zero network calls", async () => {
+    const fetchMock = vi.fn();
+    global.fetch = fetchMock;
+    const res = makeRes();
+    await handler(makeReq("GET", { from: "reykjavik-raudavatn", to: "selfoss", option: "bogus", geometryId: "x" }), res);
+    expect(res.statusCode).toBe(400);
+    expect(res.body.error).toBe("invalid_option");
+    expect(fetchMock).not.toHaveBeenCalled();
+  });
+
+  it("a non-ring pair ignores `option` entirely -- same golden 200 response as without it", async () => {
+    const stub = fullStubFetch({});
+    global.fetch = stub.fn;
+    const res = makeRes();
+    await handler(makeReq("GET", { from: "budardalur", to: "holmavik", option: "south", geometryId: FORWARD_GEOMETRY_ID }), res);
+    expect(res.statusCode).toBe(200);
+    expect(res.body.selectedOption).toBeUndefined();
+    expect(res.body.regionVersion).toBeDefined();
+  });
+
+  it("south: 5 real IdButur road sections, 3 points in real travel order, response carries selectedOption/datasetVersion/policyVersion, never regionVersion", async () => {
+    const geo = resolveRingOptionGeometry("reykjavik-raudavatn", "selfoss", "south");
+    const stub = ringStubFetch({ segmentIds: geo.idButurList, forecastPointCount: 3 });
+    global.fetch = stub.fn;
+    const res = makeRes();
+    await handler(makeReq("GET", { from: "reykjavik-raudavatn", to: "selfoss", option: "south", geometryId: RS_SOUTH_FWD }), res);
+
+    expect(res.statusCode).toBe(200);
+    expect(res.body.selectedOption).toBe("south");
+    expect(res.body.datasetVersion).toBeDefined();
+    expect(res.body.policyVersion).toBeDefined();
+    expect(res.body.regionVersion).toBeUndefined();
+    expect(res.body.roadSections).toHaveLength(5);
+    expect(res.body.forecast.points.map((p) => p.id)).toEqual(["raudavatn-route", "hellisheidi-east-route", "selfoss-route"]);
+  });
+
+  it("north: R->Selfoss 66 road sections, 18 forecast points in real travel order", async () => {
+    const geo = resolveRingOptionGeometry("reykjavik-raudavatn", "selfoss", "north");
+    const stub = ringStubFetch({ segmentIds: geo.idButurList, forecastPointCount: 18 });
+    global.fetch = stub.fn;
+    const res = makeRes();
+    await handler(makeReq("GET", { from: "reykjavik-raudavatn", to: "selfoss", option: "north", geometryId: RS_NORTH_FWD }), res);
+
+    expect(res.statusCode).toBe(200);
+    expect(res.body.roadSections).toHaveLength(66);
+    expect(res.body.forecast.points).toHaveLength(18);
+    expect(res.body.forecast.points[0].id).toBe("raudavatn-route");
+    expect(res.body.forecast.points.at(-1).id).toBe("selfoss-route");
+  });
+
+  it("maps distinct validated forecasts to the correct point for all 8 variants (auðkennd spá, P6b)", async () => {
+    const variants = [
+      ["reykjavik-raudavatn", "selfoss", "south"], ["selfoss", "reykjavik-raudavatn", "south"],
+      ["reykjavik-raudavatn", "selfoss", "north"], ["selfoss", "reykjavik-raudavatn", "north"],
+      ["reykjavik-raudavatn", "hella", "south"], ["hella", "reykjavik-raudavatn", "south"],
+      ["reykjavik-raudavatn", "hella", "north"], ["hella", "reykjavik-raudavatn", "north"],
+    ];
+    for (const [from, to, option] of variants) {
+      __resetWinterRouteCacheForTests();
+      const geo = resolveRingOptionGeometry(from, to, option);
+      const stub = ringStubFetch({ segmentIds: geo.idButurList, forecastPointCount: geo.pointIds.length });
+      global.fetch = stub.fn;
+      const res = makeRes();
+      await handler(makeReq("GET", { from, to, option, geometryId: geo.geometryId }), res);
+      expect(res.statusCode).toBe(200);
+      const points = res.body.forecast.points;
+      expect(points).toHaveLength(geo.pointIds.length);
+      points.forEach((point, i) => {
+        expect(point.available).toBe(true);
+        expect(point.id).toBe(geo.pointIds[i]);
+        expect(point.series.temperature_2m[0]).toBe(i); // identified by own requested-coordinate index
+      });
+      expect(stub.calls).toEqual({ segments: 1, points: 1, forecast: 1 });
+    }
+  });
+
+  it("geometry_mismatch when the client geometryId doesn't match the real recomputed one for the requested option", async () => {
+    const res = makeRes();
+    await handler(makeReq("GET", { from: "reykjavik-raudavatn", to: "selfoss", option: "south", geometryId: "not-real" }), res);
+    expect(res.statusCode).toBe(400);
+    expect(res.body.error).toBe("geometry_mismatch");
+  });
+
+  it("the SAME geometryId requested with the WRONG option is still geometry_mismatch (never silently serving the other option)", async () => {
+    const res = makeRes();
+    await handler(makeReq("GET", { from: "reykjavik-raudavatn", to: "selfoss", option: "north", geometryId: RS_SOUTH_FWD }), res);
+    expect(res.statusCode).toBe(400);
+    expect(res.body.error).toBe("geometry_mismatch");
+  });
+
+  it("P6(a)/P5(c): concurrent forward+reverse of the SAME option share NO bucket -- each makes its own 3 upstream calls (no Westfjords-style reverse single-flight)", async () => {
+    const stub = ringStubFetch({ segmentIds: resolveRingOptionGeometry("reykjavik-raudavatn", "selfoss", "south").idButurList, forecastPointCount: 3 });
+    global.fetch = stub.fn;
+    await Promise.all([
+      handler(makeReq("GET", { from: "reykjavik-raudavatn", to: "selfoss", option: "south", geometryId: RS_SOUTH_FWD }), makeRes()),
+      handler(makeReq("GET", { from: "selfoss", to: "reykjavik-raudavatn", option: "south", geometryId: RS_SOUTH_REV }), makeRes()),
+    ]);
+    expect(stub.calls.segments).toBe(2);
+    expect(stub.calls.points).toBe(2);
+    expect(stub.calls.forecast).toBe(2);
+  });
+
+  it("cache isolation: south and north of the SAME direction never share a bucket", async () => {
+    const stubSouth = ringStubFetch({ segmentIds: resolveRingOptionGeometry("reykjavik-raudavatn", "selfoss", "south").idButurList, forecastPointCount: 3 });
+    global.fetch = stubSouth.fn;
+    await handler(makeReq("GET", { from: "reykjavik-raudavatn", to: "selfoss", option: "south", geometryId: RS_SOUTH_FWD }), makeRes());
+
+    const stubNorth = ringStubFetch({ segmentIds: resolveRingOptionGeometry("reykjavik-raudavatn", "selfoss", "north").idButurList, forecastPointCount: 18 });
+    global.fetch = stubNorth.fn;
+    await handler(makeReq("GET", { from: "reykjavik-raudavatn", to: "selfoss", option: "north", geometryId: RS_NORTH_FWD }), makeRes());
+    expect(stubNorth.calls.segments).toBe(1); // a genuinely fresh fetch, not reused from the south bucket
+  });
+
+  it("cache isolation: ring buckets never share with a Westfjords pair's own bucket", async () => {
+    const stubBH = fullStubFetch({});
+    global.fetch = stubBH.fn;
+    await handler(makeReq("GET", { from: "budardalur", to: "holmavik", geometryId: FORWARD_GEOMETRY_ID }), makeRes());
+
+    const stubRing = ringStubFetch({ segmentIds: resolveRingOptionGeometry("reykjavik-raudavatn", "selfoss", "south").idButurList, forecastPointCount: 3 });
+    global.fetch = stubRing.fn;
+    await handler(makeReq("GET", { from: "reykjavik-raudavatn", to: "selfoss", option: "south", geometryId: RS_SOUTH_FWD }), makeRes());
+    expect(stubRing.calls.segments).toBe(1); // fresh fetch, not reused from B<->H's own bucket
+  });
+
+  it("warm cache: a second identical request makes zero new upstream calls", async () => {
+    const stub = ringStubFetch({ segmentIds: resolveRingOptionGeometry("reykjavik-raudavatn", "hella", "north").idButurList, forecastPointCount: 17 });
+    global.fetch = stub.fn;
+    await handler(makeReq("GET", { from: "reykjavik-raudavatn", to: "hella", option: "north", geometryId: RH_NORTH_FWD }), makeRes());
+    const callsAfterFirst = stub.fn.mock.calls.length;
+    await handler(makeReq("GET", { from: "reykjavik-raudavatn", to: "hella", option: "north", geometryId: RH_NORTH_FWD }), makeRes());
+    expect(stub.fn.mock.calls.length).toBe(callsAfterFirst); // nothing new within TTL
+  });
+
+  it("P4(a): 914020037 appears as exactly one road section (not two) in the response for a reverse-north variant", async () => {
+    const geo = resolveRingOptionGeometry("selfoss", "reykjavik-raudavatn", "north");
+    const stub = ringStubFetch({ segmentIds: geo.idButurList, forecastPointCount: 15 });
+    global.fetch = stub.fn;
+    const res = makeRes();
+    await handler(makeReq("GET", { from: "selfoss", to: "reykjavik-raudavatn", option: "north", geometryId: RS_NORTH_REV }), res);
+    const matches = res.body.roadSections.filter((s) => s.idButur === 914020037);
+    expect(matches).toHaveLength(1);
+  });
+
+  it("P4(c): edge segments are flagged with an absolute threshold -- 1410010037 and 901130037 on a Hella-north variant", async () => {
+    const geo = resolveRingOptionGeometry("reykjavik-raudavatn", "hella", "north");
+    const stub = ringStubFetch({ segmentIds: geo.idButurList, forecastPointCount: 17 });
+    global.fetch = stub.fn;
+    const res = makeRes();
+    await handler(makeReq("GET", { from: "reykjavik-raudavatn", to: "hella", option: "north", geometryId: RH_NORTH_FWD }), res);
+    const byId = new Map(res.body.roadSections.map((s) => [s.idButur, s]));
+    expect(byId.get(1410010037).isEdgeSegment).toBe(true);
+    expect(byId.get(901130037).isEdgeSegment).toBe(true);
+  });
+
+  it("key_missing: zero forecast calls, road data unaffected, for a ring pair too", async () => {
+    delete process.env.OPEN_METEO_API_KEY;
+    const geo = resolveRingOptionGeometry("reykjavik-raudavatn", "hella", "south");
+    const stub = ringStubFetch({ segmentIds: geo.idButurList, forecastPointCount: 3 });
+    global.fetch = stub.fn;
+    const res = makeRes();
+    await handler(makeReq("GET", { from: "reykjavik-raudavatn", to: "hella", option: "south", geometryId: geo.geometryId }), res);
 
     expect(res.body.forecast.available).toBe(false);
     expect(res.body.forecast.reason).toBe("key_missing");

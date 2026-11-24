@@ -2304,4 +2304,186 @@ describe("WinterRoute page", () => {
       expect(data.getByText("Hólmavík")).toBeInTheDocument();
     });
   });
+
+  // Ticket #503 ring-options — reykjavik-raudavatn<->selfoss/hella,
+  // option=south|north, layered under the existing geometry option-select
+  // flow (ticket #502's own south/north radio group).
+  describe("Ticket #503 — ring-options (reykjavik-raudavatn<->selfoss/hella) weather/road data", () => {
+    const RVK = "reykjavik-raudavatn";
+    const DATA_HOURS = [futureHourString(2), futureHourString(3)];
+
+    function ringGeometryFixture(to, option) {
+      return {
+        schemaVersion: 1, tier: 2, status: "geometry_only", from: RVK, to,
+        selectedOption: option, estimatedConnectorLengthM: 0,
+        geometryId: `${to}-${option}-geo`,
+        options: [
+          { id: "south", label: "Short route via Hellisheiði", lengthM: 1, via: [], routeId: "a" },
+          { id: "north", label: "Long route via the Route 1 ring", lengthM: 2, via: [], routeId: "b" },
+        ],
+      };
+    }
+
+    function ringDataFixture({ to, option, geometryId, routeLengthM, points, roadSections }) {
+      return {
+        from: RVK, to, geometryId, selectedOption: option,
+        datasetVersion: "ds1", policyVersion: `${option}-policy`,
+        routeLengthM, unmappedLengthM: 0,
+        generatedAt: "2026-11-24T09:00:00.000Z",
+        roadSections: roadSections ?? [
+          { idButur: 1, nameIs: "Dæmiskafli", nameEn: "Example section", routeLengthM: routeLengthM, routeLengthFraction: 1, isEdgeSegment: false, segmentDataAvailable: true, category: "passable", positiveStyleEligible: true, astandYfirbord: "GREIDFAERT", astandLysing: "Greiðfært", astandLysingEn: "Easily passable", export: { isStale: false }, registration: { isOld: false }, notices: [] },
+        ],
+        roadMeta: { available: true, stale: false, cacheAgeMs: 0, segmentsAvailable: true, pointsAvailable: true, pointsFeedUnavailableOrStale: false },
+        forecast: {
+          available: true,
+          window: { startHour: DATA_HOURS[0], endHour: DATA_HOURS[1], expectedHours: DATA_HOURS },
+          points,
+          stale: false, cacheAgeMs: 0,
+        },
+      };
+    }
+
+    const SOUTH_GEOMETRY_ID = "selfoss-south-geo";
+    const NORTH_GEOMETRY_ID = "selfoss-north-geo";
+    const SOUTH_POINTS = [
+      { id: "raudavatn-route", labelIs: "Rauðavatn", labelEn: "Rauðavatn", available: true, returnedLatitude: 64.1, returnedLongitude: -21.76, elevation: 1, hours: DATA_HOURS, series: { temperature_2m: [0, -1], wind_speed_10m: [1, 1], wind_gusts_10m: [1, 1], precipitation: [0, 0], weather_code: [3, 3] } },
+      { id: "hellisheidi-east-route", labelIs: "Hellisheiði — austanverð leið", labelEn: "Hellisheiði — east side", available: true, returnedLatitude: 64.02, returnedLongitude: -21.3, elevation: 300, hours: DATA_HOURS, series: { temperature_2m: [-2, -3], wind_speed_10m: [5, 5], wind_gusts_10m: [8, 8], precipitation: [1, 1], weather_code: [71, 71] } },
+      { id: "selfoss-route", labelIs: "Selfoss", labelEn: "Selfoss", available: true, returnedLatitude: 63.94, returnedLongitude: -21.0, elevation: 17, hours: DATA_HOURS, series: { temperature_2m: [1, 0], wind_speed_10m: [2, 2], wind_gusts_10m: [3, 3], precipitation: [0, 0], weather_code: [3, 3] } },
+    ];
+    const NORTH_POINTS = [
+      "raudavatn-route", "nordura-route", "holtavorduheidi-route", "gljufura-route", "kjalkavegur-route",
+      "oxnadalsheidi-route", "ljosavatnsskard-route", "myvatnsoraefi-route", "biskupshals-route", "fellabaer-route",
+      "fagridalur-route", "breiddalsvik-route", "thvotta-route", "hofn-route", "kirkjubaejarklaustur-route",
+      "myrdalssandur-route", "hvolsvollur-route", "selfoss-route",
+    ].map((id, i) => ({ id, labelIs: id, labelEn: id, available: true, returnedLatitude: 65, returnedLongitude: -18, elevation: 10, hours: DATA_HOURS, series: { temperature_2m: [i, i], wind_speed_10m: [1, 1], wind_gusts_10m: [1, 1], precipitation: [0, 0], weather_code: [3, 3] } }));
+
+    function ringFetch({ withNorthData = true } = {}) {
+      return vi.fn().mockImplementation((url) => {
+        const u = String(url);
+        if (u.includes("/api/winter-route-data")) {
+          const params = new URL(u, "http://localhost").searchParams;
+          const option = params.get("option");
+          const geometryId = params.get("geometryId");
+          if (option === "north" && withNorthData) {
+            return Promise.resolve({ status: 200, json: async () => ringDataFixture({ to: "selfoss", option: "north", geometryId, routeLengthM: 1236038.3, points: NORTH_POINTS }) });
+          }
+          return Promise.resolve({ status: 200, json: async () => ringDataFixture({ to: "selfoss", option: "south", geometryId, routeLengthM: 44984.8, points: SOUTH_POINTS }) });
+        }
+        const key = new URL(u, "http://localhost").searchParams;
+        const option = key.get("option");
+        if (key.get("from") === RVK && key.get("to") === "selfoss") {
+          return Promise.resolve({
+            status: 200,
+            json: async () => option === "north" ? { ...ringGeometryFixture("selfoss", "north"), geometryId: NORTH_GEOMETRY_ID } : { ...ringGeometryFixture("selfoss", "south"), geometryId: SOUTH_GEOMETRY_ID },
+          });
+        }
+        return Promise.reject(new Error(`no fixture for ${u}`));
+      });
+    }
+
+    async function submitRvkSelfoss() {
+      const fromSelect = await screen.findByLabelText(translations.is.winterRouteFromLabel, { selector: "select" });
+      const toSelect = screen.getByLabelText(translations.is.winterRouteToLabel, { selector: "select" });
+      const { fireEvent } = await import("@testing-library/react");
+      fireEvent.change(fromSelect, { target: { value: RVK } });
+      fireEvent.change(toSelect, { target: { value: "selfoss" } });
+      fireEvent.click(screen.getByRole("button", { name: translations.is.winterRouteShowRouteButton }));
+    }
+
+    it("default (south, no explicit option click): data fetch includes option=south, 3 points, no long-route note", async () => {
+      vi.stubGlobal("fetch", ringFetch());
+      render(<MemoryRouter initialEntries={["/winter-route"]}><WinterRoute /></MemoryRouter>);
+      await submitRvkSelfoss();
+
+      await waitFor(() => expect(screen.getByText(translations.is.winterRouteDataConnectedDisclaimer)).toBeInTheDocument());
+      expect(global.fetch.mock.calls.some((c) => String(c[0]).includes("/api/winter-route-data") && String(c[0]).includes("option=south"))).toBe(true);
+      const dataRegion = screen.getByTestId("winter-route-data");
+      const data = within(dataRegion);
+      expect(data.getByRole("heading", { name: translations.is.winterRouteDataForecastHeading.replace("{count}", "3") })).toBeInTheDocument();
+      expect(screen.queryByText(translations.is.winterRouteLongRouteComparisonNote)).toBeNull();
+    });
+
+    it("selecting north re-fetches geometry AND data with option=north, shows 18 points and the ≥400km long-route note", async () => {
+      vi.stubGlobal("fetch", ringFetch());
+      render(<MemoryRouter initialEntries={["/winter-route"]}><WinterRoute /></MemoryRouter>);
+      await submitRvkSelfoss();
+      await waitFor(() => expect(screen.getByText(translations.is.winterRouteDataConnectedDisclaimer)).toBeInTheDocument());
+
+      const { fireEvent } = await import("@testing-library/react");
+      fireEvent.click(screen.getByRole("radio", { name: translations.is.winterRouteOptionNorth }));
+
+      await waitFor(() => {
+        const dataRegion = screen.getByTestId("winter-route-data");
+        expect(within(dataRegion).getByRole("heading", { name: translations.is.winterRouteDataForecastHeading.replace("{count}", "18") })).toBeInTheDocument();
+      });
+      expect(global.fetch.mock.calls.some((c) => String(c[0]).includes("/api/winter-route-data") && String(c[0]).includes("option=north"))).toBe(true);
+      expect(screen.getByText(translations.is.winterRouteLongRouteComparisonNote)).toBeInTheDocument();
+    });
+
+    it("P8(b) race: switching north -> south before the delayed north data resolves never shows the 18-point data under the south header", async () => {
+      let resolveNorthData;
+      const fetchMock = vi.fn().mockImplementation((url) => {
+        const u = String(url);
+        if (u.includes("/api/winter-route-data")) {
+          const params = new URL(u, "http://localhost").searchParams;
+          const option = params.get("option");
+          if (option === "north") return new Promise((resolve) => { resolveNorthData = resolve; });
+          return Promise.resolve({ status: 200, json: async () => ringDataFixture({ to: "selfoss", option: "south", geometryId: params.get("geometryId"), routeLengthM: 44984.8, points: SOUTH_POINTS }) });
+        }
+        const key = new URL(u, "http://localhost").searchParams;
+        const option = key.get("option");
+        return Promise.resolve({
+          status: 200,
+          json: async () => option === "north" ? { ...ringGeometryFixture("selfoss", "north"), geometryId: NORTH_GEOMETRY_ID } : { ...ringGeometryFixture("selfoss", "south"), geometryId: SOUTH_GEOMETRY_ID },
+        });
+      });
+      vi.stubGlobal("fetch", fetchMock);
+      render(<MemoryRouter initialEntries={["/winter-route"]}><WinterRoute /></MemoryRouter>);
+      await submitRvkSelfoss();
+      await waitFor(() => expect(screen.getByText(translations.is.winterRouteDataConnectedDisclaimer)).toBeInTheDocument());
+
+      const { fireEvent } = await import("@testing-library/react");
+      fireEvent.click(screen.getByRole("radio", { name: translations.is.winterRouteOptionNorth }));
+      await waitFor(() => expect(screen.getByText(translations.is.winterRouteDataLoading)).toBeInTheDocument());
+
+      fireEvent.click(screen.getByRole("radio", { name: translations.is.winterRouteOptionSouth }));
+      await waitFor(() => {
+        const dataRegion = screen.getByTestId("winter-route-data");
+        expect(within(dataRegion).getByRole("heading", { name: translations.is.winterRouteDataForecastHeading.replace("{count}", "3") })).toBeInTheDocument();
+      });
+
+      // The abandoned north data request resolving late must never surface.
+      await act(async () => resolveNorthData?.({ status: 200, json: async () => ringDataFixture({ to: "selfoss", option: "north", geometryId: NORTH_GEOMETRY_ID, routeLengthM: 1236038.3, points: NORTH_POINTS }) }));
+      const dataRegion = screen.getByTestId("winter-route-data");
+      expect(within(dataRegion).queryByRole("heading", { name: translations.is.winterRouteDataForecastHeading.replace("{count}", "18") })).toBeNull();
+      expect(within(dataRegion).getByRole("heading", { name: translations.is.winterRouteDataForecastHeading.replace("{count}", "3") })).toBeInTheDocument();
+    });
+
+    it("an edge segment whose percent rounds to 0.0% shows the short fallback text, never '0,0%'", async () => {
+      const geo = { ...ringGeometryFixture("selfoss", "south"), geometryId: SOUTH_GEOMETRY_ID };
+      const fetchMock = vi.fn().mockImplementation((url) => {
+        const u = String(url);
+        if (u.includes("/api/winter-route-data")) {
+          const params = new URL(u, "http://localhost").searchParams;
+          return Promise.resolve({
+            status: 200,
+            json: async () => ringDataFixture({
+              to: "selfoss", option: "south", geometryId: params.get("geometryId"), routeLengthM: 1236038.3, points: SOUTH_POINTS,
+              roadSections: [
+                { idButur: 1410010037, nameIs: "Rauðavatn - Nesjavallaleið", nameEn: "Rauðavatn–Nesjavallaleið", routeLengthM: 1.3, routeLengthFraction: 1.3 / 1236038.3, isEdgeSegment: true, segmentDataAvailable: true, category: "passable", positiveStyleEligible: true, astandYfirbord: "GREIDFAERT", astandLysing: "Greiðfært", astandLysingEn: "Easily passable", export: { isStale: false }, registration: { isOld: false }, notices: [] },
+              ],
+            }),
+          });
+        }
+        return Promise.resolve({ status: 200, json: async () => geo });
+      });
+      vi.stubGlobal("fetch", fetchMock);
+      render(<MemoryRouter initialEntries={["/winter-route"]}><WinterRoute /></MemoryRouter>);
+      await submitRvkSelfoss();
+
+      await waitFor(() => expect(screen.getByText(translations.is.winterRouteEdgeSegmentNoteShort)).toBeInTheDocument());
+      expect(screen.queryByText(/0,0%/)).toBeNull();
+      expect(screen.queryByText(/0\.0%/)).toBeNull();
+    });
+  });
 });

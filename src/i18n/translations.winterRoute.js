@@ -131,6 +131,8 @@ export const winterRouteTranslations = {
     winterRouteNoCoveragePointsNote: "Weather at selected points along the route; sections between them have no point of their own.",
     winterRouteLargestGapNote: "The largest gap without a point is about {km} km, between {pointA} and {pointB}.",
     winterRouteEdgeSegmentNote: "This section covers only a short part of the route ({percent}%).",
+    winterRouteEdgeSegmentNoteShort: "This section is a very short part of the route.",
+    winterRouteLongRouteComparisonNote: "Weather is compared at the same time across selected points along the route. This is not a forecast for the whole trip.",
     winterRouteDataForecastHeading: "Weather at {count} points",
   },
 
@@ -244,6 +246,8 @@ export const winterRouteTranslations = {
     winterRouteNoCoveragePointsNote: "Veður á völdum punktum leiðarinnar; kaflar á milli þeirra hafa engan eigin punkt.",
     winterRouteLargestGapNote: "Stærsta bilið án punkts er um {km} km, milli {pointA} og {pointB}.",
     winterRouteEdgeSegmentNote: "Þessi kafli nær aðeins yfir stuttan hluta leiðarinnar ({percent}%).",
+    winterRouteEdgeSegmentNoteShort: "Þessi kafli er örstuttur hluti leiðarinnar.",
+    winterRouteLongRouteComparisonNote: "Veður er borið saman á sama tíma á völdum punktum leiðarinnar. Þetta er ekki spá fyrir ferðina í heild.",
     winterRouteDataForecastHeading: "Veður á {count} punktum",
   },
 };

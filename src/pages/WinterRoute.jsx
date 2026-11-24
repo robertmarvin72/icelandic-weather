@@ -523,6 +523,31 @@ function isWinterRouteDataPair(from, to) {
   return isBudardalurHolmavikPair(from, to) || isWestfjordsBatchPair(from, to) || isWestfjordsCompletionPair(from, to);
 }
 
+// Ticket #503 ring-options -- frontend-only duplicate of the backend's own
+// pair allowlist (api/_lib/winterRoute/ringOptionsRoute.js). Unlike the
+// Westfjords pairs, these two ALSO require a valid `option` (south|north)
+// taken from the geometry response's own `selectedOption` -- never
+// hardcoded, never re-derived client-side (P8a).
+const RING_OPTION_PAIR_KEYS = new Set([
+  "reykjavik-raudavatn|selfoss", "selfoss|reykjavik-raudavatn",
+  "reykjavik-raudavatn|hella", "hella|reykjavik-raudavatn",
+]);
+function isRingOptionPair(from, to) {
+  return from !== to && RING_OPTION_PAIR_KEYS.has(`${from}|${to}`);
+}
+
+// P4(c) ring-options -- an edge segment's own percent-of-route can round
+// to "0.0%" on a ~1200km route (the ring absolute-length rule flags
+// segments far below 0.05% of the total). Never show "0,0%"/"0.0%": fall
+// back to a plain, honest "very short part of the route" sentence
+// instead, for ring routes without changing the Westfjords 1%-based text.
+function edgeSegmentNoteFor(section, t, lang) {
+  if (!section.isEdgeSegment) return null;
+  const percentText = formatDecimal(section.routeLengthFraction * 100, lang, 1);
+  if (percentText === "0,0" || percentText === "0.0") return t("winterRouteEdgeSegmentNoteShort");
+  return t("winterRouteEdgeSegmentNote").replace("{percent}", percentText);
+}
+
 // Validate the fields consumed by the data view before accepting a response.
 function validRouteData(data, from, to, geometryId) {
   if (!data || data.from !== from || data.to !== to || data.geometryId !== geometryId ||
@@ -556,6 +581,13 @@ function WinterRouteDataView({ data, t, lang }) {
   const [selectedHour, setSelectedHour] = useState(availableHours[0] ?? null);
   const effectiveHour = selectedHour && availableHours.includes(selectedHour) ? selectedHour : (availableHours[0] ?? null);
 
+  // P8(d) -- a fixed disclaimer on any route whose own real measured
+  // length is >= ~400km (computed from routeLengthM, never hardcoded to
+  // "north" or any specific pair): the per-point forecast compares
+  // weather at the SAME chosen time along the route, not conditions when
+  // a traveller actually reaches each place. No ETA/arrival/departure.
+  const isLongRoute = typeof data.routeLengthM === "number" && data.routeLengthM >= 400000;
+
   const pointCount = data.forecast.available ? data.forecast.points.length : 0;
   const largestGap = useMemo(() => {
     if (!data.forecast.available) return null;
@@ -579,6 +611,7 @@ function WinterRouteDataView({ data, t, lang }) {
           {data.forecast.available ? t("winterRouteDataForecastHeading").replace("{count}", String(pointCount)) : t("winterRouteForecastUnavailable")}
         </h3>
         {data.forecast.available ? <p className="mt-1 text-xs italic text-slate-500 dark:text-slate-400">{t("winterRouteNoCoveragePointsNote")}</p> : null}
+        {isLongRoute ? <p className="mt-1 text-xs text-slate-600 dark:text-slate-300">{t("winterRouteLongRouteComparisonNote")}</p> : null}
         {largestGap ? (
           <p className="mt-1 text-xs italic text-slate-500 dark:text-slate-400">
             {t("winterRouteLargestGapNote")
@@ -640,7 +673,7 @@ function WinterRouteDataView({ data, t, lang }) {
               segment={section}
               t={t}
               lang={lang}
-              edgeSegmentNote={section.isEdgeSegment ? t("winterRouteEdgeSegmentNote").replace("{percent}", formatDecimal(section.routeLengthFraction * 100, lang, 1)) : null}
+              edgeSegmentNote={edgeSegmentNoteFor(section, t, lang)}
             />
           ))}
         </ol>
@@ -750,14 +783,21 @@ function WinterRouteGeometrySection({ t, lang, onAppliedChange }) {
   const view = !requestState.loading && requestState.key === currentKey ? requestState.result : null;
   const submitDisabled = requestState.loading && requestState.key === `${draftFrom}|${draftTo}|`;
 
+  // P8(a) -- ring pairs are only data-eligible once the geometry response
+  // itself carries a resolved selectedOption (south|north); that value
+  // (never re-derived client-side) is what the data request sends back.
+  const isRingPair = Boolean(applied) && isRingOptionPair(applied.from, applied.to);
+  const ringSelectedOption = isRingPair ? view?.payload?.selectedOption : null;
   const isDataEligible =
     Boolean(applied) &&
     draftMatchesApplied &&
     !isCurrentLoading &&
     view?.outcome === WINTER_ROUTE_OUTCOME.GEOMETRY_ONLY &&
-    isWinterRouteDataPair(applied.from, applied.to);
+    (isWinterRouteDataPair(applied.from, applied.to) ||
+      (isRingPair && (ringSelectedOption === "south" || ringSelectedOption === "north")));
   const dataGeometryId = isDataEligible ? view.payload.geometryId : null;
-  const currentDataKey = isDataEligible && dataGeometryId ? `${applied.from}|${applied.to}|${dataGeometryId}` : null;
+  const dataOption = isDataEligible && isRingPair ? ringSelectedOption : null;
+  const currentDataKey = isDataEligible && dataGeometryId ? `${applied.from}|${applied.to}|${dataOption ?? ""}|${dataGeometryId}` : null;
   const isDataLoading = dataRequestState.loading && dataRequestState.key === currentDataKey;
   const dataView = !dataRequestState.loading && dataRequestState.key === currentDataKey ? dataRequestState.result : null;
 
@@ -771,7 +811,7 @@ function WinterRouteGeometrySection({ t, lang, onAppliedChange }) {
       return undefined;
     }
 
-    const key = `${applied.from}|${applied.to}|${dataGeometryId}`;
+    const key = `${applied.from}|${applied.to}|${dataOption ?? ""}|${dataGeometryId}`;
     if (lastDataKeyRef.current === key) return undefined; // StrictMode double-invoke / already current
     lastDataKeyRef.current = key;
 
@@ -782,6 +822,7 @@ function WinterRouteGeometrySection({ t, lang, onAppliedChange }) {
     setDataRequestState({ key, loading: true, result: null });
 
     const params = new URLSearchParams({ from: applied.from, to: applied.to, geometryId: dataGeometryId });
+    if (dataOption) params.set("option", dataOption);
     fetch(`/api/winter-route-data?${params.toString()}`, { signal: controller.signal })
       .then(async (res) => {
         let payload = null;
@@ -801,7 +842,7 @@ function WinterRouteGeometrySection({ t, lang, onAppliedChange }) {
       });
 
     return undefined;
-  }, [isDataEligible, dataGeometryId, applied?.from, applied?.to]);
+  }, [isDataEligible, dataGeometryId, dataOption, applied?.from, applied?.to]);
 
   useEffect(() => {
     const intent = pendingFocusRef.current;

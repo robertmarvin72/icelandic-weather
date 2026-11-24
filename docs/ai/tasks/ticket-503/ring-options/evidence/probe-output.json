@@ -1,0 +1,1986 @@
+{
+  "generatedAt": "2026-11-24T09:36:44.197Z",
+  "calls": [
+    {
+      "call": "fetchRoadSegments",
+      "ok": true,
+      "elapsedMs": 65,
+      "feedDagsKeyrtUt": "2026-11-24T09:34:51Z",
+      "ageMinutes": 1.8866333333333334,
+      "isStale": false,
+      "totalRequested": 72,
+      "found": 72,
+      "ambiguous": 0,
+      "missing": []
+    },
+    {
+      "call": "fetchRoadPoints",
+      "ok": true,
+      "elapsedMs": 19,
+      "feedDagsKeyrtUt": "2026-11-24T09:35:00Z",
+      "ageMinutes": 1.7366333333333333,
+      "isStale": false,
+      "noticeCount": 8,
+      "notices": [
+        {
+          "idButur": 911400037,
+          "astand": "DYR_A_VEGI",
+          "gildirTilKnown": true
+        },
+        {
+          "idButur": 901220037,
+          "astand": "VEGAVINNA",
+          "gildirTilKnown": true
+        },
+        {
+          "idButur": 901230037,
+          "astand": "VEGAVINNA",
+          "gildirTilKnown": true
+        },
+        {
+          "idButur": 902030037,
+          "astand": "VEGAVINNA",
+          "gildirTilKnown": true
+        },
+        {
+          "idButur": 902040037,
+          "astand": "VEGAVINNA",
+          "gildirTilKnown": true
+        },
+        {
+          "idButur": 904010037,
+          "astand": "OSLETTUR_VEGUR",
+          "gildirTilKnown": true
+        },
+        {
+          "idButur": 904010037,
+          "astand": "STEINKAST",
+          "gildirTilKnown": true
+        },
+        {
+          "idButur": 904040037,
+          "astand": "VEGAVINNA",
+          "gildirTilKnown": true
+        }
+      ]
+    }
+  ],
+  "forecastAuthAvailable": true,
+  "forecastCalls": [
+    {
+      "from": "reykjavik-raudavatn",
+      "to": "selfoss",
+      "option": "north",
+      "ok": true,
+      "pointCount": 18,
+      "elapsedMs": 331,
+      "approxResponseBytes": 19536,
+      "window": {
+        "startHour": "2026-11-24T10:00",
+        "endHour": "2026-11-25T09:00",
+        "expectedHours": [
+          "2026-11-24T10:00",
+          "2026-11-24T11:00",
+          "2026-11-24T12:00",
+          "2026-11-24T13:00",
+          "2026-11-24T14:00",
+          "2026-11-24T15:00",
+          "2026-11-24T16:00",
+          "2026-11-24T17:00",
+          "2026-11-24T18:00",
+          "2026-11-24T19:00",
+          "2026-11-24T20:00",
+          "2026-11-24T21:00",
+          "2026-11-24T22:00",
+          "2026-11-24T23:00",
+          "2026-11-25T00:00",
+          "2026-11-25T01:00",
+          "2026-11-25T02:00",
+          "2026-11-25T03:00",
+          "2026-11-25T04:00",
+          "2026-11-25T05:00",
+          "2026-11-25T06:00",
+          "2026-11-25T07:00",
+          "2026-11-25T08:00",
+          "2026-11-25T09:00"
+        ]
+      },
+      "points": [
+        {
+          "id": "raudavatn-route",
+          "ok": true,
+          "requestedLat": 64.10152892,
+          "requestedLon": -21.75906405,
+          "returnedLat": 64.10492,
+          "returnedLon": -21.74794,
+          "snapKm": 0.6588144747192689,
+          "returnedElevation": 82,
+          "nativeZ": 0,
+          "marginKm": 40.08246014491679
+        },
+        {
+          "id": "nordura-route",
+          "ok": true,
+          "requestedLat": 64.80100772,
+          "requestedLon": -21.46502232,
+          "returnedLat": 64.797325,
+          "returnedLon": -21.479095,
+          "snapKm": 0.7820657695332313,
+          "returnedElevation": 60,
+          "nativeZ": 60.7962,
+          "marginKm": 28.353563218014504
+        },
+        {
+          "id": "holtavorduheidi-route",
+          "ok": true,
+          "requestedLat": 64.98778171,
+          "requestedLon": -21.05499746,
+          "returnedLat": 64.99427,
+          "returnedLon": -21.058289,
+          "snapKm": 0.7378718922904459,
+          "returnedElevation": 391,
+          "nativeZ": 392.4806,
+          "marginKm": 28.070821744046278
+        },
+        {
+          "id": "gljufura-route",
+          "ok": true,
+          "requestedLat": 65.45523809,
+          "requestedLon": -20.55584995,
+          "returnedLat": 65.44641,
+          "returnedLon": -20.572037,
+          "snapKm": 1.2340391254599852,
+          "returnedElevation": 60,
+          "nativeZ": 65.8826,
+          "marginKm": 54.51026055962616
+        },
+        {
+          "id": "kjalkavegur-route",
+          "ok": true,
+          "requestedLat": 65.43343935,
+          "requestedLon": -19.16043028,
+          "returnedLat": 65.42061,
+          "returnedLon": -19.179764,
+          "snapKm": 1.6835435921555137,
+          "returnedElevation": 91,
+          "nativeZ": 95.6991,
+          "marginKm": 21.301429817983667
+        },
+        {
+          "id": "oxnadalsheidi-route",
+          "ok": true,
+          "requestedLat": 65.46800234,
+          "requestedLon": -18.69561144,
+          "returnedLat": 65.47131,
+          "returnedLon": -18.681976,
+          "snapKm": 0.7290583499351774,
+          "returnedElevation": 542,
+          "nativeZ": 544.4727,
+          "marginKm": 21.771097882456445
+        },
+        {
+          "id": "ljosavatnsskard-route",
+          "ok": true,
+          "requestedLat": 65.7037007,
+          "requestedLon": -17.62203344,
+          "returnedLat": 65.69566,
+          "returnedLon": -17.63794,
+          "snapKm": 1.1529011437177084,
+          "returnedElevation": 121,
+          "nativeZ": 119.6414,
+          "marginKm": 36.429681023203685
+        },
+        {
+          "id": "myvatnsoraefi-route",
+          "ok": true,
+          "requestedLat": 65.64729486,
+          "requestedLon": -16.82595479,
+          "returnedLat": 65.65024,
+          "returnedLon": -16.844116,
+          "snapKm": 0.8947572314476507,
+          "returnedElevation": 419,
+          "nativeZ": 419.3205,
+          "marginKm": 35.2254445792233
+        },
+        {
+          "id": "biskupshals-route",
+          "ok": true,
+          "requestedLat": 65.56371318,
+          "requestedLon": -16.02887191,
+          "returnedLat": 65.565956,
+          "returnedLon": -16.043015,
+          "snapKm": 0.6967090421677272,
+          "returnedElevation": 495,
+          "nativeZ": 500.3798,
+          "marginKm": 36.37844489744168
+        },
+        {
+          "id": "fellabaer-route",
+          "ok": true,
+          "requestedLat": 65.36973288,
+          "requestedLon": -14.52797393,
+          "returnedLat": 65.365036,
+          "returnedLon": -14.53595,
+          "snapKm": 0.6398540182585218,
+          "returnedElevation": 188,
+          "nativeZ": 189.7738,
+          "marginKm": 31.083628005602765
+        },
+        {
+          "id": "fagridalur-route",
+          "ok": true,
+          "requestedLat": 65.09327459,
+          "requestedLon": -14.32871136,
+          "returnedLat": 65.08795,
+          "returnedLon": -14.347229,
+          "snapKm": 1.0500783562103888,
+          "returnedElevation": 321,
+          "nativeZ": 0,
+          "marginKm": 31.39462503248635
+        },
+        {
+          "id": "breiddalsvik-route",
+          "ok": true,
+          "requestedLat": 64.79326082,
+          "requestedLon": -13.93645298,
+          "returnedLat": 64.801956,
+          "returnedLon": -13.909531,
+          "snapKm": 1.5999180755401317,
+          "returnedElevation": 11,
+          "nativeZ": 12.357,
+          "marginKm": 36.33241361824822
+        },
+        {
+          "id": "thvotta-route",
+          "ok": true,
+          "requestedLat": 64.49613488,
+          "requestedLon": -14.47545899,
+          "returnedLat": 64.493996,
+          "returnedLon": -14.510513,
+          "snapKm": 1.6951308561734648,
+          "returnedElevation": 16,
+          "nativeZ": 16.2646,
+          "marginKm": 41.36969752125
+        },
+        {
+          "id": "hofn-route",
+          "ok": true,
+          "requestedLat": 64.157141,
+          "requestedLon": -15.94023451,
+          "returnedLat": 64.16091,
+          "returnedLon": -15.954758,
+          "snapKm": 0.8192265179942276,
+          "returnedElevation": 14,
+          "nativeZ": 16.0042,
+          "marginKm": 75.80939121148985
+        },
+        {
+          "id": "kirkjubaejarklaustur-route",
+          "ok": true,
+          "requestedLat": 63.95659416,
+          "requestedLon": -17.45932652,
+          "returnedLat": 63.953197,
+          "returnedLon": -17.450577,
+          "snapKm": 0.5702427999435763,
+          "returnedElevation": 52,
+          "nativeZ": 55.244,
+          "marginKm": 76.32345049977097
+        },
+        {
+          "id": "myrdalssandur-route",
+          "ok": true,
+          "requestedLat": 63.43723005,
+          "requestedLon": -18.85790357,
+          "returnedLat": 63.429867,
+          "returnedLon": -18.858948,
+          "snapKm": 0.8203807945851728,
+          "returnedElevation": 32,
+          "nativeZ": 0,
+          "marginKm": 87.66530984493747
+        },
+        {
+          "id": "hvolsvollur-route",
+          "ok": true,
+          "requestedLat": 63.83432189,
+          "requestedLon": -20.40208165,
+          "returnedLat": 63.837917,
+          "returnedLon": -20.395325,
+          "snapKm": 0.5191859413064879,
+          "returnedElevation": 26,
+          "nativeZ": 28.638,
+          "marginKm": 31.255662691311404
+        },
+        {
+          "id": "selfoss-route",
+          "ok": true,
+          "requestedLat": 63.93759501,
+          "requestedLon": -21.00380428,
+          "returnedLat": 63.93254,
+          "returnedLon": -21.01004,
+          "snapKm": 0.6393497691127555,
+          "returnedElevation": 9,
+          "nativeZ": 16.877,
+          "marginKm": 31.059607321022277
+        }
+      ]
+    },
+    {
+      "from": "reykjavik-raudavatn",
+      "to": "selfoss",
+      "option": "south",
+      "ok": true,
+      "pointCount": 3,
+      "elapsedMs": 56,
+      "approxResponseBytes": 3685,
+      "window": {
+        "startHour": "2026-11-24T10:00",
+        "endHour": "2026-11-25T09:00",
+        "expectedHours": [
+          "2026-11-24T10:00",
+          "2026-11-24T11:00",
+          "2026-11-24T12:00",
+          "2026-11-24T13:00",
+          "2026-11-24T14:00",
+          "2026-11-24T15:00",
+          "2026-11-24T16:00",
+          "2026-11-24T17:00",
+          "2026-11-24T18:00",
+          "2026-11-24T19:00",
+          "2026-11-24T20:00",
+          "2026-11-24T21:00",
+          "2026-11-24T22:00",
+          "2026-11-24T23:00",
+          "2026-11-25T00:00",
+          "2026-11-25T01:00",
+          "2026-11-25T02:00",
+          "2026-11-25T03:00",
+          "2026-11-25T04:00",
+          "2026-11-25T05:00",
+          "2026-11-25T06:00",
+          "2026-11-25T07:00",
+          "2026-11-25T08:00",
+          "2026-11-25T09:00"
+        ]
+      },
+      "points": [
+        {
+          "id": "raudavatn-route",
+          "ok": true,
+          "requestedLat": 64.10152892,
+          "requestedLon": -21.75906405,
+          "returnedLat": 64.10492,
+          "returnedLon": -21.74794,
+          "snapKm": 0.6588144747192689,
+          "returnedElevation": 82,
+          "nativeZ": 0,
+          "marginKm": 22.88909614701005
+        },
+        {
+          "id": "hellisheidi-east-route",
+          "ok": true,
+          "requestedLat": 64.0220354,
+          "requestedLon": -21.30237752,
+          "returnedLat": 64.01722,
+          "returnedLon": -21.294449,
+          "snapKm": 0.6601949497856672,
+          "returnedElevation": 347,
+          "nativeZ": 0,
+          "marginKm": 16.055982180169575
+        },
+        {
+          "id": "selfoss-route",
+          "ok": true,
+          "requestedLat": 63.93759501,
+          "requestedLon": -21.00380428,
+          "returnedLat": 63.93254,
+          "returnedLon": -21.01004,
+          "snapKm": 0.6393497691127555,
+          "returnedElevation": 9,
+          "nativeZ": 16.877,
+          "marginKm": 16.750891362227943
+        }
+      ]
+    },
+    {
+      "from": "selfoss",
+      "to": "reykjavik-raudavatn",
+      "option": "south",
+      "ok": true,
+      "pointCount": 3,
+      "elapsedMs": 55,
+      "approxResponseBytes": 3685,
+      "window": {
+        "startHour": "2026-11-24T10:00",
+        "endHour": "2026-11-25T09:00",
+        "expectedHours": [
+          "2026-11-24T10:00",
+          "2026-11-24T11:00",
+          "2026-11-24T12:00",
+          "2026-11-24T13:00",
+          "2026-11-24T14:00",
+          "2026-11-24T15:00",
+          "2026-11-24T16:00",
+          "2026-11-24T17:00",
+          "2026-11-24T18:00",
+          "2026-11-24T19:00",
+          "2026-11-24T20:00",
+          "2026-11-24T21:00",
+          "2026-11-24T22:00",
+          "2026-11-24T23:00",
+          "2026-11-25T00:00",
+          "2026-11-25T01:00",
+          "2026-11-25T02:00",
+          "2026-11-25T03:00",
+          "2026-11-25T04:00",
+          "2026-11-25T05:00",
+          "2026-11-25T06:00",
+          "2026-11-25T07:00",
+          "2026-11-25T08:00",
+          "2026-11-25T09:00"
+        ]
+      },
+      "points": [
+        {
+          "id": "selfoss-route",
+          "ok": true,
+          "requestedLat": 63.93759501,
+          "requestedLon": -21.00380428,
+          "returnedLat": 63.93254,
+          "returnedLon": -21.01004,
+          "snapKm": 0.6393497691127555,
+          "returnedElevation": 9,
+          "nativeZ": 16.877,
+          "marginKm": 16.744189261779685
+        },
+        {
+          "id": "hellisheidi-west-route",
+          "ok": true,
+          "requestedLat": 64.02209738,
+          "requestedLon": -21.30211162,
+          "returnedLat": 64.01722,
+          "returnedLon": -21.294449,
+          "snapKm": 0.6583680890211145,
+          "returnedElevation": 347,
+          "nativeZ": 0,
+          "marginKm": 16.057809040934128
+        },
+        {
+          "id": "raudavatn-route",
+          "ok": true,
+          "requestedLat": 64.10152892,
+          "requestedLon": -21.75906405,
+          "returnedLat": 64.10492,
+          "returnedLon": -21.74794,
+          "snapKm": 0.6588144747192689,
+          "returnedElevation": 82,
+          "nativeZ": 0,
+          "marginKm": 22.89827941927218
+        }
+      ]
+    },
+    {
+      "from": "selfoss",
+      "to": "reykjavik-raudavatn",
+      "option": "north",
+      "ok": true,
+      "pointCount": 15,
+      "elapsedMs": 60,
+      "approxResponseBytes": 16391,
+      "window": {
+        "startHour": "2026-11-24T10:00",
+        "endHour": "2026-11-25T09:00",
+        "expectedHours": [
+          "2026-11-24T10:00",
+          "2026-11-24T11:00",
+          "2026-11-24T12:00",
+          "2026-11-24T13:00",
+          "2026-11-24T14:00",
+          "2026-11-24T15:00",
+          "2026-11-24T16:00",
+          "2026-11-24T17:00",
+          "2026-11-24T18:00",
+          "2026-11-24T19:00",
+          "2026-11-24T20:00",
+          "2026-11-24T21:00",
+          "2026-11-24T22:00",
+          "2026-11-24T23:00",
+          "2026-11-25T00:00",
+          "2026-11-25T01:00",
+          "2026-11-25T02:00",
+          "2026-11-25T03:00",
+          "2026-11-25T04:00",
+          "2026-11-25T05:00",
+          "2026-11-25T06:00",
+          "2026-11-25T07:00",
+          "2026-11-25T08:00",
+          "2026-11-25T09:00"
+        ]
+      },
+      "points": [
+        {
+          "id": "selfoss-route",
+          "ok": true,
+          "requestedLat": 63.93759501,
+          "requestedLon": -21.00380428,
+          "returnedLat": 63.93254,
+          "returnedLon": -21.01004,
+          "snapKm": 0.6393497691127555,
+          "returnedElevation": 9,
+          "nativeZ": 16.877,
+          "marginKm": 40.4031766404838
+        },
+        {
+          "id": "steinar-route",
+          "ok": true,
+          "requestedLat": 63.49974764,
+          "requestedLon": -19.40607089,
+          "returnedLat": 63.498386,
+          "returnedLon": -19.40834,
+          "snapKm": 0.18867907598706288,
+          "returnedElevation": 53,
+          "nativeZ": 56.632,
+          "marginKm": 74.9713316832448
+        },
+        {
+          "id": "nupsstadur-route",
+          "ok": true,
+          "requestedLat": 63.79467017,
+          "requestedLon": -18.03969197,
+          "returnedLat": 63.790215,
+          "returnedLon": -18.050644,
+          "snapKm": 0.7312040621013302,
+          "returnedElevation": 23,
+          "nativeZ": 0,
+          "marginKm": 73.56267316004815
+        },
+        {
+          "id": "fagurholsmyri-route",
+          "ok": true,
+          "requestedLat": 63.93728359,
+          "requestedLon": -16.43378966,
+          "returnedLat": 63.939655,
+          "returnedLon": -16.426468,
+          "snapKm": 0.4443707861789541,
+          "returnedElevation": 21,
+          "nativeZ": 23.8262,
+          "marginKm": 80.19101930776168
+        },
+        {
+          "id": "hvalnes-route",
+          "ok": true,
+          "requestedLat": 64.37510356,
+          "requestedLon": -14.92390677,
+          "returnedLat": 64.369156,
+          "returnedLon": -14.936905,
+          "snapKm": 0.9100414202190888,
+          "returnedElevation": 26,
+          "nativeZ": 26.0055,
+          "marginKm": 48.712931836066545
+        },
+        {
+          "id": "djupivogur-route",
+          "ok": true,
+          "requestedLat": 64.73397433,
+          "requestedLon": -14.3387266,
+          "returnedLat": 64.71415,
+          "returnedLon": -14.350433,
+          "snapKm": 2.2733556866206883,
+          "returnedElevation": 18,
+          "nativeZ": 20.6113,
+          "marginKm": 39.89587841901827
+        },
+        {
+          "id": "fagridalur-route",
+          "ok": true,
+          "requestedLat": 65.09327459,
+          "requestedLon": -14.32871136,
+          "returnedLat": 65.08795,
+          "returnedLon": -14.347229,
+          "snapKm": 1.0500783562103888,
+          "returnedElevation": 321,
+          "nativeZ": 0,
+          "marginKm": 38.31231602722032
+        },
+        {
+          "id": "haereksstadir-route",
+          "ok": true,
+          "requestedLat": 65.45920424,
+          "requestedLon": -15.50762717,
+          "returnedLat": 65.46661,
+          "returnedLon": -15.500885,
+          "snapKm": 0.8803725457372493,
+          "returnedElevation": 461,
+          "nativeZ": 463.1281,
+          "marginKm": 63.31141077985581
+        },
+        {
+          "id": "myvatnsoraefi-route",
+          "ok": true,
+          "requestedLat": 65.64729486,
+          "requestedLon": -16.82595479,
+          "returnedLat": 65.65024,
+          "returnedLon": -16.844116,
+          "snapKm": 0.8947572314476507,
+          "returnedElevation": 419,
+          "nativeZ": 419.3205,
+          "marginKm": 16.26042829762334
+        },
+        {
+          "id": "myvatnsheidi-route",
+          "ok": true,
+          "requestedLat": 65.5971576,
+          "requestedLon": -17.19510017,
+          "returnedLat": 65.594574,
+          "returnedLon": -17.215195,
+          "snapKm": 0.9668722948824593,
+          "returnedElevation": 328,
+          "nativeZ": 329.9139,
+          "marginKm": 17.83574186731838
+        },
+        {
+          "id": "oxnadalsheidi-route",
+          "ok": true,
+          "requestedLat": 65.46800234,
+          "requestedLon": -18.69561144,
+          "returnedLat": 65.47131,
+          "returnedLon": -18.681976,
+          "snapKm": 0.7290583499351774,
+          "returnedElevation": 542,
+          "nativeZ": 544.4727,
+          "marginKm": 69.15716234115285
+        },
+        {
+          "id": "langidalur-route",
+          "ok": true,
+          "requestedLat": 65.65304918,
+          "requestedLon": -20.18322256,
+          "returnedLat": 65.63436,
+          "returnedLon": -20.21994,
+          "snapKm": 2.6746625019648054,
+          "returnedElevation": 65,
+          "nativeZ": 0,
+          "marginKm": 69.8729975023813
+        },
+        {
+          "id": "holtavorduheidi-route",
+          "ok": true,
+          "requestedLat": 64.98778171,
+          "requestedLon": -21.05499746,
+          "returnedLat": 64.99427,
+          "returnedLon": -21.058289,
+          "snapKm": 0.7378718922904459,
+          "returnedElevation": 391,
+          "nativeZ": 392.4806,
+          "marginKm": 80.48172583991679
+        },
+        {
+          "id": "grundartangi-route",
+          "ok": true,
+          "requestedLat": 64.34103007,
+          "requestedLon": -21.82213655,
+          "returnedLat": 64.33477,
+          "returnedLon": -21.812439,
+          "snapKm": 0.8382186700495319,
+          "returnedElevation": 55,
+          "nativeZ": 0,
+          "marginKm": 25.225191159621108
+        },
+        {
+          "id": "raudavatn-route",
+          "ok": true,
+          "requestedLat": 64.10152892,
+          "requestedLon": -21.75906405,
+          "returnedLat": 64.10492,
+          "returnedLon": -21.74794,
+          "snapKm": 0.6588144747192689,
+          "returnedElevation": 82,
+          "nativeZ": 0,
+          "marginKm": 25.839472455431
+        }
+      ]
+    },
+    {
+      "from": "reykjavik-raudavatn",
+      "to": "hella",
+      "option": "south",
+      "ok": true,
+      "pointCount": 3,
+      "elapsedMs": 51,
+      "approxResponseBytes": 3689,
+      "window": {
+        "startHour": "2026-11-24T10:00",
+        "endHour": "2026-11-25T09:00",
+        "expectedHours": [
+          "2026-11-24T10:00",
+          "2026-11-24T11:00",
+          "2026-11-24T12:00",
+          "2026-11-24T13:00",
+          "2026-11-24T14:00",
+          "2026-11-24T15:00",
+          "2026-11-24T16:00",
+          "2026-11-24T17:00",
+          "2026-11-24T18:00",
+          "2026-11-24T19:00",
+          "2026-11-24T20:00",
+          "2026-11-24T21:00",
+          "2026-11-24T22:00",
+          "2026-11-24T23:00",
+          "2026-11-25T00:00",
+          "2026-11-25T01:00",
+          "2026-11-25T02:00",
+          "2026-11-25T03:00",
+          "2026-11-25T04:00",
+          "2026-11-25T05:00",
+          "2026-11-25T06:00",
+          "2026-11-25T07:00",
+          "2026-11-25T08:00",
+          "2026-11-25T09:00"
+        ]
+      },
+      "points": [
+        {
+          "id": "raudavatn-route",
+          "ok": true,
+          "requestedLat": 64.10152892,
+          "requestedLon": -21.75906405,
+          "returnedLat": 64.10492,
+          "returnedLon": -21.74794,
+          "snapKm": 0.6588144747192689,
+          "returnedElevation": 82,
+          "nativeZ": 0,
+          "marginKm": 22.88909614701005
+        },
+        {
+          "id": "hellisheidi-east-route",
+          "ok": true,
+          "requestedLat": 64.0220354,
+          "requestedLon": -21.30237752,
+          "returnedLat": 64.01722,
+          "returnedLon": -21.294449,
+          "snapKm": 0.6601949497856672,
+          "returnedElevation": 347,
+          "nativeZ": 0,
+          "marginKm": 23.80641328619395
+        },
+        {
+          "id": "hella-route",
+          "ok": true,
+          "requestedLat": 63.83460815,
+          "requestedLon": -20.40236144,
+          "returnedLat": 63.837917,
+          "returnedLon": -20.395325,
+          "snapKm": 0.5043750469091496,
+          "returnedElevation": 26,
+          "nativeZ": 28.6819,
+          "marginKm": 48.31955104537955
+        }
+      ]
+    },
+    {
+      "from": "hella",
+      "to": "reykjavik-raudavatn",
+      "option": "south",
+      "ok": true,
+      "pointCount": 3,
+      "elapsedMs": 51,
+      "approxResponseBytes": 3689,
+      "window": {
+        "startHour": "2026-11-24T10:00",
+        "endHour": "2026-11-25T09:00",
+        "expectedHours": [
+          "2026-11-24T10:00",
+          "2026-11-24T11:00",
+          "2026-11-24T12:00",
+          "2026-11-24T13:00",
+          "2026-11-24T14:00",
+          "2026-11-24T15:00",
+          "2026-11-24T16:00",
+          "2026-11-24T17:00",
+          "2026-11-24T18:00",
+          "2026-11-24T19:00",
+          "2026-11-24T20:00",
+          "2026-11-24T21:00",
+          "2026-11-24T22:00",
+          "2026-11-24T23:00",
+          "2026-11-25T00:00",
+          "2026-11-25T01:00",
+          "2026-11-25T02:00",
+          "2026-11-25T03:00",
+          "2026-11-25T04:00",
+          "2026-11-25T05:00",
+          "2026-11-25T06:00",
+          "2026-11-25T07:00",
+          "2026-11-25T08:00",
+          "2026-11-25T09:00"
+        ]
+      },
+      "points": [
+        {
+          "id": "hella-route",
+          "ok": true,
+          "requestedLat": 63.83460815,
+          "requestedLon": -20.40236144,
+          "returnedLat": 63.837917,
+          "returnedLon": -20.395325,
+          "snapKm": 0.5043750469091496,
+          "returnedElevation": 26,
+          "nativeZ": 28.6819,
+          "marginKm": 48.310601974611735
+        },
+        {
+          "id": "hellisheidi-west-route",
+          "ok": true,
+          "requestedLat": 64.02209738,
+          "requestedLon": -21.30211162,
+          "returnedLat": 64.01722,
+          "returnedLon": -21.294449,
+          "snapKm": 0.6583680890211145,
+          "returnedElevation": 347,
+          "nativeZ": 0,
+          "marginKm": 23.808240146958504
+        },
+        {
+          "id": "raudavatn-route",
+          "ok": true,
+          "requestedLat": 64.10152892,
+          "requestedLon": -21.75906405,
+          "returnedLat": 64.10492,
+          "returnedLon": -21.74794,
+          "snapKm": 0.6588144747192689,
+          "returnedElevation": 82,
+          "nativeZ": 0,
+          "marginKm": 22.89827941927218
+        }
+      ]
+    },
+    {
+      "from": "reykjavik-raudavatn",
+      "to": "hella",
+      "option": "north",
+      "ok": true,
+      "pointCount": 17,
+      "elapsedMs": 58,
+      "approxResponseBytes": 18507,
+      "window": {
+        "startHour": "2026-11-24T10:00",
+        "endHour": "2026-11-25T09:00",
+        "expectedHours": [
+          "2026-11-24T10:00",
+          "2026-11-24T11:00",
+          "2026-11-24T12:00",
+          "2026-11-24T13:00",
+          "2026-11-24T14:00",
+          "2026-11-24T15:00",
+          "2026-11-24T16:00",
+          "2026-11-24T17:00",
+          "2026-11-24T18:00",
+          "2026-11-24T19:00",
+          "2026-11-24T20:00",
+          "2026-11-24T21:00",
+          "2026-11-24T22:00",
+          "2026-11-24T23:00",
+          "2026-11-25T00:00",
+          "2026-11-25T01:00",
+          "2026-11-25T02:00",
+          "2026-11-25T03:00",
+          "2026-11-25T04:00",
+          "2026-11-25T05:00",
+          "2026-11-25T06:00",
+          "2026-11-25T07:00",
+          "2026-11-25T08:00",
+          "2026-11-25T09:00"
+        ]
+      },
+      "points": [
+        {
+          "id": "raudavatn-route",
+          "ok": true,
+          "requestedLat": 64.10152892,
+          "requestedLon": -21.75906405,
+          "returnedLat": 64.10492,
+          "returnedLon": -21.74794,
+          "snapKm": 0.6588144747192689,
+          "returnedElevation": 82,
+          "nativeZ": 0,
+          "marginKm": 71.55279379449095
+        },
+        {
+          "id": "nordura-route",
+          "ok": true,
+          "requestedLat": 64.80100772,
+          "requestedLon": -21.46502232,
+          "returnedLat": 64.797325,
+          "returnedLon": -21.479095,
+          "snapKm": 0.7820657695332313,
+          "returnedElevation": 60,
+          "nativeZ": 60.7962,
+          "marginKm": 28.353563218014504
+        },
+        {
+          "id": "holtavorduheidi-route",
+          "ok": true,
+          "requestedLat": 64.98778171,
+          "requestedLon": -21.05499746,
+          "returnedLat": 64.99427,
+          "returnedLon": -21.058289,
+          "snapKm": 0.7378718922904459,
+          "returnedElevation": 391,
+          "nativeZ": 392.4806,
+          "marginKm": 28.070821744046278
+        },
+        {
+          "id": "gljufura-route",
+          "ok": true,
+          "requestedLat": 65.45523809,
+          "requestedLon": -20.55584995,
+          "returnedLat": 65.44641,
+          "returnedLon": -20.572037,
+          "snapKm": 1.2340391254599852,
+          "returnedElevation": 60,
+          "nativeZ": 65.8826,
+          "marginKm": 54.51026055962616
+        },
+        {
+          "id": "kjalkavegur-route",
+          "ok": true,
+          "requestedLat": 65.43343935,
+          "requestedLon": -19.16043028,
+          "returnedLat": 65.42061,
+          "returnedLon": -19.179764,
+          "snapKm": 1.6835435921555137,
+          "returnedElevation": 91,
+          "nativeZ": 95.6991,
+          "marginKm": 21.301429817983667
+        },
+        {
+          "id": "oxnadalsheidi-route",
+          "ok": true,
+          "requestedLat": 65.46800234,
+          "requestedLon": -18.69561144,
+          "returnedLat": 65.47131,
+          "returnedLon": -18.681976,
+          "snapKm": 0.7290583499351774,
+          "returnedElevation": 542,
+          "nativeZ": 544.4727,
+          "marginKm": 21.771097882456445
+        },
+        {
+          "id": "ljosavatnsskard-route",
+          "ok": true,
+          "requestedLat": 65.7037007,
+          "requestedLon": -17.62203344,
+          "returnedLat": 65.69566,
+          "returnedLon": -17.63794,
+          "snapKm": 1.1529011437177084,
+          "returnedElevation": 121,
+          "nativeZ": 119.6414,
+          "marginKm": 36.429681023203685
+        },
+        {
+          "id": "myvatnsoraefi-route",
+          "ok": true,
+          "requestedLat": 65.64729486,
+          "requestedLon": -16.82595479,
+          "returnedLat": 65.65024,
+          "returnedLon": -16.844116,
+          "snapKm": 0.8947572314476507,
+          "returnedElevation": 419,
+          "nativeZ": 419.3205,
+          "marginKm": 35.2254445792233
+        },
+        {
+          "id": "biskupshals-route",
+          "ok": true,
+          "requestedLat": 65.56371318,
+          "requestedLon": -16.02887191,
+          "returnedLat": 65.565956,
+          "returnedLon": -16.043015,
+          "snapKm": 0.6967090421677272,
+          "returnedElevation": 495,
+          "nativeZ": 500.3798,
+          "marginKm": 36.37844489744168
+        },
+        {
+          "id": "fellabaer-route",
+          "ok": true,
+          "requestedLat": 65.36973288,
+          "requestedLon": -14.52797393,
+          "returnedLat": 65.365036,
+          "returnedLon": -14.53595,
+          "snapKm": 0.6398540182585218,
+          "returnedElevation": 188,
+          "nativeZ": 189.7738,
+          "marginKm": 31.083628005602765
+        },
+        {
+          "id": "fagridalur-route",
+          "ok": true,
+          "requestedLat": 65.09327459,
+          "requestedLon": -14.32871136,
+          "returnedLat": 65.08795,
+          "returnedLon": -14.347229,
+          "snapKm": 1.0500783562103888,
+          "returnedElevation": 321,
+          "nativeZ": 0,
+          "marginKm": 31.39462503248635
+        },
+        {
+          "id": "breiddalsvik-route",
+          "ok": true,
+          "requestedLat": 64.79326082,
+          "requestedLon": -13.93645298,
+          "returnedLat": 64.801956,
+          "returnedLon": -13.909531,
+          "snapKm": 1.5999180755401317,
+          "returnedElevation": 11,
+          "nativeZ": 12.357,
+          "marginKm": 36.33241361824822
+        },
+        {
+          "id": "thvotta-route",
+          "ok": true,
+          "requestedLat": 64.49613488,
+          "requestedLon": -14.47545899,
+          "returnedLat": 64.493996,
+          "returnedLon": -14.510513,
+          "snapKm": 1.6951308561734648,
+          "returnedElevation": 16,
+          "nativeZ": 16.2646,
+          "marginKm": 41.36969752125
+        },
+        {
+          "id": "hofn-route",
+          "ok": true,
+          "requestedLat": 64.157141,
+          "requestedLon": -15.94023451,
+          "returnedLat": 64.16091,
+          "returnedLon": -15.954758,
+          "snapKm": 0.8192265179942276,
+          "returnedElevation": 14,
+          "nativeZ": 16.0042,
+          "marginKm": 75.80939121148985
+        },
+        {
+          "id": "kirkjubaejarklaustur-route",
+          "ok": true,
+          "requestedLat": 63.95659416,
+          "requestedLon": -17.45932652,
+          "returnedLat": 63.953197,
+          "returnedLon": -17.450577,
+          "snapKm": 0.5702427999435763,
+          "returnedElevation": 52,
+          "nativeZ": 55.244,
+          "marginKm": 76.32345049977097
+        },
+        {
+          "id": "myrdalssandur-route",
+          "ok": true,
+          "requestedLat": 63.43723005,
+          "requestedLon": -18.85790357,
+          "returnedLat": 63.429867,
+          "returnedLon": -18.858948,
+          "snapKm": 0.8203807945851728,
+          "returnedElevation": 32,
+          "nativeZ": 0,
+          "marginKm": 87.69305559429172
+        },
+        {
+          "id": "hella-route",
+          "ok": true,
+          "requestedLat": 63.83460815,
+          "requestedLon": -20.40236144,
+          "returnedLat": 63.837917,
+          "returnedLon": -20.395325,
+          "snapKm": 0.5043750469091496,
+          "returnedElevation": 26,
+          "nativeZ": 28.6819,
+          "marginKm": 72.21050192746509
+        }
+      ]
+    },
+    {
+      "from": "hella",
+      "to": "reykjavik-raudavatn",
+      "option": "north",
+      "ok": true,
+      "pointCount": 17,
+      "elapsedMs": 58,
+      "approxResponseBytes": 18507,
+      "window": {
+        "startHour": "2026-11-24T10:00",
+        "endHour": "2026-11-25T09:00",
+        "expectedHours": [
+          "2026-11-24T10:00",
+          "2026-11-24T11:00",
+          "2026-11-24T12:00",
+          "2026-11-24T13:00",
+          "2026-11-24T14:00",
+          "2026-11-24T15:00",
+          "2026-11-24T16:00",
+          "2026-11-24T17:00",
+          "2026-11-24T18:00",
+          "2026-11-24T19:00",
+          "2026-11-24T20:00",
+          "2026-11-24T21:00",
+          "2026-11-24T22:00",
+          "2026-11-24T23:00",
+          "2026-11-25T00:00",
+          "2026-11-25T01:00",
+          "2026-11-25T02:00",
+          "2026-11-25T03:00",
+          "2026-11-25T04:00",
+          "2026-11-25T05:00",
+          "2026-11-25T06:00",
+          "2026-11-25T07:00",
+          "2026-11-25T08:00",
+          "2026-11-25T09:00"
+        ]
+      },
+      "points": [
+        {
+          "id": "hella-route",
+          "ok": true,
+          "requestedLat": 63.83460815,
+          "requestedLon": -20.40236144,
+          "returnedLat": 63.837917,
+          "returnedLon": -20.395325,
+          "snapKm": 0.5043750469091496,
+          "returnedElevation": 26,
+          "nativeZ": 28.6819,
+          "marginKm": 72.21050192746509
+        },
+        {
+          "id": "myrdalssandur-route",
+          "ok": true,
+          "requestedLat": 63.43723005,
+          "requestedLon": -18.85790357,
+          "returnedLat": 63.429867,
+          "returnedLon": -18.858948,
+          "snapKm": 0.8203807945851728,
+          "returnedElevation": 32,
+          "nativeZ": 0,
+          "marginKm": 87.69305559429172
+        },
+        {
+          "id": "kirkjubaejarklaustur-route",
+          "ok": true,
+          "requestedLat": 63.95659416,
+          "requestedLon": -17.45932652,
+          "returnedLat": 63.953197,
+          "returnedLon": -17.450577,
+          "snapKm": 0.5702427999435763,
+          "returnedElevation": 52,
+          "nativeZ": 55.244,
+          "marginKm": 76.32345049977097
+        },
+        {
+          "id": "hofn-route",
+          "ok": true,
+          "requestedLat": 64.157141,
+          "requestedLon": -15.94023451,
+          "returnedLat": 64.16091,
+          "returnedLon": -15.954758,
+          "snapKm": 0.8192265179942276,
+          "returnedElevation": 14,
+          "nativeZ": 16.0042,
+          "marginKm": 75.80939121148985
+        },
+        {
+          "id": "thvotta-route",
+          "ok": true,
+          "requestedLat": 64.49613488,
+          "requestedLon": -14.47545899,
+          "returnedLat": 64.493996,
+          "returnedLon": -14.510513,
+          "snapKm": 1.6951308561734648,
+          "returnedElevation": 16,
+          "nativeZ": 16.2646,
+          "marginKm": 41.36969752125
+        },
+        {
+          "id": "breiddalsvik-route",
+          "ok": true,
+          "requestedLat": 64.79326082,
+          "requestedLon": -13.93645298,
+          "returnedLat": 64.801956,
+          "returnedLon": -13.909531,
+          "snapKm": 1.5999180755401317,
+          "returnedElevation": 11,
+          "nativeZ": 12.357,
+          "marginKm": 36.33241361824822
+        },
+        {
+          "id": "fagridalur-route",
+          "ok": true,
+          "requestedLat": 65.09327459,
+          "requestedLon": -14.32871136,
+          "returnedLat": 65.08795,
+          "returnedLon": -14.347229,
+          "snapKm": 1.0500783562103888,
+          "returnedElevation": 321,
+          "nativeZ": 0,
+          "marginKm": 31.39462503248635
+        },
+        {
+          "id": "fellabaer-route",
+          "ok": true,
+          "requestedLat": 65.36973288,
+          "requestedLon": -14.52797393,
+          "returnedLat": 65.365036,
+          "returnedLon": -14.53595,
+          "snapKm": 0.6398540182585218,
+          "returnedElevation": 188,
+          "nativeZ": 189.7738,
+          "marginKm": 31.083628005602765
+        },
+        {
+          "id": "biskupshals-route",
+          "ok": true,
+          "requestedLat": 65.56371318,
+          "requestedLon": -16.02887191,
+          "returnedLat": 65.565956,
+          "returnedLon": -16.043015,
+          "snapKm": 0.6967090421677272,
+          "returnedElevation": 495,
+          "nativeZ": 500.3798,
+          "marginKm": 36.37844489744168
+        },
+        {
+          "id": "myvatnsoraefi-route",
+          "ok": true,
+          "requestedLat": 65.64729486,
+          "requestedLon": -16.82595479,
+          "returnedLat": 65.65024,
+          "returnedLon": -16.844116,
+          "snapKm": 0.8947572314476507,
+          "returnedElevation": 419,
+          "nativeZ": 419.3205,
+          "marginKm": 35.2254445792233
+        },
+        {
+          "id": "ljosavatnsskard-route",
+          "ok": true,
+          "requestedLat": 65.7037007,
+          "requestedLon": -17.62203344,
+          "returnedLat": 65.69566,
+          "returnedLon": -17.63794,
+          "snapKm": 1.1529011437177084,
+          "returnedElevation": 121,
+          "nativeZ": 119.6414,
+          "marginKm": 36.429681023203685
+        },
+        {
+          "id": "oxnadalsheidi-route",
+          "ok": true,
+          "requestedLat": 65.46800234,
+          "requestedLon": -18.69561144,
+          "returnedLat": 65.47131,
+          "returnedLon": -18.681976,
+          "snapKm": 0.7290583499351774,
+          "returnedElevation": 542,
+          "nativeZ": 544.4727,
+          "marginKm": 21.771097882456445
+        },
+        {
+          "id": "kjalkavegur-route",
+          "ok": true,
+          "requestedLat": 65.43343935,
+          "requestedLon": -19.16043028,
+          "returnedLat": 65.42061,
+          "returnedLon": -19.179764,
+          "snapKm": 1.6835435921555137,
+          "returnedElevation": 91,
+          "nativeZ": 95.6991,
+          "marginKm": 21.301429817983667
+        },
+        {
+          "id": "gljufura-route",
+          "ok": true,
+          "requestedLat": 65.45523809,
+          "requestedLon": -20.55584995,
+          "returnedLat": 65.44641,
+          "returnedLon": -20.572037,
+          "snapKm": 1.2340391254599852,
+          "returnedElevation": 60,
+          "nativeZ": 65.8826,
+          "marginKm": 54.51026055962616
+        },
+        {
+          "id": "holtavorduheidi-route",
+          "ok": true,
+          "requestedLat": 64.98778171,
+          "requestedLon": -21.05499746,
+          "returnedLat": 64.99427,
+          "returnedLon": -21.058289,
+          "snapKm": 0.7378718922904459,
+          "returnedElevation": 391,
+          "nativeZ": 392.4806,
+          "marginKm": 28.070821744046278
+        },
+        {
+          "id": "nordura-route",
+          "ok": true,
+          "requestedLat": 64.80100772,
+          "requestedLon": -21.46502232,
+          "returnedLat": 64.797325,
+          "returnedLon": -21.479095,
+          "snapKm": 0.7820657695332313,
+          "returnedElevation": 60,
+          "nativeZ": 60.7962,
+          "marginKm": 28.353563218014504
+        },
+        {
+          "id": "raudavatn-route",
+          "ok": true,
+          "requestedLat": 64.10152892,
+          "requestedLon": -21.75906405,
+          "returnedLat": 64.10492,
+          "returnedLon": -21.74794,
+          "snapKm": 0.6588144747192689,
+          "returnedElevation": 82,
+          "nativeZ": 0,
+          "marginKm": 71.55279379449095
+        }
+      ]
+    }
+  ],
+  "orderCheck": {
+    "ok": true,
+    "results": [
+      {
+        "from": "reykjavik-raudavatn",
+        "to": "selfoss",
+        "option": "north",
+        "point": "raudavatn-route",
+        "ok": true,
+        "marginKm": 40.08246014491679
+      },
+      {
+        "from": "reykjavik-raudavatn",
+        "to": "selfoss",
+        "option": "north",
+        "point": "nordura-route",
+        "ok": true,
+        "marginKm": 28.353563218014504
+      },
+      {
+        "from": "reykjavik-raudavatn",
+        "to": "selfoss",
+        "option": "north",
+        "point": "holtavorduheidi-route",
+        "ok": true,
+        "marginKm": 28.070821744046278
+      },
+      {
+        "from": "reykjavik-raudavatn",
+        "to": "selfoss",
+        "option": "north",
+        "point": "gljufura-route",
+        "ok": true,
+        "marginKm": 54.51026055962616
+      },
+      {
+        "from": "reykjavik-raudavatn",
+        "to": "selfoss",
+        "option": "north",
+        "point": "kjalkavegur-route",
+        "ok": true,
+        "marginKm": 21.301429817983667
+      },
+      {
+        "from": "reykjavik-raudavatn",
+        "to": "selfoss",
+        "option": "north",
+        "point": "oxnadalsheidi-route",
+        "ok": true,
+        "marginKm": 21.771097882456445
+      },
+      {
+        "from": "reykjavik-raudavatn",
+        "to": "selfoss",
+        "option": "north",
+        "point": "ljosavatnsskard-route",
+        "ok": true,
+        "marginKm": 36.429681023203685
+      },
+      {
+        "from": "reykjavik-raudavatn",
+        "to": "selfoss",
+        "option": "north",
+        "point": "myvatnsoraefi-route",
+        "ok": true,
+        "marginKm": 35.2254445792233
+      },
+      {
+        "from": "reykjavik-raudavatn",
+        "to": "selfoss",
+        "option": "north",
+        "point": "biskupshals-route",
+        "ok": true,
+        "marginKm": 36.37844489744168
+      },
+      {
+        "from": "reykjavik-raudavatn",
+        "to": "selfoss",
+        "option": "north",
+        "point": "fellabaer-route",
+        "ok": true,
+        "marginKm": 31.083628005602765
+      },
+      {
+        "from": "reykjavik-raudavatn",
+        "to": "selfoss",
+        "option": "north",
+        "point": "fagridalur-route",
+        "ok": true,
+        "marginKm": 31.39462503248635
+      },
+      {
+        "from": "reykjavik-raudavatn",
+        "to": "selfoss",
+        "option": "north",
+        "point": "breiddalsvik-route",
+        "ok": true,
+        "marginKm": 36.33241361824822
+      },
+      {
+        "from": "reykjavik-raudavatn",
+        "to": "selfoss",
+        "option": "north",
+        "point": "thvotta-route",
+        "ok": true,
+        "marginKm": 41.36969752125
+      },
+      {
+        "from": "reykjavik-raudavatn",
+        "to": "selfoss",
+        "option": "north",
+        "point": "hofn-route",
+        "ok": true,
+        "marginKm": 75.80939121148985
+      },
+      {
+        "from": "reykjavik-raudavatn",
+        "to": "selfoss",
+        "option": "north",
+        "point": "kirkjubaejarklaustur-route",
+        "ok": true,
+        "marginKm": 76.32345049977097
+      },
+      {
+        "from": "reykjavik-raudavatn",
+        "to": "selfoss",
+        "option": "north",
+        "point": "myrdalssandur-route",
+        "ok": true,
+        "marginKm": 87.66530984493747
+      },
+      {
+        "from": "reykjavik-raudavatn",
+        "to": "selfoss",
+        "option": "north",
+        "point": "hvolsvollur-route",
+        "ok": true,
+        "marginKm": 31.255662691311404
+      },
+      {
+        "from": "reykjavik-raudavatn",
+        "to": "selfoss",
+        "option": "north",
+        "point": "selfoss-route",
+        "ok": true,
+        "marginKm": 31.059607321022277
+      },
+      {
+        "from": "reykjavik-raudavatn",
+        "to": "selfoss",
+        "option": "south",
+        "point": "raudavatn-route",
+        "ok": true,
+        "marginKm": 22.88909614701005
+      },
+      {
+        "from": "reykjavik-raudavatn",
+        "to": "selfoss",
+        "option": "south",
+        "point": "hellisheidi-east-route",
+        "ok": true,
+        "marginKm": 16.055982180169575
+      },
+      {
+        "from": "reykjavik-raudavatn",
+        "to": "selfoss",
+        "option": "south",
+        "point": "selfoss-route",
+        "ok": true,
+        "marginKm": 16.750891362227943
+      },
+      {
+        "from": "selfoss",
+        "to": "reykjavik-raudavatn",
+        "option": "south",
+        "point": "selfoss-route",
+        "ok": true,
+        "marginKm": 16.744189261779685
+      },
+      {
+        "from": "selfoss",
+        "to": "reykjavik-raudavatn",
+        "option": "south",
+        "point": "hellisheidi-west-route",
+        "ok": true,
+        "marginKm": 16.057809040934128
+      },
+      {
+        "from": "selfoss",
+        "to": "reykjavik-raudavatn",
+        "option": "south",
+        "point": "raudavatn-route",
+        "ok": true,
+        "marginKm": 22.89827941927218
+      },
+      {
+        "from": "selfoss",
+        "to": "reykjavik-raudavatn",
+        "option": "north",
+        "point": "selfoss-route",
+        "ok": true,
+        "marginKm": 40.4031766404838
+      },
+      {
+        "from": "selfoss",
+        "to": "reykjavik-raudavatn",
+        "option": "north",
+        "point": "steinar-route",
+        "ok": true,
+        "marginKm": 74.9713316832448
+      },
+      {
+        "from": "selfoss",
+        "to": "reykjavik-raudavatn",
+        "option": "north",
+        "point": "nupsstadur-route",
+        "ok": true,
+        "marginKm": 73.56267316004815
+      },
+      {
+        "from": "selfoss",
+        "to": "reykjavik-raudavatn",
+        "option": "north",
+        "point": "fagurholsmyri-route",
+        "ok": true,
+        "marginKm": 80.19101930776168
+      },
+      {
+        "from": "selfoss",
+        "to": "reykjavik-raudavatn",
+        "option": "north",
+        "point": "hvalnes-route",
+        "ok": true,
+        "marginKm": 48.712931836066545
+      },
+      {
+        "from": "selfoss",
+        "to": "reykjavik-raudavatn",
+        "option": "north",
+        "point": "djupivogur-route",
+        "ok": true,
+        "marginKm": 39.89587841901827
+      },
+      {
+        "from": "selfoss",
+        "to": "reykjavik-raudavatn",
+        "option": "north",
+        "point": "fagridalur-route",
+        "ok": true,
+        "marginKm": 38.31231602722032
+      },
+      {
+        "from": "selfoss",
+        "to": "reykjavik-raudavatn",
+        "option": "north",
+        "point": "haereksstadir-route",
+        "ok": true,
+        "marginKm": 63.31141077985581
+      },
+      {
+        "from": "selfoss",
+        "to": "reykjavik-raudavatn",
+        "option": "north",
+        "point": "myvatnsoraefi-route",
+        "ok": true,
+        "marginKm": 16.26042829762334
+      },
+      {
+        "from": "selfoss",
+        "to": "reykjavik-raudavatn",
+        "option": "north",
+        "point": "myvatnsheidi-route",
+        "ok": true,
+        "marginKm": 17.83574186731838
+      },
+      {
+        "from": "selfoss",
+        "to": "reykjavik-raudavatn",
+        "option": "north",
+        "point": "oxnadalsheidi-route",
+        "ok": true,
+        "marginKm": 69.15716234115285
+      },
+      {
+        "from": "selfoss",
+        "to": "reykjavik-raudavatn",
+        "option": "north",
+        "point": "langidalur-route",
+        "ok": true,
+        "marginKm": 69.8729975023813
+      },
+      {
+        "from": "selfoss",
+        "to": "reykjavik-raudavatn",
+        "option": "north",
+        "point": "holtavorduheidi-route",
+        "ok": true,
+        "marginKm": 80.48172583991679
+      },
+      {
+        "from": "selfoss",
+        "to": "reykjavik-raudavatn",
+        "option": "north",
+        "point": "grundartangi-route",
+        "ok": true,
+        "marginKm": 25.225191159621108
+      },
+      {
+        "from": "selfoss",
+        "to": "reykjavik-raudavatn",
+        "option": "north",
+        "point": "raudavatn-route",
+        "ok": true,
+        "marginKm": 25.839472455431
+      },
+      {
+        "from": "reykjavik-raudavatn",
+        "to": "hella",
+        "option": "south",
+        "point": "raudavatn-route",
+        "ok": true,
+        "marginKm": 22.88909614701005
+      },
+      {
+        "from": "reykjavik-raudavatn",
+        "to": "hella",
+        "option": "south",
+        "point": "hellisheidi-east-route",
+        "ok": true,
+        "marginKm": 23.80641328619395
+      },
+      {
+        "from": "reykjavik-raudavatn",
+        "to": "hella",
+        "option": "south",
+        "point": "hella-route",
+        "ok": true,
+        "marginKm": 48.31955104537955
+      },
+      {
+        "from": "hella",
+        "to": "reykjavik-raudavatn",
+        "option": "south",
+        "point": "hella-route",
+        "ok": true,
+        "marginKm": 48.310601974611735
+      },
+      {
+        "from": "hella",
+        "to": "reykjavik-raudavatn",
+        "option": "south",
+        "point": "hellisheidi-west-route",
+        "ok": true,
+        "marginKm": 23.808240146958504
+      },
+      {
+        "from": "hella",
+        "to": "reykjavik-raudavatn",
+        "option": "south",
+        "point": "raudavatn-route",
+        "ok": true,
+        "marginKm": 22.89827941927218
+      },
+      {
+        "from": "reykjavik-raudavatn",
+        "to": "hella",
+        "option": "north",
+        "point": "raudavatn-route",
+        "ok": true,
+        "marginKm": 71.55279379449095
+      },
+      {
+        "from": "reykjavik-raudavatn",
+        "to": "hella",
+        "option": "north",
+        "point": "nordura-route",
+        "ok": true,
+        "marginKm": 28.353563218014504
+      },
+      {
+        "from": "reykjavik-raudavatn",
+        "to": "hella",
+        "option": "north",
+        "point": "holtavorduheidi-route",
+        "ok": true,
+        "marginKm": 28.070821744046278
+      },
+      {
+        "from": "reykjavik-raudavatn",
+        "to": "hella",
+        "option": "north",
+        "point": "gljufura-route",
+        "ok": true,
+        "marginKm": 54.51026055962616
+      },
+      {
+        "from": "reykjavik-raudavatn",
+        "to": "hella",
+        "option": "north",
+        "point": "kjalkavegur-route",
+        "ok": true,
+        "marginKm": 21.301429817983667
+      },
+      {
+        "from": "reykjavik-raudavatn",
+        "to": "hella",
+        "option": "north",
+        "point": "oxnadalsheidi-route",
+        "ok": true,
+        "marginKm": 21.771097882456445
+      },
+      {
+        "from": "reykjavik-raudavatn",
+        "to": "hella",
+        "option": "north",
+        "point": "ljosavatnsskard-route",
+        "ok": true,
+        "marginKm": 36.429681023203685
+      },
+      {
+        "from": "reykjavik-raudavatn",
+        "to": "hella",
+        "option": "north",
+        "point": "myvatnsoraefi-route",
+        "ok": true,
+        "marginKm": 35.2254445792233
+      },
+      {
+        "from": "reykjavik-raudavatn",
+        "to": "hella",
+        "option": "north",
+        "point": "biskupshals-route",
+        "ok": true,
+        "marginKm": 36.37844489744168
+      },
+      {
+        "from": "reykjavik-raudavatn",
+        "to": "hella",
+        "option": "north",
+        "point": "fellabaer-route",
+        "ok": true,
+        "marginKm": 31.083628005602765
+      },
+      {
+        "from": "reykjavik-raudavatn",
+        "to": "hella",
+        "option": "north",
+        "point": "fagridalur-route",
+        "ok": true,
+        "marginKm": 31.39462503248635
+      },
+      {
+        "from": "reykjavik-raudavatn",
+        "to": "hella",
+        "option": "north",
+        "point": "breiddalsvik-route",
+        "ok": true,
+        "marginKm": 36.33241361824822
+      },
+      {
+        "from": "reykjavik-raudavatn",
+        "to": "hella",
+        "option": "north",
+        "point": "thvotta-route",
+        "ok": true,
+        "marginKm": 41.36969752125
+      },
+      {
+        "from": "reykjavik-raudavatn",
+        "to": "hella",
+        "option": "north",
+        "point": "hofn-route",
+        "ok": true,
+        "marginKm": 75.80939121148985
+      },
+      {
+        "from": "reykjavik-raudavatn",
+        "to": "hella",
+        "option": "north",
+        "point": "kirkjubaejarklaustur-route",
+        "ok": true,
+        "marginKm": 76.32345049977097
+      },
+      {
+        "from": "reykjavik-raudavatn",
+        "to": "hella",
+        "option": "north",
+        "point": "myrdalssandur-route",
+        "ok": true,
+        "marginKm": 87.69305559429172
+      },
+      {
+        "from": "reykjavik-raudavatn",
+        "to": "hella",
+        "option": "north",
+        "point": "hella-route",
+        "ok": true,
+        "marginKm": 72.21050192746509
+      },
+      {
+        "from": "hella",
+        "to": "reykjavik-raudavatn",
+        "option": "north",
+        "point": "hella-route",
+        "ok": true,
+        "marginKm": 72.21050192746509
+      },
+      {
+        "from": "hella",
+        "to": "reykjavik-raudavatn",
+        "option": "north",
+        "point": "myrdalssandur-route",
+        "ok": true,
+        "marginKm": 87.69305559429172
+      },
+      {
+        "from": "hella",
+        "to": "reykjavik-raudavatn",
+        "option": "north",
+        "point": "kirkjubaejarklaustur-route",
+        "ok": true,
+        "marginKm": 76.32345049977097
+      },
+      {
+        "from": "hella",
+        "to": "reykjavik-raudavatn",
+        "option": "north",
+        "point": "hofn-route",
+        "ok": true,
+        "marginKm": 75.80939121148985
+      },
+      {
+        "from": "hella",
+        "to": "reykjavik-raudavatn",
+        "option": "north",
+        "point": "thvotta-route",
+        "ok": true,
+        "marginKm": 41.36969752125
+      },
+      {
+        "from": "hella",
+        "to": "reykjavik-raudavatn",
+        "option": "north",
+        "point": "breiddalsvik-route",
+        "ok": true,
+        "marginKm": 36.33241361824822
+      },
+      {
+        "from": "hella",
+        "to": "reykjavik-raudavatn",
+        "option": "north",
+        "point": "fagridalur-route",
+        "ok": true,
+        "marginKm": 31.39462503248635
+      },
+      {
+        "from": "hella",
+        "to": "reykjavik-raudavatn",
+        "option": "north",
+        "point": "fellabaer-route",
+        "ok": true,
+        "marginKm": 31.083628005602765
+      },
+      {
+        "from": "hella",
+        "to": "reykjavik-raudavatn",
+        "option": "north",
+        "point": "biskupshals-route",
+        "ok": true,
+        "marginKm": 36.37844489744168
+      },
+      {
+        "from": "hella",
+        "to": "reykjavik-raudavatn",
+        "option": "north",
+        "point": "myvatnsoraefi-route",
+        "ok": true,
+        "marginKm": 35.2254445792233
+      },
+      {
+        "from": "hella",
+        "to": "reykjavik-raudavatn",
+        "option": "north",
+        "point": "ljosavatnsskard-route",
+        "ok": true,
+        "marginKm": 36.429681023203685
+      },
+      {
+        "from": "hella",
+        "to": "reykjavik-raudavatn",
+        "option": "north",
+        "point": "oxnadalsheidi-route",
+        "ok": true,
+        "marginKm": 21.771097882456445
+      },
+      {
+        "from": "hella",
+        "to": "reykjavik-raudavatn",
+        "option": "north",
+        "point": "kjalkavegur-route",
+        "ok": true,
+        "marginKm": 21.301429817983667
+      },
+      {
+        "from": "hella",
+        "to": "reykjavik-raudavatn",
+        "option": "north",
+        "point": "gljufura-route",
+        "ok": true,
+        "marginKm": 54.51026055962616
+      },
+      {
+        "from": "hella",
+        "to": "reykjavik-raudavatn",
+        "option": "north",
+        "point": "holtavorduheidi-route",
+        "ok": true,
+        "marginKm": 28.070821744046278
+      },
+      {
+        "from": "hella",
+        "to": "reykjavik-raudavatn",
+        "option": "north",
+        "point": "nordura-route",
+        "ok": true,
+        "marginKm": 28.353563218014504
+      },
+      {
+        "from": "hella",
+        "to": "reykjavik-raudavatn",
+        "option": "north",
+        "point": "raudavatn-route",
+        "ok": true,
+        "marginKm": 71.55279379449095
+      }
+    ]
+  },
+  "callCount": 10,
+  "maxForecastResponseBytes": 19536
+}

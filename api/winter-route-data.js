@@ -61,6 +61,15 @@ import {
   resolveWestfjordsCompletionGeometry,
   westfjordsCompletionForecastPoints,
 } from "./_lib/winterRoute/westfjordsCompletionRoute.js";
+// Ticket #503 ring-options — reykjavik-raudavatn<->selfoss/hella,
+// option=south|north, own separate resolver/cache-key/identity shape
+// (datasetVersion+policyVersion+selectedOption, never regionVersion).
+import {
+  isRingOptionPair,
+  resolveRingOptionGeometry,
+  ringOptionCacheKey,
+  ringOptionForecastPoints,
+} from "./_lib/winterRoute/ringOptionsRoute.js";
 
 const UPSTREAM_FETCH_OPTIONS = { timeoutMs: 15000, maxBytes: 2 * 1024 * 1024 };
 
@@ -201,12 +210,19 @@ export default async function handler(req, res) {
     const from = typeof query.from === "string" ? query.from : null;
     const to = typeof query.to === "string" ? query.to : null;
     const clientGeometryId = typeof query.geometryId === "string" ? query.geometryId : null;
+    const rawOption = typeof query.option === "string" ? query.option : null;
 
     if (!from || !to) {
       return res.status(400).json({ error: "missing_param", field: !from ? "from" : "to" });
     }
     if (!clientGeometryId) {
       return res.status(400).json({ error: "missing_param", field: "geometryId" });
+    }
+    // P5(a) — ring pairs require a valid south|north option, checked
+    // before any network call; every other pair ignores `option` entirely
+    // (same as the geometry handler does), never a new 400 for them.
+    if (isRingOptionPair(from, to) && rawOption !== "south" && rawOption !== "north") {
+      return res.status(400).json({ error: "invalid_option", field: "option" });
     }
 
     // Dispatch: B<->H keeps its own original, untouched resolver/cache
@@ -240,6 +256,17 @@ export default async function handler(req, res) {
         const canonicalGeo = from === canonicalFrom ? geo : resolveWestfjordsCompletionGeometry(canonicalFrom, canonicalTo);
         canonicalPoints = westfjordsCompletionForecastPoints(canonicalGeo.pointIds);
         displayPoints = westfjordsCompletionForecastPoints(geo.pointIds);
+      }
+    } else if (isRingOptionPair(from, to)) {
+      // P6(a) — no reverse-sharing for ring variants: each direction is
+      // its own single-flight bucket, so canonical fetch order and
+      // display order are simply the same (never a cross-direction
+      // canonical remap like the Westfjords modules use).
+      geo = resolveRingOptionGeometry(from, to, rawOption);
+      if (geo.ok) {
+        cacheKey = ringOptionCacheKey(from, to, rawOption, geo.geometryId);
+        canonicalPoints = ringOptionForecastPoints(geo.pointIds);
+        displayPoints = canonicalPoints;
       }
     } else {
       return res.status(400).json({ error: "unsupported", reason: "unsupported_pair" });
@@ -276,7 +303,15 @@ export default async function handler(req, res) {
       from,
       to,
       geometryId: geo.geometryId,
+      // P5(d): exactly one of regionVersion (Westfjords) or
+      // selectedOption+datasetVersion+policyVersion (ring) is ever
+      // present — the other resolver's own result never sets the other
+      // shape's fields, and JSON.stringify omits undefined keys, so no
+      // conditional branching is needed here.
       regionVersion: geo.regionVersion,
+      selectedOption: geo.selectedOption,
+      datasetVersion: geo.datasetVersion,
+      policyVersion: geo.policyVersion,
       routeLengthM: geo.lengthM,
       unmappedLengthM: geo.unmappedLengthM ?? 0,
       generatedAt: now.toISOString(),
