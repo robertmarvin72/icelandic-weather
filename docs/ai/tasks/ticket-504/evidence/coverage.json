@@ -1,0 +1,1495 @@
+{
+  "generatedBy": "docs/ai/tasks/ticket-504/evidence/build-coverage.mjs (offline, read-only, no network call)",
+  "generatedAtNote": "timestamps intentionally omitted -- this is a structural coverage snapshot, not a live-fetch artifact",
+  "uiPlaces": [
+    {
+      "id": "reykjavik-raudavatn",
+      "nameIs": "Reykjavík (Rauðavatn)",
+      "nameEn": "Reykjavík (Rauðavatn)",
+      "group": "ring"
+    },
+    {
+      "id": "selfoss",
+      "nameIs": "Selfoss",
+      "nameEn": "Selfoss",
+      "group": "ring"
+    },
+    {
+      "id": "hella",
+      "nameIs": "Hella",
+      "nameEn": "Hella",
+      "group": "ring"
+    },
+    {
+      "id": "egilsstadir",
+      "nameIs": "Egilsstaðir",
+      "nameEn": "Egilsstaðir",
+      "group": "ring"
+    },
+    {
+      "id": "seydisfjordur",
+      "nameIs": "Seyðisfjörður",
+      "nameEn": "Seyðisfjörður",
+      "group": "ring"
+    },
+    {
+      "id": "budardalur",
+      "nameIs": "Búðardalur",
+      "nameEn": "Búðardalur",
+      "group": "westfjords"
+    },
+    {
+      "id": "flokalundur",
+      "nameIs": "Flókalundur",
+      "nameEn": "Flókalundur",
+      "group": "westfjords"
+    },
+    {
+      "id": "isafjordur",
+      "nameIs": "Ísafjörður",
+      "nameEn": "Ísafjörður",
+      "group": "westfjords"
+    },
+    {
+      "id": "holmavik",
+      "nameIs": "Hólmavík",
+      "nameEn": "Hólmavík",
+      "group": "westfjords"
+    },
+    {
+      "id": "patreksfjordur",
+      "nameIs": "Patreksfjörður",
+      "nameEn": "Patreksfjörður",
+      "group": "westfjords"
+    },
+    {
+      "id": "talknafjordur",
+      "nameIs": "Tálknafjörður",
+      "nameEn": "Tálknafjörður",
+      "group": "westfjords"
+    }
+  ],
+  "totalUiPlaces": 11,
+  "totalPossiblePairs": 55,
+  "connectedPairs": [
+    {
+      "pair": [
+        "reykjavik-raudavatn",
+        "selfoss"
+      ],
+      "family": "ring-option",
+      "identityKind": "option",
+      "variants": {
+        "south": {
+          "geometryId": "215a1805457eb42ad937c6d8217f10aa",
+          "lengthM": 44984.77037809235,
+          "idButurCount": 5,
+          "idButurList": [
+            1410010037,
+            903010037,
+            253020037,
+            252090037,
+            902030037
+          ],
+          "pointCount": 3,
+          "pointIds": [
+            "raudavatn-route",
+            "hellisheidi-east-route",
+            "selfoss-route"
+          ]
+        },
+        "north": {
+          "geometryId": "d0e0996e7500b868364007e1cad20046",
+          "lengthM": 1236038.3222104264,
+          "idButurCount": 66,
+          "idButurList": [
+            1410010037,
+            914020037,
+            903020037,
+            903030037,
+            904690037,
+            904000037,
+            904010037,
+            804020037,
+            904040037,
+            904050037,
+            904060037,
+            907150037,
+            907160037,
+            770040037,
+            907210037,
+            908010037,
+            908020037,
+            908030037,
+            908040037,
+            909010037,
+            909020037,
+            909030037,
+            909360037,
+            909350037,
+            909000037,
+            909060037,
+            910010037,
+            910020037,
+            910030037,
+            810040037,
+            910040037,
+            910460037,
+            911000037,
+            911010037,
+            911020037,
+            911030037,
+            911040037,
+            911210037,
+            911430037,
+            911260037,
+            911440037,
+            911270037,
+            911400037,
+            911080037,
+            912010037,
+            912020037,
+            912030037,
+            912040037,
+            812050037,
+            912060037,
+            912070037,
+            912080037,
+            812090037,
+            912090037,
+            901010037,
+            901020037,
+            801040037,
+            901030037,
+            801100037,
+            901040037,
+            901050037,
+            901210037,
+            901220037,
+            901230037,
+            901130037,
+            902040037
+          ],
+          "pointCount": 18,
+          "pointIds": [
+            "raudavatn-route",
+            "nordura-route",
+            "holtavorduheidi-route",
+            "gljufura-route",
+            "kjalkavegur-route",
+            "oxnadalsheidi-route",
+            "ljosavatnsskard-route",
+            "myvatnsoraefi-route",
+            "biskupshals-route",
+            "fellabaer-route",
+            "fagridalur-route",
+            "breiddalsvik-route",
+            "thvotta-route",
+            "hofn-route",
+            "kirkjubaejarklaustur-route",
+            "myrdalssandur-route",
+            "hvolsvollur-route",
+            "selfoss-route"
+          ]
+        }
+      }
+    },
+    {
+      "pair": [
+        "reykjavik-raudavatn",
+        "hella"
+      ],
+      "family": "ring-option",
+      "identityKind": "option",
+      "variants": {
+        "south": {
+          "geometryId": "a7137730003351c3d1b81cd43755b632",
+          "lengthM": 80681.31193354058,
+          "idButurCount": 7,
+          "idButurList": [
+            1410010037,
+            903010037,
+            253020037,
+            252090037,
+            902030037,
+            902040037,
+            901130037
+          ],
+          "pointCount": 3,
+          "pointIds": [
+            "raudavatn-route",
+            "hellisheidi-east-route",
+            "hella-route"
+          ]
+        },
+        "north": {
+          "geometryId": "a8704618cc1a4325e9933b9079c841d9",
+          "lengthM": 1200394.6507663461,
+          "idButurCount": 65,
+          "idButurList": [
+            1410010037,
+            914020037,
+            903020037,
+            903030037,
+            904690037,
+            904000037,
+            904010037,
+            804020037,
+            904040037,
+            904050037,
+            904060037,
+            907150037,
+            907160037,
+            770040037,
+            907210037,
+            908010037,
+            908020037,
+            908030037,
+            908040037,
+            909010037,
+            909020037,
+            909030037,
+            909360037,
+            909350037,
+            909000037,
+            909060037,
+            910010037,
+            910020037,
+            910030037,
+            810040037,
+            910040037,
+            910460037,
+            911000037,
+            911010037,
+            911020037,
+            911030037,
+            911040037,
+            911210037,
+            911430037,
+            911260037,
+            911440037,
+            911270037,
+            911400037,
+            911080037,
+            912010037,
+            912020037,
+            912030037,
+            912040037,
+            812050037,
+            912060037,
+            912070037,
+            912080037,
+            812090037,
+            912090037,
+            901010037,
+            901020037,
+            801040037,
+            901030037,
+            801100037,
+            901040037,
+            901050037,
+            901210037,
+            901220037,
+            901230037,
+            901130037
+          ],
+          "pointCount": 17,
+          "pointIds": [
+            "raudavatn-route",
+            "nordura-route",
+            "holtavorduheidi-route",
+            "gljufura-route",
+            "kjalkavegur-route",
+            "oxnadalsheidi-route",
+            "ljosavatnsskard-route",
+            "myvatnsoraefi-route",
+            "biskupshals-route",
+            "fellabaer-route",
+            "fagridalur-route",
+            "breiddalsvik-route",
+            "thvotta-route",
+            "hofn-route",
+            "kirkjubaejarklaustur-route",
+            "myrdalssandur-route",
+            "hella-route"
+          ]
+        }
+      }
+    },
+    {
+      "pair": [
+        "reykjavik-raudavatn",
+        "egilsstadir"
+      ],
+      "family": "ring-completion",
+      "identityKind": "generic",
+      "geometryId": "2e22ddd927a7ba2f56c30f282c855501",
+      "datasetVersion": "f64c379cd8d029922c705bb14a9fa61b0f340358aa29235a7bf4cd639858f92a",
+      "lengthM": 615333.3403813917,
+      "idButurCount": 37,
+      "idButurList": [
+        1410010037,
+        914020037,
+        903020037,
+        903030037,
+        904690037,
+        904000037,
+        904010037,
+        804020037,
+        904040037,
+        904050037,
+        904060037,
+        907150037,
+        907160037,
+        770040037,
+        907210037,
+        908010037,
+        908020037,
+        908030037,
+        908040037,
+        909010037,
+        909020037,
+        909030037,
+        909360037,
+        909350037,
+        909000037,
+        909060037,
+        910010037,
+        910020037,
+        910030037,
+        810040037,
+        910040037,
+        910460037,
+        911000037,
+        911010037,
+        911020037,
+        911030037,
+        911040037
+      ],
+      "pointCount": 14,
+      "pointIds": [
+        "raudavatn-route",
+        "grundartangi-route",
+        "nordura-route",
+        "holtavorduheidi-route",
+        "gljufura-route",
+        "langidalur-route",
+        "kjalkavegur-route",
+        "oxnadalsheidi-route",
+        "ljosavatnsskard-route",
+        "myvatnsheidi-route",
+        "myvatnsoraefi-route",
+        "biskupshals-route",
+        "haereksstadir-route",
+        "egilsstadir-route"
+      ]
+    },
+    {
+      "pair": [
+        "reykjavik-raudavatn",
+        "seydisfjordur"
+      ],
+      "family": "ring-completion",
+      "identityKind": "generic",
+      "geometryId": "293f06413173aeaa74529759f11f3e7d",
+      "datasetVersion": "f64c379cd8d029922c705bb14a9fa61b0f340358aa29235a7bf4cd639858f92a",
+      "lengthM": 639482.2012623339,
+      "idButurCount": 38,
+      "idButurList": [
+        1410010037,
+        914020037,
+        903020037,
+        903030037,
+        904690037,
+        904000037,
+        904010037,
+        804020037,
+        904040037,
+        904050037,
+        904060037,
+        907150037,
+        907160037,
+        770040037,
+        907210037,
+        908010037,
+        908020037,
+        908030037,
+        908040037,
+        909010037,
+        909020037,
+        909030037,
+        909360037,
+        909350037,
+        909000037,
+        909060037,
+        910010037,
+        910020037,
+        910030037,
+        810040037,
+        910040037,
+        910460037,
+        911000037,
+        911010037,
+        911020037,
+        911030037,
+        911040037,
+        911170037
+      ],
+      "pointCount": 16,
+      "pointIds": [
+        "raudavatn-route",
+        "grundartangi-route",
+        "nordura-route",
+        "holtavorduheidi-route",
+        "gljufura-route",
+        "langidalur-route",
+        "kjalkavegur-route",
+        "oxnadalsheidi-route",
+        "ljosavatnsskard-route",
+        "myvatnsheidi-route",
+        "myvatnsoraefi-route",
+        "biskupshals-route",
+        "haereksstadir-route",
+        "fellabaer-route",
+        "fjardarheidi-route",
+        "seydisfjordur-route"
+      ]
+    },
+    {
+      "pair": [
+        "selfoss",
+        "hella"
+      ],
+      "family": "ring-completion",
+      "identityKind": "generic",
+      "geometryId": "1e5ec24e068b90156c1c9b0ec1c00d39",
+      "datasetVersion": "f64c379cd8d029922c705bb14a9fa61b0f340358aa29235a7bf4cd639858f92a",
+      "lengthM": 35646.17744949154,
+      "idButurCount": 2,
+      "idButurList": [
+        902040037,
+        901130037
+      ],
+      "pointCount": 2,
+      "pointIds": [
+        "selfoss-route",
+        "hella-route"
+      ]
+    },
+    {
+      "pair": [
+        "selfoss",
+        "egilsstadir"
+      ],
+      "family": "ring-completion",
+      "identityKind": "generic",
+      "geometryId": "a31ceffcec73a84d22b3b0171955a4cc",
+      "datasetVersion": "f64c379cd8d029922c705bb14a9fa61b0f340358aa29235a7bf4cd639858f92a",
+      "lengthM": 620628.5319733636,
+      "idButurCount": 29,
+      "idButurList": [
+        902040037,
+        901130037,
+        901230037,
+        901220037,
+        901210037,
+        901050037,
+        901040037,
+        801100037,
+        901030037,
+        801040037,
+        901020037,
+        901010037,
+        912090037,
+        812090037,
+        912080037,
+        912070037,
+        912060037,
+        812050037,
+        912040037,
+        912030037,
+        912020037,
+        912010037,
+        911080037,
+        911400037,
+        911270037,
+        911440037,
+        911260037,
+        911430037,
+        911210037
+      ],
+      "pointCount": 14,
+      "pointIds": [
+        "selfoss-route",
+        "hvolsvollur-route",
+        "steinar-route",
+        "myrdalssandur-route",
+        "nupsstadur-route",
+        "kirkjubaejarklaustur-route",
+        "fagurholsmyri-route",
+        "hofn-route",
+        "hvalnes-route",
+        "thvotta-route",
+        "djupivogur-route",
+        "breiddalsvik-route",
+        "fagridalur-route",
+        "egilsstadir-route"
+      ]
+    },
+    {
+      "pair": [
+        "selfoss",
+        "seydisfjordur"
+      ],
+      "family": "ring-completion",
+      "identityKind": "generic",
+      "geometryId": "32835ede526fa6b9ca3b7b8aea40e0c0",
+      "datasetVersion": "f64c379cd8d029922c705bb14a9fa61b0f340358aa29235a7bf4cd639858f92a",
+      "lengthM": 644777.3928543058,
+      "idButurCount": 31,
+      "idButurList": [
+        902040037,
+        901130037,
+        901230037,
+        901220037,
+        901210037,
+        901050037,
+        901040037,
+        801100037,
+        901030037,
+        801040037,
+        901020037,
+        901010037,
+        912090037,
+        812090037,
+        912080037,
+        912070037,
+        912060037,
+        812050037,
+        912040037,
+        912030037,
+        912020037,
+        912010037,
+        911080037,
+        911400037,
+        911270037,
+        911440037,
+        911260037,
+        911430037,
+        911210037,
+        911040037,
+        911170037
+      ],
+      "pointCount": 15,
+      "pointIds": [
+        "selfoss-route",
+        "hvolsvollur-route",
+        "steinar-route",
+        "myrdalssandur-route",
+        "nupsstadur-route",
+        "kirkjubaejarklaustur-route",
+        "fagurholsmyri-route",
+        "hofn-route",
+        "hvalnes-route",
+        "thvotta-route",
+        "djupivogur-route",
+        "breiddalsvik-route",
+        "fagridalur-route",
+        "fjardarheidi-route",
+        "seydisfjordur-route"
+      ]
+    },
+    {
+      "pair": [
+        "hella",
+        "egilsstadir"
+      ],
+      "family": "ring-completion",
+      "identityKind": "generic",
+      "geometryId": "4fe8fff5468b16f414f0ce0d81d023a6",
+      "datasetVersion": "f64c379cd8d029922c705bb14a9fa61b0f340358aa29235a7bf4cd639858f92a",
+      "lengthM": 584988.7322487978,
+      "idButurCount": 28,
+      "idButurList": [
+        901130037,
+        901230037,
+        901220037,
+        901210037,
+        901050037,
+        901040037,
+        801100037,
+        901030037,
+        801040037,
+        901020037,
+        901010037,
+        912090037,
+        812090037,
+        912080037,
+        912070037,
+        912060037,
+        812050037,
+        912040037,
+        912030037,
+        912020037,
+        912010037,
+        911080037,
+        911400037,
+        911270037,
+        911440037,
+        911260037,
+        911430037,
+        911210037
+      ],
+      "pointCount": 13,
+      "pointIds": [
+        "hella-route",
+        "steinar-route",
+        "myrdalssandur-route",
+        "nupsstadur-route",
+        "kirkjubaejarklaustur-route",
+        "fagurholsmyri-route",
+        "hofn-route",
+        "hvalnes-route",
+        "thvotta-route",
+        "djupivogur-route",
+        "breiddalsvik-route",
+        "fagridalur-route",
+        "egilsstadir-route"
+      ]
+    },
+    {
+      "pair": [
+        "hella",
+        "seydisfjordur"
+      ],
+      "family": "ring-completion",
+      "identityKind": "generic",
+      "geometryId": "d97c9f12babb3ff6db28cc2dd54bed96",
+      "datasetVersion": "f64c379cd8d029922c705bb14a9fa61b0f340358aa29235a7bf4cd639858f92a",
+      "lengthM": 609137.59312974,
+      "idButurCount": 30,
+      "idButurList": [
+        901130037,
+        901230037,
+        901220037,
+        901210037,
+        901050037,
+        901040037,
+        801100037,
+        901030037,
+        801040037,
+        901020037,
+        901010037,
+        912090037,
+        812090037,
+        912080037,
+        912070037,
+        912060037,
+        812050037,
+        912040037,
+        912030037,
+        912020037,
+        912010037,
+        911080037,
+        911400037,
+        911270037,
+        911440037,
+        911260037,
+        911430037,
+        911210037,
+        911040037,
+        911170037
+      ],
+      "pointCount": 14,
+      "pointIds": [
+        "hella-route",
+        "steinar-route",
+        "myrdalssandur-route",
+        "nupsstadur-route",
+        "kirkjubaejarklaustur-route",
+        "fagurholsmyri-route",
+        "hofn-route",
+        "hvalnes-route",
+        "thvotta-route",
+        "djupivogur-route",
+        "breiddalsvik-route",
+        "fagridalur-route",
+        "fjardarheidi-route",
+        "seydisfjordur-route"
+      ]
+    },
+    {
+      "pair": [
+        "egilsstadir",
+        "seydisfjordur"
+      ],
+      "family": "ring-completion",
+      "identityKind": "generic",
+      "geometryId": "e79c0f7e8237d6c2ecd910771b8b8bda",
+      "datasetVersion": "f64c379cd8d029922c705bb14a9fa61b0f340358aa29235a7bf4cd639858f92a",
+      "lengthM": 24148.860880942146,
+      "idButurCount": 2,
+      "idButurList": [
+        911040037,
+        911170037
+      ],
+      "pointCount": 3,
+      "pointIds": [
+        "egilsstadir-route",
+        "fjardarheidi-route",
+        "seydisfjordur-route"
+      ]
+    },
+    {
+      "pair": [
+        "budardalur",
+        "flokalundur"
+      ],
+      "family": "westfjords-batch",
+      "identityKind": "region",
+      "geometryId": "9d3e8ed90702ba8c1ddd42da6b77967d",
+      "regionVersion": "b93e0334e095cf95",
+      "lengthM": 172474.2228360156,
+      "idButurCount": 12,
+      "idButurList": [
+        805030037,
+        905070037,
+        905080037,
+        805090037,
+        905110037,
+        905130037,
+        560250037,
+        560260037,
+        805140037,
+        905150037,
+        905160037,
+        905170037
+      ],
+      "pointCount": 5,
+      "pointIds": [
+        "budardalur-route",
+        "svinadalur-route",
+        "gilsfjordur-route",
+        "klettshals-route",
+        "flokalundur-route"
+      ],
+      "unmappedLengthM": 0.0050234308413424035
+    },
+    {
+      "pair": [
+        "budardalur",
+        "isafjordur"
+      ],
+      "family": "westfjords-completion",
+      "identityKind": "region",
+      "geometryId": "ef0d7cfdfbcd1d01b014ddb9cd704644",
+      "regionVersion": "b93e0334e095cf95",
+      "lengthM": 260092.77114015716,
+      "idButurCount": 24,
+      "idButurList": [
+        805030037,
+        905070037,
+        905080037,
+        805090037,
+        905110037,
+        905130037,
+        560250037,
+        560260037,
+        805140037,
+        905150037,
+        905160037,
+        905170037,
+        660350037,
+        905310037,
+        906010037,
+        906720037,
+        806030037,
+        906040037,
+        906070037,
+        906080037,
+        664020037,
+        906700037,
+        806110037,
+        906120037
+      ],
+      "pointCount": 8,
+      "pointIds": [
+        "budardalur-route",
+        "svinadalur-route",
+        "gilsfjordur-route",
+        "klettshals-route",
+        "flokalundur-route",
+        "dynjandisheidi-route",
+        "gemlufallsheidi-route",
+        "isafjordur-route"
+      ],
+      "unmappedLengthM": 0.0050234308413424035
+    },
+    {
+      "pair": [
+        "budardalur",
+        "holmavik"
+      ],
+      "family": "budardalur-holmavik",
+      "identityKind": "region",
+      "geometryId": "b19c8443173f07732be3e79e856ad64c",
+      "regionVersion": "b93e0334e095cf95",
+      "lengthM": 78697.77054505677,
+      "idButurCount": 7,
+      "idButurList": [
+        805030037,
+        905070037,
+        905080037,
+        805090037,
+        907000037,
+        707040037,
+        907040037
+      ],
+      "pointCount": 4,
+      "pointIds": [
+        "budardalur-route",
+        "throskuldar-south-route",
+        "throskuldar-pass-route",
+        "holmavik-route"
+      ]
+    },
+    {
+      "pair": [
+        "budardalur",
+        "patreksfjordur"
+      ],
+      "family": "westfjords-batch",
+      "identityKind": "region",
+      "geometryId": "754d7e04760d31cb86c6319079ee8586",
+      "regionVersion": "b93e0334e095cf95",
+      "lengthM": 233874.32180113663,
+      "idButurCount": 17,
+      "idButurList": [
+        805030037,
+        905070037,
+        905080037,
+        805090037,
+        905110037,
+        905130037,
+        560250037,
+        560260037,
+        805140037,
+        905150037,
+        905160037,
+        905170037,
+        905180037,
+        905190037,
+        905200037,
+        905250037,
+        562070037
+      ],
+      "pointCount": 7,
+      "pointIds": [
+        "budardalur-route",
+        "svinadalur-route",
+        "gilsfjordur-route",
+        "klettshals-route",
+        "flokalundur-route",
+        "kleifaheidi-route",
+        "patreksfjordur-route"
+      ],
+      "unmappedLengthM": 4.398206058358473
+    },
+    {
+      "pair": [
+        "budardalur",
+        "talknafjordur"
+      ],
+      "family": "westfjords-batch",
+      "identityKind": "region",
+      "geometryId": "e1010409f490cf77fe0873bf1042f949",
+      "regionVersion": "b93e0334e095cf95",
+      "lengthM": 248219.98974281375,
+      "idButurCount": 18,
+      "idButurList": [
+        805030037,
+        905070037,
+        905080037,
+        805090037,
+        905110037,
+        905130037,
+        560250037,
+        560260037,
+        805140037,
+        905150037,
+        905160037,
+        905170037,
+        905180037,
+        905190037,
+        905200037,
+        905250037,
+        905260037,
+        506170037
+      ],
+      "pointCount": 8,
+      "pointIds": [
+        "budardalur-route",
+        "svinadalur-route",
+        "gilsfjordur-route",
+        "klettshals-route",
+        "flokalundur-route",
+        "kleifaheidi-route",
+        "miklidalur-route",
+        "talknafjordur-route"
+      ],
+      "unmappedLengthM": 0.0050234308413424035
+    },
+    {
+      "pair": [
+        "flokalundur",
+        "isafjordur"
+      ],
+      "family": "westfjords-completion",
+      "identityKind": "region",
+      "geometryId": "8b97e2e43a594e5c9b5efc24b82d6736",
+      "regionVersion": "b93e0334e095cf95",
+      "lengthM": 87618.54830414167,
+      "idButurCount": 13,
+      "idButurList": [
+        905170037,
+        660350037,
+        905310037,
+        906010037,
+        906720037,
+        806030037,
+        906040037,
+        906070037,
+        906080037,
+        664020037,
+        906700037,
+        806110037,
+        906120037
+      ],
+      "pointCount": 4,
+      "pointIds": [
+        "flokalundur-route",
+        "dynjandisheidi-route",
+        "gemlufallsheidi-route",
+        "isafjordur-route"
+      ],
+      "unmappedLengthM": 0
+    },
+    {
+      "pair": [
+        "flokalundur",
+        "holmavik"
+      ],
+      "family": "westfjords-completion",
+      "identityKind": "region",
+      "geometryId": "23b6db9d3987f9e7e5289ff06a6bd8fb",
+      "regionVersion": "b93e0334e095cf95",
+      "lengthM": 154887.0832053119,
+      "idButurCount": 11,
+      "idButurList": [
+        905170037,
+        905160037,
+        905150037,
+        805140037,
+        560260037,
+        560250037,
+        905130037,
+        905110037,
+        907000037,
+        707040037,
+        907040037
+      ],
+      "pointCount": 5,
+      "pointIds": [
+        "flokalundur-route",
+        "klettshals-route",
+        "throskuldar-south-route",
+        "throskuldar-pass-route",
+        "holmavik-route"
+      ],
+      "unmappedLengthM": 0.0050234308413424035
+    },
+    {
+      "pair": [
+        "flokalundur",
+        "patreksfjordur"
+      ],
+      "family": "westfjords-batch",
+      "identityKind": "region",
+      "geometryId": "c4312f35bf25f0bc3394423f20927a6a",
+      "regionVersion": "b93e0334e095cf95",
+      "lengthM": 61400.098965121026,
+      "idButurCount": 6,
+      "idButurList": [
+        905170037,
+        905180037,
+        905190037,
+        905200037,
+        905250037,
+        562070037
+      ],
+      "pointCount": 3,
+      "pointIds": [
+        "flokalundur-route",
+        "kleifaheidi-route",
+        "patreksfjordur-route"
+      ],
+      "unmappedLengthM": 4.39318262751713
+    },
+    {
+      "pair": [
+        "flokalundur",
+        "talknafjordur"
+      ],
+      "family": "westfjords-batch",
+      "identityKind": "region",
+      "geometryId": "fcdc9e5001a1f1eaa96e7ced7015f1a0",
+      "regionVersion": "b93e0334e095cf95",
+      "lengthM": 75745.76690679816,
+      "idButurCount": 7,
+      "idButurList": [
+        905170037,
+        905180037,
+        905190037,
+        905200037,
+        905250037,
+        905260037,
+        506170037
+      ],
+      "pointCount": 4,
+      "pointIds": [
+        "flokalundur-route",
+        "kleifaheidi-route",
+        "miklidalur-route",
+        "talknafjordur-route"
+      ],
+      "unmappedLengthM": 0
+    },
+    {
+      "pair": [
+        "isafjordur",
+        "holmavik"
+      ],
+      "family": "westfjords-completion",
+      "identityKind": "region",
+      "geometryId": "2d47312feaa4fa8aa674c7af85616461",
+      "regionVersion": "b93e0334e095cf95",
+      "lengthM": 223136.98949144362,
+      "idButurCount": 9,
+      "idButurList": [
+        906120037,
+        906140037,
+        906150037,
+        906160037,
+        906170037,
+        907070037,
+        907050037,
+        761220037,
+        907040037
+      ],
+      "pointCount": 5,
+      "pointIds": [
+        "isafjordur-route",
+        "sudavikurhlid-route",
+        "vatnsfjardarhals-route",
+        "steingrimsfjardarheidi-route",
+        "holmavik-route"
+      ],
+      "unmappedLengthM": 0
+    },
+    {
+      "pair": [
+        "isafjordur",
+        "patreksfjordur"
+      ],
+      "family": "westfjords-completion",
+      "identityKind": "region",
+      "geometryId": "91304012b7289a6b7fc6a6fe4055e616",
+      "regionVersion": "b93e0334e095cf95",
+      "lengthM": 148325.1015395726,
+      "idButurCount": 17,
+      "idButurList": [
+        906120037,
+        806110037,
+        906700037,
+        664020037,
+        906080037,
+        906070037,
+        906040037,
+        806030037,
+        906720037,
+        906010037,
+        905310037,
+        660350037,
+        905180037,
+        905190037,
+        905200037,
+        905250037,
+        562070037
+      ],
+      "pointCount": 5,
+      "pointIds": [
+        "isafjordur-route",
+        "gemlufallsheidi-route",
+        "dynjandisheidi-route",
+        "kleifaheidi-route",
+        "patreksfjordur-route"
+      ],
+      "unmappedLengthM": 4.39318262751713
+    },
+    {
+      "pair": [
+        "isafjordur",
+        "talknafjordur"
+      ],
+      "family": "westfjords-completion",
+      "identityKind": "region",
+      "geometryId": "8b191a7039f81354a4a87ac93c794ad3",
+      "regionVersion": "b93e0334e095cf95",
+      "lengthM": 162670.76948124974,
+      "idButurCount": 18,
+      "idButurList": [
+        906120037,
+        806110037,
+        906700037,
+        664020037,
+        906080037,
+        906070037,
+        906040037,
+        806030037,
+        906720037,
+        906010037,
+        905310037,
+        660350037,
+        905180037,
+        905190037,
+        905200037,
+        905250037,
+        905260037,
+        506170037
+      ],
+      "pointCount": 6,
+      "pointIds": [
+        "isafjordur-route",
+        "gemlufallsheidi-route",
+        "dynjandisheidi-route",
+        "kleifaheidi-route",
+        "miklidalur-route",
+        "talknafjordur-route"
+      ],
+      "unmappedLengthM": 0
+    },
+    {
+      "pair": [
+        "holmavik",
+        "patreksfjordur"
+      ],
+      "family": "westfjords-completion",
+      "identityKind": "region",
+      "geometryId": "68c439488c9df5ea7e23847e26465d98",
+      "regionVersion": "b93e0334e095cf95",
+      "lengthM": 216287.18217043296,
+      "idButurCount": 16,
+      "idButurList": [
+        907040037,
+        707040037,
+        907000037,
+        905110037,
+        905130037,
+        560250037,
+        560260037,
+        805140037,
+        905150037,
+        905160037,
+        905170037,
+        905180037,
+        905190037,
+        905200037,
+        905250037,
+        562070037
+      ],
+      "pointCount": 7,
+      "pointIds": [
+        "holmavik-route",
+        "throskuldar-pass-route",
+        "throskuldar-south-route",
+        "klettshals-route",
+        "flokalundur-route",
+        "kleifaheidi-route",
+        "patreksfjordur-route"
+      ],
+      "unmappedLengthM": 4.398206058358473
+    },
+    {
+      "pair": [
+        "holmavik",
+        "talknafjordur"
+      ],
+      "family": "westfjords-completion",
+      "identityKind": "region",
+      "geometryId": "a749a24cace4fcfaa4da1fb2824fe396",
+      "regionVersion": "b93e0334e095cf95",
+      "lengthM": 230632.85011211009,
+      "idButurCount": 17,
+      "idButurList": [
+        907040037,
+        707040037,
+        907000037,
+        905110037,
+        905130037,
+        560250037,
+        560260037,
+        805140037,
+        905150037,
+        905160037,
+        905170037,
+        905180037,
+        905190037,
+        905200037,
+        905250037,
+        905260037,
+        506170037
+      ],
+      "pointCount": 8,
+      "pointIds": [
+        "holmavik-route",
+        "throskuldar-pass-route",
+        "throskuldar-south-route",
+        "klettshals-route",
+        "flokalundur-route",
+        "kleifaheidi-route",
+        "miklidalur-route",
+        "talknafjordur-route"
+      ],
+      "unmappedLengthM": 0.0050234308413424035
+    },
+    {
+      "pair": [
+        "patreksfjordur",
+        "talknafjordur"
+      ],
+      "family": "westfjords-batch",
+      "identityKind": "region",
+      "geometryId": "b0c4c6228ca16ca0ebe5507710db9875",
+      "regionVersion": "b93e0334e095cf95",
+      "lengthM": 17114.94341971567,
+      "idButurCount": 3,
+      "idButurList": [
+        562070037,
+        905260037,
+        506170037
+      ],
+      "pointCount": 3,
+      "pointIds": [
+        "patreksfjordur-route",
+        "miklidalur-route",
+        "talknafjordur-route"
+      ],
+      "unmappedLengthM": 4.39318262751713
+    }
+  ],
+  "totalConnectedPairs": 25,
+  "unsupportedMixedPairs": [
+    {
+      "pair": [
+        "reykjavik-raudavatn",
+        "budardalur"
+      ]
+    },
+    {
+      "pair": [
+        "reykjavik-raudavatn",
+        "flokalundur"
+      ]
+    },
+    {
+      "pair": [
+        "reykjavik-raudavatn",
+        "isafjordur"
+      ]
+    },
+    {
+      "pair": [
+        "reykjavik-raudavatn",
+        "holmavik"
+      ]
+    },
+    {
+      "pair": [
+        "reykjavik-raudavatn",
+        "patreksfjordur"
+      ]
+    },
+    {
+      "pair": [
+        "reykjavik-raudavatn",
+        "talknafjordur"
+      ]
+    },
+    {
+      "pair": [
+        "selfoss",
+        "budardalur"
+      ]
+    },
+    {
+      "pair": [
+        "selfoss",
+        "flokalundur"
+      ]
+    },
+    {
+      "pair": [
+        "selfoss",
+        "isafjordur"
+      ]
+    },
+    {
+      "pair": [
+        "selfoss",
+        "holmavik"
+      ]
+    },
+    {
+      "pair": [
+        "selfoss",
+        "patreksfjordur"
+      ]
+    },
+    {
+      "pair": [
+        "selfoss",
+        "talknafjordur"
+      ]
+    },
+    {
+      "pair": [
+        "hella",
+        "budardalur"
+      ]
+    },
+    {
+      "pair": [
+        "hella",
+        "flokalundur"
+      ]
+    },
+    {
+      "pair": [
+        "hella",
+        "isafjordur"
+      ]
+    },
+    {
+      "pair": [
+        "hella",
+        "holmavik"
+      ]
+    },
+    {
+      "pair": [
+        "hella",
+        "patreksfjordur"
+      ]
+    },
+    {
+      "pair": [
+        "hella",
+        "talknafjordur"
+      ]
+    },
+    {
+      "pair": [
+        "egilsstadir",
+        "budardalur"
+      ]
+    },
+    {
+      "pair": [
+        "egilsstadir",
+        "flokalundur"
+      ]
+    },
+    {
+      "pair": [
+        "egilsstadir",
+        "isafjordur"
+      ]
+    },
+    {
+      "pair": [
+        "egilsstadir",
+        "holmavik"
+      ]
+    },
+    {
+      "pair": [
+        "egilsstadir",
+        "patreksfjordur"
+      ]
+    },
+    {
+      "pair": [
+        "egilsstadir",
+        "talknafjordur"
+      ]
+    },
+    {
+      "pair": [
+        "seydisfjordur",
+        "budardalur"
+      ]
+    },
+    {
+      "pair": [
+        "seydisfjordur",
+        "flokalundur"
+      ]
+    },
+    {
+      "pair": [
+        "seydisfjordur",
+        "isafjordur"
+      ]
+    },
+    {
+      "pair": [
+        "seydisfjordur",
+        "holmavik"
+      ]
+    },
+    {
+      "pair": [
+        "seydisfjordur",
+        "patreksfjordur"
+      ]
+    },
+    {
+      "pair": [
+        "seydisfjordur",
+        "talknafjordur"
+      ]
+    }
+  ],
+  "totalUnsupportedMixedPairs": 30,
+  "sixtySixPlaceFile": {
+    "path": "server_data/winter-route-places.json",
+    "totalEntries": 56,
+    "uiIdsPresentInFile": [
+      "reykjavik-raudavatn",
+      "selfoss",
+      "hella",
+      "egilsstadir",
+      "seydisfjordur",
+      "budardalur",
+      "isafjordur",
+      "holmavik",
+      "patreksfjordur",
+      "talknafjordur"
+    ],
+    "uiIdsPresentCount": 10,
+    "uiIdsMissingFromFile": [
+      "flokalundur"
+    ],
+    "note": "Matched by id only, never by connectionStatus (P3c) -- that field is an access-point provenance status in the 56-place file, not a routable/coverage source for this project's 11-place UI list. Not modified here."
+  }
+}
