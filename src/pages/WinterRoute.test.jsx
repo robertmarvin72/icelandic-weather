@@ -1629,20 +1629,21 @@ describe("WinterRoute page", () => {
     });
 
     it("P4(d): a network failure shows the generic error with a retry button, and retry re-sends the same request", async () => {
-      // Deliberately NOT budardalur<->holmavik here (ticket #503 would
-      // also fire its own separate /api/winter-route-data request for
-      // that specific pair once the geometry result succeeds, which this
-      // generic path-unaware mock can't distinguish) -- isafjordur<->
-      // patreksfjordur is a real geometry_only pair with no options,
-      // unaffected by #503, keeping this test's own scope (geometry
-      // retry) focused.
+      // Deliberately NOT budardalur<->holmavik (or any of the 15 Westfjords
+      // pairs ticket #503 now connects -- B<->H/westfjords-batch/westfjords-
+      // completion) here: any of those would also fire its own separate
+      // /api/winter-route-data request once the geometry result succeeds,
+      // which this generic path-unaware mock can't distinguish --
+      // budardalur<->selfoss is a real geometry_only pair with no options,
+      // outside all three #503 modules, keeping this test's own scope
+      // (geometry retry) focused.
       let callCount = 0;
       vi.stubGlobal(
         "fetch",
         vi.fn().mockImplementation(() => {
           callCount += 1;
           if (callCount === 1) return Promise.reject(new Error("network down"));
-          return Promise.resolve({ ok: true, status: 200, json: async () => ({ ...BUDARDALUR_HOLMAVIK_FIXTURE, from: "isafjordur", to: "patreksfjordur" }) });
+          return Promise.resolve({ ok: true, status: 200, json: async () => ({ ...BUDARDALUR_HOLMAVIK_FIXTURE, from: "budardalur", to: "selfoss" }) });
         })
       );
       render(<MemoryRouter initialEntries={["/winter-route"]}><WinterRoute /></MemoryRouter>);
@@ -1650,8 +1651,8 @@ describe("WinterRoute page", () => {
       const fromSelect = await screen.findByLabelText(translations.is.winterRouteFromLabel);
       const toSelect = screen.getByLabelText(translations.is.winterRouteToLabel);
       const { fireEvent } = await import("@testing-library/react");
-      fireEvent.change(fromSelect, { target: { value: "isafjordur" } });
-      fireEvent.change(toSelect, { target: { value: "patreksfjordur" } });
+      fireEvent.change(fromSelect, { target: { value: "budardalur" } });
+      fireEvent.change(toSelect, { target: { value: "selfoss" } });
       fireEvent.click(screen.getByRole("button", { name: translations.is.winterRouteShowRouteButton }));
 
       await waitFor(() => expect(screen.getByText(translations.is.winterRouteGenericError)).toBeInTheDocument());
@@ -2095,7 +2096,7 @@ describe("WinterRoute page", () => {
         if (u.includes("/api/winter-route-data")) return new Promise((resolve) => { resolveData = resolve; });
         const key = geometryUrlToKey(u);
         if (key === "budardalur|holmavik|") return Promise.resolve({ status: 200, json: async () => geometryFixture("budardalur", "holmavik", FORWARD_GEOMETRY_ID) });
-        if (key === "budardalur|isafjordur|") return Promise.resolve({ status: 200, json: async () => ({ schemaVersion: 1, tier: 0, status: "geometry_only", from: "budardalur", to: "isafjordur", geometryId: "other-id" }) });
+        if (key === "budardalur|selfoss|") return Promise.resolve({ status: 200, json: async () => ({ schemaVersion: 1, tier: 0, status: "geometry_only", from: "budardalur", to: "selfoss", geometryId: "other-id" }) });
         return Promise.reject(new Error(`no fixture for ${key}`));
       });
       vi.stubGlobal("fetch", fetchMock);
@@ -2105,7 +2106,7 @@ describe("WinterRoute page", () => {
 
       const toSelect = screen.getByLabelText(translations.is.winterRouteToLabel, { selector: "select" });
       const { fireEvent } = await import("@testing-library/react");
-      fireEvent.change(toSelect, { target: { value: "isafjordur" } });
+      fireEvent.change(toSelect, { target: { value: "selfoss" } });
       fireEvent.click(screen.getByRole("button", { name: translations.is.winterRouteShowRouteButton }));
       await waitFor(() => expect(screen.getByText(translations.is.winterRouteBaseDisclaimer)).toBeInTheDocument());
 
@@ -2171,19 +2172,48 @@ describe("WinterRoute page", () => {
       });
     }
 
+    // Ticket #503 westfjords-completion -- a non-B<->H, non-batch connected
+    // pair (isafjordur<->holmavik), with its own 5-point fixture matching
+    // the real P2(B) chainage (sudavikurhlid 21.3km, vatnsfjardarhals
+    // 127.6km -> largest gap ~106.3km).
+    const ISAFJORDUR_HOLMAVIK_GEOMETRY_ID = "isafjordur-holmavik-geometry-id-ghi";
+    function isafjordurHolmavikDataFixture(from, to, geometryId) {
+      return dataFixture(from, to, geometryId, {
+        roadSections: [
+          { idButur: 906140037, nameIs: "Súðavíkurhlíð", nameEn: "Súðavíkurhlíð", routeLengthM: 12700, routeLengthFraction: 0.057, isEdgeSegment: false, segmentDataAvailable: true, category: "passable", positiveStyleEligible: true, astandYfirbord: "GREIDFAERT", astandLysing: "Greiðfært", astandLysingEn: "Easily passable", export: { isStale: false }, registration: { isOld: false }, notices: [] },
+        ],
+        forecast: {
+          available: true,
+          window: { startHour: DATA_HOURS[0], endHour: DATA_HOURS[1], expectedHours: DATA_HOURS },
+          points: [
+            { id: "isafjordur-route", labelIs: "Ísafjörður — leiðarpunktur", labelEn: "Ísafjörður — route point", available: true, approxDistanceFromStartKm: 0, returnedLatitude: 66.07, returnedLongitude: -23.12, elevation: 1, hours: DATA_HOURS, series: { temperature_2m: [-1, -1], wind_speed_10m: [2, 2], wind_gusts_10m: [3, 3], precipitation: [0, 0], weather_code: [3, 3] } },
+            { id: "sudavikurhlid-route", labelIs: "Nærri Súðavík", labelEn: "Near Súðavík", available: true, approxDistanceFromStartKm: 21.3, returnedLatitude: 66.02, returnedLongitude: -22.99, elevation: 15, hours: DATA_HOURS, series: { temperature_2m: [-1, -2], wind_speed_10m: [3, 3], wind_gusts_10m: [4, 4], precipitation: [0, 0], weather_code: [3, 3] } },
+            { id: "vatnsfjardarhals-route", labelIs: "Nærri Vatnsfjarðarhálsi", labelEn: "Near Vatnsfjarðarháls", available: true, approxDistanceFromStartKm: 127.6, returnedLatitude: 65.93, returnedLongitude: -22.52, elevation: 122, hours: DATA_HOURS, series: { temperature_2m: [-4, -5], wind_speed_10m: [6, 6], wind_gusts_10m: [9, 9], precipitation: [1, 1], weather_code: [71, 71] } },
+            { id: "steingrimsfjardarheidi-route", labelIs: "Nærri Steingrímsfjarðarheiði", labelEn: "Near Steingrímsfjarðarheiði", available: true, approxDistanceFromStartKm: 195.9, returnedLatitude: 65.75, returnedLongitude: -22.11, elevation: 435, hours: DATA_HOURS, series: { temperature_2m: [-5, -6], wind_speed_10m: [7, 7], wind_gusts_10m: [10, 10], precipitation: [1, 1], weather_code: [73, 73] } },
+            { id: "holmavik-route", labelIs: "Hólmavík", labelEn: "Hólmavík", available: true, approxDistanceFromStartKm: 223.1, returnedLatitude: 65.7, returnedLongitude: -21.68, elevation: 20, hours: DATA_HOURS, series: { temperature_2m: [0, -1], wind_speed_10m: [3, 3], wind_gusts_10m: [4, 4], precipitation: [0, 0], weather_code: [3, 3] } },
+          ],
+          stale: false, cacheAgeMs: 0,
+        },
+      });
+    }
+
     function batchAwareFetch() {
       return vi.fn().mockImplementation((url) => {
         const u = String(url);
         if (u.includes("/api/winter-route-data")) {
           const params = new URL(u, "http://localhost").searchParams;
           const from = params.get("from"), to = params.get("to"), geometryId = params.get("geometryId");
-          const fixture = geometryId === FLOKALUNDUR_GEOMETRY_ID ? flokalundurDataFixture(from, to, geometryId) : dataFixture(from, to, geometryId);
+          const fixture =
+            geometryId === FLOKALUNDUR_GEOMETRY_ID ? flokalundurDataFixture(from, to, geometryId)
+            : geometryId === ISAFJORDUR_HOLMAVIK_GEOMETRY_ID ? isafjordurHolmavikDataFixture(from, to, geometryId)
+            : dataFixture(from, to, geometryId);
           return Promise.resolve({ status: 200, json: async () => fixture });
         }
         const key = geometryUrlToKey(u);
         if (key === "budardalur|holmavik|") return Promise.resolve({ status: 200, json: async () => geometryFixture("budardalur", "holmavik", FORWARD_GEOMETRY_ID) });
         if (key === "budardalur|flokalundur|") return Promise.resolve({ status: 200, json: async () => geometryFixture("budardalur", "flokalundur", FLOKALUNDUR_GEOMETRY_ID) });
-        if (key === "budardalur|isafjordur|") return Promise.resolve({ status: 200, json: async () => ({ schemaVersion: 1, tier: 0, status: "geometry_only", from: "budardalur", to: "isafjordur", geometryId: "unconnected-id" }) });
+        if (key === "isafjordur|holmavik|") return Promise.resolve({ status: 200, json: async () => geometryFixture("isafjordur", "holmavik", ISAFJORDUR_HOLMAVIK_GEOMETRY_ID) });
+        if (key === "budardalur|selfoss|") return Promise.resolve({ status: 200, json: async () => ({ schemaVersion: 1, tier: 2, status: "geometry_only", from: "budardalur", to: "selfoss", geometryId: "unconnected-id" }) });
         return Promise.reject(new Error(`no fixture for ${key}`));
       });
     }
@@ -2233,7 +2263,9 @@ describe("WinterRoute page", () => {
       // Place names ("Hólmavík"/"Flókalundur") are ambiguous page-wide --
       // they're also real <option> text in both Frá/Til selects -- so every
       // check below is scoped to the data region itself (same discipline as
-      // the "never raw technical fields" test above).
+      // the "never raw technical fields" test above). "selfoss" is used as
+      // the unconnected pair here (not "isafjordur", which the ticket-503
+      // westfjords-completion round connects to budardalur).
       vi.stubGlobal("fetch", batchAwareFetch());
       render(<MemoryRouter initialEntries={["/winter-route"]}><WinterRoute /></MemoryRouter>);
 
@@ -2244,13 +2276,32 @@ describe("WinterRoute page", () => {
       await waitFor(() => expect(within(screen.getByTestId("winter-route-data")).getByText("Flókalundur")).toBeInTheDocument());
       expect(within(screen.getByTestId("winter-route-data")).queryByText("Hólmavík")).toBeNull();
 
-      await chooseAndSubmit("budardalur", "isafjordur");
+      await chooseAndSubmit("budardalur", "selfoss");
       await waitFor(() => expect(screen.getByText(translations.is.winterRouteBaseDisclaimer)).toBeInTheDocument());
       expect(screen.queryByTestId("winter-route-data")).toBeNull();
 
       await chooseAndSubmit("budardalur", "flokalundur");
       await waitFor(() => expect(within(screen.getByTestId("winter-route-data")).getByText("Flókalundur")).toBeInTheDocument());
       expect(screen.queryByText(translations.is.winterRouteBaseDisclaimer)).toBeNull();
+    });
+
+    it("westfjords-completion pair (I<->H): fires /api/winter-route-data same as B<->H/batch, with a dynamic 5-point heading and the ~106.3km computed largest-gap note", async () => {
+      vi.stubGlobal("fetch", batchAwareFetch());
+      render(<MemoryRouter initialEntries={["/winter-route"]}><WinterRoute /></MemoryRouter>);
+      await chooseAndSubmit("isafjordur", "holmavik");
+
+      await waitFor(() => expect(screen.getByText(translations.is.winterRouteDataConnectedDisclaimer)).toBeInTheDocument());
+      const dataRegion = screen.getByTestId("winter-route-data");
+      const data = within(dataRegion);
+      expect(data.getByRole("heading", { name: translations.is.winterRouteDataForecastHeading.replace("{count}", "5") })).toBeInTheDocument();
+      // Largest gap is Súðavík (21.3km) -> Vatnsfjarðarháls (127.6km) = 106,3 km.
+      expect(
+        data.getByText(
+          translations.is.winterRouteLargestGapNote.replace("{km}", "106,3").replace("{pointA}", "Nærri Súðavík").replace("{pointB}", "Nærri Vatnsfjarðarhálsi")
+        )
+      ).toBeInTheDocument();
+      expect(data.getByText("Nærri Steingrímsfjarðarheiði")).toBeInTheDocument();
+      expect(data.getByText("Hólmavík")).toBeInTheDocument();
     });
   });
 });

@@ -52,6 +52,15 @@ import {
   resolveWestfjordsBatchGeometry,
   westfjordsBatchForecastPoints,
 } from "./_lib/winterRoute/westfjordsBatchRoute.js";
+// Ticket #503 westfjords-completion — the last 8 pairs (isafjordur plus the
+// 5 already-connected places), own separate resolver/registry; the two
+// modules above are untouched by this round.
+import {
+  isWestfjordsCompletionPair,
+  westfjordsCompletionCacheKey,
+  resolveWestfjordsCompletionGeometry,
+  westfjordsCompletionForecastPoints,
+} from "./_lib/winterRoute/westfjordsCompletionRoute.js";
 
 const UPSTREAM_FETCH_OPTIONS = { timeoutMs: 15000, maxBytes: 2 * 1024 * 1024 };
 
@@ -222,6 +231,15 @@ export default async function handler(req, res) {
         const canonicalGeo = from === canonicalFrom ? geo : resolveWestfjordsBatchGeometry(canonicalFrom, canonicalTo);
         canonicalPoints = westfjordsBatchForecastPoints(canonicalGeo.pointIds);
         displayPoints = westfjordsBatchForecastPoints(geo.pointIds);
+      }
+    } else if (isWestfjordsCompletionPair(from, to)) {
+      geo = resolveWestfjordsCompletionGeometry(from, to);
+      cacheKey = westfjordsCompletionCacheKey(from, to);
+      if (geo.ok) {
+        const [canonicalFrom, canonicalTo] = [from, to].sort();
+        const canonicalGeo = from === canonicalFrom ? geo : resolveWestfjordsCompletionGeometry(canonicalFrom, canonicalTo);
+        canonicalPoints = westfjordsCompletionForecastPoints(canonicalGeo.pointIds);
+        displayPoints = westfjordsCompletionForecastPoints(geo.pointIds);
       }
     } else {
       return res.status(400).json({ error: "unsupported", reason: "unsupported_pair" });

@@ -6,6 +6,7 @@ import { __resetWinterRouteCacheForTests } from "./_lib/winterRoute/cache.js";
 import { computeForecastWindow } from "./_lib/winterRoute/forecastFetch.js";
 import { resolveBudardalurHolmavikGeometry, BUDARDALUR_HOLMAVIK_FORECAST_POINTS } from "./_lib/winterRoute/budardalurHolmavikRoute.js";
 import { resolveWestfjordsBatchGeometry } from "./_lib/winterRoute/westfjordsBatchRoute.js";
+import { resolveWestfjordsCompletionGeometry } from "./_lib/winterRoute/westfjordsCompletionRoute.js";
 
 const EXPECTED_IDBUTUR = [805030037, 905070037, 905080037, 805090037, 907000037, 707040037, 907040037];
 const FORWARD_GEOMETRY_ID = resolveBudardalurHolmavikGeometry("budardalur", "holmavik").geometryId;
@@ -512,6 +513,236 @@ describe("GET /api/winter-route-data — westfjords-batch pairs", () => {
     global.fetch = stub.fn;
     const res = makeRes();
     await handler(makeReq("GET", { from: "flokalundur", to: "talknafjordur", geometryId: FT_FORWARD }), res);
+
+    expect(res.body.forecast.available).toBe(false);
+    expect(res.body.forecast.reason).toBe("key_missing");
+    expect(stub.calls.forecast).toBe(0);
+    process.env.OPEN_METEO_API_KEY = "test-key";
+  });
+});
+
+describe("GET /api/winter-route-data — westfjords-completion pairs (isafjordur + the last 8 pairs)", () => {
+  const BI_FORWARD = resolveWestfjordsCompletionGeometry("budardalur", "isafjordur").geometryId;
+  const BI_REVERSE = resolveWestfjordsCompletionGeometry("isafjordur", "budardalur").geometryId;
+  const IH_FORWARD = resolveWestfjordsCompletionGeometry("isafjordur", "holmavik").geometryId;
+  const FH_FORWARD = resolveWestfjordsCompletionGeometry("flokalundur", "holmavik").geometryId;
+  const HT_FORWARD = resolveWestfjordsCompletionGeometry("holmavik", "talknafjordur").geometryId;
+
+  function completionForecastApiResponse(pointCount, window) {
+    return Array.from({ length: pointCount }, (_, i) => ({
+      latitude: window.coordinates?.[i]?.lat ?? 65, longitude: window.coordinates?.[i]?.lon ?? -22, elevation: 10 + i, utc_offset_seconds: 0,
+      hourly_units: { temperature_2m: "°C", wind_speed_10m: "m/s", wind_gusts_10m: "m/s", precipitation: "mm", weather_code: "wmo code" },
+      hourly: {
+        time: window.expectedHours,
+        temperature_2m: window.expectedHours.map(() => i),
+        wind_speed_10m: window.expectedHours.map(() => 1),
+        wind_gusts_10m: window.expectedHours.map(() => 1),
+        precipitation: window.expectedHours.map(() => 0),
+        weather_code: window.expectedHours.map(() => 0),
+      },
+    }));
+  }
+  function completionStubFetch({ segmentIds, forecastPointCount } = {}) {
+    const calls = { segments: 0, points: 0, forecast: 0 };
+    return {
+      calls,
+      fn: vi.fn().mockImplementation((url) => {
+        const u = String(url);
+        if (u.includes("faerdpunktar")) { calls.points += 1; return Promise.resolve(okJsonResponse([])); }
+        if (u.includes("faerd2017_1")) { calls.segments += 1; return Promise.resolve(okJsonResponse((segmentIds ?? []).map((id) => validSegmentRow(id)))); }
+        calls.forecast += 1;
+        return Promise.resolve(okJsonResponse(completionForecastApiResponse(forecastPointCount ?? 5, { ...computeForecastWindow(), coordinates: new URL(u).searchParams.get("latitude").split(",").map((lat, i) => ({ lat: Number(lat), lon: Number(new URL(u).searchParams.get("longitude").split(",")[i]) })) })));
+      }),
+    };
+  }
+
+  it("maps distinct validated forecasts to the correct point in all sixteen directions", async () => {
+    const pairs = [
+      ["budardalur", "isafjordur"], ["flokalundur", "isafjordur"], ["isafjordur", "holmavik"],
+      ["isafjordur", "patreksfjordur"], ["isafjordur", "talknafjordur"], ["flokalundur", "holmavik"],
+      ["holmavik", "patreksfjordur"], ["holmavik", "talknafjordur"],
+    ];
+    for (const [a, b] of pairs) {
+      __resetWinterRouteCacheForTests();
+      const geo = resolveWestfjordsCompletionGeometry(a, b);
+      const stub = completionStubFetch({ segmentIds: geo.idButurList, forecastPointCount: geo.pointIds.length });
+      global.fetch = stub.fn;
+      let forward;
+      for (const [from, to] of [[a, b], [b, a]]) {
+        const resolved = resolveWestfjordsCompletionGeometry(from, to);
+        const res = makeRes();
+        await handler(makeReq("GET", { from, to, geometryId: resolved.geometryId }), res);
+        expect(res.statusCode).toBe(200);
+        const points = res.body.forecast.points;
+        for (const point of points) expect(point.available).toBe(true);
+        if (!forward) forward = points;
+        else expect(points.map((p) => [p.id, p.series.temperature_2m, p.returnedLatitude, p.returnedLongitude])).toEqual([...forward].reverse().map((p) => [p.id, p.series.temperature_2m, p.returnedLatitude, p.returnedLongitude]));
+        const [canonicalFrom, canonicalTo] = [a, b].sort();
+        const canonicalIds = resolveWestfjordsCompletionGeometry(canonicalFrom, canonicalTo).pointIds;
+        points.forEach((point) => expect(point.series.temperature_2m[0]).toBe(canonicalIds.indexOf(point.id)));
+      }
+      expect(stub.calls).toEqual({ segments: 1, points: 1, forecast: 1 });
+    }
+  });
+
+  it("budardalur<->isafjordur: the longest new pair, 24 road sections, 8 forecast points in real travel order, unmappedLengthM ~0.005 (-4 only)", async () => {
+    const stub = completionStubFetch({ segmentIds: resolveWestfjordsCompletionGeometry("budardalur", "isafjordur").idButurList, forecastPointCount: 8 });
+    global.fetch = stub.fn;
+    const res = makeRes();
+    await handler(makeReq("GET", { from: "budardalur", to: "isafjordur", geometryId: BI_FORWARD }), res);
+
+    expect(res.statusCode).toBe(200);
+    expect(res.body.roadSections).toHaveLength(24);
+    expect(res.body.forecast.points.map((p) => p.id)).toEqual(["budardalur-route", "svinadalur-route", "gilsfjordur-route", "klettshals-route", "flokalundur-route", "dynjandisheidi-route", "gemlufallsheidi-route", "isafjordur-route"]);
+    expect(res.body.unmappedLengthM).toBeCloseTo(0.005, 3);
+  });
+
+  it("reverse direction (isafjordur->budardalur) returns the reverse point order and a different geometryId", async () => {
+    const stub = completionStubFetch({ segmentIds: resolveWestfjordsCompletionGeometry("isafjordur", "budardalur").idButurList, forecastPointCount: 8 });
+    global.fetch = stub.fn;
+    const res = makeRes();
+    await handler(makeReq("GET", { from: "isafjordur", to: "budardalur", geometryId: BI_REVERSE }), res);
+
+    expect(res.statusCode).toBe(200);
+    expect(res.body.geometryId).toBe(BI_REVERSE);
+    expect(res.body.geometryId).not.toBe(BI_FORWARD);
+    expect(res.body.forecast.points.map((p) => p.id)).toEqual(["isafjordur-route", "gemlufallsheidi-route", "dynjandisheidi-route", "flokalundur-route", "klettshals-route", "gilsfjordur-route", "svinadalur-route", "budardalur-route"]);
+  });
+
+  it("isafjordur<->holmavik: no Þröskuldar points (no real 907000037 section), 9 road sections, 5 points, no null-ID connector", async () => {
+    const stub = completionStubFetch({ segmentIds: resolveWestfjordsCompletionGeometry("isafjordur", "holmavik").idButurList, forecastPointCount: 5 });
+    global.fetch = stub.fn;
+    const res = makeRes();
+    await handler(makeReq("GET", { from: "isafjordur", to: "holmavik", geometryId: IH_FORWARD }), res);
+
+    expect(res.statusCode).toBe(200);
+    expect(res.body.roadSections).toHaveLength(9);
+    expect(res.body.unmappedLengthM).toBe(0);
+    expect(res.body.forecast.points.map((p) => p.id)).toEqual(["isafjordur-route", "sudavikurhlid-route", "vatnsfjardarhals-route", "steingrimsfjardarheidi-route", "holmavik-route"]);
+    expect(res.body.forecast.points.map((p) => p.id)).not.toContain("throskuldar-south-route");
+  });
+
+  it("flokalundur<->holmavik: Þröskuldar points DO appear (real 907000037 section present), 11 road sections, 5 points", async () => {
+    const stub = completionStubFetch({ segmentIds: resolveWestfjordsCompletionGeometry("flokalundur", "holmavik").idButurList, forecastPointCount: 5 });
+    global.fetch = stub.fn;
+    const res = makeRes();
+    await handler(makeReq("GET", { from: "flokalundur", to: "holmavik", geometryId: FH_FORWARD }), res);
+
+    expect(res.statusCode).toBe(200);
+    expect(res.body.roadSections).toHaveLength(11);
+    expect(res.body.forecast.points.map((p) => p.id)).toEqual(["flokalundur-route", "klettshals-route", "throskuldar-south-route", "throskuldar-pass-route", "holmavik-route"]);
+  });
+
+  it("holmavik<->talknafjordur: the longest H-anchored pair, 17 road sections, 8 points", async () => {
+    const stub = completionStubFetch({ segmentIds: resolveWestfjordsCompletionGeometry("holmavik", "talknafjordur").idButurList, forecastPointCount: 8 });
+    global.fetch = stub.fn;
+    const res = makeRes();
+    await handler(makeReq("GET", { from: "holmavik", to: "talknafjordur", geometryId: HT_FORWARD }), res);
+
+    expect(res.statusCode).toBe(200);
+    expect(res.body.roadSections).toHaveLength(17);
+    expect(res.body.forecast.points.map((p) => p.id)).toEqual(["holmavik-route", "throskuldar-pass-route", "throskuldar-south-route", "klettshals-route", "flokalundur-route", "kleifaheidi-route", "miklidalur-route", "talknafjordur-route"]);
+  });
+
+  it("400 unsupported for isafjordur<->isafjordur (same place) and for a pair outside every allowlist", async () => {
+    const res1 = makeRes();
+    await handler(makeReq("GET", { from: "isafjordur", to: "isafjordur", geometryId: "x" }), res1);
+    expect(res1.statusCode).toBe(400);
+    expect(res1.body.error).toBe("unsupported");
+
+    const res2 = makeRes();
+    await handler(makeReq("GET", { from: "isafjordur", to: "egilsstadir", geometryId: "x" }), res2);
+    expect(res2.statusCode).toBe(400);
+    expect(res2.body.error).toBe("unsupported");
+  });
+
+  it("geometry_mismatch when the client geometryId doesn't match the real recomputed one, for a new pair", async () => {
+    const res = makeRes();
+    await handler(makeReq("GET", { from: "budardalur", to: "isafjordur", geometryId: "not-real" }), res);
+    expect(res.statusCode).toBe(400);
+    expect(res.body.error).toBe("geometry_mismatch");
+  });
+
+  it("P5(c)/P5b(i): concurrent forward+reverse of the SAME pair on a cold cache share exactly 3 upstream calls", async () => {
+    const stub = completionStubFetch({ segmentIds: resolveWestfjordsCompletionGeometry("isafjordur", "holmavik").idButurList, forecastPointCount: 5 });
+    global.fetch = stub.fn;
+    await Promise.all([
+      handler(makeReq("GET", { from: "isafjordur", to: "holmavik", geometryId: IH_FORWARD }), makeRes()),
+      handler(makeReq("GET", { from: "holmavik", to: "isafjordur", geometryId: resolveWestfjordsCompletionGeometry("holmavik", "isafjordur").geometryId }), makeRes()),
+    ]);
+    expect(stub.calls.segments).toBe(1);
+    expect(stub.calls.points).toBe(1);
+    expect(stub.calls.forecast).toBe(1);
+  });
+
+  it("cache isolation: budardalur<->isafjordur never shares a bucket with isafjordur<->holmavik, a westfjords-batch pair, or B<->H", async () => {
+    const emptyStub = () => vi.fn().mockImplementation((url) => {
+      const u = String(url);
+      if (u.includes("faerdpunktar")) return Promise.resolve(okJsonResponse([]));
+      if (u.includes("faerd2017_1")) return Promise.resolve(okJsonResponse([]));
+      return Promise.resolve(okJsonResponse(completionForecastApiResponse(8, computeForecastWindow())));
+    });
+
+    global.fetch = emptyStub();
+    await handler(makeReq("GET", { from: "budardalur", to: "isafjordur", geometryId: BI_FORWARD }), makeRes());
+    const callsAfterBI = global.fetch.mock.calls.length;
+
+    global.fetch = emptyStub();
+    await handler(makeReq("GET", { from: "isafjordur", to: "holmavik", geometryId: IH_FORWARD }), makeRes());
+    expect(global.fetch.mock.calls.length).toBeGreaterThan(0); // a genuinely new fetch happened, not reused
+    void callsAfterBI;
+
+    // Isolated from an (unaffected) westfjords-batch pair's own bucket.
+    const stubBatch = completionStubFetch({ segmentIds: resolveWestfjordsBatchGeometry("budardalur", "flokalundur").idButurList, forecastPointCount: 5 });
+    global.fetch = stubBatch.fn;
+    await handler(makeReq("GET", { from: "budardalur", to: "flokalundur", geometryId: resolveWestfjordsBatchGeometry("budardalur", "flokalundur").geometryId }), makeRes());
+    expect(stubBatch.calls.segments).toBe(1); // fresh fetch, not reused from any westfjords-completion bucket
+
+    // Isolated from B<->H's own fixed key.
+    const stubBH = fullStubFetch({});
+    global.fetch = stubBH.fn;
+    await handler(makeReq("GET", { from: "budardalur", to: "holmavik", geometryId: FORWARD_GEOMETRY_ID }), makeRes());
+    expect(stubBH.calls.segments).toBe(1); // fresh fetch, not reused from any other bucket
+  });
+
+  it("edge segments are flagged dynamically: 906700037 Tungudalsleggur (0.80%) on budardalur<->isafjordur, 562070037 (0.93%) on isafjordur<->patreksfjordur", async () => {
+    const stubBI = completionStubFetch({ segmentIds: resolveWestfjordsCompletionGeometry("budardalur", "isafjordur").idButurList, forecastPointCount: 8 });
+    global.fetch = stubBI.fn;
+    const resBI = makeRes();
+    await handler(makeReq("GET", { from: "budardalur", to: "isafjordur", geometryId: BI_FORWARD }), resBI);
+    const byIdBI = new Map(resBI.body.roadSections.map((s) => [s.idButur, s]));
+    expect(byIdBI.get(906700037).isEdgeSegment).toBe(true);
+    expect(byIdBI.get(805030037).isEdgeSegment).toBe(true);
+
+    const ipGeo = resolveWestfjordsCompletionGeometry("isafjordur", "patreksfjordur");
+    const stubIP = completionStubFetch({ segmentIds: ipGeo.idButurList, forecastPointCount: 5 });
+    global.fetch = stubIP.fn;
+    const resIP = makeRes();
+    await handler(makeReq("GET", { from: "isafjordur", to: "patreksfjordur", geometryId: ipGeo.geometryId }), resIP);
+    const byIdIP = new Map(resIP.body.roadSections.map((s) => [s.idButur, s]));
+    expect(byIdIP.get(562070037).isEdgeSegment).toBe(true);
+    expect(resIP.body.roadSections.every((s) => typeof s.nameIs === "string" && s.nameIs.length > 0)).toBe(true);
+  });
+
+  it("P4(c)/P5(a): each forecast point carries its own real approxDistanceFromStartKm; isafjordur<->holmavik's largest gap is ~106.3 km (sudavikurhlid->vatnsfjardarhals)", async () => {
+    const stub = completionStubFetch({ segmentIds: resolveWestfjordsCompletionGeometry("isafjordur", "holmavik").idButurList, forecastPointCount: 5 });
+    global.fetch = stub.fn;
+    const res = makeRes();
+    await handler(makeReq("GET", { from: "isafjordur", to: "holmavik", geometryId: IH_FORWARD }), res);
+    const byId = new Map(res.body.forecast.points.map((p) => [p.id, p]));
+    expect(byId.get("isafjordur-route").approxDistanceFromStartKm).toBeCloseTo(0, 1);
+    expect(byId.get("sudavikurhlid-route").approxDistanceFromStartKm).toBeCloseTo(21.3, 1);
+    expect(byId.get("vatnsfjardarhals-route").approxDistanceFromStartKm).toBeCloseTo(127.6, 1);
+    const gap = byId.get("vatnsfjardarhals-route").approxDistanceFromStartKm - byId.get("sudavikurhlid-route").approxDistanceFromStartKm;
+    expect(gap).toBeCloseTo(106.3, 0);
+  });
+
+  it("key_missing: zero forecast calls, road data unaffected, for a westfjords-completion pair too", async () => {
+    delete process.env.OPEN_METEO_API_KEY;
+    const stub = completionStubFetch({ segmentIds: resolveWestfjordsCompletionGeometry("flokalundur", "holmavik").idButurList, forecastPointCount: 5 });
+    global.fetch = stub.fn;
+    const res = makeRes();
+    await handler(makeReq("GET", { from: "flokalundur", to: "holmavik", geometryId: FH_FORWARD }), res);
 
     expect(res.body.forecast.available).toBe(false);
     expect(res.body.forecast.reason).toBe("key_missing");

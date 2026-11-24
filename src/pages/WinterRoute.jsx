@@ -507,8 +507,20 @@ const WESTFJORDS_BATCH_PAIR_KEYS = new Set(WESTFJORDS_BATCH_PAIRS.flatMap(([a, b
 function isWestfjordsBatchPair(from, to) {
   return from !== to && WESTFJORDS_BATCH_PAIR_KEYS.has(`${from}|${to}`);
 }
+
+// Ticket #503 westfjords-completion -- frontend-only duplicate of the
+// backend's own pair allowlist (api/_lib/winterRoute/westfjordsCompletionRoute.js).
+const WESTFJORDS_COMPLETION_PAIRS = [
+  ["budardalur", "isafjordur"], ["flokalundur", "isafjordur"], ["isafjordur", "holmavik"],
+  ["isafjordur", "patreksfjordur"], ["isafjordur", "talknafjordur"], ["flokalundur", "holmavik"],
+  ["holmavik", "patreksfjordur"], ["holmavik", "talknafjordur"],
+];
+const WESTFJORDS_COMPLETION_PAIR_KEYS = new Set(WESTFJORDS_COMPLETION_PAIRS.flatMap(([a, b]) => [`${a}|${b}`, `${b}|${a}`]));
+function isWestfjordsCompletionPair(from, to) {
+  return from !== to && WESTFJORDS_COMPLETION_PAIR_KEYS.has(`${from}|${to}`);
+}
 function isWinterRouteDataPair(from, to) {
-  return isBudardalurHolmavikPair(from, to) || isWestfjordsBatchPair(from, to);
+  return isBudardalurHolmavikPair(from, to) || isWestfjordsBatchPair(from, to) || isWestfjordsCompletionPair(from, to);
 }
 
 // Validate the fields consumed by the data view before accepting a response.
@@ -547,7 +559,10 @@ function WinterRouteDataView({ data, t, lang }) {
   const pointCount = data.forecast.available ? data.forecast.points.length : 0;
   const largestGap = useMemo(() => {
     if (!data.forecast.available) return null;
-    const pts = data.forecast.points.filter((p) => Number.isFinite(p.approxDistanceFromStartKm));
+    // P5(a) westfjords-completion: a point without its own forecast data
+    // does not count as a "point" for the gap calculation -- otherwise a
+    // temporarily unavailable point would understate the real gap.
+    const pts = data.forecast.points.filter((p) => p.available && Number.isFinite(p.approxDistanceFromStartKm));
     if (pts.length < 2) return null;
     let best = null;
     for (let i = 1; i < pts.length; i++) {
