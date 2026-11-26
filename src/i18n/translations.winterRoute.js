@@ -7,25 +7,7 @@ export const winterRouteTranslations = {
   en: {
     footerWinterRoute: "Rauðavatn–Vík road status",
 
-    // Ticket #491, V1 — the page's own h1/<title> no longer come from a
-    // fixed key here; they're derived directly from the selected
-    // WINTER_ROUTE_OPTIONS entry's nameIs/nameEn in WinterRoute.jsx
-    // (there is no single fixed "the title" once a second route exists).
-    winterRouteSubtitle: "Road conditions now and forecast along the route",
-    winterRouteLatestStatusNote: "Latest available status, not a forecast of road conditions.",
-
-    winterRouteHourLabel: "Forecast time",
-    winterRouteSameForecastTimeNote: "The same forecast time applies to all points.",
-    winterRouteNoHoursAvailable: "No upcoming time is available right now.",
-
-    // Ticket #491 — {count} is the selected route's own point count (6 for
-    // Rauðavatn–Vík, 4 for Rauðavatn–Borgarnes), never a hardcoded "six".
-    winterRouteForecastSectionTitle: "Forecast at {count} points along the route",
     winterRouteRoadSectionTitle: "Road conditions and closures",
-
-    // Ticket #491 — route selector (native select, same page, Vík default).
-    winterRouteRouteSelectLabel: "Route",
-    winterRouteRouteDataMismatch: "Something went wrong loading data for this route. Please try again.",
     winterRouteSectionCoverageNote:
       "Road-condition data for some sections may cover a longer stretch of road than the part this route actually uses.",
 
@@ -39,6 +21,13 @@ export const winterRouteTranslations = {
     winterRouteExportStale: "This status export may be outdated.",
     winterRouteRegistrationOld: "This section's registration is more than a day old.",
     winterRouteSegmentDataUnavailable: "No road data available for this section.",
+    // Ticket #492, direct-flow round 2, R4/V4 -- Ripley-approved exact
+    // wording. Conflicting data: shown instead of a representative row's
+    // own description for an ambiguous segment (never presented as a
+    // known surface). Unknown addition: shown by default, as plain text,
+    // whenever a segment has a real but unclassified AstandVidbotaruppl.
+    winterRouteConflictingRoadData: "Conflicting road-condition data",
+    winterRouteUnknownAdditionCode: "Unknown supplementary condition: {code}",
     winterRouteRoadFeedUnavailable: "Road-condition data is currently unavailable.",
     winterRouteRoadStaleServed: "Showing the last known status ({minutes} min old).",
     winterRoutePointsFeedUnavailable:
@@ -54,30 +43,7 @@ export const winterRouteTranslations = {
     winterRoutePointUnavailable: "No forecast data available for this point.",
     winterRouteForecastNotAvailableAtComputedTime: "Forecast not available",
     winterRouteGridDisclaimer: "A forecast grid point from a weather model — not a direct measurement on the road.",
-    winterRouteValidFor: "Valid for {time} UTC",
-    winterRouteTemperature: "Temperature",
-    winterRouteWind: "Wind",
-    winterRouteGust: "Gusts (max, previous hour)",
-    winterRoutePrecip: "Precipitation (previous hour)",
     winterRouteUnknownWeatherSymbol: "Unknown weather symbol",
-
-    // #489 — route-level summary (max gust/precip, min temp among the
-    // route's points at the one shared selected forecast hour, ticket
-    // #493; count of segments with a currently active point notice).
-    // Gust/precip wording
-    // deliberately repeats the same "(max, previous hour)"/"(previous
-    // hour)" period phrasing as winterRouteGust/winterRoutePrecip above.
-    winterRouteSummaryHeading: "Along the route now",
-    winterRouteSummaryGust: "Highest gusts (max, previous hour): {value} m/s — {point}, {time} UTC",
-    winterRouteSummaryGustMissing: "Highest gusts: data not available",
-    winterRouteSummaryPrecip: "Most precipitation (previous hour): {value} mm — {point}, {time} UTC",
-    winterRouteSummaryPrecipMissing: "Most precipitation: data not available",
-    winterRouteSummaryMinTemp: "Lowest temperature: {value} °C — {point}, {time} UTC",
-    winterRouteSummaryMinTempMissing: "Lowest temperature: data not available",
-    winterRouteSummaryPartialSuffix: " (based on {count} of {total} points)",
-    winterRouteSummaryNoticeCount: "Sections with valid notices: {count}",
-    winterRouteSummaryNoticeCountUnconfirmed: "The count of sections with valid notices is unconfirmed right now.",
-    winterRouteSummaryNoticeScope: "Not the overall road condition — see the road-condition list below.",
 
     winterRouteAttributionRoadLine:
       "Road-condition and closure data: Vegagerðin (the Icelandic Road Administration), CC BY 4.0.",
@@ -94,15 +60,21 @@ export const winterRouteTranslations = {
     // T3 note: no departure/arrival/ETA/70km wording (same sweep as above);
     // the access-point disclaimer deliberately avoids "arrival"-adjacent
     // phrasing too, per approved-prompt-v1.md's own intro note.
-    winterRouteModeGroupLabel: "View mode",
-    winterRouteModeChooseLabel: "Choose places",
-    winterRouteModeLegacyLabel: "Fixed weather routes",
+    // Ticket #492, direct-flow -- the page's own h1/<title> fallback
+    // before any pair has been applied (the former mode toggle and its
+    // "Choose places" button label are both removed; this is a plain
+    // neutral heading, not tied to any button).
+    winterRouteDefaultHeading: "Winter road weather",
     winterRouteFromLabel: "From",
     winterRouteToLabel: "To",
     winterRouteFromSearchLabel: "Search starting point",
     winterRouteToSearchLabel: "Search destination",
     winterRouteGroupRingLabel: "South and East Iceland",
     winterRouteGroupWestfjordsLabel: "Westfjords",
+    // Ticket #492, direct-flow, C6 -- a listbox-group label only, not a
+    // claim that these two places connect to each other or to the ring/
+    // Westfjords groups above.
+    winterRouteGroupOtherLabel: "Other supported places",
     winterRouteNoSearchResults: "No place matches this search.",
     winterRouteSwapLabel: "Swap From and To",
     winterRouteShowRouteButton: "Show route",
@@ -143,24 +115,56 @@ export const winterRouteTranslations = {
     winterRouteRoadCacheAgeUnderMinuteLine: "Road: cache age when the response was generated: under a minute.",
     winterRouteForecastCacheAgeLine: "Weather: cache age when the response was generated: {minutes} min.",
     winterRouteForecastCacheAgeUnderMinuteLine: "Weather: cache age when the response was generated: under a minute.",
+
+    // Ticket #492, first overview round -- "Velja staði" data-view-only key
+    // for the forecast-time control, positioned directly above the weather
+    // table rather than above the form (the legacy view's own equivalent
+    // key, winterRouteHourLabel, no longer exists -- ticket #492's
+    // direct-flow round removed that whole legacy view).
+    winterRouteDataHourLabel: "Forecast time",
+    // Ticket #492, time-slider -- keys for the native-range control that
+    // replaced the former <select> above.
+    winterRoutePrevHourButton: "Previous hour",
+    winterRouteNextHourButton: "Next hour",
+    winterRouteSameForecastTimeNoteChoose: "The same forecast time applies to all weather points.",
+    winterRouteRoadCurrentRegardlessOfTimeNote: "Latest road status, regardless of the selected forecast time.",
+    winterRouteTimeNoLongerAvailable: "The time you selected is no longer available — showing the next available time instead.",
+    winterRouteTableColumnPlace: "Place",
+    // Short table-column versions of the existing winterRouteTemperature/
+    // winterRouteWind/winterRouteGust/winterRoutePrecip labels -- the EN
+    // word "Temperature" alone overflowed its own 360px column header
+    // (real measured evidence, round 2 of this ticket: it does not
+    // contain a break point a browser can wrap at). The full wording is
+    // kept, stated ONCE, in winterRouteGustPrecipNote below the table.
+    winterRouteTableColumnTemp: "Temp.",
+    winterRouteTableColumnWind: "Wind",
+    winterRouteTableColumnGust: "Gusts",
+    winterRouteTableColumnPrecip: "Precip.",
+    // Ticket #492, round 3 (UX priority) -- the real "Weather" column
+    // (icon + short condition text), one of 6 real synchronised columns.
+    winterRouteTableColumnWeather: "Weather",
+    winterRouteGustPrecipNote: "Gusts are the maximum of the previous hour; precipitation is from the previous hour.",
+    winterRouteRoadOverviewAllClear: "No notices or closures on the route right now.",
+    winterRouteRoadOverviewUnconfirmed: "Unable to confirm there are no notices on the route right now — data is incomplete.",
+    winterRouteRoadOverviewDetailsSummary: "See all sections in driving order",
+
+    // Ticket #492, round 3 (UX priority) — req 2: compact road summary.
+    winterRouteRoadSummaryCountOne: "1 section with a notice",
+    winterRouteRoadSummaryCount: "{count} sections with notices",
+    winterRouteRoadAllDataOld: "All road data shown here is older than expected.",
+    winterRouteViewAllSectionsAction: "View all road sections",
+    winterRouteAllSectionsHeading: "All road sections, in driving order",
+
+    // Ticket #492, round 3 — req 5/6: "About the data" details, and the
+    // clarified time wording (never "fetched/updated" for generatedAt).
+    winterRouteAboutDataSummary: "About the data",
+    winterRouteRoadReleaseTimeUnknown: "Road data release time is unknown.",
   },
 
   is: {
     footerWinterRoute: "Færð Rauðavatn–Vík",
 
-    // Ticket #491, V1 — sjá samsvarandi EN athugasemd að ofan.
-    winterRouteSubtitle: "Færð núna og veðurspá á leiðinni",
-    winterRouteLatestStatusNote: "Nýjasta tiltæka staða, ekki spáð færð.",
-
-    winterRouteHourLabel: "Spátími",
-    winterRouteSameForecastTimeNote: "Sami spátími gildir fyrir alla punkta.",
-    winterRouteNoHoursAvailable: "Engin framtíðartími er tiltækur núna.",
-
-    winterRouteForecastSectionTitle: "Veðurspá á {count} punktum á leiðinni",
     winterRouteRoadSectionTitle: "Færð og lokanir",
-
-    winterRouteRouteSelectLabel: "Leið",
-    winterRouteRouteDataMismatch: "Eitthvað fór úrskeiðis við að hlaða gögnum fyrir þessa leið. Reyndu aftur.",
     winterRouteSectionCoverageNote:
       "Færðargögn fyrir suma kafla geta náð yfir lengri vegkafla en þann hluta sem þessi leið notar.",
 
@@ -174,6 +178,9 @@ export const winterRouteTranslations = {
     winterRouteExportStale: "Þessi færðarútflutningur gæti verið úreltur.",
     winterRouteRegistrationOld: "Skráning þessa kafla er eldri en sólarhringur.",
     winterRouteSegmentDataUnavailable: "Engin færðargögn tiltæk fyrir þennan kafla.",
+    // Ticket #492, direct-flow umferð 2, R4/V4 — texti Ripley samþykkti orðrétt.
+    winterRouteConflictingRoadData: "Ósamræmi í færðargögnum",
+    winterRouteUnknownAdditionCode: "Óþekktar viðbótarupplýsingar: {code}",
     winterRouteRoadFeedUnavailable: "Færðargögn eru ekki tiltæk sem stendur.",
     winterRouteRoadStaleServed: "Sýnir síðustu þekktu stöðu ({minutes} mín. gömul).",
     winterRoutePointsFeedUnavailable:
@@ -189,25 +196,7 @@ export const winterRouteTranslations = {
     winterRoutePointUnavailable: "Engin spágögn tiltæk fyrir þennan punkt.",
     winterRouteForecastNotAvailableAtComputedTime: "Spá ekki tiltæk",
     winterRouteGridDisclaimer: "Punktspá úr veðurlíkani — ekki bein mæling á vegi.",
-    winterRouteValidFor: "Gildir fyrir {time} UTC",
-    winterRouteTemperature: "Hiti",
-    winterRouteWind: "Vindur",
-    winterRouteGust: "Hviður (hámark síðustu klukkustundar)",
-    winterRoutePrecip: "Úrkoma (síðasta klukkustund)",
     winterRouteUnknownWeatherSymbol: "Óþekkt veðurtákn",
-
-    // #489 — sjá samsvarandi EN athugasemd að ofan.
-    winterRouteSummaryHeading: "Á leiðinni núna",
-    winterRouteSummaryGust: "Mestar hviður (hámark síðustu klukkustundar): {value} m/s — {point}, {time} UTC",
-    winterRouteSummaryGustMissing: "Mestar hviður: gögn ekki tiltæk",
-    winterRouteSummaryPrecip: "Mest úrkoma (síðasta klukkustund): {value} mm — {point}, {time} UTC",
-    winterRouteSummaryPrecipMissing: "Mest úrkoma: gögn ekki tiltæk",
-    winterRouteSummaryMinTemp: "Lægsti hiti: {value} °C — {point}, {time} UTC",
-    winterRouteSummaryMinTempMissing: "Lægsti hiti: gögn ekki tiltæk",
-    winterRouteSummaryPartialSuffix: " (byggt á {count} af {total} punktum)",
-    winterRouteSummaryNoticeCount: "Kaflar með gildar tilkynningar: {count}",
-    winterRouteSummaryNoticeCountUnconfirmed: "Fjöldi kafla með gildar tilkynningar er óstaðfestur núna.",
-    winterRouteSummaryNoticeScope: "Ekki heildarstaða færðar — sjá færðarlistann neðar.",
 
     winterRouteAttributionRoadLine: "Færðar- og lokanargögn: Vegagerðin, CC BY 4.0.",
     winterRouteAttributionWeatherLine: "Veðurspágögn: Open-Meteo.",
@@ -219,16 +208,15 @@ export const winterRouteTranslations = {
     winterRouteOfficialSourceLinkWeather: "Leyfi og skilmálar Open-Meteo",
     winterRouteAcquiredAt: "Færðargögn sótt: {time} UTC",
 
-    // Ticket #502 — sjá samsvarandi EN athugasemd að ofan.
-    winterRouteModeGroupLabel: "Skoðunarhamur",
-    winterRouteModeChooseLabel: "Velja staði",
-    winterRouteModeLegacyLabel: "Fastar veðurleiðir",
+    // Ticket #492, direct-flow — sjá samsvarandi EN athugasemd að ofan.
+    winterRouteDefaultHeading: "Veður á vetrarvegum",
     winterRouteFromLabel: "Frá",
     winterRouteToLabel: "Til",
     winterRouteFromSearchLabel: "Leita að upphafsstað",
     winterRouteToSearchLabel: "Leita að áfangastað",
     winterRouteGroupRingLabel: "Suður- og Austurland",
     winterRouteGroupWestfjordsLabel: "Vestfirðir",
+    winterRouteGroupOtherLabel: "Aðrir studdir staðir",
     winterRouteNoSearchResults: "Enginn staður fannst með þessari leit.",
     winterRouteSwapLabel: "Víxla Frá og Til",
     winterRouteShowRouteButton: "Sýna leið",
@@ -264,5 +252,34 @@ export const winterRouteTranslations = {
     winterRouteRoadCacheAgeUnderMinuteLine: "Færð: aldur gagna í skyndiminni þegar svarið var útbúið: innan við mínútu.",
     winterRouteForecastCacheAgeLine: "Veður: aldur gagna í skyndiminni þegar svarið var útbúið: {minutes} mín.",
     winterRouteForecastCacheAgeUnderMinuteLine: "Veður: aldur gagna í skyndiminni þegar svarið var útbúið: innan við mínútu.",
+
+    // Ticket #492 -- sjá samsvarandi EN athugasemd að ofan.
+    winterRouteDataHourLabel: "Tími veðurspár",
+    winterRoutePrevHourButton: "Fyrri klukkutími",
+    winterRouteNextHourButton: "Næsti klukkutími",
+    winterRouteSameForecastTimeNoteChoose: "Sami spátími fyrir alla veðurpunkta.",
+    winterRouteRoadCurrentRegardlessOfTimeNote: "Nýjasta færðarstaða, óháð völdum spátíma.",
+    winterRouteTimeNoLongerAvailable: "Valinn tími er ekki lengur tiltækur — næsti tiltæki tími er sýndur í staðinn.",
+    winterRouteTableColumnPlace: "Staður",
+    winterRouteTableColumnTemp: "Hiti",
+    winterRouteTableColumnWind: "Vindur",
+    winterRouteTableColumnGust: "Hviður",
+    winterRouteTableColumnPrecip: "Úrkoma",
+    winterRouteTableColumnWeather: "Veður",
+    winterRouteGustPrecipNote: "Hviður eru hámark síðustu klukkustundar; úrkoma er frá síðustu klukkustund.",
+    winterRouteRoadOverviewAllClear: "Engar tilkynningar eða lokanir á leiðinni núna.",
+    winterRouteRoadOverviewUnconfirmed: "Ekki er hægt að staðfesta að engar tilkynningar séu á leiðinni núna — gögn eru ófullnægjandi.",
+    winterRouteRoadOverviewDetailsSummary: "Sjá alla kafla í akstursröð",
+
+    // Ticket #492, umferð 3 (UX-forgangslota) — krafa 2: þétt færðarsamantekt.
+    winterRouteRoadSummaryCountOne: "1 kafli með tilkynningu",
+    winterRouteRoadSummaryCount: "{count} kaflar með tilkynningum",
+    winterRouteRoadAllDataOld: "Öll vegagögn hér eru eldri en vænst er.",
+    winterRouteViewAllSectionsAction: "Sjá alla vegkafla",
+    winterRouteAllSectionsHeading: "Allir vegkaflar, í akstursröð",
+
+    // Ticket #492, umferð 3 — krafa 5/6: „Um gögnin" ítarefni og skýrari tímar.
+    winterRouteAboutDataSummary: "Um gögnin",
+    winterRouteRoadReleaseTimeUnknown: "Útgáfutími færðargagna er óþekktur.",
   },
 };

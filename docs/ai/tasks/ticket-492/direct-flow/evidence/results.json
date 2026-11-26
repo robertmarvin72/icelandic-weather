@@ -1,0 +1,80 @@
+{
+  "negativeControl": {
+    "dupInjected": true,
+    "counts": {
+      "Rauðavatn – Nesjavallaleið": 2,
+      "Nesjavallaleið – Geirland": 2,
+      "Fossvellir – Þrengslavegur": 2,
+      "Hellisheiði (til austurs)": 2,
+      "Selfoss – Hveragerði": 2,
+      "Þjórsá – Selfoss": 2,
+      "Hella – Þjórsá": 2,
+      "Hvolsvöllur – Hella": 2,
+      "Hvolsvöllur – Markarfljót": 2,
+      "Markarfljót – Steinar": 2,
+      "Dyrhólavegur – Steinar": 2,
+      "Reynisfjall": 2,
+      "Vík": 2
+    },
+    "hasDuplicate": true
+  },
+  "vik_1280_is": {
+    "fetchCountAfterNarrow": 1,
+    "namesNarrowCount": 13,
+    "namesOpenCount": 13,
+    "namesClosedCount": 13,
+    "duplicatesNarrow": [],
+    "duplicatesOpen": [],
+    "duplicatesClosed": [],
+    "toggleCountOnPage": 1
+  },
+  "vik_1280_en": {
+    "fetchCountAfterNarrow": 1,
+    "namesNarrowCount": 13,
+    "namesOpenCount": 13,
+    "namesClosedCount": 13,
+    "duplicatesNarrow": [],
+    "duplicatesOpen": [],
+    "duplicatesClosed": [],
+    "toggleCountOnPage": 1
+  },
+  "vik_360_is": {
+    "fetchCountAfterNarrow": 1,
+    "namesNarrowCount": 13,
+    "namesOpenCount": 13,
+    "namesClosedCount": 13,
+    "duplicatesNarrow": [],
+    "duplicatesOpen": [],
+    "duplicatesClosed": [],
+    "toggleCountOnPage": 1
+  },
+  "vik_360_en": {
+    "fetchCountAfterNarrow": 1,
+    "namesNarrowCount": 13,
+    "namesOpenCount": 13,
+    "namesClosedCount": 13,
+    "duplicatesNarrow": [],
+    "duplicatesOpen": [],
+    "duplicatesClosed": [],
+    "toggleCountOnPage": 1
+  },
+  "borgarnes": {
+    "coverageNoteVisible": true
+  },
+  "caseA_knownSurfaceUnclassifiedNotice": {
+    "firstRowText": "Rauðavatn – Nesjavallaleið\nGreiðfært\nÞessi færðarútflutningur gæti verið úreltur.\nTonn alls á dag: 8\nVegavinna á kafla"
+  },
+  "caseB_ambiguous": {
+    "firstRowText": "Rauðavatn – Nesjavallaleið\nÓþekkt ástand\n\nGreiðfært\n\nÞessi færðarútflutningur gæti verið úreltur."
+  },
+  "caseC_unclassifiedSurface": {
+    "firstRowText": "Rauðavatn – Nesjavallaleið\nÓþekkt ástand\n\nHolur í vegi\n\nÞessi færðarútflutningur gæti verið úreltur."
+  },
+  "caseD_knownSurfaceUnclassifiedVidbotaruppl": {
+    "firstRowText": "Rauðavatn – Nesjavallaleið\nÓþekkt ástand\n\nGreiðfært\n\nÞessi færðarútflutningur gæti verið úreltur."
+  },
+  "regressionRingPair": {
+    "toggleExists": 1,
+    "dataVisible": true
+  }
+}

@@ -13,6 +13,13 @@ export const WINTER_ROUTE_OUTCOME = {
   SAME_PLACE: "same_place",
   NO_ROUTE: "no_route",
   ERROR: "error",
+  // Ticket #492, direct-flow, C2 -- a fixed-route-adapter result (a real
+  // /api/winter-route response reused as-is), never produced by
+  // classifyWinterRouteGeometryResponse() below (the geometry endpoint is
+  // never called for these two pairs at all) -- set directly by the
+  // caller. Listed here only because it's a sibling UI-facing outcome
+  // value checked the same way (`view.outcome === ...`) as the others.
+  FIXED_ROUTE: "fixed_route",
 };
 
 const KNOWN_PAYLOAD_STATUSES = new Set(["geometry_only", "same_place", "unsupported"]);

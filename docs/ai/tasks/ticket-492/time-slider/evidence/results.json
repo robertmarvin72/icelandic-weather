@@ -1,0 +1,120 @@
+{
+  "negativeControl": {
+    "horizontalScroll": false,
+    "viewportFit": {
+      "prevInViewport": true,
+      "nextInViewport": true,
+      "sliderInViewport": true
+    },
+    "touchTargets": {
+      "prev": {
+        "w": 44,
+        "h": 44
+      },
+      "next": {
+        "w": 44,
+        "h": 44
+      }
+    },
+    "markCount": 6,
+    "visibleMarkCount": 6,
+    "markOverlaps": 4
+  },
+  "desktop1280": {
+    "horizontalScroll": false,
+    "viewportFit": {
+      "prevInViewport": true,
+      "nextInViewport": true,
+      "sliderInViewport": true
+    },
+    "touchTargets": {
+      "prev": {
+        "w": 44,
+        "h": 44
+      },
+      "next": {
+        "w": 44,
+        "h": 44
+      }
+    },
+    "markCount": 6,
+    "visibleMarkCount": 6,
+    "markOverlaps": 0,
+    "isDark": false,
+    "dpr": 1,
+    "fontFamily": "Inter, system-ui, -apple-system, \"Segoe UI\", Roboto, Helvetica, Arial, \"Apple Color Emoji\", \"Segoe UI Emoji\"",
+    "lang": "is",
+    "theme": "light",
+    "hours": 24
+  },
+  "keyboardFlow": {
+    "valAfterEnd": "23",
+    "valAfterHome": "0",
+    "valAfterArrow": "1",
+    "valAfterPageUp": "3"
+  },
+  "twoDistinctSlots": {
+    "tempCellsBefore": "-2,9 °C",
+    "tempCellsAfter": "-3,8 °C",
+    "distinct": true
+  },
+  "mouseDrag": {
+    "valAfterDrag": "23",
+    "expectedMax": "23"
+  },
+  "mobile360": {
+    "horizontalScroll": false,
+    "viewportFit": {
+      "prevInViewport": true,
+      "nextInViewport": true,
+      "sliderInViewport": true
+    },
+    "touchTargets": {
+      "prev": {
+        "w": 44,
+        "h": 44
+      },
+      "next": {
+        "w": 44,
+        "h": 44
+      }
+    },
+    "markCount": 6,
+    "visibleMarkCount": 3,
+    "markOverlaps": 0,
+    "isDark": true,
+    "lang": "en",
+    "theme": "dark"
+  },
+  "info320": {
+    "horizontalScroll": false,
+    "viewportFit": {
+      "prevInViewport": true,
+      "nextInViewport": true,
+      "sliderInViewport": true
+    },
+    "touchTargets": {
+      "prev": {
+        "w": 44,
+        "h": 44
+      },
+      "next": {
+        "w": 44,
+        "h": 44
+      }
+    },
+    "markCount": 6,
+    "visibleMarkCount": 3,
+    "markOverlaps": 0
+  },
+  "oneSlot": {
+    "disabled": true,
+    "prevDisabled": true,
+    "nextDisabled": true
+  },
+  "zeroSlots": {
+    "sliderPresent": false
+  },
+  "touchEmulation": "NOT performed as a real touch device -- Playwright's own touch emulation (hasTouch context option) was not exercised this round; mouse+keyboard flows above are real, touch is NOT_TESTED, not substituted silently.",
+  "realZoom200": "NOT_TESTED -- no OS-level zoom tool/computer-use available in this environment. Owner step: open /winter-route, Velja staði, Búðardalur->Hólmavík, Sýna leið; press Ctrl/Cmd + three times; confirm the slider/buttons/marks and table stay legible with no clipped text."
+}

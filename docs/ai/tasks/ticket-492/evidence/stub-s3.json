@@ -1,0 +1,1369 @@
+{
+  "geo": {
+    "schemaVersion": 1,
+    "datasetVersion": "f64c379cd8d029922c705bb14a9fa61b0f340358aa29235a7bf4cd639858f92a",
+    "compositionVersion": 1,
+    "from": "reykjavik-raudavatn",
+    "to": "hella",
+    "crs": "EPSG:3057",
+    "tier": 2,
+    "drivingAccess": "UNVERIFIED",
+    "status": "geometry_only",
+    "mode": "directed",
+    "policyVersion": "raudavatn-selfoss-mvp-v1-a73f8191242a0938",
+    "selectedOption": "south",
+    "options": [
+      {
+        "id": "south",
+        "label": "Short route via Hellisheiði",
+        "lengthM": 80681.31193354058,
+        "via": [],
+        "routeId": "raudavatn-hella-south-a7137730003351c3d1b81cd43755b632"
+      },
+      {
+        "id": "north",
+        "label": "Long route via the Route 1 ring (Vesturland/Norðurland/Austurland)",
+        "lengthM": 1200394.6507663461,
+        "via": [
+          "Borgarnes",
+          "Akureyri",
+          "Egilsstaðir",
+          "Vík"
+        ],
+        "routeId": "raudavatn-hella-north-a8704618cc1a4325e9933b9079c841d9"
+      }
+    ],
+    "geometryId": "a7137730003351c3d1b81cd43755b632",
+    "lengthM": 80681.31193354058,
+    "lengthNote": "Tier-2 planar geometry length (EPSG:3057) -- not a driving-distance contract.",
+    "estimatedConnectorLengthM": 0,
+    "coordinates": [
+      {
+        "x": 365522.0175,
+        "y": 402772.762,
+        "z": 0
+      },
+      {
+        "x": 365520.995,
+        "y": 402771.934,
+        "z": 0
+      },
+      {
+        "x": 366447.32,
+        "y": 402143.36,
+        "z": 0
+      },
+      {
+        "x": 367768.94,
+        "y": 401667.09,
+        "z": 0
+      },
+      {
+        "x": 368572.82,
+        "y": 401177.17,
+        "z": 0
+      },
+      {
+        "x": 369350.3714,
+        "y": 400623.7933,
+        "z": 0
+      },
+      {
+        "x": 370364.27,
+        "y": 399954.74,
+        "z": 0
+      },
+      {
+        "x": 371428.07,
+        "y": 399325.19,
+        "z": 0
+      },
+      {
+        "x": 376301.2834,
+        "y": 397586.9871,
+        "z": 0
+      },
+      {
+        "x": 377729.94,
+        "y": 397405.9,
+        "z": 0
+      },
+      {
+        "x": 379779.72,
+        "y": 395593.1,
+        "z": 0
+      },
+      {
+        "x": 380053.5716,
+        "y": 395170.5039,
+        "z": 0
+      },
+      {
+        "x": 380267.23,
+        "y": 394868.7,
+        "z": 0
+      },
+      {
+        "x": 381958.6313,
+        "y": 393346.9,
+        "z": 0
+      },
+      {
+        "x": 382176.612,
+        "y": 393033.0415,
+        "z": 0
+      },
+      {
+        "x": 382531.6008,
+        "y": 392842.3212,
+        "z": 0
+      },
+      {
+        "x": 387447.6056,
+        "y": 393025.2882,
+        "z": 0
+      },
+      {
+        "x": 390307.9359,
+        "y": 391613.855,
+        "z": 0
+      },
+      {
+        "x": 390988.1042,
+        "y": 392241.2508,
+        "z": 0
+      },
+      {
+        "x": 391546.798,
+        "y": 391210.0615,
+        "z": 0
+      },
+      {
+        "x": 391132.7008,
+        "y": 390557.2181,
+        "z": 0
+      },
+      {
+        "x": 392674.357,
+        "y": 389846.132,
+        "z": 0
+      },
+      {
+        "x": 392682.8404,
+        "y": 389832.0355,
+        "z": 34.295
+      },
+      {
+        "x": 392710.637,
+        "y": 389838.42,
+        "z": 34.102
+      },
+      {
+        "x": 394158.2789,
+        "y": 388806.6334,
+        "z": 20.175
+      },
+      {
+        "x": 396253.532,
+        "y": 385903.218,
+        "z": 20.897
+      },
+      {
+        "x": 397164.1405,
+        "y": 385567.8564,
+        "z": 34.8407
+      },
+      {
+        "x": 400942.966,
+        "y": 384776.724,
+        "z": 46.635
+      },
+      {
+        "x": 400953.345,
+        "y": 384737.99,
+        "z": 46.626
+      },
+      {
+        "x": 400939.726,
+        "y": 384588.448,
+        "z": 42.634
+      },
+      {
+        "x": 401284.826,
+        "y": 384294.187,
+        "z": 35.403
+      },
+      {
+        "x": 401280.596,
+        "y": 384274.29,
+        "z": 35.244
+      },
+      {
+        "x": 401301.36,
+        "y": 384268.726,
+        "z": 0
+      },
+      {
+        "x": 401739.85,
+        "y": 383119.047,
+        "z": 16.877
+      },
+      {
+        "x": 401729.685,
+        "y": 383092.565,
+        "z": 0
+      },
+      {
+        "x": 401763.341,
+        "y": 383097.896,
+        "z": 0
+      },
+      {
+        "x": 403016.8402,
+        "y": 383178.3789,
+        "z": 0
+      },
+      {
+        "x": 403269.528,
+        "y": 383219.0345,
+        "z": 0
+      },
+      {
+        "x": 403292.5881,
+        "y": 383195.599,
+        "z": 0
+      },
+      {
+        "x": 403312.1652,
+        "y": 383220.1527,
+        "z": 0
+      },
+      {
+        "x": 409876.57,
+        "y": 383546.82,
+        "z": 0
+      },
+      {
+        "x": 412695.54,
+        "y": 383413.1,
+        "z": 0
+      },
+      {
+        "x": 416754.8471,
+        "y": 384396.104,
+        "z": 0
+      },
+      {
+        "x": 417924.33,
+        "y": 383198.92,
+        "z": 46.332
+      },
+      {
+        "x": 418201.0836,
+        "y": 382083.3222,
+        "z": 46.273
+      },
+      {
+        "x": 418302.2477,
+        "y": 381814.9441,
+        "z": 46.509
+      },
+      {
+        "x": 419118.2,
+        "y": 380594.77,
+        "z": 0
+      },
+      {
+        "x": 421576.63,
+        "y": 379444.2,
+        "z": 0
+      },
+      {
+        "x": 422096.84,
+        "y": 378358.05,
+        "z": 0
+      },
+      {
+        "x": 426188.183,
+        "y": 375928.946,
+        "z": 0
+      },
+      {
+        "x": 429082.0653,
+        "y": 374156.5108,
+        "z": 0
+      },
+      {
+        "x": 430624.987,
+        "y": 371832.0717,
+        "z": 39.119
+      },
+      {
+        "x": 430713.0138,
+        "y": 371613.8204,
+        "z": 38.494
+      },
+      {
+        "x": 430968.963,
+        "y": 370845.236,
+        "z": 28.656
+      },
+      {
+        "x": 430970.875,
+        "y": 370845.539,
+        "z": 28.669
+      },
+      {
+        "x": 430972.1263,
+        "y": 370845.6043,
+        "z": 28.6819
+      }
+    ],
+    "slices": [
+      {
+        "sourceId": 1436,
+        "idbutur": 1410010037,
+        "veghluti": 1,
+        "name": "Rauðavatn - Nesjavallaleið",
+        "direction": "reverse",
+        "fromIndex": 3,
+        "toIndex": 0,
+        "lengthM": 2525.590015371734,
+        "evidenceRef": "wfs-vegnr1-all.json#IDFERILL=1436&OBJECTID=153&tier=2",
+        "appliedRule": "both",
+        "directionBasis": "OWNER_APPROVED_MVP_ASSUMPTION"
+      },
+      {
+        "sourceId": 1735,
+        "idbutur": 903010037,
+        "veghluti": 1,
+        "name": "Nesjavallaleið - Geirland",
+        "direction": "reverse",
+        "fromIndex": 3,
+        "toIndex": 1,
+        "lengthM": 1895.7703683123711,
+        "evidenceRef": "wfs-vegnr1-all.json#IDFERILL=1735&OBJECTID=129&tier=2",
+        "appliedRule": "both",
+        "directionBasis": "OWNER_APPROVED_MVP_ASSUMPTION"
+      },
+      {
+        "sourceId": 2071,
+        "idbutur": 253020037,
+        "veghluti": 7,
+        "name": "Fossvellir-Þrengslavegur",
+        "direction": "forward",
+        "fromIndex": 0,
+        "toIndex": 3,
+        "lengthM": 7624.8071847681995,
+        "evidenceRef": "wfs-vegnr1-all.json#IDFERILL=2071&OBJECTID=188&tier=2",
+        "appliedRule": "forward",
+        "directionBasis": "OWNER_APPROVED_MVP_ASSUMPTION"
+      },
+      {
+        "sourceId": 2024,
+        "idbutur": 253020037,
+        "veghluti": 7,
+        "name": "Fossvellir-Þrengslavegur",
+        "direction": "forward",
+        "fromIndex": 0,
+        "toIndex": 3,
+        "lengthM": 4680.049124861883,
+        "evidenceRef": "wfs-vegnr1-all.json#IDFERILL=2024&OBJECTID=61&tier=2",
+        "appliedRule": "forward",
+        "directionBasis": "OWNER_APPROVED_MVP_ASSUMPTION"
+      },
+      {
+        "sourceId": 2117,
+        "idbutur": 252090037,
+        "veghluti": 7,
+        "name": "Hellisheiði til austurs",
+        "direction": "forward",
+        "fromIndex": 0,
+        "toIndex": 10,
+        "lengthM": 16108.145041243544,
+        "evidenceRef": "wfs-vegnr1-all.json#IDFERILL=2117&OBJECTID=97&tier=2",
+        "appliedRule": "forward",
+        "directionBasis": "OWNER_APPROVED_MVP_ASSUMPTION"
+      },
+      {
+        "sourceId": 36807,
+        "idbutur": 902030037,
+        "veghluti": 5,
+        "name": "Selfoss-Hveragerði",
+        "direction": "forward",
+        "fromIndex": 2,
+        "toIndex": 4,
+        "lengthM": 44.97272976070039,
+        "evidenceRef": "wfs-vegnr1-all.json#IDFERILL=36807&OBJECTID=1463&tier=2",
+        "appliedRule": "forward",
+        "directionBasis": "OWNER_APPROVED_MVP_ASSUMPTION"
+      },
+      {
+        "sourceId": 2135,
+        "idbutur": 902030037,
+        "veghluti": 1,
+        "name": "Selfoss-Hveragerði",
+        "direction": "reverse",
+        "fromIndex": 5,
+        "toIndex": 1,
+        "lengthM": 10189.351477696506,
+        "evidenceRef": "wfs-vegnr1-all.json#IDFERILL=2135&OBJECTID=112&tier=2",
+        "appliedRule": "both",
+        "directionBasis": "OWNER_APPROVED_MVP_ASSUMPTION"
+      },
+      {
+        "sourceId": 52492,
+        "idbutur": 902030037,
+        "veghluti": 5,
+        "name": "Selfoss-Hveragerði",
+        "direction": "forward",
+        "fromIndex": 1,
+        "toIndex": 2,
+        "lengthM": 40.10045382534789,
+        "evidenceRef": "wfs-vegnr1-all.json#IDFERILL=52492&OBJECTID=1385&tier=2",
+        "appliedRule": "forward",
+        "directionBasis": "OWNER_APPROVED_MVP_ASSUMPTION"
+      },
+      {
+        "sourceId": 2138,
+        "idbutur": 902030037,
+        "veghluti": 1,
+        "name": "Selfoss-Hveragerði",
+        "direction": "reverse",
+        "fromIndex": 5,
+        "toIndex": 3,
+        "lengthM": 603.6843492813387,
+        "evidenceRef": "wfs-vegnr1-all.json#IDFERILL=2138&OBJECTID=86&tier=2",
+        "appliedRule": "both",
+        "directionBasis": "OWNER_APPROVED_MVP_ASSUMPTION"
+      },
+      {
+        "sourceId": 52491,
+        "idbutur": 902030037,
+        "veghluti": 5,
+        "name": "Selfoss-Hveragerði",
+        "direction": "forward",
+        "fromIndex": 2,
+        "toIndex": 4,
+        "lengthM": 41.838222303576224,
+        "evidenceRef": "wfs-vegnr1-all.json#IDFERILL=52491&OBJECTID=1384&tier=2",
+        "appliedRule": "forward",
+        "directionBasis": "OWNER_APPROVED_MVP_ASSUMPTION"
+      },
+      {
+        "sourceId": 2138,
+        "idbutur": 902030037,
+        "veghluti": 1,
+        "name": "Selfoss-Hveragerði",
+        "direction": "reverse",
+        "fromIndex": 1,
+        "toIndex": 0,
+        "lengthM": 1230.4614106671531,
+        "evidenceRef": "wfs-vegnr1-all.json#IDFERILL=2138&OBJECTID=86&tier=2",
+        "appliedRule": "both",
+        "directionBasis": "OWNER_APPROVED_MVP_ASSUMPTION"
+      },
+      {
+        "sourceId": 8676,
+        "idbutur": 902040037,
+        "veghluti": 5,
+        "name": "Þjórsá-Selfoss",
+        "direction": "forward",
+        "fromIndex": 2,
+        "toIndex": 4,
+        "lengthM": 62.44147799194772,
+        "evidenceRef": "wfs-vegnr1-all.json#IDFERILL=8676&OBJECTID=873&tier=2",
+        "appliedRule": "forward",
+        "directionBasis": "OWNER_APPROVED_MVP_ASSUMPTION"
+      },
+      {
+        "sourceId": 3737,
+        "idbutur": 902040037,
+        "veghluti": 1,
+        "name": "Þjórsá-Selfoss",
+        "direction": "reverse",
+        "fromIndex": 1,
+        "toIndex": 0,
+        "lengthM": 1256.0803085762293,
+        "evidenceRef": "wfs-vegnr1-all.json#IDFERILL=3737&OBJECTID=985&tier=2",
+        "appliedRule": "both",
+        "directionBasis": "OWNER_APPROVED_MVP_ASSUMPTION"
+      },
+      {
+        "sourceId": 3768,
+        "idbutur": 902040037,
+        "veghluti": 1,
+        "name": "Þjórsá-Selfoss",
+        "direction": "reverse",
+        "fromIndex": 1,
+        "toIndex": 0,
+        "lengthM": 255.9374964326389,
+        "evidenceRef": "wfs-vegnr1-all.json#IDFERILL=3768&OBJECTID=1362&tier=2",
+        "appliedRule": "both",
+        "directionBasis": "OWNER_APPROVED_MVP_ASSUMPTION"
+      },
+      {
+        "sourceId": 3454,
+        "idbutur": 902040037,
+        "veghluti": 5,
+        "name": "Þjórsá-Selfoss",
+        "direction": "forward",
+        "fromIndex": 2,
+        "toIndex": 4,
+        "lengthM": 64.28140364860661,
+        "evidenceRef": "wfs-vegnr1-all.json#IDFERILL=3454&OBJECTID=966&tier=2",
+        "appliedRule": "forward",
+        "directionBasis": "OWNER_APPROVED_MVP_ASSUMPTION"
+      },
+      {
+        "sourceId": 3767,
+        "idbutur": 902040037,
+        "veghluti": 1,
+        "name": "Þjórsá-Selfoss",
+        "direction": "reverse",
+        "fromIndex": 3,
+        "toIndex": 0,
+        "lengthM": 13571.301521314663,
+        "evidenceRef": "wfs-vegnr1-all.json#IDFERILL=3767&OBJECTID=1361&tier=2",
+        "appliedRule": "both",
+        "directionBasis": "OWNER_APPROVED_MVP_ASSUMPTION"
+      },
+      {
+        "sourceId": 3781,
+        "idbutur": 902040037,
+        "veghluti": 1,
+        "name": "Þjórsá-Selfoss",
+        "direction": "reverse",
+        "fromIndex": 3,
+        "toIndex": 0,
+        "lengthM": 3109.825924464082,
+        "evidenceRef": "wfs-vegnr1-all.json#IDFERILL=3781&OBJECTID=809&tier=2",
+        "appliedRule": "both",
+        "directionBasis": "OWNER_APPROVED_MVP_ASSUMPTION"
+      },
+      {
+        "sourceId": 3613,
+        "idbutur": 901130037,
+        "veghluti": 1,
+        "name": "Hella-Þjórsá",
+        "direction": "reverse",
+        "fromIndex": 4,
+        "toIndex": 0,
+        "lengthM": 10144.61854996041,
+        "evidenceRef": "wfs-vegnr1-all.json#IDFERILL=3613&OBJECTID=1520&tier=2",
+        "appliedRule": "both",
+        "directionBasis": "OWNER_APPROVED_MVP_ASSUMPTION"
+      },
+      {
+        "sourceId": 3614,
+        "idbutur": 901130037,
+        "veghluti": 1,
+        "name": "Hella-Þjórsá",
+        "direction": "reverse",
+        "fromIndex": 1,
+        "toIndex": 0,
+        "lengthM": 3393.535222220677,
+        "evidenceRef": "wfs-vegnr1-all.json#IDFERILL=3614&OBJECTID=640&tier=2",
+        "appliedRule": "both",
+        "directionBasis": "OWNER_APPROVED_MVP_ASSUMPTION"
+      },
+      {
+        "sourceId": 3615,
+        "idbutur": 901130037,
+        "veghluti": 1,
+        "name": "Hella-Þjórsá",
+        "direction": "reverse",
+        "fromIndex": 2,
+        "toIndex": 0,
+        "lengthM": 3025.2493277167373,
+        "evidenceRef": "wfs-vegnr1-all.json#IDFERILL=3615&OBJECTID=984&tier=2",
+        "appliedRule": "both",
+        "directionBasis": "OWNER_APPROVED_MVP_ASSUMPTION"
+      },
+      {
+        "sourceId": 3591,
+        "idbutur": 901130037,
+        "veghluti": 1,
+        "name": "Hella-Þjórsá",
+        "direction": "reverse",
+        "fromIndex": 3,
+        "toIndex": 0,
+        "lengthM": 813.2703231222372,
+        "evidenceRef": "wfs-vegnr1-all.json#IDFERILL=3591&OBJECTID=926&tier=2",
+        "appliedRule": "both",
+        "directionBasis": "OWNER_APPROVED_MVP_ASSUMPTION"
+      }
+    ]
+  },
+  "data": {
+    "from": "reykjavik-raudavatn",
+    "to": "hella",
+    "geometryId": "a7137730003351c3d1b81cd43755b632",
+    "selectedOption": "south",
+    "datasetVersion": "f64c379cd8d029922c705bb14a9fa61b0f340358aa29235a7bf4cd639858f92a",
+    "policyVersion": "raudavatn-selfoss-mvp-v1-a73f8191242a0938",
+    "routeLengthM": 80681.31193354058,
+    "unmappedLengthM": 0,
+    "generatedAt": "2026-11-24T19:50:06.808Z",
+    "roadSections": [
+      {
+        "idButur": 1410010037,
+        "nameIs": "Rauðavatn - Nesjavallaleið",
+        "nameEn": "Rauðavatn–Nesjavallaleið",
+        "routeLengthM": 2525.590015371734,
+        "routeLengthFraction": 0.03130328393088268,
+        "isEdgeSegment": false,
+        "segmentDataAvailable": true,
+        "ambiguous": false,
+        "category": "closed",
+        "positiveStyleEligible": false,
+        "astandYfirbord": "LOKAD",
+        "astandVidbotaruppl": null,
+        "astandLysing": "Lokað",
+        "astandLysingEn": "Closed",
+        "export": {
+          "dagsKeyrtUt": "2026-11-24T19:48:06.806Z",
+          "ageMinutes": 2.0000333333333336,
+          "isStale": false
+        },
+        "registration": {
+          "dagsSkrad": "2026-11-24T17:50:06.806Z",
+          "ageHours": 2.0000005555555553,
+          "isOld": false
+        },
+        "notices": []
+      },
+      {
+        "idButur": 903010037,
+        "nameIs": "Nesjavallaleið - Geirland",
+        "nameEn": "Nesjavallaleið–Geirland",
+        "routeLengthM": 1895.7703683123711,
+        "routeLengthFraction": 0.023497019605655017,
+        "isEdgeSegment": false,
+        "segmentDataAvailable": true,
+        "ambiguous": false,
+        "category": "hazard_notice",
+        "positiveStyleEligible": false,
+        "astandYfirbord": "GREIDFAERT",
+        "astandVidbotaruppl": null,
+        "astandLysing": "Greiðfært",
+        "astandLysingEn": "Easily passable",
+        "export": {
+          "dagsKeyrtUt": "2026-11-24T19:48:06.806Z",
+          "ageMinutes": 2.0000333333333336,
+          "isStale": false
+        },
+        "registration": {
+          "dagsSkrad": "2026-11-24T17:50:06.806Z",
+          "ageHours": 2.0000005555555553,
+          "isOld": false
+        },
+        "notices": [
+          {
+            "idPunktur": 1,
+            "astand": "VEGAVINNA",
+            "category": "hazard_notice",
+            "lysing": "Vegavinna á kafla",
+            "lysingEn": "Roadworks on section",
+            "dagsSkrad": "2026-11-24T18:50:06.798Z",
+            "gildirTil": "2026-11-25T19:50:06.798Z",
+            "status": "active"
+          }
+        ]
+      },
+      {
+        "idButur": 253020037,
+        "nameIs": "Fossvellir-Þrengslavegur",
+        "nameEn": "Fossvellir–Þrengslavegur",
+        "routeLengthM": 12304.856309630082,
+        "routeLengthFraction": 0.15251185206018875,
+        "isEdgeSegment": false,
+        "segmentDataAvailable": true,
+        "ambiguous": false,
+        "category": "passable",
+        "positiveStyleEligible": true,
+        "astandYfirbord": "GREIDFAERT",
+        "astandVidbotaruppl": null,
+        "astandLysing": "Greiðfært",
+        "astandLysingEn": "Easily passable",
+        "export": {
+          "dagsKeyrtUt": "2026-11-24T19:48:06.806Z",
+          "ageMinutes": 2.0000333333333336,
+          "isStale": false
+        },
+        "registration": {
+          "dagsSkrad": "2026-11-24T17:50:06.806Z",
+          "ageHours": 2.0000005555555553,
+          "isOld": false
+        },
+        "notices": []
+      },
+      {
+        "idButur": 252090037,
+        "nameIs": "Hellisheiði til austurs",
+        "nameEn": "Hellisheiði eastbound",
+        "routeLengthM": 16108.145041243544,
+        "routeLengthFraction": 0.19965150113711919,
+        "isEdgeSegment": false,
+        "segmentDataAvailable": true,
+        "ambiguous": false,
+        "category": "passable",
+        "positiveStyleEligible": true,
+        "astandYfirbord": "GREIDFAERT",
+        "astandVidbotaruppl": null,
+        "astandLysing": "Greiðfært",
+        "astandLysingEn": "Easily passable",
+        "export": {
+          "dagsKeyrtUt": "2026-11-24T19:48:06.806Z",
+          "ageMinutes": 2.0000333333333336,
+          "isStale": false
+        },
+        "registration": {
+          "dagsSkrad": "2026-11-24T17:50:06.806Z",
+          "ageHours": 2.0000005555555553,
+          "isOld": false
+        },
+        "notices": []
+      },
+      {
+        "idButur": 902030037,
+        "nameIs": "Selfoss-Hveragerði",
+        "nameEn": "Selfoss–Hveragerði",
+        "routeLengthM": 12150.408643534622,
+        "routeLengthFraction": 0.15059755911682804,
+        "isEdgeSegment": false,
+        "segmentDataAvailable": true,
+        "ambiguous": false,
+        "category": "passable",
+        "positiveStyleEligible": true,
+        "astandYfirbord": "GREIDFAERT",
+        "astandVidbotaruppl": null,
+        "astandLysing": "Greiðfært",
+        "astandLysingEn": "Easily passable",
+        "export": {
+          "dagsKeyrtUt": "2026-11-24T19:48:06.806Z",
+          "ageMinutes": 2.0000333333333336,
+          "isStale": false
+        },
+        "registration": {
+          "dagsSkrad": "2026-11-24T17:50:06.806Z",
+          "ageHours": 2.0000005555555553,
+          "isOld": false
+        },
+        "notices": []
+      },
+      {
+        "idButur": 902040037,
+        "nameIs": "Þjórsá-Selfoss",
+        "nameEn": "Þjórsá–Selfoss",
+        "routeLengthM": 18319.868132428168,
+        "routeLengthFraction": 0.22706457906285346,
+        "isEdgeSegment": false,
+        "segmentDataAvailable": true,
+        "ambiguous": false,
+        "category": "passable",
+        "positiveStyleEligible": true,
+        "astandYfirbord": "GREIDFAERT",
+        "astandVidbotaruppl": null,
+        "astandLysing": "Greiðfært",
+        "astandLysingEn": "Easily passable",
+        "export": {
+          "dagsKeyrtUt": "2026-11-24T19:48:06.806Z",
+          "ageMinutes": 2.0000333333333336,
+          "isStale": false
+        },
+        "registration": {
+          "dagsSkrad": "2026-11-24T17:50:06.806Z",
+          "ageHours": 2.0000005555555553,
+          "isOld": false
+        },
+        "notices": []
+      },
+      {
+        "idButur": 901130037,
+        "nameIs": "Hella-Þjórsá",
+        "nameEn": "Hella–Þjórsá",
+        "routeLengthM": 17376.67342302006,
+        "routeLengthFraction": 0.21537420508647287,
+        "isEdgeSegment": false,
+        "segmentDataAvailable": true,
+        "ambiguous": false,
+        "category": "passable",
+        "positiveStyleEligible": true,
+        "astandYfirbord": "GREIDFAERT",
+        "astandVidbotaruppl": null,
+        "astandLysing": "Greiðfært",
+        "astandLysingEn": "Easily passable",
+        "export": {
+          "dagsKeyrtUt": "2026-11-24T19:48:06.806Z",
+          "ageMinutes": 2.0000333333333336,
+          "isStale": false
+        },
+        "registration": {
+          "dagsSkrad": "2026-11-24T17:50:06.806Z",
+          "ageHours": 2.0000005555555553,
+          "isOld": false
+        },
+        "notices": []
+      }
+    ],
+    "roadMeta": {
+      "available": true,
+      "stale": false,
+      "cacheAgeMs": 0,
+      "segmentsAvailable": true,
+      "pointsAvailable": true,
+      "pointsFeedUnavailableOrStale": false
+    },
+    "forecast": {
+      "available": true,
+      "window": {
+        "startHour": "2026-11-24T20:00",
+        "endHour": "2026-11-25T19:00",
+        "expectedHours": [
+          "2026-11-24T20:00",
+          "2026-11-24T21:00",
+          "2026-11-24T22:00",
+          "2026-11-24T23:00",
+          "2026-11-25T00:00",
+          "2026-11-25T01:00",
+          "2026-11-25T02:00",
+          "2026-11-25T03:00",
+          "2026-11-25T04:00",
+          "2026-11-25T05:00",
+          "2026-11-25T06:00",
+          "2026-11-25T07:00",
+          "2026-11-25T08:00",
+          "2026-11-25T09:00",
+          "2026-11-25T10:00",
+          "2026-11-25T11:00",
+          "2026-11-25T12:00",
+          "2026-11-25T13:00",
+          "2026-11-25T14:00",
+          "2026-11-25T15:00",
+          "2026-11-25T16:00",
+          "2026-11-25T17:00",
+          "2026-11-25T18:00",
+          "2026-11-25T19:00"
+        ]
+      },
+      "points": [
+        {
+          "id": "raudavatn-route",
+          "labelIs": "Rauðavatn",
+          "labelEn": "Rauðavatn",
+          "available": true,
+          "requestedLat": 64.10152892,
+          "requestedLon": -21.75906405,
+          "returnedLatitude": 64.10152892,
+          "returnedLongitude": -21.75906405,
+          "elevation": 10,
+          "routeZ": 0,
+          "approxDistanceFromStartKm": 0,
+          "hours": [
+            "2026-11-24T20:00",
+            "2026-11-24T21:00",
+            "2026-11-24T22:00",
+            "2026-11-24T23:00",
+            "2026-11-25T00:00",
+            "2026-11-25T01:00",
+            "2026-11-25T02:00",
+            "2026-11-25T03:00",
+            "2026-11-25T04:00",
+            "2026-11-25T05:00",
+            "2026-11-25T06:00",
+            "2026-11-25T07:00",
+            "2026-11-25T08:00",
+            "2026-11-25T09:00",
+            "2026-11-25T10:00",
+            "2026-11-25T11:00",
+            "2026-11-25T12:00",
+            "2026-11-25T13:00",
+            "2026-11-25T14:00",
+            "2026-11-25T15:00",
+            "2026-11-25T16:00",
+            "2026-11-25T17:00",
+            "2026-11-25T18:00",
+            "2026-11-25T19:00"
+          ],
+          "series": {
+            "temperature_2m": [
+              -3,
+              -2.9,
+              -2.8,
+              -2.7,
+              -2.6,
+              -2.5,
+              -2.4,
+              -2.3,
+              -2.2,
+              -2.1,
+              -2,
+              -1.9,
+              -1.7999999999999998,
+              -1.7,
+              -1.5999999999999999,
+              -1.5,
+              -1.4,
+              -1.2999999999999998,
+              -1.2,
+              -1.0999999999999999,
+              -1,
+              -0.8999999999999999,
+              -0.7999999999999998,
+              -0.6999999999999997
+            ],
+            "wind_speed_10m": [
+              2,
+              2,
+              2,
+              2,
+              2,
+              2,
+              2,
+              2,
+              2,
+              2,
+              2,
+              2,
+              2,
+              2,
+              2,
+              2,
+              2,
+              2,
+              2,
+              2,
+              2,
+              2,
+              2,
+              2
+            ],
+            "wind_gusts_10m": [
+              4,
+              4,
+              4,
+              4,
+              4,
+              4,
+              4,
+              4,
+              4,
+              4,
+              4,
+              4,
+              4,
+              4,
+              4,
+              4,
+              4,
+              4,
+              4,
+              4,
+              4,
+              4,
+              4,
+              4
+            ],
+            "precipitation": [
+              0,
+              0.2,
+              0.2,
+              0.2,
+              0.2,
+              0.2,
+              0.2,
+              0.2,
+              0.2,
+              0.2,
+              0.2,
+              0.2,
+              0.2,
+              0.2,
+              0.2,
+              0.2,
+              0.2,
+              0.2,
+              0.2,
+              0.2,
+              0.2,
+              0.2,
+              0.2,
+              0.2
+            ],
+            "weather_code": [
+              3,
+              3,
+              3,
+              3,
+              3,
+              3,
+              3,
+              3,
+              3,
+              3,
+              3,
+              3,
+              3,
+              3,
+              3,
+              3,
+              3,
+              3,
+              3,
+              3,
+              3,
+              3,
+              3,
+              3
+            ]
+          }
+        },
+        {
+          "id": "hellisheidi-east-route",
+          "labelIs": "Hellisheiði — austanverð leið",
+          "labelEn": "Hellisheiði — east side",
+          "available": true,
+          "requestedLat": 64.0220354,
+          "requestedLon": -21.30237752,
+          "returnedLatitude": 64.0220354,
+          "returnedLongitude": -21.30237752,
+          "elevation": 11,
+          "routeZ": 0,
+          "approxDistanceFromStartKm": 25.075749328941885,
+          "hours": [
+            "2026-11-24T20:00",
+            "2026-11-24T21:00",
+            "2026-11-24T22:00",
+            "2026-11-24T23:00",
+            "2026-11-25T00:00",
+            "2026-11-25T01:00",
+            "2026-11-25T02:00",
+            "2026-11-25T03:00",
+            "2026-11-25T04:00",
+            "2026-11-25T05:00",
+            "2026-11-25T06:00",
+            "2026-11-25T07:00",
+            "2026-11-25T08:00",
+            "2026-11-25T09:00",
+            "2026-11-25T10:00",
+            "2026-11-25T11:00",
+            "2026-11-25T12:00",
+            "2026-11-25T13:00",
+            "2026-11-25T14:00",
+            "2026-11-25T15:00",
+            "2026-11-25T16:00",
+            "2026-11-25T17:00",
+            "2026-11-25T18:00",
+            "2026-11-25T19:00"
+          ],
+          "series": {
+            "temperature_2m": [
+              -2.6,
+              -2.5,
+              -2.4,
+              -2.3,
+              -2.2,
+              -2.1,
+              -2,
+              -1.9,
+              -1.8,
+              -1.7000000000000002,
+              -1.6,
+              -1.5,
+              -1.4,
+              -1.3,
+              -1.2,
+              -1.1,
+              -1,
+              -0.8999999999999999,
+              -0.8,
+              -0.7,
+              -0.6000000000000001,
+              -0.5,
+              -0.3999999999999999,
+              -0.2999999999999998
+            ],
+            "wind_speed_10m": [
+              2.3,
+              2.3,
+              2.3,
+              2.3,
+              2.3,
+              2.3,
+              2.3,
+              2.3,
+              2.3,
+              2.3,
+              2.3,
+              2.3,
+              2.3,
+              2.3,
+              2.3,
+              2.3,
+              2.3,
+              2.3,
+              2.3,
+              2.3,
+              2.3,
+              2.3,
+              2.3,
+              2.3
+            ],
+            "wind_gusts_10m": [
+              4.5,
+              4.5,
+              4.5,
+              4.5,
+              4.5,
+              4.5,
+              4.5,
+              4.5,
+              4.5,
+              4.5,
+              4.5,
+              4.5,
+              4.5,
+              4.5,
+              4.5,
+              4.5,
+              4.5,
+              4.5,
+              4.5,
+              4.5,
+              4.5,
+              4.5,
+              4.5,
+              4.5
+            ],
+            "precipitation": [
+              0,
+              0.2,
+              0.2,
+              0.2,
+              0.2,
+              0.2,
+              0.2,
+              0.2,
+              0.2,
+              0.2,
+              0.2,
+              0.2,
+              0.2,
+              0.2,
+              0.2,
+              0.2,
+              0.2,
+              0.2,
+              0.2,
+              0.2,
+              0.2,
+              0.2,
+              0.2,
+              0.2
+            ],
+            "weather_code": [
+              71,
+              71,
+              71,
+              71,
+              71,
+              71,
+              71,
+              71,
+              71,
+              71,
+              71,
+              71,
+              71,
+              71,
+              71,
+              71,
+              71,
+              71,
+              71,
+              71,
+              71,
+              71,
+              71,
+              71
+            ]
+          }
+        },
+        {
+          "id": "hella-route",
+          "labelIs": "Hella",
+          "labelEn": "Hella",
+          "available": true,
+          "requestedLat": 63.83460815,
+          "requestedLon": -20.40236144,
+          "returnedLatitude": 63.83460815,
+          "returnedLongitude": -20.40236144,
+          "elevation": 12,
+          "routeZ": 28.6819,
+          "approxDistanceFromStartKm": 80.68131193354056,
+          "hours": [
+            "2026-11-24T20:00",
+            "2026-11-24T21:00",
+            "2026-11-24T22:00",
+            "2026-11-24T23:00",
+            "2026-11-25T00:00",
+            "2026-11-25T01:00",
+            "2026-11-25T02:00",
+            "2026-11-25T03:00",
+            "2026-11-25T04:00",
+            "2026-11-25T05:00",
+            "2026-11-25T06:00",
+            "2026-11-25T07:00",
+            "2026-11-25T08:00",
+            "2026-11-25T09:00",
+            "2026-11-25T10:00",
+            "2026-11-25T11:00",
+            "2026-11-25T12:00",
+            "2026-11-25T13:00",
+            "2026-11-25T14:00",
+            "2026-11-25T15:00",
+            "2026-11-25T16:00",
+            "2026-11-25T17:00",
+            "2026-11-25T18:00",
+            "2026-11-25T19:00"
+          ],
+          "series": {
+            "temperature_2m": [
+              -2.2,
+              -2.1,
+              -2,
+              -1.9000000000000001,
+              -1.8000000000000003,
+              -1.7000000000000002,
+              -1.6,
+              -1.5,
+              -1.4000000000000001,
+              -1.3000000000000003,
+              -1.2000000000000002,
+              -1.1,
+              -1,
+              -0.9000000000000001,
+              -0.8,
+              -0.7000000000000002,
+              -0.6000000000000001,
+              -0.5,
+              -0.40000000000000013,
+              -0.30000000000000004,
+              -0.20000000000000018,
+              -0.10000000000000009,
+              0,
+              0.10000000000000009
+            ],
+            "wind_speed_10m": [
+              2.6,
+              2.6,
+              2.6,
+              2.6,
+              2.6,
+              2.6,
+              2.6,
+              2.6,
+              2.6,
+              2.6,
+              2.6,
+              2.6,
+              2.6,
+              2.6,
+              2.6,
+              2.6,
+              2.6,
+              2.6,
+              2.6,
+              2.6,
+              2.6,
+              2.6,
+              2.6,
+              2.6
+            ],
+            "wind_gusts_10m": [
+              5,
+              5,
+              5,
+              5,
+              5,
+              5,
+              5,
+              5,
+              5,
+              5,
+              5,
+              5,
+              5,
+              5,
+              5,
+              5,
+              5,
+              5,
+              5,
+              5,
+              5,
+              5,
+              5,
+              5
+            ],
+            "precipitation": [
+              0,
+              0.2,
+              0.2,
+              0.2,
+              0.2,
+              0.2,
+              0.2,
+              0.2,
+              0.2,
+              0.2,
+              0.2,
+              0.2,
+              0.2,
+              0.2,
+              0.2,
+              0.2,
+              0.2,
+              0.2,
+              0.2,
+              0.2,
+              0.2,
+              0.2,
+              0.2,
+              0.2
+            ],
+            "weather_code": [
+              71,
+              71,
+              71,
+              71,
+              71,
+              71,
+              71,
+              71,
+              71,
+              71,
+              71,
+              71,
+              71,
+              71,
+              71,
+              71,
+              71,
+              71,
+              71,
+              71,
+              71,
+              71,
+              71,
+              71
+            ]
+          }
+        }
+      ],
+      "stale": false,
+      "cacheAgeMs": 0
+    }
+  }
+}

@@ -1,0 +1,302 @@
+{
+  "negativeControl": {
+    "trackWidth": 300,
+    "totalMarkCount": 4,
+    "visibleMarkCount": 4,
+    "visibleMarks": [
+      {
+        "label": "26.11",
+        "left": -69,
+        "right": 231,
+        "width": 300
+      },
+      {
+        "label": "07:00",
+        "left": -69,
+        "right": 231,
+        "width": 300
+      },
+      {
+        "label": "15:00",
+        "left": -69,
+        "right": 231,
+        "width": 300
+      },
+      {
+        "label": "22:00",
+        "left": -69,
+        "right": 231,
+        "width": 300
+      }
+    ],
+    "minGapPx": -300,
+    "overlapCount": 3
+  },
+  "start2300_360px": {
+    "trackWidth": 198,
+    "totalMarkCount": 4,
+    "visibleMarkCount": 2,
+    "visibleMarks": [
+      {
+        "label": "26.11",
+        "left": 86,
+        "right": 108,
+        "width": 22
+      },
+      {
+        "label": "22:00",
+        "left": 257,
+        "right": 285,
+        "width": 28
+      }
+    ],
+    "minGapPx": 149.2,
+    "overlapCount": 0,
+    "isDark": false,
+    "dpr": 1,
+    "fontFamily": "Inter, system-ui, -apple-system, \"Segoe UI\", Roboto, Helvetica, Arial, \"Apple Color Emoji\", \"Segoe UI Emoji\"",
+    "lang": "is",
+    "theme": "light"
+  },
+  "start2300_320px": {
+    "trackWidth": 158,
+    "totalMarkCount": 4,
+    "visibleMarkCount": 2,
+    "visibleMarks": [
+      {
+        "label": "26.11",
+        "left": 84,
+        "right": 106,
+        "width": 22
+      },
+      {
+        "label": "22:00",
+        "left": 217,
+        "right": 245,
+        "width": 28
+      }
+    ],
+    "minGapPx": 110.9,
+    "overlapCount": 0,
+    "isDark": false,
+    "dpr": 1,
+    "fontFamily": "Inter, system-ui, -apple-system, \"Segoe UI\", Roboto, Helvetica, Arial, \"Apple Color Emoji\", \"Segoe UI Emoji\"",
+    "lang": "is",
+    "theme": "light"
+  },
+  "start0300_360px": {
+    "trackWidth": 198,
+    "totalMarkCount": 3,
+    "visibleMarkCount": 2,
+    "visibleMarks": [
+      {
+        "label": "25.11",
+        "left": 78,
+        "right": 100,
+        "width": 22
+      },
+      {
+        "label": "26.11",
+        "left": 236,
+        "right": 258,
+        "width": 22
+      }
+    ],
+    "minGapPx": 135.7,
+    "overlapCount": 0,
+    "isDark": false,
+    "dpr": 1,
+    "fontFamily": "Inter, system-ui, -apple-system, \"Segoe UI\", Roboto, Helvetica, Arial, \"Apple Color Emoji\", \"Segoe UI Emoji\"",
+    "lang": "is",
+    "theme": "light"
+  },
+  "start0300_320px": {
+    "trackWidth": 158,
+    "totalMarkCount": 3,
+    "visibleMarkCount": 2,
+    "visibleMarks": [
+      {
+        "label": "25.11",
+        "left": 78,
+        "right": 100,
+        "width": 22
+      },
+      {
+        "label": "26.11",
+        "left": 201,
+        "right": 223,
+        "width": 22
+      }
+    ],
+    "minGapPx": 101,
+    "overlapCount": 0,
+    "isDark": false,
+    "dpr": 1,
+    "fontFamily": "Inter, system-ui, -apple-system, \"Segoe UI\", Roboto, Helvetica, Arial, \"Apple Color Emoji\", \"Segoe UI Emoji\"",
+    "lang": "is",
+    "theme": "light"
+  },
+  "start2300_360px_en_dark": {
+    "trackWidth": 198,
+    "totalMarkCount": 4,
+    "visibleMarkCount": 2,
+    "visibleMarks": [
+      {
+        "label": "26.11",
+        "left": 86,
+        "right": 108,
+        "width": 22
+      },
+      {
+        "label": "22:00",
+        "left": 257,
+        "right": 285,
+        "width": 28
+      }
+    ],
+    "minGapPx": 149.2,
+    "overlapCount": 0,
+    "isDark": true,
+    "dpr": 1,
+    "fontFamily": "Inter, system-ui, -apple-system, \"Segoe UI\", Roboto, Helvetica, Arial, \"Apple Color Emoji\", \"Segoe UI Emoji\"",
+    "lang": "en",
+    "theme": "dark"
+  },
+  "start1100_640px": {
+    "trackWidth": 454,
+    "totalMarkCount": 3,
+    "visibleMarkCount": 3,
+    "visibleMarks": [
+      {
+        "label": "25.11",
+        "left": 90,
+        "right": 112,
+        "width": 22
+      },
+      {
+        "label": "26.11",
+        "left": 338,
+        "right": 360,
+        "width": 22
+      },
+      {
+        "label": "10:00",
+        "left": 526,
+        "right": 552,
+        "width": 26
+      }
+    ],
+    "minGapPx": 166.4,
+    "overlapCount": 0
+  },
+  "start1100_768px": {
+    "trackWidth": 582,
+    "totalMarkCount": 3,
+    "visibleMarkCount": 3,
+    "visibleMarks": [
+      {
+        "label": "25.11",
+        "left": 90,
+        "right": 112,
+        "width": 22
+      },
+      {
+        "label": "26.11",
+        "left": 410,
+        "right": 432,
+        "width": 22
+      },
+      {
+        "label": "10:00",
+        "left": 654,
+        "right": 680,
+        "width": 26
+      }
+    ],
+    "minGapPx": 222.1,
+    "overlapCount": 0
+  },
+  "start2300_1280px": {
+    "trackWidth": 710,
+    "totalMarkCount": 4,
+    "visibleMarkCount": 4,
+    "visibleMarks": [
+      {
+        "label": "26.11",
+        "left": 312,
+        "right": 334,
+        "width": 22
+      },
+      {
+        "label": "07:00",
+        "left": 521,
+        "right": 548,
+        "width": 27
+      },
+      {
+        "label": "15:00",
+        "left": 763,
+        "right": 789,
+        "width": 26
+      },
+      {
+        "label": "22:00",
+        "left": 973,
+        "right": 1001,
+        "width": 28
+      }
+    ],
+    "minGapPx": 184.6,
+    "overlapCount": 0
+  },
+  "controlTableInView_1280": {
+    "viewA": {
+      "scrollY": 852,
+      "sliderInViewport": true,
+      "firstRowInViewport": true,
+      "sliderRect": {
+        "top": 124,
+        "bottom": 148
+      },
+      "firstRowRect": {
+        "top": 229,
+        "bottom": 270
+      },
+      "innerHeight": 900
+    },
+    "viewB": {
+      "scrollY": 852,
+      "sliderInViewport": true,
+      "firstRowInViewport": true,
+      "sliderRect": {
+        "top": 124,
+        "bottom": 148
+      },
+      "firstRowRect": {
+        "top": 229,
+        "bottom": 270
+      },
+      "innerHeight": 900
+    },
+    "tempA": "-2,0 °C",
+    "tempB": "-2,9 °C",
+    "distinctTemps": true
+  },
+  "controlTableInView_360": {
+    "view": {
+      "scrollY": 1086,
+      "sliderInViewport": true,
+      "firstRowInViewport": true,
+      "sliderRect": {
+        "top": 96,
+        "bottom": 120
+      },
+      "firstRowRect": {
+        "top": 178,
+        "bottom": 339
+      },
+      "innerHeight": 800
+    },
+    "temp": "-2.0 °C"
+  }
+}

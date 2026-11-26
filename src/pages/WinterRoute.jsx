@@ -32,18 +32,28 @@ import { resolveWeatherPresentation, isDaytimeHour } from "../lib/weatherPresent
 import {
   SEGMENT_CATEGORY_LABEL_KEY,
   formatDecimal,
-  formatHourLabel,
-  formatTimestamp,
   formatValidatedUtcTimestamp,
   cacheAgeMinutesDisplay,
   hourOfDayFromHourString,
+  flaggedRoadSegments,
+  roadOverviewIsConfirmedClear,
+  staleOldUniformity,
+  shortenWinterRoutePointLabel,
+  formatWinterRouteHourFull,
+  formatWinterRouteHourValueText,
+  winterRouteTimeSliderMarks,
 } from "../lib/winterRoutePresentation";
-import { computeWeatherExtremaSummary, computeActiveNoticeSegmentCount } from "../lib/winterRouteSummary";
-import { WINTER_ROUTE_OPTIONS, DEFAULT_WINTER_ROUTE_ID, expectedPointCountForRoute } from "../lib/winterRouteRoutes";
+import { winterRouteSurfaceDisplayCategory, winterRouteUnknownAdditionCode } from "../lib/winterRouteRoadConditionCodes";
+import {
+  WINTER_ROUTE_OPTIONS,
+  DEFAULT_WINTER_ROUTE_ID,
+  resolveDirectPairRouteId,
+} from "../lib/winterRouteRoutes";
 import {
   WINTER_ROUTE_PLACES,
   WINTER_ROUTE_GROUP_RING,
   WINTER_ROUTE_GROUP_WESTFJORDS,
+  WINTER_ROUTE_GROUP_OTHER,
   winterRoutePlaceName,
   winterRoutePlaceMatchesSearch,
 } from "../lib/winterRoutePlaces";
@@ -70,8 +80,12 @@ import {
 const DEFAULT_GEOMETRY_FROM = "reykjavik-raudavatn";
 const DEFAULT_GEOMETRY_TO = "selfoss";
 
-const WINTER_ROUTE_MODE_CHOOSE = "choose";
-const WINTER_ROUTE_MODE_LEGACY = "legacy";
+// Ticket #492, direct-flow, C1 -- places the geometry endpoint has no
+// knowledge of at all; a same-id draft for either must be handled
+// entirely client-side (see handleSubmit). The original 11 ids are
+// deliberately NOT in this set -- they keep using the real geometry
+// endpoint's own existing `same_place` classification unchanged.
+const WINTER_ROUTE_CLIENT_SAME_PLACE_IDS = new Set(["vik", "borgarnes"]);
 
 const VEGAGERDIN_LINKS = {
   is: "https://www.vegagerdin.is/upplysingar-og-utgafa/gagnaveita-vegagerdarinnar/",
@@ -109,11 +123,42 @@ function useNowTicking(intervalMs = 60000) {
 // stays byte-identical): a short-section caveat so a closure/notice on a
 // section carrying under 1% of the route's own total length never reads
 // as the whole route's own status.
-function SegmentRow({ segment, t, lang, edgeSegmentNote = null }) {
+// Ticket #492, round 3 (UX priority), P3(vi) -- an optional `compact` prop
+// (default false/undefined = byte-identical to before, so the legacy
+// view and every existing caller that doesn't pass it are untouched):
+// when true, a description line that says exactly the same thing as the
+// category pill above it (e.g. "Greiðfært" pill + "Greiðfært" own
+// description) is suppressed, since showing the identical word twice in
+// one card is the literal duplication req2 names. A description that
+// says something ELSE is still shown either way.
+function SegmentRow({ segment, t, lang, edgeSegmentNote = null, compact = false, hideStaleOldBadges = false }) {
   const name = lang === "en" ? segment.nameEn : segment.nameIs;
-  const pillClass = categoryPillClass(segment.category, segment.positiveStyleEligible);
-  const categoryLabel = t(SEGMENT_CATEGORY_LABEL_KEY[segment.category] || SEGMENT_CATEGORY_LABEL_KEY.unknown_unclassified);
-  const description = lang === "en" ? segment.astandLysingEn : segment.astandLysing;
+  // Ticket #492, direct-flow, P6 -- the pill shows the SURFACE's own
+  // category when a known surface was only pulled to "unknown" by an
+  // unrelated unclassified point notice (see winterRouteSurfaceDisplayCategory's
+  // own doc comment for the full three-way split). `positiveStyleEligible`
+  // is left untouched -- it already reflects the backend's own composite
+  // category, so a swapped-to-"passable" display here still renders
+  // neutral, never green, while an unresolved notice is still present.
+  const displayCategory = winterRouteSurfaceDisplayCategory(segment);
+  const pillClass = categoryPillClass(displayCategory, segment.positiveStyleEligible);
+  const categoryLabel = t(SEGMENT_CATEGORY_LABEL_KEY[displayCategory] || SEGMENT_CATEGORY_LABEL_KEY.unknown_unclassified);
+  // Ticket #492, direct-flow round 2, R4(1)/V4 -- an ambiguous segment's
+  // own `astandLysing` is just ONE of the contradictory duplicate rows'
+  // own text; presenting it as the segment's real surface description
+  // would misrepresent a genuinely unresolved conflict as known. Shown
+  // instead of (never alongside) the normal description, for every
+  // ambiguous segment regardless of its composite category -- including
+  // a real closure (V4(1): the closure's own PILL is untouched, since
+  // winterRouteSurfaceDisplayCategory never touches a non-"unknown"
+  // composite; only this description line changes).
+  const description = segment.ambiguous
+    ? t("winterRouteConflictingRoadData")
+    : lang === "en" ? segment.astandLysingEn : segment.astandLysing;
+  const descriptionIsRedundant = compact && !segment.ambiguous && description === categoryLabel;
+  // V4(2) -- shown by default (never behind a control), as plain text;
+  // null for an ambiguous segment or a known/missing AstandVidbotaruppl.
+  const unknownAdditionCode = winterRouteUnknownAdditionCode(segment);
 
   return (
     <li className="rounded-xl border border-slate-200/70 bg-white/70 px-4 py-3 dark:border-slate-800/70 dark:bg-slate-900/70">
@@ -128,11 +173,18 @@ function SegmentRow({ segment, t, lang, edgeSegmentNote = null }) {
         <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">{t("winterRouteSegmentDataUnavailable")}</p>
       ) : (
         <>
-          {description ? <p className="mt-1 text-sm text-slate-600 dark:text-slate-300">{description}</p> : null}
-          <div className="mt-1 flex flex-wrap gap-2 text-xs text-slate-500 dark:text-slate-400">
-            {segment.export?.isStale ? <span>{t("winterRouteExportStale")}</span> : null}
-            {segment.registration?.isOld ? <span>{t("winterRouteRegistrationOld")}</span> : null}
-          </div>
+          {description && !descriptionIsRedundant ? <p className="mt-1 text-sm text-slate-600 dark:text-slate-300">{description}</p> : null}
+          {unknownAdditionCode ? (
+            <p className="mt-1 text-sm text-slate-600 dark:text-slate-300">
+              {t("winterRouteUnknownAdditionCode").replace("{code}", unknownAdditionCode)}
+            </p>
+          ) : null}
+          {!hideStaleOldBadges ? (
+            <div className="mt-1 flex flex-wrap gap-2 text-xs text-slate-500 dark:text-slate-400">
+              {segment.export?.isStale ? <span>{t("winterRouteExportStale")}</span> : null}
+              {segment.registration?.isOld ? <span>{t("winterRouteRegistrationOld")}</span> : null}
+            </div>
+          ) : null}
         </>
       )}
 
@@ -161,16 +213,27 @@ function SegmentRow({ segment, t, lang, edgeSegmentNote = null }) {
               );
             }
 
-            const noticeText = lang === "en" ? notice.lysingEn || notice.lysing : notice.lysing;
+            // R4(3)/V4(3) -- an unclassified (or any) notice without its
+            // own lysing/lysingEn text falls back to its raw `astand`
+            // code as plain text, rather than rendering blank.
+            const noticeText = (lang === "en" ? notice.lysingEn || notice.lysing : notice.lysing) || notice.astand;
             const statusKey =
               notice.status === "active"
                 ? "winterRouteNoticeActive"
                 : notice.status === "expired"
                   ? "winterRouteNoticeExpired"
                   : "winterRouteNoticeUnknownValidity";
+            // source.md "Sýna tilkynningar beint" / carried P5 -- an
+            // active notice's own "— Tilkynning í gildi" suffix is
+            // dropped: the notice is already shown by default (it would
+            // not be listed at all otherwise), so repeating "in effect"
+            // on every line adds no information. "Útrunnin..."/"Óþekktur
+            // gildistími" genuinely carry information (they tell the
+            // reader NOT to trust this notice as current) and stay.
             return (
               <li key={notice.idPunktur ?? `${segment.idButur}-${notice.astand}`} className="text-xs text-slate-600 dark:text-slate-300">
-                <span className="font-medium">{noticeText}</span> — {t(statusKey)}
+                <span className="font-medium">{noticeText}</span>
+                {notice.status !== "active" ? <> — {t(statusKey)}</> : null}
               </li>
             );
           })}
@@ -180,236 +243,196 @@ function SegmentRow({ segment, t, lang, edgeSegmentNote = null }) {
   );
 }
 
-function ForecastCard({ point, effectiveHour, t, lang }) {
-  const label = lang === "en" ? point.labelEn : point.labelIs;
+// Ticket #492, round 3 (UX priority), P1(e)/P2 — a single accessible
+// combobox per Frá/Til field, replacing the former separate search-input
+// + native-<select> pair (no custom combobox framework/dependency).
+//
+// `query` (the visible typed text) and the confirmed `value` (placeId,
+// owned by the parent) are STRICTLY separate: typing alone never commits
+// a selection, so a half-typed/ambiguous string can never silently reuse
+// a stale confirmed id (P2a). Only a real selection -- mouse/touch click,
+// or Enter on a highlighted option -- calls `onChange`. On blur/Escape
+// without a fresh selection, the field reverts to its last confirmed
+// place's own name (documented choice; the alternative the prompt also
+// allowed was a dedicated "missing selection" state, not needed here
+// since the field always already holds a valid confirmed id to revert
+// to -- there is no "empty" draft state in this form). The swap button
+// (P3(d)) needs no separate "swap while mid-edit" branch either: it only
+// ever reads/writes the parent's own confirmed draftFrom/draftTo, never a
+// field's in-progress `query` text, so a half-typed string is simply
+// discarded -- the field's displayed text re-syncs to its (new) confirmed
+// place via the effect above the moment `value` itself changes, whether
+// or not a blur happened to fire first.
+//
+// Options carry `data-place-id` (stable, language-independent) alongside
+// their ARIA role, and the input itself exposes the confirmed id via
+// `data-selected-place-id` -- both test-only hooks, read by nothing in
+// the component itself, kept so tests can assert the real confirmed
+// selection without depending on display-name text.
+function PlaceField({ idPrefix, label, searchLabel, noResultsText, value, onChange, lang, t }) {
+  const [query, setQuery] = useState(() => winterRoutePlaceName(value, lang));
+  const [open, setOpen] = useState(false);
+  const [activeIndex, setActiveIndex] = useState(-1);
+  // `query` always holds the input's own displayed text (including the
+  // confirmed place's full name right after opening, before any typing),
+  // but filtering by THAT text would hide every other place the instant
+  // the field opens. `filtering` tracks whether the user has actually
+  // typed since the field opened -- false means "show the complete list",
+  // true means "filter by query" -- so opening via focus/click always
+  // shows all 11 places (like the old native <select> always did), and
+  // only an actual keystroke narrows it.
+  const [filtering, setFiltering] = useState(false);
 
-  if (!point.available) {
+  // Re-sync the displayed text to the CONFIRMED place whenever it changes
+  // from outside this keystroke (a real selection here, or an external
+  // reset such as the swap button) -- never a reaction to the user's own
+  // typing, since `value` itself doesn't change while typing.
+  useEffect(() => {
+    setQuery(winterRoutePlaceName(value, lang));
+  }, [value, lang]);
+
+  const inputId = `${idPrefix}-input`;
+  const listboxId = `${idPrefix}-listbox`;
+  const matches = filtering ? WINTER_ROUTE_PLACES.filter((p) => winterRoutePlaceMatchesSearch(p, lang, query)) : WINTER_ROUTE_PLACES;
+  const hasNoRealMatches = matches.length === 0;
+  const ringPlaces = matches.filter((p) => p.group === WINTER_ROUTE_GROUP_RING);
+  const westfjordsPlaces = matches.filter((p) => p.group === WINTER_ROUTE_GROUP_WESTFJORDS);
+  const otherPlaces = matches.filter((p) => p.group === WINTER_ROUTE_GROUP_OTHER);
+  const flat = [...ringPlaces, ...westfjordsPlaces, ...otherPlaces];
+  const activeOption = activeIndex >= 0 ? flat[activeIndex] : null;
+
+  function commit(place) {
+    onChange(place.id);
+    setQuery(lang === "en" ? place.nameEn : place.nameIs);
+    setOpen(false);
+    setActiveIndex(-1);
+    setFiltering(false);
+  }
+
+  function revert() {
+    setQuery(winterRoutePlaceName(value, lang));
+    setOpen(false);
+    setActiveIndex(-1);
+    setFiltering(false);
+  }
+
+  function handleKeyDown(e) {
+    if (e.key === "ArrowDown") {
+      e.preventDefault();
+      if (!open) {
+        setOpen(true);
+        setActiveIndex(0);
+        return;
+      }
+      setActiveIndex((i) => Math.min(flat.length - 1, i + 1));
+    } else if (e.key === "ArrowUp") {
+      e.preventDefault();
+      if (open) setActiveIndex((i) => Math.max(0, i - 1));
+    } else if (e.key === "Enter") {
+      // Never let Enter submit the surrounding form while an option is
+      // highlighted -- only a real commit, never an accidental submit.
+      if (open && activeOption) {
+        e.preventDefault();
+        commit(activeOption);
+      }
+    } else if (e.key === "Escape") {
+      if (open) {
+        e.preventDefault();
+        revert();
+      }
+    }
+  }
+
+  function renderOption(p, index) {
+    const isActive = index === activeIndex;
     return (
-      <div className="rounded-xl border border-slate-200/70 bg-white/70 p-4 dark:border-slate-800/70 dark:bg-slate-900/70">
-        <div className="font-medium text-slate-800 dark:text-slate-100">{label}</div>
-        <p className="mt-2 text-sm text-slate-500 dark:text-slate-400">{t("winterRoutePointUnavailable")}</p>
+      <div
+        key={p.id}
+        id={`${idPrefix}-option-${p.id}`}
+        role="option"
+        aria-selected={p.id === value}
+        data-place-id={p.id}
+        // Mouse/touch selection fires on mousedown (preventDefault so the
+        // input's own blur-revert never runs first and destroys the list
+        // before the click lands) -- the actual commit still happens on
+        // click, so a drag-off-and-release never selects.
+        onMouseDown={(e) => e.preventDefault()}
+        onClick={() => commit(p)}
+        className={`cursor-pointer px-3 py-2 text-sm ${
+          isActive ? "bg-sky-100 dark:bg-sky-900/40" : "hover:bg-slate-50 dark:hover:bg-slate-800"
+        }`}
+      >
+        {lang === "en" ? p.nameEn : p.nameIs}
       </div>
     );
   }
 
-  // Ticket #493 — exact lookup of the ONE shared selected forecast hour in
-  // this point's own `hours` array. No distance, no ETA, no per-point time;
-  // a hand-picked hour not present in this point's own `hours` (shouldn't
-  // happen per the backend's own contract, but not assumed) is the same
-  // explicit "not available" outcome as `effectiveHour` itself being null.
-  const hourIndex = effectiveHour != null ? point.hours.indexOf(effectiveHour) : -1;
-  const hasHour = hourIndex >= 0;
-
-  const temp = hasHour ? point.series.temperature_2m[hourIndex] : null;
-  const wind = hasHour ? point.series.wind_speed_10m[hourIndex] : null;
-  const gust = hasHour ? point.series.wind_gusts_10m[hourIndex] : null;
-  const precip = hasHour ? point.series.precipitation[hourIndex] : null;
-  const code = hasHour ? point.series.weather_code[hourIndex] : null;
-  // N1: derive day/night from the selected UTC hour's own "HH" digits
-  // (the fixed "YYYY-MM-DDTHH:00" string, never a Date/local-timezone
-  // read) using the same isDaytimeHour() convention ForecastTable/
-  // HourlyForecastModal already use — no new sunrise/sunset lookup.
-  const hourOfDay = hasHour ? hourOfDayFromHourString(point.hours[hourIndex]) : null;
-  const presentation = resolveWeatherPresentation(code, { isDay: isDaytimeHour(hourOfDay) });
-
-  return (
-    <div className="rounded-xl border border-slate-200/70 bg-white/70 p-4 dark:border-slate-800/70 dark:bg-slate-900/70">
-      <div className="flex items-center justify-between gap-2">
-        <div className="font-medium text-slate-800 dark:text-slate-100">{label}</div>
-        {!presentation.isUnknown ? (
-          <WeatherIcon iconId={presentation.iconId} aria-label={t(presentation.textKey)} className="h-8 w-8" />
-        ) : (
-          <span className="text-xs text-slate-400">{t("winterRouteUnknownWeatherSymbol")}</span>
-        )}
-      </div>
-
-      {!hasHour ? (
-        <p className="mt-2 text-sm text-slate-500 dark:text-slate-400">{t("winterRouteForecastNotAvailableAtComputedTime")}</p>
-      ) : (
-        <>
-          <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">
-            {t("winterRouteValidFor").replace("{time}", formatHourLabel(effectiveHour))}
-          </p>
-          <dl className="mt-2 grid grid-cols-2 gap-1 text-sm text-slate-700 dark:text-slate-200">
-            <dt className="text-slate-500 dark:text-slate-400">{t("winterRouteTemperature")}</dt>
-            <dd>{temp == null ? "—" : `${formatDecimal(temp, lang, 1)} °C`}</dd>
-            <dt className="text-slate-500 dark:text-slate-400">{t("winterRouteWind")}</dt>
-            <dd>{wind == null ? "—" : `${formatDecimal(wind, lang, 1)} m/s`}</dd>
-            <dt className="text-slate-500 dark:text-slate-400">{t("winterRouteGust")}</dt>
-            <dd>{gust == null ? "—" : `${formatDecimal(gust, lang, 1)} m/s`}</dd>
-            <dt className="text-slate-500 dark:text-slate-400">{t("winterRoutePrecip")}</dt>
-            <dd>{precip == null ? "—" : `${formatDecimal(precip, lang, 1)} mm`}</dd>
-          </dl>
-        </>
-      )}
-
-      <p className="mt-2 text-xs italic text-slate-400 dark:text-slate-500">{t("winterRouteGridDisclaimer")}</p>
-    </div>
-  );
-}
-
-// #489 — one metric line in the route-level summary. `metric` is one entry
-// from computeWeatherExtremaSummary()'s result (value/point/hourString/
-// isMissing/isPartial/validCount). Null/missing is its own dedicated
-// string, never a "0" or a silently-dropped line.
-function SummaryMetricLine({ t, lang, metric, valueKey, missingKey, expectedPointCount }) {
-  if (metric.isMissing) {
-    return <p className="text-sm text-slate-600 dark:text-slate-300">{t(missingKey)}</p>;
-  }
-
-  const pointLabel = lang === "en" ? metric.point.labelEn : metric.point.labelIs;
-  let line = t(valueKey)
-    .replace("{value}", formatDecimal(metric.value, lang, 1))
-    .replace("{point}", pointLabel)
-    .replace("{time}", formatHourLabel(metric.hourString));
-
-  if (metric.isPartial) {
-    line += t("winterRouteSummaryPartialSuffix")
-      .replace("{count}", String(metric.validCount))
-      .replace("{total}", String(expectedPointCount));
-  }
-
-  return <p className="text-sm text-slate-600 dark:text-slate-300">{line}</p>;
-}
-
-// #489 — route-level summary, positioned above the forecast cards and the
-// road list. Ticket #493: weather extrema read the exact same ONE shared
-// `effectiveHour` the cards use (computeWeatherExtremaSummary, an exact
-// per-point lookup — no ETA model, never a second time per point); the
-// notice count is independent of the selected hour entirely (point-notice
-// status is computed server-side from "now"). No positive styling anywhere
-// here (S1) — the notice count never reads as a green/safe indicator,
-// including when it is 0, and the fixed scope disclaimer is always shown
-// regardless of the count's value.
-function RouteSummary({ data, effectiveHour, t, lang }) {
-  const weatherSummary = useMemo(() => {
-    const points = data.forecast?.available ? data.forecast.points : [];
-    return computeWeatherExtremaSummary(points, effectiveHour);
-  }, [data.forecast, effectiveHour]);
-  const noticeSummary = computeActiveNoticeSegmentCount(data.segments, data.roadMeta);
-  const expectedPointCount = data.expectedPointCount;
-
-  return (
-    <section className="mb-6 rounded-xl border border-slate-200/70 bg-white/70 px-4 py-3 dark:border-slate-800/70 dark:bg-slate-900/70">
-      <h2 className="text-sm font-semibold text-slate-700 dark:text-slate-200">{t("winterRouteSummaryHeading")}</h2>
-
-      <div className="mt-2 space-y-1">
-        <SummaryMetricLine
-          t={t}
-          lang={lang}
-          metric={weatherSummary.maxGust}
-          valueKey="winterRouteSummaryGust"
-          missingKey="winterRouteSummaryGustMissing"
-          expectedPointCount={expectedPointCount}
-        />
-        <SummaryMetricLine
-          t={t}
-          lang={lang}
-          metric={weatherSummary.maxPrecip}
-          valueKey="winterRouteSummaryPrecip"
-          missingKey="winterRouteSummaryPrecipMissing"
-          expectedPointCount={expectedPointCount}
-        />
-        <SummaryMetricLine
-          t={t}
-          lang={lang}
-          metric={weatherSummary.minTemp}
-          valueKey="winterRouteSummaryMinTemp"
-          missingKey="winterRouteSummaryMinTempMissing"
-          expectedPointCount={expectedPointCount}
-        />
-      </div>
-
-      {data.forecast?.available && data.forecast.stale ? (
-        <p className="mt-1 text-xs text-amber-600 dark:text-amber-300">
-          {t("winterRouteForecastStaleServed").replace(
-            "{minutes}",
-            String(Math.round((data.forecast.cacheAgeMs || 0) / 60000))
-          )}
-        </p>
-      ) : null}
-
-      <div className="mt-3 border-t border-slate-200/60 pt-2 dark:border-slate-800/60">
-        <p className="text-sm text-slate-600 dark:text-slate-300">
-          {noticeSummary.confirmed
-            ? t("winterRouteSummaryNoticeCount").replace("{count}", String(noticeSummary.count))
-            : t("winterRouteSummaryNoticeCountUnconfirmed")}
-        </p>
-        <p className="text-xs text-slate-500 dark:text-slate-400">{t("winterRouteSummaryNoticeScope")}</p>
-      </div>
-
-      <p className="mt-2 text-xs text-slate-400 dark:text-slate-500">
-        {t("winterRouteAcquiredAt").replace("{time}", formatTimestamp(data.generatedAt))}
-      </p>
-    </section>
-  );
-}
-
-// Ticket #502, P3 — one labelled search input + one labelled native
-// <select> per endpoint (no custom combobox framework/dependency). The
-// currently selected id is ALWAYS included in the rendered option list,
-// even when the search text would otherwise filter it out (P3b: a valid
-// selection is never silently lost). Grouped via <optgroup> by network
-// membership (P2b) so the user can see ring-pilot and Westfjords ids are
-// never mixed. The search input never changes `value` itself — only an
-// actual <select> change does — so Enter/typing can never send a
-// half-typed non-place string.
-function PlaceField({ idPrefix, label, searchLabel, noResultsText, value, onChange, search, onSearchChange, lang, t }) {
-  const matches = WINTER_ROUTE_PLACES.filter((p) => winterRoutePlaceMatchesSearch(p, lang, search));
-  const visiblePlaces = matches.some((p) => p.id === value)
-    ? matches
-    : [...WINTER_ROUTE_PLACES.filter((p) => p.id === value), ...matches];
-  const hasNoRealMatches = matches.length === 0;
-  const ringPlaces = visiblePlaces.filter((p) => p.group === WINTER_ROUTE_GROUP_RING);
-  const westfjordsPlaces = visiblePlaces.filter((p) => p.group === WINTER_ROUTE_GROUP_WESTFJORDS);
-
   return (
     <div>
-      <label htmlFor={`${idPrefix}-select`} className="text-sm font-medium text-slate-700 dark:text-slate-200">
+      <label htmlFor={inputId} className="text-sm font-medium text-slate-700 dark:text-slate-200">
         {label}
       </label>
-      <div className="mt-1 flex flex-col gap-1 sm:flex-row sm:items-center">
-        <div>
-          <label htmlFor={`${idPrefix}-search`} className="sr-only">
-            {searchLabel}
-          </label>
-          <input
-            id={`${idPrefix}-search`}
-            type="text"
-            placeholder={searchLabel}
-            value={search}
-            onChange={(e) => onSearchChange(e.target.value)}
-            className="block w-full max-w-xs rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 dark:border-slate-700 dark:bg-slate-900"
-          />
-        </div>
-        <select
-          id={`${idPrefix}-select`}
-          value={value}
-          onChange={(e) => onChange(e.target.value)}
-          className="block w-full max-w-xs rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 dark:border-slate-700 dark:bg-slate-900"
-        >
-          {ringPlaces.length > 0 ? (
-            <optgroup label={t("winterRouteGroupRingLabel")}>
-              {ringPlaces.map((p) => (
-                <option key={p.id} value={p.id}>
-                  {lang === "en" ? p.nameEn : p.nameIs}
-                </option>
-              ))}
-            </optgroup>
-          ) : null}
-          {westfjordsPlaces.length > 0 ? (
-            <optgroup label={t("winterRouteGroupWestfjordsLabel")}>
-              {westfjordsPlaces.map((p) => (
-                <option key={p.id} value={p.id}>
-                  {lang === "en" ? p.nameEn : p.nameIs}
-                </option>
-              ))}
-            </optgroup>
-          ) : null}
-        </select>
+      <div className="relative mt-1">
+        <input
+          id={inputId}
+          type="text"
+          role="combobox"
+          aria-expanded={open}
+          aria-controls={listboxId}
+          aria-autocomplete="list"
+          aria-activedescendant={open && activeOption ? `${idPrefix}-option-${activeOption.id}` : undefined}
+          placeholder={searchLabel}
+          value={query}
+          data-selected-place-id={value}
+          onFocus={() => setOpen(true)}
+          onChange={(e) => {
+            setQuery(e.target.value);
+            setOpen(true);
+            setFiltering(true);
+            setActiveIndex(0);
+          }}
+          onKeyDown={handleKeyDown}
+          onBlur={() => {
+            if (open) revert();
+          }}
+          autoComplete="off"
+          // Ticket #492 round 3, P2 -- >=16px to avoid iOS Safari's
+          // auto-zoom-on-focus for any input under 16px.
+          className="block w-full max-w-xs rounded-lg border border-slate-300 bg-white px-3 py-2 text-base focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 dark:border-slate-700 dark:bg-slate-900"
+        />
+        {open ? (
+          <div
+            id={listboxId}
+            role="listbox"
+            aria-label={label}
+            className="absolute z-10 mt-1 max-h-60 w-full max-w-xs overflow-auto rounded-lg border border-slate-300 bg-white py-1 shadow-lg dark:border-slate-700 dark:bg-slate-900"
+          >
+            {hasNoRealMatches ? (
+              <div className="px-3 py-2 text-sm text-slate-500 dark:text-slate-400">{noResultsText}</div>
+            ) : (
+              <>
+                {ringPlaces.length > 0 ? (
+                  <div role="group" aria-label={t("winterRouteGroupRingLabel")}>
+                    {ringPlaces.map((p) => renderOption(p, flat.indexOf(p)))}
+                  </div>
+                ) : null}
+                {westfjordsPlaces.length > 0 ? (
+                  <div role="group" aria-label={t("winterRouteGroupWestfjordsLabel")}>
+                    {westfjordsPlaces.map((p) => renderOption(p, flat.indexOf(p)))}
+                  </div>
+                ) : null}
+                {otherPlaces.length > 0 ? (
+                  <div role="group" aria-label={t("winterRouteGroupOtherLabel")}>
+                    {otherPlaces.map((p) => renderOption(p, flat.indexOf(p)))}
+                  </div>
+                ) : null}
+              </>
+            )}
+          </div>
+        ) : null}
       </div>
       <p role="status" aria-live="polite" className="mt-1 text-xs text-slate-500 dark:text-slate-400">
-        {hasNoRealMatches ? noResultsText : ""}
+        {hasNoRealMatches && open ? noResultsText : ""}
       </p>
     </div>
   );
@@ -531,39 +554,507 @@ function hasValidIdentityShape(data, from, to) {
   return false;
 }
 
+// Ticket #492, direct-flow, C4 -- shared by every identity kind (not a
+// second copy for the new "fixed" kind): a road section whose own
+// `segmentDataAvailable` is `false` may be missing `registration`
+// (ONLY that field -- `notices`/`export` are still required
+// unconditionally). The real `/api/winter-route`/`/api/winter-route-
+// data` handlers' own "segment not found in the feed" branch never sets
+// `registration` at all (there is no registration date for a segment
+// the feed doesn't even mention) -- requiring it unconditionally meant
+// a real, correctly-shaped "data unavailable for this section" response
+// was rejected outright as a validation failure, turning an honest
+// partial-data state into a generic error for the whole route. This
+// previously affected every pair (not just the two new fixed routes);
+// fixing it here fixes it everywhere `validRouteData`/
+// `validFixedRouteData` are used, not a parallel exception.
+function validRoadSectionsShape(sections) {
+  return Array.isArray(sections) && sections.every((section) =>
+    section && Array.isArray(section.notices) && section.export &&
+    (section.segmentDataAvailable === false || section.registration)
+  );
+}
+
+function validForecastShape(forecast) {
+  return forecast && typeof forecast.available === "boolean" && (!forecast.available || (
+    Array.isArray(forecast.window?.expectedHours) &&
+    forecast.window.expectedHours.every((h) => typeof h === "string" && Number.isFinite(Date.parse(`${h}:00Z`))) &&
+    Array.isArray(forecast.points) && forecast.points.every((point) => point && typeof point.available === "boolean" &&
+      (!point.available || (Array.isArray(point.hours) && point.series &&
+        ["temperature_2m", "wind_speed_10m", "wind_gusts_10m", "precipitation", "weather_code"].every((key) => Array.isArray(point.series[key])))))
+  ));
+}
+
 // Validate the fields consumed by the data view before accepting a response.
 function validRouteData(data, from, to, geometryId) {
   if (!data || data.from !== from || data.to !== to || data.geometryId !== geometryId ||
       !hasValidIdentityShape(data, from, to) ||
-      !Array.isArray(data.roadSections) || !data.roadMeta || typeof data.roadMeta.available !== "boolean" ||
-      !data.forecast || typeof data.forecast.available !== "boolean") return false;
-  if (!data.roadSections.every((section) => section && Array.isArray(section.notices) && section.export && section.registration)) return false;
-  const forecast = data.forecast;
-  return !forecast.available || (Array.isArray(forecast.window?.expectedHours) &&
-    forecast.window.expectedHours.every((h) => typeof h === "string" && Number.isFinite(Date.parse(`${h}:00Z`))) &&
-    Array.isArray(forecast.points) && forecast.points.every((point) => point && typeof point.available === "boolean" &&
-      (!point.available || (Array.isArray(point.hours) && point.series &&
-        ["temperature_2m", "wind_speed_10m", "wind_gusts_10m", "precipitation", "weather_code"].every((key) => Array.isArray(point.series[key]))))));
+      !validRoadSectionsShape(data.roadSections) || !data.roadMeta || typeof data.roadMeta.available !== "boolean") return false;
+  return validForecastShape(data.forecast);
+}
+
+// Ticket #492, direct-flow, C3 -- the 4th identity kind: a real `/api/
+// winter-route?routeId=...` response reused AS-IS for the choose-flow
+// (no geometryId/region/option/dataset/policy fields exist for these two
+// routes at all -- their PRESENCE is rejected, not just their absence
+// tolerated, so a blended/wrong-generation response is never accepted).
+// `route` is the frontend's own WINTER_ROUTE_OPTIONS entry (routeId/
+// expectedPointCount/pointIdOrder/idButurOrder) -- the point/segment
+// COUNT, IDs and ORDER must all match exactly; normalization adds
+// nothing (no fabricated routeLengthM/isEdgeSegment/chainageKm/
+// geometryId, per C3's own "bætir engu við").
+function validFixedRouteData(data, routeId, route) {
+  if (!data || data.routeId !== routeId || data.expectedPointCount !== route.expectedPointCount) return false;
+  if (data.geometryId !== undefined || data.regionVersion !== undefined || data.selectedOption !== undefined ||
+      data.datasetVersion !== undefined || data.policyVersion !== undefined) return false;
+  if (!validRoadSectionsShape(data.segments) || data.segments.length !== route.idButurOrder.length ||
+      !data.segments.every((s, i) => s.idButur === route.idButurOrder[i])) return false;
+  if (!data.roadMeta || typeof data.roadMeta.available !== "boolean") return false;
+  if (!validForecastShape(data.forecast)) return false;
+  if (data.forecast.available) {
+    if (data.forecast.points.length !== route.pointIdOrder.length) return false;
+    if (!data.forecast.points.every((p, i) => p.id === route.pointIdOrder[i])) return false;
+  }
+  return true;
+}
+
+// Ticket #492, direct-flow, C1/P4/P5, source.md "Sýna tilkynningar beint,
+// án tvítekninga" -- the road/closures overview for the "Velja staði"
+// data view, module-level. Shows FIRST, above the weather table: feed-
+// level flags, the real road release time (req5, kept visible in the
+// main view -- cache age moves to "Um gögnin" below), a compact count-
+// based summary ("N kaflar með tilkynningum" / honest "ekki staðfest",
+// never a green "all clear" unless genuinely confirmed clean with no
+// stale/old data either), and ONE dense default list of every FLAGGED
+// section (closed/unconfirmed/stale/no-data/with-notices, in driving
+// order) using the SAME `SegmentRow` card the full list uses -- so a
+// flagged section's actual notice CONTENT is visible directly, never
+// just a name+pill chip repeating what a second list would say. Exactly
+// ONE control ("Sjá alla vegkafla") toggles to the full section list
+// (ALL sections, same renderer, same driving order); the two lists are
+// never both mounted at once (only one <ol> renders at a time), so a
+// section can never appear twice in the DOM simultaneously. The former
+// separate "Sjá tilkynningar" action/filter and the former name-only
+// `FlaggedSegmentChip` card are both removed entirely (no remaining
+// callers) -- this redesign replaces them, it does not add to them.
+function RoadOverviewSection({ data, roadExportedAtText, t, lang, sectionCoverageNote = false }) {
+  const flagged = useMemo(() => flaggedRoadSegments(data.roadSections), [data.roadSections]);
+  const allClear = roadOverviewIsConfirmedClear(data.roadSections, data.roadMeta);
+  const uniformStaleOld = useMemo(() => staleOldUniformity(flagged), [flagged]);
+  // P3(i)/(v)/carried -- compact count of DISTINCT sections carrying at
+  // least one real notice, regardless of that notice's own status
+  // (active/expired/unknown-validity all count the section once); a
+  // section is never counted just because its own category happens to
+  // be unknown with no real notice attached.
+  const noticeCount = useMemo(() => flagged.filter((s) => (s.notices ?? []).length > 0).length, [flagged]);
+  // The same "feeds are trustworthy right now" signal roadOverviewIsConfirmedClear
+  // itself requires before it will ever say "clear" -- reused directly so
+  // the summary line never contradicts it.
+  const confirmed =
+    !!data.roadMeta?.available &&
+    !!data.roadMeta?.segmentsAvailable &&
+    !!data.roadMeta?.pointsAvailable &&
+    !data.roadMeta?.pointsFeedUnavailableOrStale &&
+    !data.roadMeta?.stale;
+
+  const [detailsOpen, setDetailsOpen] = useState(false);
+  const visibleSections = detailsOpen ? data.roadSections : flagged;
+
+  return (
+    <section>
+      <h3 className="text-sm font-semibold text-slate-700 dark:text-slate-200">{t("winterRouteRoadSectionTitle")}</h3>
+      {/* Ticket #492, time-slider, P5(ii)/marks-fix P4(i) -- a new,
+          separate i18n line (never the legacy
+          `winterRouteSameForecastTimeNote`/`winterRouteHourLabel` keys),
+          INSIDE this section's own <section> (not a sibling in the
+          caller) so it is genuinely reachable via `closest("section")`
+          from this heading, as the approved prompt's own test
+          requires: the road section is explicitly time-independent, so
+          a user reading "Nýjasta færðarstaða..." never mistakes a
+          stale/unavailable road badge for a forecast of future
+          conditions at the selected time. */}
+      <p className="mt-2 text-xs italic text-slate-500 dark:text-slate-400">{t("winterRouteRoadCurrentRegardlessOfTimeNote")}</p>
+      {/* Ticket #492, direct-flow, C5 -- Borgarnes-only: the reused
+          IDBUTUR road data covers a longer stretch than this route's own
+          actual drive (see winterRouteRoutes.js's own header comment). */}
+      {sectionCoverageNote ? (
+        <p className="mt-2 text-xs italic text-slate-500 dark:text-slate-400">{t("winterRouteSectionCoverageNote")}</p>
+      ) : null}
+      {!data.roadMeta.available ? <p className="mt-2 text-sm text-slate-500">{t("winterRouteRoadFeedUnavailable")}</p> : null}
+      {/* req5/P6(iv) -- the overall road-feed staleness stays visible
+          OUTSIDE the details list, more prominent than any internal
+          timestamp (which lives only in "Um gögnin" below). */}
+      {data.roadMeta.stale ? (
+        <p className="mt-2 text-xs text-amber-600 dark:text-amber-300">{t("winterRouteRoadStaleServed").replace("{minutes}", String(Math.round((data.roadMeta.cacheAgeMs || 0) / 60000)))}</p>
+      ) : null}
+      {data.roadMeta.pointsFeedUnavailableOrStale ? (
+        <p className="mt-2 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-xs font-medium text-amber-800 dark:border-amber-900/50 dark:bg-amber-950/30 dark:text-amber-200">
+          {t("winterRoutePointsFeedUnavailable")}
+        </p>
+      ) : null}
+      {/* req5 -- the real Vegagerðin release time stays visible in the
+          main view; internal cache-age/response-prepared timestamps are
+          now only in "Um gögnin" below (never duplicated here). */}
+      {roadExportedAtText ? (
+        <p className="mt-2 text-xs text-slate-500 dark:text-slate-400">{t("winterRouteRoadExportedAtLine").replace("{time}", roadExportedAtText)}</p>
+      ) : (
+        <p className="mt-2 text-xs text-slate-500 dark:text-slate-400">{t("winterRouteRoadReleaseTimeUnknown")}</p>
+      )}
+
+      {/* P3(i)/(v) -- compact count of DISTINCT sections carrying a
+          notice, never the raw notice count, only stated as a number
+          when the underlying feed is actually confirmed; a genuine
+          all-clear only when confirmed AND nothing at all is flagged
+          (reuses roadOverviewIsConfirmedClear's own stricter definition,
+          P4 round 1 + round 3 P3v); when confirmed but something besides
+          notices is flagged (e.g. a closure with no notice of its own),
+          the list below already says so -- no separate summary line. */}
+      {!confirmed ? (
+        <p className="mt-2 text-sm font-medium text-slate-700 dark:text-slate-200">{t("winterRouteRoadOverviewUnconfirmed")}</p>
+      ) : allClear ? (
+        <p className="mt-2 text-sm font-medium text-slate-700 dark:text-slate-200">{t("winterRouteRoadOverviewAllClear")}</p>
+      ) : noticeCount > 0 ? (
+        <p className="mt-2 text-sm font-medium text-slate-700 dark:text-slate-200">
+          {noticeCount === 1 ? t("winterRouteRoadSummaryCountOne") : t("winterRouteRoadSummaryCount").replace("{count}", String(noticeCount))}
+        </p>
+      ) : null}
+
+      {/* P3(iv) -- one shared sentence when every flagged section is
+          flagged for the exact same stale/old reason and nothing else;
+          otherwise each row below carries its own short per-row text
+          (SegmentRow's own stale/old lines, suppressed here via
+          hideStaleOldBadges so the reason is never stated twice). */}
+      {uniformStaleOld ? (
+        <p className="mt-1 text-xs text-amber-700 dark:text-amber-300">{t("winterRouteRoadAllDataOld")}</p>
+      ) : null}
+
+      <p className="mt-3">
+        <button
+          type="button"
+          aria-expanded={detailsOpen}
+          aria-controls="winter-route-road-details"
+          onClick={() => setDetailsOpen((open) => !open)}
+          className="text-sm font-medium text-sky-600 hover:text-sky-700 dark:text-sky-400 dark:hover:text-sky-300"
+        >
+          {t("winterRouteViewAllSectionsAction")}
+        </button>
+      </p>
+
+      <div id="winter-route-road-details">
+        {detailsOpen ? (
+          <h4 className="mt-3 text-sm font-medium text-slate-700 dark:text-slate-200">{t("winterRouteAllSectionsHeading")}</h4>
+        ) : null}
+        {visibleSections.length > 0 ? (
+          <ol className="mt-3 space-y-2">
+            {visibleSections.map((section) => (
+              <SegmentRow
+                key={section.idButur}
+                segment={section}
+                t={t}
+                lang={lang}
+                edgeSegmentNote={edgeSegmentNoteFor(section, t, lang)}
+                compact
+                hideStaleOldBadges={uniformStaleOld}
+              />
+            ))}
+          </ol>
+        ) : null}
+      </div>
+    </section>
+  );
+}
+
+// Ticket #492, round 3 (UX priority), P4 -- ONE mounted DOM shape (option
+// A: a single CSS-reflowed representation, never two markups where only
+// one is mounted/hidden): a `role="table"` built from plain `div`s, since
+// giving a real `<table>`'s rows `display:grid` for the desktop layout
+// would strip their native table semantics in some browsers (P4's own
+// warning) -- explicit `role="table"/"row"/"columnheader"/"cell"` keeps
+// it a real accessible table at every width. At `md:` and up, each row
+// becomes a 6-column CSS grid (Staður/Veður/Hiti/Vindur/Hviður/Úrkoma,
+// real synchronised columns, req3); below `md:`, the exact same divs
+// simply stack as blocks, with a per-cell mobile-only label (hidden at
+// `md:`, where the shared column header already names it) so every value
+// stays legible without opening/zooming anything. The SAME six `role=
+// "cell"` elements exist at every width -- nothing is duplicated or
+// swapped out by JS/matchMedia.
+const WR_GRID = "md:grid md:grid-cols-[2fr_1.3fr_0.8fr_0.8fr_0.9fr_0.9fr] md:items-center md:gap-3";
+
+function WinterRouteGridCellLabel({ t, labelKey }) {
+  return <span className="mr-1 text-xs font-medium text-slate-500 dark:text-slate-400 md:hidden">{t(labelKey)}:</span>;
+}
+
+function WinterRoutePointRow({ point, effectiveHour, t, lang }) {
+  // Ticket #492, P5 (round 3) -- choose-flow-only display shortening
+  // ("Leiðarpunktur nærri X" -> "Nærri X"); the point's own id/coords/
+  // labelIs/labelEn are untouched, this only affects what is rendered.
+  const label = shortenWinterRoutePointLabel(lang === "en" ? point.labelEn : point.labelIs, lang);
+
+  if (!point.available) {
+    return (
+      <div role="row" className={`border-b border-slate-100 py-2 dark:border-slate-900 ${WR_GRID}`}>
+        <div role="cell" className="font-medium text-slate-800 dark:text-slate-100">
+          <span className="break-words">{label}</span>
+        </div>
+        <div role="cell" className="mt-1 text-slate-500 dark:text-slate-400 md:col-span-5 md:mt-0">{t("winterRoutePointUnavailable")}</div>
+      </div>
+    );
+  }
+
+  const hourIndex = effectiveHour != null ? point.hours.indexOf(effectiveHour) : -1;
+  const hasHour = hourIndex >= 0;
+  const temp = hasHour ? point.series.temperature_2m[hourIndex] : null;
+  const wind = hasHour ? point.series.wind_speed_10m[hourIndex] : null;
+  const gust = hasHour ? point.series.wind_gusts_10m[hourIndex] : null;
+  const precip = hasHour ? point.series.precipitation[hourIndex] : null;
+  const code = hasHour ? point.series.weather_code[hourIndex] : null;
+  const hourOfDay = hasHour ? hourOfDayFromHourString(point.hours[hourIndex]) : null;
+  const presentation = resolveWeatherPresentation(code, { isDay: isDaytimeHour(hourOfDay) });
+
+  if (!hasHour) {
+    return (
+      <div role="row" className={`border-b border-slate-100 py-2 dark:border-slate-900 ${WR_GRID}`}>
+        <div role="cell" className="font-medium text-slate-800 dark:text-slate-100">
+          <span className="break-words">{label}</span>
+        </div>
+        <div role="cell" className="mt-1 text-slate-500 dark:text-slate-400 md:col-span-5 md:mt-0">{t("winterRouteForecastNotAvailableAtComputedTime")}</div>
+      </div>
+    );
+  }
+
+  // P4 -- "Merki tengd eigin gildi": each value is its own `role="cell"`,
+  // directly paired with its own mobile label AND the shared column
+  // header at `md:` (never a swapped/mismatched pairing); value and unit
+  // always stay in ONE text node (P2d unchanged in spirit from round 2).
+  return (
+    <div role="row" className={`border-b border-slate-100 py-2 dark:border-slate-900 ${WR_GRID}`}>
+      <div role="cell" className="font-medium text-slate-800 dark:text-slate-100">
+        <span className="break-words">{label}</span>
+      </div>
+      <div role="cell" className="mt-1 flex items-center gap-1.5 md:mt-0">
+        <WinterRouteGridCellLabel t={t} labelKey="winterRouteTableColumnWeather" />
+        {!presentation.isUnknown ? (
+          <WeatherIcon iconId={presentation.iconId} aria-hidden="true" className="h-6 w-6 shrink-0" />
+        ) : null}
+        <span className="whitespace-nowrap">{presentation.isUnknown ? t("winterRouteUnknownWeatherSymbol") : t(presentation.textKey)}</span>
+      </div>
+      <div role="cell" className="mt-1 md:mt-0">
+        <WinterRouteGridCellLabel t={t} labelKey="winterRouteTableColumnTemp" />
+        <span className="whitespace-nowrap">{temp == null ? "—" : `${formatDecimal(temp, lang, 1)} °C`}</span>
+      </div>
+      <div role="cell" className="mt-1 md:mt-0">
+        <WinterRouteGridCellLabel t={t} labelKey="winterRouteTableColumnWind" />
+        <span className="whitespace-nowrap">{wind == null ? "—" : `${formatDecimal(wind, lang, 1)} m/s`}</span>
+      </div>
+      <div role="cell" className="mt-1 md:mt-0">
+        <WinterRouteGridCellLabel t={t} labelKey="winterRouteTableColumnGust" />
+        <span className="whitespace-nowrap">{gust == null ? "—" : `${formatDecimal(gust, lang, 1)} m/s`}</span>
+      </div>
+      <div role="cell" className="mt-1 md:mt-0">
+        <WinterRouteGridCellLabel t={t} labelKey="winterRouteTableColumnPrecip" />
+        <span className="whitespace-nowrap">{precip == null ? "—" : `${formatDecimal(precip, lang, 1)} mm`}</span>
+      </div>
+    </div>
+  );
+}
+
+// Ticket #492, round 3 (UX priority), P4 -- the 6-column header row,
+// visible only at `md:` and up (mobile relies on each cell's own inline
+// label instead, see WinterRouteGridCellLabel) but always present in the
+// DOM -- this is still the SAME mounted shape, just visually collapsed
+// below `md:` via CSS, not a second structure.
+function WinterRoutePointsTable({ points, effectiveHour, t, lang, headingId }) {
+  return (
+    <div role="table" aria-labelledby={headingId} className="mt-3 text-sm">
+      <div role="row" className={`hidden border-b border-slate-300 pb-1.5 text-left text-xs font-medium text-slate-500 dark:border-slate-700 dark:text-slate-400 ${WR_GRID}`}>
+        <div role="columnheader">{t("winterRouteTableColumnPlace")}</div>
+        <div role="columnheader">{t("winterRouteTableColumnWeather")}</div>
+        <div role="columnheader">{t("winterRouteTableColumnTemp")}</div>
+        <div role="columnheader">{t("winterRouteTableColumnWind")}</div>
+        <div role="columnheader">{t("winterRouteTableColumnGust")}</div>
+        <div role="columnheader">{t("winterRouteTableColumnPrecip")}</div>
+      </div>
+      {points.map((point) => (
+        <WinterRoutePointRow key={point.id} point={point} effectiveHour={effectiveHour} t={t} lang={lang} />
+      ))}
+      <p className="mt-2 text-xs italic text-slate-400 dark:text-slate-500">{t("winterRouteGustPrecipNote")}</p>
+      <p className="mt-1 text-xs italic text-slate-400 dark:text-slate-500">{t("winterRouteGridDisclaimer")}</p>
+    </div>
+  );
+}
+
+// Ticket #492, time-slider -- replaces the choose-flow's own former
+// native <select> with a native <input type="range"> + prev/next step
+// buttons (P1/P3). `selectedHour`/`hasUserPicked`/`availableHours`/
+// `effectiveHour` are all owned by the parent (`WinterRouteDataView`,
+// below) since the table/notes need `effectiveHour` too -- this
+// component is purely presentational + its own interaction/focus
+// handling, controlled entirely by props.
+//
+// P1(iii) -- the "previous time no longer available" notice must only
+// ever appear after the user's OWN pick disappears from `availableHours`
+// (never for an untouched default aging out on its own), which is why
+// `hasUserPicked` is a separate prop from `selectedHour` rather than
+// inferred from `selectedHour !== null`.
+//
+// P3(iv) -- when a step button is disabled WHILE it holds focus (the
+// user stepped to an end, or a minute-tick shrank `availableHours` out
+// from under a focused-but-now-out-of-range button), focus must move to
+// the slider itself, never fall through to `document.body` and strand a
+// keyboard user -- checked after every render via this effect, not
+// inside the click handler (the button's own `disabled` attribute only
+// takes effect on the NEXT render).
+function WinterRouteTimeSlider({ availableHours, selectedHour, effectiveHour, hasUserPicked, onSelect, t, lang }) {
+  const n = availableHours.length;
+  const currentIndex = effectiveHour != null ? availableHours.indexOf(effectiveHour) : -1;
+  const sliderRef = useRef(null);
+  const prevRef = useRef(null);
+  const nextRef = useRef(null);
+
+  const prevDisabled = n === 0 || currentIndex <= 0;
+  const nextDisabled = n === 0 || currentIndex === -1 || currentIndex >= n - 1;
+
+  useEffect(() => {
+    const active = document.activeElement;
+    if ((active === prevRef.current && active?.disabled) || (active === nextRef.current && active?.disabled)) {
+      sliderRef.current?.focus();
+    }
+  }, [currentIndex, n]);
+
+  function handleSliderChange(e) {
+    const idx = Number(e.target.value);
+    if (!Number.isInteger(idx) || idx < 0 || idx >= n) return;
+    onSelect(availableHours[idx]);
+  }
+  function goPrev() {
+    if (!prevDisabled) onSelect(availableHours[currentIndex - 1]);
+  }
+  function goNext() {
+    if (!nextDisabled) onSelect(availableHours[currentIndex + 1]);
+  }
+
+  const fullLabel = effectiveHour != null ? formatWinterRouteHourFull(effectiveHour, lang) : "—";
+  const valueText = effectiveHour != null ? formatWinterRouteHourValueText(effectiveHour, lang) : "—";
+  // P4 -- marks positioned with a thumb-width CSS correction (a native
+  // range's thumb center never reaches the track's physical edges), not
+  // a raw percentage -- CC's chosen/documented method (cc-report.md):
+  // `calc((100% - thumbPx) * fraction + thumbPx / 2)`, thumbPx a CSS
+  // constant (16px, a typical default/accent-color thumb width; verified
+  // against the thumb/label alignment visually in the P8 evidence
+  // screenshots, not measured in jsdom). Secondary (non-edge, non-date-
+  // break) marks are hidden below `sm:` so the row stays readable on a
+  // narrow phone, per P4's own "aðlöguð með Tailwind sm: flokkum".
+  const marks = n > 1 ? winterRouteTimeSliderMarks(availableHours) : [];
+  const showFallbackNotice = hasUserPicked && selectedHour != null && !availableHours.includes(selectedHour);
+
+  return (
+    <div className="mt-3" data-testid="winter-route-time-slider">
+      <label htmlFor="winter-route-data-hour" className="text-sm font-medium text-slate-700 dark:text-slate-200">
+        {t("winterRouteDataHourLabel")}
+      </label>
+      <p className="mt-1 text-base font-semibold text-slate-800 dark:text-slate-100">{fullLabel}</p>
+      <div className="mt-2 flex items-center gap-2">
+        <button
+          ref={prevRef}
+          type="button"
+          onClick={goPrev}
+          disabled={prevDisabled}
+          aria-label={t("winterRoutePrevHourButton")}
+          className="flex min-h-[44px] min-w-[44px] shrink-0 items-center justify-center rounded-lg border border-slate-300 text-slate-700 disabled:opacity-40 dark:border-slate-700 dark:text-slate-200"
+        >
+          ‹
+        </button>
+        <div className="relative flex-1">
+          <input
+            ref={sliderRef}
+            id="winter-route-data-hour"
+            type="range"
+            min={0}
+            max={Math.max(0, n - 1)}
+            step={1}
+            value={currentIndex >= 0 ? currentIndex : 0}
+            disabled={n <= 1}
+            onChange={handleSliderChange}
+            aria-valuetext={valueText}
+            className="h-6 w-full accent-sky-600"
+          />
+          {marks.length > 0 ? (
+            <div aria-hidden="true" className="relative mt-1 h-4 text-[10px] text-slate-500 dark:text-slate-400">
+              {marks.map((m) => (
+                <span
+                  key={m.index}
+                  className={m.primary ? "absolute whitespace-nowrap" : "absolute hidden whitespace-nowrap sm:inline"}
+                  style={{ left: `calc((100% - 16px) * ${m.index / (n - 1)} + 8px)`, transform: "translateX(-50%)" }}
+                >
+                  {m.label}
+                </span>
+              ))}
+            </div>
+          ) : null}
+        </div>
+        <button
+          ref={nextRef}
+          type="button"
+          onClick={goNext}
+          disabled={nextDisabled}
+          aria-label={t("winterRouteNextHourButton")}
+          className="flex min-h-[44px] min-w-[44px] shrink-0 items-center justify-center rounded-lg border border-slate-300 text-slate-700 disabled:opacity-40 dark:border-slate-700 dark:text-slate-200"
+        >
+          ›
+        </button>
+      </div>
+      <p className="mt-1 text-xs italic text-slate-500 dark:text-slate-400">{t("winterRouteSameForecastTimeNoteChoose")}</p>
+      {showFallbackNotice ? (
+        <p role="status" className="mt-1 text-xs text-amber-600 dark:text-amber-300">
+          {t("winterRouteTimeNoLongerAvailable")}
+        </p>
+      ) : null}
+    </div>
+  );
 }
 
 // Ticket #503 (B<->H) / westfjords-batch — the actual weather/road body for
 // a confirmed /api/winter-route-data response, for any of the 7 connected
-// pairs. Reuses the existing ForecastCard/SegmentRow components verbatim
-// (same field shapes), own local-only (no-fetch) shared hour selection —
-// same #490 R1 discipline as every other <select> in this file (plain
-// onChange, no focus-moving ref/effect). The data body is outside live
-// status regions (P6c). Point count (3-8) and the largest-gap caveat are
-// computed from the actual response (P6a) via approxDistanceFromStartKm,
-// which is only present for westfjords-batch pairs; B<->H has none, so it
-// keeps its own generic coverage note with no computed gap line.
-function WinterRouteDataView({ data, t, lang }) {
+// pairs. Own local-only (no-fetch) shared hour selection — same #490 R1
+// discipline as every other <select> in this file (plain onChange, no
+// focus-moving ref/effect). The data body is outside live status regions
+// (P6c). Point count (3-18) and the largest-gap caveat are computed from
+// the actual response (P6a) via approxDistanceFromStartKm.
+//
+// Ticket #492, first overview round — restructured: the road/closures
+// overview now comes FIRST (above the weather table, P4), the shared hour
+// control sits directly above the single weather table (P1/P2, replacing
+// the former repeated ForecastCard grid — ForecastCard itself is
+// untouched and still used by the legacy fixed-route view below), and the
+// road/forecast timestamp lines move up near their own sections (P5)
+// instead of only appearing in the bottom attribution block.
+//
+// Ticket #492, time-slider -- the former native <select> is now
+// `WinterRouteTimeSlider` above (P1/P3), and P5(i) reverses the previous
+// DOM order: RoadOverviewSection now comes BEFORE the time control, which
+// sits directly above `role="table"` with nothing else between them (the
+// weather heading/notes/stale-line all moved to above the control).
+function WinterRouteDataView({ data, t, lang, sectionCoverageNote = false }) {
   const now = useNowTicking();
   const availableHours = useMemo(() => {
     const hours = data.forecast.available ? data.forecast.window.expectedHours : [];
     return hours.filter((h) => new Date(`${h}:00Z`).getTime() > now.getTime());
   }, [data, now]);
-  const [selectedHour, setSelectedHour] = useState(availableHours[0] ?? null);
+  // Ticket #492, time-slider, P1(iii) -- `selectedHour` starts as "nothing
+  // picked yet" (`null`), not the first available hour: an untouched
+  // default that later ages out of `availableHours` must never trigger
+  // the "previous time no longer available" notice below. `hasUserPicked`
+  // only ever becomes true via the slider/step-button's own `onSelect`
+  // (never set from this initial state or from the tick-driven
+  // `availableHours` recompute), so the notice is shown only when the
+  // user's OWN real choice is the one that disappeared.
+  const [selectedHour, setSelectedHour] = useState(null);
+  const [hasUserPicked, setHasUserPicked] = useState(false);
   const effectiveHour = selectedHour && availableHours.includes(selectedHour) ? selectedHour : (availableHours[0] ?? null);
+  function handleSelectHour(hour) {
+    setSelectedHour(hour);
+    setHasUserPicked(true);
+  }
 
   // P8(d) -- a fixed disclaimer on any route whose own real measured
   // length is >= ~400km (computed from routeLengthM, never hardcoded to
@@ -615,8 +1106,18 @@ function WinterRouteDataView({ data, t, lang }) {
 
   return (
     <div className="mt-4">
-      <section>
-        <h3 className="text-sm font-semibold text-slate-700 dark:text-slate-200">
+      {/* Ticket #492, time-slider, P5(i) -- DOM order is now road overview
+          FIRST, then the time control, then `role="table"` with NOTHING
+          else between the control and the table: the weather heading and
+          its own notes (coverage/long-route/gap/stale) all moved to
+          ABOVE the control, inside the same <section> as the table, so
+          they no longer sit between the control and the table either. */}
+      <div className="mt-6">
+        <RoadOverviewSection data={data} roadExportedAtText={roadExportedAtText} t={t} lang={lang} sectionCoverageNote={sectionCoverageNote} />
+      </div>
+
+      <section className="mt-6">
+        <h3 id="winter-route-data-weather-heading" className="text-sm font-semibold text-slate-700 dark:text-slate-200">
           {data.forecast.available ? t("winterRouteDataForecastHeading").replace("{count}", String(pointCount)) : t("winterRouteForecastUnavailable")}
         </h3>
         {data.forecast.available ? <p className="mt-1 text-xs italic text-slate-500 dark:text-slate-400">{t("winterRouteNoCoveragePointsNote")}</p> : null}
@@ -625,87 +1126,60 @@ function WinterRouteDataView({ data, t, lang }) {
           <p className="mt-1 text-xs italic text-slate-500 dark:text-slate-400">
             {t("winterRouteLargestGapNote")
               .replace("{km}", formatDecimal(largestGap.km, lang, 1))
-              .replace("{pointA}", lang === "is" ? largestGap.a.labelIs : largestGap.a.labelEn)
-              .replace("{pointB}", lang === "is" ? largestGap.b.labelIs : largestGap.b.labelEn)}
+              .replace("{pointA}", shortenWinterRoutePointLabel(lang === "is" ? largestGap.a.labelIs : largestGap.a.labelEn, lang))
+              .replace("{pointB}", shortenWinterRoutePointLabel(lang === "is" ? largestGap.b.labelIs : largestGap.b.labelEn, lang))}
           </p>
+        ) : null}
+        {data.forecast.available && data.forecast.stale ? (
+          <p className="mt-1 text-xs text-amber-600 dark:text-amber-300">{t("winterRouteForecastStaleServed").replace("{minutes}", String(Math.round((data.forecast.cacheAgeMs || 0) / 60000)))}</p>
         ) : null}
 
         {data.forecast.available && availableHours.length > 0 ? (
-          <div className="mt-2">
-            <label htmlFor="winter-route-data-hour" className="text-sm font-medium text-slate-700 dark:text-slate-200">
-              {t("winterRouteHourLabel")}
-            </label>
-            <select
-              id="winter-route-data-hour"
-              className="mt-1 block w-full max-w-xs rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 dark:border-slate-700 dark:bg-slate-900"
-              value={effectiveHour ?? ""}
-              onChange={(e) => setSelectedHour(e.target.value)}
-            >
-              {availableHours.map((h) => (
-                <option key={h} value={h}>
-                  {formatHourLabel(h)}
-                </option>
-              ))}
-            </select>
-            <p className="mt-1 text-xs italic text-slate-500 dark:text-slate-400">{t("winterRouteSameForecastTimeNote")}</p>
-          </div>
-        ) : (
-          <p className="mt-2 text-sm text-slate-500 dark:text-slate-400">{t("winterRouteForecastUnavailable")}</p>
+          <WinterRouteTimeSlider
+            availableHours={availableHours}
+            selectedHour={selectedHour}
+            effectiveHour={effectiveHour}
+            hasUserPicked={hasUserPicked}
+            onSelect={handleSelectHour}
+            t={t}
+            lang={lang}
+          />
+        ) : !data.forecast.available ? null : (
+          <p className="mt-3 text-sm text-slate-500 dark:text-slate-400">{t("winterRouteForecastUnavailable")}</p>
         )}
 
-        {data.forecast.available && data.forecast.stale ? (
-          <p className="mt-2 text-xs text-amber-600 dark:text-amber-300">{t("winterRouteForecastStaleServed").replace("{minutes}", String(Math.round((data.forecast.cacheAgeMs || 0) / 60000)))}</p>
-        ) : null}
-
         {data.forecast.available ? (
-          <div className="mt-3 grid grid-cols-1 gap-3 sm:grid-cols-2">
-            {data.forecast.points.map((point) => (
-              <ForecastCard key={point.id} point={point} effectiveHour={effectiveHour} t={t} lang={lang} />
-            ))}
-          </div>
+          <WinterRoutePointsTable points={data.forecast.points} effectiveHour={effectiveHour} t={t} lang={lang} headingId="winter-route-data-weather-heading" />
         ) : null}
       </section>
 
-      <section className="mt-6">
-        <h3 className="text-sm font-semibold text-slate-700 dark:text-slate-200">{t("winterRouteRoadSectionTitle")}</h3>
-        {!data.roadMeta.available ? <p className="mt-2 text-sm text-slate-500">{t("winterRouteRoadFeedUnavailable")}</p> : null}
-        {data.roadMeta.stale ? <p className="mt-2 text-xs text-amber-600 dark:text-amber-300">{t("winterRouteRoadStaleServed").replace("{minutes}", String(Math.round((data.roadMeta.cacheAgeMs || 0) / 60000)))}</p> : null}
-        {data.roadMeta.pointsFeedUnavailableOrStale ? (
-          <p className="mt-2 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-xs font-medium text-amber-800 dark:border-amber-900/50 dark:bg-amber-950/30 dark:text-amber-200">
-            {t("winterRoutePointsFeedUnavailable")}
-          </p>
-        ) : null}
-        <ol className="mt-3 space-y-2">
-          {data.roadSections.map((section) => (
-            <SegmentRow
-              key={section.idButur}
-              segment={section}
-              t={t}
-              lang={lang}
-              edgeSegmentNote={edgeSegmentNoteFor(section, t, lang)}
-            />
-          ))}
-        </ol>
-      </section>
+      {/* Ticket #492, round 3 (UX priority), P6 -- "Um gögnin": the
+          response-prepared timestamp (never called "fetched/updated",
+          req5) and both parts' internal cache age now live ONLY here,
+          never duplicated in the main view above. Attribution/legal text
+          is unchanged and stays its own separate, always-visible block
+          below (stale/errors are already shown outside any details,
+          higher up). */}
+      <details className="mt-6 rounded-xl border border-slate-200/70 bg-white/60 px-4 py-3 text-xs text-slate-500 dark:border-slate-800/70 dark:bg-slate-900/60 dark:text-slate-400">
+        <summary className="cursor-pointer text-sm font-medium text-slate-700 dark:text-slate-200">{t("winterRouteAboutDataSummary")}</summary>
+        <div className="mt-2 space-y-1 leading-relaxed">
+          {generatedAtText ? <p>{t("winterRouteDataGeneratedAtLine").replace("{time}", generatedAtText)}</p> : null}
+          {roadCacheAge ? (
+            <p>{roadCacheAge.underOneMinute ? t("winterRouteRoadCacheAgeUnderMinuteLine") : t("winterRouteRoadCacheAgeLine").replace("{minutes}", String(roadCacheAge.minutes))}</p>
+          ) : null}
+          {forecastCacheAge ? (
+            <p>{forecastCacheAge.underOneMinute ? t("winterRouteForecastCacheAgeUnderMinuteLine") : t("winterRouteForecastCacheAgeLine").replace("{minutes}", String(forecastCacheAge.minutes))}</p>
+          ) : null}
+        </div>
+      </details>
 
       {/* Ticket #503 source-time -- same attribution/legal text the
-          legacy fixed-route view already shows (P1: no new wording),
-          plus this response's own server timestamp, the real Vegagerðin
-          road-data export time (P2), and cache age at response time
-          (P3), for all 25 connected pairs via this one shared component.
-          Outside role="status" (P5): the sr-only status line above only
-          ever announces the heading, never this block. */}
-      <section className="mt-8 rounded-xl border border-slate-200/70 bg-white/60 px-4 py-4 text-xs leading-relaxed text-slate-500 dark:border-slate-800/70 dark:bg-slate-900/60 dark:text-slate-400">
+          legacy fixed-route view already shows (P1: no new wording).
+          Outside role="status": the sr-only status line in the parent
+          only ever announces the heading, never this block. */}
+      <section className="mt-4 rounded-xl border border-slate-200/70 bg-white/60 px-4 py-4 text-xs leading-relaxed text-slate-500 dark:border-slate-800/70 dark:bg-slate-900/60 dark:text-slate-400">
         <p>{t("winterRouteAttributionRoadLine")}</p>
-        {roadExportedAtText ? <p>{t("winterRouteRoadExportedAtLine").replace("{time}", roadExportedAtText)}</p> : null}
-        {roadCacheAge ? (
-          <p>{roadCacheAge.underOneMinute ? t("winterRouteRoadCacheAgeUnderMinuteLine") : t("winterRouteRoadCacheAgeLine").replace("{minutes}", String(roadCacheAge.minutes))}</p>
-        ) : null}
         <p>{t("winterRouteAttributionWeatherLine")}</p>
-        {forecastCacheAge ? (
-          <p>{forecastCacheAge.underOneMinute ? t("winterRouteForecastCacheAgeUnderMinuteLine") : t("winterRouteForecastCacheAgeLine").replace("{minutes}", String(forecastCacheAge.minutes))}</p>
-        ) : null}
-        {generatedAtText ? <p>{t("winterRouteDataGeneratedAtLine").replace("{time}", generatedAtText)}</p> : null}
         <p>{t("winterRouteModifiedBy")}</p>
         <p>{t("winterRouteNoEndorsement")}</p>
         <p className="font-medium">{t("winterRouteOfficialOverride")}</p>
@@ -742,8 +1216,6 @@ function WinterRouteDataView({ data, t, lang }) {
 function WinterRouteGeometrySection({ t, lang, onAppliedChange }) {
   const [draftFrom, setDraftFrom] = useState(DEFAULT_GEOMETRY_FROM);
   const [draftTo, setDraftTo] = useState(DEFAULT_GEOMETRY_TO);
-  const [searchFrom, setSearchFrom] = useState("");
-  const [searchTo, setSearchTo] = useState("");
   const [applied, setApplied] = useState(null); // { from, to } | null -- null until first "Sýna leið"
   const [requestState, setRequestState] = useState({ key: null, loading: false, result: null });
 
@@ -807,9 +1279,75 @@ function WinterRouteGeometrySection({ t, lang, onAppliedChange }) {
       });
   }
 
+  // Ticket #492, direct-flow, C1/C2 -- the single fixed-route-adapter
+  // request, using the SAME requestState/controllerRef/requestIdRef as
+  // the geometry request above (this is just "the result of submitting
+  // a draft", not something intrinsically geometry-specific) so abort/
+  // requestId/retry/swap/draft-vs-applied protections are identical,
+  // never a second parallel lifecycle.
+  function runFixedRequest(from, to, routeId, focusTarget = null) {
+    pendingFocusRef.current = focusTarget ? { target: focusTarget, from, to } : null;
+    controllerRef.current?.abort();
+    const controller = new AbortController();
+    controllerRef.current = controller;
+    const thisRequestId = ++requestIdRef.current;
+    const key = `${from}|${to}|`;
+    setRequestState({ key, loading: true, result: null });
+
+    fetch(`/api/winter-route?routeId=${routeId}`, { signal: controller.signal })
+      .then(async (res) => {
+        let payload = null;
+        try {
+          payload = await res.json();
+        } catch {
+          payload = null;
+        }
+        return { httpStatus: res.status, payload };
+      })
+      .catch((err) => (err?.name === "AbortError" ? undefined : { httpStatus: null, payload: null }))
+      .then((resolved) => {
+        if (!resolved) return;
+        if (requestIdRef.current !== thisRequestId) return;
+        const route = WINTER_ROUTE_OPTIONS.find((r) => r.routeId === routeId);
+        const ok = resolved.httpStatus === 200 && route && validFixedRouteData(resolved.payload, routeId, route);
+        setRequestState({
+          key,
+          loading: false,
+          // C3 -- normalization adds nothing beyond the one rename this
+          // shared data view already expects (`segments` -> `roadSections`,
+          // same objects, same order); no fabricated routeLengthM/
+          // isEdgeSegment/chainageKm/geometryId.
+          result: ok
+            ? { outcome: WINTER_ROUTE_OUTCOME.FIXED_ROUTE, payload: { ...resolved.payload, roadSections: resolved.payload.segments } }
+            : { outcome: WINTER_ROUTE_OUTCOME.ERROR },
+        });
+      });
+  }
+
   function handleSubmit(e) {
     e.preventDefault();
     setApplied({ from: draftFrom, to: draftTo });
+
+    // C1 -- same-place guard for the two new fixed-route-only ids (vik/
+    // borgarnes): the geometry endpoint has no knowledge of either, so a
+    // same-id submission would otherwise resolve as a confusing
+    // "unsupported" instead of the existing, already-correct same-place
+    // message. The original 11 ids keep going through the real geometry
+    // endpoint's own `same_place` classification unchanged (already
+    // covered by its own real accessApproach data -- see P5(h)'s own
+    // existing test) -- this is additive, not a replacement.
+    if (draftFrom === draftTo && WINTER_ROUTE_CLIENT_SAME_PLACE_IDS.has(draftFrom)) {
+      controllerRef.current?.abort();
+      requestIdRef.current += 1; // invalidate any in-flight request; nothing to apply from it
+      setRequestState({ key: `${draftFrom}|${draftTo}|`, loading: false, result: { outcome: WINTER_ROUTE_OUTCOME.SAME_PLACE, payload: {} } });
+      return;
+    }
+
+    const fixedRouteId = resolveDirectPairRouteId(draftFrom, draftTo);
+    if (fixedRouteId) {
+      runFixedRequest(draftFrom, draftTo, fixedRouteId);
+      return;
+    }
     runRequest(draftFrom, draftTo, null);
   }
 
@@ -839,19 +1377,27 @@ function WinterRouteGeometrySection({ t, lang, onAppliedChange }) {
   // (never re-derived client-side) is what the data request sends back.
   const isRingPair = Boolean(applied) && isRingOptionPair(applied.from, applied.to);
   const ringSelectedOption = isRingPair ? view?.payload?.selectedOption : null;
+  // Ticket #492, direct-flow, C2 -- a fixed-route result IS the final
+  // data already (one single fetch, no separate geometry+data two-step
+  // at all) -- data-eligible the moment the request settles, with no
+  // geometryId concept involved.
+  const isFixedRoute = view?.outcome === WINTER_ROUTE_OUTCOME.FIXED_ROUTE;
   const isDataEligible =
     Boolean(applied) &&
     draftMatchesApplied &&
     !isCurrentLoading &&
-    view?.outcome === WINTER_ROUTE_OUTCOME.GEOMETRY_ONLY &&
-    (isWinterRouteDataPair(applied.from, applied.to) ||
-      isRingCompletionPair(applied.from, applied.to) ||
-      (isRingPair && (ringSelectedOption === "south" || ringSelectedOption === "north")));
-  const dataGeometryId = isDataEligible ? view.payload.geometryId : null;
-  const dataOption = isDataEligible && isRingPair ? ringSelectedOption : null;
-  const currentDataKey = isDataEligible && dataGeometryId ? `${applied.from}|${applied.to}|${dataOption ?? ""}|${dataGeometryId}` : null;
-  const isDataLoading = dataRequestState.loading && dataRequestState.key === currentDataKey;
-  const dataView = !dataRequestState.loading && dataRequestState.key === currentDataKey ? dataRequestState.result : null;
+    (isFixedRoute ||
+      (view?.outcome === WINTER_ROUTE_OUTCOME.GEOMETRY_ONLY &&
+        (isWinterRouteDataPair(applied.from, applied.to) ||
+          isRingCompletionPair(applied.from, applied.to) ||
+          (isRingPair && (ringSelectedOption === "south" || ringSelectedOption === "north")))));
+  const dataGeometryId = isDataEligible && !isFixedRoute ? view.payload.geometryId : null;
+  const dataOption = isDataEligible && !isFixedRoute && isRingPair ? ringSelectedOption : null;
+  const currentDataKey = isDataEligible && !isFixedRoute && dataGeometryId ? `${applied.from}|${applied.to}|${dataOption ?? ""}|${dataGeometryId}` : null;
+  const isDataLoading = !isFixedRoute && dataRequestState.loading && dataRequestState.key === currentDataKey;
+  const dataView = isFixedRoute
+    ? { ok: true, payload: view.payload }
+    : (!dataRequestState.loading && dataRequestState.key === currentDataKey ? dataRequestState.result : null);
 
   useEffect(() => {
     if (!isDataEligible || !dataGeometryId) {
@@ -917,8 +1463,6 @@ function WinterRouteGeometrySection({ t, lang, onAppliedChange }) {
           noResultsText={t("winterRouteNoSearchResults")}
           value={draftFrom}
           onChange={setDraftFrom}
-          search={searchFrom}
-          onSearchChange={setSearchFrom}
           lang={lang}
           t={t}
         />
@@ -929,8 +1473,6 @@ function WinterRouteGeometrySection({ t, lang, onAppliedChange }) {
           noResultsText={t("winterRouteNoSearchResults")}
           value={draftTo}
           onChange={setDraftTo}
-          search={searchTo}
-          onSearchChange={setSearchTo}
           lang={lang}
           t={t}
         />
@@ -967,7 +1509,20 @@ function WinterRouteGeometrySection({ t, lang, onAppliedChange }) {
             <button
               type="button"
               data-route-retry
-              onClick={() => runRequest(applied.from, applied.to, currentOption, "retry")}
+              onClick={() => {
+                // Ticket #492, direct-flow, R1 -- a fixed pair's own retry
+                // must re-run the SAME fixed-route adapter request (same
+                // routeId, same requestId/abort machinery), never fall
+                // through to the geometry endpoint (which has no data for
+                // these two pairs at all and would wrongly resolve as
+                // "no route yet" on every retry).
+                const fixedRouteId = resolveDirectPairRouteId(applied.from, applied.to);
+                if (fixedRouteId) {
+                  runFixedRequest(applied.from, applied.to, fixedRouteId, "retry");
+                } else {
+                  runRequest(applied.from, applied.to, currentOption, "retry");
+                }
+              }}
               className="mt-2 rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-sm text-slate-700 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200"
             >
               {t("winterRouteRetryButton")}
@@ -975,7 +1530,7 @@ function WinterRouteGeometrySection({ t, lang, onAppliedChange }) {
           </div>
         ) : view?.outcome === WINTER_ROUTE_OUTCOME.NO_ROUTE ? (
           <p className="text-sm text-slate-600 dark:text-slate-300">{t("winterRouteNoRouteYet")}</p>
-        ) : view?.outcome === WINTER_ROUTE_OUTCOME.SAME_PLACE || view?.outcome === WINTER_ROUTE_OUTCOME.GEOMETRY_ONLY ? (
+        ) : view?.outcome === WINTER_ROUTE_OUTCOME.SAME_PLACE || view?.outcome === WINTER_ROUTE_OUTCOME.GEOMETRY_ONLY || view?.outcome === WINTER_ROUTE_OUTCOME.FIXED_ROUTE ? (
           <GeometryResultView
             outcome={view.outcome}
             payload={view.payload}
@@ -990,7 +1545,7 @@ function WinterRouteGeometrySection({ t, lang, onAppliedChange }) {
 
       {/* Only request status is live; hour changes do not announce all cards. */}
       {isDataEligible ? (
-        <div data-testid="winter-route-data" className="mt-4 rounded-xl border border-slate-200/70 bg-white/70 px-4 py-3 dark:border-slate-800/70 dark:bg-slate-900/70">
+        <div data-testid="winter-route-data" className="mt-4 rounded-xl border border-slate-200/70 bg-white/70 px-3 py-3 dark:border-slate-800/70 dark:bg-slate-900/70 sm:px-4">
           <p role="status" aria-live="polite" className="sr-only">
             {isDataLoading
               ? t("winterRouteDataLoading")
@@ -1002,7 +1557,14 @@ function WinterRouteGeometrySection({ t, lang, onAppliedChange }) {
                       : t("winterRouteForecastUnavailable"))
                   : ""}
           </p>
-          {dataView?.ok ? <WinterRouteDataView data={dataView.payload} t={t} lang={lang} /> : null}
+          {dataView?.ok ? (
+            <WinterRouteDataView
+              data={dataView.payload}
+              t={t}
+              lang={lang}
+              sectionCoverageNote={isFixedRoute && view.payload.routeId === "raudavatn-borgarnes"}
+            />
+          ) : null}
         </div>
       ) : null}
     </div>
@@ -1013,187 +1575,29 @@ export default function WinterRoute() {
   const { t, lang, theme } = usePageRouteProps();
   useThemeClass(theme === "dark");
 
-  // Ticket #502, P1(a) — "Velja staði" (geometry mode) is the default,
-  // primary mode; the legacy fixed-route weather flow below is opt-in via
-  // "Fastar veðurleiðir". Switching modes never clears the other mode's
-  // own state (routeId/data stay put if the user switches back).
-  const [mode, setMode] = useState(WINTER_ROUTE_MODE_CHOOSE);
-
-  const [routeId, setRouteId] = useState(DEFAULT_WINTER_ROUTE_ID);
-  const [data, setData] = useState(null);
-  // Ticket #491, V2 — tagged with the routeId the error belongs to (the
-  // routeId captured in the fetch effect's closure, i.e. the route that
-  // was actually requested), so a stale error from a route the user has
-  // since switched away from can be told apart from the CURRENT route's
-  // own error at render time. See `viewErrorKey` below.
-  const [loadError, setLoadError] = useState(null); // { routeId, key: "winterRouteRoadFeedUnavailable" | "winterRouteRouteDataMismatch" } | null
-  const [selectedHour, setSelectedHour] = useState(null);
-
-  const selectedRouteOption = useMemo(
-    () => WINTER_ROUTE_OPTIONS.find((o) => o.routeId === routeId) ?? WINTER_ROUTE_OPTIONS[0],
-    [routeId]
-  );
-  const routeName = lang === "en" ? selectedRouteOption.nameEn : selectedRouteOption.nameIs;
-
-  // Ticket #491 — replaces the old #486 `fetchedRef`/mount-only guard,
-  // which deliberately fetched at most ONCE PER MOUNT and therefore could
-  // never support a route switch (a second `routeId` would never trigger a
-  // new fetch). `lastRequestedRouteIdRef` now guards "has a fetch already
-  // been started for THIS routeId" rather than "has any fetch ever
-  // started" — a real `routeId` change always starts a genuinely new
-  // fetch, but React 18 StrictMode's dev-only synthetic double-invoke of
-  // the INITIAL mount's effect (mount -> cleanup -> mount again, same
-  // routeId both times) is correctly collapsed back to a single real
-  // request, exactly like the old behaviour, WITHOUT reintroducing the
-  // actual #490 R1 bug: that bug was the first invocation's own
-  // still-in-flight (never aborted) fetch having its eventual real
-  // response silently discarded by a `cancelled` flag the synthetic
-  // cleanup flipped — not "too many requests". Here, the synthetic
-  // second invocation returns early and touches nothing (no abort, no
-  // flag), so the first invocation's single real fetch is left
-  // completely alone and its response is applied normally when it
-  // resolves. `controllerRef` aborts only a previous GENUINELY abandoned
-  // route's in-flight request (never the current one) when a real switch
-  // happens, and `requestIdRef` is the final authoritative guard so a
-  // late-arriving response for an abandoned route can never overwrite the
-  // current route's state even if abort() itself doesn't actually stop a
-  // fetch already past that point in some runtime (defensive, not the
-  // only safeguard). `selectedHour` is deliberately left untouched here;
-  // the existing availableHours-reconciliation effect below already keeps
-  // it only if still valid in the new data, otherwise picks the new
-  // route's first available hour once that data arrives.
-  //
-  // Ticket #491, V2 correction: an earlier version of this comment (and
-  // of cc-report-implementation.md) claimed `data`/`loadError` were
-  // "cleared synchronously at the top of a GENUINE switch (same render
-  // pass the routeId state change is applied in)" via setData(null)/
-  // setLoadError(null) calls made here. That claim was wrong — those
-  // calls ran inside this PASSIVE EFFECT, which commits one render pass
-  // AFTER the `routeId` state change itself (not in the same pass), so a
-  // route switch really could commit one frame with the new routeId
-  // selected next to the previous route's still-current `data`/
-  // `loadError`. This effect no longer calls setData(null)/
-  // setLoadError(null) at all: `data` and `loadError` now carry the
-  // `routeId` they belong to (the response's own `routeId`, or the
-  // routeId captured in this closure for an error), and `view`/
-  // `viewErrorKey` below mask either one at RENDER TIME whenever that tag
-  // no longer matches the currently selected `routeId` — so the masking
-  // itself lands in the exact same render pass as the `routeId` state
-  // change, with no extra state update required.
-  const requestIdRef = useRef(0);
-  const controllerRef = useRef(null);
-  const lastRequestedRouteIdRef = useRef(null);
-  useEffect(() => {
-    // Ticket #502, P1(b) — the legacy fixed-route fetch must never start
-    // while "Velja staði" (geometry mode) is active; it begins the first
-    // time the user actually switches to "Fastar veðurleiðir" and then
-    // keeps the existing "once per routeId" semantics from then on (this
-    // early return, not the ref assignment below, is what gates it —
-    // toggling back to legacy mode again never re-fetches the same
-    // routeId it already fetched once).
-    if (mode !== WINTER_ROUTE_MODE_LEGACY) return undefined;
-
-    if (lastRequestedRouteIdRef.current === routeId) {
-      // StrictMode's synthetic re-invocation for the SAME routeId a fetch
-      // was already started for this render cycle — do nothing.
-      return undefined;
-    }
-    lastRequestedRouteIdRef.current = routeId;
-
-    controllerRef.current?.abort(); // stop a previous, now-abandoned route's request, if any
-    const controller = new AbortController();
-    controllerRef.current = controller;
-
-    const thisRequestId = ++requestIdRef.current;
-
-    const url = routeId === DEFAULT_WINTER_ROUTE_ID ? "/api/winter-route" : `/api/winter-route?routeId=${routeId}`;
-
-    fetch(url, { signal: controller.signal })
-      .then((res) => {
-        if (!res.ok) throw new Error("winter_route_fetch_failed");
-        return res.json();
-      })
-      .then((payload) => {
-        if (requestIdRef.current !== thisRequestId) return; // superseded by a later route switch
-
-        // B3 — the response must match THIS page's own expectation for the
-        // route it was requested for, not just "some" 200 response: a
-        // wrong routeId, a point-count contract mismatch, or (when the
-        // forecast is actually available) a points array of the wrong
-        // length is a route-scoped error, never a silent partial/wrong-
-        // route view.
-        const expected = expectedPointCountForRoute(routeId);
-        const forecastPointCountOk =
-          !payload?.forecast?.available || payload.forecast.points.length === expected;
-        if (payload?.routeId !== routeId || payload?.expectedPointCount !== expected || !forecastPointCountOk) {
-          setLoadError({ routeId, key: "winterRouteRouteDataMismatch" });
-          return;
-        }
-        setData(payload);
-      })
-      .catch((err) => {
-        if (err?.name === "AbortError") return;
-        if (requestIdRef.current !== thisRequestId) return;
-        setLoadError({ routeId, key: "winterRouteRoadFeedUnavailable" });
-      });
-
-    return undefined;
-  }, [routeId, mode]);
-
-  // Ticket #491, V2 — route-bound view of `data`/`loadError`, derived at
-  // render time (not via a setData(null)/setLoadError(null) call inside
-  // the passive effect above — see its corrected comment). `data` only
-  // "counts" for display when its own `routeId` still matches the
-  // currently selected `routeId`; same for `loadError`'s captured
-  // `routeId`. This is what actually prevents a route switch from ever
-  // committing the new selection's title/disclaimers next to the
-  // previous route's stale cards/segments/error — the masking lands in
-  // the exact same render pass as the `routeId` state change itself.
-  const view = data?.routeId === routeId ? data : null;
-  const viewErrorKey = loadError?.routeId === routeId ? loadError.key : null;
-
-  const now = useNowTicking();
-
-  const availableHours = useMemo(() => {
-    const hours = view?.forecast?.available ? view.forecast.window.expectedHours : [];
-    return hours.filter((h) => new Date(`${h}:00Z`).getTime() > now.getTime());
-  }, [view, now]);
-
-  useEffect(() => {
-    if (availableHours.length === 0) return;
-    if (!selectedHour || !availableHours.includes(selectedHour)) {
-      setSelectedHour(availableHours[0]);
-    }
-  }, [availableHours, selectedHour]);
-
-  // Ticket #493 — the one shared, valid selected forecast hour, computed
-  // fresh EVERY render (not via an effect): `selectedHour` only "counts"
-  // when it is still present in the CURRENT `availableHours` (same filter
-  // the hour `<select>` itself uses). This is what keeps an empty window, a
-  // selection that just expired (the once-a-minute `availableHours`
-  // re-filter above), or the first render right after a route switch whose
-  // new window doesn't contain the old selection from ever showing stale
-  // values for a time the picker itself calls unavailable — the
-  // reconciliation effect above still runs to pick a new valid hour, but
-  // `effectiveHour` is correct in the very same render pass regardless,
-  // one render before that effect would otherwise fire.
-  const effectiveHour = selectedHour && availableHours.includes(selectedHour) ? selectedHour : null;
-
-  // Ticket #502, P1(e) — in geometry mode, the h1/<title> follow the
-  // applied Frá/Til result (e.g. "Reykjavík (Rauðavatn) → Selfoss"), never
-  // the legacy routeName, and never a drawn-out draft (only the APPLIED
-  // pair, reported up by the section itself once "Sýna leið" is pressed).
-  // Before any pair has been applied, a neutral generic heading is shown.
+  // Ticket #492, direct-flow -- the former "Fastar veðurleiðir"/"Velja
+  // staði" mode toggle and its entire legacy fixed-route weather flow
+  // (routeId <select>, its own fetch effect, RouteSummary/ForecastCard
+  // grid, legacy road-section list, legacy attribution block) are
+  // removed entirely (source.md "Fjarlægja 'Fastar veðurleiðir' úr
+  // notendaviðmóti"): there is now exactly one direct Frá->Til->Sýna
+  // leið flow (WinterRouteGeometrySection below), which also serves the
+  // two fixed routes (Vík/Borgarnes) via its own frontend adapter -- see
+  // WINTER_ROUTE_DIRECT_PAIRS/resolveDirectPairRouteId in
+  // winterRouteRoutes.js. `winterRouteRoutes.js`'s own ROUTE_DEFS-
+  // parity table, backend, fixtures and their own tests are unaffected
+  // -- this removal only reaches identifiers that became unreachable
+  // once this component's legacy branch itself was deleted (full list
+  // in cc-report.md).
   const [geometryApplied, setGeometryApplied] = useState(null);
   const geometryTitle = geometryApplied
     ? `${winterRoutePlaceName(geometryApplied.from, lang)} → ${winterRoutePlaceName(geometryApplied.to, lang)}`
-    : t("winterRouteModeChooseLabel");
-  const pageTitle = mode === WINTER_ROUTE_MODE_LEGACY ? routeName : geometryTitle;
+    : t("winterRouteDefaultHeading");
 
   return (
     <>
       <Helmet>
-        <title>{pageTitle} · {lang === "en" ? "Chase the Weather" : "Eltum Veðrið"}</title>
+        <title>{geometryTitle} · {lang === "en" ? "Chase the Weather" : "Eltum Veðrið"}</title>
       </Helmet>
 
       <div className="min-h-screen bg-soft-grid text-slate-900 dark:bg-slate-950 dark:text-slate-100">
@@ -1204,222 +1608,9 @@ export default function WinterRoute() {
         </header>
 
         <main className="mx-auto max-w-4xl px-4 py-8 sm:px-6">
-          <h1 className="text-2xl font-black tracking-tight md:text-3xl">{pageTitle}</h1>
+          <h1 className="text-2xl font-black tracking-tight md:text-3xl">{geometryTitle}</h1>
 
-          {/* Ticket #502, P1(a)/P6 — mode toggle. "Velja staði" is the
-              primary/default mode; "Fastar veðurleiðir" is the existing
-              #486/#491 flow, now opt-in. Switching modes is a plain state
-              change, never a request by itself. */}
-          <div role="group" aria-label={t("winterRouteModeGroupLabel")} className="mt-3 inline-flex rounded-lg border border-slate-300 p-1 dark:border-slate-700">
-            <button
-              type="button"
-              aria-pressed={mode === WINTER_ROUTE_MODE_CHOOSE}
-              onClick={() => setMode(WINTER_ROUTE_MODE_CHOOSE)}
-              className={`rounded-md px-3 py-1.5 text-sm font-medium ${
-                mode === WINTER_ROUTE_MODE_CHOOSE
-                  ? "bg-sky-600 text-white"
-                  : "text-slate-600 dark:text-slate-300"
-              }`}
-            >
-              {t("winterRouteModeChooseLabel")}
-            </button>
-            <button
-              type="button"
-              aria-pressed={mode === WINTER_ROUTE_MODE_LEGACY}
-              onClick={() => setMode(WINTER_ROUTE_MODE_LEGACY)}
-              className={`rounded-md px-3 py-1.5 text-sm font-medium ${
-                mode === WINTER_ROUTE_MODE_LEGACY
-                  ? "bg-sky-600 text-white"
-                  : "text-slate-600 dark:text-slate-300"
-              }`}
-            >
-              {t("winterRouteModeLegacyLabel")}
-            </button>
-          </div>
-
-          {/* Ticket #502 — both mode sections stay mounted at all times
-              (never conditionally unmounted via a ternary), hidden with
-              the native `hidden` attribute instead: this is what lets
-              each mode's own in-progress state (the geometry section's
-              draft/applied/request; the legacy section's routeId/data/
-              lastRequestedRouteIdRef dedup) survive round-tripping through
-              the other mode, exactly like switching back to an already-
-              fetched legacy route never re-fetches it. */}
-          <div hidden={mode !== WINTER_ROUTE_MODE_CHOOSE}>
-            <WinterRouteGeometrySection t={t} lang={lang} onAppliedChange={setGeometryApplied} />
-          </div>
-
-          <div hidden={mode !== WINTER_ROUTE_MODE_LEGACY}>
-          <p className="mt-4 text-sm text-slate-600 dark:text-slate-400">{t("winterRouteSubtitle")}</p>
-          <p className="mt-1 text-xs italic text-slate-500 dark:text-slate-400">{t("winterRouteLatestStatusNote")}</p>
-
-          {/* Ticket #491 — native IS/EN route select, Vík default, single
-              existing entrypoint (same page). onChange calls setRouteId
-              directly (no focus-moving ref/effect attached to it, same
-              reasoning as the hour <select>'s own #490 R1 fix: never
-              interrupt native keyboard stepping). */}
-          <div className="mt-4">
-            <label htmlFor="winter-route-select" className="text-sm font-medium text-slate-700 dark:text-slate-200">
-              {t("winterRouteRouteSelectLabel")}
-            </label>
-            <select
-              id="winter-route-select"
-              className="mt-1 block w-full max-w-xs rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 dark:border-slate-700 dark:bg-slate-900"
-              value={routeId}
-              onChange={(e) => setRouteId(e.target.value)}
-            >
-              {WINTER_ROUTE_OPTIONS.map((opt) => (
-                <option key={opt.routeId} value={opt.routeId}>
-                  {lang === "en" ? opt.nameEn : opt.nameIs}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          {viewErrorKey ? (
-            <p className="mt-6 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700 dark:border-red-900/50 dark:bg-red-950/30 dark:text-red-300">
-              {t(viewErrorKey)}
-            </p>
-          ) : null}
-
-          {view ? (
-            <>
-              <RouteSummary data={view} effectiveHour={effectiveHour} t={t} lang={lang} />
-
-              <section className="mt-6">
-                <h2 className="text-lg font-semibold">
-                  {t("winterRouteForecastSectionTitle").replace("{count}", String(view.expectedPointCount))}
-                </h2>
-
-                {view.forecast.available ? (
-                  <div className="mt-3">
-                    <label htmlFor="winter-route-hour" className="text-sm font-medium text-slate-700 dark:text-slate-200">
-                      {t("winterRouteHourLabel")}
-                    </label>
-                    {availableHours.length === 0 ? (
-                      <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">{t("winterRouteNoHoursAvailable")}</p>
-                    ) : (
-                      <select
-                        id="winter-route-hour"
-                        className="mt-1 block w-full max-w-xs rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 dark:border-slate-700 dark:bg-slate-900"
-                        value={selectedHour ?? ""}
-                        onChange={(e) => setSelectedHour(e.target.value)}
-                      >
-                        {availableHours.map((h) => (
-                          <option key={h} value={h}>
-                            {formatHourLabel(h)}
-                          </option>
-                        ))}
-                      </select>
-                    )}
-
-                    {/* Ticket #493 — the one shared forecast hour applies to
-                        every point below; stated once here rather than
-                        repeated per card/metric line. */}
-                    <p className="mt-1 text-xs italic text-slate-500 dark:text-slate-400">
-                      {t("winterRouteSameForecastTimeNote")}
-                    </p>
-                  </div>
-                ) : (
-                  <p className="mt-2 text-sm text-slate-500 dark:text-slate-400">{t("winterRouteForecastUnavailable")}</p>
-                )}
-
-                {view.forecast.available && view.forecast.stale ? (
-                  <p className="mt-2 text-xs text-amber-600 dark:text-amber-300">
-                    {t("winterRouteForecastStaleServed").replace(
-                      "{minutes}",
-                      String(Math.round((view.forecast.cacheAgeMs || 0) / 60000))
-                    )}
-                  </p>
-                ) : null}
-
-                {view.forecast.available ? (
-                  <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-3">
-                    {view.forecast.points.map((point) => (
-                      <ForecastCard key={point.id} point={point} effectiveHour={effectiveHour} t={t} lang={lang} />
-                    ))}
-                  </div>
-                ) : null}
-              </section>
-
-              <section className="mt-8">
-                <h2 className="text-lg font-semibold">{t("winterRouteRoadSectionTitle")}</h2>
-
-                {/* B6/item 6 — Borgarnes reuses a few IDBUTUR whose road-
-                    condition line covers a longer stretch than the part
-                    this route actually drives (e.g. 904040037/
-                    904690037); said once here, not per-segment. */}
-                {routeId !== DEFAULT_WINTER_ROUTE_ID ? (
-                  <p className="mt-1 text-xs italic text-slate-500 dark:text-slate-400">{t("winterRouteSectionCoverageNote")}</p>
-                ) : null}
-
-                {!view.roadMeta.available ? (
-                  <p className="mt-2 text-sm text-slate-500 dark:text-slate-400">{t("winterRouteRoadFeedUnavailable")}</p>
-                ) : null}
-                {view.roadMeta.stale ? (
-                  <p className="mt-2 text-xs text-amber-600 dark:text-amber-300">
-                    {t("winterRouteRoadStaleServed").replace(
-                      "{minutes}",
-                      String(Math.round((view.roadMeta.cacheAgeMs || 0) / 60000))
-                    )}
-                  </p>
-                ) : null}
-
-                {view.roadMeta.pointsFeedUnavailableOrStale ? (
-                  <div className="mt-2 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-xs font-medium text-amber-800 dark:border-amber-900/50 dark:bg-amber-950/30 dark:text-amber-200">
-                    <p>{t("winterRoutePointsFeedUnavailable")}</p>
-                    {/* Round 3 (R5-2): same retained VEGAGERDIN_LINKS[lang]
-                        already used at the page bottom — no new URL. */}
-                    <a
-                      href={VEGAGERDIN_LINKS[lang === "en" ? "en" : "is"]}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="mt-1 inline-block underline underline-offset-2 hover:text-amber-900 dark:hover:text-amber-100"
-                    >
-                      {t("winterRouteOfficialSourceLinkRoad")}
-                    </a>
-                  </div>
-                ) : null}
-
-                <ol className="mt-3 space-y-2">
-                  {view.segments.map((segment) => (
-                    <SegmentRow key={segment.idButur} segment={segment} t={t} lang={lang} />
-                  ))}
-                </ol>
-              </section>
-
-              <section className="mt-8 rounded-xl border border-slate-200/70 bg-white/60 px-4 py-4 text-xs leading-relaxed text-slate-500 dark:border-slate-800/70 dark:bg-slate-900/60 dark:text-slate-400">
-                <p>{t("winterRouteAttributionRoadLine")}</p>
-                <p>{t("winterRouteAcquiredAt").replace("{time}", formatTimestamp(view.generatedAt))}</p>
-                <p>{t("winterRouteAttributionWeatherLine")}</p>
-                <p>{t("winterRouteModifiedBy")}</p>
-                <p>{t("winterRouteNoEndorsement")}</p>
-                <p className="font-medium">{t("winterRouteOfficialOverride")}</p>
-                <p>{t("winterRouteNotSafetyAdvice")}</p>
-                <p className="mt-2 flex flex-wrap gap-3">
-                  <a
-                    href={VEGAGERDIN_LINKS[lang === "en" ? "en" : "is"]}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-sky-600 hover:text-sky-700 dark:text-sky-400 dark:hover:text-sky-300 underline-offset-4 hover:underline"
-                  >
-                    {t("winterRouteOfficialSourceLinkRoad")}
-                  </a>
-                  <a
-                    href={OPEN_METEO_TERMS_LINK}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-sky-600 hover:text-sky-700 dark:text-sky-400 dark:hover:text-sky-300 underline-offset-4 hover:underline"
-                  >
-                    {t("winterRouteOfficialSourceLinkWeather")}
-                  </a>
-                </p>
-              </section>
-            </>
-          ) : !viewErrorKey ? (
-            <p className="mt-6 text-sm text-slate-500 dark:text-slate-400">…</p>
-          ) : null}
-          </div>
+          <WinterRouteGeometrySection t={t} lang={lang} onAppliedChange={setGeometryApplied} />
         </main>
 
         <Footer t={t} />

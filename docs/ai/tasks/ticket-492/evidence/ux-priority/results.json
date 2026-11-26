@@ -1,0 +1,29 @@
+{
+  "negativeControl": {
+    "violationCount": 90,
+    "sample": [
+      "clipped text: \"Snjókoma\" scrollWidth=65 clientWidth=8",
+      "clipped text: \"-3,0 °C\" scrollWidth=48 clientWidth=8",
+      "clipped text: \"4,0 m/s\" scrollWidth=50 clientWidth=8"
+    ],
+    "matchedSpanCount": 90
+  },
+  "desktop": {
+    "headers": 6,
+    "rows": 19,
+    "violations": [],
+    "isDark": false,
+    "storedLang": "is",
+    "storedTheme": "light"
+  },
+  "mobile": {
+    "violations": [],
+    "isDark": true
+  },
+  "keyboardFlow": {
+    "ok": true,
+    "violations": []
+  },
+  "themeLangConfirmed": true,
+  "zoom": "NOT_TESTED"
+}

@@ -21,6 +21,13 @@
 
 export const WINTER_ROUTE_GROUP_RING = "ring";
 export const WINTER_ROUTE_GROUP_WESTFJORDS = "westfjords";
+// Ticket #492, direct-flow, C6 -- a THIRD presentation group, for the two
+// fixed-route-adapter places only (vik/borgarnes). This is an optgroup/
+// listbox-group label only, never a route-allowlist or a claim that
+// these two places connect to each other or to any other place in this
+// list -- see WINTER_ROUTE_DIRECT_PAIRS (winterRouteRoutes.js), which is
+// the actual (and only) source of which pairs are supported.
+export const WINTER_ROUTE_GROUP_OTHER = "other";
 
 // reykjavik-raudavatn displays as "Reykjavík (Rauðavatn)" in both
 // languages (approved-prompt-v1.md P2(b)) — the parenthetical names the
@@ -39,6 +46,14 @@ export const WINTER_ROUTE_PLACES = [
   { id: "holmavik", nameIs: "Hólmavík", nameEn: "Hólmavík", group: WINTER_ROUTE_GROUP_WESTFJORDS },
   { id: "patreksfjordur", nameIs: "Patreksfjörður", nameEn: "Patreksfjörður", group: WINTER_ROUTE_GROUP_WESTFJORDS },
   { id: "talknafjordur", nameIs: "Tálknafjörður", nameEn: "Tálknafjörður", group: WINTER_ROUTE_GROUP_WESTFJORDS },
+  // Ticket #492, direct-flow, C6 -- exactly these two canonical ids,
+  // names taken verbatim from server_data/winter-route-places.json
+  // (`vik`/`borgarnes`, both single-language names there). Reused by the
+  // fixed-route adapter (WINTER_ROUTE_DIRECT_PAIRS) for exactly the two
+  // explicit pairs it supports -- adding them here does NOT itself make
+  // any pair supported.
+  { id: "vik", nameIs: "Vík", nameEn: "Vík", group: WINTER_ROUTE_GROUP_OTHER },
+  { id: "borgarnes", nameIs: "Borgarnes", nameEn: "Borgarnes", group: WINTER_ROUTE_GROUP_OTHER },
 ];
 
 export function isKnownWinterRoutePlaceId(id) {

@@ -1,0 +1,302 @@
+{
+  "vik_1280_is": {
+    "n": 24,
+    "firstSlotText": "fimmtudagur, 26. nóvember kl. 10:00 UTC",
+    "headerBottom": 153,
+    "scrollYBefore": 0,
+    "hit": {
+      "scrolled": true,
+      "scrollY": 515,
+      "headerBottom": 153,
+      "sliderRect": {
+        "top": 518,
+        "bottom": 542
+      },
+      "noticeRect": {
+        "top": 169,
+        "bottom": 276
+      },
+      "sliderHit": {
+        "tag": "INPUT",
+        "isSelf": true
+      },
+      "noticeHit": {
+        "tag": "UL",
+        "isSelf": true
+      }
+    },
+    "staleLinePresent": false,
+    "namesNarrowCount": 4,
+    "namesOpenCount": 15,
+    "namesClosedCount": 4,
+    "narrowLessThanOpen": true,
+    "narrowEqualsClosedAgain": true,
+    "fetchCountFixed": 1,
+    "fetchCountGeometry": 0,
+    "fetchCountUnchangedOnTimeStep": true
+  },
+  "vik_1280_en": {
+    "n": 24,
+    "firstSlotText": "Thursday 26 November at 10:00 UTC",
+    "headerBottom": 153,
+    "scrollYBefore": 0,
+    "hit": {
+      "scrolled": true,
+      "scrollY": 515,
+      "headerBottom": 153,
+      "sliderRect": {
+        "top": 542,
+        "bottom": 566
+      },
+      "noticeRect": {
+        "top": 169,
+        "bottom": 300
+      },
+      "sliderHit": {
+        "tag": "INPUT",
+        "isSelf": true
+      },
+      "noticeHit": {
+        "tag": "LI",
+        "isSelf": true
+      }
+    },
+    "staleLinePresent": false,
+    "namesNarrowCount": 4,
+    "namesOpenCount": 15,
+    "namesClosedCount": 4,
+    "narrowLessThanOpen": true,
+    "narrowEqualsClosedAgain": true,
+    "fetchCountFixed": 1,
+    "fetchCountGeometry": 0,
+    "fetchCountUnchangedOnTimeStep": true
+  },
+  "vik_360_is": {
+    "n": 24,
+    "firstSlotText": "fimmtudagur, 26. nóvember kl. 10:00 UTC",
+    "headerBottom": 105,
+    "scrollYBefore": 0,
+    "hit": {
+      "scrolled": true,
+      "scrollY": 649,
+      "headerBottom": 105,
+      "sliderRect": {
+        "top": 558,
+        "bottom": 582
+      },
+      "noticeRect": {
+        "top": 121,
+        "bottom": 256
+      },
+      "sliderHit": {
+        "tag": "INPUT",
+        "isSelf": true
+      },
+      "noticeHit": {
+        "tag": "LI",
+        "isSelf": true
+      }
+    },
+    "staleLinePresent": false,
+    "namesNarrowCount": 4,
+    "namesOpenCount": 15,
+    "namesClosedCount": 4,
+    "narrowLessThanOpen": true,
+    "narrowEqualsClosedAgain": true,
+    "fetchCountFixed": 1,
+    "fetchCountGeometry": 0,
+    "fetchCountUnchangedOnTimeStep": true
+  },
+  "vik_360_en": {
+    "n": 24,
+    "firstSlotText": "Thursday 26 November at 10:00 UTC",
+    "headerBottom": 105,
+    "scrollYBefore": 0,
+    "hit": {
+      "scrolled": true,
+      "scrollY": 701,
+      "headerBottom": 105,
+      "sliderRect": {
+        "top": 582,
+        "bottom": 606
+      },
+      "noticeRect": {
+        "top": 121,
+        "bottom": 280
+      },
+      "sliderHit": {
+        "tag": "INPUT",
+        "isSelf": true
+      },
+      "noticeHit": {
+        "tag": "P",
+        "isSelf": true
+      }
+    },
+    "staleLinePresent": false,
+    "namesNarrowCount": 4,
+    "namesOpenCount": 15,
+    "namesClosedCount": 4,
+    "narrowLessThanOpen": true,
+    "narrowEqualsClosedAgain": true,
+    "fetchCountFixed": 1,
+    "fetchCountGeometry": 0,
+    "fetchCountUnchangedOnTimeStep": true
+  },
+  "borgarnes_1280_is": {
+    "n": 24,
+    "firstSlotText": "fimmtudagur, 26. nóvember kl. 10:00 UTC",
+    "headerBottom": 153,
+    "scrollYBefore": 0,
+    "hit": {
+      "scrolled": true,
+      "scrollY": 539,
+      "headerBottom": 153,
+      "sliderRect": {
+        "top": 518,
+        "bottom": 542
+      },
+      "noticeRect": {
+        "top": 169,
+        "bottom": 276
+      },
+      "sliderHit": {
+        "tag": "INPUT",
+        "isSelf": true
+      },
+      "noticeHit": {
+        "tag": "UL",
+        "isSelf": true
+      }
+    },
+    "staleLinePresent": false,
+    "namesNarrowCount": 4,
+    "namesOpenCount": 10,
+    "namesClosedCount": 4,
+    "narrowLessThanOpen": true,
+    "narrowEqualsClosedAgain": true,
+    "fetchCountFixed": 1,
+    "fetchCountGeometry": 0,
+    "fetchCountUnchangedOnTimeStep": true
+  },
+  "borgarnes_1280_en": {
+    "n": 24,
+    "firstSlotText": "Thursday 26 November at 10:00 UTC",
+    "headerBottom": 153,
+    "scrollYBefore": 0,
+    "hit": {
+      "scrolled": true,
+      "scrollY": 539,
+      "headerBottom": 153,
+      "sliderRect": {
+        "top": 542,
+        "bottom": 566
+      },
+      "noticeRect": {
+        "top": 169,
+        "bottom": 300
+      },
+      "sliderHit": {
+        "tag": "INPUT",
+        "isSelf": true
+      },
+      "noticeHit": {
+        "tag": "LI",
+        "isSelf": true
+      }
+    },
+    "staleLinePresent": false,
+    "namesNarrowCount": 4,
+    "namesOpenCount": 10,
+    "namesClosedCount": 4,
+    "narrowLessThanOpen": true,
+    "narrowEqualsClosedAgain": true,
+    "fetchCountFixed": 1,
+    "fetchCountGeometry": 0,
+    "fetchCountUnchangedOnTimeStep": true
+  },
+  "borgarnes_360_is": {
+    "n": 24,
+    "firstSlotText": "fimmtudagur, 26. nóvember kl. 10:00 UTC",
+    "headerBottom": 105,
+    "scrollYBefore": 0,
+    "hit": {
+      "scrolled": true,
+      "scrollY": 721,
+      "headerBottom": 105,
+      "sliderRect": {
+        "top": 530,
+        "bottom": 554
+      },
+      "noticeRect": {
+        "top": 121,
+        "bottom": 256
+      },
+      "sliderHit": {
+        "tag": "INPUT",
+        "isSelf": true
+      },
+      "noticeHit": {
+        "tag": "LI",
+        "isSelf": true
+      }
+    },
+    "staleLinePresent": false,
+    "namesNarrowCount": 4,
+    "namesOpenCount": 10,
+    "namesClosedCount": 4,
+    "narrowLessThanOpen": true,
+    "narrowEqualsClosedAgain": true,
+    "fetchCountFixed": 1,
+    "fetchCountGeometry": 0,
+    "fetchCountUnchangedOnTimeStep": true
+  },
+  "borgarnes_360_en": {
+    "n": 24,
+    "firstSlotText": "Thursday 26 November at 10:00 UTC",
+    "headerBottom": 105,
+    "scrollYBefore": 0,
+    "hit": {
+      "scrolled": true,
+      "scrollY": 789,
+      "headerBottom": 105,
+      "sliderRect": {
+        "top": 582,
+        "bottom": 606
+      },
+      "noticeRect": {
+        "top": 121,
+        "bottom": 280
+      },
+      "sliderHit": {
+        "tag": "INPUT",
+        "isSelf": true
+      },
+      "noticeHit": {
+        "tag": "P",
+        "isSelf": true
+      }
+    },
+    "staleLinePresent": false,
+    "namesNarrowCount": 4,
+    "namesOpenCount": 10,
+    "namesClosedCount": 4,
+    "narrowLessThanOpen": true,
+    "narrowEqualsClosedAgain": true,
+    "fetchCountFixed": 1,
+    "fetchCountGeometry": 0,
+    "fetchCountUnchangedOnTimeStep": true
+  },
+  "zero-notices": {
+    "staleLinePresent": false,
+    "allClearVisible": true
+  },
+  "one-notice": {
+    "staleLinePresent": false,
+    "allClearVisible": false
+  },
+  "ringOptionRegression": {
+    "toggleExists": 1,
+    "dataVisible": true
+  }
+}

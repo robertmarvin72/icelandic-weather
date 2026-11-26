@@ -1,0 +1,1292 @@
+{
+  "is-light-360": {
+    "fontInfo": {
+      "fontFamily": "Inter, system-ui, -apple-system, \"Segoe UI\", Roboto, Helvetica, Arial, \"Apple Color Emoji\", \"Segoe UI Emoji\"",
+      "fontsReady": "loaded",
+      "dpr": 1,
+      "innerWidth": 360,
+      "htmlDark": false
+    },
+    "measurement": {
+      "documentScrollWidth": 360,
+      "viewportWidth": 360,
+      "wrapperScrollWidth": 294,
+      "wrapperClientWidth": 294,
+      "totalCellsMeasured": 95,
+      "outOfCellCount": 4,
+      "outOfCellSamples": [
+        {
+          "rowIdx": 3,
+          "cellIdx": 0,
+          "tag": "TH",
+          "text": "Nærri Holtavörðuheiði",
+          "cellRect": {
+            "left": 33,
+            "right": 121.1875,
+            "top": 1554.828125,
+            "bottom": 1603.828125
+          },
+          "contentRect": {
+            "left": 33,
+            "right": 123.125,
+            "top": 1563.328125,
+            "bottom": 1595.328125
+          },
+          "withinCell": false,
+          "scrollWidth": 116,
+          "clientWidth": 88,
+          "overflowing": true,
+          "lineBoxCount": 3
+        },
+        {
+          "rowIdx": 7,
+          "cellIdx": 0,
+          "tag": "TH",
+          "text": "Leiðarpunktur nærri Ljósavatnsskarði",
+          "cellRect": {
+            "left": 33,
+            "right": 121.1875,
+            "top": 1766.828125,
+            "bottom": 1831.828125
+          },
+          "contentRect": {
+            "left": 33,
+            "right": 129.03125,
+            "top": 1775.328125,
+            "bottom": 1823.328125
+          },
+          "withinCell": false,
+          "scrollWidth": 122,
+          "clientWidth": 88,
+          "overflowing": true,
+          "lineBoxCount": 4
+        },
+        {
+          "rowIdx": 8,
+          "cellIdx": 0,
+          "tag": "TH",
+          "text": "Nærri Mývatnsöræfum",
+          "cellRect": {
+            "left": 33,
+            "right": 121.1875,
+            "top": 1831.828125,
+            "bottom": 1880.828125
+          },
+          "contentRect": {
+            "left": 33,
+            "right": 127.578125,
+            "top": 1840.328125,
+            "bottom": 1872.328125
+          },
+          "withinCell": false,
+          "scrollWidth": 121,
+          "clientWidth": 88,
+          "overflowing": true,
+          "lineBoxCount": 3
+        },
+        {
+          "rowIdx": 15,
+          "cellIdx": 0,
+          "tag": "TH",
+          "text": "Leiðarpunktur nærri Kirkjubæjarklaustri",
+          "cellRect": {
+            "left": 33,
+            "right": 121.1875,
+            "top": 2206.828125,
+            "bottom": 2271.828125
+          },
+          "contentRect": {
+            "left": 33,
+            "right": 141.46875,
+            "top": 2215.328125,
+            "bottom": 2263.328125
+          },
+          "withinCell": false,
+          "scrollWidth": 134,
+          "clientWidth": 88,
+          "overflowing": true,
+          "lineBoxCount": 4
+        }
+      ],
+      "overflowingCellCount": 15,
+      "overflowingSamples": [
+        {
+          "rowIdx": 2,
+          "cellIdx": 0,
+          "tag": "TH",
+          "text": "Leiðarpunktur nærri Norðurá",
+          "cellRect": {
+            "left": 33,
+            "right": 121.1875,
+            "top": 1489.828125,
+            "bottom": 1554.828125
+          },
+          "contentRect": {
+            "left": 33,
+            "right": 117.1875,
+            "top": 1498.328125,
+            "bottom": 1546.328125
+          },
+          "withinCell": true,
+          "scrollWidth": 106,
+          "clientWidth": 88,
+          "overflowing": true,
+          "lineBoxCount": 4
+        },
+        {
+          "rowIdx": 3,
+          "cellIdx": 0,
+          "tag": "TH",
+          "text": "Nærri Holtavörðuheiði",
+          "cellRect": {
+            "left": 33,
+            "right": 121.1875,
+            "top": 1554.828125,
+            "bottom": 1603.828125
+          },
+          "contentRect": {
+            "left": 33,
+            "right": 123.125,
+            "top": 1563.328125,
+            "bottom": 1595.328125
+          },
+          "withinCell": false,
+          "scrollWidth": 116,
+          "clientWidth": 88,
+          "overflowing": true,
+          "lineBoxCount": 3
+        },
+        {
+          "rowIdx": 4,
+          "cellIdx": 0,
+          "tag": "TH",
+          "text": "Leiðarpunktur nærri Gljúfurá",
+          "cellRect": {
+            "left": 33,
+            "right": 121.1875,
+            "top": 1603.828125,
+            "bottom": 1652.828125
+          },
+          "contentRect": {
+            "left": 33,
+            "right": 117.1875,
+            "top": 1612.328125,
+            "bottom": 1644.328125
+          },
+          "withinCell": true,
+          "scrollWidth": 106,
+          "clientWidth": 88,
+          "overflowing": true,
+          "lineBoxCount": 3
+        },
+        {
+          "rowIdx": 5,
+          "cellIdx": 0,
+          "tag": "TH",
+          "text": "Leiðarpunktur nærri Kjálkavegi",
+          "cellRect": {
+            "left": 33,
+            "right": 121.1875,
+            "top": 1652.828125,
+            "bottom": 1717.828125
+          },
+          "contentRect": {
+            "left": 33,
+            "right": 117.1875,
+            "top": 1661.328125,
+            "bottom": 1709.328125
+          },
+          "withinCell": true,
+          "scrollWidth": 106,
+          "clientWidth": 88,
+          "overflowing": true,
+          "lineBoxCount": 4
+        },
+        {
+          "rowIdx": 6,
+          "cellIdx": 0,
+          "tag": "TH",
+          "text": "Nærri Öxnadalsheiði",
+          "cellRect": {
+            "left": 33,
+            "right": 121.1875,
+            "top": 1717.828125,
+            "bottom": 1766.828125
+          },
+          "contentRect": {
+            "left": 33,
+            "right": 117.1875,
+            "top": 1726.328125,
+            "bottom": 1758.328125
+          },
+          "withinCell": true,
+          "scrollWidth": 107,
+          "clientWidth": 88,
+          "overflowing": true,
+          "lineBoxCount": 3
+        },
+        {
+          "rowIdx": 7,
+          "cellIdx": 0,
+          "tag": "TH",
+          "text": "Leiðarpunktur nærri Ljósavatnsskarði",
+          "cellRect": {
+            "left": 33,
+            "right": 121.1875,
+            "top": 1766.828125,
+            "bottom": 1831.828125
+          },
+          "contentRect": {
+            "left": 33,
+            "right": 129.03125,
+            "top": 1775.328125,
+            "bottom": 1823.328125
+          },
+          "withinCell": false,
+          "scrollWidth": 122,
+          "clientWidth": 88,
+          "overflowing": true,
+          "lineBoxCount": 4
+        }
+      ],
+      "overlapCount": 3,
+      "overlapSamples": [
+        {
+          "a": "row7c0:Leiðarpunktur nærri Ljósavatnsskarði",
+          "b": "row7c1:-0,6 °C"
+        },
+        {
+          "a": "row8c0:Nærri Mývatnsöræfum",
+          "b": "row8c1:-0,2 °C"
+        },
+        {
+          "a": "row15c0:Leiðarpunktur nærri Kirkjubæjarklaustri",
+          "b": "row15c1:-12,5 °C"
+        }
+      ],
+      "multiLineValueCellCount": 12,
+      "multiLineValueSamples": [
+        {
+          "rowIdx": 3,
+          "cellIdx": 2,
+          "tag": "TD",
+          "text": "14,0 m/s",
+          "cellRect": {
+            "left": 172.640625,
+            "right": 224.09375,
+            "top": 1554.828125,
+            "bottom": 1603.828125
+          },
+          "contentRect": {
+            "left": 176.640625,
+            "right": 199.59375,
+            "top": 1563.328125,
+            "bottom": 1594.328125
+          },
+          "withinCell": true,
+          "scrollWidth": 51,
+          "clientWidth": 51,
+          "overflowing": false,
+          "lineBoxCount": 2
+        },
+        {
+          "rowIdx": 3,
+          "cellIdx": 3,
+          "tag": "TD",
+          "text": "21,5 m/s",
+          "cellRect": {
+            "left": 224.09375,
+            "right": 275.546875,
+            "top": 1554.828125,
+            "bottom": 1603.828125
+          },
+          "contentRect": {
+            "left": 228.09375,
+            "right": 250.703125,
+            "top": 1563.328125,
+            "bottom": 1594.328125
+          },
+          "withinCell": true,
+          "scrollWidth": 51,
+          "clientWidth": 51,
+          "overflowing": false,
+          "lineBoxCount": 2
+        },
+        {
+          "rowIdx": 6,
+          "cellIdx": 2,
+          "tag": "TD",
+          "text": "13,5 m/s",
+          "cellRect": {
+            "left": 172.640625,
+            "right": 224.09375,
+            "top": 1717.828125,
+            "bottom": 1766.828125
+          },
+          "contentRect": {
+            "left": 176.640625,
+            "right": 199.078125,
+            "top": 1726.328125,
+            "bottom": 1757.328125
+          },
+          "withinCell": true,
+          "scrollWidth": 51,
+          "clientWidth": 51,
+          "overflowing": false,
+          "lineBoxCount": 2
+        },
+        {
+          "rowIdx": 6,
+          "cellIdx": 3,
+          "tag": "TD",
+          "text": "19,0 m/s",
+          "cellRect": {
+            "left": 224.09375,
+            "right": 275.546875,
+            "top": 1717.828125,
+            "bottom": 1766.828125
+          },
+          "contentRect": {
+            "left": 228.09375,
+            "right": 250.84375,
+            "top": 1726.328125,
+            "bottom": 1757.328125
+          },
+          "withinCell": true,
+          "scrollWidth": 51,
+          "clientWidth": 51,
+          "overflowing": false,
+          "lineBoxCount": 2
+        },
+        {
+          "rowIdx": 13,
+          "cellIdx": 3,
+          "tag": "TD",
+          "text": "10,0 m/s",
+          "cellRect": {
+            "left": 224.09375,
+            "right": 275.546875,
+            "top": 2108.828125,
+            "bottom": 2157.828125
+          },
+          "contentRect": {
+            "left": 228.09375,
+            "right": 250.96875,
+            "top": 2117.328125,
+            "bottom": 2148.328125
+          },
+          "withinCell": true,
+          "scrollWidth": 51,
+          "clientWidth": 51,
+          "overflowing": false,
+          "lineBoxCount": 2
+        },
+        {
+          "rowIdx": 14,
+          "cellIdx": 3,
+          "tag": "TD",
+          "text": "10,5 m/s",
+          "cellRect": {
+            "left": 224.09375,
+            "right": 275.546875,
+            "top": 2157.828125,
+            "bottom": 2206.828125
+          },
+          "contentRect": {
+            "left": 228.09375,
+            "right": 250.65625,
+            "top": 2166.328125,
+            "bottom": 2197.328125
+          },
+          "withinCell": true,
+          "scrollWidth": 51,
+          "clientWidth": 51,
+          "overflowing": false,
+          "lineBoxCount": 2
+        }
+      ]
+    },
+    "slack": {
+      "minSlackPx": -46,
+      "minSlackCellText": "Leiðarpunktur nærri Kirkjubæjarklaustri"
+    }
+  },
+  "en-dark-360": {
+    "fontInfo": {
+      "fontFamily": "Inter, system-ui, -apple-system, \"Segoe UI\", Roboto, Helvetica, Arial, \"Apple Color Emoji\", \"Segoe UI Emoji\"",
+      "fontsReady": "loaded",
+      "dpr": 1,
+      "innerWidth": 360,
+      "htmlDark": true
+    },
+    "measurement": {
+      "documentScrollWidth": 360,
+      "viewportWidth": 360,
+      "wrapperScrollWidth": 294,
+      "wrapperClientWidth": 294,
+      "totalCellsMeasured": 95,
+      "outOfCellCount": 4,
+      "outOfCellSamples": [
+        {
+          "rowIdx": 0,
+          "cellIdx": 1,
+          "tag": "TH",
+          "text": "Temperature",
+          "cellRect": {
+            "left": 121.1875,
+            "right": 172.640625,
+            "top": 1463,
+            "bottom": 1488.828125
+          },
+          "contentRect": {
+            "left": 125.1875,
+            "right": 187.84375,
+            "top": 1469,
+            "bottom": 1481
+          },
+          "withinCell": false,
+          "scrollWidth": 67,
+          "clientWidth": 51,
+          "overflowing": true,
+          "lineBoxCount": 1
+        },
+        {
+          "rowIdx": 3,
+          "cellIdx": 0,
+          "tag": "TH",
+          "text": "Near Holtavörðuheiði",
+          "cellRect": {
+            "left": 33,
+            "right": 121.1875,
+            "top": 1590.828125,
+            "bottom": 1639.828125
+          },
+          "contentRect": {
+            "left": 33,
+            "right": 123.125,
+            "top": 1599.328125,
+            "bottom": 1631.328125
+          },
+          "withinCell": false,
+          "scrollWidth": 116,
+          "clientWidth": 88,
+          "overflowing": true,
+          "lineBoxCount": 3
+        },
+        {
+          "rowIdx": 7,
+          "cellIdx": 0,
+          "tag": "TH",
+          "text": "Route point near Ljósavatnsskarð",
+          "cellRect": {
+            "left": 33,
+            "right": 121.1875,
+            "top": 1818.828125,
+            "bottom": 1883.828125
+          },
+          "contentRect": {
+            "left": 33,
+            "right": 126,
+            "top": 1827.328125,
+            "bottom": 1875.328125
+          },
+          "withinCell": false,
+          "scrollWidth": 119,
+          "clientWidth": 88,
+          "overflowing": true,
+          "lineBoxCount": 4
+        },
+        {
+          "rowIdx": 15,
+          "cellIdx": 0,
+          "tag": "TH",
+          "text": "Route point near Kirkjubæjarklaustur",
+          "cellRect": {
+            "left": 33,
+            "right": 121.1875,
+            "top": 2306.828125,
+            "bottom": 2355.828125
+          },
+          "contentRect": {
+            "left": 33,
+            "right": 145.5625,
+            "top": 2315.328125,
+            "bottom": 2347.328125
+          },
+          "withinCell": false,
+          "scrollWidth": 139,
+          "clientWidth": 88,
+          "overflowing": true,
+          "lineBoxCount": 3
+        }
+      ],
+      "overflowingCellCount": 11,
+      "overflowingSamples": [
+        {
+          "rowIdx": 0,
+          "cellIdx": 1,
+          "tag": "TH",
+          "text": "Temperature",
+          "cellRect": {
+            "left": 121.1875,
+            "right": 172.640625,
+            "top": 1463,
+            "bottom": 1488.828125
+          },
+          "contentRect": {
+            "left": 125.1875,
+            "right": 187.84375,
+            "top": 1469,
+            "bottom": 1481
+          },
+          "withinCell": false,
+          "scrollWidth": 67,
+          "clientWidth": 51,
+          "overflowing": true,
+          "lineBoxCount": 1
+        },
+        {
+          "rowIdx": 3,
+          "cellIdx": 0,
+          "tag": "TH",
+          "text": "Near Holtavörðuheiði",
+          "cellRect": {
+            "left": 33,
+            "right": 121.1875,
+            "top": 1590.828125,
+            "bottom": 1639.828125
+          },
+          "contentRect": {
+            "left": 33,
+            "right": 123.125,
+            "top": 1599.328125,
+            "bottom": 1631.328125
+          },
+          "withinCell": false,
+          "scrollWidth": 116,
+          "clientWidth": 88,
+          "overflowing": true,
+          "lineBoxCount": 3
+        },
+        {
+          "rowIdx": 5,
+          "cellIdx": 0,
+          "tag": "TH",
+          "text": "Route point near Kjálkavegur",
+          "cellRect": {
+            "left": 33,
+            "right": 121.1875,
+            "top": 1704.828125,
+            "bottom": 1769.828125
+          },
+          "contentRect": {
+            "left": 33,
+            "right": 117.1875,
+            "top": 1713.328125,
+            "bottom": 1761.328125
+          },
+          "withinCell": true,
+          "scrollWidth": 93,
+          "clientWidth": 88,
+          "overflowing": true,
+          "lineBoxCount": 4
+        },
+        {
+          "rowIdx": 6,
+          "cellIdx": 0,
+          "tag": "TH",
+          "text": "Near Öxnadalsheiði",
+          "cellRect": {
+            "left": 33,
+            "right": 121.1875,
+            "top": 1769.828125,
+            "bottom": 1818.828125
+          },
+          "contentRect": {
+            "left": 33,
+            "right": 117.1875,
+            "top": 1778.328125,
+            "bottom": 1810.328125
+          },
+          "withinCell": true,
+          "scrollWidth": 107,
+          "clientWidth": 88,
+          "overflowing": true,
+          "lineBoxCount": 3
+        },
+        {
+          "rowIdx": 7,
+          "cellIdx": 0,
+          "tag": "TH",
+          "text": "Route point near Ljósavatnsskarð",
+          "cellRect": {
+            "left": 33,
+            "right": 121.1875,
+            "top": 1818.828125,
+            "bottom": 1883.828125
+          },
+          "contentRect": {
+            "left": 33,
+            "right": 126,
+            "top": 1827.328125,
+            "bottom": 1875.328125
+          },
+          "withinCell": false,
+          "scrollWidth": 119,
+          "clientWidth": 88,
+          "overflowing": true,
+          "lineBoxCount": 4
+        },
+        {
+          "rowIdx": 8,
+          "cellIdx": 0,
+          "tag": "TH",
+          "text": "Near Mývatnsöræfi",
+          "cellRect": {
+            "left": 33,
+            "right": 121.1875,
+            "top": 1883.828125,
+            "bottom": 1932.828125
+          },
+          "contentRect": {
+            "left": 33,
+            "right": 117.1875,
+            "top": 1892.328125,
+            "bottom": 1924.328125
+          },
+          "withinCell": true,
+          "scrollWidth": 106,
+          "clientWidth": 88,
+          "overflowing": true,
+          "lineBoxCount": 3
+        }
+      ],
+      "overlapCount": 3,
+      "overlapSamples": [
+        {
+          "a": "row0c1:Temperature",
+          "b": "row0c2:Wind"
+        },
+        {
+          "a": "row7c0:Route point near Ljósavatnsskarð",
+          "b": "row7c1:-0.6 °C"
+        },
+        {
+          "a": "row15c0:Route point near Kirkjubæjarklaustur",
+          "b": "row15c1:-12.5 °C"
+        }
+      ],
+      "multiLineValueCellCount": 12,
+      "multiLineValueSamples": [
+        {
+          "rowIdx": 3,
+          "cellIdx": 2,
+          "tag": "TD",
+          "text": "14.0 m/s",
+          "cellRect": {
+            "left": 172.640625,
+            "right": 224.09375,
+            "top": 1590.828125,
+            "bottom": 1639.828125
+          },
+          "contentRect": {
+            "left": 176.640625,
+            "right": 199.59375,
+            "top": 1599.328125,
+            "bottom": 1630.328125
+          },
+          "withinCell": true,
+          "scrollWidth": 51,
+          "clientWidth": 51,
+          "overflowing": false,
+          "lineBoxCount": 2
+        },
+        {
+          "rowIdx": 3,
+          "cellIdx": 3,
+          "tag": "TD",
+          "text": "21.5 m/s",
+          "cellRect": {
+            "left": 224.09375,
+            "right": 275.546875,
+            "top": 1590.828125,
+            "bottom": 1639.828125
+          },
+          "contentRect": {
+            "left": 228.09375,
+            "right": 250.703125,
+            "top": 1599.328125,
+            "bottom": 1630.328125
+          },
+          "withinCell": true,
+          "scrollWidth": 51,
+          "clientWidth": 51,
+          "overflowing": false,
+          "lineBoxCount": 2
+        },
+        {
+          "rowIdx": 6,
+          "cellIdx": 2,
+          "tag": "TD",
+          "text": "13.5 m/s",
+          "cellRect": {
+            "left": 172.640625,
+            "right": 224.09375,
+            "top": 1769.828125,
+            "bottom": 1818.828125
+          },
+          "contentRect": {
+            "left": 176.640625,
+            "right": 199.078125,
+            "top": 1778.328125,
+            "bottom": 1809.328125
+          },
+          "withinCell": true,
+          "scrollWidth": 51,
+          "clientWidth": 51,
+          "overflowing": false,
+          "lineBoxCount": 2
+        },
+        {
+          "rowIdx": 6,
+          "cellIdx": 3,
+          "tag": "TD",
+          "text": "19.0 m/s",
+          "cellRect": {
+            "left": 224.09375,
+            "right": 275.546875,
+            "top": 1769.828125,
+            "bottom": 1818.828125
+          },
+          "contentRect": {
+            "left": 228.09375,
+            "right": 250.84375,
+            "top": 1778.328125,
+            "bottom": 1809.328125
+          },
+          "withinCell": true,
+          "scrollWidth": 51,
+          "clientWidth": 51,
+          "overflowing": false,
+          "lineBoxCount": 2
+        },
+        {
+          "rowIdx": 13,
+          "cellIdx": 3,
+          "tag": "TD",
+          "text": "10.0 m/s",
+          "cellRect": {
+            "left": 224.09375,
+            "right": 275.546875,
+            "top": 2176.828125,
+            "bottom": 2241.828125
+          },
+          "contentRect": {
+            "left": 228.09375,
+            "right": 250.96875,
+            "top": 2185.328125,
+            "bottom": 2216.328125
+          },
+          "withinCell": true,
+          "scrollWidth": 51,
+          "clientWidth": 51,
+          "overflowing": false,
+          "lineBoxCount": 2
+        },
+        {
+          "rowIdx": 14,
+          "cellIdx": 3,
+          "tag": "TD",
+          "text": "10.5 m/s",
+          "cellRect": {
+            "left": 224.09375,
+            "right": 275.546875,
+            "top": 2241.828125,
+            "bottom": 2306.828125
+          },
+          "contentRect": {
+            "left": 228.09375,
+            "right": 250.65625,
+            "top": 2250.328125,
+            "bottom": 2281.328125
+          },
+          "withinCell": true,
+          "scrollWidth": 51,
+          "clientWidth": 51,
+          "overflowing": false,
+          "lineBoxCount": 2
+        }
+      ]
+    },
+    "slack": {
+      "minSlackPx": -51,
+      "minSlackCellText": "Route point near Kirkjubæjarklaustur"
+    }
+  },
+  "is-light-320": {
+    "fontInfo": {
+      "fontFamily": "Inter, system-ui, -apple-system, \"Segoe UI\", Roboto, Helvetica, Arial, \"Apple Color Emoji\", \"Segoe UI Emoji\"",
+      "fontsReady": "loaded",
+      "dpr": 1,
+      "innerWidth": 320,
+      "htmlDark": false
+    },
+    "measurement": {
+      "documentScrollWidth": 320,
+      "viewportWidth": 320,
+      "wrapperScrollWidth": 254,
+      "wrapperClientWidth": 254,
+      "totalCellsMeasured": 95,
+      "outOfCellCount": 15,
+      "outOfCellSamples": [
+        {
+          "rowIdx": 2,
+          "cellIdx": 0,
+          "tag": "TH",
+          "text": "Leiðarpunktur nærri Norðurá",
+          "cellRect": {
+            "left": 33,
+            "right": 109.1875,
+            "top": 1557.828125,
+            "bottom": 1622.828125
+          },
+          "contentRect": {
+            "left": 33,
+            "right": 113.15625,
+            "top": 1566.328125,
+            "bottom": 1614.328125
+          },
+          "withinCell": false,
+          "scrollWidth": 106,
+          "clientWidth": 76,
+          "overflowing": true,
+          "lineBoxCount": 4
+        },
+        {
+          "rowIdx": 3,
+          "cellIdx": 0,
+          "tag": "TH",
+          "text": "Nærri Holtavörðuheiði",
+          "cellRect": {
+            "left": 33,
+            "right": 109.1875,
+            "top": 1622.828125,
+            "bottom": 1671.828125
+          },
+          "contentRect": {
+            "left": 33,
+            "right": 123.125,
+            "top": 1631.328125,
+            "bottom": 1663.328125
+          },
+          "withinCell": false,
+          "scrollWidth": 116,
+          "clientWidth": 76,
+          "overflowing": true,
+          "lineBoxCount": 3
+        },
+        {
+          "rowIdx": 4,
+          "cellIdx": 0,
+          "tag": "TH",
+          "text": "Leiðarpunktur nærri Gljúfurá",
+          "cellRect": {
+            "left": 33,
+            "right": 109.1875,
+            "top": 1671.828125,
+            "bottom": 1720.828125
+          },
+          "contentRect": {
+            "left": 33,
+            "right": 113.15625,
+            "top": 1680.328125,
+            "bottom": 1712.328125
+          },
+          "withinCell": false,
+          "scrollWidth": 106,
+          "clientWidth": 76,
+          "overflowing": true,
+          "lineBoxCount": 3
+        },
+        {
+          "rowIdx": 5,
+          "cellIdx": 0,
+          "tag": "TH",
+          "text": "Leiðarpunktur nærri Kjálkavegi",
+          "cellRect": {
+            "left": 33,
+            "right": 109.1875,
+            "top": 1720.828125,
+            "bottom": 1785.828125
+          },
+          "contentRect": {
+            "left": 33,
+            "right": 113.15625,
+            "top": 1729.328125,
+            "bottom": 1777.328125
+          },
+          "withinCell": false,
+          "scrollWidth": 106,
+          "clientWidth": 76,
+          "overflowing": true,
+          "lineBoxCount": 4
+        },
+        {
+          "rowIdx": 6,
+          "cellIdx": 0,
+          "tag": "TH",
+          "text": "Nærri Öxnadalsheiði",
+          "cellRect": {
+            "left": 33,
+            "right": 109.1875,
+            "top": 1785.828125,
+            "bottom": 1834.828125
+          },
+          "contentRect": {
+            "left": 33,
+            "right": 114.015625,
+            "top": 1794.328125,
+            "bottom": 1826.328125
+          },
+          "withinCell": false,
+          "scrollWidth": 107,
+          "clientWidth": 76,
+          "overflowing": true,
+          "lineBoxCount": 3
+        },
+        {
+          "rowIdx": 7,
+          "cellIdx": 0,
+          "tag": "TH",
+          "text": "Leiðarpunktur nærri Ljósavatnsskarði",
+          "cellRect": {
+            "left": 33,
+            "right": 109.1875,
+            "top": 1834.828125,
+            "bottom": 1899.828125
+          },
+          "contentRect": {
+            "left": 33,
+            "right": 129.03125,
+            "top": 1843.328125,
+            "bottom": 1891.328125
+          },
+          "withinCell": false,
+          "scrollWidth": 122,
+          "clientWidth": 76,
+          "overflowing": true,
+          "lineBoxCount": 4
+        }
+      ],
+      "overflowingCellCount": 16,
+      "overflowingSamples": [
+        {
+          "rowIdx": 1,
+          "cellIdx": 0,
+          "tag": "TH",
+          "text": "Rauðavatn",
+          "cellRect": {
+            "left": 33,
+            "right": 109.1875,
+            "top": 1508.828125,
+            "bottom": 1557.828125
+          },
+          "contentRect": {
+            "left": 33,
+            "right": 105.1875,
+            "top": 1517.328125,
+            "bottom": 1537.328125
+          },
+          "withinCell": true,
+          "scrollWidth": 87,
+          "clientWidth": 76,
+          "overflowing": true,
+          "lineBoxCount": 2
+        },
+        {
+          "rowIdx": 2,
+          "cellIdx": 0,
+          "tag": "TH",
+          "text": "Leiðarpunktur nærri Norðurá",
+          "cellRect": {
+            "left": 33,
+            "right": 109.1875,
+            "top": 1557.828125,
+            "bottom": 1622.828125
+          },
+          "contentRect": {
+            "left": 33,
+            "right": 113.15625,
+            "top": 1566.328125,
+            "bottom": 1614.328125
+          },
+          "withinCell": false,
+          "scrollWidth": 106,
+          "clientWidth": 76,
+          "overflowing": true,
+          "lineBoxCount": 4
+        },
+        {
+          "rowIdx": 3,
+          "cellIdx": 0,
+          "tag": "TH",
+          "text": "Nærri Holtavörðuheiði",
+          "cellRect": {
+            "left": 33,
+            "right": 109.1875,
+            "top": 1622.828125,
+            "bottom": 1671.828125
+          },
+          "contentRect": {
+            "left": 33,
+            "right": 123.125,
+            "top": 1631.328125,
+            "bottom": 1663.328125
+          },
+          "withinCell": false,
+          "scrollWidth": 116,
+          "clientWidth": 76,
+          "overflowing": true,
+          "lineBoxCount": 3
+        },
+        {
+          "rowIdx": 4,
+          "cellIdx": 0,
+          "tag": "TH",
+          "text": "Leiðarpunktur nærri Gljúfurá",
+          "cellRect": {
+            "left": 33,
+            "right": 109.1875,
+            "top": 1671.828125,
+            "bottom": 1720.828125
+          },
+          "contentRect": {
+            "left": 33,
+            "right": 113.15625,
+            "top": 1680.328125,
+            "bottom": 1712.328125
+          },
+          "withinCell": false,
+          "scrollWidth": 106,
+          "clientWidth": 76,
+          "overflowing": true,
+          "lineBoxCount": 3
+        },
+        {
+          "rowIdx": 5,
+          "cellIdx": 0,
+          "tag": "TH",
+          "text": "Leiðarpunktur nærri Kjálkavegi",
+          "cellRect": {
+            "left": 33,
+            "right": 109.1875,
+            "top": 1720.828125,
+            "bottom": 1785.828125
+          },
+          "contentRect": {
+            "left": 33,
+            "right": 113.15625,
+            "top": 1729.328125,
+            "bottom": 1777.328125
+          },
+          "withinCell": false,
+          "scrollWidth": 106,
+          "clientWidth": 76,
+          "overflowing": true,
+          "lineBoxCount": 4
+        },
+        {
+          "rowIdx": 6,
+          "cellIdx": 0,
+          "tag": "TH",
+          "text": "Nærri Öxnadalsheiði",
+          "cellRect": {
+            "left": 33,
+            "right": 109.1875,
+            "top": 1785.828125,
+            "bottom": 1834.828125
+          },
+          "contentRect": {
+            "left": 33,
+            "right": 114.015625,
+            "top": 1794.328125,
+            "bottom": 1826.328125
+          },
+          "withinCell": false,
+          "scrollWidth": 107,
+          "clientWidth": 76,
+          "overflowing": true,
+          "lineBoxCount": 3
+        }
+      ],
+      "overlapCount": 5,
+      "overlapSamples": [
+        {
+          "a": "row3c0:Nærri Holtavörðuheiði",
+          "b": "row3c1:-9,5 °C"
+        },
+        {
+          "a": "row6c0:Nærri Öxnadalsheiði",
+          "b": "row6c1:-8,0 °C"
+        },
+        {
+          "a": "row7c0:Leiðarpunktur nærri Ljósavatnsskarði",
+          "b": "row7c1:-0,6 °C"
+        },
+        {
+          "a": "row8c0:Nærri Mývatnsöræfum",
+          "b": "row8c1:-0,2 °C"
+        },
+        {
+          "a": "row15c0:Leiðarpunktur nærri Kirkjubæjarklaustri",
+          "b": "row15c1:-12,5 °C"
+        }
+      ],
+      "multiLineValueCellCount": 63,
+      "multiLineValueSamples": [
+        {
+          "rowIdx": 1,
+          "cellIdx": 1,
+          "tag": "TD",
+          "text": "-3,0 °C",
+          "cellRect": {
+            "left": 109.1875,
+            "right": 153.640625,
+            "top": 1508.828125,
+            "bottom": 1557.828125
+          },
+          "contentRect": {
+            "left": 113.1875,
+            "right": 136.4375,
+            "top": 1517.328125,
+            "bottom": 1548.328125
+          },
+          "withinCell": true,
+          "scrollWidth": 44,
+          "clientWidth": 44,
+          "overflowing": false,
+          "lineBoxCount": 2
+        },
+        {
+          "rowIdx": 1,
+          "cellIdx": 2,
+          "tag": "TD",
+          "text": "2,0 m/s",
+          "cellRect": {
+            "left": 153.640625,
+            "right": 198.09375,
+            "top": 1508.828125,
+            "bottom": 1557.828125
+          },
+          "contentRect": {
+            "left": 157.640625,
+            "right": 178.8125,
+            "top": 1517.328125,
+            "bottom": 1548.328125
+          },
+          "withinCell": true,
+          "scrollWidth": 44,
+          "clientWidth": 44,
+          "overflowing": false,
+          "lineBoxCount": 2
+        },
+        {
+          "rowIdx": 1,
+          "cellIdx": 3,
+          "tag": "TD",
+          "text": "4,0 m/s",
+          "cellRect": {
+            "left": 198.09375,
+            "right": 242.546875,
+            "top": 1508.828125,
+            "bottom": 1557.828125
+          },
+          "contentRect": {
+            "left": 202.09375,
+            "right": 223.265625,
+            "top": 1517.328125,
+            "bottom": 1548.328125
+          },
+          "withinCell": true,
+          "scrollWidth": 44,
+          "clientWidth": 44,
+          "overflowing": false,
+          "lineBoxCount": 2
+        },
+        {
+          "rowIdx": 1,
+          "cellIdx": 4,
+          "tag": "TD",
+          "text": "0,2 mm",
+          "cellRect": {
+            "left": 242.546875,
+            "right": 287,
+            "top": 1508.828125,
+            "bottom": 1557.828125
+          },
+          "contentRect": {
+            "left": 246.546875,
+            "right": 267.578125,
+            "top": 1517.328125,
+            "bottom": 1548.328125
+          },
+          "withinCell": true,
+          "scrollWidth": 44,
+          "clientWidth": 44,
+          "overflowing": false,
+          "lineBoxCount": 2
+        },
+        {
+          "rowIdx": 2,
+          "cellIdx": 1,
+          "tag": "TD",
+          "text": "-2,6 °C",
+          "cellRect": {
+            "left": 109.1875,
+            "right": 153.640625,
+            "top": 1557.828125,
+            "bottom": 1622.828125
+          },
+          "contentRect": {
+            "left": 113.1875,
+            "right": 136.21875,
+            "top": 1566.328125,
+            "bottom": 1597.328125
+          },
+          "withinCell": true,
+          "scrollWidth": 44,
+          "clientWidth": 44,
+          "overflowing": false,
+          "lineBoxCount": 2
+        },
+        {
+          "rowIdx": 2,
+          "cellIdx": 2,
+          "tag": "TD",
+          "text": "2,3 m/s",
+          "cellRect": {
+            "left": 153.640625,
+            "right": 198.09375,
+            "top": 1557.828125,
+            "bottom": 1622.828125
+          },
+          "contentRect": {
+            "left": 157.640625,
+            "right": 178.8125,
+            "top": 1566.328125,
+            "bottom": 1597.328125
+          },
+          "withinCell": true,
+          "scrollWidth": 44,
+          "clientWidth": 44,
+          "overflowing": false,
+          "lineBoxCount": 2
+        }
+      ]
+    },
+    "slack": {
+      "minSlackPx": -58,
+      "minSlackCellText": "Leiðarpunktur nærri Kirkjubæjarklaustri"
+    }
+  }
+}

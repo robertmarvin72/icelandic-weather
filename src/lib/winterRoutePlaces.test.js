@@ -6,6 +6,7 @@ import {
   WINTER_ROUTE_PLACES,
   WINTER_ROUTE_GROUP_RING,
   WINTER_ROUTE_GROUP_WESTFJORDS,
+  WINTER_ROUTE_GROUP_OTHER,
   isKnownWinterRoutePlaceId,
   winterRoutePlaceName,
   winterRoutePlacesByGroup,
@@ -16,10 +17,12 @@ import {
 const EXPECTED_IDS = [
   "reykjavik-raudavatn", "selfoss", "hella", "egilsstadir", "seydisfjordur",
   "budardalur", "flokalundur", "isafjordur", "holmavik", "patreksfjordur", "talknafjordur",
+  // Ticket #492, direct-flow, C6 -- the two fixed-route-adapter places.
+  "vik", "borgarnes",
 ];
 
-describe("winterRoutePlaces — frozen 11-id list (P2a)", () => {
-  it("has exactly these 11 ids, no more, no fewer", () => {
+describe("winterRoutePlaces — frozen 13-id list (P2a, extended by #492 direct-flow C6)", () => {
+  it("has exactly these 13 ids, no more, no fewer", () => {
     expect(WINTER_ROUTE_PLACES.map((p) => p.id).sort()).toEqual([...EXPECTED_IDS].sort());
   });
 
@@ -27,19 +30,25 @@ describe("winterRoutePlaces — frozen 11-id list (P2a)", () => {
     for (const place of WINTER_ROUTE_PLACES) {
       expect(place.nameIs.length).toBeGreaterThan(0);
       expect(place.nameEn.length).toBeGreaterThan(0);
-      expect([WINTER_ROUTE_GROUP_RING, WINTER_ROUTE_GROUP_WESTFJORDS]).toContain(place.group);
+      expect([WINTER_ROUTE_GROUP_RING, WINTER_ROUTE_GROUP_WESTFJORDS, WINTER_ROUTE_GROUP_OTHER]).toContain(place.group);
     }
   });
 
-  it("groups are exactly 5 (ring) + 6 (westfjords) = 11, matching ticket #501's own network split", () => {
+  it("groups are exactly 5 (ring) + 6 (westfjords) + 2 (other) = 13", () => {
     expect(winterRoutePlacesByGroup(WINTER_ROUTE_GROUP_RING)).toHaveLength(5);
     expect(winterRoutePlacesByGroup(WINTER_ROUTE_GROUP_WESTFJORDS)).toHaveLength(6);
+    expect(winterRoutePlacesByGroup(WINTER_ROUTE_GROUP_OTHER)).toHaveLength(2);
   });
 
   it("junction ids and any id outside the frozen list are not known", () => {
-    for (const id of ["junction-1-60-baulan", "junction-1-68-stadarskali", "junction-60-61-throskuldar", "kopavogur", "vik"]) {
+    for (const id of ["junction-1-60-baulan", "junction-1-68-stadarskali", "junction-60-61-throskuldar", "kopavogur", "akureyri"]) {
       expect(isKnownWinterRoutePlaceId(id)).toBe(false);
     }
+  });
+
+  it("the two direct-flow places ARE known (unlike before #492)", () => {
+    expect(isKnownWinterRoutePlaceId("vik")).toBe(true);
+    expect(isKnownWinterRoutePlaceId("borgarnes")).toBe(true);
   });
 
   it("winterRoutePlaceName returns the right language and falls back to the raw id for an unknown id", () => {
@@ -48,11 +57,13 @@ describe("winterRoutePlaces — frozen 11-id list (P2a)", () => {
     expect(winterRoutePlaceName("not-a-real-id", "is")).toBe("not-a-real-id");
   });
 
-  // 10 of 11 ids exist in the real winter-route-places.json; `flokalundur`
+  // 12 of 13 ids exist in the real winter-route-places.json; `flokalundur`
   // is the one documented exception (ticket #501's own connector-insertion
-  // endpoint, never added to that 56-place file). Read via `fs` here, at
-  // test time only — the production module above never imports this JSON.
-  it("10 of 11 ids' Icelandic display names match server_data/winter-route-places.json verbatim; flokalundur is the documented exception", () => {
+  // endpoint, never added to that 56-place file). `vik`/`borgarnes` (added
+  // by #492 direct-flow C6) ARE in that file too, verified here the same
+  // way as the original 11. Read via `fs` here, at test time only — the
+  // production module above never imports this JSON.
+  it("12 of 13 ids' Icelandic display names match server_data/winter-route-places.json verbatim; flokalundur is the documented exception", () => {
     const placesJsonPath = path.join(process.cwd(), "server_data/winter-route-places.json");
     const placesJson = JSON.parse(fs.readFileSync(placesJsonPath, "utf8"));
     const byId = new Map(placesJson.places.map((p) => [p.id, p]));
@@ -75,7 +86,7 @@ describe("winterRoutePlaces — frozen 11-id list (P2a)", () => {
       }
       matched += 1;
     }
-    expect(matched).toBe(10);
+    expect(matched).toBe(12);
   });
 });
 
@@ -88,7 +99,7 @@ describe("winterRoutePlaces — diacritic-insensitive search (P3a)", () => {
     expect(normalizeWinterRouteSearchText("Búðardalur")).toBe("budardalur");
   });
 
-  it("every one of the 11 places is found by its own plain-ASCII (accent-stripped) search term", () => {
+  it("every one of the 13 places is found by its own plain-ASCII (accent-stripped) search term", () => {
     for (const place of WINTER_ROUTE_PLACES) {
       const asciiQuery = normalizeWinterRouteSearchText(place.nameIs);
       expect(winterRoutePlaceMatchesSearch(place, "is", asciiQuery)).toBe(true);

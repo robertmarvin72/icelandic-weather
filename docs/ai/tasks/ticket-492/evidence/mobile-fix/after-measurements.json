@@ -1,0 +1,86 @@
+{
+  "is-light-360": {
+    "fontInfo": {
+      "fontFamily": "Inter, system-ui, -apple-system, \"Segoe UI\", Roboto, Helvetica, Arial, \"Apple Color Emoji\", \"Segoe UI Emoji\"",
+      "fontsReady": "loaded",
+      "dpr": 1,
+      "innerWidth": 360,
+      "htmlDark": false
+    },
+    "measurement": {
+      "documentScrollWidth": 360,
+      "viewportWidth": 360,
+      "wrapperScrollWidth": 302,
+      "wrapperClientWidth": 302,
+      "totalCellsMeasured": 38,
+      "outOfCellCount": 0,
+      "outOfCellSamples": [],
+      "overflowingCellCount": 0,
+      "overflowingSamples": [],
+      "overlapCount": 0,
+      "overlapSamples": [],
+      "multiLineValueCellCount": 0,
+      "multiLineValueSamples": []
+    },
+    "slack": {
+      "minSlackPx": 3.90625,
+      "minSlackCellText": "Nærri Öxnadalsheiði"
+    }
+  },
+  "en-dark-360": {
+    "fontInfo": {
+      "fontFamily": "Inter, system-ui, -apple-system, \"Segoe UI\", Roboto, Helvetica, Arial, \"Apple Color Emoji\", \"Segoe UI Emoji\"",
+      "fontsReady": "loaded",
+      "dpr": 1,
+      "innerWidth": 360,
+      "htmlDark": true
+    },
+    "measurement": {
+      "documentScrollWidth": 360,
+      "viewportWidth": 360,
+      "wrapperScrollWidth": 302,
+      "wrapperClientWidth": 302,
+      "totalCellsMeasured": 38,
+      "outOfCellCount": 0,
+      "outOfCellSamples": [],
+      "overflowingCellCount": 0,
+      "overflowingSamples": [],
+      "overlapCount": 0,
+      "overlapSamples": [],
+      "multiLineValueCellCount": 0,
+      "multiLineValueSamples": []
+    },
+    "slack": {
+      "minSlackPx": 7.8125,
+      "minSlackCellText": "Route point near Kirkjubæjarklaustur"
+    }
+  },
+  "is-light-320": {
+    "fontInfo": {
+      "fontFamily": "Inter, system-ui, -apple-system, \"Segoe UI\", Roboto, Helvetica, Arial, \"Apple Color Emoji\", \"Segoe UI Emoji\"",
+      "fontsReady": "loaded",
+      "dpr": 1,
+      "innerWidth": 320,
+      "htmlDark": false
+    },
+    "measurement": {
+      "documentScrollWidth": 320,
+      "viewportWidth": 320,
+      "wrapperScrollWidth": 262,
+      "wrapperClientWidth": 262,
+      "totalCellsMeasured": 38,
+      "outOfCellCount": 0,
+      "outOfCellSamples": [],
+      "overflowingCellCount": 0,
+      "overflowingSamples": [],
+      "overlapCount": 0,
+      "overlapSamples": [],
+      "multiLineValueCellCount": 0,
+      "multiLineValueSamples": []
+    },
+    "slack": {
+      "minSlackPx": 0.921875,
+      "minSlackCellText": "Leiðarpunktur nærri Breiðdalsvík"
+    }
+  }
+}
